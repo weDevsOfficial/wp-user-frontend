@@ -1,36 +1,26 @@
 /**
  * DESCRIPTION: Subscription form component for creating/editing subscriptions
- * DESCRIPTION: Refactored to use SubscriptionDetails, stores, and new component architecture
+ * DESCRIPTION: Refactored to use URL-based navigation via router
  */
 import { useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch } from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
-import Header from '../Header';
-import SidebarMenu from './SidebarMenu';
 import SubscriptionDetails from './SubscriptionDetails';
 import UpdateButton from './UpdateButton';
-import UnsavedChanges from './UnsavedChanges';
+import { useSubscriptionData, useSubscriptionActions, useSubscriptionNavigation } from '../../hooks';
 
-const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null, onNavigateToList } ) => {
+const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null } ) => {
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ error, setError ] = useState( null );
 	const [ currentTab, setCurrentTab ] = useState( 'subscription_details' );
-	const [ currentSubscriptionStatus, setCurrentSubscriptionStatus ] = useState( 'all' );
-	const [ allCount, setAllCount ] = useState( { all: 0 } );
 
-	// Store selectors
-	const { subscription, isUpdating, isDirty, isUnsavedPopupOpen } = useSelect(
-		( select ) => ( {
-			subscription: select( 'wpuf/subscriptions' ).getItem(),
-			isUpdating: select( 'wpuf/subscriptions' ).isUpdating(),
-			isDirty: select( 'wpuf/subscriptions' ).isDirty(),
-			isUnsavedPopupOpen: select( 'wpuf/subscriptions' ).isUnsavedPopupOpen(),
-		} ),
-		[]
-	);
+	// Navigation hook
+	const { goToList } = useSubscriptionNavigation();
 
-	// Store actions
+	// Store selectors using custom hook
+	const { subscription, isUpdating, isDirty } = useSubscriptionData();
+
+	// Store actions using custom hook
 	const {
 		setItem,
 		setItemCopy,
@@ -39,26 +29,22 @@ const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null, onNavigate
 		modifyItem,
 		setBlankItem,
 		updateItem: storeUpdateItem,
-	} = useDispatch( 'wpuf/subscriptions' );
+	} = useSubscriptionActions();
 
 	// Fetch subscription data if in edit mode
 	useEffect( () => {
 		if ( mode === 'edit' && subscriptionId ) {
-			// Fetch all subscriptions and find the one we need
-			// Note: The API doesn't have a single subscription endpoint, so we fetch the list
+			// Fetch single subscription by ID
 			apiFetch( {
-				path: '/wpuf/v1/wpuf_subscription',
+				path: `/wpuf/v1/wpuf_subscription/${ subscriptionId }`,
 				method: 'GET',
 			} )
 				.then( ( data ) => {
-					if ( data.success && data.subscriptions ) {
-						const found = data.subscriptions.find( ( sub ) => sub.ID === parseInt( subscriptionId ) );
-						if ( found ) {
-							setItem( found );
-							setItemCopy( JSON.parse( JSON.stringify( found ) ) );
-						} else {
-							setError( __( 'Subscription not found', 'wp-user-frontend' ) );
-						}
+					if ( data.success && data.subscription ) {
+						setItem( data.subscription );
+						setItemCopy( JSON.parse( JSON.stringify( data.subscription ) ) );
+					} else {
+						setError( data.message || __( 'Subscription not found', 'wp-user-frontend' ) );
 					}
 				} )
 				.catch( ( err ) => {
@@ -103,7 +89,7 @@ const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null, onNavigate
 
 			if ( result?.success ) {
 				setIsDirty( false );
-				onNavigateToList?.();
+				goToList();
 			} else {
 				setError( result?.message || __( 'Failed to save subscription', 'wp-user-frontend' ) );
 			}
@@ -127,7 +113,7 @@ const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null, onNavigate
 
 			if ( result?.success ) {
 				setIsDirty( false );
-				onNavigateToList?.();
+				goToList();
 			} else {
 				setError( result?.message || __( 'Failed to save subscription', 'wp-user-frontend' ) );
 			}
@@ -143,20 +129,8 @@ const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null, onNavigate
 		if ( isDirty ) {
 			setIsUnsavedPopupOpen( true );
 		} else {
-			onNavigateToList?.();
+			goToList();
 		}
-	};
-
-	// Discard unsaved changes and navigate
-	const handleDiscardChanges = () => {
-		setIsDirty( false );
-		setIsUnsavedPopupOpen( false );
-		onNavigateToList?.();
-	};
-
-	// Continue editing (close popup)
-	const handleContinueEditing = () => {
-		setIsUnsavedPopupOpen( false );
 	};
 
 	if ( ! subscription ) {
@@ -168,70 +142,46 @@ const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null, onNavigate
 	}
 
 	return (
-		<>
-			<Header utm="wpuf-subscription-form" />
-			<div className={ `wpuf-flex wpuf-pt-[40px] wpuf-px-[20px] ${ isUnsavedPopupOpen ? 'wpuf-blur' : '' }` }>
-			{/* Left Sidebar */}
-			<div className="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200">
-				<SidebarMenu
-					currentSubscriptionStatus={ currentSubscriptionStatus }
-					allCount={ allCount }
-					onCheckIsDirty={ setCurrentSubscriptionStatus }
-					isUnsavedPopupOpen={ isUnsavedPopupOpen }
-				/>
-			</div>
+		<div className="wpuf-px-12">
+			{/* Header */}
+			<h3 className="wpuf-text-lg wpuf-font-bold wpuf-mb-0">
+				{ mode === 'edit'
+					? __( 'Edit Subscription', 'wp-user-frontend' )
+					: __( 'New Subscription', 'wp-user-frontend' ) }
+			</h3>
 
-			{/* Main Content */}
-			<div className="wpuf-basis-4/5 wpuf-px-12">
-				{/* Header */}
-				<h3 className="wpuf-text-lg wpuf-font-bold wpuf-mb-0">
-					{ mode === 'edit'
-						? __( 'Edit Subscription', 'wp-user-frontend' )
-						: __( 'New Subscription', 'wp-user-frontend' ) }
-				</h3>
-
-				{/* Error message */}
-				{ error && (
-					<div className="wpuf-p-4 wpuf-mb-4 wpuf-bg-red-100 wpuf-border wpuf-border-red-400 wpuf-text-red-700 wpuf-rounded">
-						{ error }
-					</div>
-				) }
-
-				{/* Subscription details with tabs */}
-				<SubscriptionDetails
-					subscription={ subscription }
-					onFieldChange={ handleFieldChange }
-					currentTab={ currentTab }
-					onTabChange={ setCurrentTab }
-				/>
-
-				{/* Action buttons */}
-				<div className="wpuf-flex wpuf-flex-row-reverse wpuf-mt-8 wpuf-text-end">
-					<UpdateButton
-						buttonText={ mode === 'edit' ? __( 'Update', 'wp-user-frontend' ) : __( 'Save', 'wp-user-frontend' ) }
-						isUpdating={ isUpdating || isSaving }
-						onPublish={ handlePublish }
-						onSaveDraft={ handleSaveDraft }
-					/>
-					<button
-						type="button"
-						onClick={ handleCancel }
-						className="wpuf-mr-[10px] wpuf-rounded-md wpuf-bg-white wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50"
-					>
-						{ __( 'Cancel', 'wp-user-frontend' ) }
-					</button>
+			{/* Error message */}
+			{ error && (
+				<div className="wpuf-p-4 wpuf-mb-4 wpuf-bg-red-100 wpuf-border wpuf-border-red-400 wpuf-text-red-700 wpuf-rounded">
+					{ error }
 				</div>
+			) }
 
-				{/* Unsaved changes popup */}
-				{ isUnsavedPopupOpen && (
-					<UnsavedChanges
-						onDiscard={ handleDiscardChanges }
-						onContinue={ handleContinueEditing }
-					/>
-				) }
+			{/* Subscription details with tabs */}
+			<SubscriptionDetails
+				subscription={ subscription }
+				onFieldChange={ handleFieldChange }
+				currentTab={ currentTab }
+				onTabChange={ setCurrentTab }
+			/>
+
+			{/* Action buttons */}
+			<div className="wpuf-flex wpuf-flex-row-reverse wpuf-mt-8 wpuf-text-end">
+				<UpdateButton
+					buttonText={ mode === 'edit' ? __( 'Update', 'wp-user-frontend' ) : __( 'Save', 'wp-user-frontend' ) }
+					isUpdating={ isUpdating || isSaving }
+					onPublish={ handlePublish }
+					onSaveDraft={ handleSaveDraft }
+				/>
+				<button
+					type="button"
+					onClick={ handleCancel }
+					className="wpuf-mr-[10px] wpuf-rounded-md wpuf-bg-white wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50"
+				>
+					{ __( 'Cancel', 'wp-user-frontend' ) }
+				</button>
 			</div>
 		</div>
-		</>
 	);
 };
 

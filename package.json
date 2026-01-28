@@ -52,6 +52,7 @@
     "@vueform/multiselect": "^2.6.8",
     "@vuepic/vue-datepicker": "^8.2.0",
     "@wordpress/api-fetch": "^6.49.0",
+    "@wordpress/compose": "^6.0.0",
     "@wordpress/data": "^9.0.0",
     "@wordpress/element": "^5.0.0",
     "@wordpress/i18n": "^4.52.0",

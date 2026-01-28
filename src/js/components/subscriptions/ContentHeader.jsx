@@ -16,7 +16,7 @@ const ContentHeader = ( { currentSubscriptionStatus = 'all', allCount = {}, onAd
 			</h3>
 
 			<div className="wpuf-flex wpuf-justify-end wpuf-h-max">
-				{ shouldShowButton && (
+				{ shouldShowButton && onAddSubscription && (
 					<button
 						onClick={ onAddSubscription }
 						type="button"

@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
 const SidebarMenu = ( {
 	currentSubscriptionStatus = 'all',
 	allCount = {},
-	onCheckIsDirty,
+	onStatusClick,
 	isUnsavedPopupOpen = false,
 } ) => {
 	const statusItems = [
@@ -29,7 +29,7 @@ const SidebarMenu = ( {
 						return (
 							<li
 								key={ item.key }
-								onClick={ () => onCheckIsDirty && onCheckIsDirty( item.key ) }
+								onClick={ () => onStatusClick && onStatusClick( item.key ) }
 								className={
 									'wpuf-justify-between wpuf-text-gray-700 hover:wpuf-text-primary hover:wpuf-bg-gray-50 group wpuf-flex wpuf-gap-x-3 wpuf-rounded-md wpuf-py-2 wpuf-px-[20px] wpuf-text-sm wpuf-leading-6 hover:wpuf-cursor-pointer' +
 									( isActive ? ' wpuf-bg-gray-50 wpuf-text-primary' : '' )

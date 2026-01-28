@@ -7,15 +7,20 @@ import { useState, useEffect, useCallback, useMemo } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
+import { useSubscriptionActions } from '../../hooks';
 
-const SubscriptionBox = ( { subscription } ) => {
+const SubscriptionBox = ( { subscription, onEdit } ) => {
 	const [ showPopup, setShowPopup ] = useState( false );
 	const [ showBox, setShowBox ] = useState( true );
 	const [ quickMenuStatus, setQuickMenuStatus ] = useState( false );
 	const [ subscribers, setSubscribers ] = useState( 0 );
 
+	// These selectors need state argument, so use useSelect directly
 	const { getReadableBillingAmount, isRecurring } = useSelect( ( select ) => select( 'wpuf/subscriptions' ), [] );
-	const { setItem, updateItem, deleteItem } = useDispatch( 'wpuf/subscriptions' );
+	// Store actions using custom hook
+	const { setItem, updateItem, deleteItem } = useSubscriptionActions();
+	// Quick edit store actions
+	const { setQuickEditStatus } = useDispatch( 'wpuf/subscriptions-quick-edit' );
 
 	const isPasswordProtected = useMemo( () => {
 		return subscription.post_password !== '';
@@ -71,8 +76,8 @@ const SubscriptionBox = ( { subscription } ) => {
 			.then( ( response ) => {
 				setSubscribers( response.subscribers );
 			} )
-			.catch( ( error ) => {
-				console.log( error );
+			.catch( () => {
+				// Silently fail on error
 			} );
 	}, [ subscription.ID ] );
 
@@ -80,43 +85,57 @@ const SubscriptionBox = ( { subscription } ) => {
 	useEffect( () => {
 		const handleClickOutside = ( event ) => {
 			if ( quickMenuStatus && ! event.target.closest( '.wpuf-quick-menu' ) ) {
+				console.log( '[SubscriptionBox] Click outside detected, closing quick menu' );
 				setQuickMenuStatus( false );
 			}
 		};
 
 		if ( quickMenuStatus ) {
+			console.log( '[SubscriptionBox] Adding click outside listener' );
 			document.addEventListener( 'click', handleClickOutside );
 		}
 
 		return () => {
+			console.log( '[SubscriptionBox] Removing click outside listener' );
 			document.removeEventListener( 'click', handleClickOutside );
 		};
 	}, [ quickMenuStatus ] );
 
 	const handleQuickMenu = useCallback( ( e ) => {
 		e.stopPropagation();
-		setQuickMenuStatus( ! quickMenuStatus );
-	}, [ quickMenuStatus ] );
+		const newStatus = ! quickMenuStatus;
+		console.log( '[SubscriptionBox] Quick menu toggled:', { subscriptionId: subscription.ID, from: quickMenuStatus, to: newStatus } );
+		setQuickMenuStatus( newStatus );
+	}, [ quickMenuStatus, subscription.ID ] );
 
 	const handleEdit = useCallback( () => {
+		console.log( '[SubscriptionBox] Edit action clicked:', { subscriptionId: subscription.ID, title: subscription.post_title } );
 		setItem( subscription );
-		// Navigate to edit page
-		const url = new URL( window.location.href );
-		url.searchParams.set( 'action', 'edit' );
-		url.searchParams.set( 'id', subscription.ID );
-		window.location.href = url.toString();
-	}, [ subscription, setItem ] );
+		// Use the callback prop if provided, otherwise fall back to URL navigation
+		if ( onEdit ) {
+			onEdit( subscription.ID );
+		} else {
+			// Fallback to URL navigation for backward compatibility
+			const url = new URL( window.location.href );
+			url.searchParams.set( 'action', 'edit' );
+			url.searchParams.set( 'id', subscription.ID );
+			window.location.href = url.toString();
+		}
+	}, [ subscription, setItem, onEdit ] );
 
 	const handleQuickEdit = useCallback( () => {
+		console.log( '[SubscriptionBox] Quick Edit action clicked:', { subscriptionId: subscription.ID, title: subscription.post_title } );
 		setItem( subscription );
-		// TODO: Open quick edit modal
+		setQuickEditStatus( true );
 		setQuickMenuStatus( false );
-	}, [ subscription, setItem ] );
+	}, [ subscription, setItem, setQuickEditStatus ] );
 
 	const handleToggleStatus = useCallback( () => {
 		const newStatus = subscription.post_status === 'draft' ? 'publish' : 'draft';
+		console.log( '[SubscriptionBox] Toggle Status action clicked:', { subscriptionId: subscription.ID, from: subscription.post_status, to: newStatus } );
 		const updatedSubscription = {
 			...subscription,
+			edit_single_row: true,
 			edit_row_name: 'post_status',
 			edit_row_value: newStatus,
 		};
@@ -132,13 +151,34 @@ const SubscriptionBox = ( { subscription } ) => {
 	}, [ subscription, setItem, updateItem ] );
 
 	const handleTrash = useCallback( () => {
+		console.log( '[SubscriptionBox] Trash action clicked:', { subscriptionId: subscription.ID, title: subscription.post_title } );
 		setShowPopup( true );
 		setQuickMenuStatus( false );
-	}, [] );
+	}, [ subscription.ID ] );
+
+	// Actually move the item to trash
+	const confirmTrash = useCallback( () => {
+		console.log( '[SubscriptionBox] Confirming trash action:', { subscriptionId: subscription.ID } );
+		const updatedSubscription = {
+			...subscription,
+			edit_single_row: true,
+			edit_row_name: 'post_status',
+			edit_row_value: 'trash',
+		};
+		setItem( updatedSubscription );
+		updateItem().then( ( result ) => {
+			if ( result.success ) {
+				setShowBox( false );
+				window.location.reload();
+			}
+		} );
+		setShowPopup( false );
+	}, [ subscription, setItem, updateItem ] );
 
 	const handleRestore = useCallback( () => {
 		const updatedSubscription = {
 			...subscription,
+			edit_single_row: true,
 			edit_row_name: 'post_status',
 			edit_row_value: 'draft',
 		};
@@ -187,7 +227,7 @@ const SubscriptionBox = ( { subscription } ) => {
 				</div>
 
 				{/* Quick Menu Button */}
-				<div className="wpuf-absolute wpuf-right-6 wpuf-p-[10px] wpuf-rounded-full hover:wpuf-bg-gray-100 wpuf-top-4 wpuf-right-4 wpuf-quick-menu">
+				<div className="wpuf-absolute wpuf-top-4 wpuf-right-4 wpuf-p-[10px] wpuf-rounded-full hover:wpuf-bg-gray-100 wpuf-quick-menu">
 					<svg
 						onClick={ handleQuickMenu }
 						className="wpuf-h-5 wpuf-w-5 hover:wpuf-cursor-pointer"
@@ -200,7 +240,7 @@ const SubscriptionBox = ( { subscription } ) => {
 
 					{/* Quick Menu Dropdown */}
 					{ quickMenuStatus && (
-						<div className="wpuf-w-max wpuf--left-20 wpuf-absolute wpuf-rounded-xl wpuf-bg-white wpuf-shadow-lg wpuf-ring-1 wpuf-ring-gray-900/5 wpuf-overflow-hidden wpuf-z-10">
+						<div className="wpuf-absolute wpuf-right-0 wpuf-top-10 wpuf-w-max wpuf-rounded-xl wpuf-bg-white wpuf-shadow-lg wpuf-ring-1 wpuf-ring-gray-900/5 wpuf-overflow-hidden wpuf-z-10">
 							{ subscription.post_status !== 'trash' ? (
 								<ul>
 									<li onClick={ handleEdit } className="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
@@ -221,7 +261,7 @@ const SubscriptionBox = ( { subscription } ) => {
 									<li onClick={ handleRestore } className="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
 										{ __( 'Restore', 'wp-user-frontend' ) }
 									</li>
-									<li onClick={ handleTrash } className="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
+									<li onClick={ handleDelete } className="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
 										{ __( 'Delete Permanently', 'wp-user-frontend' ) }
 									</li>
 								</ul>
@@ -269,7 +309,7 @@ const SubscriptionBox = ( { subscription } ) => {
 								{ __( 'Cancel', 'wp-user-frontend' ) }
 							</button>
 							<button
-								onClick={ subscription.post_status === 'trash' ? handleDelete : handleTrash }
+								onClick={ subscription.post_status === 'trash' ? handleDelete : confirmTrash }
 								className="wpuf-px-4 wpuf-py-2 wpuf-bg-red-600 wpuf-text-white wpuf-rounded-md hover:wpuf-bg-red-700"
 							>
 								{ subscription.post_status === 'trash' ? __( 'Delete', 'wp-user-frontend' ) : __( 'Trash', 'wp-user-frontend' ) }

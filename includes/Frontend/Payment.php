@@ -95,6 +95,13 @@ class Payment {
         if ( $post->ID === $pay_page && 'wpuf_pay' === $action ) {
             $post_id = isset( $_REQUEST['post_id'] ) ? intval( wp_unslash( $_REQUEST['post_id'] ) ) : 0;
             $pack_id = isset( $_REQUEST['pack_id'] ) ? intval( wp_unslash( $_REQUEST['pack_id'] ) ) : 0;
+            
+            // Validate that both post_id and pack_id are not set simultaneously
+            // Payment should be for either a pack OR a post, not both
+            if ( $post_id > 0 && $pack_id > 0 ) {
+                return $content;
+            }
+            
             $is_free = false;
             if ( $pack_id ) {
                 $pack_detail = wpuf()->subscription->get_subscription( $pack_id );
@@ -250,9 +257,11 @@ class Payment {
                                         <?php } ?>
                                     </div>
 
+                                    <div id="wpuf_type" style="display: none"><?php echo 'pack'; ?></div>
+                                    <div id="wpuf_id" style="display: none"><?php echo esc_attr( $pack_id ); ?></div>
+
                                     <?php
-                                }
-                                if ( $post_id ) {
+                                } elseif ( $post_id ) {
                                     $form              = new Admin\Forms\Form(
                                         get_post_meta(
                                             $post_id, '_wpuf_form_id', true

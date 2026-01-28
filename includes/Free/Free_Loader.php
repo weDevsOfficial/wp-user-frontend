@@ -43,6 +43,9 @@ class Free_Loader extends Pro_Prompt {
         add_action( 'wpuf_form_post_expiration', [ $this, 'wpuf_form_post_expiration_runner' ] );
         add_action( 'wpuf_form_settings_post_notification', [ $this, 'post_notification_hook_runner' ] );
 
+        // Free module toggle AJAX
+        add_action( 'wp_ajax_wpuf_toggle_free_module', [ $this, 'toggle_free_module' ] );
+
         // plugin settings
         add_filter( 'wpuf_settings_sections', [ $this, 'pro_sections' ] );
         add_filter( 'wpuf_settings_fields', [ $this, 'pro_settings' ] );
@@ -79,10 +82,46 @@ class Free_Loader extends Pro_Prompt {
         // class files to include pro elements
         require_once WPUF_INCLUDES . '/functions/user/edit-user.php';
         require_once WPUF_INCLUDES . '/Hooks/Form_Settings_Cleanup.php';
+
+        // User Directory Free - only load if Pro module is not active AND Free module is enabled
+        if ( ! $this->is_pro_user_directory_active() && $this->is_free_user_directory_active() ) {
+            require_once WPUF_ROOT . '/modules/user-directory/User_Directory.php';
+        }
+    }
+
+    /**
+     * Check if Pro User Directory module is active
+     *
+     * @since 4.3.0
+     *
+     * @return bool
+     */
+    private function is_pro_user_directory_active() {
+        if ( ! wpuf_is_pro_active() ) {
+            return false;
+        }
+
+        return class_exists( 'WPUF_User_Listing' );
+    }
+
+    /**
+     * Check if Free User Directory module is enabled
+     *
+     * @since 4.3.0
+     *
+     * @return bool
+     */
+    private function is_free_user_directory_active() {
+        return wpuf_free_is_module_active( 'user_directory' );
     }
 
     public function instantiate() {
         $this->edit_profile = new Edit_Profile();
+
+        // Initialize User Directory Free if Pro module is not active AND Free module is enabled
+        if ( ! $this->is_pro_user_directory_active() && $this->is_free_user_directory_active() ) {
+            \WeDevs\Wpuf\Modules\User_Directory\User_Directory::get_instance();
+        }
 
         if ( is_admin() ) {
 
@@ -1000,7 +1039,8 @@ class Free_Loader extends Pro_Prompt {
      * @return void
      */
     public function modules_preview_page() {
-        $modules = $this->pro_modules_info();
+        $pro_modules  = $this->pro_modules_info();
+        $free_modules = wpuf_free_get_modules();
 
         $diamond_icon = file_exists( WPUF_ROOT . '/assets/images/diamond.svg' ) ? file_get_contents( WPUF_ROOT . '/assets/images/diamond.svg' ) : '';
         $check_icon   = file_exists( WPUF_ROOT . '/assets/images/check.svg' ) ? file_get_contents( WPUF_ROOT . '/assets/images/check.svg' ) : '';
@@ -1104,9 +1144,61 @@ class Free_Loader extends Pro_Prompt {
         </div>
         <div class="wrap wpuf-modules">
             <h1><?php esc_attr_e( 'Modules', 'wp-user-frontend' ); ?></h1>
-            <div class="wp-list-table widefat wpuf-modules">
-                <?php if ( $modules ) {
-                    foreach ( $modules as $slug => $module ) {
+
+            <?php // Free Modules Section ?>
+            <?php if ( $free_modules ) : ?>
+            <h2 class="wpuf-modules-section-title" style="margin-top: 20px; margin-bottom: 10px; font-size: 16px; font-weight: 600;">
+                <?php esc_html_e( 'Available Modules', 'wp-user-frontend' ); ?>
+            </h2>
+            <div class="wp-list-table widefat wpuf-modules wpuf-free-modules">
+                <?php
+                foreach ( $free_modules as $module_id => $module ) {
+                    $is_active = wpuf_free_is_module_active( $module_id );
+                    ?>
+                    <div class="plugin-card">
+                        <div class="plugin-card-top">
+                            <div class="name column-name">
+                                <h3>
+                                    <span class="plugin-name"><a href="<?php echo esc_url( $module['plugin_uri'] ); ?>" target="_blank"><?php echo esc_html( $module['name'] ); ?></a></span>
+                                    <a href="<?php echo esc_url( $module['plugin_uri'] ); ?>" target="_blank"><img class="plugin-icon" src="<?php echo esc_url( WPUF_ASSET_URI . '/images/modules/' . $module['thumbnail'] ); ?>" alt="" /></a>
+                                </h3>
+                            </div>
+
+                            <div class="action-links">
+                                <ul class="plugin-action-buttons">
+                                    <li data-module="<?php echo esc_attr( $module_id ); ?>">
+                                        <label class="wpuf-toggle-switch">
+                                            <input type="checkbox" name="module_toggle" class="wpuf-toggle-free-module" data-module="<?php echo esc_attr( $module_id ); ?>" <?php checked( $is_active ); ?>>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </li>
+                                </ul>
+                                <div class="wpuf-doc-link"><a href="<?php echo esc_url( $module['plugin_uri'] ); ?>" target="_blank"><?php esc_html_e( 'Documentation', 'wp-user-frontend' ); ?></a></div>
+                            </div>
+
+                            <div class="desc column-description">
+                                <p>
+                                    <?php echo esc_html( $module['description'] ); ?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                }
+                ?>
+            </div>
+            <?php endif; ?>
+
+            <?php // Pro Modules Preview Section ?>
+            <h2 class="wpuf-modules-section-title" style="margin-top: 30px; margin-bottom: 10px; font-size: 16px; font-weight: 600;">
+                <?php esc_html_e( 'Pro Modules', 'wp-user-frontend' ); ?>
+                <span style="font-size: 12px; font-weight: normal; color: #666; margin-left: 10px;">
+                    <?php esc_html_e( '(Upgrade to Pro to unlock)', 'wp-user-frontend' ); ?>
+                </span>
+            </h2>
+            <div class="wp-list-table widefat wpuf-modules wpuf-pro-modules-preview" style="position: relative;">
+                <?php if ( $pro_modules ) {
+                    foreach ( $pro_modules as $slug => $module ) {
                         ?>
                         <div class="plugin-card">
                             <div class="plugin-card-top">
@@ -1126,7 +1218,7 @@ class Free_Loader extends Pro_Prompt {
                                             </label>
                                         </li>
                                     </ul>
-                                    <div class="wpuf-doc-link" ><a href="<?php echo esc_url( $module['plugin_uri'] ); ?>" target="_blank">Documentation</a></div>
+                                    <div class="wpuf-doc-link" ><a href="<?php echo esc_url( $module['plugin_uri'] ); ?>" target="_blank"><?php esc_html_e( 'Documentation', 'wp-user-frontend' ); ?></a></div>
                                 </div>
 
                                 <div class="desc column-description">
@@ -1140,11 +1232,11 @@ class Free_Loader extends Pro_Prompt {
                     }
                 }
                 ?>
-            </div>
-            <div class="form-create-overlay">
-                <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=freeplugin&amp;utm_medium=prompt&amp;utm_term=wpuf_free_plugin&amp;utm_content=textlink&amp;utm_campaign=pro_prompt" target="_blank">
-                    <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="pro icon" class="wpuf-module-pro-badge">
-                </a>
+                <div class="form-create-overlay">
+                    <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=freeplugin&amp;utm_medium=prompt&amp;utm_term=wpuf_free_plugin&amp;utm_content=textlink&amp;utm_campaign=pro_prompt" target="_blank">
+                        <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="pro icon" class="wpuf-module-pro-badge">
+                    </a>
+                </div>
             </div>
         </div>
         <?php
@@ -1166,6 +1258,60 @@ class Free_Loader extends Pro_Prompt {
         wp_enqueue_script( 'wpuf-swiffy-slider' );
         wp_enqueue_script( 'wpuf-swiffy-slider-extensions' );
         wp_enqueue_script( 'wpuf-module' );
+
+        // Localize script for free module toggle
+        wp_localize_script( 'wpuf-module', 'wpuf_free_modules', [
+            'ajaxurl' => admin_url( 'admin-ajax.php' ),
+            'nonce'   => wp_create_nonce( 'wpuf_toggle_free_module' ),
+        ] );
+    }
+
+    /**
+     * Handle AJAX request to toggle a free module on/off
+     *
+     * @since 4.3.0
+     *
+     * @return void
+     */
+    public function toggle_free_module() {
+        // Check nonce
+        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'wpuf_toggle_free_module' ) ) {
+            wp_send_json_error( [ 'message' => __( 'Security check failed', 'wp-user-frontend' ) ] );
+        }
+
+        // Check permission
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( [ 'message' => __( 'Permission denied', 'wp-user-frontend' ) ] );
+        }
+
+        $module_id = isset( $_POST['module'] ) ? sanitize_text_field( wp_unslash( $_POST['module'] ) ) : '';
+        $status    = isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : '';
+
+        if ( empty( $module_id ) ) {
+            wp_send_json_error( [ 'message' => __( 'Invalid module', 'wp-user-frontend' ) ] );
+        }
+
+        // Check if module exists
+        $modules = wpuf_free_get_modules();
+        if ( ! isset( $modules[ $module_id ] ) ) {
+            wp_send_json_error( [ 'message' => __( 'Module not found', 'wp-user-frontend' ) ] );
+        }
+
+        if ( 'active' === $status ) {
+            $result = wpuf_free_activate_module( $module_id );
+        } else {
+            $result = wpuf_free_deactivate_module( $module_id );
+        }
+
+        if ( is_wp_error( $result ) ) {
+            wp_send_json_error( [ 'message' => $result->get_error_message() ] );
+        }
+
+        wp_send_json_success( [
+            'message' => 'active' === $status
+                ? __( 'Module activated successfully', 'wp-user-frontend' )
+                : __( 'Module deactivated successfully', 'wp-user-frontend' ),
+        ] );
     }
 
     /**
@@ -1284,12 +1430,6 @@ class Free_Loader extends Pro_Prompt {
                 'description' => 'Add subscribers to mailpoet mailing list when they registers via WP User Frontend Pro',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/mailpoet3/',
                 'thumbnail'   => 'mailpoet3.png',
-            ],
-            'user-directory/userlisting.php' => [
-                'name'        => 'User Directory',
-                'description' => 'Handle user listing and user profile in frontend',
-                'plugin_uri'  => 'https://wedevs.com/products/plugins/wp-user-frontend-pro/user-listing-profile/',
-                'thumbnail'   => 'wpuf-ul.png',
             ],
             'stripe/wpuf-stripe.php' => [
                 'name'        => 'Stripe Payment',

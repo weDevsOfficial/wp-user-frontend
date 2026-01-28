@@ -42,6 +42,20 @@
     position: relative;
 }
 
+.wpuf-modules-section-title {
+    clear: both;
+}
+
+.wpuf-free-modules {
+    margin-bottom: 20px;
+}
+
+.wpuf-free-modules::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
 .wpuf-modules .plugin-card .plugin-name {
     color: #0073aa;
 }
@@ -78,7 +92,7 @@
     padding-top: 26px;
 }
 
-.plugin-card:hover .form-create-overlay {
+.wpuf-pro-modules-preview .plugin-card:hover .form-create-overlay {
     -webkit-opacity: 1;
     opacity: 1;
     z-index: 1;

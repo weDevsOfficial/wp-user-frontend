@@ -33,7 +33,7 @@ add_action( 'init', 'wpuf_buffer_start' );
 function wpuf_show_post_status( $status ) {
     if ( 'publish' === $status ) {
         $title     = __( 'Live', 'wp-user-frontend' );
-        $fontcolor = '#33CC33';
+        $fontcolor = 'rgb(5, 150, 105)';
     } elseif ( 'draft' === $status ) {
         $title     = __( 'Offline', 'wp-user-frontend' );
         $fontcolor = '#bbbbbb';
@@ -484,10 +484,10 @@ function wpuf_get_field_settings_excludes( $field_settings, $exclude_type ) {
         foreach ( $attributes as $attr ) {
             $terms = get_terms(
                 $field_settings['name'],
-                array(
+                [
                     'hide_empty' => false,
                     'parent'     => $attr,
-                )
+                ]
             );
 
             foreach ( $terms as $term ) {
@@ -556,10 +556,6 @@ function wpuf_allowed_extensions() {
         'zip'    => [
             'ext' => 'zip,gz,gzip,rar,7z',
             'label' => __( 'Zip Archives', 'wp-user-frontend' ),
-        ],
-        'exe'    => [
-            'ext' => 'exe',
-            'label' => __( 'Executable Files', 'wp-user-frontend' ),
         ],
         'csv'    => [
             'ext' => 'csv',
@@ -784,6 +780,90 @@ function wpuf_custom_avatar_data( $args, $id_or_email ) {
 }
 
 add_filter( 'get_avatar_data', 'wpuf_custom_avatar_data', 10, 2 );
+
+/**
+ * Get user avatar data with fallback to initials
+ *
+ * Checks for custom profile photo first, then Gravatar, and provides
+ * initials as fallback. This follows the same logic as user directory.
+ *
+ * @since 4.2.7
+ *
+ * @param int|WP_User $user    User ID or WP_User object.
+ * @param int         $size    Avatar size in pixels. Default 96.
+ *
+ * @return array {
+ *     Avatar data array.
+ *
+ *     @type string|false $url       Avatar URL or false if no avatar.
+ *     @type string       $initials  User initials for fallback display.
+ *     @type int          $font_size Calculated font size for initials.
+ * }
+ */
+function wpuf_get_user_avatar_data( $user, $size = 96 ) {
+    // Get user object if ID is passed
+    if ( is_numeric( $user ) ) {
+        $user = get_user_by( 'id', $user );
+    }
+
+    if ( ! $user ) {
+        return [
+            'url'       => false,
+            'initials'  => '',
+            'font_size' => 16,
+        ];
+    }
+
+    $avatar_url = false;
+
+    // First check for wpuf_profile_photo meta (custom uploaded photo)
+    $profile_photo_id = get_user_meta( $user->ID, 'wpuf_profile_photo', true );
+
+    if ( $profile_photo_id ) {
+        $photo_url = wp_get_attachment_url( $profile_photo_id );
+
+        if ( $photo_url ) {
+            $avatar_url = $photo_url;
+        }
+    }
+
+    // If no custom photo, check for real Gravatar
+    if ( ! $avatar_url ) {
+        $email_hash         = md5( strtolower( trim( $user->user_email ) ) );
+        $gravatar_check_url = "https://www.gravatar.com/avatar/{$email_hash}?d=404&s={$size}";
+        $response           = wp_remote_head( $gravatar_check_url, [ 'timeout' => 2 ] );
+
+        if ( ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ) {
+            $avatar_url = "https://www.gravatar.com/avatar/{$email_hash}?s={$size}";
+        }
+    }
+
+    // Get user initials for fallback
+    $first_name = get_user_meta( $user->ID, 'first_name', true );
+    $last_name  = get_user_meta( $user->ID, 'last_name', true );
+
+    if ( $first_name && $last_name ) {
+        $initials = strtoupper( substr( $first_name, 0, 1 ) . substr( $last_name, 0, 1 ) );
+    } else {
+        $name       = $user->display_name ?: $user->user_login;
+        $name_parts = explode( ' ', $name );
+
+        if ( count( $name_parts ) >= 2 ) {
+            $initials = strtoupper( substr( $name_parts[0], 0, 1 ) . substr( $name_parts[1], 0, 1 ) );
+        } else {
+            $initials = strtoupper( substr( $name, 0, 2 ) );
+        }
+    }
+
+    // Calculate font size for initials
+    $font_size = max( $size / 2.5, 16 );
+
+    return [
+        'url'       => $avatar_url,
+        'initials'  => $initials,
+        'font_size' => $font_size,
+    ];
+}
 
 
 function wpuf_update_avatar( $user_id, $attachment_id ) {
@@ -1865,37 +1945,12 @@ function wpuf_get_form_fields( $form_id ) {
                 $field['multiple'] = '';
             }
 
-            // if old repeat field format
+            // Ensure inner_fields is a simple array (not column structure)
             if ( empty( $field['inner_fields'] ) ) {
-                $old_id            = $field['id'];
-                $old_meta          = $field['name'];
-                $old_label         = $field['label'];
-                $new_id            = wpuf_form_field_id_generator();
-                $field['template'] = 'text_field';
-
-                // set the new compatible values
-                $field['id']                       = $new_id;
-                $field['name']                     = $old_meta . '_' . $new_id;
-                $field['label']                    = '';
-                $field['inner_fields']['column-1'] = [ $field ];
-                $field['inner_fields']['column-2'] = [];
-                $field['inner_fields']['column-3'] = [];
-                $field['template']                 = 'repeat_field';
-                $field['columns']                  = 1;
-                $field['min_column']               = 1;
-                $field['max_column']               = 3;
-                $field['column_space']             = 5;
-
-                $field['id']    = $old_id;
-                $field['label'] = $old_label;
-                $field['name']  = $old_meta;
-            }
-
-            // if old repeat field format
-            if ( empty( $field['inner_columns_size'] ) ) {
-                $field['inner_columns_size']['column-1'] = '100%';
-                $field['inner_columns_size']['column-2'] = '100%';
-                $field['inner_columns_size']['column-3'] = '100%';
+                $field['inner_fields'] = [];
+            } elseif ( isset( $field['inner_fields']['column-1'] ) ) {
+                // Convert column structure to simple array
+                $field['inner_fields'] = $field['inner_fields']['column-1'];
             }
         }
 
@@ -3858,7 +3913,7 @@ function wpuf_update_option( $option, $section, $value ) {
     $options = get_option( $section );
 
     if ( ! is_array( $options ) ) {
-        $options = array();
+        $options = [];
     }
 
     $options[ $option ] = $value;
@@ -3906,10 +3961,12 @@ function wpuf_ajax_get_states_field() {
     $states    = $cs->getStates( $countries[ $country ] );
 
     if ( ! empty( $states ) ) {
+        $field_name = isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '';
+
         $args = [
-            'name'             => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
-            'id'               => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
-            'class'            => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
+            'name'             => $field_name,
+            'id'               => $field_name,
+            'class'            => $field_name,
             'options'          => $states,
             'show_option_all'  => false,
             'show_option_none' => false,
@@ -5458,7 +5515,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                 'label'   => __( 'Payment Success Page', 'wp-user-frontend' ),
                 'type'    => 'select',
                 'options' => $pages,
-                'help'    => __( 'Select the page users will be redirected to after a successful payment', 'wp-user-frontend' ),
+                'help_text'    => __( 'Select the page to redirect after successful payment.', 'wp-user-frontend' ),
             ],
         ]
     );
@@ -5477,7 +5534,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'new'         => [
                             'label' => __( 'New Post Notification', 'wp-user-frontend' ),
                             'type'  => 'toggle',
-                            'help'  => __( 'Enable email alerts for each new post submitted through this form', 'wp-user-frontend' ),
+                            'help_text'  => __( 'Enable email alerts for new submissions through this form', 'wp-user-frontend' ),
                             'name'  => 'wpuf_settings[notification][new]',
                         ],
                         'new_to'      => [
@@ -5759,6 +5816,91 @@ if ( ! function_exists( 'wpuf_field_profile_photo_allowed_mimes' ) ) {
          * @param array $profile_photo_mimes Array of allowed MIME types for profile photos
          */
         return apply_filters( 'wpuf_field_profile_photo_allowed_mimes', $profile_photo_mimes );
+    }
+}
+
+/**
+ * Get taxonomy object types (post types the taxonomy is associated with)
+ *
+ * This works for all taxonomies - built-in or custom.
+ *
+ * @since 4.2.6
+ *
+ * @param string $taxonomy_name The taxonomy name to check
+ * @return array Array of post type names associated with the taxonomy
+ */
+if ( ! function_exists( 'wpuf_get_taxonomy_post_types' ) ) {
+    function wpuf_get_taxonomy_post_types( $taxonomy_name ) {
+        // If taxonomy doesn't exist, return empty array
+        if ( ! taxonomy_exists( $taxonomy_name ) ) {
+            return [];
+        }
+
+        // Get the taxonomy object
+        $taxonomy = get_taxonomy( $taxonomy_name );
+
+        if ( ! $taxonomy ) {
+            return [];
+        }
+
+        // WordPress stores associated post types in object_type property
+        if ( isset( $taxonomy->object_type ) && is_array( $taxonomy->object_type ) ) {
+            return $taxonomy->object_type;
+        }
+
+        return [];
+    }
+}
+
+/**
+ * Get list of taxonomies that should be available in free version
+ *
+ * This includes built-in taxonomies and custom taxonomies associated with 'post' or 'page' post types.
+ *
+ * @since 4.2.6
+ *
+ * @return array Array of taxonomy names that are available in free version
+ */
+if ( ! function_exists( 'wpuf_get_free_taxonomies' ) ) {
+    function wpuf_get_free_taxonomies() {
+        // Built-in taxonomies that are always available
+        $free_taxonomies = [ 'category', 'post_tag' ];
+
+        // Allow filtering to add more free taxonomies
+        //$free_taxonomies = apply_filters( 'wpuf_free_taxonomies', $free_taxonomies );
+
+        // Get all registered taxonomies (built-in and custom)
+        $all_taxonomies = get_taxonomies( [], 'names' );
+
+        foreach ( $all_taxonomies as $taxonomy_name ) {
+            // Skip if already in free list
+            if ( in_array( $taxonomy_name, $free_taxonomies, true ) ) {
+                continue;
+            }
+
+            // Get the post types this taxonomy is associated with
+            $post_types = wpuf_get_taxonomy_post_types( $taxonomy_name );
+
+            // Only allow taxonomies that are associated with 'post' or 'page' in free version
+            if ( ! empty( $post_types ) ) {
+                $allowed_post_types = [ 'post', 'page' ];
+                $has_allowed_type = false;
+
+                foreach ( $post_types as $post_type ) {
+                    if ( in_array( $post_type, $allowed_post_types, true ) ) {
+                        $has_allowed_type = true;
+                        break;
+                    }
+                }
+
+                // If this taxonomy is for post or page, add it to free list
+                if ( $has_allowed_type ) {
+                    $free_taxonomies[] = $taxonomy_name;
+                }
+            }
+        }
+
+        return $free_taxonomies;
     }
 }
 

@@ -1,0 +1,855 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Account page specific utilities */
+@layer components {
+    .wpuf-account-container {
+        @apply wpuf-flex wpuf-gap-12 wpuf-max-w-7xl wpuf-mx-auto wpuf-p-4 sm:wpuf-p-6 lg:wpuf-p-8;
+    }
+
+    /* Sidebar Styles */
+    .wpuf-account-sidebar {
+        @apply wpuf-w-full lg:wpuf-w-[260px] wpuf-flex-shrink-0 wpuf-space-y-[62px] wpuf-h-full wpuf-opacity-100;
+    }
+
+    /* Profile Section */
+    .wpuf-profile-section {
+        @apply wpuf-bg-transparent wpuf-text-base;
+    }
+
+    .wpuf-profile-avatar {
+        @apply wpuf-mb-4 wpuf-flex wpuf-justify-start;
+    }
+
+    .wpuf-profile-avatar img {
+        @apply wpuf-rounded-full wpuf-w-24 wpuf-h-24 wpuf-object-cover;
+    }
+
+    .wpuf-profile-name {
+        @apply wpuf-text-xl wpuf-font-semibold wpuf-text-gray-900 wpuf-mb-[10px] wpuf-mt-0;
+    }
+
+    .wpuf-profile-role {
+        @apply wpuf-text-[18px] wpuf-text-gray-400 wpuf-mb-[32px];
+    }
+
+    .wpuf-edit-profile-btn {
+        @apply wpuf-inline-flex wpuf-items-center wpuf-justify-center wpuf-gap-[10px] wpuf-bg-[#111827] wpuf-text-white wpuf-px-6 wpuf-py-[10px] wpuf-rounded-lg wpuf-transition-colors wpuf-font-normal wpuf-text-base wpuf-leading-6 wpuf-tracking-[0.13px] wpuf-no-underline wpuf-w-[166px] wpuf-h-[44px];
+        text-shadow: unset!important;
+    }
+
+    .wpuf-edit-profile-btn:hover {
+        background-color: #06090e !important;
+    }
+
+    /* Navigation Styles */
+    .wpuf-account-nav {
+        @apply wpuf-bg-transparent;
+    }
+
+    .wpuf-account-nav ul {
+        @apply wpuf-space-y-1;
+    }
+
+    .wpuf-account-nav-item {
+        @apply wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-px-4 wpuf-py-3 wpuf-text-[#374151] wpuf-rounded-md hover:wpuf-bg-[#E1E6EA] wpuf-transition-colors wpuf-no-underline wpuf-text-base wpuf-leading-none focus:wpuf-outline-none;
+    }
+
+    .wpuf-account-nav-item svg {
+        @apply wpuf-flex-shrink-0;
+    }
+
+    .wpuf-account-nav-item span {
+        @apply wpuf-flex-1;
+    }
+
+    .wpuf-account-nav-item.active {
+        @apply wpuf-flex wpuf-items-center wpuf-gap-[10px] wpuf-px-4 wpuf-py-3 !wpuf-bg-[#F3F4F6] !wpuf-text-gray-900 wpuf-rounded-lg wpuf-transition-colors wpuf-no-underline wpuf-text-base wpuf-leading-none focus:wpuf-outline-none wpuf-w-[260px] wpuf-h-[48px];
+    }
+
+    .wpuf-account-nav-item:hover {
+        background-color: #F3F4F6 !important;
+        color: #06090e !important;
+    }
+
+    /* Logout Section */
+    .wpuf-logout-section {
+        @apply wpuf-bg-transparent;
+    }
+
+    .wpuf-logout-link {
+        @apply wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-px-4 wpuf-py-3 wpuf-text-red-600 wpuf-rounded-md hover:wpuf-bg-red-50 wpuf-transition-colors wpuf-no-underline wpuf-text-base wpuf-leading-none focus:wpuf-outline-none;
+    }
+
+    .wpuf-logout-link svg {
+        @apply wpuf-flex-shrink-0;
+    }
+
+    /* Main Content Area */
+    .wpuf-account-content {
+        @apply wpuf-flex-1 wpuf-min-w-0 wpuf-bg-transparent wpuf-p-6 lg:wpuf-p-8 lg:wpuf-border-l wpuf-border-gray-200 lg:wpuf-pl-12;
+    }
+
+    /* Edit Profile Container */
+    .wpuf-edit-profile-container {
+        @apply wpuf-w-full;
+    }
+
+    /* Page Header */
+    .wpuf-page-header {
+        @apply wpuf-mb-8;
+    }
+
+    .wpuf-page-title {
+        @apply wpuf-text-2xl wpuf-font-semibold wpuf-text-gray-900 wpuf-mb-2 wpuf-mt-0;
+    }
+
+    .wpuf-page-subtitle {
+        @apply wpuf-text-sm wpuf-text-gray-500 wpuf-mb-0;
+    }
+
+    /* Edit Profile Form */
+    .wpuf-edit-profile-form {
+        @apply wpuf-space-y-6;
+    }
+
+    /* Form Group */
+    .wpuf-form-group {
+        @apply wpuf-mb-5;
+    }
+
+    .wpuf-form-label {
+        @apply wpuf-block wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-mb-2;
+    }
+
+    .wpuf-form-input {
+        width: 100% !important;
+        max-width: 772px !important;
+        height: 42px !important;
+        padding: 9px 13px !important;
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important;
+        color: rgb(17, 24, 39) !important;
+        background-color: rgb(255, 255, 255) !important;
+        border: 1px solid rgb(203, 213, 225) !important;
+        border-radius: 0.375rem !important;
+        opacity: 1 !important;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: none !important;
+    }
+
+    .wpuf-form-input:focus {
+        outline: none !important;
+        border-color: transparent !important;
+        box-shadow: 0 0 0 2px rgb(59, 130, 246) !important;
+    }
+
+    .wpuf-form-input::placeholder {
+        color: rgb(156, 163, 175) !important;
+        font-size: 0.875rem !important;
+    }
+
+    /* Password Field */
+    .wpuf-password-field {
+        @apply wpuf-relative wpuf-max-w-[772px];
+    }
+
+    .wpuf-password-toggle {
+        @apply wpuf-absolute wpuf-right-3 wpuf-top-1/2 wpuf-transform -wpuf-translate-y-1/2 wpuf-cursor-pointer wpuf-w-5 wpuf-h-5 wpuf-opacity-50 hover:wpuf-opacity-100 wpuf-transition-opacity;
+    }
+
+    .wpuf-password-strength {
+        @apply wpuf-block wpuf-mt-2 wpuf-text-xs wpuf-font-medium wpuf-text-gray-600;
+    }
+
+    .wpuf-password-strength.short {
+        @apply wpuf-text-red-600;
+    }
+
+    .wpuf-password-strength.bad {
+        @apply wpuf-text-orange-600;
+    }
+
+    .wpuf-password-strength.good {
+        @apply wpuf-text-yellow-600;
+    }
+
+    .wpuf-password-strength.strong {
+        @apply wpuf-text-green-600;
+    }
+
+    /* Form Actions */
+    .wpuf-form-actions {
+        @apply wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-pt-6 wpuf-mt-8 wpuf-border-t wpuf-border-gray-200;
+    }
+
+    /* Buttons */
+    .wpuf-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0.625rem 1.5rem !important;
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important;
+        font-weight: 600 !important;
+        border-radius: 0.375rem !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+        border: none !important;
+    }
+
+    .wpuf-btn:hover {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .wpuf-btn-primary {
+        background-color: #99A7B2 !important;
+        color: rgb(255, 255, 255) !important;
+    }
+
+    .wpuf-btn-primary:hover {
+        background-color: #7F8C96 !important;
+    }
+
+    .wpuf-btn-primary:focus {
+        outline: none !important;
+        box-shadow: 0 0 0 2px rgb(255, 255, 255), 0 0 0 4px #99A7B2 !important;
+    }
+
+    .wpuf-btn-secondary {
+        background-color: rgb(255, 255, 255) !important;
+        color: rgb(55, 65, 81) !important;
+        border: 1px solid rgb(209, 213, 219) !important;
+    }
+
+    .wpuf-btn-secondary:hover {
+        background-color: rgb(249, 250, 251) !important;
+    }
+
+    .wpuf-btn-secondary:focus {
+        outline: none !important;
+        box-shadow: 0 0 0 2px rgb(255, 255, 255), 0 0 0 4px rgb(209, 213, 219) !important;
+    }
+
+    /* WPUF Form Builder Styles */
+    .wpuf-form-add ul.wpuf-form {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .wpuf-form-add ul.wpuf-form > li {
+        list-style: none !important;
+    }
+
+    .wpuf-form-add .wpuf-label {
+        margin-bottom: 0 !important;
+    }
+
+    .wpuf-form-add .wpuf-label label {
+        display: block !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px !important;
+        line-height: 20px !important;
+        font-weight: 500 !important;
+        color: #334155 !important;
+        margin-bottom: 8px !important;
+        letter-spacing: 0 !important;
+    }
+
+    .wpuf-form-add .wpuf-fields {
+        margin-bottom: 0 !important;
+    }
+
+    .wpuf-form-add .wpuf-fields input[type="text"],
+    .wpuf-form-add .wpuf-fields input[type="email"],
+    .wpuf-form-add .wpuf-fields input[type="password"],
+    .wpuf-form-add .wpuf-fields input.textfield,
+    .wpuf-form-add .wpuf-fields input.password {
+        width: 100% !important;
+        max-width: 772px !important;
+        height: 42px !important;
+        padding: 9px 13px !important;
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important;
+        color: rgb(17, 24, 39) !important;
+        background-color: rgb(255, 255, 255) !important;
+        border: 1px solid rgb(203, 213, 225) !important;
+        border-radius: 0.375rem !important;
+        opacity: 1 !important;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: none !important;
+        margin-bottom: 0 !important;
+    }
+
+    .wpuf-form-add .wpuf-fields input[type="text"]:focus,
+    .wpuf-form-add .wpuf-fields input[type="email"]:focus,
+    .wpuf-form-add .wpuf-fields input[type="password"]:focus,
+    .wpuf-form-add .wpuf-fields input.textfield:focus,
+    .wpuf-form-add .wpuf-fields input.password:focus {
+        outline: none !important;
+        border-color: transparent !important;
+        box-shadow: 0 0 0 2px rgb(59, 130, 246) !important;
+    }
+
+    .wpuf-form-add .wpuf-fields input::placeholder {
+        color: rgb(156, 163, 175) !important;
+        font-size: 0.875rem !important;
+    }
+
+    /* Password field with eye icon */
+    .wpuf-form-add .wpuf-fields-inline {
+        position: relative !important;
+        max-width: 772px !important;
+    }
+
+    .wpuf-form-add .wpuf-fields-inline .wpuf-eye {
+        position: absolute !important;
+        right: 0.75rem !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        cursor: pointer !important;
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+        opacity: 0.5 !important;
+        transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .wpuf-form-add .wpuf-fields-inline .wpuf-eye:hover {
+        opacity: 1 !important;
+    }
+
+    /* Password strength indicator */
+    .wpuf-form-add .pass-strength-result {
+        display: block !important;
+        margin-top: 0.5rem !important;
+        font-size: 0.75rem !important;
+        line-height: 1rem !important;
+        font-weight: 500 !important;
+        color: rgb(107, 114, 128) !important;
+        padding: 0.5rem !important;
+        border-radius: 0.375rem !important;
+        background-color: rgb(249, 250, 251) !important;
+    }
+
+    .wpuf-form-add .pass-strength-result.short {
+        color: rgb(220, 38, 38) !important;
+        background-color: rgb(254, 242, 242) !important;
+    }
+
+    .wpuf-form-add .pass-strength-result.bad {
+        color: rgb(249, 115, 22) !important;
+        background-color: rgb(255, 247, 237) !important;
+    }
+
+    .wpuf-form-add .pass-strength-result.good {
+        color: rgb(234, 179, 8) !important;
+        background-color: rgb(254, 252, 232) !important;
+    }
+
+    .wpuf-form-add .pass-strength-result.strong {
+        color: rgb(22, 163, 74) !important;
+        background-color: rgb(240, 253, 244) !important;
+    }
+
+    /* Social fields with icons and @ prefix */
+    .wpuf-form-add .wpuf-label-with-icon {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .wpuf-form-add .wpuf-social-label-icon {
+        flex-shrink: 0 !important;
+    }
+
+    .wpuf-form-add .wpuf-social-label-icon svg {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+        fill: rgb(107, 114, 128) !important;
+    }
+
+    .wpuf-form-add .wpuf-social-input-wrapper {
+        position: relative !important;
+        max-width: 772px !important;
+    }
+
+    .wpuf-form-add .wpuf-at-prefix {
+        position: absolute !important;
+        left: 2px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        color: rgb(107, 114, 128) !important;
+        font-size: 0.875rem !important;
+        pointer-events: none !important;
+        z-index: 1 !important;
+    }
+
+    .wpuf-form-add .wpuf-twitter-with-prefix {
+        padding-left: 30px !important;
+    }
+
+    /* Help text */
+    .wpuf-form-add .wpuf-help {
+        display: block !important;
+        margin-top: 0.5rem !important;
+        font-size: 0.75rem !important;
+        line-height: 1rem !important;
+        color: rgb(107, 114, 128) !important;
+    }
+
+    /* Required asterisk */
+    .wpuf-form-add .required {
+        color: rgb(220, 38, 38) !important;
+        font-weight: 600 !important;
+    }
+
+    /* Avatar upload section */
+    .wpuf-form-add .wpuf-attachment-upload-filelist {
+        max-width: 772px !important;
+    }
+
+    .wpuf-form-add .file-selector {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0.625rem 1.5rem !important;
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important;
+        font-weight: 600 !important;
+        border-radius: 0.375rem !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        background-color: rgb(255, 255, 255) !important;
+        color: rgb(55, 65, 81) !important;
+        border: 1px solid rgb(209, 213, 219) !important;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .wpuf-form-add .file-selector:hover {
+        background-color: rgb(249, 250, 251) !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .wpuf-form-add .wpuf-attachment-list {
+        list-style: none !important;
+        padding: 0 !important;
+        margin-top: 1rem !important;
+    }
+
+    /* Submit button */
+    .wpuf-form-add .wpuf-submit {
+        margin-top: 2rem !important;
+        padding-top: 1.5rem !important;
+        border-top: 1px solid rgb(229, 231, 235) !important;
+    }
+
+    .wpuf-form-add .wpuf-submit-button {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 10px 24px !important;
+        font-size: 16px !important;
+        line-height: 24px !important;
+        font-weight: 400 !important;
+        border-radius: 0.375rem !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+        border: none !important;
+        background-color: #111827 !important;
+        color: rgb(255, 255, 255) !important;
+        text-shadow: unset !important;
+    }
+
+    .wpuf-form-add .wpuf-submit-button:hover {
+        background-color: #030712 !important;
+        color: #D1D5DB !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .wpuf-form-add .wpuf-submit-button:focus {
+        outline: none !important;
+        box-shadow: 0 0 0 2px rgb(255, 255, 255), 0 0 0 4px #99A7B2 !important;
+    }
+
+    /* Remove default form styling */
+    .wpuf-form-add {
+        background: none !important;
+        border: none !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
+    /* ===========================
+       Subscription Page Styles
+       =========================== */
+
+    /* Subscription Header */
+    .wpuf-subscription-header {
+        @apply wpuf-mb-8;
+    }
+
+    .wpuf-subscription-title {
+        @apply wpuf-text-2xl wpuf-font-semibold wpuf-text-gray-900 wpuf-mb-2 wpuf-mt-0;
+    }
+
+    .wpuf-subscription-subtitle {
+        @apply wpuf-text-sm wpuf-text-gray-500 wpuf-mb-0;
+    }
+
+    /* Subscription Cards Container */
+    .wpuf-subscription-cards {
+        @apply wpuf-grid wpuf-grid-cols-1 wpuf-gap-6 wpuf-mb-8;
+    }
+
+    .wpuf-subscription-cards.wpuf-single-card {
+        max-width: 868px !important;
+    }
+
+    /* Subscription Card */
+    .wpuf-subscription-card {
+        background: #FFFFFF !important;
+        border: 1px solid #CBD2D9 !important;
+        border-radius: 24px !important;
+        padding: 24px !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        transition: box-shadow 0.3s ease !important;
+    }
+
+    .wpuf-subscription-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    /* Card Header */
+    .wpuf-subscription-card-header {
+        background: transparent !important;
+        padding: 0 !important;
+        border: none !important;
+        margin-bottom: 24px !important;
+        display: flex !important;
+        align-items: flex-start !important;
+        justify-content: space-between !important;
+        gap: 16px !important;
+    }
+
+    .wpuf-subscription-header-content {
+        flex: 1 !important;
+    }
+
+    .wpuf-subscription-name {
+        font-size: 24px !important;
+        line-height: 36px !important;
+        font-weight: 700 !important;
+        color: #1F2A30 !important;
+        margin: 0 0 8px 0 !important;
+    }
+
+    .wpuf-subscription-expire-date,
+    .wpuf-subscription-next-payment {
+        font-weight: 400 !important;
+        font-size: 18px !important;
+        line-height: 24px !important;
+        color: #6C7A85 !important;
+        margin: 0 !important;
+    }
+
+    .wpuf-subscription-status {
+        display: inline-flex !important;
+        align-items: center !important;
+        padding: 4px 12px !important;
+        border-radius: 16px !important;
+        font-size: 12px !important;
+        line-height: 16px !important;
+        font-weight: 500 !important;
+    }
+
+    .wpuf-status-expired {
+        background: #FEE2E2 !important;
+        color: #991B1B !important;
+    }
+
+    .wpuf-show-details-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        padding: 8px 16px !important;
+        font-size: 14px !important;
+        line-height: 20px !important;
+        font-weight: 500 !important;
+        color: #2C3A41 !important;
+        background: #FFFFFF !important;
+        border: 1px solid #CBD2D9 !important;
+        border-radius: 8px !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .wpuf-show-details-btn:hover {
+        background: #F4F6F8 !important;
+        border-color: #99A7B2 !important;
+        color: #99A7B2 !important;
+    }
+
+    .wpuf-show-details-btn:focus {
+        outline: none !important;
+        box-shadow: 0 0 0 3px rgba(153, 167, 178, 0.1) !important;
+    }
+
+    /* Card Body */
+    .wpuf-subscription-card-body {
+        padding: 0 !important;
+    }
+
+    /* Price Section */
+    .wpuf-subscription-price {
+        margin-bottom: 36px !important;
+    }
+
+    .wpuf-price {
+        font-size: 36px !important;
+        line-height: 44px !important;
+        font-weight: 900 !important;
+        color: #99A7B2 !important;
+    }
+
+    .wpuf-price-period {
+        font-size: 16px !important;
+        line-height: 24px !important;
+        color: #6C7A85 !important;
+        margin-left: 4px !important;
+    }
+
+    /* Features List */
+    .wpuf-subscription-features {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 16px 24px !important;
+        margin-bottom: 24px !important;
+        list-style: none !important;
+        padding-left: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .wpuf-subscription-features li {
+        display: flex !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+        font-size: 14px !important;
+        line-height: 20px !important;
+        color: #6C7A85 !important;
+        list-style: none !important;
+    }
+
+    .wpuf-subscription-features li svg {
+        flex-shrink: 0 !important;
+        margin-top: 0 !important;
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    .wpuf-subscription-features li span {
+        flex: 1 !important;
+        color: #6C7A85 !important;
+    }
+
+    .wpuf-subscription-features li strong {
+        font-weight: 600 !important;
+        color: #1F2A30 !important;
+    }
+
+    /* Compact Features List */
+    .wpuf-features-compact {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 16px 24px !important;
+        margin-bottom: 24px !important;
+        list-style: none !important;
+        padding-left: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    /* Expandable Subscription Details */
+    .wpuf-subscription-details {
+        margin-top: 36px !important;
+        padding-top: 0 !important;
+        border-top: none !important;
+    }
+
+    .wpuf-subscription-features-detailed {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 16px 20px !important;
+        margin-bottom: 24px !important;
+        list-style: none !important;
+        padding-left: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .wpuf-subscription-features-detailed li {
+        display: flex !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+        font-size: 14px !important;
+        line-height: 20px !important;
+        color: #6C7A85 !important;
+        list-style: none !important;
+    }
+
+    .wpuf-subscription-features-detailed li svg {
+        flex-shrink: 0 !important;
+        margin-top: 0 !important;
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    .wpuf-subscription-features-detailed li span {
+        flex: 1 !important;
+        color: #6C7A85 !important;
+    }
+
+    .wpuf-subscription-features-detailed li strong {
+        font-weight: 600 !important;
+        color: #1F2A30 !important;
+    }
+
+    /* Responsive Grid Adjustments */
+    @media (max-width: 768px) {
+        .wpuf-subscription-features,
+        .wpuf-features-compact {
+            grid-template-columns: repeat(1, 1fr) !important;
+        }
+
+        .wpuf-subscription-features-detailed {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .wpuf-subscription-features,
+        .wpuf-features-compact {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+
+        .wpuf-subscription-features-detailed {
+            grid-template-columns: repeat(3, 1fr) !important;
+        }
+    }
+
+    /* Show All Button - Hidden since we use Show Details button in header */
+    .wpuf-show-all-btn {
+        display: none !important;
+    }
+
+    /* Expired Card */
+    .wpuf-subscription-expired {
+        @apply wpuf-border-red-200 wpuf-bg-red-50;
+    }
+
+    .wpuf-subscription-expired .wpuf-subscription-card-header {
+        @apply wpuf-bg-red-50 wpuf-border-red-200;
+    }
+
+    .wpuf-subscription-expired-message {
+        @apply wpuf-text-red-600 wpuf-font-medium wpuf-text-sm wpuf-mt-4;
+    }
+
+    /* Cancel Subscription Section */
+    .wpuf-cancel-subscription-section {
+        @apply wpuf-bg-white wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-px-6 wpuf-py-5 wpuf-mt-8;
+    }
+
+    .wpuf-cancel-text {
+        @apply wpuf-text-sm wpuf-text-gray-600 wpuf-mb-4 wpuf-italic;
+    }
+
+    .wpuf-cancel-form {
+        @apply wpuf-flex wpuf-items-center wpuf-justify-center;
+    }
+
+    .wpuf-cancel-btn {
+        @apply wpuf-inline-flex wpuf-items-center wpuf-gap-2 wpuf-px-6 wpuf-py-2.5 wpuf-text-sm wpuf-font-medium wpuf-text-white wpuf-bg-[#99A7B2] hover:wpuf-bg-[#7F8C96] wpuf-rounded-lg wpuf-transition-colors wpuf-cursor-pointer wpuf-border-none;
+    }
+
+    .wpuf-cancel-btn:focus {
+        @apply wpuf-outline-none wpuf-ring-2 wpuf-ring-offset-2 wpuf-ring-[#99A7B2];
+    }
+
+    .wpuf-cancel-btn svg {
+        @apply wpuf-flex-shrink-0;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .wpuf-subscription-cards {
+            @apply wpuf-grid-cols-1;
+        }
+
+        .wpuf-subscription-card-header {
+            @apply wpuf-flex-col wpuf-items-start wpuf-gap-3;
+        }
+
+        .wpuf-show-details-btn {
+            @apply wpuf-w-full wpuf-justify-center;
+        }
+    }
+
+    /* Posts Table Styling */
+    .items-table {
+        @apply wpuf-text-sm wpuf-text-gray-900;
+    }
+
+    .items-table thead th {
+        @apply wpuf-bg-gray-50 wpuf-font-medium;
+    }
+
+    .items-table tbody tr:last-child {
+        @apply wpuf-border-b-0;
+    }
+
+    .items-table a {
+        @apply wpuf-divide-gray-700 hover:wpuf-text-gray-800 wpuf-no-underline wpuf-transition-colors wpuf-font-normal wpuf-text-base;
+    }
+
+    .items-table .wpuf-posts-options {
+        @apply wpuf-no-underline;
+    }
+
+    /* Status badges */
+    .items-table .post-status {
+        @apply wpuf-inline-flex wpuf-items-center wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full wpuf-text-xs wpuf-font-medium;
+    }
+
+    .items-table .post-status.publish {
+        @apply wpuf-bg-green-100 wpuf-text-green-800;
+    }
+
+    .items-table .post-status.draft {
+        @apply wpuf-bg-gray-100 wpuf-text-gray-800;
+    }
+
+    .items-table .post-status.pending {
+        @apply wpuf-bg-yellow-100 wpuf-text-yellow-800;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1023px) {
+        .wpuf-account-container {
+            @apply wpuf-flex-col;
+        }
+
+        .wpuf-account-sidebar {
+            @apply wpuf-w-full;
+        }
+
+        .wpuf-account-content {
+            @apply wpuf-p-4;
+        }
+    }
+}

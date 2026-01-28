@@ -130,7 +130,40 @@ class Frontend_Form_Ajax {
             }
         }
 
+        // Attachment deletion authorization check
+        $current_user_id = get_current_user_id();
+        $post_id_for_edit = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : 0;
+
         foreach ( $attachments_to_delete as $attach_id ) {
+            $attach_id = absint( $attach_id );
+
+            if ( empty( $attach_id ) ) {
+                continue;
+            }
+
+            $attachment = get_post( $attach_id );
+
+            // Skip if attachment doesn't exist or is not an attachment
+            if ( ! $attachment || 'attachment' !== $attachment->post_type ) {
+                continue;
+            }
+
+            // Authorization check: User must be the attachment author OR have delete_others_posts capability
+            $is_owner = ( $current_user_id > 0 ) && ( (int) $attachment->post_author === $current_user_id );
+            $can_delete_others = current_user_can( 'delete_others_posts' );
+
+            if ( ! $is_owner && ! $can_delete_others ) {
+                continue;
+            }
+
+            if ( $post_id_for_edit > 0 ) {
+                $attachment_parent = (int) $attachment->post_parent;
+
+                if ( $attachment_parent !== 0 && $attachment_parent !== $post_id_for_edit && ! $can_delete_others ) {
+                    continue;
+                }
+            }
+
             wp_delete_attachment( $attach_id, true );
         }
 

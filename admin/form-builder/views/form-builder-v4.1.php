@@ -5,7 +5,7 @@
     <div class="wpuf-bg-white wpuf-p-8 wpuf-justify-between wpuf-items-center wpuf-pb-7">
         <div class="wpuf-flex wpuf-justify-between">
             <div class="wpuf-flex">
-                <img src="<?php echo WPUF_ASSET_URI . '/images/wpuf-icon-circle.svg'; ?>" alt="WPUF Icon" class="wpuf-mr-2">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/wpuf-icon-circle.svg' ); ?>" alt="WPUF Icon" class="wpuf-mr-2">
                 <nav class="wpuf-flex wpuf-items-center" aria-label="Tabs">
                     <div class="wpuf-relative wpuf-flex">
                         <div class="wpuf-flex wpuf-items-center">
@@ -56,10 +56,15 @@
                 if ( count( $shortcodes ) > 1 && isset( $shortcodes[0]['type'] ) ) {
                     foreach ( $shortcodes as $shortcode ) {
                         ?>
+                        <?php
+                        // translators: %s is the shortcode type (e.g., form, post, profile)
+                        $title = sprintf( __( 'Click to copy %s shortcode', 'wp-user-frontend' ), esc_attr( $shortcode['type'] ) );
+                        $clipboard = sprintf( '[%s type="%s" id="%s"]', $shortcode['name'], esc_attr( $shortcode['type'] ), esc_attr( $form_id ) );
+                        ?>
                         <span
                             class="form-id wpuf-group wpuf-flex wpuf-items-center wpuf-px-[18px] wpuf-py-[10px] wpuf-rounded-md wpuf-border wpuf-border-gray-300 hover:wpuf-cursor-pointer wpuf-ml-6 wpuf-text-gray-700 wpuf-text-base wpuf-leading-none wpuf-shadow-sm"
-                            title="<?php printf( esc_attr( __( 'Click to copy %s shortcode', 'wp-user-frontend' ) ), $shortcode['type'] ); ?>"
-                            data-clipboard-text="<?php printf( esc_attr( '[' . $shortcode['name'] . ' type="' . esc_attr( $shortcode['type'] ) . '" id="' . esc_attr( $form_id ) . '"]' ) ); ?>"><?php echo esc_attr( ucwords( $shortcode['type'] ) ); ?>: #{{ post.ID }}
+                            title="<?php echo esc_attr( $title ); ?>"
+                            data-clipboard-text="<?php echo esc_attr( $clipboard ); ?>"><?php echo esc_attr( ucwords( $shortcode['type'] ) ); ?>: #{{ post.ID }}
                             <span id="default-icon" class="wpuf-ml-2">
                                 <svg
                                     class="group-hover:wpuf-rotate-6 group-hover:wpuf-stroke-gray-500 wpuf-stroke-gray-400"
@@ -106,7 +111,7 @@
             </div>
             <div class="wpuf-flex wpuf-space-x-4">
                 <a
-                    :href="'<?php echo get_wpuf_preview_page(); ?>?wpuf_preview=1&form_id=' + post.ID"
+                    :href="'<?php echo esc_url( get_wpuf_preview_page() ); ?>?wpuf_preview=1&form_id=' + post.ID"
                     target="_blank"
                     class="wpuf-inline-flex wpuf-items-center wpuf-gap-x-3 wpuf-rounded-md wpuf-px-[18px] wpuf-py-[10px] wpuf-text-base wpuf-text-gray-700  hover:wpuf-text-gray-700 hover:wpuf-bg-gray-50 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 focus:wpuf-shadow-none focus:wpuf-border-none wpuf-leading-none wpuf-shadow-sm"><?php esc_html_e( 'Preview', 'wp-user-frontend' ); ?>
                     <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -176,7 +181,7 @@
                     </div>
                 </section>
             </div>
-    </div>
+        </div>
     </div>
     <div
         v-show="active_tab === 'form-settings'"

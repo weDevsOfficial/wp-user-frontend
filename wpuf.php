@@ -284,11 +284,6 @@ final class WP_User_Frontend {
             $this->container['free_loader']->includes();
             $this->container['free_loader']->instantiate();
             $this->container['free_loader']->run_hooks();
-
-            // Load TEC venue/organizer fix when Pro is not active
-            if ( file_exists( WPUF_INCLUDES . '/Integrations/TEC_Venue_Organizer_Fix.php' ) ) {
-                require_once WPUF_INCLUDES . '/Integrations/TEC_Venue_Organizer_Fix.php';
-            }
         }
 
         // Remove the what's new option.

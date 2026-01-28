@@ -731,6 +731,35 @@ tr.pro-preview td .pro-field-overlay {
   z-index: 10;
   pointer-events: auto;
 }
+/* Text field pro preview styles */
+.wpuf-text-field-wrapper {
+  position: relative;
+  display: inline-block;
+  min-width: 350px;
+  min-height: 40px;
+}
+.wpuf-text-field-wrapper input {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+.wpuf-text-field-wrapper:hover .pro-field-overlay,
+tr.pro-preview:hover .wpuf-text-field-wrapper .pro-field-overlay {
+  display: block;
+  opacity: 1;
+}
+.wpuf-text-field-wrapper .pro-field-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(236, 253, 245, 0.5);
+  border-radius: 5px;
+  display: none;
+  border: 1px dashed #10b981;
+  z-index: 10;
+  pointer-events: auto;
+}
 .wpuf-subscription-pack-settings nav .tab-current a.wpuf-button.button-upgrade-to-pro,
 a.wpuf-button.button-upgrade-to-pro {
   padding: 8px 16px;

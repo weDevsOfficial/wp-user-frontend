@@ -111,5 +111,7 @@
         </p>
     </form>
 
-    <?php echo wp_kses_post( wpuf()->frontend->simple_login->get_action_links( [ 'login' => false, 'lostpassword' => false ] ) ); ?>
+    <div class="wpuf-action-links">
+        <?php echo wp_kses_post( wpuf()->frontend->simple_login->get_action_links( [ 'login' => false, 'lostpassword' => false ] ) ); ?>
+    </div>
 </div>

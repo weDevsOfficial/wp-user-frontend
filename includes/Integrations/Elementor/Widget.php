@@ -122,8 +122,6 @@ class Widget extends Widget_Base {
         $this->register_placeholder_style_controls();
         $this->register_radio_checkbox_style_controls();
         $this->register_submit_button_style_controls();
-        $this->register_success_message_style_controls();
-        $this->register_error_message_style_controls();
     }
 
     /**
@@ -792,121 +790,6 @@ class Widget extends Widget_Base {
         $this->end_controls_tab();
 
         $this->end_controls_tabs();
-
-        $this->end_controls_section();
-    }
-
-    /**
-     * Register success message style controls.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    protected function register_success_message_style_controls() {
-        $this->start_controls_section(
-            'section_success_message_style',
-            [
-                'label' => __( 'Success Message', 'wp-user-frontend' ),
-                'tab'   => Controls_Manager::TAB_STYLE,
-            ]
-        );
-
-        $this->add_control(
-            'success_message_bg_color',
-            [
-                'label'     => __( 'Background Color', 'wp-user-frontend' ),
-                'type'      => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .wpuf-elementor-widget-wrapper .wpuf-success' => 'background-color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'success_message_text_color',
-            [
-                'label'     => __( 'Text Color', 'wp-user-frontend' ),
-                'type'      => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .wpuf-elementor-widget-wrapper .wpuf-success' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name'     => 'success_message_typography',
-                'selector' => '{{WRAPPER}} .wpuf-elementor-widget-wrapper .wpuf-success',
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Border::get_type(),
-            [
-                'name'     => 'success_message_border',
-                'selector' => '{{WRAPPER}} .wpuf-elementor-widget-wrapper .wpuf-success',
-            ]
-        );
-
-        $this->end_controls_section();
-    }
-
-    /**
-     * Register error message style controls.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    protected function register_error_message_style_controls() {
-        $this->start_controls_section(
-            'section_error_message_style',
-            [
-                'label' => __( 'Error Message', 'wp-user-frontend' ),
-                'tab'   => Controls_Manager::TAB_STYLE,
-            ]
-        );
-
-        $error_selector = '{{WRAPPER}} .wpuf-elementor-widget-wrapper .wpuf-form .wpuf-error, {{WRAPPER}} .wpuf-elementor-widget-wrapper .wpuf-form .error';
-
-        $this->add_control(
-            'error_message_color',
-            [
-                'label'     => __( 'Color', 'wp-user-frontend' ),
-                'type'      => Controls_Manager::COLOR,
-                'selectors' => [ $error_selector => 'color: {{VALUE}};' ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name'     => 'error_message_typography',
-                'selector' => $error_selector,
-            ]
-        );
-
-        $this->add_responsive_control(
-            'error_message_padding',
-            [
-                'label'      => __( 'Padding', 'wp-user-frontend' ),
-                'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => [ 'px', 'em', '%' ],
-                'selectors'  => [ $error_selector => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'error_message_margin',
-            [
-                'label'      => __( 'Margin', 'wp-user-frontend' ),
-                'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => [ 'px', 'em', '%' ],
-                'selectors'  => [ $error_selector => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
-            ]
-        );
 
         $this->end_controls_section();
     }

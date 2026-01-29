@@ -188,7 +188,9 @@ function get_next_billing_html( $subscription_data ) {
             <div class="wpuf-subscription-card-body">
                 <div class="wpuf-subscription-price">
                     <span class="wpuf-price"><?php echo esc_html( $billing_amount ); ?></span>
-                    <span class="wpuf-price-period">/year</span>
+                    <?php if ( ! empty( $recurring_des ) ) : ?>
+                        <span class="wpuf-price-period"><?php echo esc_html( $recurring_des ); ?></span>
+                    <?php endif; ?>
                 </div>
                 <p class="wpuf-subscription-expired-message"><?php esc_html_e( 'Subscription Expired!', 'wp-user-frontend' ); ?></p>
             </div>
@@ -248,8 +250,6 @@ function get_next_billing_html( $subscription_data ) {
                     <span class="wpuf-price"><?php echo esc_html( $billing_amount ); ?></span>
                     <?php if ( ! empty( $recurring_des ) ) : ?>
                         <span class="wpuf-price-period"><?php echo esc_html( $recurring_des ); ?></span>
-                    <?php else : ?>
-                        <span class="wpuf-price-period">/year</span>
                     <?php endif; ?>
                 </div>
 

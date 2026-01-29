@@ -314,7 +314,7 @@ module.exports = function( grunt) {
 
     // build stuff
     grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme', 'tailwind', 'tailwind-minify' ] );
-    grunt.registerTask( 'zip', [ 'clean', 'copy', 'compress' ] );
+    grunt.registerTask( 'zip', [ 'shell:npm_build', 'clean', 'copy', 'compress' ] );
 
     grunt.event.on('watch', function(action, filepath, target) {
         if (target === 'tailwind') {

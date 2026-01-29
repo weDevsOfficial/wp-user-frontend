@@ -85,7 +85,7 @@ const fetchForms = async (page = 1, status = 'any', search = '') => {
     currentPage.value = page;
     
     // Build API URL
-    const restApiRoot = wpuf_forms_list.rest_url.replace(/\/$/, '');
+    const restApiRoot = ( wpuf_forms_list.rest_url || '' ).replace(/\/$/, '');
     const params = new URLSearchParams({
       page: page.toString(),
       per_page: perPage.value.toString(),

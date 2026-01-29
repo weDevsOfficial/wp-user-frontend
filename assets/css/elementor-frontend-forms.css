@@ -65,6 +65,10 @@
   width: 100%;
   display: block;
 }
+.wpuf-elementor-widget-wrapper.wpuf-elementor-upload-full .wpuf-attachment-upload-filelist .file-selector {
+  width: 100%;
+  display: block;
+}
 .wpuf-elementor-widget-wrapper.wpuf-elementor-hide-labels .wpuf-label {
   display: none !important;
 }

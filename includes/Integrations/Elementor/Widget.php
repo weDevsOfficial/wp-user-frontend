@@ -121,6 +121,7 @@ class Widget extends Widget_Base {
         $this->register_input_style_controls();
         $this->register_placeholder_style_controls();
         $this->register_radio_checkbox_style_controls();
+        $this->register_upload_button_style_controls();
         $this->register_submit_button_style_controls();
     }
 
@@ -572,6 +573,232 @@ class Widget extends Widget_Base {
     }
 
     /**
+     * Register upload button style controls
+     *
+     * Styles the file/image upload buttons (e.g. "Select File", "Select Image") within WPUF forms.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    protected function register_upload_button_style_controls() {
+        $btn_selector = '{{WRAPPER}} .wpuf-form .file-selector';
+        $align_selector = '{{WRAPPER}} .wpuf-form .wpuf-attachment-upload-filelist';
+
+        $this->start_controls_section(
+            'section_upload_button_style',
+            [
+                'label' => __( 'Upload Button', 'wp-user-frontend' ),
+                'tab'   => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_control(
+            'upload_button_width_type',
+            [
+                'label'   => __( 'Width', 'wp-user-frontend' ),
+                'type'    => Controls_Manager::SELECT,
+                'default' => 'custom',
+                'options' => [
+                    'full-width' => __( 'Full Width', 'wp-user-frontend' ),
+                    'custom'     => __( 'Custom', 'wp-user-frontend' ),
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'upload_button_align',
+            [
+                'label'     => __( 'Alignment', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::CHOOSE,
+                'default'   => 'left',
+                'options'   => [
+                    'left'   => [ 'title' => __( 'Left', 'wp-user-frontend' ), 'icon' => 'eicon-h-align-left' ],
+                    'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-h-align-center' ],
+                    'right'  => [ 'title' => __( 'Right', 'wp-user-frontend' ), 'icon' => 'eicon-h-align-right' ],
+                ],
+                'selectors' => [ $align_selector => 'text-align: {{VALUE}};' ],
+                'condition' => [ 'upload_button_width_type' => 'custom' ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'upload_button_width',
+            [
+                'label'      => __( 'Width', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::SLIDER,
+                'size_units' => [ 'px', '%' ],
+                'range'      => [ 'px' => [ 'min' => 0, 'max' => 1200, 'step' => 1 ] ],
+                'selectors'  => [ $btn_selector => 'width: {{SIZE}}{{UNIT}};' ],
+                'condition'  => [ 'upload_button_width_type' => 'custom' ],
+            ]
+        );
+
+        $this->start_controls_tabs( 'tabs_upload_button_style' );
+
+        $this->start_controls_tab( 'tab_upload_button_normal', [ 'label' => __( 'Normal', 'wp-user-frontend' ) ] );
+
+        $this->add_control(
+            'upload_button_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'default'   => '#6b7280',
+                'selectors' => [ $btn_selector => 'background-color: {{VALUE}};' ],
+            ]
+        );
+
+        $this->add_control(
+            'upload_button_text_color',
+            [
+                'label'     => __( 'Text Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'default'   => '#ffffff',
+                'selectors' => [ $btn_selector => 'color: {{VALUE}};' ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name'           => 'upload_button_typography',
+                'selector'       => $btn_selector,
+                'fields_options' => [
+                    'font_weight' => [
+                        'default' => '500',
+                    ],
+                    'font_size'   => [
+                        'default' => [
+                            'unit' => 'px',
+                            'size' => '16',
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name'           => 'upload_button_border',
+                'selector'       => $btn_selector,
+                'fields_options' => [
+                    'border' => [
+                        'default' => 'solid',
+                    ],
+                    'width'  => [
+                        'default' => [
+                            'top'    => '0',
+                            'right'  => '0',
+                            'bottom' => '0',
+                            'left'   => '0',
+                        ],
+                    ],
+                    'color'  => [
+                        'default' => 'transparent',
+                    ],
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'upload_button_border_radius',
+            [
+                'label'      => __( 'Border Radius', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', '%' ],
+                'default'    => [
+                    'top'    => '6',
+                    'right'  => '6',
+                    'bottom' => '6',
+                    'left'   => '6',
+                    'unit'   => 'px',
+                ],
+                'selectors'  => [ $btn_selector => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'upload_button_padding',
+            [
+                'label'      => __( 'Padding', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em', '%' ],
+                'default'    => [
+                    'top'    => '12',
+                    'right'  => '24',
+                    'bottom' => '12',
+                    'left'   => '24',
+                    'unit'   => 'px',
+                ],
+                'selectors'  => [ $btn_selector => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Box_Shadow::get_type(),
+            [
+                'name'           => 'upload_button_box_shadow',
+                'selector'       => $btn_selector,
+                'separator'      => 'before',
+                'fields_options' => [
+                    'box_shadow_type' => [
+                        'default' => 'yes',
+                    ],
+                    'box_shadow'      => [
+                        'default' => [
+                            'horizontal' => 0,
+                            'vertical'   => 1,
+                            'blur'       => 3,
+                            'spread'     => 0,
+                            'color'      => 'rgba(0, 0, 0, 0.1)',
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab( 'tab_upload_button_hover', [ 'label' => __( 'Hover', 'wp-user-frontend' ) ] );
+
+        $this->add_control(
+            'upload_button_hover_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'default'   => '#4b5563',
+                'selectors' => [ $btn_selector . ':hover' => 'background-color: {{VALUE}};' ],
+            ]
+        );
+
+        $this->add_control(
+            'upload_button_hover_text_color',
+            [
+                'label'     => __( 'Text Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'default'   => '#ffffff',
+                'selectors' => [ $btn_selector . ':hover' => 'color: {{VALUE}};' ],
+            ]
+        );
+
+        $this->add_control(
+            'upload_button_hover_border_color',
+            [
+                'label'     => __( 'Border Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [ $btn_selector . ':hover' => 'border-color: {{VALUE}};' ],
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->end_controls_tabs();
+
+        $this->end_controls_section();
+    }
+
+    /**
      * Register submit button style controls
      *
      * @since WPUF_SINCE
@@ -813,6 +1040,10 @@ class Widget extends Widget_Base {
 
         if ( ! empty( $settings['submit_button_width_type'] ) && 'full-width' === $settings['submit_button_width_type'] ) {
             $wrapper_classes[] = 'wpuf-elementor-submit-full';
+        }
+
+        if ( ! empty( $settings['upload_button_width_type'] ) && 'full-width' === $settings['upload_button_width_type'] ) {
+            $wrapper_classes[] = 'wpuf-elementor-upload-full';
         }
 
         $this->add_render_attribute( 'wrapper', 'class', $wrapper_classes );

@@ -18,16 +18,18 @@
             data-source="stage"
         >
             <div v-if="!is_full_width(field.template)" class="wpuf-label">
-                <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'left_label'" 
+                <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'left_label'"
                       class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-mr-1">
-                      <i :class="[field.field_icon, 'wpuf-field-icon']"></i>
+                      <img v-if="field.field_icon.indexOf('http') === 0 || field.field_icon.indexOf('/') === 0" :src="field.field_icon" alt="" class="wpuf-field-icon wpuf-field-icon-img" />
+                      <i v-else :class="[field.field_icon, 'wpuf-field-icon']"></i>
                 </span>
                 <label v-if="!is_invisible(field)" :for="'wpuf-' + field.name ? field.name : 'cls'">
                     {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
                 </label>
-                <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'right_label'" 
+                <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'right_label'"
                       class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2">
-                      <i :class="[field.field_icon, 'wpuf-field-icon']"></i>
+                      <img v-if="field.field_icon.indexOf('http') === 0 || field.field_icon.indexOf('/') === 0" :src="field.field_icon" alt="" class="wpuf-field-icon wpuf-field-icon-img" />
+                      <i v-else :class="[field.field_icon, 'wpuf-field-icon']"></i>
                 </span>
             </div>
 
@@ -119,7 +121,8 @@
                 <div v-if="!(is_full_width(field.template) || is_pro_preview(field.template))" class="wpuf-w-1/4 wpuf-flex wpuf-items-center">
                     <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'left_label'"
                           class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-mr-1">
-                          <i :class="[field.field_icon, 'wpuf-field-icon']"></i>
+                          <img v-if="field.field_icon.indexOf('http') === 0 || field.field_icon.indexOf('/') === 0" :src="field.field_icon" alt="" class="wpuf-field-icon wpuf-field-icon-img" />
+                          <i v-else :class="[field.field_icon, 'wpuf-field-icon']"></i>
                     </span>
                     <label
                         v-if="!is_invisible(field)"
@@ -138,7 +141,8 @@
                     </label>
                     <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'right_label'"
                           class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2">
-                          <i :class="[field.field_icon, 'wpuf-field-icon']"></i>
+                          <img v-if="field.field_icon.indexOf('http') === 0 || field.field_icon.indexOf('/') === 0" :src="field.field_icon" alt="" class="wpuf-field-icon wpuf-field-icon-img" />
+                          <i v-else :class="[field.field_icon, 'wpuf-field-icon']"></i>
                     </span>
                 </div>
                 <div
@@ -308,12 +312,14 @@
     </div>
 
     <div class="option-fields-section wpuf-relative">
+        <!-- Trigger -->
         <div
             @click.stop="togglePicker"
             class="wpuf-w-full wpuf-mt-4 wpuf-min-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-medium !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] hover:!wpuf-text-gray-700 wpuf-flex wpuf-justify-between wpuf-items-center !wpuf-text-base wpuf-cursor-pointer"
         >
             <div class="wpuf-flex wpuf-items-center wpuf-gap-2">
-                <i v-if="value" :class="value" class="wpuf-text-gray-600"></i>
+                <img v-if="isImageValue" :src="value" alt="" style="width: 20px; height: 20px; object-fit: contain; vertical-align: middle;" />
+                <i v-else-if="value" :class="value" class="wpuf-text-gray-600"></i>
                 <span>{{ selectedIconDisplay }}</span>
             </div>
             <div class="wpuf-flex wpuf-items-center wpuf-gap-1">
@@ -322,48 +328,121 @@
             </div>
         </div>
 
+        <!-- Dropdown -->
         <div
             v-if="showIconPicker"
             @click.stop
             class="wpuf-absolute wpuf-bg-white wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-w-full wpuf-z-50 wpuf-mt-1 wpuf-shadow-lg wpuf-right-0"
-            style="max-height: 300px; min-width: 320px; max-width: 400px;"
+            style="min-width: 320px; max-width: 400px;"
         >
-            <!-- Search -->
-            <div class="wpuf-p-3 wpuf-border-b wpuf-border-gray-200">
-                <input
-                    v-model="searchTerm"
-                    type="text"
-                    placeholder="Search icons... (e.g., user, email, home)"
-                    class="wpuf-w-full !wpuf-px-4 !wpuf-py-1.5 wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-text-sm wpuf-text-gray-900 placeholder:wpuf-text-gray-400 wpuf-shadow focus:!wpuf-shadow-none"
+            <!-- Tabs -->
+            <div class="wpuf-flex wpuf-border-b wpuf-border-gray-200">
+                <button
+                    type="button"
+                    @click.stop="switchTab('icon')"
+                    :class="activeTab === 'icon' ? 'wpuf-text-emerald-600 wpuf-border-b-2 wpuf-border-emerald-600' : 'wpuf-text-gray-500 hover:wpuf-text-gray-700'"
+                    class="wpuf-flex-1 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-text-center wpuf-transition-colors wpuf-bg-transparent wpuf-cursor-pointer"
+                    style="border-top: none; border-left: none; border-right: none;"
                 >
-                <div class="wpuf-text-xs wpuf-text-gray-500 wpuf-mt-1">
-                    {{ filteredIcons.length }} icons {{ searchTerm ? 'found' : 'available' }}
-                </div>
+                    <?php esc_html_e( 'Select Icon', 'wp-user-frontend' ); ?>
+                </button>
+                <button
+                    type="button"
+                    @click.stop="switchTab('image')"
+                    :class="activeTab === 'image' ? 'wpuf-text-emerald-600 wpuf-border-b-2 wpuf-border-emerald-600' : 'wpuf-text-gray-500 hover:wpuf-text-gray-700'"
+                    class="wpuf-flex-1 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-text-center wpuf-transition-colors wpuf-bg-transparent wpuf-cursor-pointer"
+                    style="border-top: none; border-left: none; border-right: none;"
+                >
+                    <?php esc_html_e( 'Upload Image', 'wp-user-frontend' ); ?>
+                </button>
             </div>
 
-            <!-- Icons Grid -->
-            <div class="wpuf-icon-grid-container" style="max-height: 210px; overflow-y: auto; padding: 10px;">
-                <!-- Icons Grid -->
-                <div v-if="filteredIcons.length > 0" class="wpuf-icon-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
-                    <div
-                        v-for="icon in filteredIcons"
-                        :key="icon.class"
-                        @click="selectIcon(icon.class)"
-                        :class="['wpuf-icon-grid-item', { 'selected': value === icon.class }]"
-                        :title="icon.name + ' - ' + icon.keywords"
-                        style="padding: 10px 5px; text-align: center; border: 1px solid #e0e0e0; border-radius: 4px; cursor: pointer; transition: all 0.2s; min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center;"
+            <!-- Icon Tab -->
+            <template v-if="activeTab === 'icon'">
+                <!-- Search -->
+                <div class="wpuf-p-3 wpuf-border-b wpuf-border-gray-200">
+                    <input
+                        v-model="searchTerm"
+                        type="text"
+                        placeholder="<?php esc_attr_e( 'Search icons... (e.g., user, email, home)', 'wp-user-frontend' ); ?>"
+                        class="wpuf-w-full !wpuf-px-4 !wpuf-py-1.5 wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-text-sm wpuf-text-gray-900 placeholder:wpuf-text-gray-400 wpuf-shadow focus:!wpuf-shadow-none"
                     >
-                        <i :class="icon.class" style="font-size: 18px; margin-bottom: 4px; color: #555;"></i>
-                        <div style="font-size: 10px; color: #666; line-height: 1.2; word-break: break-word; max-width: 100%;">{{ icon.name }}</div>
+                    <div class="wpuf-text-xs wpuf-text-gray-500 wpuf-mt-1">
+                        {{ filteredIcons.length }} <?php esc_html_e( 'icons', 'wp-user-frontend' ); ?> {{ searchTerm ? '<?php echo esc_js( __( 'found', 'wp-user-frontend' ) ); ?>' : '<?php echo esc_js( __( 'available', 'wp-user-frontend' ) ); ?>' }}
                     </div>
                 </div>
 
-                <!-- No Results -->
-                <div v-else class="wpuf-text-center wpuf-py-8 wpuf-text-gray-500">
-                    <div style="font-size: 16px; margin-bottom: 8px;">🔍 No icons found</div>
-                    <div style="font-size: 12px;">Try searching with different keywords like "user", "email", "home"</div>
+                <!-- Icons Grid -->
+                <div class="wpuf-icon-grid-container" style="max-height: 210px; overflow-y: auto; padding: 10px;">
+                    <div v-if="filteredIcons.length > 0" class="wpuf-icon-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+                        <div
+                            v-for="icon in filteredIcons"
+                            :key="icon.class"
+                            @click="selectIcon(icon.class)"
+                            :class="['wpuf-icon-grid-item', { 'selected': value === icon.class }]"
+                            :title="icon.name + ' - ' + icon.keywords"
+                            style="padding: 10px 5px; text-align: center; border: 1px solid #e0e0e0; border-radius: 4px; cursor: pointer; transition: all 0.2s; min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center;"
+                        >
+                            <i :class="icon.class" style="font-size: 18px; margin-bottom: 4px; color: #555;"></i>
+                            <div style="font-size: 10px; color: #666; line-height: 1.2; word-break: break-word; max-width: 100%;">{{ icon.name }}</div>
+                        </div>
+                    </div>
+
+                    <!-- No Results -->
+                    <div v-else class="wpuf-text-center wpuf-py-8 wpuf-text-gray-500">
+                        <div style="font-size: 14px; margin-bottom: 8px;"><?php esc_html_e( 'No icons found', 'wp-user-frontend' ); ?></div>
+                        <div style="font-size: 12px;"><?php esc_html_e( 'Try searching with different keywords like "user", "email", "home"', 'wp-user-frontend' ); ?></div>
+                    </div>
                 </div>
-            </div>
+            </template>
+
+            <!-- Image Upload Tab -->
+            <template v-if="activeTab === 'image'">
+                <div style="padding: 20px;">
+                    <!-- Image preview when selected -->
+                    <div v-if="isImageValue" class="wpuf-flex wpuf-flex-col wpuf-items-center" style="gap: 12px;">
+                        <div style="border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px; background: #f9fafb;">
+                            <img :src="value" alt="" style="width: 48px; height: 48px; object-fit: contain;" />
+                        </div>
+                        <div class="wpuf-flex wpuf-items-center" style="gap: 8px;">
+                            <button
+                                type="button"
+                                @click.stop="openMediaUploader"
+                                class="wpuf-text-sm wpuf-font-medium wpuf-cursor-pointer wpuf-bg-transparent"
+                                style="color: #059669; border: none; padding: 4px 8px;"
+                            >
+                                <?php esc_html_e( 'Replace', 'wp-user-frontend' ); ?>
+                            </button>
+                            <button
+                                type="button"
+                                @click.stop="clearIcon"
+                                class="wpuf-text-sm wpuf-font-medium wpuf-cursor-pointer wpuf-bg-transparent"
+                                style="color: #ef4444; border: none; padding: 4px 8px;"
+                            >
+                                <?php esc_html_e( 'Remove', 'wp-user-frontend' ); ?>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Upload placeholder when no image -->
+                    <div v-else class="wpuf-flex wpuf-flex-col wpuf-items-center" style="gap: 12px; padding: 16px 0;">
+                        <svg style="width: 40px; height: 40px; color: #d1d5db;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <p class="wpuf-text-sm wpuf-text-gray-500" style="margin: 0;">
+                            <?php esc_html_e( 'Upload an image to use as icon', 'wp-user-frontend' ); ?>
+                        </p>
+                        <button
+                            type="button"
+                            @click.stop="openMediaUploader"
+                            class="wpuf-text-sm wpuf-font-medium wpuf-cursor-pointer"
+                            style="background-color: #059669; color: #fff; border: none; border-radius: 6px; padding: 8px 16px;"
+                        >
+                            <?php esc_html_e( 'Upload Image', 'wp-user-frontend' ); ?>
+                        </button>
+                    </div>
+                </div>
+            </template>
         </div>
     </div>
 </div>

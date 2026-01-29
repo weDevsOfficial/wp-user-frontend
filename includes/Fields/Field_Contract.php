@@ -821,17 +821,29 @@ abstract class Field_Contract {
         ?>
         <div class="wpuf-label">
             <label for="<?php echo isset( $field['name'] ) ? esc_attr( $field['name'] ) . '_' . esc_attr( $form_id ) : 'cls'; ?>">
-                <?php 
+                <?php
                 // Render icon before label if position is left
                 if ( ! empty( $field['show_icon'] ) && $field['show_icon'] === 'yes' && ! empty( $field['field_icon'] ) && ! empty( $field['icon_position'] ) && $field['icon_position'] === 'left_label' ) {
-                    echo '<i class="' . esc_attr( $field['field_icon'] ) . ' wpuf-field-icon wpuf-field-icon-left"></i> ';
+                    $icon_val = $field['field_icon'];
+
+                    if ( filter_var( $icon_val, FILTER_VALIDATE_URL ) || strpos( $icon_val, '/' ) === 0 ) {
+                        echo '<img src="' . esc_url( $icon_val ) . '" alt="" class="wpuf-field-icon wpuf-field-icon-img wpuf-field-icon-left" style="width: 1em; height: 1em; object-fit: contain; vertical-align: middle; display: inline-block;" /> ';
+                    } else {
+                        echo '<i class="' . esc_attr( $icon_val ) . ' wpuf-field-icon wpuf-field-icon-left"></i> ';
+                    }
                 }
-                
+
                 echo wp_kses_post( $field['label'] . $this->required_mark( $field ) );
-                
+
                 // Render icon after label if position is right
                 if ( ! empty( $field['show_icon'] ) && $field['show_icon'] === 'yes' && ! empty( $field['field_icon'] ) && ! empty( $field['icon_position'] ) && $field['icon_position'] === 'right_label' ) {
-                    echo ' <i class="' . esc_attr( $field['field_icon'] ) . ' wpuf-field-icon wpuf-field-icon-right"></i>';
+                    $icon_val = $field['field_icon'];
+
+                    if ( filter_var( $icon_val, FILTER_VALIDATE_URL ) || strpos( $icon_val, '/' ) === 0 ) {
+                        echo ' <img src="' . esc_url( $icon_val ) . '" alt="" class="wpuf-field-icon wpuf-field-icon-img wpuf-field-icon-right" style="width: 1em; height: 1em; object-fit: contain; vertical-align: middle; display: inline-block;" />';
+                    } else {
+                        echo ' <i class="' . esc_attr( $icon_val ) . ' wpuf-field-icon wpuf-field-icon-right"></i>';
+                    }
                 }
                 ?>
             </label>

@@ -72,7 +72,17 @@ class Widget extends Widget_Base {
      * @return array
      */
     public function get_style_depends() {
-        return [ 'wpuf-elementor-frontend-forms' ];
+        $depends = [ 'wpuf-elementor-frontend-forms' ];
+
+        /**
+         * Filters the list of style handles the widget depends on.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param string[]        $depends Array of style handles.
+         * @param \Elementor\Widget_Base $this  The widget instance.
+         */
+        return apply_filters( 'wpuf_elementor_widget_style_depends', $depends, $this );
     }
 
     /**
@@ -83,9 +93,17 @@ class Widget extends Widget_Base {
      * @return array
      */
     public function get_script_depends() {
-        // Note: wp_enqueue_editor() is called in Elementor::enqueue_scripts()
-        // to ensure TinyMCE scripts are loaded in Elementor preview
-        return [];
+        $depends = [];
+
+        /**
+         * Filters the list of script handles the widget depends on.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param string[]        $depends Array of script handles.
+         * @param \Elementor\Widget_Base $this  The widget instance.
+         */
+        return apply_filters( 'wpuf_elementor_widget_script_depends', $depends, $this );
     }
 
     /**
@@ -123,6 +141,17 @@ class Widget extends Widget_Base {
         $this->register_radio_checkbox_style_controls();
         $this->register_upload_button_style_controls();
         $this->register_submit_button_style_controls();
+
+        /**
+         * Fires after the widget has registered its style controls.
+         *
+         * Use this to add additional style sections (e.g. for Pro features like multistep).
+         *
+         * @since WPUF_SINCE
+         *
+         * @param \Elementor\Widget_Base $this The widget instance.
+         */
+        do_action( 'wpuf_elementor_widget_register_style_controls', $this );
     }
 
     /**
@@ -147,7 +176,15 @@ class Widget extends Widget_Base {
             }
         }
 
-        return $options;
+        /**
+         * Filters the form options shown in the widget's form dropdown.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array           $options Associative array of form_id => form_title.
+         * @param \Elementor\Widget_Base $this   The widget instance.
+         */
+        return apply_filters( 'wpuf_elementor_form_options', $options, $this );
     }
 
     /**
@@ -173,17 +210,6 @@ class Widget extends Widget_Base {
                 'label'    => __( 'Background', 'wp-user-frontend' ),
                 'types'    => [ 'classic', 'gradient' ],
                 'selector' => '{{WRAPPER}} .wpuf-elementor-widget-wrapper',
-            ]
-        );
-
-        $this->add_control(
-            'container_link_color',
-            [
-                'label'     => __( 'Link Color', 'wp-user-frontend' ),
-                'type'      => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .wpuf-elementor-widget-wrapper .wpuf-form a' => 'color: {{VALUE}};',
-                ],
             ]
         );
 
@@ -478,20 +504,6 @@ class Widget extends Widget_Base {
         $this->end_controls_tab();
 
         $this->end_controls_tabs();
-
-        $this->add_responsive_control(
-            'input_field_spacing',
-            [
-                'label'      => __( 'Field Spacing', 'wp-user-frontend' ),
-                'type'       => Controls_Manager::SLIDER,
-                'size_units' => [ 'px', 'em' ],
-                'range'      => [ 'px' => [ 'min' => 0, 'max' => 100, 'step' => 1 ] ],
-                'selectors'  => [
-                    '{{WRAPPER}} .wpuf-form .field-items' => 'margin-bottom: {{SIZE}}{{UNIT}};',
-                ],
-                'separator' => 'before',
-            ]
-        );
 
         $this->end_controls_section();
     }
@@ -1046,6 +1058,17 @@ class Widget extends Widget_Base {
             $wrapper_classes[] = 'wpuf-elementor-upload-full';
         }
 
+        /**
+         * Filters the CSS classes applied to the widget wrapper.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param string[] $wrapper_classes Array of class names.
+         * @param array    $settings       Widget settings.
+         * @param int|null $form_id        Selected form ID.
+         */
+        $wrapper_classes = apply_filters( 'wpuf_elementor_widget_wrapper_classes', $wrapper_classes, $settings, $form_id );
+
         $this->add_render_attribute( 'wrapper', 'class', $wrapper_classes );
 
         // Set alignment attribute if not default
@@ -1203,6 +1226,15 @@ class Widget extends Widget_Base {
             <?php
         }
         echo '</div>';
+
+        /**
+         * Fires after the widget has rendered its output.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param \Elementor\Widget_Base $this The widget instance.
+         */
+        do_action( 'wpuf_elementor_widget_after_render', $this );
     }
 
     /**

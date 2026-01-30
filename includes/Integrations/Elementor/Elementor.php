@@ -29,13 +29,39 @@ class Elementor {
      * @return void
      */
     public function enqueue_styles() {
+        // dequeue all wpuf hardcodes styles. so that elementor styles can work
         wp_dequeue_style('wpuf-frontend-forms');
         wp_dequeue_style('wpuf-layout1');
         wp_dequeue_style('wpuf-layout2');
         wp_dequeue_style('wpuf-layout3');
         wp_dequeue_style('wpuf-layout4');
         wp_dequeue_style('wpuf-layout5');
-        wp_enqueue_style( 'wpuf-elementor-frontend-forms' );
+
+        $style_handles = [ 'wpuf-elementor-frontend-forms' ];
+
+        /**
+         * Filters the list of style handles to enqueue in Elementor context.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param string[] $style_handles Array of style handles to enqueue.
+         */
+        $style_handles = apply_filters( 'wpuf_elementor_styles_to_enqueue', $style_handles );
+
+        foreach ( $style_handles as $handle ) {
+            wp_enqueue_style( $handle );
+        }
+
+        if ( wpuf_is_pro_active() ) {
+            wp_enqueue_script( 'wpuf-conditional-logic' );
+        }
+
+        /**
+         * Fires after WPUF has enqueued its styles in Elementor context.
+         *
+         * @since WPUF_SINCE
+         */
+        do_action( 'wpuf_elementor_after_enqueue_styles' );
     }
 
     /**
@@ -68,6 +94,13 @@ class Elementor {
                 }
             }
         }
+
+        /**
+         * Fires after WPUF has enqueued its scripts in Elementor context.
+         *
+         * @since WPUF_SINCE
+         */
+        do_action( 'wpuf_elementor_after_enqueue_scripts' );
     }
 
     /**

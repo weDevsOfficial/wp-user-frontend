@@ -43,6 +43,12 @@
   outline: none;
   box-shadow: 0 0 0 2px rgba(26, 126, 251, 0.1);
 }
+.wpuf-elementor-widget-wrapper .wpuf-fields .wpuf-radio-block,
+.wpuf-elementor-widget-wrapper .wpuf-fields .wpuf-checkbox-block {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
 .wpuf-elementor-widget-wrapper ul.wpuf-form {
   list-style: none;
 }

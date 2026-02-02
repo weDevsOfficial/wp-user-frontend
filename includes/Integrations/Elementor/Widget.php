@@ -581,6 +581,28 @@ class Widget extends Widget_Base {
             ]
         );
 
+        $this->add_control(
+            'radio_checkbox_selector_color',
+            [
+                'label'     => __( 'Selector Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .wpuf-form input[type="radio"], {{WRAPPER}} .wpuf-form input[type="checkbox"]' => 'accent-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'radio_checkbox_options_text_color',
+            [
+                'label'     => __( 'Options Text Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .wpuf-form .wpuf-radio-block, {{WRAPPER}} .wpuf-form .wpuf-checkbox-block, {{WRAPPER}} .wpuf-form .wpuf-radio-inline, {{WRAPPER}} .wpuf-form .wpuf-checkbox-inline' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
         $this->end_controls_section();
     }
 

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.2.8\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2026-01-28 06:28:38+00:00\n"
+"POT-Creation-Date: 2026-02-06 08:39:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -270,11 +270,11 @@ msgstr ""
 msgid "Number of items per page:"
 msgstr ""
 
-#: admin/class-admin-settings.php:497 includes/Admin.php:109
+#: admin/class-admin-settings.php:497 includes/Admin.php:108
 msgid "Post lock has been cleared"
 msgstr ""
 
-#: admin/class-admin-settings.php:501 includes/Admin.php:121
+#: admin/class-admin-settings.php:501 includes/Admin.php:120
 #. translators: %1$s opening div tag, %2$s shortcode, %3$s opening strong tag,
 #. %4$s closing strong tag, %5$s closing div tag.
 #. translators: %1$s is the opening div tag, %2$s is the shortcode
@@ -1188,39 +1188,39 @@ msgid "Sample Form"
 msgstr ""
 
 #: admin/posting.php:74 class/render-form.php:1703
-#: includes/Admin/Posting.php:130 includes/Admin.php:172
+#: includes/Admin/Posting.php:130 includes/Admin.php:171
 #: includes/Fields/Field_Contract.php:996 includes/Frontend.php:81
 #: includes/Render_Form.php:1594
 msgid "Are you sure?"
 msgstr ""
 
 #: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:342
-#: includes/Admin/Posting.php:131 includes/Admin.php:173
+#: includes/Admin/Posting.php:131 includes/Admin.php:172
 #: includes/Fields/Field_Contract.php:997 includes/Frontend.php:82
 msgid "Yes, delete it"
 msgstr ""
 
-#: admin/posting.php:76 includes/Admin/Posting.php:132 includes/Admin.php:174
+#: admin/posting.php:76 includes/Admin/Posting.php:132 includes/Admin.php:173
 #: includes/Fields/Field_Contract.php:998 includes/Frontend.php:83
 msgid "No, cancel it"
 msgstr ""
 
-#: admin/posting.php:82 includes/Admin/Posting.php:138 includes/Admin.php:182
+#: admin/posting.php:82 includes/Admin/Posting.php:138 includes/Admin.php:181
 #: includes/Fields/Field_Contract.php:1008 includes/Frontend.php:93
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:85 includes/Admin/Posting.php:141 includes/Admin.php:188
+#: admin/posting.php:85 includes/Admin/Posting.php:141 includes/Admin.php:187
 #: includes/Fields/Field_Contract.php:1014 includes/Frontend.php:99
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:86 includes/Admin/Posting.php:142 includes/Admin.php:189
+#: admin/posting.php:86 includes/Admin/Posting.php:142 includes/Admin.php:188
 #: includes/Fields/Field_Contract.php:1015 includes/Frontend.php:100
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:87 includes/Admin/Posting.php:143 includes/Admin.php:190
+#: admin/posting.php:87 includes/Admin/Posting.php:143 includes/Admin.php:189
 #: includes/Fields/Field_Contract.php:1019 includes/Frontend.php:104
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
@@ -3066,7 +3066,7 @@ msgid "Okay"
 msgstr ""
 
 #: includes/Admin/Forms/Admin_Form_Builder.php:346
-#: includes/Admin/views/shortcode-builder.php:70 includes/Admin.php:239
+#: includes/Admin/views/shortcode-builder.php:70 includes/Admin.php:238
 msgid "Close"
 msgstr ""
 
@@ -3115,7 +3115,7 @@ msgstr ""
 msgid "To view field options, please start adding fields in the builder"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:363 includes/Admin.php:231
+#: includes/Admin/Forms/Admin_Form_Builder.php:363 includes/Admin.php:230
 msgid "Something went wrong. Please try again."
 msgstr ""
 
@@ -4694,7 +4694,7 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: includes/Admin.php:230 includes/Free/Simple_Login.php:536
+#: includes/Admin.php:229 includes/Free/Simple_Login.php:536
 #: includes/Free/Simple_Login.php:577 includes/Frontend/Registration.php:184
 #: includes/Frontend/Registration.php:191
 #: includes/Frontend/Registration.php:198
@@ -4708,33 +4708,33 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: includes/Admin.php:232
+#: includes/Admin.php:231
 msgid "Invalid Request"
 msgstr ""
 
-#: includes/Admin.php:233
+#: includes/Admin.php:232
 msgid "I can only help with form creation. Try: \"Create a contact form\""
 msgstr ""
 
-#: includes/Admin.php:234
+#: includes/Admin.php:233
 msgid "Pro Feature Required"
 msgstr ""
 
-#: includes/Admin.php:235
+#: includes/Admin.php:234
 msgid ""
 "This field type requires WP User Frontend Pro. You can continue without it "
 "or upgrade to Pro for full functionality."
 msgstr ""
 
-#: includes/Admin.php:236
+#: includes/Admin.php:235
 msgid "Continue without Pro"
 msgstr ""
 
-#: includes/Admin.php:237 includes/Free/Free_Loader.php:895
+#: includes/Admin.php:236 includes/Free/Free_Loader.php:895
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: includes/Admin.php:238
+#: includes/Admin.php:237
 msgid "Try Again"
 msgstr ""
 

@@ -12,8 +12,8 @@
     "build:subscriptions": "ENTRY=subscriptions vite build",
     "build:frontend-subscriptions": "ENTRY=frontend-subscriptions vite build",
     "build:ai-form-builder": "ENTRY=ai-form-builder vite build",
-    "build:user-directory": "cd modules/user-directory && npm run build",
-    "dev:user-directory": "cd modules/user-directory && npm run dev",
+    "build:user-directory": "cd modules/user-directory && npm ci && npm run build",
+    "dev:user-directory": "cd modules/user-directory && npm ci && npm run dev",
     "build:css": "grunt tailwind && grunt tailwind-minify",
     "build:account": "ENTRY=account vite build"
   },

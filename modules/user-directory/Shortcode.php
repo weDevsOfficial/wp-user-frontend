@@ -489,27 +489,6 @@ class Shortcode {
     }
 
     /**
-     * Get current page number (matching Pro logic)
-     *
-     * @since 4.3.0
-     *
-     * @return int
-     */
-    private function get_current_page() {
-        $current_page = 1;
-
-        // Support both ?page=2 and /page/2/
-        if ( get_query_var( 'paged' ) ) {
-            $current_page = (int) get_query_var( 'paged' );
-        } elseif ( ! empty( $_GET['page'] ) ) {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-            $current_page = (int) $_GET['page'];
-        }
-
-        return max( 1, $current_page );
-    }
-
-    /**
      * Get directory URL (current page without profile params)
      *
      * @since 4.3.0

@@ -13,15 +13,27 @@ import DirectoryList from './components/DirectoryList';
 import DirectoryWizard from './components/DirectoryWizard';
 import DeleteConfirmModal from './components/common/DeleteConfirmModal';
 
-// Pro Badge Component - uses the same SVG as modules page
-const ProBadge = ({ className = '' }) => (
-    <img 
-        src={(window.wpuf_ud_free?.asset_url || window.wpuf_ud?.asset_url || window.wpuf_admin_script?.asset_url || '') + '/images/pro-badge.svg'} 
-        alt="Pro" 
-        className={className}
-        style={{ width: '39px', height: '22px', display: 'inline-block', verticalAlign: 'middle' }}
-    />
-);
+// Pro Badge Component - clickable link to upgrade page
+const ProBadge = ({ className = '', utm = 'wpuf-user-directory' }) => {
+    const wpuf = window.wpuf_admin_script || {};
+    const upgradeUrl = (wpuf.upgradeUrl || 'https://wedevs.com/wp-user-frontend-pro/pricing/') + '?utm_source=' + utm + '&utm_medium=pro-badge';
+
+    return (
+        <a
+            href={upgradeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={className}
+            style={{ display: 'inline-block', verticalAlign: 'middle' }}
+        >
+            <img
+                src={(window.wpuf_ud_free?.asset_url || window.wpuf_ud?.asset_url || window.wpuf_admin_script?.asset_url || '') + '/images/pro-badge.svg'}
+                alt="Pro"
+                style={{ width: '39px', height: '22px', display: 'inline-block', verticalAlign: 'middle' }}
+            />
+        </a>
+    );
+};
 
 const App = () => {
     const [view, setView] = useState('list'); // 'list' or 'wizard'
@@ -145,43 +157,19 @@ const App = () => {
                 <div className="wpuf-mb-8">
                     <div className="wpuf-flex wpuf-justify-between wpuf-items-center wpuf-mb-6">
                         <h1 className="wpuf-text-2xl wpuf-font-bold wpuf-m-0">{__('User Directories', 'wp-user-frontend')}</h1>
-                        <div className="wpuf-relative wpuf-inline-block wpuf-group">
-                            <button
-                                className={`wpuf-flex wpuf-items-center ${hasReachedLimit ? 'wpuf-bg-gray-100 wpuf-text-gray-400 wpuf-border wpuf-border-gray-300 wpuf-rounded-md wpuf-px-4 wpuf-py-2 wpuf-cursor-not-allowed' : 'new-wpuf-form wpuf-rounded-md wpuf-text-center wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-primaryHover hover:wpuf-text-white focus:wpuf-bg-primaryHover focus:wpuf-text-white focus:wpuf-shadow-none hover:wpuf-cursor-pointer'}`}
-                                onClick={handleCreate}
-                                disabled={hasReachedLimit}
-                            >
-                                <span className="dashicons dashicons-plus-alt2"></span>
-                                &nbsp;
-                                {__('New Directory', 'wp-user-frontend')}
-                            </button>
-                            {/* Pro Badge on hover - vertically centered */}
+                        <button
+                            className={`wpuf-flex wpuf-items-center wpuf-gap-2 ${hasReachedLimit ? 'wpuf-bg-gray-100 wpuf-text-gray-400 wpuf-border wpuf-border-gray-300 wpuf-rounded-md wpuf-px-4 wpuf-py-2 wpuf-cursor-not-allowed' : 'new-wpuf-form wpuf-rounded-md wpuf-text-center wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-primaryHover hover:wpuf-text-white focus:wpuf-bg-primaryHover focus:wpuf-text-white focus:wpuf-shadow-none hover:wpuf-cursor-pointer'}`}
+                            onClick={handleCreate}
+                            disabled={hasReachedLimit}
+                        >
+                            <span className="dashicons dashicons-plus-alt2"></span>
+                            {__('New Directory', 'wp-user-frontend')}
+                            {/* Pro Badge inside button - always visible when limit reached */}
                             {hasReachedLimit && (
-                                <div className="wpuf-absolute wpuf-z-50 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-transition-opacity wpuf-duration-200" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-                                    <ProBadge />
-                                </div>
+                                <ProBadge utm="wpuf-user-directory-new-button" />
                             )}
-                        </div>
+                        </button>
                     </div>
-
-                    {/* Limit Warning */}
-                    {hasReachedLimit && (
-                        <div className="wpuf-flex wpuf-items-start wpuf-gap-3 wpuf-p-4 wpuf-bg-amber-50 wpuf-border wpuf-border-amber-200 wpuf-rounded-lg wpuf-mt-6 wpuf-mb-6">
-                            <svg className="wpuf-w-5 wpuf-h-5 wpuf-text-amber-600 wpuf-flex-shrink-0 wpuf-mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-                            <div>
-                                <p className="wpuf-font-semibold wpuf-text-amber-800 wpuf-m-0">
-                                    {config.i18n?.directory_limit || __('You can only create 1 directory in the free version.', 'wp-user-frontend')}
-                                </p>
-                                <p className="wpuf-text-amber-700 wpuf-mt-1 wpuf-m-0">
-                                    <a href={config.upgrade_url || 'https://wedevs.com/wp-user-frontend-pro/pricing/'} target="_blank" rel="noopener noreferrer" className="wpuf-text-emerald-600 wpuf-font-medium hover:wpuf-underline">
-                                        {config.i18n?.upgrade_to_pro || __('Upgrade to Pro', 'wp-user-frontend')}
-                                    </a> {__('to create unlimited directories.', 'wp-user-frontend')}
-                                </p>
-                            </div>
-                        </div>
-                    )}
                 </div>
 
                 {loading ? (

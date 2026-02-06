@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { __ } from '@wordpress/i18n';
 
 const StepProfile = ({ formData, setFormData, config }) => {
     // Free version only allows layout-2
     const freeLayout = 'layout-2';
+
+    // Hover state for Pro layouts
+    const [hoveredLayout, setHoveredLayout] = useState(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -54,7 +57,8 @@ const StepProfile = ({ formData, setFormData, config }) => {
                 {Object.entries(layoutOptions).map(([value, option]) => {
                     const isPro = isProLayout(value);
                     const isSelected = formData.profile_layout === value;
-                    
+                    const isHovered = hoveredLayout === value;
+
                     return (
                         <label
                             key={value}
@@ -65,15 +69,15 @@ const StepProfile = ({ formData, setFormData, config }) => {
                                 width: '255px',
                                 height: '182px',
                                 borderRadius: '10px',
-                                borderWidth: isPro ? '2px' : '1px',
-                                borderStyle: isPro ? 'dashed' : 'solid',
+                                borderWidth: '1px',
+                                borderStyle: 'solid',
                                 borderColor: isSelected ? '#059669' : '#E5E7EB',
                                 backgroundColor: '#FFFFFF',
-                                opacity: isPro ? 0.6 : 1,
+                                opacity: 1,
                                 transition: 'all 0.2s ease-in-out'
                             }}
-                            onMouseEnter={(e) => { if (isPro) e.currentTarget.style.borderColor = '#3B82F6'; }}
-                            onMouseLeave={(e) => { if (isPro) e.currentTarget.style.borderColor = '#E5E7EB'; }}
+                            onMouseEnter={() => isPro && setHoveredLayout(value)}
+                            onMouseLeave={() => isPro && setHoveredLayout(null)}
                         >
                             <input
                                 type="radio"
@@ -87,40 +91,47 @@ const StepProfile = ({ formData, setFormData, config }) => {
                             <img
                                 src={option.image}
                                 alt={option.name}
-                                style={{ 
+                                style={{
                                     maxWidth: '100%',
                                     maxHeight: '100%',
                                     padding: '10px',
-                                    imageRendering: 'crisp-edges', 
-                                    WebkitFontSmoothing: 'antialiased' 
+                                    imageRendering: 'crisp-edges',
+                                    WebkitFontSmoothing: 'antialiased'
                                 }}
                             />
-                            
-                            {/* Pro Badge for locked layouts */}
-                            {isPro && (
+
+                            {/* Pro Badge on hover for locked layouts */}
+                            {isPro && isHovered && (
                                 <div className="wpuf-absolute wpuf-inset-0 wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-bg-white/80" style={{ borderRadius: '10px' }}>
-                                    <img 
-                                        src={(window.wpuf_ud_free?.asset_url || window.wpuf_ud?.asset_url || '') + '/images/pro-badge.svg'} 
-                                        alt="Pro" 
+                                    <a
+                                        href={((window.wpuf_admin_script || {}).upgradeUrl || 'https://wedevs.com/wp-user-frontend-pro/pricing/') + '?utm_source=wpuf-user-directory-profile-layout&utm_medium=pro-badge'}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         className="wpuf-mb-2"
-                                        style={{ width: '39px', height: '22px' }}
-                                    />
+                                        style={{ display: 'inline-block' }}
+                                    >
+                                        <img
+                                            src={(window.wpuf_ud_free?.asset_url || window.wpuf_ud?.asset_url || '') + '/images/pro-badge.svg'}
+                                            alt="Pro"
+                                            style={{ width: '39px', height: '22px' }}
+                                        />
+                                    </a>
                                     <span className="wpuf-text-xs wpuf-text-gray-600 wpuf-text-center wpuf-px-2">
                                         {option.name}
                                     </span>
                                 </div>
                             )}
-                            
+
                             {/* Hover overlay with layout name - only for free layout */}
                             {!isPro && (
-                                <div 
+                                <div
                                     className="wpuf-absolute wpuf-inset-0 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-transition-opacity wpuf-duration-300"
                                     style={{
                                         backgroundColor: 'rgba(236, 253, 245, 0.95)',
                                         borderRadius: '10px'
                                     }}
                                 >
-                                    <span 
+                                    <span
                                         style={{
                                             fontSize: '16px',
                                             fontWeight: 600,

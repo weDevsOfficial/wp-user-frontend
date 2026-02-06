@@ -64,35 +64,6 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
         }
     };
 
-    // Common input style for select dropdowns
-    const inputStyle = {
-        maxWidth: '793px',
-        width: '100%',
-        height: '42px',
-        borderRadius: '6px',
-        borderWidth: '1px',
-        paddingTop: '9px',
-        paddingRight: '37px',
-        paddingBottom: '9px',
-        paddingLeft: '13px',
-        backgroundColor: '#FFFFFF',
-        borderColor: '#CBD5E1',
-        borderStyle: 'solid',
-        opacity: 1,
-        boxSizing: 'border-box',
-        fontSize: '16px',
-        lineHeight: '1',
-        display: 'flex',
-        alignItems: 'center',
-        backgroundImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' stroke=\'%23374151\' viewBox=\'0 0 24 24\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'right 13px center',
-        backgroundSize: '16px',
-        appearance: 'none',
-        WebkitAppearance: 'none',
-        MozAppearance: 'none'
-    };
-
     // Number input style (shows native spinners like Pro)
     const numberInputStyle = {
         maxWidth: '793px',
@@ -276,18 +247,11 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.375 9.375L9.40957 9.35771C9.88717 9.11891 10.4249 9.55029 10.2954 10.0683L9.70458 12.4317C9.57507 12.9497 10.1128 13.3811 10.5904 13.1423L10.625 13.125M17.5 10C17.5 14.1421 14.1421 17.5 10 17.5C5.85786 17.5 2.5 14.1421 2.5 10C2.5 5.85786 5.85786 2.5 10 2.5C14.1421 2.5 17.5 5.85786 17.5 10ZM10 6.875H10.0063V6.88125H10V6.875Z" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
                         </Tooltip>
                     </label>
-                    <select
-                        id="profile_base"
-                        name="profile_base"
-                        className="wpuf-block wpuf-min-w-full wpuf-text-gray-700 wpuf-font-normal focus:wpuf-ring-transparent wpuf-border"
-                        style={inputStyle}
+                    <SingleSelect
+                        options={profileBases}
                         value={formData.profile_base || 'username'}
-                        onChange={handleChange}
-                    >
-                        {profileBases.map(option => (
-                            <option key={option.value} value={option.value}>{option.label}</option>
-                        ))}
-                    </select>
+                        onChange={(value) => handleChange({ target: { name: 'profile_base', value } })}
+                    />
                 </div>
 
                 {/* Select Social Profiles - All Pro */}

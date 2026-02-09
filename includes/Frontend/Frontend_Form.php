@@ -169,6 +169,15 @@ class Frontend_Form extends Frontend_Render_Form {
 
     /**
      * Draft Post
+     *
+     * Saves or updates a draft post via AJAX. For updates (when post_id is provided),
+     * authorization is enforced: logged-in users must have 'edit_post' capability,
+     * and guest users must provide a valid draft token.
+     *
+     * @since 4.0.0
+     * @since 4.2.9 Added authorization checks to prevent unauthorized post modification (IDOR fix).
+     *
+     * @return void
      */
     public function draft_post() {
         check_ajax_referer( 'wpuf_form_add' );
@@ -238,8 +247,30 @@ class Frontend_Form extends Frontend_Render_Form {
 
         // if post_id is passed, we update the post
         if ( isset( $_POST['post_id'] ) ) {
+            $update_post_id = intval( wp_unslash( $_POST['post_id'] ) );
+            $existing_post  = get_post( $update_post_id );
+
+            if ( ! $existing_post ) {
+                wp_send_json_error( [ 'message' => __( 'Invalid post.', 'wp-user-frontend' ) ] );
+            }
+
+            // Authorization check: logged-in users must have edit capability
+            if ( is_user_logged_in() ) {
+                if ( ! current_user_can( 'edit_post', $update_post_id ) ) {
+                    wp_send_json_error( [ 'message' => __( 'You are not authorized to edit this post.', 'wp-user-frontend' ) ] );
+                }
+            } else {
+                // Guest users: validate draft token to prevent IDOR
+                $stored_token    = get_post_meta( $update_post_id, '_wpuf_draft_token', true );
+                $submitted_token = isset( $_POST['_wpuf_draft_token'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpuf_draft_token'] ) ) : '';
+
+                if ( empty( $stored_token ) || ! hash_equals( $stored_token, $submitted_token ) ) {
+                    wp_send_json_error( [ 'message' => __( 'You are not authorized to edit this draft.', 'wp-user-frontend' ) ] );
+                }
+            }
+
             $is_update                 = true;
-            $postarr['ID']             = intval( wp_unslash( $_POST['post_id'] ) );
+            $postarr['ID']             = $update_post_id;
             $postarr['comment_status'] = 'open';
         }
 
@@ -270,22 +301,34 @@ class Frontend_Form extends Frontend_Render_Form {
             }
         }
 
+        // Generate and store a draft token for guest users on new draft creation
+        $draft_token = '';
+
+        if ( ! is_user_logged_in() && $post_id && ! isset( $_POST['post_id'] ) ) {
+            $draft_token = wp_generate_password( 32, false );
+            update_post_meta( $post_id, '_wpuf_draft_token', $draft_token );
+        }
+
         //used to add code to run when the post is going to draft
         do_action( 'wpuf_draft_post_after_insert', $post_id, $form_id, $this->form_settings, $this->form_fields );
 
         wpuf_clear_buffer();
 
-        echo wp_json_encode(
-            [
-                'post_id'        => $post_id,
-                'action'         => isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '',
-                'date'           => current_time( 'mysql' ),
-                'post_author'    => get_current_user_id(),
-                'comment_status' => get_option( 'default_comment_status' ),
-                'url'            => add_query_arg( 'preview', 'true', get_permalink( $post_id ) ),
-                'message'        => __( 'Post Saved', 'wp-user-frontend' ),
-            ]
-        );
+        $response = [
+            'post_id'        => $post_id,
+            'action'         => isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '',
+            'date'           => current_time( 'mysql' ),
+            'post_author'    => get_current_user_id(),
+            'comment_status' => get_option( 'default_comment_status' ),
+            'url'            => add_query_arg( 'preview', 'true', get_permalink( $post_id ) ),
+            'message'        => __( 'Post Saved', 'wp-user-frontend' ),
+        ];
+
+        if ( ! empty( $draft_token ) ) {
+            $response['draft_token'] = $draft_token;
+        }
+
+        echo wp_json_encode( $response );
 
         exit;
     }

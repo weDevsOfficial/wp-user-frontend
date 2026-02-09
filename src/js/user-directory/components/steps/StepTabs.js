@@ -276,12 +276,14 @@ const StepTabs = ({ formData, setFormData, config }) => {
                                         <path d="M3.125 5.625H16.875M3.125 10H16.875M3.125 14.375H16.875" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
 
-                                    {/* Tab Name with PRO Badge */}
+                                    {/* Tab Name with PRO Badge on hover */}
                                     <div className="wpuf-flex wpuf-items-center wpuf-gap-2">
                                         <span className="wpuf-text-[15px] wpuf-text-gray-700 wpuf-font-medium">
                                             {tab.label}
                                         </span>
-                                        <ProBadge utm="wpuf-user-directory-tab-names" />
+                                        {isHovered && (
+                                            <ProBadge utm="wpuf-user-directory-tab-names" />
+                                        )}
                                     </div>
                                 </div>
                                 

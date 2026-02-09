@@ -183,7 +183,7 @@ const DirectoryWizard = ({ onClose, initialData, config = {} }) => {
 
                 <button
                     onClick={handleSaveAndExit}
-                    className="wpuf-px-4 wpuf-py-2 wpuf-text-gray-700 wpuf-bg-white wpuf-border wpuf-border-gray-300 wpuf-rounded-md hover:wpuf-bg-gray-50 wpuf-transition-colors wpuf-flex wpuf-items-center"
+                    className="wpuf-btn-white wpuf-flex wpuf-items-center"
                     disabled={loading}
                 >
                     {loading && (
@@ -266,8 +266,11 @@ const DirectoryWizard = ({ onClose, initialData, config = {} }) => {
             </div>
 
             {/* Footer Navigation */}
-            <div className="wpuf-fixed wpuf-bottom-0 wpuf-left-0 wpuf-right-0 wpuf-bg-white wpuf-border-t wpuf-border-gray-200 wpuf-shadow-lg wpuf-z-50"
-                 style={{ left: document.body.classList.contains('folded') ? '36px' : '160px' }}>
+            <div className="wpuf-fixed wpuf-bottom-0 !wpuf-bg-white wpuf-border-t wpuf-border-gray-200 wpuf-shadow-lg wpuf-z-50"
+                 style={{
+                     left: document.body.classList.contains('folded') ? '36px' : '160px',
+                     right: '0'
+                 }}>
                 <div className="wpuf-container wpuf-mx-auto">
                     <div className="wpuf-flex wpuf-justify-between wpuf-items-center wpuf-max-w-4xl wpuf-mx-auto wpuf-py-4 wpuf-px-4">
                         {/* Left buttons */}
@@ -275,14 +278,14 @@ const DirectoryWizard = ({ onClose, initialData, config = {} }) => {
                             {currentStepIndex === 0 ? (
                                 <button
                                     onClick={onClose}
-                                    className="wpuf-px-4 wpuf-py-2 wpuf-text-gray-700 wpuf-bg-white wpuf-border wpuf-border-gray-300 wpuf-rounded-md hover:wpuf-bg-gray-50 wpuf-transition-colors"
+                                    className="wpuf-px-4 wpuf-py-2 wpuf-text-gray-700 wpuf-bg-white wpuf-border wpuf-border-gray-300 wpuf-rounded-md hover:wpuf-bg-gray-50 focus:wpuf-outline-none focus:wpuf-ring-2 focus:wpuf-ring-offset-2 focus:wpuf-ring-gray-500 wpuf-transition-colors"
                                 >
                                     {__('Cancel', 'wp-user-frontend')}
                                 </button>
                             ) : (
                                 <button
                                     onClick={handlePrevStep}
-                                    className="wpuf-px-4 wpuf-py-2 wpuf-text-gray-700 wpuf-bg-white wpuf-border wpuf-border-gray-300 wpuf-rounded-md hover:wpuf-bg-gray-50 wpuf-transition-colors wpuf-flex wpuf-items-center"
+                                    className="wpuf-px-4 wpuf-py-2 wpuf-text-gray-700 wpuf-bg-white wpuf-border wpuf-border-gray-300 wpuf-rounded-md hover:wpuf-bg-gray-50 focus:wpuf-outline-none focus:wpuf-ring-2 focus:wpuf-ring-offset-2 focus:wpuf-ring-gray-500 wpuf-transition-colors wpuf-flex wpuf-items-center"
                                 >
                                     <svg className="wpuf-w-4 wpuf-h-4 wpuf-mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -297,7 +300,7 @@ const DirectoryWizard = ({ onClose, initialData, config = {} }) => {
                             <button
                                 onClick={handleNextStep}
                                 disabled={loading}
-                                className="wpuf-px-6 wpuf-py-2 wpuf-text-white wpuf-bg-emerald-600 wpuf-rounded-md hover:wpuf-bg-emerald-700 wpuf-transition-colors wpuf-flex wpuf-items-center disabled:wpuf-opacity-50 disabled:wpuf-cursor-not-allowed"
+                                className="wpuf-px-6 wpuf-py-2 wpuf-text-white wpuf-bg-emerald-600 wpuf-rounded-md hover:wpuf-bg-emerald-700 focus:wpuf-outline-none focus:wpuf-ring-2 focus:wpuf-ring-offset-2 focus:wpuf-ring-emerald-500 wpuf-transition-colors wpuf-flex wpuf-items-center disabled:wpuf-opacity-50 disabled:wpuf-cursor-not-allowed"
                             >
                                 {loading && isLastStep && (
                                     <span className="wpuf-animate-spin wpuf-mr-2 wpuf-inline-block wpuf-w-4 wpuf-h-4 wpuf-border-2 wpuf-border-white wpuf-border-t-transparent wpuf-rounded-full"></span>

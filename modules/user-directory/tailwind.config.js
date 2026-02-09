@@ -72,6 +72,15 @@ module.exports = {
         '!wpuf-border-gray-800',
         '!wpuf-border-gray-700',
         '!wpuf-ring-gray-800',
+        // Button component classes
+        'wpuf-btn-white',
+        'wpuf-btn-primary',
+        // Focus ring classes for buttons
+        'focus:wpuf-outline-none',
+        'focus:wpuf-ring-2',
+        'focus:wpuf-ring-offset-2',
+        'focus:wpuf-ring-gray-500',
+        'focus:wpuf-ring-emerald-500',
     ],
     theme: {
         extend: {

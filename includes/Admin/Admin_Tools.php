@@ -410,7 +410,7 @@ class Admin_Tools {
                 </div>
             <?php endif; ?>
 
-            <?php foreach ( $shortcodes as $category_key => $category ) : ?>
+            <?php foreach ( $shortcodes as $category ) : ?>
                 <div class="postbox wpuf-shortcode-category" style="margin-bottom: 20px;">
                     <h3 style="padding: 10px 15px; margin: 0; border-bottom: 1px solid #ccd0d4;">
                         <?php echo esc_html( $category['title'] ); ?>

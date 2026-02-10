@@ -193,6 +193,13 @@ class Frontend_Form extends Frontend_Render_Form {
         $this->form_fields   = $form->get_fields();
         $pay_per_post        = $form->is_enabled_pay_per_post();
 
+        // Early return: User must be logged in to save drafts
+        $current_user_id = get_current_user_id();
+
+        if ( $current_user_id <= 0 ) {
+            wp_send_json_error( [ 'message' => __( 'You must be logged in to save drafts.', 'wp-user-frontend' ) ] );
+        }
+
         [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
         $entry_fields = $form->prepare_entries();
@@ -201,7 +208,7 @@ class Frontend_Form extends Frontend_Render_Form {
         $postarr = [
             'post_type'    => $this->form_settings['post_type'],
             'post_status'  => wpuf_get_draft_post_status( $this->form_settings ),
-            'post_author'  => get_current_user_id(),
+            'post_author'  => $current_user_id,
             'post_title'   => isset( $_POST['post_title'] ) ? sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) : '',
             'post_content' => $post_content,
             'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) : '',
@@ -250,37 +257,19 @@ class Frontend_Form extends Frontend_Render_Form {
 
         if ( isset( $_POST['post_id'] ) ) {
             $update_post_id = intval( wp_unslash( $_POST['post_id'] ) );
-            $existing_post  = get_post( $update_post_id );
 
-            if ( ! $existing_post ) {
-                wp_send_json_error( [ 'message' => __( 'Invalid post.', 'wp-user-frontend' ) ] );
+            // Verify the post exists and user has permission to edit
+            $can_edit = wpuf_user_can_edit_post( $update_post_id );
+
+            if ( is_wp_error( $can_edit ) ) {
+                wp_send_json_error( [ 'message' => $can_edit->get_error_message() ] );
             }
 
-            $current_user_id = get_current_user_id();
-            $post_author_id  = (int) $existing_post->post_author;
-
-            if ( $current_user_id === 0 ) {
-                wp_send_json_error( [ 'message' => __( 'You must be logged in to edit drafts.', 'wp-user-frontend' ) ] );
-            }
-
-            if ( $current_user_id === $post_author_id ) {
-                if ( ! current_user_can( 'edit_post', $update_post_id ) ) {
-                    wp_send_json_error( [ 'message' => __( 'You are not authorized to edit this post.', 'wp-user-frontend' ) ] );
-                }
-            } else {
-                $post_type_object = get_post_type_object( $existing_post->post_type );
-
-                if ( ! $post_type_object || ! current_user_can( $post_type_object->cap->edit_others_posts ) ) {
-                    wp_send_json_error( [ 'message' => __( 'You are not authorized to edit this post.', 'wp-user-frontend' ) ] );
-                }
-
-                if ( ! current_user_can( 'edit_post', $update_post_id ) ) {
-                    wp_send_json_error( [ 'message' => __( 'You are not authorized to edit this post.', 'wp-user-frontend' ) ] );
-                }
-            }
+            $existing_post = get_post( $update_post_id );
 
             $is_update                 = true;
             $postarr['ID']             = $update_post_id;
+            $postarr['post_author']    = (int) $existing_post->post_author; // Preserve original author
             $postarr['comment_status'] = 'open';
         }
 
@@ -319,7 +308,7 @@ class Frontend_Form extends Frontend_Render_Form {
             'post_id'        => $post_id,
             'action'         => isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '',
             'date'           => current_time( 'mysql' ),
-            'post_author'    => get_current_user_id(),
+            'post_author'    => $current_user_id,
             'comment_status' => get_option( 'default_comment_status' ),
             'url'            => add_query_arg( 'preview', 'true', get_permalink( $post_id ) ),
             'message'        => __( 'Post Saved', 'wp-user-frontend' ),

@@ -167,6 +167,16 @@ class Frontend_Form_Ajax {
             wp_delete_attachment( $attach_id, true );
         }
 
+        // Early return: If editing a post, user must be logged in
+        if ( isset( $_POST['post_id'] ) && $current_user_id <= 0 ) {
+            wpuf()->ajax->send_error( __( 'You must be logged in to edit posts.', 'wp-user-frontend' ) );
+        }
+
+        // Early return: If not guest mode and creating new post, user must be logged in
+        if ( ! isset( $_POST['post_id'] ) && 'guest_post' !== $guest_mode && $current_user_id <= 0 ) {
+            wpuf()->ajax->send_error( __( 'You must be logged in to submit posts.', 'wp-user-frontend' ) );
+        }
+
         [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
         if ( ! isset( $_POST['post_id'] ) ) {
@@ -261,33 +271,15 @@ class Frontend_Form_Ajax {
         if ( isset( $_POST['post_id'] ) ) {
             $post_id = intval( wp_unslash( $_POST['post_id'] ) );
 
+            // Verify the post exists and user has permission to edit
+            $can_edit = wpuf_user_can_edit_post( $post_id );
+
+            if ( is_wp_error( $can_edit ) ) {
+                wpuf()->ajax->send_error( $can_edit->get_error_message() );
+            }
+
             $post = get_post( $post_id );
-            if ( ! $post || is_wp_error( $post ) ) {
-                wpuf()->ajax->send_error( __( 'Post not found.', 'wp-user-frontend' ) );
-            }
-
-            $current_user_id = get_current_user_id();
-            $post_author_id  = (int) $post->post_author;
-
-            if ( $current_user_id > 0 ) {
-                if ( $current_user_id === $post_author_id ) {
-                    if ( ! current_user_can( 'edit_post', $post_id ) ) {
-                        wpuf()->ajax->send_error( __( 'You are not authorized to edit this post.', 'wp-user-frontend' ) );
-                    }
-                } else {
-                    $post_type_object = get_post_type_object( $post->post_type );
-
-                    if ( ! $post_type_object || ! current_user_can( $post_type_object->cap->edit_others_posts ) ) {
-                        wpuf()->ajax->send_error( __( 'You are not authorized to edit this post.', 'wp-user-frontend' ) );
-                    }
-
-                    if ( ! current_user_can( 'edit_post', $post_id ) ) {
-                        wpuf()->ajax->send_error( __( 'You are not authorized to edit this post.', 'wp-user-frontend' ) );
-                    }
-                }
-            } else {
-                wpuf()->ajax->send_error( __( 'You must be logged in to edit posts.', 'wp-user-frontend' ) );
-            }
+            $post_author_id = (int) $post->post_author;
 
             $is_update                 = true;
             $postarr['ID']             = $post_id;

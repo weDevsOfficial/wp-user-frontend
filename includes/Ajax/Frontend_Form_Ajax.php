@@ -167,6 +167,16 @@ class Frontend_Form_Ajax {
             wp_delete_attachment( $attach_id, true );
         }
 
+        // Early return: If editing a post, user must be logged in
+        if ( isset( $_POST['post_id'] ) && $current_user_id <= 0 ) {
+            wpuf()->ajax->send_error( __( 'You must be logged in to edit posts.', 'wp-user-frontend' ) );
+        }
+
+        // Early return: If not guest mode and creating new post, user must be logged in
+        if ( ! isset( $_POST['post_id'] ) && 'guest_post' !== $guest_mode && $current_user_id <= 0 ) {
+            wpuf()->ajax->send_error( __( 'You must be logged in to submit posts.', 'wp-user-frontend' ) );
+        }
+
         [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
         if ( ! isset( $_POST['post_id'] ) ) {
@@ -260,28 +270,22 @@ class Frontend_Form_Ajax {
 
         // if post_id is passed, we update the post
         if ( isset( $_POST['post_id'] ) ) {
-            $post_id                   = intval( wp_unslash( $_POST['post_id'] ) );
+            $post_id = intval( wp_unslash( $_POST['post_id'] ) );
 
-            // Verify the post exists
+            // Verify the post exists and user has permission to edit
+            $can_edit = wpuf_user_can_edit_post( $post_id );
+
+            if ( is_wp_error( $can_edit ) ) {
+                wpuf()->ajax->send_error( $can_edit->get_error_message() );
+            }
+
             $post = get_post( $post_id );
-            if ( ! $post || is_wp_error( $post ) ) {
-                wpuf()->ajax->send_error( __( 'Post not found.', 'wp-user-frontend' ) );
-            }
-
-            // Security: Check if user has permission to edit this post (Broken Access Control fix)
-            $post_author = (int) get_post_field( 'post_author', $post_id );
-            $current_user_id = get_current_user_id();
-
-            // Allow edit if: user is post author OR user has edit_others_posts capability
-            if ( $current_user_id !== $post_author && ! current_user_can( 'edit_others_posts' ) ) {
-                wpuf()->ajax->send_error( __( 'You do not have permission to edit this post.', 'wp-user-frontend' ) );
-            }
 
             $is_update                 = true;
             $postarr['ID']             = $post_id;
             $postarr['post_date']      = isset( $_POST['post_date'] ) ? sanitize_text_field( wp_unslash( $_POST['post_date'] ) ) : '';
             $postarr['comment_status'] = isset( $_POST['comment_status'] ) ? sanitize_text_field( wp_unslash( $_POST['comment_status'] ) ) : '';
-            $postarr['post_author']    = isset( $_POST['post_author'] ) ? sanitize_text_field( wp_unslash( $_POST['post_author'] ) ) : '';
+            $postarr['post_author']    = (int) $post->post_author; // Preserve original author
             $postarr['post_parent']    = get_post_field( 'post_parent', $post_id );
 
             $menu_order = get_post_field( 'menu_order', $post_id );

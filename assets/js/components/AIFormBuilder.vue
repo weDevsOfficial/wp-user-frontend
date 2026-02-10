@@ -127,8 +127,8 @@ export default {
                 const requestBody = {
                     prompt: prompt,
                     session_id: this.getSessionId(),
-                    form_type: config.formType || 'post',
-                    provider: config.provider || 'openai'
+                    form_type: config.formType,
+                    provider: config.provider
                 };
 
                 // Add integration parameter if selected

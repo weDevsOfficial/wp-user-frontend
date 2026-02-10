@@ -2154,8 +2154,8 @@ What would you like me to help you with?`;
                 prompt: message,  // Send the user's message as-is
                 session_id: this.sessionId,
                 conversation_context: conversationContext,
-                form_type: config.formType || 'post',
-                provider: config.provider || 'google',
+                form_type: config.formType,
+                provider: config.provider,
                 language: this.selectedLanguage || 'English'
             };
 

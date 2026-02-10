@@ -4682,8 +4682,7 @@ function wpuf_unset_conditional( $settings ) {
  * @return bool True if editable, false otherwise
  */
 function wpuf_is_post_editable( $post ) {
-    // Handle post ID (numeric)
-        // Handle WordPress post object
+    // Handle WordPress post object
     if ( ! $post instanceof WP_Post ) {
         return false;
     }

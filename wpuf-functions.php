@@ -30,7 +30,7 @@ add_action( 'init', 'wpuf_buffer_start' );
 function wpuf_show_post_status( $status ) {
     if ( 'publish' === $status ) {
         $title     = __( 'Live', 'wp-user-frontend' );
-        $fontcolor = '#33CC33';
+        $fontcolor = 'rgb(5, 150, 105)';
     } elseif ( 'draft' === $status ) {
         $title     = __( 'Offline', 'wp-user-frontend' );
         $fontcolor = '#bbbbbb';
@@ -554,10 +554,6 @@ function wpuf_allowed_extensions() {
             'ext' => 'zip,gz,gzip,rar,7z',
             'label' => __( 'Zip Archives', 'wp-user-frontend' ),
         ],
-        'exe'    => [
-            'ext' => 'exe',
-            'label' => __( 'Executable Files', 'wp-user-frontend' ),
-        ],
         'csv'    => [
             'ext' => 'csv',
             'label' => __( 'CSV', 'wp-user-frontend' ),
@@ -781,6 +777,90 @@ function wpuf_custom_avatar_data( $args, $id_or_email ) {
 }
 
 add_filter( 'get_avatar_data', 'wpuf_custom_avatar_data', 10, 2 );
+
+/**
+ * Get user avatar data with fallback to initials
+ *
+ * Checks for custom profile photo first, then Gravatar, and provides
+ * initials as fallback. This follows the same logic as user directory.
+ *
+ * @since 4.2.7
+ *
+ * @param int|WP_User $user    User ID or WP_User object.
+ * @param int         $size    Avatar size in pixels. Default 96.
+ *
+ * @return array {
+ *     Avatar data array.
+ *
+ *     @type string|false $url       Avatar URL or false if no avatar.
+ *     @type string       $initials  User initials for fallback display.
+ *     @type int          $font_size Calculated font size for initials.
+ * }
+ */
+function wpuf_get_user_avatar_data( $user, $size = 96 ) {
+    // Get user object if ID is passed
+    if ( is_numeric( $user ) ) {
+        $user = get_user_by( 'id', $user );
+    }
+
+    if ( ! $user ) {
+        return [
+            'url'       => false,
+            'initials'  => '',
+            'font_size' => 16,
+        ];
+    }
+
+    $avatar_url = false;
+
+    // First check for wpuf_profile_photo meta (custom uploaded photo)
+    $profile_photo_id = get_user_meta( $user->ID, 'wpuf_profile_photo', true );
+
+    if ( $profile_photo_id ) {
+        $photo_url = wp_get_attachment_url( $profile_photo_id );
+
+        if ( $photo_url ) {
+            $avatar_url = $photo_url;
+        }
+    }
+
+    // If no custom photo, check for real Gravatar
+    if ( ! $avatar_url ) {
+        $email_hash         = md5( strtolower( trim( $user->user_email ) ) );
+        $gravatar_check_url = "https://www.gravatar.com/avatar/{$email_hash}?d=404&s={$size}";
+        $response           = wp_remote_head( $gravatar_check_url, [ 'timeout' => 2 ] );
+
+        if ( ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ) {
+            $avatar_url = "https://www.gravatar.com/avatar/{$email_hash}?s={$size}";
+        }
+    }
+
+    // Get user initials for fallback
+    $first_name = get_user_meta( $user->ID, 'first_name', true );
+    $last_name  = get_user_meta( $user->ID, 'last_name', true );
+
+    if ( $first_name && $last_name ) {
+        $initials = strtoupper( substr( $first_name, 0, 1 ) . substr( $last_name, 0, 1 ) );
+    } else {
+        $name       = $user->display_name ?: $user->user_login;
+        $name_parts = explode( ' ', $name );
+
+        if ( count( $name_parts ) >= 2 ) {
+            $initials = strtoupper( substr( $name_parts[0], 0, 1 ) . substr( $name_parts[1], 0, 1 ) );
+        } else {
+            $initials = strtoupper( substr( $name, 0, 2 ) );
+        }
+    }
+
+    // Calculate font size for initials
+    $font_size = max( $size / 2.5, 16 );
+
+    return [
+        'url'       => $avatar_url,
+        'initials'  => $initials,
+        'font_size' => $font_size,
+    ];
+}
 
 
 function wpuf_update_avatar( $user_id, $attachment_id ) {
@@ -3878,10 +3958,12 @@ function wpuf_ajax_get_states_field() {
     $states    = $cs->getStates( $countries[ $country ] );
 
     if ( ! empty( $states ) ) {
+        $field_name = isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '';
+
         $args = [
-            'name'             => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
-            'id'               => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
-            'class'            => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
+            'name'             => $field_name,
+            'id'               => $field_name,
+            'class'            => $field_name,
             'options'          => $states,
             'show_option_all'  => false,
             'show_option_none' => false,

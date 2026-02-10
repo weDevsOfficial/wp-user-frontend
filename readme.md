@@ -4,7 +4,7 @@
 **Tags:** frontend post, user directory, membership, user profile, user registration, content restriction, guest post, submit post, subscriptions, directory, login form, registration form, user profile, profile builder, forms  
 **Requires at least:** 5.0  
 **Tested up to:** 6.9  
-**Stable tag:** 4.2.6  
+**Stable tag:** 4.2.8  
 **Requires PHP:** 5.6  
 **License:** GPLv2  
 **License URL:** https://www.gnu.org/licenses/gpl-2.0.html  
@@ -359,6 +359,22 @@ Please report security bugs found in the source code of the User Frontend plugin
 15. Create AI Powered Post Form
 
 ## Changelog ##
+### v4.2.8 (28 January, 2026) ###
+* New – Account page Re-Design
+* New – AI settings improvements with temperature control, API key masking, and connection testing
+* Enhance – Remove currency symbol from AI form builder pricing fields
+* Enhance – Form builder UI and usability tweaks
+* Enhance – Conditional options for field icon settings
+* Enhance – Improve string translation and escaping in modal templates
+
+### v4.2.7 (27 January, 2026) ###
+* New – Account page Re-Design
+* New – AI settings improvements with temperature control, API key masking, and connection testing
+* Enhance – Remove currency symbol from AI form builder pricing fields
+* Enhance – Form builder UI and usability tweaks
+* Enhance – Conditional options for field icon settings
+* Enhance – Improve string translation and escaping in modal templates
+
 ### v4.2.6 (14 January, 2026) ###
 * New – Add AI-powered field options generator for dropdown, radio, and checkbox fields
 * Fix – Correctly detect ACF taxonomies

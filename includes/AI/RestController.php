@@ -138,9 +138,26 @@ class RestController extends WP_REST_Controller {
             $this->namespace,
             '/' . $this->rest_base . '/test',
             [
-                'methods'             => WP_REST_Server::READABLE,
+                'methods'             => WP_REST_Server::CREATABLE,
                 'callback'            => [ $this, 'test_connection' ],
                 'permission_callback' => [ $this, 'check_permission' ],
+                'args'                => [
+                    'api_key'  => [
+                        'required'          => false,
+                        'type'              => 'string',
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'provider' => [
+                        'required' => false,
+                        'type'     => 'string',
+                        'enum'     => [ 'openai', 'anthropic', 'google' ],
+                    ],
+                    'model'    => [
+                        'required'          => false,
+                        'type'              => 'string',
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                ],
             ]
         );
 
@@ -508,7 +525,13 @@ class RestController extends WP_REST_Controller {
      */
     public function test_connection(WP_REST_Request $request) {
         try {
-            $result = $this->form_generator->test_connection();
+            // Get parameters from request
+            $api_key = $request->get_param('api_key');
+            $provider = $request->get_param('provider');
+            $model = $request->get_param('model');
+
+            // Pass provider and model to test_connection
+            $result = $this->form_generator->test_connection($api_key, $provider, $model);
 
             return new WP_REST_Response($result, $result['success'] ? 200 : 400);
 
@@ -2071,7 +2094,7 @@ class RestController extends WP_REST_Controller {
                     $field['count'] = '1';
                 }
                 if (!isset($field['extension'])) {
-                    $field['extension'] = ['images', 'audio', 'video', 'pdf', 'office', 'zip', 'exe', 'csv'];
+                    $field['extension'] = ['images', 'audio', 'video', 'pdf', 'office', 'zip', 'csv'];
                 }
             }
 
@@ -2163,9 +2186,6 @@ class RestController extends WP_REST_Controller {
                         'third_item' => '50',
                     ];
                 }
-                if (!isset($field['currency_symbol'])) {
-                    $field['currency_symbol'] = '$';
-                }
                 if (!isset($field['enable_quantity'])) {
                     $field['enable_quantity'] = 'no';
                 }
@@ -2190,9 +2210,6 @@ class RestController extends WP_REST_Controller {
             if ($field['input_type'] === 'cart_total' || $field['template'] === 'cart_total') {
                 if (!isset($field['show_summary'])) {
                     $field['show_summary'] = 'yes';
-                }
-                if (!isset($field['currency_symbol'])) {
-                    $field['currency_symbol'] = 'USD';
                 }
             }
         }

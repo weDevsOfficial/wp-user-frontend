@@ -171,11 +171,14 @@ class Frontend_Form extends Frontend_Render_Form {
      * Draft Post
      *
      * Saves or updates a draft post via AJAX. For updates (when post_id is provided),
-     * authorization is enforced: logged-in users must have 'edit_post' capability,
-     * and guest users must provide a valid draft token.
+     * authorization is enforced using WordPress capabilities.
+     *
+     * - Logged-in users: Verifies post ownership and edit_post capability, or edit_others_posts
+     *   capability for posts they don't own
+     * - Guest users: Can create new drafts but cannot edit existing drafts (must log in)
      *
      * @since 4.0.0
-     * @since 4.2.9 Added authorization checks to prevent unauthorized post modification (IDOR fix).
+     * @since 4.2.9 Enhanced authorization with proper capability checks. Removed guest draft editing.
      *
      * @return void
      */
@@ -245,7 +248,6 @@ class Frontend_Form extends Frontend_Render_Form {
             $postarr['tags_input'] = explode( ',', sanitize_text_field( wp_unslash( $_POST['tags'] ) ) );
         }
 
-        // if post_id is passed, we update the post
         if ( isset( $_POST['post_id'] ) ) {
             $update_post_id = intval( wp_unslash( $_POST['post_id'] ) );
             $existing_post  = get_post( $update_post_id );
@@ -254,18 +256,26 @@ class Frontend_Form extends Frontend_Render_Form {
                 wp_send_json_error( [ 'message' => __( 'Invalid post.', 'wp-user-frontend' ) ] );
             }
 
-            // Authorization check: logged-in users must have edit capability
-            if ( is_user_logged_in() ) {
+            $current_user_id = get_current_user_id();
+            $post_author_id  = (int) $existing_post->post_author;
+
+            if ( $current_user_id === 0 ) {
+                wp_send_json_error( [ 'message' => __( 'You must be logged in to edit drafts.', 'wp-user-frontend' ) ] );
+            }
+
+            if ( $current_user_id === $post_author_id ) {
                 if ( ! current_user_can( 'edit_post', $update_post_id ) ) {
                     wp_send_json_error( [ 'message' => __( 'You are not authorized to edit this post.', 'wp-user-frontend' ) ] );
                 }
             } else {
-                // Guest users: validate draft token to prevent IDOR
-                $stored_token    = get_post_meta( $update_post_id, '_wpuf_draft_token', true );
-                $submitted_token = isset( $_POST['_wpuf_draft_token'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpuf_draft_token'] ) ) : '';
+                $post_type_object = get_post_type_object( $existing_post->post_type );
 
-                if ( empty( $stored_token ) || ! hash_equals( $stored_token, $submitted_token ) ) {
-                    wp_send_json_error( [ 'message' => __( 'You are not authorized to edit this draft.', 'wp-user-frontend' ) ] );
+                if ( ! $post_type_object || ! current_user_can( $post_type_object->cap->edit_others_posts ) ) {
+                    wp_send_json_error( [ 'message' => __( 'You are not authorized to edit this post.', 'wp-user-frontend' ) ] );
+                }
+
+                if ( ! current_user_can( 'edit_post', $update_post_id ) ) {
+                    wp_send_json_error( [ 'message' => __( 'You are not authorized to edit this post.', 'wp-user-frontend' ) ] );
                 }
             }
 
@@ -301,15 +311,6 @@ class Frontend_Form extends Frontend_Render_Form {
             }
         }
 
-        // Generate and store a draft token for guest users on new draft creation
-        $draft_token = '';
-
-        if ( ! is_user_logged_in() && $post_id && ! isset( $_POST['post_id'] ) ) {
-            $draft_token = wp_generate_password( 32, false );
-            update_post_meta( $post_id, '_wpuf_draft_token', $draft_token );
-        }
-
-        //used to add code to run when the post is going to draft
         do_action( 'wpuf_draft_post_after_insert', $post_id, $form_id, $this->form_settings, $this->form_fields );
 
         wpuf_clear_buffer();
@@ -323,10 +324,6 @@ class Frontend_Form extends Frontend_Render_Form {
             'url'            => add_query_arg( 'preview', 'true', get_permalink( $post_id ) ),
             'message'        => __( 'Post Saved', 'wp-user-frontend' ),
         ];
-
-        if ( ! empty( $draft_token ) ) {
-            $response['draft_token'] = $draft_token;
-        }
 
         echo wp_json_encode( $response );
 
@@ -387,8 +384,27 @@ class Frontend_Form extends Frontend_Render_Form {
         $response       = [];
         $post_id        = wpuf_decryption( $pid );
         $form_id        = wpuf_decryption( $fid );
+
+        $post = get_post( $post_id );
+
+        if ( ! $post ) {
+            wp_die( esc_html__( 'Invalid post.', 'wp-user-frontend' ) );
+        }
+
+        $post_author_id = (int) $post->post_author;
+
+        if ( $post_author_id !== 0 ) {
+            wp_die( esc_html__( 'This post cannot be published via email verification.', 'wp-user-frontend' ) );
+        }
+
+        $current_status   = get_post_status( $post_id );
+        $allowed_statuses = [ 'draft', 'pending', 'auto-draft' ];
+
+        if ( ! in_array( $current_status, $allowed_statuses, true ) ) {
+            wp_die( esc_html__( 'This post has already been published.', 'wp-user-frontend' ) );
+        }
+
         $form_settings  = wpuf_get_form_settings( $form_id );
-        $post_author_id = get_post_field( 'post_author', $post_id );
         $payment_status = new Subscription();
         $form           = new Form( $form_id );
         $pay_per_post   = $form->is_enabled_pay_per_post();

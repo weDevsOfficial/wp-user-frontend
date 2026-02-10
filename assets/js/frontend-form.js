@@ -458,11 +458,6 @@
                     html += '<input type="hidden" name="post_author" value="' + res.post_author +'">';
                     html += '<input type="hidden" name="comment_status" value="' + res.comment_status +'">';
 
-                    // Store draft token for guest authorization on subsequent saves
-                    if ( res.draft_token ) {
-                        html += '<input type="hidden" name="_wpuf_draft_token" value="' + res.draft_token +'">';
-                    }
-
                     form.append( html );
                 }
 

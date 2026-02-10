@@ -258,30 +258,42 @@ class Frontend_Form_Ajax {
             $postarr['tags_input'] = explode( ',', sanitize_text_field( wp_unslash( $_POST['tags'] ) ) );
         }
 
-        // if post_id is passed, we update the post
         if ( isset( $_POST['post_id'] ) ) {
-            $post_id                   = intval( wp_unslash( $_POST['post_id'] ) );
+            $post_id = intval( wp_unslash( $_POST['post_id'] ) );
 
-            // Verify the post exists
             $post = get_post( $post_id );
             if ( ! $post || is_wp_error( $post ) ) {
                 wpuf()->ajax->send_error( __( 'Post not found.', 'wp-user-frontend' ) );
             }
 
-            // Security: Check if user has permission to edit this post (Broken Access Control fix)
-            $post_author = (int) get_post_field( 'post_author', $post_id );
             $current_user_id = get_current_user_id();
+            $post_author_id  = (int) $post->post_author;
 
-            // Allow edit if: user is post author OR user has edit_others_posts capability
-            if ( $current_user_id !== $post_author && ! current_user_can( 'edit_others_posts' ) ) {
-                wpuf()->ajax->send_error( __( 'You do not have permission to edit this post.', 'wp-user-frontend' ) );
+            if ( $current_user_id > 0 ) {
+                if ( $current_user_id === $post_author_id ) {
+                    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+                        wpuf()->ajax->send_error( __( 'You are not authorized to edit this post.', 'wp-user-frontend' ) );
+                    }
+                } else {
+                    $post_type_object = get_post_type_object( $post->post_type );
+
+                    if ( ! $post_type_object || ! current_user_can( $post_type_object->cap->edit_others_posts ) ) {
+                        wpuf()->ajax->send_error( __( 'You are not authorized to edit this post.', 'wp-user-frontend' ) );
+                    }
+
+                    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+                        wpuf()->ajax->send_error( __( 'You are not authorized to edit this post.', 'wp-user-frontend' ) );
+                    }
+                }
+            } else {
+                wpuf()->ajax->send_error( __( 'You must be logged in to edit posts.', 'wp-user-frontend' ) );
             }
 
             $is_update                 = true;
             $postarr['ID']             = $post_id;
             $postarr['post_date']      = isset( $_POST['post_date'] ) ? sanitize_text_field( wp_unslash( $_POST['post_date'] ) ) : '';
             $postarr['comment_status'] = isset( $_POST['comment_status'] ) ? sanitize_text_field( wp_unslash( $_POST['comment_status'] ) ) : '';
-            $postarr['post_author']    = isset( $_POST['post_author'] ) ? sanitize_text_field( wp_unslash( $_POST['post_author'] ) ) : '';
+            $postarr['post_author']    = $post_author_id;
             $postarr['post_parent']    = get_post_field( 'post_parent', $post_id );
 
             $menu_order = get_post_field( 'menu_order', $post_id );

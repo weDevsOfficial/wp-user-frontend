@@ -2079,8 +2079,12 @@ What would you like me to help you with?`;
 
         async callChatAPI(message) {
             const config = window.wpufAIFormBuilder || {};
-            const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
+            const generateUrl = config.endpoints?.generate;
             const nonce = config.nonce || '';
+
+            if ( ! generateUrl ) {
+                throw new Error( 'WPUF AI Form Builder: Generate endpoint not configured' );
+            }
 
             // Build comprehensive conversation context
             const conversationContext = {
@@ -2143,7 +2147,6 @@ What would you like me to help you with?`;
 
             // Always use generate endpoint for chat modifications since form isn't saved yet
             // Only use modify-form endpoint if we have a saved form ID from database
-            const endpoint = 'wpuf/v1/ai-form-builder/generate';
 
             // Prepare request body for generate endpoint
             // Let the backend handle the system prompt - don't override it here
@@ -2151,13 +2154,12 @@ What would you like me to help you with?`;
                 prompt: message,  // Send the user's message as-is
                 session_id: this.sessionId,
                 conversation_context: conversationContext,
-                form_type: config.formType || 'post', // Pass form type to API
-                provider: config.provider || 'google',
-                language: this.selectedLanguage || 'English' // Pass selected language to API
-                // Note: temperature and max_tokens are now handled by backend based on model configuration
+                form_type: config.formType,
+                provider: config.provider,
+                language: this.selectedLanguage || 'English'
             };
 
-            const response = await fetch(restUrl + endpoint, {
+            const response = await fetch(generateUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -2191,8 +2193,12 @@ What would you like me to help you with?`;
 
             try {
                 const config = window.wpufAIFormBuilder || {};
-                const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
+                const createFormUrl = config.endpoints?.createForm;
                 const nonce = config.nonce || '';
+
+                if ( ! createFormUrl ) {
+                    throw new Error( 'WPUF AI Form Builder: Create form endpoint not configured' );
+                }
 
                 // Prepare form data in WPUF format
                 const formData = {
@@ -2244,7 +2250,7 @@ What would you like me to help you with?`;
                 };
 
                 // Call the create form API
-                const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/create-form', {
+                const response = await fetch(createFormUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

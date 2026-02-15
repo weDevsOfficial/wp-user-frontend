@@ -176,7 +176,12 @@ class Form {
 
         $has_post_count = $current_user->subscription()->has_post_count( $post_type );
 
-        if ( $current_user->subscription()->current_pack_id() && ! $has_post_count ) {
+        // skip the early return so the payment logic below can handle it
+        $skip_limit_block = $this->is_charging_enabled()
+            && $this->is_enabled_force_pack()
+            && $this->is_enabled_fallback_cost();
+
+        if ( $current_user->subscription()->current_pack_id() && ! $has_post_count && ! $skip_limit_block ) {
             $user_can_post = 'no';
             $info          = __( 'Post Limit Exceeded for your purchased subscription pack.', 'wp-user-frontend' );
 

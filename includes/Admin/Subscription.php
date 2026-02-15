@@ -1187,7 +1187,13 @@ class Subscription {
     public function force_pack_notice( $text, $id, $form_settings ) {
         $form = new Form( $id );
 
-        $force_pack = $form->is_enabled_force_pack();
+        $force_pack       = $form->is_enabled_force_pack();
+        $fallback_enabled = $form->is_enabled_fallback_cost();
+
+        // When fallback pay-per-post is enabled, don't show "purchase a pack" notice
+        if ( $force_pack && $fallback_enabled ) {
+            return $text;
+        }
 
         if ( $force_pack && self::has_user_error( $form_settings ) ) {
             $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
@@ -1213,7 +1219,11 @@ class Subscription {
             return 'yes';
         }
 
-        if ( $current_user->subscription()->current_pack_id() && ! $has_post_count ) {
+        // When force_pack + fallback pay-per-post is enabled, skip this early return
+        // so the downstream fallback logic can allow the user to post with per-post payment.
+        $skip_limit_block = $force_pack && $fallback_enabled;
+
+        if ( $current_user->subscription()->current_pack_id() && ! $has_post_count && ! $skip_limit_block ) {
             return 'no';
         }
 

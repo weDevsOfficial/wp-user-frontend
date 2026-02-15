@@ -648,6 +648,11 @@ class WPUF_Subscription {
      * @return string
      */
     public function post_redirect( $response, $post_id, $form_id, $form_settings ) {
+        // Admin users bypass payment redirect
+        if ( current_user_can( wpuf_admin_role() ) ) {
+            return $response;
+        }
+
         $form             = new WPUF_Form( $form_id );
         $payment_options  = $form->is_charging_enabled();
         $force_pack       = $form->is_enabled_force_pack();
@@ -1075,7 +1080,7 @@ class WPUF_Subscription {
             <div class="wpuf-info">
                 <?php
                 $form          = new WPUF_Form( $form_id );
-                $fallback_cost = (int) $form->get_subs_fallback_cost();
+                $fallback_cost = (float) $form->get_subs_fallback_cost();
 
                 if ( isset( $price_with_tax ) && $price_with_tax ) {
                     $fallback_cost = apply_filters( 'wpuf_payment_amount', $fallback_cost );

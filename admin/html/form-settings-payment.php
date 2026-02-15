@@ -57,7 +57,7 @@ $ppp_success_page      = isset( $form_settings['ppp_payment_success_page'] ) ? $
             <th>&mdash; &mdash; <?php esc_html_e( 'Fallback cost', 'wp-user-frontend' ); ?></th>
             <td>
                 <label>
-                    <input type="number" name="wpuf_settings[fallback_ppp_cost]" value="<?php echo esc_attr( $fallback_ppp_cost ); ?>" />
+                    <input type="number" step="0.01" min="0" name="wpuf_settings[fallback_ppp_cost]" value="<?php echo esc_attr( $fallback_ppp_cost ); ?>" />
                 </label>
                 <p class="description"><?php esc_html_e( 'Cost of pay per post after a subscription pack limit is reached.', 'wp-user-frontend' ); ?></p>
             </td>
@@ -79,7 +79,7 @@ $ppp_success_page      = isset( $form_settings['ppp_payment_success_page'] ) ? $
             <th>&mdash; &mdash; <?php esc_html_e( 'Cost Settings', 'wp-user-frontend' ); ?></th>
             <td>
                 <label>
-                    <input type="number" name="wpuf_settings[pay_per_post_cost]" value="<?php echo esc_attr( $pay_per_post_cost ); ?>" />
+                    <input type="number" step="0.01" min="0" name="wpuf_settings[pay_per_post_cost]" value="<?php echo esc_attr( $pay_per_post_cost ); ?>" />
                 </label>
                 <p class="description"><?php esc_html_e( 'Amount to be charged per post', 'wp-user-frontend' ); ?></p>
             </td>

@@ -16,6 +16,7 @@ module.exports = {
         './includes/Admin/template-parts/*.php',
         './admin/form-builder/views/*.php',
         './admin/form-builder/assets/js/**/*.php',
+        './templates/**/*.php',
         'wpuf-functions.php',
         // New paths from upstream (for subscription templates)
         './templates/**/*.php',
@@ -30,7 +31,7 @@ module.exports = {
         },
     },
     plugins: [
-        require('@tailwindcss/forms'),
+        require('@tailwindcss/forms')({ strategy: 'class' }),
         require('daisyui'),
         scopedPreflightStyles( {
             isolationStrategy: isolateInsideOfContainer(
@@ -40,13 +41,20 @@ module.exports = {
                     '#wpuf-form-builder',
                     '#wpuf-profile-forms-list-table-view',
                     '#wpuf-post-forms-list-table-view',
-                    '.swal2-container'
+                    '#wpuf-ai-form-builder',
+                    '.wpuf-ai-form-wrapper',
+                    '.swal2-container',
+                    '.wpuf-account-container'
                 ], {}
             ),
         } ),
-        require('@tailwindcss/forms'),
     ],
     daisyui: {
         themes: [],
+        base: false,
+        styled: true,
+        utils: true,
+        prefix: 'wpuf-',
+        logs: false,
     },
 }

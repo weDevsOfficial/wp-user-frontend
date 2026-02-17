@@ -54,6 +54,7 @@ class Elementor {
 
         if ( wpuf_is_pro_active() ) {
             wp_enqueue_script( 'wpuf-conditional-logic' );
+            wp_enqueue_script( 'wpuf-frontend-form' );
         }
 
         /**

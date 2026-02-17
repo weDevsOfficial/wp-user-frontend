@@ -1,6 +1,6 @@
 /**
  * DESCRIPTION: SubscriptionField component for rendering individual form fields
- * DESCRIPTION: Handles various field types: input-text, input-number, textarea, switcher, select
+ * DESCRIPTION: Handles various field types: input-text, input-number, textarea, switcher, select, inline
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
@@ -49,6 +49,18 @@ const SubscriptionField = ( { field, fieldId, subscription, onFieldChange } ) =>
 			default:
 				return field.default || '';
 		}
+	};
+
+	// Parse expiration time value (e.g., "30 day" -> { value: "30", unit: "day" })
+	const parseExpirationTime = ( timeString ) => {
+		if ( ! timeString || typeof timeString !== 'string' ) {
+			return { value: '', unit: 'day' };
+		}
+		const parts = timeString.trim().split( ' ' );
+		return {
+			value: parts[ 0 ] || '',
+			unit: parts[ 1 ] || 'day',
+		};
 	};
 
 	const value = getFieldValue();
@@ -191,6 +203,99 @@ const SubscriptionField = ( { field, fieldId, subscription, onFieldChange } ) =>
 							</option>
 						) ) }
 					</select>
+				) }
+
+				{/* Inline - compound field with multiple inputs */}
+				{ field.type === 'inline' && field.fields && (
+					<div className="wpuf-flex wpuf-gap-2 wpuf-items-center">
+						{ Object.entries( field.fields ).map( ( [ subFieldKey, subField ] ) => {
+							// Get sub-field value
+							let subFieldValue = subField.default || '';
+
+							if ( subscription ) {
+								// For expiration_time, parse the combined value
+								if ( field.name === 'expiration-time' && subscription.meta_value?._post_expiration_time ) {
+									const parsed = parseExpirationTime( subscription.meta_value._post_expiration_time );
+									subFieldValue = subField.key_id === 'expiration_value' ? parsed.value : parsed.unit;
+								} else if ( subField.db_type === 'meta' ) {
+									subFieldValue = subscription.meta_value?.[ subField.db_key ] || subField.default || '';
+								}
+							}
+
+							// Handle sub-field change
+							const handleSubFieldChange = ( newValue ) => {
+								// For inline fields, we need to construct the combined value
+								if ( field.name === 'expiration-time' ) {
+									// Get the other sub-field's value
+									const otherSubFieldKey = subFieldKey === 'expiration_value' ? 'expiration_unit' : 'expiration_value';
+									const otherSubField = field.fields[ otherSubFieldKey ];
+									let otherValue = otherSubField.default;
+
+									if ( subscription && subscription.meta_value?._post_expiration_time ) {
+										const parsed = parseExpirationTime( subscription.meta_value._post_expiration_time );
+										otherValue = otherSubFieldKey === 'expiration_value' ? parsed.value : parsed.unit;
+									}
+
+									// Combine values: "value unit" or "unit value" depending on which changed
+									const combinedValue = subFieldKey === 'expiration_value'
+										? `${ newValue } ${ otherValue }`
+										: `${ otherValue } ${ newValue }`;
+
+									onFieldChange( { ...field, db_key: '_post_expiration_time' }, combinedValue );
+								} else {
+									onFieldChange( subField, newValue );
+								}
+							};
+
+							// Render input-number sub-field
+							if ( subField.type === 'input-number' ) {
+								return (
+									<input
+										key={ subFieldKey }
+										type="number"
+										id={ subField.name }
+										name={ subField.name }
+										value={ subFieldValue }
+										placeholder={ subField.placeholder || '' }
+										min={ subField.min }
+										step={ subField.step }
+										onChange={ ( e ) => handleSubFieldChange( e.target.value ) }
+										onKeyDown={ ( e ) => {
+											const allowedKeys = [ 'Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', '.' ];
+											if ( ! allowedKeys.includes( e.key ) && isNaN( Number( e.key ) ) ) {
+												e.preventDefault();
+											}
+										} }
+										disabled={ isPro }
+										className="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-primaryHover focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-primaryHover sm:wpuf-text-sm !wpuf-shadow-none !wpuf-border-gray-300"
+									/>
+								);
+							}
+
+							// Render select sub-field
+							if ( subField.type === 'select' && subField.options ) {
+								return (
+									<select
+										key={ subFieldKey }
+										id={ subField.name }
+										name={ subField.name }
+										value={ subFieldValue }
+										onChange={ ( e ) => handleSubFieldChange( e.target.value ) }
+										disabled={ isPro }
+										className="wpuf-w-full !wpuf-max-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-primaryHover focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-primaryHover sm:wpuf-text-sm !wpuf-border-gray-300"
+									>
+										{ Object.entries( subField.options ).map( ( [ key, label ] ) => (
+											<option key={ key } value={ key }>
+												{ label }
+											</option>
+										) ) }
+									</select>
+								);
+							}
+
+							return null;
+						} ) }
+					</div>
 				) }
 
 				{/* Description */}

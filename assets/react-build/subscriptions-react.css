@@ -2,21 +2,190 @@
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/css/subscriptions-react.css ***!
   \*************************************************************************************************************************************************************************************/
 /* DESCRIPTION: Subscriptions React page styles with Tailwind CSS v3 */
-/* ! tailwindcss v3.4.11 | MIT License | https://tailwindcss.com */
+[type='text'],input:where(:not([type])),[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: #fff;
+  border-color: #6b7280;
+  border-width: 1px;
+  border-radius: 0px;
+  padding-top: 0.5rem;
+  padding-right: 0.75rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  --tw-shadow: 0 0 #0000;
+}
+[type='text']:focus, input:where(:not([type])):focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/);
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: #2563eb;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  border-color: #2563eb;
+}
+input::-moz-placeholder, textarea::-moz-placeholder {
+  color: #6b7280;
+  opacity: 1;
+}
+input::placeholder,textarea::placeholder {
+  color: #6b7280;
+  opacity: 1;
+}
+::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+::-webkit-date-and-time-value {
+  min-height: 1.5em;
+  text-align: inherit;
+}
+::-webkit-datetime-edit {
+  display: inline-flex;
+}
+::-webkit-datetime-edit,::-webkit-datetime-edit-year-field,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute-field,::-webkit-datetime-edit-second-field,::-webkit-datetime-edit-millisecond-field,::-webkit-datetime-edit-meridiem-field {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3e%3cpath stroke=%27%236b7280%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27M6 8l4 4 4-4%27/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+}
+[multiple],[size]:where(select:not([size="1"])) {
+  background-image: initial;
+  background-position: initial;
+  background-repeat: unset;
+  background-size: initial;
+  padding-right: 0.75rem;
+  -webkit-print-color-adjust: unset;
+          print-color-adjust: unset;
+}
+[type='checkbox'],[type='radio'] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  padding: 0;
+  -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+  display: inline-block;
+  vertical-align: middle;
+  background-origin: border-box;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  flex-shrink: 0;
+  height: 1rem;
+  width: 1rem;
+  color: #2563eb;
+  background-color: #fff;
+  border-color: #6b7280;
+  border-width: 1px;
+  --tw-shadow: 0 0 #0000;
+}
+[type='checkbox'] {
+  border-radius: 0px;
+}
+[type='radio'] {
+  border-radius: 100%;
+}
+[type='checkbox']:focus,[type='radio']:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/);
+  --tw-ring-offset-width: 2px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: #2563eb;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+[type='checkbox']:checked,[type='radio']:checked {
+  border-color: transparent;
+  background-color: currentColor;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+[type='checkbox']:checked {
+  background-image: url("data:image/svg+xml,%3csvg viewBox=%270 0 16 16%27 fill=%27white%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3cpath d=%27M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z%27/%3e%3c/svg%3e");
+}
+@media (forced-colors: active)  {
+  [type='checkbox']:checked {
+    -webkit-appearance: auto;
+       -moz-appearance: auto;
+            appearance: auto;
+  }
+}
+[type='radio']:checked {
+  background-image: url("data:image/svg+xml,%3csvg viewBox=%270 0 16 16%27 fill=%27white%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3ccircle cx=%278%27 cy=%278%27 r=%273%27/%3e%3c/svg%3e");
+}
+@media (forced-colors: active)  {
+  [type='radio']:checked {
+    -webkit-appearance: auto;
+       -moz-appearance: auto;
+            appearance: auto;
+  }
+}
+[type='checkbox']:checked:hover,[type='checkbox']:checked:focus,[type='radio']:checked:hover,[type='radio']:checked:focus {
+  border-color: transparent;
+  background-color: currentColor;
+}
+[type='checkbox']:indeterminate {
+  background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 16 16%27%3e%3cpath stroke=%27white%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27M4 8h8%27/%3e%3c/svg%3e");
+  border-color: transparent;
+  background-color: currentColor;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+@media (forced-colors: active)  {
+  [type='checkbox']:indeterminate {
+    -webkit-appearance: auto;
+       -moz-appearance: auto;
+            appearance: auto;
+  }
+}
+[type='checkbox']:indeterminate:hover,[type='checkbox']:indeterminate:focus {
+  border-color: transparent;
+  background-color: currentColor;
+}
+[type='file'] {
+  background: unset;
+  border-color: inherit;
+  border-width: 0;
+  border-radius: 0;
+  padding: 0;
+  font-size: unset;
+  line-height: inherit;
+}
+[type='file']:focus {
+  outline: 1px solid ButtonText;
+  outline: 1px auto -webkit-focus-ring-color;
+}
 /*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
 2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
 */
-*,
-::before,
-::after {
+*:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *)::before,
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *)::after {
   box-sizing: border-box; /* 1 */
   border-width: 0; /* 2 */
   border-style: solid; /* 2 */
   border-color: #e5e7eb; /* 2 */
 }
-::before,
-::after {
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *)::before,
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *)::after {
   --tw-content: '';
 }
 /*
@@ -28,8 +197,13 @@
 6. Use the user's configured `sans` font-variation-settings by default.
 7. Disable tap highlights on iOS
 */
-html,
-:host {
+.wpuf_packs,
+#wpuf-subscription-page,
+#wpuf-form-builder,
+#wpuf-profile-forms-list-table-view,
+#wpuf-post-forms-list-table-view,
+.swal2-container,
+.wpuf-account-container {
   line-height: 1.5; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */
   -moz-tab-size: 4; /* 3 */
@@ -44,7 +218,13 @@ html,
 1. Remove the margin in all browsers.
 2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
 */
-body {
+.wpuf_packs,
+#wpuf-subscription-page,
+#wpuf-form-builder,
+#wpuf-profile-forms-list-table-view,
+#wpuf-post-forms-list-table-view,
+.swal2-container,
+.wpuf-account-container {
   margin: 0; /* 1 */
   line-height: inherit; /* 2 */
 }
@@ -53,7 +233,7 @@ body {
 2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
 3. Ensure horizontal rules are visible by default.
 */
-hr {
+hr:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   height: 0; /* 1 */
   color: inherit; /* 2 */
   border-top-width: 1px; /* 3 */
@@ -61,34 +241,34 @@ hr {
 /*
 Add the correct text decoration in Chrome, Edge, and Safari.
 */
-abbr:where([title]) {
+abbr:where([title]):where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   -webkit-text-decoration: underline dotted;
           text-decoration: underline dotted;
 }
 /*
 Remove the default font size and weight for headings.
 */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+h2:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+h3:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+h4:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+h5:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+h6:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   font-size: inherit;
   font-weight: inherit;
 }
 /*
 Reset links to optimize for opt-in styling instead of opt-out.
 */
-a {
+a:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   color: inherit;
   text-decoration: inherit;
 }
 /*
 Add the correct font weight in Edge and Safari.
 */
-b,
-strong {
+b:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+strong:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   font-weight: bolder;
 }
 /*
@@ -97,10 +277,10 @@ strong {
 3. Use the user's configured `mono` font-variation-settings by default.
 4. Correct the odd `em` font sizing in all browsers.
 */
-code,
-kbd,
-samp,
-pre {
+code:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+kbd:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+samp:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+pre:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
   font-feature-settings: normal; /* 2 */
   font-variation-settings: normal; /* 3 */
@@ -109,23 +289,23 @@ pre {
 /*
 Add the correct font size in all browsers.
 */
-small {
+small:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   font-size: 80%;
 }
 /*
 Prevent `sub` and `sup` elements from affecting the line height in all browsers.
 */
-sub,
-sup {
+sub:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+sup:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   font-size: 75%;
   line-height: 0;
   position: relative;
   vertical-align: baseline;
 }
-sub {
+sub:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   bottom: -0.25em;
 }
-sup {
+sup:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   top: -0.5em;
 }
 /*
@@ -133,7 +313,7 @@ sup {
 2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
 3. Remove gaps between table borders by default.
 */
-table {
+table:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   text-indent: 0; /* 1 */
   border-color: inherit; /* 2 */
   border-collapse: collapse; /* 3 */
@@ -143,11 +323,11 @@ table {
 2. Remove the margin in Firefox and Safari.
 3. Remove default padding in all browsers.
 */
-button,
-input,
-optgroup,
-select,
-textarea {
+button:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+input:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+optgroup:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+select:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+textarea:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   font-family: inherit; /* 1 */
   font-feature-settings: inherit; /* 1 */
   font-variation-settings: inherit; /* 1 */
@@ -162,18 +342,18 @@ textarea {
 /*
 Remove the inheritance of text transform in Edge and Firefox.
 */
-button,
-select {
+button:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+select:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   text-transform: none;
 }
 /*
 1. Correct the inability to style clickable types in iOS and Safari.
 2. Remove default button styles.
 */
-button,
-input:where([type='button']),
-input:where([type='reset']),
-input:where([type='submit']) {
+button:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+input:where([type='button']):where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+input:where([type='reset']):where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+input:where([type='submit']):where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   -webkit-appearance: button; /* 1 */
   background-color: transparent; /* 2 */
   background-image: none; /* 2 */
@@ -181,84 +361,84 @@ input:where([type='submit']) {
 /*
 Use the modern Firefox focus style for all focusable elements.
 */
-:-moz-focusring {
+:-moz-focusring:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   outline: auto;
 }
 /*
 Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
 */
-:-moz-ui-invalid {
+:-moz-ui-invalid:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   box-shadow: none;
 }
 /*
 Add the correct vertical alignment in Chrome and Firefox.
 */
-progress {
+progress:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   vertical-align: baseline;
 }
 /*
 Correct the cursor style of increment and decrement buttons in Safari.
 */
-::-webkit-inner-spin-button,
-::-webkit-outer-spin-button {
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) ::-webkit-inner-spin-button,
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) ::-webkit-outer-spin-button {
   height: auto;
 }
 /*
 1. Correct the odd appearance in Chrome and Safari.
 2. Correct the outline style in Safari.
 */
-[type='search'] {
+[type='search']:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   -webkit-appearance: textfield; /* 1 */
   outline-offset: -2px; /* 2 */
 }
 /*
 Remove the inner padding in Chrome and Safari on macOS.
 */
-::-webkit-search-decoration {
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) ::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 /*
 1. Correct the inability to style clickable types in iOS and Safari.
 2. Change font properties to `inherit` in Safari.
 */
-::-webkit-file-upload-button {
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) ::-webkit-file-upload-button {
   -webkit-appearance: button; /* 1 */
   font: inherit; /* 2 */
 }
 /*
 Add the correct display in Chrome and Safari.
 */
-summary {
+summary:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   display: list-item;
 }
 /*
 Removes the default spacing and border for appropriate elements.
 */
-blockquote,
-dl,
-dd,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-hr,
-figure,
-p,
-pre {
+blockquote:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+dl:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+dd:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+h1:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+h2:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+h3:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+h4:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+h5:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+h6:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+hr:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+figure:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+p:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+pre:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   margin: 0;
 }
-fieldset {
+fieldset:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   margin: 0;
   padding: 0;
 }
-legend {
+legend:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   padding: 0;
 }
-ol,
-ul,
-menu {
+ol:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+ul:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+menu:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -266,39 +446,39 @@ menu {
 /*
 Reset default styling for dialogs.
 */
-dialog {
+dialog:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   padding: 0;
 }
 /*
 Prevent resizing textareas horizontally by default.
 */
-textarea {
+textarea:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   resize: vertical;
 }
 /*
 1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
 2. Set the default placeholder color to the user's configured gray 400 color.
 */
-input::-moz-placeholder, textarea::-moz-placeholder {
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) input::-moz-placeholder, :where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) textarea::-moz-placeholder {
   opacity: 1; /* 1 */
   color: #9ca3af; /* 2 */
 }
-input::placeholder,
-textarea::placeholder {
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) input::placeholder,
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) textarea::placeholder {
   opacity: 1; /* 1 */
   color: #9ca3af; /* 2 */
 }
 /*
 Set the default cursor for buttons.
 */
-button,
-[role="button"] {
+button:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+[role="button"]:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   cursor: pointer;
 }
 /*
 Make sure disabled buttons don't get the pointer cursor.
 */
-:disabled {
+:disabled:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   cursor: default;
 }
 /*
@@ -306,27 +486,27 @@ Make sure disabled buttons don't get the pointer cursor.
 2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
    This can trigger a poorly considered lint error in some tools but is included by design.
 */
-img,
-svg,
-video,
-canvas,
-audio,
-iframe,
-embed,
-object {
+img:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+svg:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+video:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+canvas:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+audio:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+iframe:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+embed:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+object:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   display: block; /* 1 */
   vertical-align: middle; /* 2 */
 }
 /*
 Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
 */
-img,
-video {
+img:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *),
+video:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   max-width: 100%;
   height: auto;
 }
 /* Make elements with the HTML hidden attribute stay hidden by default */
-[hidden] {
+[hidden]:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *,.wpuf-account-container,.wpuf-account-container *) {
   display: none;
 }
 *, ::before, ::after {
@@ -435,6 +615,74 @@ video {
   --tw-contain-paint:  ;
   --tw-contain-style:  ;
 }
+.wpuf-form-input,.wpuf-form-textarea,.wpuf-form-select,.wpuf-form-multiselect {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: #fff;
+  border-color: #6b7280;
+  border-width: 1px;
+  border-radius: 0px;
+  padding-top: 0.5rem;
+  padding-right: 0.75rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  --tw-shadow: 0 0 #0000;
+}
+.wpuf-form-input:focus, .wpuf-form-textarea:focus, .wpuf-form-select:focus, .wpuf-form-multiselect:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/);
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: #2563eb;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  border-color: #2563eb;
+}
+.wpuf-form-input::-moz-placeholder, .wpuf-form-textarea::-moz-placeholder {
+  color: #6b7280;
+  opacity: 1;
+}
+.wpuf-form-input::placeholder,.wpuf-form-textarea::placeholder {
+  color: #6b7280;
+  opacity: 1;
+}
+.wpuf-form-input::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+.wpuf-form-input::-webkit-date-and-time-value {
+  min-height: 1.5em;
+  text-align: inherit;
+}
+.wpuf-form-input::-webkit-datetime-edit {
+  display: inline-flex;
+}
+.wpuf-form-input::-webkit-datetime-edit,.wpuf-form-input::-webkit-datetime-edit-year-field,.wpuf-form-input::-webkit-datetime-edit-month-field,.wpuf-form-input::-webkit-datetime-edit-day-field,.wpuf-form-input::-webkit-datetime-edit-hour-field,.wpuf-form-input::-webkit-datetime-edit-minute-field,.wpuf-form-input::-webkit-datetime-edit-second-field,.wpuf-form-input::-webkit-datetime-edit-millisecond-field,.wpuf-form-input::-webkit-datetime-edit-meridiem-field {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.wpuf-form-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3e%3cpath stroke=%27%236b7280%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27M6 8l4 4 4-4%27/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+}
+.wpuf-form-select:where([size]:not([size="1"])) {
+  background-image: initial;
+  background-position: initial;
+  background-repeat: unset;
+  background-size: initial;
+  padding-right: 0.75rem;
+  -webkit-print-color-adjust: unset;
+          print-color-adjust: unset;
+}
 .wpuf-sr-only {
   position: absolute;
   width: 1px;
@@ -457,6 +705,9 @@ video {
 }
 .wpuf-absolute {
   position: absolute;
+}
+.\!wpuf-relative {
+  position: relative !important;
 }
 .wpuf-relative {
   position: relative;
@@ -679,6 +930,10 @@ video {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
+.wpuf-my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
 .wpuf-my-8 {
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -695,8 +950,14 @@ video {
 .\!wpuf-ml-0 {
   margin-left: 0px !important;
 }
+.\!wpuf-ml-1 {
+  margin-left: 0.25rem !important;
+}
 .\!wpuf-ml-6 {
   margin-left: 1.5rem !important;
+}
+.\!wpuf-mr-1 {
+  margin-right: 0.25rem !important;
 }
 .\!wpuf-mr-10 {
   margin-right: 2.5rem !important;
@@ -706,6 +967,9 @@ video {
 }
 .\!wpuf-mt-0 {
   margin-top: 0px !important;
+}
+.\!wpuf-mt-10 {
+  margin-top: 2.5rem !important;
 }
 .\!wpuf-mt-2 {
   margin-top: 0.5rem !important;
@@ -772,6 +1036,15 @@ video {
 }
 .wpuf-mb-8 {
   margin-bottom: 2rem;
+}
+.wpuf-mb-\[10px\] {
+  margin-bottom: 10px;
+}
+.wpuf-mb-\[32px\] {
+  margin-bottom: 32px;
+}
+.wpuf-mb-\[48px\] {
+  margin-bottom: 48px;
 }
 .wpuf-me-2 {
   margin-inline-end: 0.5rem;
@@ -881,6 +1154,9 @@ video {
 .wpuf-mt-\[40px\] {
   margin-top: 40px;
 }
+.\!wpuf-ml-\[-20px\] {
+  margin-left: -20px !important;
+}
 .wpuf-block {
   display: block;
 }
@@ -892,6 +1168,9 @@ video {
 }
 .wpuf-flex {
   display: flex;
+}
+.\!wpuf-inline-flex {
+  display: inline-flex !important;
 }
 .wpuf-inline-flex {
   display: inline-flex;
@@ -922,6 +1201,9 @@ video {
 .wpuf-size-6 {
   width: 1.5rem;
   height: 1.5rem;
+}
+.\!wpuf-h-5 {
+  height: 1.25rem !important;
 }
 .\!wpuf-h-\[150vh\] {
   height: 150vh !important;
@@ -971,6 +1253,12 @@ video {
 .wpuf-h-\[180\%\] {
   height: 180%;
 }
+.wpuf-h-\[44px\] {
+  height: 44px;
+}
+.wpuf-h-\[48px\] {
+  height: 48px;
+}
 .wpuf-h-\[50vh\] {
   height: 50vh;
 }
@@ -979,6 +1267,9 @@ video {
 }
 .wpuf-h-\[80vh\] {
   height: 80vh;
+}
+.wpuf-h-\[96px\] {
+  height: 96px;
 }
 .wpuf-h-\[calc\(100vh-12rem\)\] {
   height: calc(100vh - 12rem);
@@ -1005,6 +1296,9 @@ video {
 }
 .wpuf-h-svh {
   height: 100svh;
+}
+.wpuf-max-h-64 {
+  max-height: 16rem;
 }
 .wpuf-max-h-\[200px\] {
   max-height: 200px;
@@ -1049,6 +1343,9 @@ video {
 }
 .wpuf-min-h-screen {
   min-height: 100vh;
+}
+.\!wpuf-w-5 {
+  width: 1.25rem !important;
 }
 .\!wpuf-w-\[calc\(100\%\+20px\)\] {
   width: calc(100% + 20px) !important;
@@ -1143,6 +1440,12 @@ video {
 .wpuf-w-\[104\%\] {
   width: 104%;
 }
+.wpuf-w-\[166px\] {
+  width: 166px;
+}
+.wpuf-w-\[260px\] {
+  width: 260px;
+}
 .wpuf-w-\[calc\(100\%\+20px\)\] {
   width: calc(100% + 20px);
 }
@@ -1184,11 +1487,17 @@ video {
 .\!wpuf-max-w-full {
   max-width: 100% !important;
 }
+.wpuf-max-w-2xl {
+  max-width: 42rem;
+}
 .wpuf-max-w-4xl {
   max-width: 56rem;
 }
 .wpuf-max-w-5xl {
   max-width: 64rem;
+}
+.wpuf-max-w-7xl {
+  max-width: 80rem;
 }
 .wpuf-max-w-\[1400px\] {
   max-width: 1400px;
@@ -1198,6 +1507,12 @@ video {
 }
 .wpuf-max-w-\[768px\] {
   max-width: 768px;
+}
+.wpuf-max-w-\[772px\] {
+  max-width: 772px;
+}
+.wpuf-max-w-\[868px\] {
+  max-width: 868px;
 }
 .wpuf-max-w-full {
   max-width: 100%;
@@ -1250,8 +1565,27 @@ video {
 .wpuf-basis-4\/5 {
   flex-basis: 80%;
 }
+.wpuf-border-collapse {
+  border-collapse: collapse;
+}
+.wpuf-border-separate {
+  border-collapse: separate;
+}
+.wpuf-border-spacing-0 {
+  --tw-border-spacing-x: 0px;
+  --tw-border-spacing-y: 0px;
+  border-spacing: var(--tw-border-spacing-x) var(--tw-border-spacing-y);
+}
 .wpuf-origin-top-right {
   transform-origin: top right;
+}
+.-wpuf-translate-y-1 {
+  --tw-translate-y: -0.25rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-wpuf-translate-y-1\/2 {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 .wpuf--translate-x-1 {
   --tw-translate-x: -0.25rem;
@@ -1330,6 +1664,9 @@ video {
 .wpuf-animate-spin {
   animation: wpuf-spin 1s linear infinite;
 }
+.\!wpuf-cursor-not-allowed {
+  cursor: not-allowed !important;
+}
 .wpuf-cursor-not-allowed {
   cursor: not-allowed;
 }
@@ -1369,6 +1706,9 @@ video {
 .wpuf-items-start {
   align-items: flex-start;
 }
+.\!wpuf-items-center {
+  align-items: center !important;
+}
 .wpuf-items-center {
   align-items: center;
 }
@@ -1380,6 +1720,9 @@ video {
 }
 .wpuf-justify-end {
   justify-content: flex-end;
+}
+.\!wpuf-justify-center {
+  justify-content: center !important;
 }
 .wpuf-justify-center {
   justify-content: center;
@@ -1395,6 +1738,12 @@ video {
 }
 .wpuf-justify-items-center {
   justify-items: center;
+}
+.\!wpuf-gap-1 {
+  gap: 0.25rem !important;
+}
+.\!wpuf-gap-2 {
+  gap: 0.5rem !important;
 }
 .wpuf-gap-1 {
   gap: 0.25rem;
@@ -1422,6 +1771,9 @@ video {
 }
 .wpuf-gap-6 {
   gap: 1.5rem;
+}
+.wpuf-gap-\[10px\] {
+  gap: 10px;
 }
 .wpuf-gap-x-1 {
   -moz-column-gap: 0.25rem;
@@ -1467,6 +1819,11 @@ video {
   margin-right: calc(1rem * var(--tw-space-x-reverse));
   margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
 }
+.wpuf-space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
+}
 .wpuf-space-y-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
@@ -1477,10 +1834,20 @@ video {
   margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
 }
+.wpuf-space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
 .wpuf-space-y-6 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+.wpuf-space-y-\[62px\] > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(62px * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(62px * var(--tw-space-y-reverse));
 }
 .wpuf-divide-y > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-y-reverse: 0;
@@ -1494,6 +1861,10 @@ video {
 .wpuf-divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-opacity: 1;
   border-color: rgb(229 231 235 / var(--tw-divide-opacity));
+}
+.wpuf-divide-gray-700 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(55 65 81 / var(--tw-divide-opacity));
 }
 .wpuf-overflow-auto {
   overflow: auto;
@@ -1545,6 +1916,9 @@ video {
 }
 .wpuf-rounded-none {
   border-radius: 0px;
+}
+.wpuf-rounded-sm {
+  border-radius: 0.125rem;
 }
 .wpuf-rounded-xl {
   border-radius: 0.75rem;
@@ -1625,6 +1999,9 @@ video {
 .\!wpuf-border-t {
   border-top-width: 1px !important;
 }
+.\!wpuf-border-t-2 {
+  border-top-width: 2px !important;
+}
 .wpuf-border-b {
   border-bottom-width: 1px;
 }
@@ -1670,6 +2047,10 @@ video {
 .wpuf-border-none {
   border-style: none;
 }
+.\!wpuf-border-emerald-600 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(5 150 105 / var(--tw-border-opacity)) !important;
+}
 .\!wpuf-border-gray-300 {
   --tw-border-opacity: 1 !important;
   border-color: rgb(209 213 219 / var(--tw-border-opacity)) !important;
@@ -1677,6 +2058,10 @@ video {
 .\!wpuf-border-gray-50 {
   --tw-border-opacity: 1 !important;
   border-color: rgb(249 250 251 / var(--tw-border-opacity)) !important;
+}
+.\!wpuf-border-gray-900 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(17 24 39 / var(--tw-border-opacity)) !important;
 }
 .\!wpuf-border-green-400 {
   --tw-border-opacity: 1 !important;
@@ -1693,6 +2078,10 @@ video {
   --tw-border-opacity: 1;
   border-color: rgb(227 229 232 / var(--tw-border-opacity));
 }
+.wpuf-border-\[\#ECFDF5\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(236 253 245 / var(--tw-border-opacity));
+}
 .wpuf-border-blue-200 {
   --tw-border-opacity: 1;
   border-color: rgb(191 219 254 / var(--tw-border-opacity));
@@ -1708,6 +2097,10 @@ video {
 .wpuf-border-emerald-200 {
   --tw-border-opacity: 1;
   border-color: rgb(167 243 208 / var(--tw-border-opacity));
+}
+.wpuf-border-emerald-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(52 211 153 / var(--tw-border-opacity));
 }
 .wpuf-border-emerald-500 {
   --tw-border-opacity: 1;
@@ -1757,9 +2150,17 @@ video {
   --tw-border-opacity: 1;
   border-color: rgb(5 150 105 / var(--tw-border-opacity));
 }
+.wpuf-border-primaryHover {
+  --tw-border-opacity: 1;
+  border-color: rgb(16 185 129 / var(--tw-border-opacity));
+}
 .wpuf-border-purple-300 {
   --tw-border-opacity: 1;
   border-color: rgb(216 180 254 / var(--tw-border-opacity));
+}
+.wpuf-border-red-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(254 202 202 / var(--tw-border-opacity));
 }
 .wpuf-border-red-400 {
   --tw-border-opacity: 1;
@@ -1803,6 +2204,14 @@ video {
 .wpuf-border-t-transparent {
   border-top-color: transparent;
 }
+.\!wpuf-bg-\[\#E1E6EA\] {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(225 230 234 / var(--tw-bg-opacity)) !important;
+}
+.\!wpuf-bg-gray-900 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(17 24 39 / var(--tw-bg-opacity)) !important;
+}
 .\!wpuf-bg-green-600 {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(22 163 74 / var(--tw-bg-opacity)) !important;
@@ -1814,6 +2223,10 @@ video {
 .\!wpuf-bg-white {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
+}
+.wpuf-bg-\[\#99A7B2\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(153 167 178 / var(--tw-bg-opacity));
 }
 .wpuf-bg-\[\#ECFDF5\] {
   --tw-bg-opacity: 1;
@@ -1873,6 +2286,10 @@ video {
 .wpuf-bg-gray-300 {
   --tw-bg-opacity: 1;
   background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+.wpuf-bg-gray-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(156 163 175 / var(--tw-bg-opacity));
 }
 .wpuf-bg-gray-50 {
   --tw-bg-opacity: 1;
@@ -2056,6 +2473,10 @@ video {
 .wpuf-p-\[20px\] {
   padding: 20px;
 }
+.\!wpuf-px-3 {
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+}
 .\!wpuf-px-4 {
   padding-left: 1rem !important;
   padding-right: 1rem !important;
@@ -2071,6 +2492,10 @@ video {
 .\!wpuf-py-1\.5 {
   padding-top: 0.375rem !important;
   padding-bottom: 0.375rem !important;
+}
+.\!wpuf-py-2 {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
 }
 .\!wpuf-py-\[10px\] {
   padding-top: 10px !important;
@@ -2160,6 +2585,10 @@ video {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
+.wpuf-py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
 .wpuf-py-24 {
   padding-top: 6rem;
   padding-bottom: 6rem;
@@ -2199,6 +2628,10 @@ video {
 .wpuf-py-\[7px\] {
   padding-top: 7px;
   padding-bottom: 7px;
+}
+.wpuf-py-\[8px\] {
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 .\!wpuf-pb-3 {
   padding-bottom: 0.75rem !important;
@@ -2357,8 +2790,14 @@ video {
 .wpuf-text-\[17px\] {
   font-size: 17px;
 }
+.wpuf-text-\[18px\] {
+  font-size: 18px;
+}
 .wpuf-text-\[24px\] {
   font-size: 24px;
+}
+.wpuf-text-\[32px\] {
+  font-size: 32px;
 }
 .wpuf-text-base {
   font-size: 1rem;
@@ -2398,6 +2837,9 @@ video {
 .wpuf-font-semibold {
   font-weight: 600;
 }
+.wpuf-uppercase {
+  text-transform: uppercase;
+}
 .wpuf-italic {
   font-style: italic;
 }
@@ -2422,8 +2864,20 @@ video {
 .wpuf-leading-9 {
   line-height: 2.25rem;
 }
+.wpuf-leading-\[24px\] {
+  line-height: 24px;
+}
+.wpuf-leading-\[48px\] {
+  line-height: 48px;
+}
 .wpuf-leading-none {
   line-height: 1;
+}
+.wpuf-leading-relaxed {
+  line-height: 1.625;
+}
+.wpuf-tracking-\[0\.13px\] {
+  letter-spacing: 0.13px;
 }
 .wpuf-tracking-normal {
   letter-spacing: 0em;
@@ -2431,13 +2885,40 @@ video {
 .wpuf-tracking-tight {
   letter-spacing: -0.025em;
 }
+.wpuf-tracking-wider {
+  letter-spacing: 0.05em;
+}
 .\!wpuf-text-black {
   --tw-text-opacity: 1 !important;
   color: rgb(0 0 0 / var(--tw-text-opacity)) !important;
 }
+.\!wpuf-text-emerald-600 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(5 150 105 / var(--tw-text-opacity)) !important;
+}
+.\!wpuf-text-gray-300 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(209 213 219 / var(--tw-text-opacity)) !important;
+}
+.\!wpuf-text-gray-500 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(107 114 128 / var(--tw-text-opacity)) !important;
+}
+.\!wpuf-text-gray-600 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(75 85 99 / var(--tw-text-opacity)) !important;
+}
 .\!wpuf-text-gray-700 {
   --tw-text-opacity: 1 !important;
   color: rgb(55 65 81 / var(--tw-text-opacity)) !important;
+}
+.\!wpuf-text-gray-800 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(31 41 55 / var(--tw-text-opacity)) !important;
+}
+.\!wpuf-text-gray-900 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(17 24 39 / var(--tw-text-opacity)) !important;
 }
 .\!wpuf-text-red-900 {
   --tw-text-opacity: 1 !important;
@@ -2446,6 +2927,10 @@ video {
 .\!wpuf-text-white {
   --tw-text-opacity: 1 !important;
   color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+}
+.wpuf-text-\[\#2C3A41\] {
+  --tw-text-opacity: 1;
+  color: rgb(44 58 65 / var(--tw-text-opacity));
 }
 .wpuf-text-black {
   --tw-text-opacity: 1;
@@ -2519,6 +3004,10 @@ video {
   --tw-text-opacity: 1;
   color: rgb(21 128 61 / var(--tw-text-opacity));
 }
+.wpuf-text-green-800 {
+  --tw-text-opacity: 1;
+  color: rgb(22 101 52 / var(--tw-text-opacity));
+}
 .wpuf-text-indigo-600 {
   --tw-text-opacity: 1;
   color: rgb(79 70 229 / var(--tw-text-opacity));
@@ -2554,6 +3043,10 @@ video {
 .wpuf-text-red-700 {
   --tw-text-opacity: 1;
   color: rgb(185 28 28 / var(--tw-text-opacity));
+}
+.wpuf-text-red-800 {
+  --tw-text-opacity: 1;
+  color: rgb(153 27 27 / var(--tw-text-opacity));
 }
 .wpuf-text-slate-600 {
   --tw-text-opacity: 1;
@@ -2593,6 +3086,9 @@ video {
 }
 .wpuf-underline {
   text-decoration-line: underline;
+}
+.\!wpuf-no-underline {
+  text-decoration-line: none !important;
 }
 .wpuf-no-underline {
   text-decoration-line: none;
@@ -2687,11 +3183,20 @@ video {
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
+.wpuf-ring-2 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
 .wpuf-ring-inset {
   --tw-ring-inset: inset;
 }
 .\!wpuf-ring-transparent {
   --tw-ring-color: transparent !important;
+}
+.wpuf-ring-\[\#99A7B2\] {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(153 167 178 / var(--tw-ring-opacity));
 }
 .wpuf-ring-black {
   --tw-ring-opacity: 1;
@@ -2745,6 +3250,9 @@ video {
 .wpuf-ring-opacity-5 {
   --tw-ring-opacity: 0.05;
 }
+.wpuf-ring-offset-2 {
+  --tw-ring-offset-width: 2px;
+}
 .wpuf-blur {
   --tw-blur: blur(8px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -2756,6 +3264,11 @@ video {
 .wpuf-backdrop-blur-sm {
   --tw-backdrop-blur: blur(4px);
   backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+.\!wpuf-transition-colors {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke !important;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition-duration: 150ms !important;
 }
 .wpuf-transition {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
@@ -2774,6 +3287,11 @@ video {
 }
 .wpuf-transition-opacity {
   transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.wpuf-transition-shadow {
+  transition-property: box-shadow;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -2969,8 +3487,15 @@ video {
 .hover\:wpuf-rounded-md:hover {
   border-radius: 0.375rem;
 }
+.hover\:\!wpuf-border-t-2:hover {
+  border-top-width: 2px !important;
+}
 .hover\:wpuf-border-b-2:hover {
   border-bottom-width: 2px;
+}
+.hover\:\!wpuf-border-emerald-600:hover {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(5 150 105 / var(--tw-border-opacity)) !important;
 }
 .hover\:wpuf-border-blue-700:hover {
   --tw-border-opacity: 1;
@@ -3004,6 +3529,14 @@ video {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(240 253 244 / var(--tw-bg-opacity)) !important;
 }
+.hover\:wpuf-bg-\[\#7F8C96\]:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(127 140 150 / var(--tw-bg-opacity));
+}
+.hover\:wpuf-bg-\[\#E1E6EA\]:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(225 230 234 / var(--tw-bg-opacity));
+}
 .hover\:wpuf-bg-blue-600:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(37 99 235 / var(--tw-bg-opacity));
@@ -3019,6 +3552,10 @@ video {
 .hover\:wpuf-bg-emerald-400:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(52 211 153 / var(--tw-bg-opacity));
+}
+.hover\:wpuf-bg-emerald-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity));
 }
 .hover\:wpuf-bg-emerald-700:hover {
   --tw-bg-opacity: 1;
@@ -3044,10 +3581,6 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(240 253 244 / var(--tw-bg-opacity));
 }
-.hover\:wpuf-bg-green-700:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(21 128 61 / var(--tw-bg-opacity));
-}
 .hover\:wpuf-bg-indigo-500:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(99 102 241 / var(--tw-bg-opacity));
@@ -3059,6 +3592,10 @@ video {
 .hover\:wpuf-bg-primaryHover:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(16 185 129 / var(--tw-bg-opacity));
+}
+.hover\:wpuf-bg-red-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 242 242 / var(--tw-bg-opacity));
 }
 .hover\:wpuf-bg-red-500:hover {
   --tw-bg-opacity: 1;
@@ -3098,9 +3635,17 @@ video {
 .hover\:wpuf-stroke-gray-200:hover {
   stroke: #e5e7eb;
 }
+.hover\:\!wpuf-text-emerald-600:hover {
+  --tw-text-opacity: 1 !important;
+  color: rgb(5 150 105 / var(--tw-text-opacity)) !important;
+}
 .hover\:\!wpuf-text-gray-700:hover {
   --tw-text-opacity: 1 !important;
   color: rgb(55 65 81 / var(--tw-text-opacity)) !important;
+}
+.hover\:\!wpuf-text-gray-900:hover {
+  --tw-text-opacity: 1 !important;
+  color: rgb(17 24 39 / var(--tw-text-opacity)) !important;
 }
 .hover\:wpuf-text-emerald-200:hover {
   --tw-text-opacity: 1;
@@ -3130,6 +3675,10 @@ video {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
 }
+.hover\:wpuf-text-green-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(22 101 52 / var(--tw-text-opacity));
+}
 .hover\:wpuf-text-primary:hover {
   --tw-text-opacity: 1;
   color: rgb(5 150 105 / var(--tw-text-opacity));
@@ -3146,12 +3695,20 @@ video {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
+.hover\:wpuf-underline:hover {
+  text-decoration-line: underline;
+}
 .hover\:wpuf-opacity-100:hover {
   opacity: 1;
 }
 .hover\:wpuf-shadow-lg:hover {
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.hover\:wpuf-shadow-md:hover {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 .hover\:wpuf-shadow-sm:hover {
@@ -3288,6 +3845,10 @@ video {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(191 219 254 / var(--tw-ring-opacity));
 }
+.focus\:wpuf-ring-blue-500:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity));
+}
 .focus\:wpuf-ring-emerald-200:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(167 243 208 / var(--tw-ring-opacity));
@@ -3319,10 +3880,6 @@ video {
 .focus\:wpuf-ring-yellow-500:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(234 179 8 / var(--tw-ring-opacity));
-}
-.focus\:wpuf-ring-blue-500:focus {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity));
 }
 .focus\:wpuf-ring-offset-2:focus {
   --tw-ring-offset-width: 2px;
@@ -3398,21 +3955,21 @@ video {
 .wpuf-group:hover .group-hover\:wpuf-cursor-pointer {
   cursor: pointer;
 }
-.wpuf-group\/column-inner:hover .group-hover\/column-inner\:wpuf-border-green-400 {
+.wpuf-group\/column-inner:hover .group-hover\/column-inner\:wpuf-border-primary {
   --tw-border-opacity: 1;
-  border-color: rgb(74 222 128 / var(--tw-border-opacity));
+  border-color: rgb(5 150 105 / var(--tw-border-opacity));
 }
-.wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-border-green-400 {
+.wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-border-primaryHover {
   --tw-border-opacity: 1;
-  border-color: rgb(74 222 128 / var(--tw-border-opacity));
+  border-color: rgb(16 185 129 / var(--tw-border-opacity));
 }
 .wpuf-group:hover .group-hover\:\!wpuf-border-green-400 {
   --tw-border-opacity: 1 !important;
   border-color: rgb(74 222 128 / var(--tw-border-opacity)) !important;
 }
-.wpuf-group:hover .group-hover\:wpuf-border-green-400 {
+.wpuf-group:hover .group-hover\:wpuf-border-primary {
   --tw-border-opacity: 1;
-  border-color: rgb(74 222 128 / var(--tw-border-opacity));
+  border-color: rgb(5 150 105 / var(--tw-border-opacity));
 }
 .wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-bg-green-50 {
   --tw-bg-opacity: 1;
@@ -3429,6 +3986,9 @@ video {
   opacity: 1;
 }
 .wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-opacity-100 {
+  opacity: 1;
+}
+.wpuf-group\/pro-button:hover .group-hover\/pro-button\:wpuf-opacity-100 {
   opacity: 1;
 }
 .wpuf-group\/pro-field:hover .group-hover\/pro-field\:wpuf-opacity-100 {
@@ -3556,6 +4116,9 @@ video {
     margin-left: -2rem;
     margin-right: -2rem;
   }
+  .lg\:wpuf-w-\[260px\] {
+    width: 260px;
+  }
   .lg\:wpuf-grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -3572,6 +4135,9 @@ video {
   .lg\:wpuf-rounded-r-none {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
+  }
+  .lg\:wpuf-border-l {
+    border-left-width: 1px;
   }
   .lg\:wpuf-p-8 {
     padding: 2rem;

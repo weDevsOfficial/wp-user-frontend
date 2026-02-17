@@ -1,4 +1,4 @@
-<div id="wpuf-subscription-page" class="wpuf-ml-[-20px] wpuf-h-screen wpuf-bg-white wpuf-w-[calc(100%+20px)]">
+<div id="wpuf-subscription-page" class="!wpuf-ml-[-20px] wpuf-min-h-screen wpuf-bg-white wpuf-w-[calc(100%+20px)]">
     <noscript>
         <strong>
             <?php esc_html_e( "We're sorry but this page doesn't work properly without JavaScript. Please enable it to continue.", 'wp-user-frontend' ); ?>

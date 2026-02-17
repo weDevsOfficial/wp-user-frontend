@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.2.8\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2026-02-02 04:14:57+00:00\n"
+"POT-Creation-Date: 2026-02-15 07:03:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1620,8 +1620,8 @@ msgstr ""
 #: admin/template.php:188 includes/Admin/Forms/Admin_Template.php:217
 #: includes/Fields/Field_Contract.php:740
 #: includes/Integrations/Elementor/Widget.php:414
-#: includes/Integrations/Elementor/Widget.php:651
-#: includes/Integrations/Elementor/Widget.php:874
+#: includes/Integrations/Elementor/Widget.php:673
+#: includes/Integrations/Elementor/Widget.php:896
 msgid "Normal"
 msgstr ""
 
@@ -6294,10 +6294,10 @@ msgstr ""
 #: includes/Free/Free_Loader.php:1609
 #: includes/Integrations/Elementor/Widget.php:419
 #: includes/Integrations/Elementor/Widget.php:480
-#: includes/Integrations/Elementor/Widget.php:656
-#: includes/Integrations/Elementor/Widget.php:780
-#: includes/Integrations/Elementor/Widget.php:879
-#: includes/Integrations/Elementor/Widget.php:1003
+#: includes/Integrations/Elementor/Widget.php:678
+#: includes/Integrations/Elementor/Widget.php:802
+#: includes/Integrations/Elementor/Widget.php:901
+#: includes/Integrations/Elementor/Widget.php:1025
 msgid "Background Color"
 msgstr ""
 
@@ -7168,8 +7168,8 @@ msgstr ""
 
 #: includes/Integrations/Elementor/Widget.php:235
 #: includes/Integrations/Elementor/Widget.php:401
-#: includes/Integrations/Elementor/Widget.php:624
-#: includes/Integrations/Elementor/Widget.php:847
+#: includes/Integrations/Elementor/Widget.php:646
+#: includes/Integrations/Elementor/Widget.php:869
 msgid "Alignment"
 msgstr ""
 
@@ -7180,31 +7180,31 @@ msgstr ""
 
 #: includes/Integrations/Elementor/Widget.php:243
 #: includes/Integrations/Elementor/Widget.php:404
-#: includes/Integrations/Elementor/Widget.php:628
-#: includes/Integrations/Elementor/Widget.php:851
+#: includes/Integrations/Elementor/Widget.php:650
+#: includes/Integrations/Elementor/Widget.php:873
 #: includes/functions/settings-options.php:595
 msgid "Left"
 msgstr ""
 
 #: includes/Integrations/Elementor/Widget.php:247
 #: includes/Integrations/Elementor/Widget.php:405
-#: includes/Integrations/Elementor/Widget.php:629
-#: includes/Integrations/Elementor/Widget.php:852
+#: includes/Integrations/Elementor/Widget.php:651
+#: includes/Integrations/Elementor/Widget.php:874
 msgid "Center"
 msgstr ""
 
 #: includes/Integrations/Elementor/Widget.php:251
 #: includes/Integrations/Elementor/Widget.php:406
-#: includes/Integrations/Elementor/Widget.php:630
-#: includes/Integrations/Elementor/Widget.php:853
+#: includes/Integrations/Elementor/Widget.php:652
+#: includes/Integrations/Elementor/Widget.php:875
 #: includes/functions/settings-options.php:597
 msgid "Right"
 msgstr ""
 
 #: includes/Integrations/Elementor/Widget.php:262
 #: includes/Integrations/Elementor/Widget.php:457
-#: includes/Integrations/Elementor/Widget.php:736
-#: includes/Integrations/Elementor/Widget.php:959
+#: includes/Integrations/Elementor/Widget.php:758
+#: includes/Integrations/Elementor/Widget.php:981
 msgid "Padding"
 msgstr ""
 
@@ -7214,8 +7214,8 @@ msgstr ""
 
 #: includes/Integrations/Elementor/Widget.php:294
 #: includes/Integrations/Elementor/Widget.php:447
-#: includes/Integrations/Elementor/Widget.php:719
-#: includes/Integrations/Elementor/Widget.php:942
+#: includes/Integrations/Elementor/Widget.php:741
+#: includes/Integrations/Elementor/Widget.php:964
 msgid "Border Radius"
 msgstr ""
 
@@ -7226,10 +7226,10 @@ msgstr ""
 #: includes/Integrations/Elementor/Widget.php:333
 #: includes/Integrations/Elementor/Widget.php:428
 #: includes/Integrations/Elementor/Widget.php:532
-#: includes/Integrations/Elementor/Widget.php:666
-#: includes/Integrations/Elementor/Widget.php:790
-#: includes/Integrations/Elementor/Widget.php:889
-#: includes/Integrations/Elementor/Widget.php:1013
+#: includes/Integrations/Elementor/Widget.php:688
+#: includes/Integrations/Elementor/Widget.php:812
+#: includes/Integrations/Elementor/Widget.php:911
+#: includes/Integrations/Elementor/Widget.php:1035
 msgid "Text Color"
 msgstr ""
 
@@ -7261,38 +7261,46 @@ msgstr ""
 msgid "Spacing"
 msgstr ""
 
-#: includes/Integrations/Elementor/Widget.php:603
+#: includes/Integrations/Elementor/Widget.php:587
+msgid "Selector Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:598
+msgid "Options Text Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:625
 msgid "Upload Button"
 msgstr ""
 
-#: includes/Integrations/Elementor/Widget.php:611
-#: includes/Integrations/Elementor/Widget.php:640
-#: includes/Integrations/Elementor/Widget.php:834
-#: includes/Integrations/Elementor/Widget.php:863
+#: includes/Integrations/Elementor/Widget.php:633
+#: includes/Integrations/Elementor/Widget.php:662
+#: includes/Integrations/Elementor/Widget.php:856
+#: includes/Integrations/Elementor/Widget.php:885
 msgid "Width"
 msgstr ""
 
-#: includes/Integrations/Elementor/Widget.php:615
-#: includes/Integrations/Elementor/Widget.php:838
+#: includes/Integrations/Elementor/Widget.php:637
+#: includes/Integrations/Elementor/Widget.php:860
 msgid "Full Width"
 msgstr ""
 
-#: includes/Integrations/Elementor/Widget.php:616
-#: includes/Integrations/Elementor/Widget.php:839
+#: includes/Integrations/Elementor/Widget.php:638
+#: includes/Integrations/Elementor/Widget.php:861
 msgid "Custom"
 msgstr ""
 
-#: includes/Integrations/Elementor/Widget.php:775
-#: includes/Integrations/Elementor/Widget.php:998
+#: includes/Integrations/Elementor/Widget.php:797
+#: includes/Integrations/Elementor/Widget.php:1020
 msgid "Hover"
 msgstr ""
 
-#: includes/Integrations/Elementor/Widget.php:800
-#: includes/Integrations/Elementor/Widget.php:1023
+#: includes/Integrations/Elementor/Widget.php:822
+#: includes/Integrations/Elementor/Widget.php:1045
 msgid "Border Color"
 msgstr ""
 
-#: includes/Integrations/Elementor/Widget.php:826
+#: includes/Integrations/Elementor/Widget.php:848
 msgid "Submit Button"
 msgstr ""
 

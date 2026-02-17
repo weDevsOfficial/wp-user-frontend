@@ -1098,6 +1098,13 @@ class Widget extends Widget_Base {
             $this->add_render_attribute( 'wrapper', 'data-align', $settings['container_alignment'] );
         }
 
+        $wrapper_attributes = apply_filters( 'wpuf_elementor_widget_wrapper_attributes', [], $settings, $form_id );
+        foreach ( $wrapper_attributes as $attr_key => $attr_value ) {
+            if ( is_string( $attr_key ) && is_string( $attr_value ) ) {
+                $this->add_render_attribute( 'wrapper', $attr_key, $attr_value );
+            }
+        }
+
         $shortcode_str = '[wpuf_form id="' . $form_id . '"]';
         $output        = do_shortcode( $shortcode_str );
 

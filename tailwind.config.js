@@ -1,20 +1,21 @@
 const colors = require('tailwindcss/colors');
 
+const { scopedPreflightStyles, isolateInsideOfContainer } = require('tailwindcss-scoped-preflight');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     prefix: 'wpuf-',
     content: [
-        // Original paths (critical for form builder)
         './assets/**/*.{js,jsx,ts,tsx,vue,html}',
         './includes/Admin/**/*.php',
+        './includes/Free/Free_Loader.php',
         './includes/Admin/template-parts/*.php',
         './admin/form-builder/views/*.php',
         './admin/form-builder/assets/js/**/*.php',
-        'wpuf-functions.php',
-        // New paths from upstream (for subscription templates)
         './templates/**/*.php',
+        'wpuf-functions.php',
+        // New upstream / react paths
         './src/**/*.{js,css}',
-        // React components for subscriptions
         './assets/js/components-react/**/*.{js,jsx}',
         './assets/js/subscriptions-react.jsx',
         './src/js/components-react/**/*.{js,jsx}',
@@ -28,5 +29,24 @@ module.exports = {
             }
         },
     },
-    plugins: [],
+    plugins: [
+        require('@tailwindcss/forms'),
+        require('daisyui'),
+        scopedPreflightStyles({
+            isolationStrategy: isolateInsideOfContainer(
+                [
+                    '.wpuf_packs',
+                    '#wpuf-subscription-page',
+                    '#wpuf-form-builder',
+                    '#wpuf-profile-forms-list-table-view',
+                    '#wpuf-post-forms-list-table-view',
+                    '.swal2-container',
+                    '.wpuf-account-container'
+                ], {}
+            ),
+        }),
+    ],
+    daisyui: {
+        themes: [],
+    },
 }

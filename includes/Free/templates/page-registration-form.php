@@ -145,7 +145,7 @@ $email_integrations = [
     <div class="wpuf-box">
         <div class="heading">
             <div class="crown-icon pro-icon">
-                <?php echo file_get_contents( wp_kses($crown_icon, array('svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ], 'path' => [ 'd' => true, 'fill' => true ], 'circle' => [ 'cx' => true, 'cy' => true, 'r' => true ], ) ) ); // @codingStandardsIgnoreLine ?>
+                <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="<?php esc_attr_e( 'PRO', 'wp-user-frontend' ); ?>">
             </div>
             <div class="titles">
                 <h2><?php esc_html_e( 'Unlock PRO Features', 'wp-user-frontend' ); ?></h2>

@@ -129,7 +129,7 @@ class Paypal {
                     type: 'POST',
                     data: {
                         action: 'wpuf_dismiss_paypal_notice',
-                        nonce: '<?php echo wp_create_nonce( 'wpuf_dismiss_paypal_notice' ); ?>'
+                        nonce: '<?php echo esc_js( wp_create_nonce( 'wpuf_dismiss_paypal_notice' ) ); ?>'
                     },
                     success: function(response) {
                         // Handle success if needed
@@ -465,7 +465,7 @@ class Paypal {
 
                 $acknowledged = true;
             } catch ( \Exception $e ) {
-               throw new \Exception( 'Webhook processing failed: ' . $e->getMessage() );
+               throw new \Exception( 'Webhook processing failed: ' . esc_html( $e->getMessage() ) );
             }
 
             // Always acknowledge to PayPal
@@ -635,7 +635,7 @@ class Paypal {
                 'recurring' => 'yes',
                 'cycle_period' => $period,
                 'cycle_number' => $interval,
-                'postnum_rollback_on_delete' => isset( $pack_meta['_postnum_rollback_on_delete'] ) ? $pack_meta['_postnum_rollback_on_delete'] : '',
+                'postnum_rollback_on_delete' => isset( $pack_meta['postnum_rollback_on_delete'] ) ? $pack_meta['postnum_rollback_on_delete'] : '',
                 '_enable_post_expiration' => isset( $pack_meta['_enable_post_expiration'] ) ? $pack_meta['_enable_post_expiration'] : 'no',
                 '_post_expiration_time' => isset( $pack_meta['_post_expiration_time'] ) ? $pack_meta['_post_expiration_time'] : '',
                 '_expired_post_status' => isset( $pack_meta['_expired_post_status'] ) ? $pack_meta['_expired_post_status'] : 'publish',
@@ -1538,7 +1538,7 @@ class Paypal {
                 exit();
             }
         } catch ( \Exception $e ) {
-            wp_die( $e->getMessage() );
+            wp_die( esc_html( $e->getMessage() ) );
         }
     }
 
@@ -2082,7 +2082,7 @@ class Paypal {
                 }
             }
         } catch ( \Exception $e ) {
-            throw new \Exception( 'Error handling subscription activation: ' . $e->getMessage() );
+            throw new \Exception( 'Error handling subscription activation: ' . $e->getMessage(), 0, $e );
         }
     }
 }

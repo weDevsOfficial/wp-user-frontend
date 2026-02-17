@@ -59,6 +59,7 @@ class RestController extends WP_REST_Controller {
      */
     public function __construct() {
         $this->form_generator = new FormGenerator();
+        add_action( 'wp_ajax_wpuf_ai_generate_field_options', [ $this, 'ajax_generate_field_options' ] );
     }
 
     /**
@@ -123,9 +124,26 @@ class RestController extends WP_REST_Controller {
 
         // Test connection endpoint
         register_rest_route($this->namespace, '/' . $this->rest_base . '/test', [
-            'methods' => WP_REST_Server::READABLE,
+            'methods' => WP_REST_Server::CREATABLE,
             'callback' => [$this, 'test_connection'],
-            'permission_callback' => [$this, 'check_permission']
+            'permission_callback' => [$this, 'check_permission'],
+            'args' => [
+                'api_key' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'sanitize_callback' => 'sanitize_text_field'
+                ],
+                'provider' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'enum' => ['openai', 'anthropic', 'google']
+                ],
+                'model' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'sanitize_callback' => 'sanitize_text_field'
+                ]
+            ]
         ]);
 
         // Get providers endpoint
@@ -237,6 +255,48 @@ class RestController extends WP_REST_Controller {
             'methods' => WP_REST_Server::READABLE,
             'callback' => [$this, 'get_models'],
             'permission_callback' => [$this, 'check_permission']
+        ]);
+
+        // Generate field options endpoint
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/generate-options', [
+            'methods' => WP_REST_Server::CREATABLE,
+            'callback' => [$this, 'generate_field_options'],
+            'permission_callback' => [$this, 'check_permission'],
+            'args' => [
+                'prompt' => [
+                    'required' => true,
+                    'type' => 'string',
+                    'sanitize_callback' => 'sanitize_textarea_field',
+                    'validate_callback' => [$this, 'validate_prompt']
+                ],
+                'field_type' => [
+                    'required' => true,
+                    'type' => 'string',
+                    'enum' => ['dropdown_field', 'radio_field', 'checkbox_field', 'multiple_select'],
+                    'sanitize_callback' => 'sanitize_text_field'
+                ],
+                'output_format' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'enum' => ['one_per_line', 'value_label'],
+                    'default' => 'one_per_line',
+                    'sanitize_callback' => 'sanitize_text_field'
+                ],
+                'tone' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'enum' => ['casual', 'formal', 'professional', 'friendly'],
+                    'default' => 'casual',
+                    'sanitize_callback' => 'sanitize_text_field'
+                ],
+                'max_options' => [
+                    'required' => false,
+                    'type' => 'integer',
+                    'minimum' => 1,
+                    'maximum' => 100,
+                    'default' => 20
+                ]
+            ]
         ]);
     }
 
@@ -387,7 +447,13 @@ class RestController extends WP_REST_Controller {
      */
     public function test_connection(WP_REST_Request $request) {
         try {
-            $result = $this->form_generator->test_connection();
+            // Get parameters from request
+            $api_key = $request->get_param('api_key');
+            $provider = $request->get_param('provider');
+            $model = $request->get_param('model');
+
+            // Pass provider and model to test_connection
+            $result = $this->form_generator->test_connection($api_key, $provider, $model);
 
             return new WP_REST_Response($result, $result['success'] ? 200 : 400);
 
@@ -581,6 +647,137 @@ class RestController extends WP_REST_Controller {
             'success' => true,
             'models' => $models
         ], 200);
+    }
+
+    /**
+     * Generate field options using AI
+     *
+     * @param WP_REST_Request $request REST request object
+     * @return WP_REST_Response|WP_Error Response object
+     */
+    public function generate_field_options(WP_REST_Request $request) {
+        try {
+            $prompt = $request->get_param('prompt');
+            $field_type = $request->get_param('field_type');
+            $output_format = $request->get_param('output_format') ?? 'one_per_line';
+            $tone = $request->get_param('tone') ?? 'casual';
+            $max_options = $request->get_param('max_options') ?? 20;
+
+            // Validate max options
+            if ($max_options < 1 || $max_options > 100) {
+                return new WP_Error(
+                    'invalid_max_options',
+                    __('Maximum options must be between 1 and 100', 'wp-user-frontend'),
+                    ['status' => 400]
+                );
+            }
+
+            // Call FormGenerator to generate options
+            $result = $this->form_generator->generate_field_options($prompt, [
+                'field_type' => $field_type,
+                'output_format' => $output_format,
+                'tone' => $tone,
+                'max_options' => $max_options
+            ]);
+
+            // Check for both error === true and success === false as failure conditions
+            if ( ( isset( $result['error'] ) && $result['error'] ) || ( isset( $result['success'] ) && ! $result['success'] ) ) {
+                return new WP_Error(
+                    'generation_failed',
+                    $result['message'] ?? __('Failed to generate field options', 'wp-user-frontend'),
+                    ['status' => 400]
+                );
+            }
+
+            // Sanitize generated options
+            $sanitized_options = $this->sanitize_field_options($result['options'] ?? []);
+
+            return new WP_REST_Response([
+                'success' => true,
+                'options' => $sanitized_options,
+                'message' => __('Options generated successfully', 'wp-user-frontend')
+            ], 200);
+
+        } catch (\Exception $e) {
+            return new WP_Error(
+                'generation_error',
+                __('An error occurred while generating options. Please try again.', 'wp-user-frontend'),
+                ['status' => 500]
+            );
+        }
+    }
+
+    /**
+     * Sanitize field options
+     *
+     * @param array $options Raw options from AI (array of objects with 'label' and 'value' keys)
+     * @return array Sanitized options as indexed array
+     */
+    private function sanitize_field_options( $options ) {
+        if ( ! is_array( $options ) ) {
+            return [];
+        }
+
+        $sanitized = [];
+
+        foreach ( $options as $option ) {
+            // Handle array of objects with label/value structure (from generate_field_options)
+            if ( is_array( $option ) && isset( $option['label'] ) && isset( $option['value'] ) ) {
+                $sanitized[] = [
+                    'label' => sanitize_text_field( $option['label'] ),
+                    'value' => sanitize_key( $option['value'] ),
+                ];
+            } elseif ( is_string( $option ) ) {
+                // Handle simple string options
+                $sanitized[] = [
+                    'label' => sanitize_text_field( $option ),
+                    'value' => sanitize_key( strtolower( str_replace( ' ', '_', $option ) ) ),
+                ];
+            }
+        }
+
+        return $sanitized;
+    }
+
+    /**
+     * AJAX handler for generating field options
+     *
+     * @since 4.2.2
+     *
+     * @return void
+     */
+    public function ajax_generate_field_options() {
+        check_ajax_referer( 'form-builder-setting-nonce', 'nonce' );
+
+        if ( ! $this->check_permission() ) {
+            wp_send_json_error( [ 'message' => __( 'Permission denied', 'wp-user-frontend' ) ] );
+        }
+
+        $prompt = sanitize_textarea_field( $_POST['prompt'] ?? '' );
+        $field_type = sanitize_text_field( $_POST['field_type'] ?? 'dropdown_field' );
+
+        if ( empty( $prompt ) ) {
+            wp_send_json_error( [ 'message' => __( 'Prompt is required', 'wp-user-frontend' ) ] );
+        }
+
+        $result = $this->form_generator->generate_field_options( $prompt, [ 'field_type' => $field_type ] );
+
+        if ( is_wp_error( $result ) ) {
+            wp_send_json_error( [ 'message' => $result->get_error_message() ] );
+        }
+
+        // Check for both error === true and success === false as failure conditions
+        if ( ( isset( $result['error'] ) && $result['error'] ) || ( isset( $result['success'] ) && ! $result['success'] ) ) {
+            wp_send_json_error( [ 'message' => $result['message'] ?? __( 'Failed to generate options', 'wp-user-frontend' ) ] );
+        }
+
+        if ( isset( $result['success'] ) && $result['success'] ) {
+            // Sanitize options before returning (matching REST handler behavior)
+            $sanitized_options = $this->sanitize_field_options( $result['options'] ?? [] );
+            wp_send_json_success( [ 'options' => $sanitized_options ] );
+        }
+
+        wp_send_json_error( [ 'message' => $result['message'] ?? __( 'Failed to generate options', 'wp-user-frontend' ) ] );
     }
 
     /**
@@ -1678,7 +1875,7 @@ class RestController extends WP_REST_Controller {
                     $field['count'] = '1';
                 }
                 if (!isset($field['extension'])) {
-                    $field['extension'] = ['images', 'audio', 'video', 'pdf', 'office', 'zip', 'exe', 'csv'];
+                    $field['extension'] = ['images', 'audio', 'video', 'pdf', 'office', 'zip', 'csv'];
                 }
             }
 
@@ -1770,9 +1967,6 @@ class RestController extends WP_REST_Controller {
                         'third_item' => '50',
                     ];
                 }
-                if (!isset($field['currency_symbol'])) {
-                    $field['currency_symbol'] = '$';
-                }
                 if (!isset($field['enable_quantity'])) {
                     $field['enable_quantity'] = 'no';
                 }
@@ -1797,9 +1991,6 @@ class RestController extends WP_REST_Controller {
             if ($field['input_type'] === 'cart_total' || $field['template'] === 'cart_total') {
                 if (!isset($field['show_summary'])) {
                     $field['show_summary'] = 'yes';
-                }
-                if (!isset($field['currency_symbol'])) {
-                    $field['currency_symbol'] = 'USD';
                 }
             }
         }

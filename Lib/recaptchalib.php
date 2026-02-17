@@ -122,9 +122,10 @@ function recaptcha_get_html ($pubkey, $enable_no_captcha = false, $error = null,
 
 
     if ( $enable_no_captcha == true ) {
-        $return_var =  '<div class="g-recaptcha" data-sitekey="'.$pubkey.'"></div><script src="https://www.google.com/recaptcha/api.js"></script>';
+        wp_enqueue_script( 'wpuf-recaptcha', 'https://www.google.com/recaptcha/api.js', array(), null, true );
+        $return_var =  '<div class="g-recaptcha" data-sitekey="'.esc_attr($pubkey).'"></div>';
     } else {
-        $return_var = '<script type="text/javascript" src="'. $server . '/challenge?k=' . $pubkey . $errorpart . '"></script>';
+        $return_var = '<script src="' . esc_url( $server . '/challenge?k=' . rawurlencode( $pubkey ) . $errorpart ) . '"></script>';
     }
 
         return $return_var.'

@@ -530,12 +530,20 @@ class WeDevs_Settings_API {
         $value    = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
         $disabled = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
         $size     = isset( $args['size'] ) && ! is_null( $args['size'] ) ? $args['size'] : 'regular';
+        $is_pro_preview = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'];
 
-        $html  = sprintf( '<input type="text" class="%1$s-text wp-color-picker-field" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s" data-default-color="%5$s" %6$s />', $size, $args['section'], $args['id'], $value, $args['std'], $disabled );
+        // Wrap color picker in a container for pro preview
+        $html = '';
+        if ( $is_pro_preview ) {
+            $html .= '<div class="wpuf-color-picker-wrapper" style="position: relative; display: inline-block;">';
+        }
+
+        $html  .= sprintf( '<input type="text" class="%1$s-text wp-color-picker-field" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s" data-default-color="%5$s" %6$s />', $size, $args['section'], $args['id'], $value, $args['std'], $disabled );
         $html  .= $this->get_field_description( $args );
 
-        if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+        if ( $is_pro_preview ) {
             $html .= wpuf_get_pro_preview_html();
+            $html .= '</div>';
         }
 
         // Allow input tags with necessary attributes for color picker fields
@@ -549,6 +557,18 @@ class WeDevs_Settings_API {
             'value'              => true,
             'data-default-color' => true,
             'disabled'           => true,
+        ];
+        $allowed_html['div']['style'] = true;
+        $allowed_html['svg'] = [
+            'width'   => true,
+            'height'  => true,
+            'viewBox' => true,
+            'fill'    => true,
+            'xmlns'   => true,
+        ];
+        $allowed_html['path'] = [
+            'd'    => true,
+            'fill' => true,
         ];
 
         echo wp_kses( $html, $allowed_html );

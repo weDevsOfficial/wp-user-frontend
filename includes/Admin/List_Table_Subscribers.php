@@ -15,6 +15,18 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 class List_Table_Subscribers extends WP_List_Table {
     protected $page_status;
 
+    /**
+     * Verify nonce for admin actions
+     *
+     * @return bool
+     */
+    private function verify_nonce() {
+        if ( ! isset( $_REQUEST['_wpnonce'] ) ) {
+            return false;
+        }
+        return wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ), 'wpuf_subscribers_list' );
+    }
+
     public function __construct() {
         parent::__construct(
             [
@@ -119,6 +131,13 @@ class List_Table_Subscribers extends WP_List_Table {
      * @return string
      */
     public function column_cb( $item ) {
+        // Verify nonce for security
+        if ( ! $this->verify_nonce() ) {
+            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                error_log( 'WPUF Subscribers: Nonce verification failed for column_cb function' );
+            }
+        }
+        
         $post_ID = isset( $_REQUEST['post_ID'] ) ? intval( wp_unslash( $_REQUEST['post_ID'] ) ) : 0;
         return sprintf(
             '<input type="checkbox" name="subscriber_id[]" value="%d" />', $post_ID
@@ -131,6 +150,13 @@ class List_Table_Subscribers extends WP_List_Table {
      * @return array
      */
     public function get_views() {
+        // Verify nonce for security
+        if ( ! $this->verify_nonce() ) {
+            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                error_log( 'WPUF Subscribers: Nonce verification failed for get_views function' );
+            }
+        }
+        
         $status_links = [];
         $post_ID = isset( $_REQUEST['post_ID'] ) ? intval( wp_unslash( $_REQUEST['post_ID'] ) ) : 0;
         $base_link    = admin_url( 'admin.php?page=wpuf_subscribers&pack=' . $post_ID );
@@ -156,6 +182,13 @@ class List_Table_Subscribers extends WP_List_Table {
     public function prepare_items() {
         global $wpdb;
 
+        // Verify nonce for security
+        if ( ! $this->verify_nonce() ) {
+            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                error_log( 'WPUF Subscribers: Nonce verification failed for prepare_items function' );
+            }
+        }
+
         $columns               = $this->get_columns();
         $hidden                = [];
         $sortable              = $this->get_sortable_columns();
@@ -177,33 +210,67 @@ class List_Table_Subscribers extends WP_List_Table {
             $args['order']   = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) );
         }
 
-        // start with a fresh query
-        $sql            = 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_subscribers';
-        $where_clauses  = [];
+        // Build the query with proper placeholders
+        $base_sql = 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_subscribers';
         $prepare_values = [];
+        $where_clause = '';
 
         // Add conditional WHERE clauses if params exist
-        if ( ! empty( $_REQUEST['post_ID'] ) ) {
-            $where_clauses[]  = 'subscribtion_id = %d';
-            $prepare_values[] = intval( sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) ) );
+        $post_id = ! empty( $_REQUEST['post_ID'] ) ? intval( sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) ) ) : '';
+        $status = ! empty( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : '';
+
+        if ( $post_id && $status ) {
+            $where_clause = ' WHERE subscribtion_id = %d AND subscribtion_status = %s';
+            $prepare_values = [ $post_id, $status ];
+        } elseif ( $post_id ) {
+            $where_clause = ' WHERE subscribtion_id = %d';
+            $prepare_values = [ $post_id ];
+        } elseif ( $status ) {
+            $where_clause = ' WHERE subscribtion_status = %s';
+            $prepare_values = [ $status ];
         }
 
-        if ( ! empty( $_REQUEST['status'] ) ) {
-            $where_clauses[]  = 'subscribtion_status = %d';
-            $prepare_values[] = sanitize_key( wp_unslash( $_REQUEST['status'] ) );
+        // Get total count for pagination
+        $count_sql = 'SELECT COUNT(*) FROM ' . $wpdb->prefix . 'wpuf_subscribers' . $where_clause;
+
+        if ( ! empty( $prepare_values ) ) {
+            $total_items = (int) $wpdb->get_var( $wpdb->prepare( $count_sql, ...$prepare_values ) );
+        } else {
+            $total_items = (int) $wpdb->get_var( $count_sql );
         }
 
-        // Combine WHERE clauses if any exist
-        if ( ! empty( $where_clauses ) ) {
-            $sql .= ' WHERE ' . implode( ' AND ', $where_clauses );
+        // Build ORDER BY clause with whitelisted columns
+        $order_by = 'id';
+        $order    = 'DESC';
+
+        if ( ! empty( $args['orderby'] ) ) {
+            $allowed_cols = [ 'id', 'user_id', 'subscribtion_id', 'subscribtion_status', 'starts_from', 'expire' ];
+            $candidate    = sanitize_key( $args['orderby'] );
+
+            if ( in_array( $candidate, $allowed_cols, true ) ) {
+                $order_by = $candidate;
+            }
         }
 
-        // Prepare and execute the query safely
-        $prepared_query = $wpdb->prepare( $sql, $prepare_values );
-        $this->items    = $wpdb->get_results( $prepared_query );
+        if ( ! empty( $args['order'] ) && in_array( strtoupper( $args['order'] ), [ 'ASC', 'DESC' ], true ) ) {
+            $order = strtoupper( $args['order'] );
+        }
+
+        // Build final query with ORDER BY, LIMIT, and OFFSET
+        $sql = $base_sql . $where_clause . " ORDER BY {$order_by} {$order} LIMIT %d OFFSET %d";
+        $prepare_values[] = (int) $per_page;
+        $prepare_values[] = (int) $offset;
+
+        // Execute the paginated query
+        if ( ! empty( $prepare_values ) ) {
+            $this->items = $wpdb->get_results( $wpdb->prepare( $sql, ...$prepare_values ) );
+        } else {
+            // This should not happen as we always have LIMIT and OFFSET
+            $this->items = [];
+        }
 
         $this->set_pagination_args( [
-            'total_items' => count( $this->items ),
+            'total_items' => $total_items,
             'per_page'    => $per_page,
         ] );
     }

@@ -120,6 +120,7 @@ if ( ! empty( $registry ) ) {
             <div class="wpuf-mb-14 wpuf-mt-10 wpuf-ml-10">
                 <h1 class="wpuf-text-3xl wpuf-text-gray-900 wpuf-m-0 wpuf-p-0" id="template-modal-title">
                     <?php
+                        // translators: %s is the form type (e.g., 'Post', 'Registration')
                         echo esc_html( sprintf( __( 'Select a %s Template', 'wp-user-frontend' ), $form_type ) );
                     ?>
                 </h1>
@@ -445,15 +446,11 @@ if ( ! empty( $registry ) ) {
                 // AI Forms handling - only attach if AI is not configured
                 var $aiTemplate = $( '.wpuf-ai-forms-template' );
                 var aiConfigured = $aiTemplate.data( 'ai-configured' );
-                console.log('AI Template found:', $aiTemplate.length);
-                console.log('AI Configured raw:', aiConfigured);
-                console.log('AI Configured type:', typeof aiConfigured);
-                
+              
                 // Check for both boolean true and string 'true'
                 var isConfigured = aiConfigured === true || aiConfigured === 'true';
                 
                 if ( $aiTemplate.length && !isConfigured ) {
-                    console.log('Attaching AI click handler because AI is NOT configured');
                     $( '.wpuf-ai-forms-template a' ).on( 'click', $.proxy( this.handleAIFormsClick, this ) );
                     $( '#ai-config-cancel' ).on( 'click', $.proxy( this.closeAIConfigModal, this ) );
                     $( '#ai-config-settings' ).on( 'click', $.proxy( this.goToSettings, this ) );

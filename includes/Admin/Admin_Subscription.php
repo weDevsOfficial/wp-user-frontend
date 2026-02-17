@@ -1556,6 +1556,7 @@ class Admin_Subscription
                             'wp-user-frontend'
                         ),
                         'default' => false,
+                        'is_pro'  => true,
                     ],
                 ],
             ]

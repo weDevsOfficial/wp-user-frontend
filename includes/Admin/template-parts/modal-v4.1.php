@@ -18,7 +18,10 @@ $form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
             <div class="wpuf-mb-12">
                 <h1 class="wpuf-text-3xl wpuf-text-black wpuf-m-0 wpuf-p-0">
                     <?php
-                        esc_html_e( sprintf( 'Select a %s Template', $form_type ), 'wp-user-frontend' );
+                        printf(
+                            // translators: %s is the form type (e.g., 'Post', 'Registration')
+                            esc_html__( 'Select a %s Template', 'wp-user-frontend' ), esc_html( $form_type )
+                        );
                     ?>
                 </h1>
                 <p class="wpuf-text-base wpuf-text-gray-500 wpuf-mt-3 wpuf-p-0">
@@ -31,7 +34,7 @@ $form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
                 <div class="wpuf-grid wpuf-gap-6 wpuf-grid-cols-3 wpuf-max-w-[768px]">
                     <div class="template-box">
                         <div class="wpuf-relative wpuf-group wpuf-shadow-base">
-                            <img src="<?php esc_attr_e( WPUF_ASSET_URI . '/images/templates/blank.svg' ); ?>" alt="Blank Form">
+                            <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/templates/blank.svg' ); ?>" alt="Blank Form">
                             <div class="wpuf-absolute wpuf-opacity-0 group-hover:wpuf-opacity-70 wpuf-transition-all wpuf-z-10 wpuf-text-center wpuf-flex wpuf-flex-col wpuf-justify-center wpuf-items-center wpuf-bg-emerald-900 wpuf-h-full wpuf-w-full wpuf-top-0 wpuf-left-0 wpuf-text-white wpuf-p-10 wpuf-rounded-md"></div>
                             <a href="<?php echo esc_url( $blank_form_url ); ?>" class="wpuf-btn-secondary wpuf-w-max wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-20 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-border-transparent focus:wpuf-shadow-none" title="<?php echo esc_attr( 'Blank Form' ); ?>">
                                 <?php esc_html_e( 'Create Form', 'wp-user-frontend' ); ?>

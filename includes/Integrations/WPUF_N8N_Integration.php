@@ -307,9 +307,9 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_N8N_Integration' ) ) {
             $n8n = [
                 'n8n' => [
                     'label' => __( 'N8N', 'wp-user-frontend' ),
-                    'icon'  => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="custom-stroke">
-                                <path d="M10 1.66675L12.5 7.50008L18.3333 10.0001L12.5 12.5001L10 18.3334L7.5 12.5001L1.66667 10.0001L7.5 7.50008L10 1.66675Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                              </svg>',
+                    'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="custom-stroke">
+<path d="M5.38983 12.0847C5.38983 13.0208 4.63099 13.7797 3.69492 13.7797C2.75884 13.7797 2 13.0208 2 12.0847C2 11.1487 2.75884 10.3898 3.69492 10.3898C4.63099 10.3898 5.38983 11.1487 5.38983 12.0847ZM5.38983 12.0847H7.50847M10.8983 12.0847C10.8983 13.0208 10.1395 13.7797 9.20339 13.7797C8.26731 13.7797 7.50847 13.0208 7.50847 12.0847M10.8983 12.0847C10.8983 11.1487 10.1395 10.3898 9.20339 10.3898C8.26731 10.3898 7.50847 11.1487 7.50847 12.0847M10.8983 12.0847H12.2542M16.4068 15.3051C16.4068 16.2412 17.1656 17 18.1017 17C19.0378 17 19.7966 16.2412 19.7966 15.3051C19.7966 14.369 19.0378 13.6102 18.1017 13.6102C17.1656 13.6102 16.4068 14.369 16.4068 15.3051ZM16.4068 15.3051H15.4746C14.5853 15.3051 13.8644 14.5842 13.8644 13.6949C13.8644 12.8056 13.1435 12.0847 12.2542 12.0847M12.2542 12.0847C13.1435 12.0847 13.8644 11.3638 13.8644 10.4746C13.8644 9.5853 14.5853 8.86441 15.4746 8.86441H18.6102M22 8.69492C22 9.63099 21.2412 10.3898 20.3051 10.3898C19.369 10.3898 18.6102 9.63099 18.6102 8.69492C18.6102 7.75884 19.369 7 20.3051 7C21.2412 7 22 7.75884 22 8.69492Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>',
                 ],
             ];
 
@@ -326,18 +326,30 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_N8N_Integration' ) ) {
          * @return array
          */
         public function add_n8n_form_settings( $settings ) {
-            $settings['post_settings']['n8n']['enable_n8n'] = [
-                'label'       => __( 'Enable N8N Integration', 'wp-user-frontend' ),
-                'type'        => 'toggle',
-                'help_text'   => __( 'Enable N8N integration', 'wp-user-frontend' ),
-                'default'     => 'off',
-            ];
-
-            $settings['post_settings']['n8n']['n8n_webhook_url'] = [
-                'label'       => __( 'Webhook URL', 'wp-user-frontend' ),
-                'type'        => 'text',
-                'help_text'   => __( 'Enter the N8N webhook URL to send form data when posts are submitted', 'wp-user-frontend' ),
-                'placeholder' => __( 'https://your-n8n-instance.com/webhook/your-webhook-id', 'wp-user-frontend' ),
+            $settings['post_settings']['n8n'] = [
+                'section' => [
+                    'n8n_settings' => [
+                        'label'  => __( 'N8N Integration', 'wp-user-frontend' ),
+                        'desc'   => __(
+                            'Configure N8N webhook integration to send user post data to your N8N workflows',
+                            'wp-user-frontend'
+                        ),
+                        'fields' => [
+                            'enable_n8n' => [
+                                'label'     => __( 'Enable N8N Integration', 'wp-user-frontend' ),
+                                'type'      => 'toggle',
+                                'help_text' => __( 'Toggle N8N webhook integration on or off for this form', 'wp-user-frontend' ),
+                                'default'   => 'off',
+                            ],
+                            'n8n_webhook_url' => [
+                                'label'       => __( 'Webhook URL', 'wp-user-frontend' ),
+                                'type'        => 'text',
+                                'help_text'   => __( 'Enter the N8N webhook URL to send form data when posts are submitted', 'wp-user-frontend' ),
+                                'placeholder' => __( 'https://your-n8n-instance.com/webhook/your-webhook-id', 'wp-user-frontend' ),
+                            ],
+                        ],
+                    ],
+                ],
             ];
 
             return $settings;

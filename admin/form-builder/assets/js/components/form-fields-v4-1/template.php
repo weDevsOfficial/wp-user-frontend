@@ -37,12 +37,12 @@
             v-for="(section, index) in panel_sections">
             <div v-if="section.fields.length" class="panel-form-field-group wpuf-mb-8">
                 <h3
-                    :class="section.show ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
+                    :class="section.show ? 'wpuf-text-primary' : 'wpuf-text-gray-500'"
                     class="wpuf-flex wpuf-justify-between hover:wpuf-cursor-pointer wpuf-text-base wpuf-m-0 !wpuf-font-medium"
                     @click="panel_toggle(index)">
                     {{ section.title }}
                     <i
-                        :class="[section.show ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500']"
+                        :class="[section.show ? 'fa fa-angle-down wpuf-text-primary' : 'fa fa-angle-right wpuf-text-gray-500']"
                         class="wpuf-text-[24px]"></i>
                 </h3>
                 <div
@@ -73,7 +73,7 @@
                                 </div>
                             <div
                                 class="wpuf-absolute wpuf-top-4 wpuf-right-4 wpuf-opacity-0 group-hover/pro-field:wpuf-opacity-100 wpuf-transition-all">
-                                <img src="<?php esc_attr_e( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
+                                <img src="<?php echo esc_attr( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
                             </div>
                         </div>
                         <div

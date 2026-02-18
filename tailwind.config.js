@@ -50,11 +50,6 @@ module.exports = {
         } ),
     ],
     daisyui: {
-        themes: [],
-        base: false,
-        styled: true,
-        utils: true,
-        prefix: 'wpuf-',
-        logs: false,
+        themes: []
     },
 }

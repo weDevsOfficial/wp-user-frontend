@@ -1964,7 +1964,18 @@ function wpuf_get_form_fields( $form_id ) {
         $form_fields[] = apply_filters( 'wpuf-get-form-fields', $field );
     }
 
-    return $form_fields;
+    /**
+     * Filter form fields data array before returning
+     *
+     * Allows filtering the complete form fields array. Used to filter out
+     * pro-only fields when pro plugin is not active.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $form_fields The array of form fields data
+     * @param int   $form_id     The form ID
+     */
+    return apply_filters( 'wpuf_form_fields_data', $form_fields, $form_id );
 }
 
 add_action( 'wp_ajax_wpuf_get_child_cat', 'wpuf_get_child_cats' );
@@ -4676,45 +4687,38 @@ function wpuf_unset_conditional( $settings ) {
 /**
  * Check if current post is editable
  *
- * @param $post
+ * This is a backward-compatible wrapper around wpuf_user_can_edit_post()
+ * for use in templates. Returns boolean instead of WP_Error.
+ *
+ * @param WP_Post|int $post Post object or post ID
  *
  * @since 3.5.27
+ * @since WPUF_SINCE Refactored to use wpuf_user_can_edit_post(). Now accepts post ID or post object.
  *
- * @return bool
+ * @return bool True if editable, false otherwise
  */
 function wpuf_is_post_editable( $post ) {
-    $show_edit = false;
+    // Handle WordPress post object
+    if ( ! $post instanceof WP_Post ) {
+        return false;
+    }
+    
+    if ( is_numeric( $post ) ) {
+        $post_id = absint( $post );
 
-    $current_user      = wpuf_get_user();
-    $user_subscription = new WeDevs\Wpuf\User_Subscription( $current_user );
-    $user_sub          = $user_subscription->current_pack();
-    $sub_id            = $current_user->subscription()->current_pack_id();
+        if ( ! $post_id ) {
+            return false;
+        }
 
-    if ( $sub_id ) {
-        $subs_expired = $user_subscription->expired();
-    } else {
-        $subs_expired = false;
+        $can_edit = wpuf_user_can_edit_post( $post_id );
+
+        return ! is_wp_error( $can_edit );
     }
 
-    if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
-        $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
-        $disable_publish_edit = wpuf_get_option( 'disable_publish_edit', 'wpuf_dashboard', 'off' );
+    $can_edit = wpuf_user_can_edit_post( $post->ID );
 
-        $show_edit = true;
-        if ( ( 'pending' === $post->post_status && 'on' === $disable_pending_edit ) || ( 'publish' === $post->post_status && 'off' !==  $disable_publish_edit ) ) {
-            $show_edit = false;
-        }
-
-        if ( ( $post->post_status == 'draft' || $post->post_status == 'pending' ) && ( ! empty( $payment_status ) && $payment_status != 'completed' ) ) {
-            $show_edit = false;
-        }
-
-        if ( $subs_expired ) {
-            $show_edit = false;
-        }
-    }
-
-    return $show_edit;
+    // Return true if not an error, false otherwise
+    return ! is_wp_error( $can_edit );
 }
 
 /**
@@ -5994,4 +5998,156 @@ function wpuf_render_login_layout_field( $args ) {
     }
 
     echo '</fieldset>';
+}
+
+/**
+ * Check if current user can edit a specific post
+ *
+ * Validates user authorization to edit a post by checking:
+ * - User is logged in
+ * - WPUF global and user-specific edit settings
+ * - Post-specific lock settings
+ * - User is post author with edit_post capability
+ * - User has edit_others_posts capability for posts they don't own
+ *
+ * @since SINCE_WPUF
+ *
+ * @param int  $post_id         Post ID to check
+ * @param bool $check_settings  Whether to check WPUF settings (default true). Set false for AJAX/admin operations
+ *
+ * @return true|WP_Error True if user can edit, WP_Error on failure
+ */
+function wpuf_user_can_edit_post( $post_id, $check_settings = true ) {
+
+    $post_id = absint( $post_id );
+
+    if ( ! $post_id ) {
+        return new WP_Error(
+            'wpuf_invalid_post',
+            __( 'Invalid post ID.', 'wp-user-frontend' )
+        );
+    }
+
+    // Get the post
+    $post = get_post( $post_id );
+
+    if ( ! $post || is_wp_error( $post ) ) {
+        return new WP_Error(
+            'wpuf_post_not_found',
+            __( 'Post not found.', 'wp-user-frontend' )
+        );
+    }
+
+    // Get current user and post author
+    $current_user_id = get_current_user_id();
+    $post_author_id  = (int) $post->post_author;
+
+    // Early return: user must be logged in
+    if ( $current_user_id <= 0 ) {
+        return new WP_Error(
+            'wpuf_user_not_logged_in',
+            __( 'You must be logged in to edit posts.', 'wp-user-frontend' )
+        );
+    }
+
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        return new WP_Error(
+            'wpuf_unauthorized_edit',
+            __( 'You are not authorized to edit this post.', 'wp-user-frontend' )
+        );
+    }
+
+    // Check WPUF-specific settings (only for non-admin users)
+    if ( $check_settings && ! current_user_can( 'edit_others_posts' ) ) {
+
+        // Check if post editing is globally enabled
+        if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) !== 'yes' ) {
+            return new WP_Error(
+                'wpuf_post_edit_disabled',
+                __( 'Post editing is disabled.', 'wp-user-frontend' )
+            );
+        }
+
+        // Check user-level post lock
+        if ( wpuf_get_user()->edit_post_locked() ) {
+            $reason = wpuf_get_user()->edit_post_lock_reason();
+
+            return new WP_Error(
+                'wpuf_user_edit_locked',
+                $reason ?: __( 'Your post edit access has been locked by an administrator.', 'wp-user-frontend' )
+            );
+        }
+
+        // Check post-specific lock (admin can lock individual posts)
+        $post_lock = get_post_meta( $post_id, '_wpuf_lock_editing_post', true );
+
+        if ( 'yes' === $post_lock ) {
+            return new WP_Error(
+                'wpuf_post_locked',
+                apply_filters(
+                    'wpuf_edit_post_lock_user_notice',
+                    __( 'Your edit access for this post has been locked by an administrator.', 'wp-user-frontend' )
+                )
+            );
+        }
+
+        // Check time-based lock
+        $lock_time = get_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', true );
+
+        if ( ! empty( $lock_time ) && $lock_time < time() ) {
+            return new WP_Error(
+                'wpuf_post_lock_expired',
+                apply_filters(
+                    'wpuf_edit_post_lock_expire_notice',
+                    __( 'Your allocated time for editing this post has expired.', 'wp-user-frontend' )
+                )
+            );
+        }
+
+        // Check post status restrictions
+        $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
+        $disable_publish_edit = wpuf_get_option( 'disable_publish_edit', 'wpuf_dashboard', 'off' );
+
+        if ( 'pending' === $post->post_status && 'on' === $disable_pending_edit ) {
+            return new WP_Error(
+                'wpuf_pending_edit_disabled',
+                __( 'You can\'t edit a post while in pending mode.', 'wp-user-frontend' )
+            );
+        }
+
+        if ( 'publish' === $post->post_status && 'off' !== $disable_publish_edit ) {
+            return new WP_Error(
+                'wpuf_publish_edit_disabled',
+                __( 'You\'re not allowed to edit this post.', 'wp-user-frontend' )
+            );
+        }
+
+        // Check subscription expiration
+        $current_user      = wpuf_get_user();
+        $user_subscription = new \WeDevs\Wpuf\User_Subscription( $current_user );
+        $sub_id            = $current_user->subscription()->current_pack_id();
+
+        if ( $sub_id ) {
+            $subs_expired = $user_subscription->expired();
+
+            if ( $subs_expired ) {
+                return new WP_Error(
+                    'wpuf_subscription_expired',
+                    __( 'Your subscription has expired. Please renew to edit posts.', 'wp-user-frontend' )
+                );
+            }
+        }
+
+        // Check payment status for draft/pending posts
+        $payment_status = get_post_meta( $post_id, '_wpuf_payment_status', true );
+
+        if ( ( 'draft' === $post->post_status || 'pending' === $post->post_status ) && ! empty( $payment_status ) && 'completed' !== $payment_status ) {
+            return new WP_Error(
+                'wpuf_payment_incomplete',
+                __( 'You cannot edit this post until payment is completed.', 'wp-user-frontend' )
+            );
+        }
+    }
+
+    return true;
 }

@@ -37,7 +37,7 @@ class Elementor {
         wp_dequeue_style('wpuf-layout4');
         wp_dequeue_style('wpuf-layout5');
 
-        $style_handles = [ 'wpuf-elementor-frontend-forms' ];
+        $style_handles = [ 'wpuf-elementor-frontend-forms', 'wpuf-elementor-subscription-plans' ];
 
         /**
          * Filters the list of style handles to enqueue in Elementor context.
@@ -253,7 +253,9 @@ class Elementor {
      */
     public function register_widgets( $widgets_manager ) {
         require_once __DIR__ . '/Widget.php';
+        require_once __DIR__ . '/Subscription_Plans_Widget.php';
 
         $widgets_manager->register( new Widget() );
+        $widgets_manager->register( new Subscription_Plans_Widget() );
     }
 }

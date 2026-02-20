@@ -29,7 +29,7 @@ class Elementor {
      * @return void
      */
     public function enqueue_styles() {
-        // dequeue all wpuf hardcodes styles. so that elementor styles can work
+        // Dequeue all WPUF hardcoded styles so Elementor styles can work properly
         wp_dequeue_style('wpuf-frontend-forms');
         wp_dequeue_style('wpuf-layout1');
         wp_dequeue_style('wpuf-layout2');
@@ -37,7 +37,7 @@ class Elementor {
         wp_dequeue_style('wpuf-layout4');
         wp_dequeue_style('wpuf-layout5');
 
-        $style_handles = [ 'wpuf-elementor-frontend-forms', 'wpuf-elementor-subscription-plans' ];
+        $style_handles = [ 'wpuf-elementor-frontend-forms' ];
 
         /**
          * Filters the list of style handles to enqueue in Elementor context.

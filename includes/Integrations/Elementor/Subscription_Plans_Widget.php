@@ -149,10 +149,11 @@ class Subscription_Plans_Widget extends Widget_Base {
 		$this->add_control(
 			'order_by',
 			[
-				'label'   => __( 'Order By', 'wp-user-frontend' ),
-				'type'    => Controls_Manager::SELECT,
-				'default' => 'custom',
-				'options' => [
+				'label'       => __( 'Order By', 'wp-user-frontend' ),
+				'type'        => Controls_Manager::SELECT,
+				'default'     => 'custom',
+				'description' => __( 'Choose how to sort the subscription plans. Custom Order uses the sort order set in each plan\'s settings.', 'wp-user-frontend' ),
+				'options'     => [
 					'custom'     => __( 'Custom Order', 'wp-user-frontend' ),
 					'id'         => __( 'Plan ID', 'wp-user-frontend' ),
 					'price_asc'  => __( 'Price (Low to High)', 'wp-user-frontend' ),
@@ -201,6 +202,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'label'     => __( 'Background Color', 'wp-user-frontend' ),
 				'type'      => Controls_Manager::COLOR,
+				'default'   => '#ffffff',
 				'selectors' => [
 					'{{WRAPPER}} .wpuf-sub-card' => 'background-color: {{VALUE}};',
 				],
@@ -210,8 +212,25 @@ class Subscription_Plans_Widget extends Widget_Base {
 		$this->add_group_control(
 			Group_Control_Border::get_type(),
 			[
-				'name'     => 'card_border',
-				'selector' => '{{WRAPPER}} .wpuf-sub-card',
+				'name'          => 'card_border',
+				'selector'      => '{{WRAPPER}} .wpuf-sub-card',
+				'fields_options' => [
+					'border' => [
+						'default' => 'solid',
+					],
+					'width'  => [
+						'default' => [
+							'top'      => '1',
+							'right'    => '1',
+							'bottom'   => '1',
+							'left'     => '1',
+							'isLinked' => true,
+						],
+					],
+					'color'  => [
+						'default' => '#e5e7eb',
+					],
+				],
 			]
 		);
 
@@ -221,6 +240,13 @@ class Subscription_Plans_Widget extends Widget_Base {
 				'label'      => __( 'Border Radius', 'wp-user-frontend' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
+				'default'    => [
+					'top'      => '12',
+					'right'    => '12',
+					'bottom'   => '12',
+					'left'     => '12',
+					'isLinked' => true,
+				],
 				'selectors'  => [
 					'{{WRAPPER}} .wpuf-sub-card' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -241,6 +267,13 @@ class Subscription_Plans_Widget extends Widget_Base {
 				'label'      => __( 'Card Padding', 'wp-user-frontend' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
+				'default'    => [
+					'top'      => '24',
+					'right'    => '24',
+					'bottom'   => '24',
+					'left'     => '24',
+					'isLinked' => true,
+				],
 				'selectors'  => [
 					'{{WRAPPER}} .wpuf-sub-card' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -266,6 +299,10 @@ class Subscription_Plans_Widget extends Widget_Base {
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
 				'range'      => [ 'px' => [ 'min' => 0, 'max' => 100 ] ],
+				'default'    => [
+					'size' => '20',
+					'unit' => 'px',
+				],
 				'selectors'  => [
 					'{{WRAPPER}} .wpuf-subscription-plans-grid' => 'gap: {{SIZE}}{{UNIT}};',
 				],
@@ -296,6 +333,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'label'     => __( 'Text Color', 'wp-user-frontend' ),
 				'type'      => Controls_Manager::COLOR,
+				'default'   => '#111827',
 				'selectors' => [
 					'{{WRAPPER}} .wpuf-sub-plan-name' => 'color: {{VALUE}};',
 				],
@@ -307,6 +345,17 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'name'     => 'plan_name_typography',
 				'selector' => '{{WRAPPER}} .wpuf-sub-plan-name',
+				'fields_options' => [
+					'font_size' => [
+						'default' => [
+							'size' => '24',
+							'unit' => 'px',
+						],
+					],
+					'font_weight' => [
+						'default' => '700',
+					],
+				],
 			]
 		);
 
@@ -320,6 +369,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 					'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-center' ],
 					'right'  => [ 'title' => __( 'Right', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-right' ],
 				],
+				'default'   => 'left',
 				'selectors' => [
 					'{{WRAPPER}} .wpuf-sub-plan-name' => 'text-align: {{VALUE}};',
 				],
@@ -333,6 +383,10 @@ class Subscription_Plans_Widget extends Widget_Base {
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
 				'range'      => [ 'px' => [ 'min' => 0, 'max' => 50 ] ],
+				'default'    => [
+					'size' => '16',
+					'unit' => 'px',
+				],
 				'selectors'  => [
 					'{{WRAPPER}} .wpuf-sub-plan-name' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
@@ -363,6 +417,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'label'     => __( 'Text Color', 'wp-user-frontend' ),
 				'type'      => Controls_Manager::COLOR,
+				'default'   => '#111827',
 				'selectors' => [
 					'{{WRAPPER}} .wpuf-sub-price' => 'color: {{VALUE}};',
 				],
@@ -374,6 +429,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'label'     => __( 'Currency Symbol Color', 'wp-user-frontend' ),
 				'type'      => Controls_Manager::COLOR,
+				'default'   => '#6b7280',
 				'selectors' => [
 					'{{WRAPPER}} .wpuf-sub-currency' => 'color: {{VALUE}};',
 				],
@@ -385,6 +441,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'label'     => __( 'Billing Cycle Text Color', 'wp-user-frontend' ),
 				'type'      => Controls_Manager::COLOR,
+				'default'   => '#6b7280',
 				'selectors' => [
 					'{{WRAPPER}} .wpuf-sub-billing-cycle' => 'color: {{VALUE}};',
 				],
@@ -396,6 +453,17 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'name'     => 'price_typography',
 				'selector' => '{{WRAPPER}} .wpuf-sub-price',
+				'fields_options' => [
+					'font_size' => [
+						'default' => [
+							'size' => '36',
+							'unit' => 'px',
+						],
+					],
+					'font_weight' => [
+						'default' => '700',
+					],
+				],
 			]
 		);
 
@@ -409,6 +477,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 					'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-center' ],
 					'right'  => [ 'title' => __( 'Right', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-right' ],
 				],
+				'default'   => 'left',
 				'selectors' => [
 					'{{WRAPPER}} .wpuf-sub-price-wrapper' => 'text-align: {{VALUE}};',
 				],
@@ -422,6 +491,10 @@ class Subscription_Plans_Widget extends Widget_Base {
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
 				'range'      => [ 'px' => [ 'min' => 0, 'max' => 50 ] ],
+				'default'    => [
+					'size' => '20',
+					'unit' => 'px',
+				],
 				'selectors'  => [
 					'{{WRAPPER}} .wpuf-sub-price-wrapper' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
@@ -452,6 +525,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'label'     => __( 'Text Color', 'wp-user-frontend' ),
 				'type'      => Controls_Manager::COLOR,
+				'default'   => '#059669',
 				'selectors' => [
 					'{{WRAPPER}} .wpuf-sub-trial-description' => 'color: {{VALUE}};',
 				],
@@ -463,6 +537,14 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'name'     => 'trial_typography',
 				'selector' => '{{WRAPPER}} .wpuf-sub-trial-description',
+				'fields_options' => [
+					'font_size' => [
+						'default' => [
+							'size' => '14',
+							'unit' => 'px',
+						],
+					],
+				],
 			]
 		);
 
@@ -490,6 +572,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'label'     => __( 'Text Color', 'wp-user-frontend' ),
 				'type'      => Controls_Manager::COLOR,
+				'default'   => '#4b5563',
 				'selectors' => [
 					'{{WRAPPER}} .wpuf-sub-features-list' => 'color: {{VALUE}};',
 				],
@@ -501,6 +584,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'label'     => __( 'Icon Color', 'wp-user-frontend' ),
 				'type'      => Controls_Manager::COLOR,
+				'default'   => '#10b981',
 				'selectors' => [
 					'{{WRAPPER}} .wpuf-sub-feature-icon' => 'fill: {{VALUE}};',
 				],
@@ -514,6 +598,10 @@ class Subscription_Plans_Widget extends Widget_Base {
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
 				'range'      => [ 'px' => [ 'min' => 10, 'max' => 50 ] ],
+				'default'    => [
+					'size' => '20',
+					'unit' => 'px',
+				],
 				'selectors'  => [
 					'{{WRAPPER}} .wpuf-sub-feature-icon' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
 				],
@@ -525,6 +613,14 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'name'     => 'features_typography',
 				'selector' => '{{WRAPPER}} .wpuf-sub-features-list',
+				'fields_options' => [
+					'font_size' => [
+						'default' => [
+							'size' => '14',
+							'unit' => 'px',
+						],
+					],
+				],
 			]
 		);
 
@@ -535,6 +631,10 @@ class Subscription_Plans_Widget extends Widget_Base {
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
 				'range'      => [ 'px' => [ 'min' => 0, 'max' => 50 ] ],
+				'default'    => [
+					'size' => '12',
+					'unit' => 'px',
+				],
 				'selectors'  => [
 					'{{WRAPPER}} .wpuf-sub-feature-item' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
@@ -578,6 +678,17 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'name'     => 'button_typography',
 				'selector' => '{{WRAPPER}} .wpuf-sub-button',
+				'fields_options' => [
+					'font_size' => [
+						'default' => [
+							'size' => '16',
+							'unit' => 'px',
+						],
+					],
+					'font_weight' => [
+						'default' => '600',
+					],
+				],
 			]
 		);
 
@@ -591,6 +702,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 					'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-h-align-center' ],
 					'right'  => [ 'title' => __( 'Right', 'wp-user-frontend' ), 'icon' => 'eicon-h-align-right' ],
 				],
+				'default'   => 'center',
 				'selectors' => [
 					'{{WRAPPER}} .wpuf-sub-button-wrapper' => 'text-align: {{VALUE}};',
 				],
@@ -606,6 +718,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'label'     => __( 'Text Color', 'wp-user-frontend' ),
 				'type'      => Controls_Manager::COLOR,
+				'default'   => '#ffffff',
 				'selectors' => [
 					'{{WRAPPER}} .wpuf-sub-button' => 'color: {{VALUE}};',
 				],
@@ -617,6 +730,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'label'     => __( 'Background Color', 'wp-user-frontend' ),
 				'type'      => Controls_Manager::COLOR,
+				'default'   => '#64748b',
 				'selectors' => [
 					'{{WRAPPER}} .wpuf-sub-button' => 'background-color: {{VALUE}};',
 				],
@@ -628,6 +742,23 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'name'     => 'button_border',
 				'selector' => '{{WRAPPER}} .wpuf-sub-button',
+				'fields_options' => [
+					'border' => [
+						'default' => 'solid',
+					],
+					'width'  => [
+						'default' => [
+							'top'      => '1',
+							'right'    => '1',
+							'bottom'   => '1',
+							'left'     => '1',
+							'isLinked' => true,
+						],
+					],
+					'color'  => [
+						'default' => 'transparent',
+					],
+				],
 			]
 		);
 
@@ -637,6 +768,13 @@ class Subscription_Plans_Widget extends Widget_Base {
 				'label'      => __( 'Border Radius', 'wp-user-frontend' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
+				'default'    => [
+					'top'      => '5',
+					'right'    => '5',
+					'bottom'   => '5',
+					'left'     => '5',
+					'isLinked' => true,
+				],
 				'selectors'  => [
 					'{{WRAPPER}} .wpuf-sub-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -649,6 +787,13 @@ class Subscription_Plans_Widget extends Widget_Base {
 				'label'      => __( 'Padding', 'wp-user-frontend' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
+				'default'    => [
+					'top'      => '5',
+					'right'    => '20',
+					'bottom'   => '5',
+					'left'     => '20',
+					'isLinked' => false,
+				],
 				'selectors'  => [
 					'{{WRAPPER}} .wpuf-sub-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -734,8 +879,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 			case 'custom':
 			default:
 				$args['meta_key'] = '_sort_order';
-				$args['orderby']  = 'meta_value_num';
-				$args['order']    = 'ASC';
+				$args['orderby']  = [ 'meta_value_num' => 'ASC', 'title' => 'ASC' ];
 				break;
 		}
 

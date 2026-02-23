@@ -448,6 +448,19 @@ class Subscription_Plans_Widget extends Widget_Base {
 			]
 		);
 
+		$this->add_responsive_control(
+			'billing_cycle_font_size',
+			[
+				'label'      => __( 'Billing Cycle Text Size', 'wp-user-frontend' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em' ],
+				'range'      => [ 'px' => [ 'min' => 8, 'max' => 50 ] ],
+				'selectors'  => [
+					'{{WRAPPER}} .wpuf-sub-billing-cycle' => 'font-size: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
@@ -480,6 +493,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				'default'   => 'left',
 				'selectors' => [
 					'{{WRAPPER}} .wpuf-sub-price-wrapper' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .wpuf-sub-price'         => 'justify-content: {{VALUE}};',
 				],
 			]
 		);
@@ -544,6 +558,36 @@ class Subscription_Plans_Widget extends Widget_Base {
 							'unit' => 'px',
 						],
 					],
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'trial_font_size',
+			[
+				'label'      => __( 'Text Size', 'wp-user-frontend' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em' ],
+				'range'      => [ 'px' => [ 'min' => 8, 'max' => 50 ] ],
+				'selectors'  => [
+					'{{WRAPPER}} .wpuf-sub-trial-description' => 'font-size: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'trial_align',
+			[
+				'label'     => __( 'Text Alignment', 'wp-user-frontend' ),
+				'type'      => Controls_Manager::CHOOSE,
+				'options'   => [
+					'left'   => [ 'title' => __( 'Left', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-left' ],
+					'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-center' ],
+					'right'  => [ 'title' => __( 'Right', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-right' ],
+				],
+				'default'   => 'left',
+				'selectors' => [
+					'{{WRAPPER}} .wpuf-sub-trial-description' => 'text-align: {{VALUE}};',
 				],
 			]
 		);
@@ -995,8 +1039,8 @@ class Subscription_Plans_Widget extends Widget_Base {
 	protected function render_plan_card( $pack, $current_pack_id, $current_pack_status ) {
 		$settings               = $this->get_settings_for_display();
 		$billing_amount         = isset( $pack->meta_value['billing_amount'] ) ? floatval( $pack->meta_value['billing_amount'] ) : 0;
-		$recurring_pay          = isset( $pack->meta_value['recurring_pay'] ) ? $pack->meta_value['recurring_pay'] : 'no';
-		$trial_status           = isset( $pack->meta_value['trial_status'] ) ? $pack->meta_value['trial_status'] : 'no';
+		$recurring_pay          = wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay'] ?? '' );
+		$trial_status           = wpuf_is_checkbox_or_toggle_on( $pack->meta_value['trial_status'] ?? '' );
 		$billing_cycle_number   = isset( $pack->meta_value['billing_cycle_number'] ) ? $pack->meta_value['billing_cycle_number'] : 1;
 		$cycle_period           = isset( $pack->meta_value['cycle_period'] ) ? $pack->meta_value['cycle_period'] : 'month';
 		$trial_duration         = isset( $pack->meta_value['trial_duration'] ) ? $pack->meta_value['trial_duration'] : 0;
@@ -1029,10 +1073,12 @@ class Subscription_Plans_Widget extends Widget_Base {
 			echo '<span class="wpuf-sub-currency">' . esc_html( $currency_symbol ) . '</span>';
 			echo '<span class="wpuf-sub-amount">' . esc_html( $amount_formatted ) . '</span>';
 
-			if ( $recurring_pay === 'yes' ) {
-				$cycle_label = wpuf()->subscription->get_cycle_label( $cycle_period, $billing_cycle_number );
+			if ( $recurring_pay ) {
+				$cycle_label  = wpuf()->subscription->get_cycle_label( $cycle_period, $billing_cycle_number );
 				$billing_text = sprintf( __( 'Every %s %s', 'wp-user-frontend' ), $billing_cycle_number, $cycle_label );
-				echo '<span class="wpuf-sub-billing-cycle"> ' . esc_html( $billing_text ) . '</span>';
+				echo '<span class="wpuf-sub-billing-cycle">' . esc_html( $billing_text ) . '</span>';
+			} else {
+				echo '<span class="wpuf-sub-billing-cycle">' . esc_html__( 'One time payment', 'wp-user-frontend' ) . '</span>';
 			}
 			echo '</div>';
 		} else {
@@ -1041,7 +1087,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 		echo '</div>';
 
 		// Trial Description
-		if ( $billing_amount > 0 && $recurring_pay === 'yes' && $trial_status === 'yes' && $trial_duration > 0 ) {
+		if ( $billing_amount > 0 && $recurring_pay && $trial_status && $trial_duration > 0 ) {
 			$duration = _n( $trial_duration_type, $trial_duration_type . 's', $trial_duration, 'wp-user-frontend' );
 			$trial_text = sprintf( __( 'Trial available for first %1$s %2$s', 'wp-user-frontend' ), $trial_duration, $duration );
 			echo '<div class="wpuf-sub-trial-description">' . esc_html( $trial_text ) . '</div>';
@@ -1161,6 +1207,123 @@ class Subscription_Plans_Widget extends Widget_Base {
 				}
 			}
 
+			// User Requests limit
+			if ( isset( $all_limits['user_request'] ) && '0' !== $all_limits['user_request'] ) {
+				if ( '-1' === $all_limits['user_request'] ) {
+					$features_list[] = __( 'Unlimited user requests', 'wp-user-frontend' );
+				} else {
+					$features_list[] = sprintf( __( '%d user requests allowed', 'wp-user-frontend' ), intval( $all_limits['user_request'] ) );
+				}
+			}
+
+			// WooCommerce Products limit
+			if ( isset( $all_limits['product'] ) && '0' !== $all_limits['product'] ) {
+				if ( '-1' === $all_limits['product'] ) {
+					$features_list[] = __( 'Unlimited products', 'wp-user-frontend' );
+				} else {
+					$features_list[] = sprintf( __( '%d products allowed', 'wp-user-frontend' ), intval( $all_limits['product'] ) );
+				}
+			}
+
+			// Reusable Blocks limit
+			if ( isset( $all_limits['wp_block'] ) && '0' !== $all_limits['wp_block'] ) {
+				if ( '-1' === $all_limits['wp_block'] ) {
+					$features_list[] = __( 'Unlimited reusable blocks', 'wp-user-frontend' );
+				} else {
+					$features_list[] = sprintf( __( '%d reusable blocks allowed', 'wp-user-frontend' ), intval( $all_limits['wp_block'] ) );
+				}
+			}
+
+			// Templates limit
+			if ( isset( $all_limits['wp_template'] ) && '0' !== $all_limits['wp_template'] ) {
+				if ( '-1' === $all_limits['wp_template'] ) {
+					$features_list[] = __( 'Unlimited templates', 'wp-user-frontend' );
+				} else {
+					$features_list[] = sprintf( __( '%d templates allowed', 'wp-user-frontend' ), intval( $all_limits['wp_template'] ) );
+				}
+			}
+
+			// Template Parts limit
+			if ( isset( $all_limits['wp_template_part'] ) && '0' !== $all_limits['wp_template_part'] ) {
+				if ( '-1' === $all_limits['wp_template_part'] ) {
+					$features_list[] = __( 'Unlimited template parts', 'wp-user-frontend' );
+				} else {
+					$features_list[] = sprintf( __( '%d template parts allowed', 'wp-user-frontend' ), intval( $all_limits['wp_template_part'] ) );
+				}
+			}
+
+			// Navigation Menus limit
+			if ( isset( $all_limits['wp_navigation'] ) && '0' !== $all_limits['wp_navigation'] ) {
+				if ( '-1' === $all_limits['wp_navigation'] ) {
+					$features_list[] = __( 'Unlimited navigation menus', 'wp-user-frontend' );
+				} else {
+					$features_list[] = sprintf( __( '%d navigation menus allowed', 'wp-user-frontend' ), intval( $all_limits['wp_navigation'] ) );
+				}
+			}
+
+			// Global Styles limit
+			if ( isset( $all_limits['wp_global_styles'] ) && '0' !== $all_limits['wp_global_styles'] ) {
+				if ( '-1' === $all_limits['wp_global_styles'] ) {
+					$features_list[] = __( 'Unlimited global styles', 'wp-user-frontend' );
+				} else {
+					$features_list[] = sprintf( __( '%d global styles allowed', 'wp-user-frontend' ), intval( $all_limits['wp_global_styles'] ) );
+				}
+			}
+
+			// Font Families limit
+			if ( isset( $all_limits['wp_font_family'] ) && '0' !== $all_limits['wp_font_family'] ) {
+				if ( '-1' === $all_limits['wp_font_family'] ) {
+					$features_list[] = __( 'Unlimited font families', 'wp-user-frontend' );
+				} else {
+					$features_list[] = sprintf( __( '%d font families allowed', 'wp-user-frontend' ), intval( $all_limits['wp_font_family'] ) );
+				}
+			}
+
+			// Font Faces limit
+			if ( isset( $all_limits['wp_font_face'] ) && '0' !== $all_limits['wp_font_face'] ) {
+				if ( '-1' === $all_limits['wp_font_face'] ) {
+					$features_list[] = __( 'Unlimited font faces', 'wp-user-frontend' );
+				} else {
+					$features_list[] = sprintf( __( '%d font faces allowed', 'wp-user-frontend' ), intval( $all_limits['wp_font_face'] ) );
+				}
+			}
+
+			// Product Variations limit
+			if ( isset( $all_limits['product_variation'] ) && '0' !== $all_limits['product_variation'] ) {
+				if ( '-1' === $all_limits['product_variation'] ) {
+					$features_list[] = __( 'Unlimited product variations', 'wp-user-frontend' );
+				} else {
+					$features_list[] = sprintf( __( '%d product variations allowed', 'wp-user-frontend' ), intval( $all_limits['product_variation'] ) );
+				}
+			}
+
+			// Shop Orders limit
+			if ( isset( $all_limits['shop_order'] ) && '0' !== $all_limits['shop_order'] ) {
+				if ( '-1' === $all_limits['shop_order'] ) {
+					$features_list[] = __( 'Unlimited shop orders', 'wp-user-frontend' );
+				} else {
+					$features_list[] = sprintf( __( '%d shop orders allowed', 'wp-user-frontend' ), intval( $all_limits['shop_order'] ) );
+				}
+			}
+
+			// Shop Refunds limit
+			if ( isset( $all_limits['shop_order_refund'] ) && '0' !== $all_limits['shop_order_refund'] ) {
+				if ( '-1' === $all_limits['shop_order_refund'] ) {
+					$features_list[] = __( 'Unlimited shop refunds', 'wp-user-frontend' );
+				} else {
+					$features_list[] = sprintf( __( '%d shop refunds allowed', 'wp-user-frontend' ), intval( $all_limits['shop_order_refund'] ) );
+				}
+			}
+
+			// Shop Coupons limit
+			if ( isset( $all_limits['shop_coupon'] ) && '0' !== $all_limits['shop_coupon'] ) {
+				if ( '-1' === $all_limits['shop_coupon'] ) {
+					$features_list[] = __( 'Unlimited shop coupons', 'wp-user-frontend' );
+				} else {
+					$features_list[] = sprintf( __( '%d shop coupons allowed', 'wp-user-frontend' ), intval( $all_limits['shop_coupon'] ) );
+				}
+			}
+
 			// Featured items limit
 			if ( isset( $pack->meta_value['_total_feature_item'] ) && '0' !== $pack->meta_value['_total_feature_item'] ) {
 				if ( '-1' === $pack->meta_value['_total_feature_item'] ) {
@@ -1170,13 +1333,25 @@ class Subscription_Plans_Widget extends Widget_Base {
 				}
 			}
 
+			// Post expiration
+			if ( isset( $pack->meta_value['_enable_post_expiration'] ) && 'yes' === $pack->meta_value['_enable_post_expiration'] ) {
+				$expiry_period = isset( $pack->meta_value['_post_expiration_number'] ) ? intval( $pack->meta_value['_post_expiration_number'] ) : 0;
+				$expiry_type = isset( $pack->meta_value['_post_expiration_period'] ) ? $pack->meta_value['_post_expiration_period'] : 'day';
+
+				if ( $expiry_period > 0 ) {
+					$features_list[] = sprintf( __( 'Posts expire after %d %s', 'wp-user-frontend' ), $expiry_period, $expiry_type . ( $expiry_period > 1 ? 's' : '' ) );
+				} else {
+					$features_list[] = __( 'Post expiration enabled', 'wp-user-frontend' );
+				}
+			}
+
 			// Recurring payment
-			if ( isset( $pack->meta_value['recurring_pay'] ) && 'yes' === $pack->meta_value['recurring_pay'] ) {
+			if ( wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay'] ?? '' ) ) {
 				$features_list[] = __( 'Recurring subscription', 'wp-user-frontend' );
 			}
 
 			// Trial period
-			if ( isset( $pack->meta_value['trial_status'] ) && 'yes' === $pack->meta_value['trial_status'] ) {
+			if ( wpuf_is_checkbox_or_toggle_on( $pack->meta_value['trial_status'] ?? '' ) ) {
 				$trial_duration = isset( $pack->meta_value['trial_duration'] ) ? intval( $pack->meta_value['trial_duration'] ) : 0;
 				$trial_type = isset( $pack->meta_value['trial_duration_type'] ) ? $pack->meta_value['trial_duration_type'] : 'day';
 
@@ -1185,6 +1360,11 @@ class Subscription_Plans_Widget extends Widget_Base {
 				} else {
 					$features_list[] = __( 'Free trial available', 'wp-user-frontend' );
 				}
+			}
+
+			// Mail notification on expiry
+			if ( isset( $pack->meta_value['_enable_mail_after_expired'] ) && 'yes' === $pack->meta_value['_enable_mail_after_expired'] ) {
+				$features_list[] = __( 'Email notifications on post expiry', 'wp-user-frontend' );
 			}
 
 			// If no features found, show a basic feature

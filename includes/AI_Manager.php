@@ -238,6 +238,36 @@ class AI_Manager {
         $templates = [];
 
         // Free plugin provides post form templates
+        if ( 'profile' === $form_type && empty( $integration ) ) {
+            // Default registration/profile form templates (no integration)
+            $templates = [
+                [
+                    'id'    => 'basic_registration',
+                    'label' => __( 'Basic User Registration', 'wp-user-frontend' ),
+                ],
+                [
+                    'id'    => 'member_directory',
+                    'label' => __( 'Member Directory Profile', 'wp-user-frontend' ),
+                ],
+                [
+                    'id'    => 'job_applicant',
+                    'label' => __( 'Job Applicant Registration', 'wp-user-frontend' ),
+                ],
+                [
+                    'id'    => 'blog_author_signup',
+                    'label' => __( 'Blog Author Signup', 'wp-user-frontend' ),
+                ],
+                [
+                    'id'    => 'community_member_join',
+                    'label' => __( 'Community Member Join', 'wp-user-frontend' ),
+                ],
+                [
+                    'id'    => 'freelancer_profile_signup',
+                    'label' => __( 'Freelancer Profile Signup', 'wp-user-frontend' ),
+                ],
+            ];
+        }
+
         if ( 'post' === $form_type ) {
             if ( empty( $integration ) ) {
                 // Regular post form templates (no integration)
@@ -341,6 +371,18 @@ class AI_Manager {
         $instructions = [];
 
         // Free plugin provides post form instructions
+        if ( 'profile' === $form_type && empty( $integration ) ) {
+            // Default registration/profile form instructions (no integration)
+            $instructions = [
+                'basic_registration'      => __( 'Create a Basic User Registration form with email, name, username, password', 'wp-user-frontend' ),
+                'member_directory'        => __( 'Create a Member Directory Profile form with name, email, bio, profile photo', 'wp-user-frontend' ),
+                'job_applicant'           => __( 'Create a Job Applicant Registration form with name, email, phone, resume upload', 'wp-user-frontend' ),
+                'blog_author_signup'      => __( 'Create a registration form for new blog authors. Collect their login details, public display information, a short introduction about themselves, a profile photo or avatar, and an optional personal website link.', 'wp-user-frontend' ),
+                'community_member_join'   => __( 'Create a registration form for new community members. Collect their basic personal details, login information, a public name, a nickname, their interests (as checkboxes), a short personal introduction, and a profile picture', 'wp-user-frontend' ),
+                'freelancer_profile_signup' => __( 'Create a registration form for freelancers that captures their professional details, skills, experience summary, portfolio information, and profile photo.', 'wp-user-frontend' ),
+            ];
+        }
+
         if ( 'post' === $form_type ) {
             if ( empty( $integration ) ) {
                 // Regular post form instructions (no integration)

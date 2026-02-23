@@ -736,6 +736,27 @@ class Subscription_Plans_Widget extends Widget_Base {
 			]
 		);
 
+		$this->add_responsive_control(
+			'button_font_size',
+			[
+				'label'      => __( 'Text Size', 'wp-user-frontend' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem' ],
+				'range'      => [
+					'px' => [ 'min' => 8, 'max' => 50 ],
+					'em' => [ 'min' => 0.5, 'max' => 5 ],
+					'rem' => [ 'min' => 0.5, 'max' => 5 ],
+				],
+				'default'    => [
+					'size' => '1',
+					'unit' => 'rem',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .wpuf-sub-button' => 'font-size: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->add_control(
 			'button_align',
 			[

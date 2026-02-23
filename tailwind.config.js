@@ -44,7 +44,8 @@ module.exports = {
                     '#wpuf-ai-form-builder',
                     '.wpuf-ai-form-wrapper',
                     '.swal2-container',
-                    '.wpuf-account-container'
+                    '.wpuf-account-container',
+                    '.wpuf-form-template-modal'
                 ], {}
             ),
         } ),

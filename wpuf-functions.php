@@ -1965,7 +1965,7 @@ function wpuf_get_form_fields( $form_id ) {
      * Allows filtering the complete form fields array. Used to filter out
      * pro-only fields when pro plugin is not active.
      *
-     * @since WPUF_SINCE
+     * @since 4.2.9
      *
      * @param array $form_fields The array of form fields data
      * @param int   $form_id     The form ID
@@ -4688,7 +4688,7 @@ function wpuf_unset_conditional( $settings ) {
  * @param WP_Post|int $post Post object or post ID
  *
  * @since 3.5.27
- * @since WPUF_SINCE Refactored to use wpuf_user_can_edit_post(). Now accepts post ID or post object.
+ * @since 4.2.9 Refactored to use wpuf_user_can_edit_post(). Now accepts post ID or post object.
  *
  * @return bool True if editable, false otherwise
  */
@@ -4697,7 +4697,7 @@ function wpuf_is_post_editable( $post ) {
     if ( ! $post instanceof WP_Post ) {
         return false;
     }
-    
+
     if ( is_numeric( $post ) ) {
         $post_id = absint( $post );
 

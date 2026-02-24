@@ -382,7 +382,7 @@ class Admin_Tools {
     /**
      * Display shortcodes page with all available shortcodes
      *
-     * @since WPUF_SINCE
+     * @since 4.2.9
      *
      * @return void
      */
@@ -541,7 +541,7 @@ class Admin_Tools {
     /**
      * Get all available shortcodes organized by category
      *
-     * @since WPUF_SINCE
+     * @since 4.2.9
      *
      * @return array
      */
@@ -679,7 +679,7 @@ class Admin_Tools {
         /**
          * Filter the shortcodes list for the tools page
          *
-         * @since WPUF_SINCE
+         * @since 4.2.9
          *
          * @param array $shortcodes The shortcodes array organized by category
          */
@@ -843,7 +843,7 @@ class Admin_Tools {
      * Allow json file to upload with async uploader
      *
      * @since 3.2.0
-     * @since WPUF_SINCE Added security validation to prevent arbitrary file uploads
+     * @since 4.2.9 Added security validation to prevent arbitrary file uploads
      *
      * @param array  $info            File data array with 'ext', 'type', and 'proper_filename' keys
      * @param string $file            Full path to the file

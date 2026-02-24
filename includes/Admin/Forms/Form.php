@@ -106,13 +106,13 @@ class Form {
     /**
      * Get pay per cost amount
      *
-     * @return int
+     * @return float
      */
     public function get_pay_per_post_cost() {
         $settings = $this->get_settings();
 
         if ( isset( $settings['pay_per_post_cost'] ) && $settings['pay_per_post_cost'] > 0 ) {
-            return $settings['pay_per_post_cost'];
+            return (float) $settings['pay_per_post_cost'];
         }
 
         return 0;
@@ -136,13 +136,13 @@ class Form {
     /**
      * Get the fallback cost amount
      *
-     * @return int
+     * @return float
      */
     public function get_subs_fallback_cost() {
         $settings = $this->get_settings();
 
         if ( isset( $settings['fallback_ppp_cost'] ) && $settings['fallback_ppp_cost'] > 0 ) {
-            return $settings['fallback_ppp_cost'];
+            return (float) $settings['fallback_ppp_cost'];
         }
 
         return 0;

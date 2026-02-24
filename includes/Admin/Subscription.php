@@ -1119,7 +1119,7 @@ class Subscription {
                 ?>
             </div>
             <?php
-        } elseif ( self::has_user_error( $form_settings ) || ( $payment_enabled && $force_pack && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) ) {
+        } elseif ( $payment_enabled && $force_pack && $form->is_enabled_fallback_cost() && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
             ?>
             <div class="wpuf-info">
                 <?php
@@ -1250,14 +1250,14 @@ class Subscription {
                         if ( ! is_wp_error( $current_pack ) ) {
                             // current pack has no error
                             if ( ! $fallback_enabled ) {
-                                //fallback cost enabled
+                                // fallback cost disabled
                                 if ( ! $current_user->subscription()->current_pack_id() ) {
                                     return 'no';
                                 } elseif ( $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
                                     return 'yes';
                                 }
                             } elseif ( $fallback_enabled ) {
-                                //fallback cost disabled
+                                // fallback cost enabled
                                 if ( ! $current_user->subscription()->current_pack_id() ) {
                                     return 'no';
                                 } elseif ( $has_post_count ) {
@@ -1308,7 +1308,7 @@ class Subscription {
 
         // _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user()->subscription()->has_error( $form_settings = null );' );
 
-        wpuf_get_user()->subscription()->has_error( $form_settings );
+        return wpuf_get_user()->subscription()->has_error( $form_settings );
     }
 
     /**

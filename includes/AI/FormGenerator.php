@@ -773,7 +773,7 @@ class FormGenerator {
          * Allows pro plugin to override prompt file paths for different
          * form types and integrations.
          *
-         * @since WPUF_SINCE
+         * @since 4.2.9
          *
          * @param string $prompt_file Path to the prompt file
          * @param string $form_type   Form type ('post' or 'profile')

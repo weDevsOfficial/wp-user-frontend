@@ -227,7 +227,7 @@ class AI_Manager {
      * Returns templates organized by form type and integration.
      * Pro plugin can extend this via the wpuf_ai_prompt_templates filter.
      *
-     * @since WPUF_SINCE
+     * @since 4.2.9
      *
      * @param string $form_type   Form type ('post' or 'profile')
      * @param string $integration Integration identifier (empty for no integration)
@@ -345,7 +345,7 @@ class AI_Manager {
          *
          * Allows pro plugin to add additional templates based on form type and integration.
          *
-         * @since WPUF_SINCE
+         * @since 4.2.9
          *
          * @param array  $templates   Array of template objects with 'id' and 'label' keys
          * @param string $form_type   Form type ('post' or 'profile')
@@ -360,7 +360,7 @@ class AI_Manager {
      * Returns AI instructions mapped by template ID.
      * Pro plugin can extend this via the wpuf_ai_prompt_instructions filter.
      *
-     * @since WPUF_SINCE
+     * @since 4.2.9
      *
      * @param string $form_type   Form type ('post' or 'profile')
      * @param string $integration Integration identifier (empty for no integration)
@@ -418,7 +418,7 @@ class AI_Manager {
          *
          * Allows pro plugin to add additional instructions based on form type and integration.
          *
-         * @since WPUF_SINCE
+         * @since 4.2.9
          *
          * @param array  $instructions Array of instructions keyed by template ID
          * @param string $form_type    Form type ('post' or 'profile')
@@ -432,7 +432,7 @@ class AI_Manager {
      *
      * Returns a complete structure for JavaScript localization.
      *
-     * @since WPUF_SINCE
+     * @since 4.2.9
      *
      * @return array Complete templates structure
      */
@@ -467,7 +467,7 @@ class AI_Manager {
      *
      * Returns a flat structure for JavaScript localization.
      *
-     * @since WPUF_SINCE
+     * @since 4.2.9
      *
      * @return array Complete instructions keyed by template ID
      */

@@ -1058,7 +1058,10 @@ class WPUF_Subscription {
             $price_with_tax = wpuf_prices_include_tax();
         }
 
-        if ( self::has_user_error( $form_settings ) || ( $payment_enabled && $pay_per_post && ! $force_pack ) ) {
+        if (
+            ( self::has_user_error( $form_settings ) && ! ( $force_pack && $form->is_enabled_fallback_cost() ) )
+            || ( $payment_enabled && $pay_per_post && ! $force_pack )
+        ) {
             ?>
             <div class="wpuf-info">
                 <?php

@@ -299,6 +299,7 @@ class Field_Templates {
             'default' => '',
             'rows' => '5',
             'cols' => '25',
+            'rich' => 'no',
             'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
@@ -317,6 +318,9 @@ class Field_Templates {
             'help' => '',
             'css' => '',
             'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
             'width' => 'large',
         ], self::get_common() );
     }

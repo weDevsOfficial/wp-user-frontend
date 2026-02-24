@@ -169,6 +169,18 @@ class Frontend_Form extends Frontend_Render_Form {
 
     /**
      * Draft Post
+     *
+     * Saves or updates a draft post via AJAX. For updates (when post_id is provided),
+     * authorization is enforced using WordPress capabilities.
+     *
+     * - Logged-in users: Verifies post ownership and edit_post capability, or edit_others_posts
+     *   capability for posts they don't own
+     * - Guest users: Can create new drafts but cannot edit existing drafts (must log in)
+     *
+     * @since 4.0.0
+     * @since 4.2.9 Enhanced authorization with proper capability checks. Removed guest draft editing.
+     *
+     * @return void
      */
     public function draft_post() {
         check_ajax_referer( 'wpuf_form_add' );
@@ -181,6 +193,13 @@ class Frontend_Form extends Frontend_Render_Form {
         $this->form_fields   = $form->get_fields();
         $pay_per_post        = $form->is_enabled_pay_per_post();
 
+        // Early return: User must be logged in to save drafts
+        $current_user_id = get_current_user_id();
+
+        if ( $current_user_id <= 0 ) {
+            wp_send_json_error( [ 'message' => __( 'You must be logged in to save drafts.', 'wp-user-frontend' ) ] );
+        }
+
         [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
         $entry_fields = $form->prepare_entries();
@@ -189,7 +208,7 @@ class Frontend_Form extends Frontend_Render_Form {
         $postarr = [
             'post_type'    => $this->form_settings['post_type'],
             'post_status'  => wpuf_get_draft_post_status( $this->form_settings ),
-            'post_author'  => get_current_user_id(),
+            'post_author'  => $current_user_id,
             'post_title'   => isset( $_POST['post_title'] ) ? sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) : '',
             'post_content' => $post_content,
             'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) : '',
@@ -236,10 +255,21 @@ class Frontend_Form extends Frontend_Render_Form {
             $postarr['tags_input'] = explode( ',', sanitize_text_field( wp_unslash( $_POST['tags'] ) ) );
         }
 
-        // if post_id is passed, we update the post
         if ( isset( $_POST['post_id'] ) ) {
+            $update_post_id = intval( wp_unslash( $_POST['post_id'] ) );
+
+            // Verify the post exists and user has permission to edit
+            $can_edit = wpuf_user_can_edit_post( $update_post_id );
+
+            if ( is_wp_error( $can_edit ) ) {
+                wp_send_json_error( [ 'message' => $can_edit->get_error_message() ] );
+            }
+
+            $existing_post = get_post( $update_post_id );
+
             $is_update                 = true;
-            $postarr['ID']             = intval( wp_unslash( $_POST['post_id'] ) );
+            $postarr['ID']             = $update_post_id;
+            $postarr['post_author']    = (int) $existing_post->post_author; // Preserve original author
             $postarr['comment_status'] = 'open';
         }
 
@@ -270,22 +300,21 @@ class Frontend_Form extends Frontend_Render_Form {
             }
         }
 
-        //used to add code to run when the post is going to draft
         do_action( 'wpuf_draft_post_after_insert', $post_id, $form_id, $this->form_settings, $this->form_fields );
 
         wpuf_clear_buffer();
 
-        echo wp_json_encode(
-            [
-                'post_id'        => $post_id,
-                'action'         => isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '',
-                'date'           => current_time( 'mysql' ),
-                'post_author'    => get_current_user_id(),
-                'comment_status' => get_option( 'default_comment_status' ),
-                'url'            => add_query_arg( 'preview', 'true', get_permalink( $post_id ) ),
-                'message'        => __( 'Post Saved', 'wp-user-frontend' ),
-            ]
-        );
+        $response = [
+            'post_id'        => $post_id,
+            'action'         => isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '',
+            'date'           => current_time( 'mysql' ),
+            'post_author'    => $current_user_id,
+            'comment_status' => get_option( 'default_comment_status' ),
+            'url'            => add_query_arg( 'preview', 'true', get_permalink( $post_id ) ),
+            'message'        => __( 'Post Saved', 'wp-user-frontend' ),
+        ];
+
+        echo wp_json_encode( $response );
 
         exit;
     }
@@ -344,8 +373,27 @@ class Frontend_Form extends Frontend_Render_Form {
         $response       = [];
         $post_id        = wpuf_decryption( $pid );
         $form_id        = wpuf_decryption( $fid );
+
+        $post = get_post( $post_id );
+
+        if ( ! $post ) {
+            wp_die( esc_html__( 'Invalid post.', 'wp-user-frontend' ) );
+        }
+
+        $post_author_id = (int) $post->post_author;
+
+        if ( $post_author_id !== 0 ) {
+            wp_die( esc_html__( 'This post cannot be published via email verification.', 'wp-user-frontend' ) );
+        }
+
+        $current_status   = get_post_status( $post_id );
+        $allowed_statuses = [ 'draft', 'pending', 'auto-draft' ];
+
+        if ( ! in_array( $current_status, $allowed_statuses, true ) ) {
+            wp_die( esc_html__( 'This post has already been published.', 'wp-user-frontend' ) );
+        }
+
         $form_settings  = wpuf_get_form_settings( $form_id );
-        $post_author_id = get_post_field( 'post_author', $post_id );
         $payment_status = new Subscription();
         $form           = new Form( $form_id );
         $pay_per_post   = $form->is_enabled_pay_per_post();

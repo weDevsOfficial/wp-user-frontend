@@ -21,6 +21,8 @@ trait TaxableTrait {
      * @return bool
      */
     function wpuf_tax_enabled() {
+        _deprecated_function( __METHOD__, '4.2.9', 'WeDevs\Wpuf\Pro\Traits\TaxableTrait' );
+
         $tax_enabled = wpuf_get_option( 'enable_tax', 'wpuf_payment_tax', 'on' );
         $value = false;
         if ( $tax_enabled === 'on' ) {
@@ -37,6 +39,8 @@ trait TaxableTrait {
      * @return bool $include_tax
      */
     function wpuf_prices_include_tax() {
+        _deprecated_function( __METHOD__, '4.2.9', 'WeDevs\Wpuf\Pro\Traits\TaxableTrait' );
+
         $enable_tax    = $this->wpuf_tax_enabled();
         $price_inc_tax = wpuf_get_option( 'prices_include_tax', 'wpuf_payment_tax', 'yes' );
         $value = false;
@@ -55,6 +59,8 @@ trait TaxableTrait {
      * @return array Defined tax rates
      */
     function wpuf_get_tax_rates() {
+        _deprecated_function( __METHOD__, '4.2.9', 'WeDevs\Wpuf\Pro\Traits\TaxableTrait' );
+
         $rates = get_option( 'wpuf_tax_rates', [] );
         return apply_filters( 'wpuf_get_tax_rates', $rates );
     }
@@ -67,6 +73,8 @@ trait TaxableTrait {
      * @return void
      */
     function wpuf_base_country_state( $args ) {
+        _deprecated_function( __METHOD__, '4.2.9', 'WeDevs\Wpuf\Pro\Traits\TaxableTrait' );
+
         $rates = $this->wpuf_get_tax_rates();
 
         $cs = new Country_State();
@@ -138,7 +146,7 @@ trait TaxableTrait {
                                 'chosen'           => false,
                                 'placeholder'      => __( 'Choose a state', 'wp-user-frontend' ),
                             ]
-                        ), 
+                        ),
                         [
                             'select' => [
                                 'class'            => [],
@@ -167,6 +175,8 @@ trait TaxableTrait {
      * @return void
      */
     function wpuf_ajax_get_base_states() {
+        _deprecated_function( __METHOD__, '4.2.9', 'WeDevs\Wpuf\Pro\Traits\TaxableTrait' );
+
         $cc = ! empty( $_REQUEST['country'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['country'] ) ) : 'US';
         $cs = new Country_State();
         $countries = $cs->countries();
@@ -203,6 +213,8 @@ trait TaxableTrait {
      * @return void
      */
     public function wpuf_tax_rates( $args ) {
+        _deprecated_function( __METHOD__, '4.2.9', 'WeDevs\Wpuf\Pro\Traits\TaxableTrait' );
+
         $rates  = $this->wpuf_get_tax_rates();
         $cs     = new Country_State();
         $states = [];
@@ -383,6 +395,8 @@ trait TaxableTrait {
      * @return string
      */
     function wpuf_current_tax_rate() {
+        _deprecated_function( __METHOD__, '4.2.9', 'WeDevs\Wpuf\Pro\Traits\TaxableTrait' );
+
         $tax_amount = 0;
 
         if ( ! $this->wpuf_tax_enabled() ) {
@@ -455,6 +469,8 @@ trait TaxableTrait {
      * @return string
      */
     function wpuf_tax_rate_country_state( $country, $state ) {
+        _deprecated_function( __METHOD__, '4.2.9', 'WeDevs\Wpuf\Pro\Traits\TaxableTrait' );
+
         $tax_amount = 0;
 
         $rates = $this->wpuf_get_tax_rates();
@@ -495,6 +511,8 @@ trait TaxableTrait {
      * @return string
      */
     function wpuf_amount_with_tax( $billing_amount ) {
+        _deprecated_function( __METHOD__, '4.2.9', 'WeDevs\Wpuf\Pro\Traits\TaxableTrait' );
+
         global $current_user;
 
         $tax_enabled = $this->wpuf_tax_enabled();
@@ -515,6 +533,8 @@ trait TaxableTrait {
      * @return void|bool
      */
     function wpuf_calculate_taxes( $post_data ) {
+        _deprecated_function( __METHOD__, '4.2.9', 'WeDevs\Wpuf\Pro\Traits\TaxableTrait' );
+
         if ( ! $this->wpuf_tax_enabled() ) {
             return false;
         }
@@ -569,6 +589,8 @@ trait TaxableTrait {
      * @return void
      */
     function wpuf_save_tax_options() {
+        _deprecated_function( __METHOD__, '4.2.9', 'WeDevs\Wpuf\Pro\Traits\TaxableTrait' );
+
         if ( isset( $_REQUEST['option_page'] ) && $_REQUEST['option_page'] === 'wpuf_payment_tax' ) {
             if ( ! is_admin() ) {
                 return;
@@ -583,6 +605,8 @@ trait TaxableTrait {
     }
 
     function wpuf_render_tax_field() {
+        _deprecated_function( __METHOD__, '4.2.9', 'WeDevs\Wpuf\Pro\Traits\TaxableTrait' );
+
         $tax_rate = $this->wpuf_current_tax_rate() . '%';
         if ( $this->wpuf_tax_enabled() ) {
             ?>
@@ -599,6 +623,8 @@ trait TaxableTrait {
      * @return void
      */
     function wpuf_tax_get_states_field() {
+        _deprecated_function( __METHOD__, '4.2.9', 'WeDevs\Wpuf\Pro\Traits\TaxableTrait' );
+
         $cs        = new Country_State();
         $countries = $cs->countries();
         $country   = isset( $_REQUEST['country'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['country'] ) ) : '';

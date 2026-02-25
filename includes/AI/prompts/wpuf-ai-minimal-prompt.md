@@ -482,51 +482,7 @@ Note: Always use 3 as the maximum, never exceed it.
 - Always provide 3-5 pricing options with appropriate demo amounts
 - For cart_total field, do NOT include prices (it calculates automatically)
 
-**Currency Symbol:**
-You MUST ONLY use one of these valid currency symbols. Do NOT use any other symbol:
-- $ (USD, AUD, CAD, HKD, MXN, NZD, SGD, AZD, CLP, COP)
-- € (EUR)
-- £ (GBP)
-- ¥ (CNY, JPY)
-- ₹ (INR, MUR, NPR)
-- د.إ (AED)
-- ৳ (BDT)
-- R$ (BRL)
-- лв. (BGN)
-- Kč (CZK)
-- kr. (DKK, NOK, SEK, ISK)
-- RD$ (DOP)
-- DA; (DZD)
-- Kn (HRK)
-- Ft (HUF)
-- Rp (IDR)
-- Rs (PKR, INR)
-- Rs. (NPR)
-- ₪ (ILS)
-- ₭ (KIP)
-- ₩ (KRW)
-- RM (MYR)
-- ₦ (NGN)
-- N$ (NAD)
-- ر.ع. (OMR)
-- ﷼ (IRR)
-- ₲ (PYG)
-- ₱ (PHP)
-- zł (PLN)
-- lei (RON)
-- руб. (RUB)
-- SR (SR)
-- R (ZAR)
-- CHF (CHF)
-- NT$ (TWD)
-- ฿ (THB)
-- ₺ (TRY)
-- TT$ (TTD)
-- ₫ (VND)
-- EGP (EGP)
-- د.أ (JOD)
-
-Include `options`, `prices`, and `currency_symbol` for pricing fields:
+Include `options` and `prices` for pricing fields:
 ```json
 {
   "template": "pricing_radio",
@@ -540,8 +496,7 @@ Include `options`, `prices`, and `currency_symbol` for pricing fields:
     "basic": "10",
     "premium": "25",
     "enterprise": "50"
-  },
-  "currency_symbol": "$"
+  }
 }
 ```
 
@@ -549,8 +504,7 @@ Include `options`, `prices`, and `currency_symbol` for pricing fields:
 ```json
 {
   "template": "cart_total",
-  "label": "Total Amount",
-  "currency_symbol": "$"
+  "label": "Total Amount"
 }
 ```
 
@@ -569,13 +523,11 @@ User: "add membership pricing with monthly $10 and yearly $100"
       "prices": {
         "monthly": "10",
         "yearly": "100"
-      },
-      "currency_symbol": "$"
+      }
     },
     {
       "template": "cart_total",
-      "label": "Total",
-      "currency_symbol": "$"
+      "label": "Total"
     }
   ]
 }
@@ -598,13 +550,11 @@ User: "add ticket pricing field"
         "general": "50",
         "vip": "150",
         "backstage": "300"
-      },
-      "currency_symbol": "$"
+      }
     },
     {
       "template": "cart_total",
-      "label": "Total Amount",
-      "currency_symbol": "$"
+      "label": "Total Amount"
     }
   ]
 }
@@ -630,13 +580,11 @@ User: "add add-ons pricing"
         "gift_wrap": "5",
         "insurance": "10",
         "premium_support": "25"
-      },
-      "currency_symbol": "$"
+      }
     },
     {
       "template": "cart_total",
-      "label": "Total",
-      "currency_symbol": "$"
+      "label": "Total"
     }
   ]
 }

@@ -375,6 +375,59 @@ Vue.component('builder-stage-v4-1', {
                 comp.openFieldPicker();
             }
         },
+
+        hiddenClasses: function() {
+            return [
+                'hidden',           // Tailwind: display: none
+                'wpuf_hidden_field',
+                'screen-reader-text'
+            ];
+        },
+
+        /**
+         * Filter CSS classes to prevent hiding fields in the builder
+         * Removes classes that would make the field invisible or hidden in the backend
+         * while preserving them for frontend rendering
+         *
+         * @param {string} cssClasses - Space-separated CSS class names
+         * @return {string} Filtered CSS classes safe for builder
+         */
+        filter_builder_css_classes: function(cssClasses) {
+            if (!cssClasses || typeof cssClasses !== 'string') {
+                return '';
+            }
+
+            // Split classes, filter out forbidden ones, and rejoin
+            var classes = cssClasses.split(/\s+/).filter(function(className) {
+                return className && this.hiddenClasses().indexOf(className.toLowerCase()) === -1;
+            }.bind(this));
+
+            return classes.join(' ');
+        },
+
+        /**
+         * Check if field has CSS classes that would hide it on the frontend
+         * Used to display a visual indicator in the builder
+         *
+         * @param {string} cssClasses - Space-separated CSS class names
+         * @return {boolean} True if field has hiding CSS classes
+         */
+        has_hidden_css_class: function(cssClasses) {
+            if (!cssClasses || typeof cssClasses !== 'string') {
+                return false;
+            }
+
+            var hiddenClasses = this.hiddenClasses();
+            var classes = cssClasses.toLowerCase().split(/\s+/);
+
+            for (var i = 0; i < hiddenClasses.length; i++) {
+                if (classes.indexOf(hiddenClasses[i]) !== -1) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
     }
 });
 
@@ -410,7 +463,6 @@ Vue.component('field-checkbox', {
                     value = value ? Object.keys(this.option_field.options)[0] : '';
                 }
 
-
                 this.$store.commit('update_editing_form_field', {
                     editing_field_id: this.editing_form_field.id,
                     field_name: this.option_field.name,
@@ -435,7 +487,7 @@ Vue.component('field-icon_selector', {
     mixins: [
         wpuf_mixins.option_field_mixin
     ],
-    
+
     mounted: function() {
         document.addEventListener('click', this.handleClickOutside);
     },
@@ -476,9 +528,9 @@ Vue.component('field-icon_selector', {
         filteredIcons: function() {
             var self = this;
             if (!this.icons.length) return [];
-            
+
             if (!this.searchTerm) return this.icons;
-            
+
             var searchLower = this.searchTerm.toLowerCase();
             return this.icons.filter(function(icon) {
                 return icon.name.toLowerCase().indexOf(searchLower) !== -1 ||
@@ -538,6 +590,7 @@ Vue.component('field-icon_selector', {
         document.removeEventListener('click', this.handleClickOutside);
     }
 });
+
 Vue.component('field-multiselect', {
     template: '#tmpl-wpuf-field-multiselect',
 
@@ -650,7 +703,13 @@ Vue.component('field-option-data', {
             sync_value: true,
             options: [],
             selected: [],
-            display: !this.editing_form_field.hide_option_data // hide this field for the events calendar
+            display: !this.editing_form_field.hide_option_data, // hide this field for the events calendar
+            show_ai_modal: false,
+            show_ai_config_modal: false,
+            ai_prompt: '',
+            ai_loading: false,
+            ai_error: '',
+            ai_generated_options: []
         };
     },
 
@@ -661,6 +720,12 @@ Vue.component('field-option-data', {
 
         field_selected: function () {
             return this.editing_form_field.selected;
+        },
+
+        all_ai_selected: function () {
+            return this.ai_generated_options.length > 0 && this.ai_generated_options.every(function(opt) {
+                return opt.selected;
+            });
         }
     },
 
@@ -731,6 +796,98 @@ Vue.component('field-option-data', {
             if (this.sync_value) {
                 this.options[index].value = label.toLocaleLowerCase().replace( /\s/g, '_' );
             }
+        },
+
+        open_ai_modal: function () {
+            // Check if AI is configured
+            if (!wpuf_form_builder.ai_configured) {
+                this.show_ai_config_modal = true;
+                return;
+            }
+            this.show_ai_modal = true;
+            this.ai_prompt = '';
+            this.ai_error = '';
+            this.ai_generated_options = [];
+        },
+
+        close_ai_config_modal: function () {
+            this.show_ai_config_modal = false;
+        },
+
+        go_to_ai_settings: function () {
+            window.location.href = wpuf_form_builder.ai_settings_url;
+        },
+
+        close_ai_modal: function () {
+            this.show_ai_modal = false;
+            this.ai_prompt = '';
+            this.ai_error = '';
+            this.ai_generated_options = [];
+            this.ai_loading = false;
+        },
+
+        generate_ai_options: function () {
+            var self = this;
+
+            if (!this.ai_prompt.trim()) {
+                return;
+            }
+
+            this.ai_loading = true;
+            this.ai_error = '';
+
+            var field_type = this.editing_form_field.template;
+
+            wp.ajax.post('wpuf_ai_generate_field_options', {
+                prompt: this.ai_prompt,
+                field_type: field_type,
+                nonce: wpuf_form_builder.nonce
+            }).done(function(response) {
+                // wp.ajax.post returns data directly in response (not response.data)
+                // when using wp_send_json_success(['options' => $options])
+                var options = response.options || (response.data && response.data.options) || [];
+                
+                if (options.length > 0) {
+                    var mapped_options = options.map(function(opt) {
+                        return {
+                            label: opt.label || opt,
+                            value: opt.value || opt,
+                            selected: true
+                        };
+                    });
+                    self.$set(self, 'ai_generated_options', mapped_options);
+                } else {
+                    self.ai_error = response.message || (response.data && response.data.message) || self.i18n.something_went_wrong;
+                }
+            }).fail(function(error) {
+                self.ai_error = error.message || self.i18n.something_went_wrong;
+            }).always(function() {
+                self.ai_loading = false;
+            });
+        },
+
+        select_all_ai_options: function () {
+            var select_state = !this.all_ai_selected;
+            this.ai_generated_options.forEach(function(opt) {
+                opt.selected = select_state;
+            });
+        },
+
+        import_ai_options: function () {
+            var self = this;
+            var selected_options = this.ai_generated_options.filter(function(opt) {
+                return opt.selected;
+            });
+
+            selected_options.forEach(function(opt) {
+                self.options.push({
+                    label: opt.label,
+                    value: opt.value,
+                    id: self.get_random_id()
+                });
+            });
+
+            this.close_ai_modal();
         }
     },
 

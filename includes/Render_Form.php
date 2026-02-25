@@ -1339,10 +1339,10 @@ class Render_Form {
         if ( wpuf_is_pro_active() ) {
             return false;
         }
-
-        // Check if this is a custom taxonomy
-        $builtin_taxonomies = apply_filters( 'wpuf_builtin_taxonomies_free', array( 'category', 'post_tag' ) );
-        return ! in_array( $form_field['name'], $builtin_taxonomies, true );
+        
+        // Get free taxonomies (built-in + taxonomies for post/page)
+        $free_taxonomies = wpuf_get_free_taxonomies();
+        return ! in_array( $form_field['name'], $free_taxonomies, true );
     }
 
     /**
@@ -1353,8 +1353,8 @@ class Render_Form {
      */
     public function taxonomy( $attr, $post_id, $form_id ) {
         // Check if this is a custom taxonomy and pro is not active
-        $builtin_taxonomies = apply_filters( 'wpuf_builtin_taxonomies_free', array( 'category', 'post_tag' ) );
-        if ( ! in_array( $attr['name'], $builtin_taxonomies, true ) && ! wpuf_is_pro_active() ) {
+        $free_taxonomies = wpuf_get_free_taxonomies();
+        if ( ! in_array( $attr['name'], $free_taxonomies, true ) && ! wpuf_is_pro_active() ) {
             // Don't render custom taxonomies when pro is not active
             return;
         }

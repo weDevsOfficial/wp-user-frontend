@@ -317,3 +317,39 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 .wpuf-pro-modal-right img {
     @apply wpuf-w-auto wpuf-h-80 wpuf-rounded wpuf-block;
 }
+
+/* AI Field Options Modal */
+.wpuf-ai-modal-overlay {
+    @apply wpuf-fixed wpuf-inset-0 wpuf-bg-black wpuf-bg-opacity-50 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-z-50;
+}
+
+.wpuf-ai-modal {
+    @apply wpuf-bg-white wpuf-rounded-lg wpuf-shadow-xl wpuf-max-w-2xl wpuf-w-full wpuf-mx-4;
+    max-height: 90vh;
+}
+
+.wpuf-ai-modal-header {
+    @apply wpuf-flex wpuf-justify-between wpuf-items-center wpuf-p-6 wpuf-border-b;
+}
+
+.wpuf-ai-modal-header h3 {
+    @apply wpuf-text-lg wpuf-font-semibold wpuf-m-0;
+}
+
+.wpuf-ai-modal-close {
+    @apply wpuf-text-gray-400 hover:wpuf-text-gray-600 wpuf-text-3xl wpuf-leading-none wpuf-bg-transparent wpuf-border-0 wpuf-cursor-pointer;
+}
+
+.wpuf-ai-modal-body {
+    @apply wpuf-p-6;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.wpuf-ai-modal-footer {
+    @apply wpuf-flex wpuf-justify-end wpuf-gap-3 wpuf-p-6 wpuf-border-t;
+}
+
+.wpuf-ai-options-list {
+    @apply wpuf-max-h-64 wpuf-overflow-y-auto wpuf-border wpuf-rounded wpuf-p-3;
+}

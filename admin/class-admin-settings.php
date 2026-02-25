@@ -563,12 +563,67 @@ class WPUF_Admin_Settings {
      * Allow json file to upload with async uploader
      *
      * @since 3.2.0
+     * @since 4.2.9 Added security validation to prevent arbitrary file uploads
      *
-     * @param array $info
+     * @param array  $info            File data array with 'ext', 'type', and 'proper_filename' keys
+     * @param string $file            Full path to the file
+     * @param string $filename        The name of the file (may differ from $file due to $file being in a tmp directory)
+     * @param array  $mimes           Array of mime types keyed by their file extension regex
+     * @param string $real_mime       The actual mime type or false if the type cannot be determined
      *
      * @return array
      */
-    public function check_filetype_and_ext( $info ) {
+    public function check_filetype_and_ext( $info, $file, $filename, $mimes, $real_mime ) {
+        // Security: Validate this is actually a JSON file
+
+        // 1. Check the file extension is .json
+        $filetype = wp_check_filetype( $filename, [ 'json' => 'application/json' ] );
+
+        if ( 'json' !== $filetype['ext'] ) {
+            // Not a .json file - reject it
+            return $info;
+        }
+
+        // 2. Verify the file exists and is readable
+        if ( ! file_exists( $file ) || ! is_readable( $file ) ) {
+            return $info;
+        }
+
+        // 3. Check for dangerous file extensions that might be disguised
+        $dangerous_extensions = [ 'php', 'php3', 'php4', 'php5', 'php7', 'phtml', 'phar', 'exe', 'sh', 'bat', 'cmd' ];
+        $file_parts = pathinfo( $filename );
+
+        // Check for double extensions (e.g., shell.php.json)
+        $filename_lower = strtolower( $filename );
+        foreach ( $dangerous_extensions as $ext ) {
+            if ( strpos( $filename_lower, '.' . $ext ) !== false ) {
+                // Dangerous extension found - reject
+                return $info;
+            }
+        }
+
+        // 4. Validate the file content is actually valid JSON
+        $file_content = file_get_contents( $file );
+
+        if ( false === $file_content ) {
+            return $info;
+        }
+
+        // Try to decode the JSON
+        json_decode( $file_content );
+
+        if ( json_last_error() !== JSON_ERROR_NONE ) {
+            // Not valid JSON - reject it
+            return $info;
+        }
+
+        // 5. Additional security: Check file doesn't contain PHP tags
+        if ( preg_match( '/<\?php|<\?=|<script[^>]*>.*?<\/script>/i', $file_content ) ) {
+            // Contains PHP or script tags - reject it
+            return $info;
+        }
+
+        // All validations passed - it's a legitimate JSON file
         $info['ext']  = 'json';
         $info['type'] = 'application/json';
 
@@ -579,6 +634,7 @@ class WPUF_Admin_Settings {
      * Enable json file upload via ajax in tools page
      *
      * @since 3.2.0
+     * @since 4.2.9 Added admin capability check for security
      *
      * @todo Move this method to WPUF_Admin_Tools class
      *
@@ -597,7 +653,14 @@ class WPUF_Admin_Settings {
         ) {
             // @see wp_ajax_upload_attachment
             check_ajax_referer( 'media-form' );
-            add_filter( 'wp_check_filetype_and_ext', [ $this, 'check_filetype_and_ext' ] );
+
+            // Security: Only allow admins to upload JSON files
+            if ( ! current_user_can( 'manage_options' ) ) {
+                $file['error'] = __( 'You do not have permission to upload files here.', 'wp-user-frontend' );
+                return $file;
+            }
+
+            add_filter( 'wp_check_filetype_and_ext', [ $this, 'check_filetype_and_ext' ], 10, 5 );
         }
 
         return $file;

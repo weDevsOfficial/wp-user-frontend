@@ -254,7 +254,7 @@ class Field_Manager {
                 $show_field = true;
             }
             if ( $visibility_selected == 'hidden' ) {
-                $form_field['css'] .= 'wpuf_hidden_field';
+                $form_field['css'] .= ' wpuf_hidden_field';
                 $show_field        = true;
             }
             if ( $visibility_selected == 'logged_in' && is_user_logged_in() ) {

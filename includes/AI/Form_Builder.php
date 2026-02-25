@@ -50,7 +50,13 @@ class Form_Builder {
             }
 
             // Extract custom properties (everything except template and label)
-            $raw_custom_props = array_diff_key( $minimal_field, [ 'template' => '', 'label' => '' ] );
+            $raw_custom_props = array_diff_key(
+                $minimal_field,
+                [
+                    'template' => '',
+                    'label'    => '',
+                ]
+            );
 
             // Filter out null/empty values to prevent overriding template defaults
             // This is critical for fields like google_map that have automatic defaults
@@ -67,7 +73,7 @@ class Form_Builder {
 
             if ( ! empty( $complete_field ) ) {
                 $complete_fields[] = $complete_field;
-                $field_counter++;
+                ++$field_counter;
             }
         }
 
@@ -75,8 +81,27 @@ class Form_Builder {
             'form_title'       => $ai_response['form_title'] ?? 'Untitled Form',
             'form_description' => $ai_response['form_description'] ?? '',
             'wpuf_fields'      => $complete_fields,
-            'form_settings'    => self::get_default_settings(),
+            'form_settings'    => self::merge_form_settings( $ai_response['form_settings'] ?? [] ),
         ];
+    }
+
+    /**
+     * Merge AI form settings with defaults
+     *
+     * @param array $ai_settings Settings from AI response
+     * @return array
+     */
+    private static function merge_form_settings( $ai_settings ) {
+        $defaults = self::get_default_settings();
+
+        // Ensure $ai_settings is an array to prevent warnings
+        if ( ! is_array( $ai_settings ) ) {
+            $ai_settings = [];
+        }
+
+        // Recursive merge so nested defaults (e.g., 'notification') are preserved
+        // while AI-specified values override defaults at any level
+        return array_replace_recursive( $defaults, $ai_settings );
     }
 
     /**
@@ -193,6 +218,20 @@ class Form_Builder {
                 }
                 break;
 
+            case 'secondary_email':
+                // Preserve name and meta_key for secondary_email field (fixed to 'wpuf_secondary_email')
+                if ( ! empty( $field['name'] ) ) {
+                    $custom_props['name'] = $field['name'];
+                }
+                if ( ! empty( $field['meta_key'] ) ) {
+                    $custom_props['meta_key'] = $field['meta_key'];
+                }
+                // Preserve read_only setting
+                if ( ! empty( $field['read_only'] ) ) {
+                    $custom_props['read_only'] = $field['read_only'];
+                }
+                break;
+
             case 'facebook_url':
             case 'twitter_url':
             case 'instagram_url':
@@ -224,6 +263,16 @@ class Form_Builder {
                 if ( ! empty( $field['meta_key'] ) ) {
                     $custom_props['meta_key'] = $field['meta_key'];
                 }
+                // Also handle upload properties
+                if ( ! empty( $field['count'] ) ) {
+                    $custom_props['count'] = $field['count'];
+                }
+                if ( ! empty( $field['max_size'] ) ) {
+                    $custom_props['max_size'] = $field['max_size'];
+                }
+                if ( ! empty( $field['button_label'] ) ) {
+                    $custom_props['button_label'] = $field['button_label'];
+                }
                 break;
 
             case 'image_upload':
@@ -231,7 +280,6 @@ class Form_Builder {
             case 'featured_image':
             case 'avatar':
             case 'user_avatar':
-            case 'profile_photo':
                 if ( ! empty( $field['count'] ) ) {
                     $custom_props['count'] = $field['count'];
                 }
@@ -405,9 +453,6 @@ class Form_Builder {
                 if ( ! empty( $field['enable_quantity'] ) ) {
                     $custom_props['enable_quantity'] = $field['enable_quantity'];
                 }
-                if ( ! empty( $field['currency_symbol'] ) ) {
-                    $custom_props['currency_symbol'] = $field['currency_symbol'];
-                }
                 if ( ! empty( $field['selected'] ) ) {
                     $custom_props['selected'] = $field['selected'];
                 }
@@ -419,9 +464,6 @@ class Form_Builder {
             case 'cart_total':
                 if ( ! empty( $field['show_summary'] ) ) {
                     $custom_props['show_summary'] = $field['show_summary'];
-                }
-                if ( ! empty( $field['currency_symbol'] ) ) {
-                    $custom_props['currency_symbol'] = $field['currency_symbol'];
                 }
                 break;
         }

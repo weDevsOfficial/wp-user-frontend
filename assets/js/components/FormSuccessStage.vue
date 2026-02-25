@@ -67,7 +67,7 @@
                             </svg>
                         </button>
                         <button @click="handleEditInBuilder" class="wpuf-btn-edit-builder wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-py-2 wpuf-px-4 wpuf-rounded-lg wpuf-text-base wpuf-leading-6 wpuf-cursor-pointer wpuf-flex wpuf-items-center wpuf-gap-2 wpuf-transition-colors hover:wpuf-bg-emerald-800">
-                            {{ __('Edit in Builder', 'wp-user-frontend') }}
+                            {{ __('Edit with Builder', 'wp-user-frontend') }}
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16.8898 3.11019L17.4201 2.57986V2.57986L16.8898 3.11019ZM5.41667 17.5296V18.2796C5.61558 18.2796 5.80634 18.2005 5.947 18.0599L5.41667 17.5296ZM2.5 17.5296H1.75C1.75 17.9438 2.08579 18.2796 2.5 18.2796V17.5296ZM2.5 14.5537L1.96967 14.0233C1.82902 14.164 1.75 14.3548 1.75 14.5537H2.5ZM13.9435 3.11019L14.4738 3.64052C14.9945 3.11983 15.8387 3.11983 16.3594 3.64052L16.8898 3.11019L17.4201 2.57986C16.3136 1.47338 14.5196 1.47338 13.4132 2.57986L13.9435 3.11019ZM16.8898 3.11019L16.3594 3.64052C16.8801 4.16122 16.8801 5.00544 16.3594 5.52614L16.8898 6.05647L17.4201 6.5868C18.5266 5.48032 18.5266 3.68635 17.4201 2.57986L16.8898 3.11019ZM16.8898 6.05647L16.3594 5.52614L4.88634 16.9992L5.41667 17.5296L5.947 18.0599L17.4201 6.5868L16.8898 6.05647ZM5.41667 17.5296V16.7796H2.5V17.5296V18.2796H5.41667V17.5296ZM13.9435 3.11019L13.4132 2.57986L1.96967 14.0233L2.5 14.5537L3.03033 15.084L14.4738 3.64052L13.9435 3.11019ZM2.5 14.5537H1.75V17.5296H2.5H3.25V14.5537H2.5ZM12.6935 4.36019L12.1632 4.89052L15.1094 7.8368L15.6398 7.30647L16.1701 6.77614L13.2238 3.82986L12.6935 4.36019Z" fill="white"/>
                             </svg>
@@ -282,7 +282,7 @@
                                                         <input type="radio" :name="`field_${field.id}`" :value="option.value" disabled class="wpuf-radio-input wpuf-text-emerald-600">
                                                         <label class="wpuf-radio-label wpuf-text-base wpuf-leading-6 wpuf-text-gray-700">{{ option.label }}</label>
                                                     </div>
-                                                    <span class="wpuf-text-base wpuf-font-medium wpuf-text-emerald-600">{{ field.currency_symbol || '$' }}{{ field.prices && field.prices[option.value] ? field.prices[option.value] : '0' }}</span>
+                                                    <span class="wpuf-text-base wpuf-font-medium wpuf-text-emerald-600">{{ field.prices && field.prices[option.value] ? field.prices[option.value] : '0' }}</span>
                                                 </div>
                                             </template>
                                             <div v-else class="wpuf-text-gray-400 wpuf-text-base wpuf-leading-6">{{ __('No pricing options configured', 'wp-user-frontend') }}</div>
@@ -298,7 +298,7 @@
                                                         <input type="checkbox" :value="option.value" disabled class="wpuf-checkbox-input wpuf-text-emerald-600">
                                                         <label class="wpuf-checkbox-label wpuf-text-base wpuf-leading-6 wpuf-text-gray-700">{{ option.label }}</label>
                                                     </div>
-                                                    <span class="wpuf-text-base wpuf-font-medium wpuf-text-emerald-600">{{ field.currency_symbol || '$' }}{{ field.prices && field.prices[option.value] ? field.prices[option.value] : '0' }}</span>
+                                                    <span class="wpuf-text-base wpuf-font-medium wpuf-text-emerald-600">{{ field.prices && field.prices[option.value] ? field.prices[option.value] : '0' }}</span>
                                                 </div>
                                             </template>
                                             <div v-else class="wpuf-text-gray-400 wpuf-text-base wpuf-leading-6">{{ __('No pricing options configured', 'wp-user-frontend') }}</div>
@@ -306,15 +306,22 @@
                                     </div>
 
                                     <!-- WPUF Pricing Dropdown -->
-                                    <div v-else-if="getWPUFFieldType(field) === 'pricing_dropdown'" class="wpuf-form-pricing-dropdown-container">
-                                        <select disabled class="wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-w-full">
+                                    <div v-else-if="getWPUFFieldType(field) === 'pricing_dropdown'" class="wpuf-form-pricing-dropdown-container wpuf-relative">
+                                        <select
+                                            disabled
+                                            class="wpuf-form-select wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-w-full wpuf-text-gray-700 wpuf-cursor-pointer focus:wpuf-outline-none focus:wpuf-ring-2 focus:wpuf-ring-emerald-500 focus:wpuf-border-emerald-500 wpuf-pr-10"
+                                        >
+                                            <option value="" class="wpuf-text-gray-400">{{ field.first || __('- Select -', 'wp-user-frontend') }}</option>
                                             <template v-if="field.options && normalizeOptions(field.options).length > 0">
                                                 <option v-for="option in normalizeOptions(field.options)" :key="option.value" :value="option.value">
-                                                    {{ option.label }} - {{ field.currency_symbol || '$' }}{{ field.prices && field.prices[option.value] ? field.prices[option.value] : '0' }}
+                                                    {{ option.label }} - {{ field.prices && field.prices[option.value] ? field.prices[option.value] : '0' }}
                                                 </option>
                                             </template>
                                             <option v-else disabled class="wpuf-text-gray-400">{{ __('No pricing options configured', 'wp-user-frontend') }}</option>
                                         </select>
+                                        <svg class="wpuf-select-caret wpuf-absolute wpuf-right-3 wpuf-top-1/2 wpuf-transform wpuf--translate-y-1/2 wpuf-pointer-events-none wpuf-text-gray-500" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
                                     </div>
 
                                     <!-- WPUF Pricing Multiselect -->
@@ -322,7 +329,7 @@
                                         <select multiple disabled class="wpuf-form-multiselect wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-w-full" style="min-height: 120px;">
                                             <template v-if="field.options && normalizeOptions(field.options).length > 0">
                                                 <option v-for="option in normalizeOptions(field.options)" :key="option.value" :value="option.value" class="wpuf-py-2 wpuf-px-3">
-                                                    {{ option.label }} - {{ field.currency_symbol || '$' }}{{ field.prices && field.prices[option.value] ? field.prices[option.value] : '0' }}
+                                                    {{ option.label }} - {{ field.prices && field.prices[option.value] ? field.prices[option.value] : '0' }}
                                                 </option>
                                             </template>
                                             <option v-else disabled class="wpuf-text-gray-400">{{ __('No pricing options configured', 'wp-user-frontend') }}</option>
@@ -333,7 +340,7 @@
                                     <div v-else-if="getWPUFFieldType(field) === 'cart_total'" class="wpuf-form-cart-total wpuf-border-2 wpuf-border-emerald-200 wpuf-bg-emerald-50 wpuf-rounded-[10px] wpuf-p-4">
                                         <div class="wpuf-flex wpuf-items-center wpuf-justify-between">
                                             <span class="wpuf-text-lg wpuf-font-semibold wpuf-text-gray-800">{{ field.label || __('Total', 'wp-user-frontend') }}</span>
-                                            <span class="wpuf-text-2xl wpuf-font-bold wpuf-text-emerald-600">{{ field.currency_symbol || '$' }}0.00</span>
+                                            <span class="wpuf-text-2xl wpuf-font-bold wpuf-text-emerald-600">0.00</span>
                                         </div>
                                     </div>
 
@@ -2072,8 +2079,12 @@ What would you like me to help you with?`;
 
         async callChatAPI(message) {
             const config = window.wpufAIFormBuilder || {};
-            const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
+            const generateUrl = config.endpoints?.generate;
             const nonce = config.nonce || '';
+
+            if ( ! generateUrl ) {
+                throw new Error( 'WPUF AI Form Builder: Generate endpoint not configured' );
+            }
 
             // Build comprehensive conversation context
             const conversationContext = {
@@ -2136,7 +2147,6 @@ What would you like me to help you with?`;
 
             // Always use generate endpoint for chat modifications since form isn't saved yet
             // Only use modify-form endpoint if we have a saved form ID from database
-            const endpoint = 'wpuf/v1/ai-form-builder/generate';
 
             // Prepare request body for generate endpoint
             // Let the backend handle the system prompt - don't override it here
@@ -2144,13 +2154,12 @@ What would you like me to help you with?`;
                 prompt: message,  // Send the user's message as-is
                 session_id: this.sessionId,
                 conversation_context: conversationContext,
-                form_type: config.formType || 'post', // Pass form type to API
-                provider: config.provider || 'google',
-                language: this.selectedLanguage || 'English' // Pass selected language to API
-                // Note: temperature and max_tokens are now handled by backend based on model configuration
+                form_type: config.formType,
+                provider: config.provider,
+                language: this.selectedLanguage || 'English'
             };
 
-            const response = await fetch(restUrl + endpoint, {
+            const response = await fetch(generateUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -2184,8 +2193,12 @@ What would you like me to help you with?`;
 
             try {
                 const config = window.wpufAIFormBuilder || {};
-                const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
+                const createFormUrl = config.endpoints?.createForm;
                 const nonce = config.nonce || '';
+
+                if ( ! createFormUrl ) {
+                    throw new Error( 'WPUF AI Form Builder: Create form endpoint not configured' );
+                }
 
                 // Prepare form data in WPUF format
                 const formData = {
@@ -2237,7 +2250,7 @@ What would you like me to help you with?`;
                 };
 
                 // Call the create form API
-                const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/create-form', {
+                const response = await fetch(createFormUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

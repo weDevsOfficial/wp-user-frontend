@@ -188,5 +188,58 @@ Vue.component('builder-stage-v4-1', {
                 comp.openFieldPicker();
             }
         },
+
+        hiddenClasses: function() {
+            return [
+                'hidden',           // Tailwind: display: none
+                'wpuf_hidden_field',
+                'screen-reader-text'
+            ];
+        },
+
+        /**
+         * Filter CSS classes to prevent hiding fields in the builder
+         * Removes classes that would make the field invisible or hidden in the backend
+         * while preserving them for frontend rendering
+         *
+         * @param {string} cssClasses - Space-separated CSS class names
+         * @return {string} Filtered CSS classes safe for builder
+         */
+        filter_builder_css_classes: function(cssClasses) {
+            if (!cssClasses || typeof cssClasses !== 'string') {
+                return '';
+            }
+
+            // Split classes, filter out forbidden ones, and rejoin
+            var classes = cssClasses.split(/\s+/).filter(function(className) {
+                return className && this.hiddenClasses().indexOf(className.toLowerCase()) === -1;
+            }.bind(this));
+
+            return classes.join(' ');
+        },
+
+        /**
+         * Check if field has CSS classes that would hide it on the frontend
+         * Used to display a visual indicator in the builder
+         *
+         * @param {string} cssClasses - Space-separated CSS class names
+         * @return {boolean} True if field has hiding CSS classes
+         */
+        has_hidden_css_class: function(cssClasses) {
+            if (!cssClasses || typeof cssClasses !== 'string') {
+                return false;
+            }
+
+            var hiddenClasses = this.hiddenClasses();
+            var classes = cssClasses.toLowerCase().split(/\s+/);
+
+            for (var i = 0; i < hiddenClasses.length; i++) {
+                if (classes.indexOf(hiddenClasses[i]) !== -1) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
     }
 });

@@ -2,7 +2,6 @@
 
 namespace WeDevs\Wpuf\Frontend;
 
-use Tribe__Events__Query;
 use WP_Query;
 
 /**
@@ -11,22 +10,6 @@ use WP_Query;
  * @author Tareq Hasan
  */
 class Frontend_Dashboard {
-
-    public function __construct() {
-        add_action( 'wpuf_dashboard_shortcode_init', [ $this, 'remove_tribe_pre_get_posts' ] );
-    }
-
-    /**
-     * Events from the events calendar plugin don't show on the frontend dashboard,
-     * that's why this function is reequired.
-     *
-     * @since 3.1.2
-     */
-    public function remove_tribe_pre_get_posts() {
-        if ( class_exists( 'Tribe__Events__Query' ) ) {
-            remove_action( 'pre_get_posts', [ Tribe__Events__Query::class, 'pre_get_posts' ], 50 );
-        }
-    }
 
     /**
      * Handle's user dashboard functionality
@@ -50,6 +33,7 @@ class Frontend_Dashboard {
                 'meta'           => 'off',
                 'excerpt'        => 'off',
                 'payment_column' => 'on',
+                'post_status'    => 'draft,future,pending,publish,private',
             ], $atts
         );
         $attributes = array_merge( $attributes, $atts );
@@ -89,13 +73,21 @@ class Frontend_Dashboard {
         }
         $post_type = explode( ',', $post_type );
         unset( $attributes['post_type'] );
+
+        // Parse post_status from shortcode attribute
+        $post_status = $attributes['post_status'] ? $attributes['post_status'] : 'draft,future,pending,publish,private';
+        $post_status = \is_array( $post_status ) ? $post_status : explode( ',', $post_status );
+        $post_status = array_map( 'trim', $post_status );
+        unset( $attributes['post_status'] );
+
         $args = [
             'author'         => get_current_user_id(),
-            'post_status'    => [ 'draft', 'future', 'pending', 'publish', 'private' ],
+            'post_status'    => $post_status,
             'post_type'      => $post_type,
             'posts_per_page' => wpuf_get_option( 'per_page', 'wpuf_dashboard', 10 ),
             'paged'          => $pagenum,
         ];
+
         if ( isset( $attributes['form_id'] ) && $attributes['form_id'] !== 'off' ) {
             $args['meta_query'] = [
                 [

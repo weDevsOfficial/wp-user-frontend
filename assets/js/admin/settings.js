@@ -243,25 +243,26 @@
 
                 Object.keys(groups).forEach(function (key) {
                     var group = groups[key];
-                    var isProFeatureDisabled = (key === 'stripe' && !group.existingCheckbox);
+                    
+                    // For stripe, check if it's a PRO preview (Free version adds stripe checkbox with PRO badge in label)
+                    // PRO is disabled if:
+                    // 1. No existingCheckbox exists (stripe not registered at all), OR
+                    // 2. existingCheckbox exists but contains a PRO icon (Free_Loader adds it for preview)
+                    var hasProBadgeInLabel = false;
+                    if (key === 'stripe' && group.existingCheckbox) {
+                        // Check if the checkbox label contains the PRO icon/badge
+                        hasProBadgeInLabel = group.existingCheckbox.querySelector('.pro-icon, .pro-icon-title, img[src*="pro-badge"]') !== null;
+                    }
+                    var isProFeatureDisabled = (key === 'stripe' && (!group.existingCheckbox || hasProBadgeInLabel));
 
-                    if (group.existingCheckbox) {
+                    if (group.existingCheckbox && !hasProBadgeInLabel) {
+                        // PRO is active - stripe checkbox exists without PRO badge
                         var checkboxTr = document.createElement('tr');
                         var checkboxTh = document.createElement('th');
                         checkboxTh.scope = 'row';
 
-                        if (key === 'stripe') {
-                            // Build label with PRO badge — same pattern as native PRO-gated settings
-                            var enableLbl = document.createElement('label');
-                            enableLbl.appendChild(document.createTextNode('Enable Gateway '));
-                            var proBadgeSpan = document.createElement('span');
-                            proBadgeSpan.className = 'pro-icon';
-                            proBadgeSpan.innerHTML = existingProIconSrc;
-                            enableLbl.appendChild(proBadgeSpan);
-                            checkboxTh.appendChild(enableLbl);
-                        } else {
-                            checkboxTh.innerHTML = 'Enable Gateway';
-                        }
+                        // When PRO is truly active, no PRO badge needed
+                        checkboxTh.innerHTML = 'Enable Gateway';
 
                         var checkboxTd = document.createElement('td');
 

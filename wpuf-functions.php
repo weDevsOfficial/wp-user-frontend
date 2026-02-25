@@ -6123,6 +6123,8 @@ function wpuf_logout_visibility_css() {
     <?php
 }
 add_action( 'wp_head', 'wpuf_logout_visibility_css', 100 );
+
+/**
  * Check if current user can edit a specific post
  *
  * Validates user authorization to edit a post by checking:

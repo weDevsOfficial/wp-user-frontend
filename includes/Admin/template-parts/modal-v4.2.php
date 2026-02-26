@@ -50,10 +50,10 @@ if ( strpos( strtolower( $form_type ), 'registration' ) !== false || strpos( str
             'label'    => __( 'Membership', 'wp-user-frontend' ),
             'keywords' => [ 'membership' ],
         ],
-        // 'community'    => [
-        //     'label'    => __( 'Community', 'wp-user-frontend' ),
-        //     'keywords' => [],
-        // ],
+        'community'    => [
+            'label'    => __( 'Community', 'wp-user-frontend' ),
+            'keywords' => [ 'community member' ],
+        ],
         // 'associations' => [
         //     'label'    => __( 'Associations', 'wp-user-frontend' ),
         //     'keywords' => [],

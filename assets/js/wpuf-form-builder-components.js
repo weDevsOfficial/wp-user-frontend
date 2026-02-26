@@ -496,6 +496,7 @@ Vue.component('field-icon_selector', {
         return {
             showIconPicker: false,
             searchTerm: '',
+            activeTab: 'icon',
             icons: wpuf_form_builder.icons || []
         };
     },
@@ -515,14 +516,28 @@ Vue.component('field-icon_selector', {
             }
         },
 
+        isImageValue: function() {
+            if (!this.value) return false;
+            return this.value.indexOf('http') === 0 || ( this.value.indexOf('/') === 0 && this.value.charAt(1) !== '/' );
+        },
+
         selectedIconDisplay: function() {
             if (this.value) {
+                if (this.isImageValue) {
+                    return wpuf_form_builder.i18n.custom_image;
+                }
                 var icon = this.icons.find(function(item) {
                     return item.class === this.value;
                 }.bind(this));
                 return icon ? icon.name : this.value;
             }
-            return 'Select an icon';
+            return wpuf_form_builder.i18n.select_icon_or_upload;
+        },
+
+        iconCountLabel: function() {
+            var i18n = wpuf_form_builder.i18n;
+            var status = this.searchTerm ? i18n.icons_found : i18n.icons_available;
+            return this.filteredIcons.length + ' ' + status;
         },
 
         filteredIcons: function() {
@@ -560,6 +575,13 @@ Vue.component('field-icon_selector', {
                     });
                 }
             }
+        },
+
+        value: function() {
+            // Auto-switch tab based on value type
+            if (this.value) {
+                this.activeTab = this.isImageValue ? 'image' : 'icon';
+            }
         }
     },
 
@@ -577,6 +599,37 @@ Vue.component('field-icon_selector', {
 
         togglePicker: function() {
             this.showIconPicker = !this.showIconPicker;
+        },
+
+        switchTab: function(tab) {
+            this.activeTab = tab;
+        },
+
+        openMediaUploader: function(e) {
+            if (e) e.stopPropagation();
+
+            if (typeof wp === 'undefined' || !wp.media) {
+                return;
+            }
+
+            var self = this;
+            var frame = wp.media({
+                title: wpuf_form_builder.i18n.select_icon_image,
+                button: { text: wpuf_form_builder.i18n.use_as_icon },
+                multiple: false,
+                library: { type: 'image' }
+            });
+
+            frame.on('select', function() {
+                var attachment = frame.state().get('selection').first().toJSON();
+                var url = (attachment.sizes && attachment.sizes.thumbnail)
+                    ? attachment.sizes.thumbnail.url
+                    : attachment.url;
+                self.value = url;
+                self.showIconPicker = false;
+            });
+
+            frame.open();
         },
 
         handleClickOutside: function(event) {

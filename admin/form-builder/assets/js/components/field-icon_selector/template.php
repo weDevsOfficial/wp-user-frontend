@@ -11,7 +11,7 @@
             class="wpuf-w-full wpuf-mt-4 wpuf-min-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-medium !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] hover:!wpuf-text-gray-700 wpuf-flex wpuf-justify-between wpuf-items-center !wpuf-text-base wpuf-cursor-pointer"
         >
             <div class="wpuf-flex wpuf-items-center wpuf-gap-2">
-                <img v-if="isImageValue" :src="value" style="width: 20px; height: 20px; object-fit: cover; border-radius: 2px;" />
+                <img v-if="isImageValue" :src="value" alt="" style="width: 20px; height: 20px; object-fit: cover; border-radius: 2px;" />
                 <i v-else-if="value" :class="value" class="wpuf-text-gray-600"></i>
                 <span>{{ selectedIconDisplay }}</span>
             </div>
@@ -52,28 +52,30 @@
                     <input
                         v-model="searchTerm"
                         type="text"
-                        placeholder="Search icons... (e.g., user, email, home)"
+                        placeholder="<?php esc_attr_e( 'Search icons... (e.g., user, email, home)', 'wp-user-frontend' ); ?>"
                         class="wpuf-w-full !wpuf-px-4 !wpuf-py-1.5 wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-text-sm wpuf-text-gray-900 placeholder:wpuf-text-gray-400 wpuf-shadow focus:!wpuf-shadow-none"
                     >
                     <div class="wpuf-text-xs wpuf-text-gray-500 wpuf-mt-1">
-                        {{ filteredIcons.length }} icons {{ searchTerm ? 'found' : 'available' }}
+                        {{ iconCountLabel }}
                     </div>
                 </div>
 
                 <!-- Icons Grid -->
                 <div class="wpuf-icon-grid-container" style="max-height: 210px; overflow-y: auto; padding: 10px;">
                     <div v-if="filteredIcons.length > 0" class="wpuf-icon-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
-                        <div
+                        <button
+                            type="button"
                             v-for="icon in filteredIcons"
                             :key="icon.class"
                             @click="selectIcon(icon.class)"
                             :class="['wpuf-icon-grid-item', { 'selected': value === icon.class }]"
                             :title="icon.name + ' - ' + icon.keywords"
+                            :aria-pressed="value === icon.class"
                             style="padding: 10px 5px; text-align: center; border: 1px solid #e0e0e0; border-radius: 4px; cursor: pointer; transition: all 0.2s; min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center;"
                         >
                             <i :class="icon.class" style="font-size: 18px; margin-bottom: 4px; color: #555;"></i>
                             <div style="font-size: 10px; color: #666; line-height: 1.2; word-break: break-word; max-width: 100%;">{{ icon.name }}</div>
-                        </div>
+                        </button>
                     </div>
 
                     <!-- No Results -->
@@ -89,7 +91,7 @@
                 <div class="wpuf-text-center">
                     <!-- Image Preview -->
                     <div v-if="isImageValue" class="wpuf-mb-4">
-                        <img :src="value" style="max-width: 100px; max-height: 100px; object-fit: cover; border-radius: 8px; border: 2px solid #e0e0e0; margin: 0 auto;" />
+                        <img :src="value" alt="" style="max-width: 100px; max-height: 100px; object-fit: cover; border-radius: 8px; border: 2px solid #e0e0e0; margin: 0 auto;" />
                         <div class="wpuf-text-xs wpuf-text-gray-500 wpuf-mt-2"><?php esc_html_e( 'Current custom image', 'wp-user-frontend' ); ?></div>
                     </div>
 

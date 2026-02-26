@@ -20,7 +20,7 @@
             <div v-if="!is_full_width(field.template)" class="wpuf-label">
                 <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'left_label'"
                       class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-mr-1">
-                      <img v-if="field.field_icon.indexOf('http') === 0 || field.field_icon.indexOf('/') === 0" :src="field.field_icon" alt="" class="wpuf-field-icon wpuf-field-icon-img" />
+                      <img v-if="field.field_icon.indexOf('http') === 0 || ( field.field_icon.indexOf('/') === 0 && field.field_icon.charAt(1) !== '/' )" :src="field.field_icon" alt="" class="wpuf-field-icon wpuf-field-icon-img" />
                       <i v-else :class="[field.field_icon, 'wpuf-field-icon']"></i>
                 </span>
                 <label v-if="!is_invisible(field)" :for="'wpuf-' + field.name ? field.name : 'cls'">
@@ -28,7 +28,7 @@
                 </label>
                 <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'right_label'"
                       class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2">
-                      <img v-if="field.field_icon.indexOf('http') === 0 || field.field_icon.indexOf('/') === 0" :src="field.field_icon" alt="" class="wpuf-field-icon wpuf-field-icon-img" />
+                      <img v-if="field.field_icon.indexOf('http') === 0 || ( field.field_icon.indexOf('/') === 0 && field.field_icon.charAt(1) !== '/' )" :src="field.field_icon" alt="" class="wpuf-field-icon wpuf-field-icon-img" />
                       <i v-else :class="[field.field_icon, 'wpuf-field-icon']"></i>
                 </span>
             </div>
@@ -121,7 +121,7 @@
                 <div v-if="!(is_full_width(field.template) || is_pro_preview(field.template))" class="wpuf-w-1/4 wpuf-flex wpuf-items-center">
                     <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'left_label'"
                           class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-mr-1">
-                          <img v-if="field.field_icon.indexOf('http') === 0 || field.field_icon.indexOf('/') === 0" :src="field.field_icon" alt="" class="wpuf-field-icon wpuf-field-icon-img" />
+                          <img v-if="field.field_icon.indexOf('http') === 0 || ( field.field_icon.indexOf('/') === 0 && field.field_icon.charAt(1) !== '/' )" :src="field.field_icon" alt="" class="wpuf-field-icon wpuf-field-icon-img" />
                           <i v-else :class="[field.field_icon, 'wpuf-field-icon']"></i>
                     </span>
                     <label
@@ -141,7 +141,7 @@
                     </label>
                     <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'right_label'"
                           class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2">
-                          <img v-if="field.field_icon.indexOf('http') === 0 || field.field_icon.indexOf('/') === 0" :src="field.field_icon" alt="" class="wpuf-field-icon wpuf-field-icon-img" />
+                          <img v-if="field.field_icon.indexOf('http') === 0 || ( field.field_icon.indexOf('/') === 0 && field.field_icon.charAt(1) !== '/' )" :src="field.field_icon" alt="" class="wpuf-field-icon wpuf-field-icon-img" />
                           <i v-else :class="[field.field_icon, 'wpuf-field-icon']"></i>
                     </span>
                 </div>

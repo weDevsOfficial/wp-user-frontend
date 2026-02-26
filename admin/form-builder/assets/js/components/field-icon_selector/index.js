@@ -35,20 +35,26 @@ Vue.component('field-icon_selector', {
 
         isImageValue: function() {
             if (!this.value) return false;
-            return this.value.indexOf('http') === 0 || this.value.indexOf('//') === 0 || this.value.indexOf('/') === 0;
+            return this.value.indexOf('http') === 0 || ( this.value.indexOf('/') === 0 && this.value.charAt(1) !== '/' );
         },
 
         selectedIconDisplay: function() {
             if (this.value) {
                 if (this.isImageValue) {
-                    return 'Custom image';
+                    return wpuf_form_builder.i18n.custom_image;
                 }
                 var icon = this.icons.find(function(item) {
                     return item.class === this.value;
                 }.bind(this));
                 return icon ? icon.name : this.value;
             }
-            return 'Select an icon or upload image';
+            return wpuf_form_builder.i18n.select_icon_or_upload;
+        },
+
+        iconCountLabel: function() {
+            var i18n = wpuf_form_builder.i18n;
+            var status = this.searchTerm ? i18n.icons_found : i18n.icons_available;
+            return this.filteredIcons.length + ' ' + status;
         },
 
         filteredIcons: function() {
@@ -88,10 +94,10 @@ Vue.component('field-icon_selector', {
             }
         },
 
-        value: function(newVal) {
+        value: function() {
             // Auto-switch tab based on value type
-            if (newVal) {
-                this.activeTab = (newVal.indexOf('http') === 0 || newVal.indexOf('//') === 0 || newVal.indexOf('/') === 0) ? 'image' : 'icon';
+            if (this.value) {
+                this.activeTab = this.isImageValue ? 'image' : 'icon';
             }
         }
     },
@@ -125,8 +131,8 @@ Vue.component('field-icon_selector', {
 
             var self = this;
             var frame = wp.media({
-                title: 'Select Icon Image',
-                button: { text: 'Use as Icon' },
+                title: wpuf_form_builder.i18n.select_icon_image,
+                button: { text: wpuf_form_builder.i18n.use_as_icon },
                 multiple: false,
                 library: { type: 'image' }
             });

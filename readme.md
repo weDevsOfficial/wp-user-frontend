@@ -3,8 +3,8 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** frontend post, user directory, membership, user profile, user registration, content restriction, guest post, submit post, subscriptions, directory, login form, registration form, user profile, profile builder, forms  
 **Requires at least:** 5.0  
-**Tested up to:** 6.9  
-**Stable tag:** 4.2.8  
+**Tested up to:** 6.9.1  
+**Stable tag:** 4.2.9  
 **Requires PHP:** 5.6  
 **License:** GPLv2  
 **License URL:** https://www.gnu.org/licenses/gpl-2.0.html  
@@ -207,7 +207,7 @@ Try an <a href="https://wedevs.com/in/wpuf/demo/?utm_medium=referral&utm_source=
 
 Check out the <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme">full feature list and pricing plans </a> of the Pro version.
 
-You can always explore every update, fix and improvement in the **full changelog** here: [https://headwayapp.co/wp-user-frontend-changelog](https://headwayapp.co/wp-user-frontend-changelog)
+You can always explore every update, fix and improvement in the **full changelog** here: [https://headwayapp.co/user-frontend-changelog](https://headwayapp.co/user-frontend-changelog)
 
 
 
@@ -359,6 +359,14 @@ Please report security bugs found in the source code of the User Frontend plugin
 15. Create AI Powered Post Form
 
 ## Changelog ##
+### v4.2.9 (24 February, 2026) ###
+* New – Integration-specific AI form builder support
+* New – Add Shortcodes Reference page under Tools menu
+* Enhance – Improve Bank payment system
+* Enhance – Add security validation for JSON file uploads
+* Enhance – Strengthen authorization checks for draft post editing
+* Fix – Correct AI form builder button text
+
 ### v4.2.8 (28 January, 2026) ###
 * New – Account page Re-Design
 * New – AI settings improvements with temperature control, API key masking, and connection testing

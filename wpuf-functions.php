@@ -1959,7 +1959,18 @@ function wpuf_get_form_fields( $form_id ) {
         $form_fields[] = apply_filters( 'wpuf-get-form-fields', $field );
     }
 
-    return $form_fields;
+    /**
+     * Filter form fields data array before returning
+     *
+     * Allows filtering the complete form fields array. Used to filter out
+     * pro-only fields when pro plugin is not active.
+     *
+     * @since 4.2.9
+     *
+     * @param array $form_fields The array of form fields data
+     * @param int   $form_id     The form ID
+     */
+    return apply_filters( 'wpuf_form_fields_data', $form_fields, $form_id );
 }
 
 add_action( 'wp_ajax_wpuf_get_child_cat', 'wpuf_get_child_cats' );
@@ -4671,45 +4682,38 @@ function wpuf_unset_conditional( $settings ) {
 /**
  * Check if current post is editable
  *
- * @param $post
+ * This is a backward-compatible wrapper around wpuf_user_can_edit_post()
+ * for use in templates. Returns boolean instead of WP_Error.
+ *
+ * @param WP_Post|int $post Post object or post ID
  *
  * @since 3.5.27
+ * @since 4.2.9 Refactored to use wpuf_user_can_edit_post(). Now accepts post ID or post object.
  *
- * @return bool
+ * @return bool True if editable, false otherwise
  */
 function wpuf_is_post_editable( $post ) {
-    $show_edit = false;
-
-    $current_user      = wpuf_get_user();
-    $user_subscription = new WeDevs\Wpuf\User_Subscription( $current_user );
-    $user_sub          = $user_subscription->current_pack();
-    $sub_id            = $current_user->subscription()->current_pack_id();
-
-    if ( $sub_id ) {
-        $subs_expired = $user_subscription->expired();
-    } else {
-        $subs_expired = false;
+    // Handle WordPress post object
+    if ( ! $post instanceof WP_Post ) {
+        return false;
     }
 
-    if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
-        $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
-        $disable_publish_edit = wpuf_get_option( 'disable_publish_edit', 'wpuf_dashboard', 'off' );
+    if ( is_numeric( $post ) ) {
+        $post_id = absint( $post );
 
-        $show_edit = true;
-        if ( ( 'pending' === $post->post_status && 'on' === $disable_pending_edit ) || ( 'publish' === $post->post_status && 'off' !==  $disable_publish_edit ) ) {
-            $show_edit = false;
+        if ( ! $post_id ) {
+            return false;
         }
 
-        if ( ( $post->post_status == 'draft' || $post->post_status == 'pending' ) && ( ! empty( $payment_status ) && $payment_status != 'completed' ) ) {
-            $show_edit = false;
-        }
+        $can_edit = wpuf_user_can_edit_post( $post_id );
 
-        if ( $subs_expired ) {
-            $show_edit = false;
-        }
+        return ! is_wp_error( $can_edit );
     }
 
-    return $show_edit;
+    $can_edit = wpuf_user_can_edit_post( $post->ID );
+
+    // Return true if not an error, false otherwise
+    return ! is_wp_error( $can_edit );
 }
 
 /**
@@ -5989,4 +5993,285 @@ function wpuf_render_login_layout_field( $args ) {
     }
 
     echo '</fieldset>';
+}
+
+/**
+ * Get WPUF logout URL
+ *
+ * Returns the logout URL with proper nonce. If WPUF login override is enabled,
+ * it returns the WPUF logout URL, otherwise falls back to WordPress default.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $redirect_to Optional. URL to redirect after logout.
+ *
+ * @return string The logout URL
+ */
+function wpuf_get_logout_url( $redirect_to = '' ) {
+    $override = wpuf_get_option( 'register_link_override', 'wpuf_profile', 'off' );
+
+    if ( 'on' === $override ) {
+        $login_page_id = wpuf_get_option( 'login_page', 'wpuf_profile', false );
+
+        if ( $login_page_id ) {
+            $root_url   = get_permalink( $login_page_id );
+            $logout_url = wp_nonce_url( add_query_arg( [ 'action' => 'logout' ], $root_url ), 'log-out' );
+
+            if ( ! empty( $redirect_to ) ) {
+                $logout_url = add_query_arg( 'redirect_to', urlencode( $redirect_to ), $logout_url );
+            }
+
+            return $logout_url;
+        }
+    }
+
+    return wp_logout_url( $redirect_to );
+}
+
+/**
+ * Add logout link to WordPress navigation menu
+ *
+ * @since WPUF_SINCE
+ *
+ * @param int    $menu_id     The menu ID to add the logout link to.
+ * @param string $menu_label  Optional. The label for the logout menu item.
+ * @param int    $parent_id   Optional. The parent menu item ID.
+ *
+ * @return int|WP_Error The menu item ID on success, WP_Error on failure.
+ */
+function wpuf_add_logout_to_menu( $menu_id, $menu_label = '', $parent_id = 0 ) {
+    if ( empty( $menu_label ) ) {
+        $menu_label = __( 'Logout', 'wp-user-frontend' );
+    }
+
+    $logout_url = wpuf_get_logout_url();
+
+    $menu_item_data = [
+        'menu-item-title'   => $menu_label,
+        'menu-item-url'     => $logout_url,
+        'menu-item-status'  => 'publish',
+        'menu-item-type'    => 'custom',
+        'menu-item-parent-id' => $parent_id,
+    ];
+
+    $menu_item_id = wp_update_nav_menu_item( $menu_id, 0, $menu_item_data );
+
+    // Add CSS class to identify WPUF logout menu items
+    if ( ! is_wp_error( $menu_item_id ) ) {
+        update_post_meta( $menu_item_id, '_menu_item_classes', [ 'wpuf-logout-link' ] );
+    }
+
+    return $menu_item_id;
+}
+
+/**
+ * Filter navigation menu items to hide logout link when user is not logged in
+ *
+ * @since WPUF_SINCE
+ *
+ * @param array $items The menu items.
+ *
+ * @return array Filtered menu items.
+ */
+function wpuf_filter_logout_menu_items( $items ) {
+    // If user is logged in, show all items
+    if ( is_user_logged_in() ) {
+        return $items;
+    }
+
+    // Remove logout items for non-logged-in users
+    foreach ( $items as $key => $item ) {
+        // Check if this is a logout link by URL or CSS class
+        if (
+            strpos( $item->url, 'action=logout' ) !== false ||
+            ( is_array( $item->classes ) && in_array( 'wpuf-logout-link', $item->classes, true ) )
+        ) {
+            unset( $items[ $key ] );
+        }
+    }
+
+    return $items;
+}
+add_filter( 'wp_nav_menu_objects', 'wpuf_filter_logout_menu_items', 10, 1 );
+
+/**
+ * Add CSS to hide logout links for non-logged-in users (for FSE themes)
+ *
+ * This handles cases where the logout link is in a block navigation
+ * that doesn't go through wp_nav_menu_objects filter.
+ *
+ * @since WPUF_SINCE
+ *
+ * @return void
+ */
+function wpuf_logout_visibility_css() {
+    // Only output CSS if user is NOT logged in
+    if ( is_user_logged_in() ) {
+        return;
+    }
+
+    ?>
+    <style type="text/css">
+        /* Hide logout links for non-logged-in users */
+        .wp-block-navigation a[href*="action=logout"],
+        .wp-block-navigation-item a[href*="action=logout"],
+        a.wpuf-logout-link,
+        .wpuf-logout-link {
+            display: none !important;
+        }
+    </style>
+    <?php
+}
+add_action( 'wp_head', 'wpuf_logout_visibility_css', 100 );
+
+/**
+ * Check if current user can edit a specific post
+ *
+ * Validates user authorization to edit a post by checking:
+ * - User is logged in
+ * - WPUF global and user-specific edit settings
+ * - Post-specific lock settings
+ * - User is post author with edit_post capability
+ * - User has edit_others_posts capability for posts they don't own
+ *
+ * @since SINCE_WPUF
+ *
+ * @param int  $post_id         Post ID to check
+ * @param bool $check_settings  Whether to check WPUF settings (default true). Set false for AJAX/admin operations
+ *
+ * @return true|WP_Error True if user can edit, WP_Error on failure
+ */
+function wpuf_user_can_edit_post( $post_id, $check_settings = true ) {
+
+    $post_id = absint( $post_id );
+
+    if ( ! $post_id ) {
+        return new WP_Error(
+            'wpuf_invalid_post',
+            __( 'Invalid post ID.', 'wp-user-frontend' )
+        );
+    }
+
+    // Get the post
+    $post = get_post( $post_id );
+
+    if ( ! $post || is_wp_error( $post ) ) {
+        return new WP_Error(
+            'wpuf_post_not_found',
+            __( 'Post not found.', 'wp-user-frontend' )
+        );
+    }
+
+    // Get current user and post author
+    $current_user_id = get_current_user_id();
+    $post_author_id  = (int) $post->post_author;
+
+    // Early return: user must be logged in
+    if ( $current_user_id <= 0 ) {
+        return new WP_Error(
+            'wpuf_user_not_logged_in',
+            __( 'You must be logged in to edit posts.', 'wp-user-frontend' )
+        );
+    }
+
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        return new WP_Error(
+            'wpuf_unauthorized_edit',
+            __( 'You are not authorized to edit this post.', 'wp-user-frontend' )
+        );
+    }
+
+    // Check WPUF-specific settings (only for non-admin users)
+    if ( $check_settings && ! current_user_can( 'edit_others_posts' ) ) {
+
+        // Check if post editing is globally enabled
+        if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) !== 'yes' ) {
+            return new WP_Error(
+                'wpuf_post_edit_disabled',
+                __( 'Post editing is disabled.', 'wp-user-frontend' )
+            );
+        }
+
+        // Check user-level post lock
+        if ( wpuf_get_user()->edit_post_locked() ) {
+            $reason = wpuf_get_user()->edit_post_lock_reason();
+
+            return new WP_Error(
+                'wpuf_user_edit_locked',
+                $reason ?: __( 'Your post edit access has been locked by an administrator.', 'wp-user-frontend' )
+            );
+        }
+
+        // Check post-specific lock (admin can lock individual posts)
+        $post_lock = get_post_meta( $post_id, '_wpuf_lock_editing_post', true );
+
+        if ( 'yes' === $post_lock ) {
+            return new WP_Error(
+                'wpuf_post_locked',
+                apply_filters(
+                    'wpuf_edit_post_lock_user_notice',
+                    __( 'Your edit access for this post has been locked by an administrator.', 'wp-user-frontend' )
+                )
+            );
+        }
+
+        // Check time-based lock
+        $lock_time = get_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', true );
+
+        if ( ! empty( $lock_time ) && $lock_time < time() ) {
+            return new WP_Error(
+                'wpuf_post_lock_expired',
+                apply_filters(
+                    'wpuf_edit_post_lock_expire_notice',
+                    __( 'Your allocated time for editing this post has expired.', 'wp-user-frontend' )
+                )
+            );
+        }
+
+        // Check post status restrictions
+        $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
+        $disable_publish_edit = wpuf_get_option( 'disable_publish_edit', 'wpuf_dashboard', 'off' );
+
+        if ( 'pending' === $post->post_status && 'on' === $disable_pending_edit ) {
+            return new WP_Error(
+                'wpuf_pending_edit_disabled',
+                __( 'You can\'t edit a post while in pending mode.', 'wp-user-frontend' )
+            );
+        }
+
+        if ( 'publish' === $post->post_status && 'off' !== $disable_publish_edit ) {
+            return new WP_Error(
+                'wpuf_publish_edit_disabled',
+                __( 'You\'re not allowed to edit this post.', 'wp-user-frontend' )
+            );
+        }
+
+        // Check subscription expiration
+        $current_user      = wpuf_get_user();
+        $user_subscription = new \WeDevs\Wpuf\User_Subscription( $current_user );
+        $sub_id            = $current_user->subscription()->current_pack_id();
+
+        if ( $sub_id ) {
+            $subs_expired = $user_subscription->expired();
+
+            if ( $subs_expired ) {
+                return new WP_Error(
+                    'wpuf_subscription_expired',
+                    __( 'Your subscription has expired. Please renew to edit posts.', 'wp-user-frontend' )
+                );
+            }
+        }
+
+        // Check payment status for draft/pending posts
+        $payment_status = get_post_meta( $post_id, '_wpuf_payment_status', true );
+
+        if ( ( 'draft' === $post->post_status || 'pending' === $post->post_status ) && ! empty( $payment_status ) && 'completed' !== $payment_status ) {
+            return new WP_Error(
+                'wpuf_payment_incomplete',
+                __( 'You cannot edit this post until payment is completed.', 'wp-user-frontend' )
+            );
+        }
+    }
+
+    return true;
 }

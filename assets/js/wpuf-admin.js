@@ -358,3 +358,79 @@ jQuery(function($) {
         }, 50);
     });
 });
+
+// Login Form Settings Tabs
+jQuery(document).ready(function($) {
+    if ( ! $('.wpuf-login-tab-link').length ) {
+        return;
+    }
+
+    var appearanceFields = [
+        'wpuf_login_form_layout',
+        'wpuf_login_form_bg_color',
+        'wpuf_login_form_border_color',
+        'wpuf_login_field_border_color',
+        'wpuf_login_field_bg_color',
+        'wpuf_login_label_text_color',
+        'wpuf_login_placeholder_color',
+        'wpuf_login_input_text_color',
+        'wpuf_login_help_text_color',
+        'wpuf_login_button_bg_color',
+        'wpuf_login_button_border_color',
+        'wpuf_login_button_text_color'
+    ];
+
+    var fieldsFields = [
+        'wpuf_login_form_title',
+        'wpuf_login_form_subtitle',
+        'wpuf_login_username_label',
+        'wpuf_login_username_placeholder',
+        'wpuf_login_username_help',
+        'wpuf_login_password_label',
+        'wpuf_login_password_placeholder',
+        'wpuf_login_password_help',
+        'wpuf_login_remember_me_text',
+        'wpuf_login_lost_password_text',
+        'wpuf_login_button_text',
+        'pending_user_message',
+        'denied_user_message'
+    ];
+
+    function markRows() {
+        appearanceFields.forEach(function(field) {
+            $('tr').has('[name*="' + field + '"]').addClass('wpuf-login-settings-row wpuf-tab-appearance');
+        });
+        fieldsFields.forEach(function(field) {
+            $('tr').has('[name*="' + field + '"]').addClass('wpuf-login-settings-row wpuf-tab-fields');
+        });
+    }
+
+    function showTab(tab) {
+        if (tab === 'appearance') {
+            $('.wpuf-tab-appearance').removeClass('hidden');
+            $('.wpuf-tab-fields').addClass('hidden');
+        } else {
+            $('.wpuf-tab-fields').removeClass('hidden');
+            $('.wpuf-tab-appearance').addClass('hidden');
+        }
+    }
+
+    markRows();
+    showTab('appearance');
+
+    $('.wpuf-login-tab-link').on('click', function(e) {
+        e.preventDefault();
+        var tab = $(this).data('tab');
+
+        $('.wpuf-login-tab-link').removeClass('active').css({
+            'color': '#646970',
+            'border-bottom-color': 'transparent'
+        });
+        $(this).addClass('active').css({
+            'color': '#2271b1',
+            'border-bottom-color': '#2271b1'
+        });
+
+        showTab(tab);
+    });
+});

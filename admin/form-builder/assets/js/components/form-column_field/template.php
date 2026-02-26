@@ -25,7 +25,7 @@
                         ('custom_hidden_field' === field.template) ? 'hidden-field' : '',
                         parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50' : ''
                       ]">
-                    <div class="wpuf-flex wpuf-flex-col md:wpuf-flex-row wpuf-gap-2 wpuf-p-4 wpuf-border-transparent group-hover/column-inner:wpuf-border-green-400 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed wpuf-border-green-400">
+                    <div class="wpuf-flex wpuf-flex-col md:wpuf-flex-row wpuf-gap-2 wpuf-p-4 wpuf-border-transparent group-hover/column-inner:wpuf-border-primary wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed wpuf-border-emerald-400">
                         <div
                             v-if="!(is_full_width(field.template) || is_pro_preview(field.template))">
                             <label v-if="!is_invisible(field)"
@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <div
-                        class="wpuf-column-field-control-buttons wpuf-opacity-0 group-hover/column-inner:wpuf-opacity-100 wpuf-rounded-b-lg wpuf-bg-green-600 wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-center">
+                        class="wpuf-column-field-control-buttons wpuf-opacity-0 group-hover/column-inner:wpuf-opacity-100 wpuf-rounded-b-lg wpuf-bg-primary wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-center">
                         <div class="wpuf-items-center wpuf-text-green-200 wpuf-flex wpuf-justify-evenly wpuf-p-1">
                             <template v-if="!is_failed_to_validate(field.template)">
                                 <span class="!wpuf-mt-2.5">
@@ -100,7 +100,7 @@
                         </span>
                             <span :class="action_button_classes"
                                 v-if="is_pro_preview(field.template)"
-                                class="hover:wpuf-bg-green-700">
+                                class="hover:wpuf-bg-primary">
                             <a
                                 :href="pro_link"
                                 target="_blank"

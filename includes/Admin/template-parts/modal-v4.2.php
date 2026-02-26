@@ -38,6 +38,10 @@ $categories = [];
 if ( strpos( strtolower( $form_type ), 'registration' ) !== false || strpos( strtolower( $form_type ), 'profile' ) !== false ) {
     // Profile/Registration form categories
     $categories = [
+        'general'      => [
+            'label'    => __( 'General', 'wp-user-frontend' ),
+            'keywords' => [ 'simple', 'signup', 'blog author' ],
+        ],
         'ecommerce'    => [
             'label'    => __( 'E-commerce', 'wp-user-frontend' ),
             'keywords' => [ 'vendor', 'marketplace', 'product' ],

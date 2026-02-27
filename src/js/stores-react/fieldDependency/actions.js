@@ -28,40 +28,61 @@ export function addDependentFields(dependentFields) {
     };
 }
 
+/**
+ * Recalculates which fields should be hidden based on current modifier statuses.
+ *
+ * @param {Object} modifierFields   Map of modifier field -> dependent fields with expected values
+ * @param {Object} currentStatus    Current on/off status of each modifier field
+ *
+ * @return {Array} List of field IDs that should be hidden
+ */
+function calculateHiddenFields(modifierFields, currentStatus) {
+    let hiddenFields = [];
+
+    for (const modifierFieldName in modifierFields) {
+        const modifierStatus = currentStatus[modifierFieldName] || false;
+
+        for (const dependentField in modifierFields[modifierFieldName]) {
+            const expectedValue = modifierFields[modifierFieldName][dependentField];
+
+            if (modifierStatus !== expectedValue) {
+                if (!hiddenFields.includes(dependentField)) {
+                    hiddenFields.push(dependentField);
+                }
+            }
+        }
+    }
+
+    return hiddenFields;
+}
+
 export function toggleDependentFields(fieldId, status) {
     return ({ dispatch, select }) => {
         const modifierFields = select.getModifierFields();
         const modifierFieldStatus = select.getModifierFieldStatus();
 
         // Update the status of the current modifier field
-        dispatch.setModifierFieldStatus({
+        const updatedStatus = {
             ...modifierFieldStatus,
             [fieldId]: status,
-        });
+        };
+        dispatch.setModifierFieldStatus(updatedStatus);
 
-        // Reset hiddenFields array
-        let hiddenFields = [];
+        // Recalculate hidden fields using the UPDATED status
+        const hiddenFields = calculateHiddenFields(modifierFields, updatedStatus);
 
-        // Loop through all modifier fields and their dependent fields
-        for (const modifierFieldName in modifierFields) {
-            // Get the current status of this modifier field
-            const modifierStatus = modifierFieldStatus[modifierFieldName] || false;
+        dispatch.setHiddenFields(hiddenFields);
+    };
+}
 
-            // For each dependent field of this modifier
-            for (const dependentField in modifierFields[modifierFieldName]) {
-                const expectedValue = modifierFields[modifierFieldName][dependentField];
+export function initializeFieldVisibility(initialStatuses) {
+    return ({ dispatch, select }) => {
+        const modifierFields = select.getModifierFields();
 
-                // If status doesn't match the expected value, add to hiddenFields
-                if (modifierStatus !== expectedValue) {
-                    // Only add if not already in the array
-                    if (!hiddenFields.includes(dependentField)) {
-                        hiddenFields.push(dependentField);
-                    }
-                }
-            }
-        }
+        dispatch.setModifierFieldStatus(initialStatuses);
 
-        // Update the hiddenFields in the store
+        const hiddenFields = calculateHiddenFields(modifierFields, initialStatuses);
+
         dispatch.setHiddenFields(hiddenFields);
     };
 }

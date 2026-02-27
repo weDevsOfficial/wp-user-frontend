@@ -1,7 +1,12 @@
-import apiFetch from '@wordpress/api-fetch';
-import { addQueryArgs } from '@wordpress/url';
 import { __ } from '@wordpress/i18n';
+import { applyFilters, doAction } from '@wordpress/hooks';
 import { ACTION_TYPES } from './constants';
+import {
+    fetchSubscriptions,
+    fetchSubscriptionCounts,
+    updateSubscription,
+    deleteSubscription
+} from '../../api/subscription';
 
 // Internal helper to get global data
 const getWpufSubscriptions = () => window.wpufSubscriptions || {};
@@ -148,7 +153,8 @@ export function setBlankItem() {
             }
         }
 
-        dispatch.setItem(item);
+        const filteredItem = applyFilters( 'wpuf.subscription.blankItem', item );
+        dispatch.setItem(filteredItem);
     };
 }
 
@@ -194,13 +200,11 @@ export function fetchItems(status, offset = 0) {
         };
 
         try {
-            const response = await apiFetch({
-                path: addQueryArgs('/wpuf/v1/wpuf_subscription', queryParams),
-                method: 'GET',
-            });
+            const response = await fetchSubscriptions(queryParams);
 
             if (response.success) {
                 dispatch.setItems(response.subscriptions);
+                doAction( 'wpuf.subscription.itemsLoaded', response.subscriptions );
             }
             return response;
         } catch (error) {
@@ -223,17 +227,8 @@ export function getSubscriptionCount(status = 'all') {
 
 export function fetchCounts(status = 'all') {
     return async ({ dispatch }) => {
-        let path = '/wpuf/v1/wpuf_subscription/count';
-
-        if (status !== 'all') {
-            path += '/' + status;
-        }
-
         try {
-            const response = await apiFetch({
-                path: addQueryArgs(path),
-                method: 'GET',
-            });
+            const response = await fetchSubscriptionCounts(status);
 
             if (response.success) {
                 dispatch.setCounts(response.count);
@@ -281,22 +276,13 @@ export function updateItem() {
         // Get the updated item after modifications
         // Note: In Redux/WordPress data, dispatches are synchronous for plain objects but we need to be careful.
         // Since we just dispatched modifyItem, the state should be updated.
-        const updatedItem = select.getItem();
-
-        let path = '/wpuf/v1/wpuf_subscription';
-
-        if (updatedItem.ID) {
-            path += '/' + updatedItem.ID;
-        }
+        const updatedItem = applyFilters( 'wpuf.subscription.itemBeforeSave', select.getItem() );
 
         try {
-            const response = await apiFetch({
-                path: path,
-                method: 'POST',
-                data: { subscription: updatedItem }
-            });
+            const response = await updateSubscription(updatedItem);
 
             dispatch.setIsDirty(false);
+            doAction( 'wpuf.subscription.itemSaved', response, updatedItem );
             return response;
         } catch (error) {
             dispatch.setError('fetch', 'An error occurred while updating the subscription.');
@@ -309,10 +295,7 @@ export function updateItem() {
 export function deleteItem(id) {
     return async () => {
         try {
-            const response = await apiFetch({
-                path: `/wpuf/v1/wpuf_subscription/${id}`,
-                method: 'DELETE',
-            });
+            const response = await deleteSubscription(id);
             return response;
         } catch (error) {
             console.error(error);
@@ -416,6 +399,6 @@ export function validateFields(mode = 'update') {
             }
         }
 
-        return !select.hasError();
+        return applyFilters( 'wpuf.subscription.validateFields', !select.hasError(), item, mode );
     };
 }

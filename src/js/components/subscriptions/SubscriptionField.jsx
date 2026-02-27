@@ -1,9 +1,10 @@
 /**
  * DESCRIPTION: SubscriptionField component for rendering individual form fields
- * DESCRIPTION: Handles various field types: input-text, input-number, textarea, switcher, select, inline
+ * DESCRIPTION: Handles various field types: input-text, input-number, textarea, switcher, select, inline, time-date
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
+import { applyFilters } from '@wordpress/hooks';
 import ProBadge from './ProBadge';
 import ProTooltip from './ProTooltip';
 
@@ -80,6 +81,18 @@ const SubscriptionField = ( { field, fieldId, subscription, onFieldChange } ) =>
 
 	if ( isHidden ) {
 		return null;
+	}
+
+	// Allow Pro and third-party plugins to override field rendering for custom field types
+	const customField = applyFilters(
+		'wpuf.subscription.fieldComponent',
+		null,
+		field,
+		{ fieldId, value, subscription, onFieldChange, handleChange, isPro, getFieldValue }
+	);
+
+	if ( customField ) {
+		return customField;
 	}
 
 	return (
@@ -296,6 +309,23 @@ const SubscriptionField = ( { field, fieldId, subscription, onFieldChange } ) =>
 							return null;
 						} ) }
 					</div>
+				) }
+
+				{/* Time-Date */}
+				{ field.type === 'time-date' && (
+					<input
+						type="datetime-local"
+						id={ field.name }
+						name={ field.name }
+						value={ value ? value.replace( ' ', 'T' ) : '' }
+						onChange={ ( e ) => {
+							// Convert datetime-local format (YYYY-MM-DDTHH:mm) to MySQL format (YYYY-MM-DD HH:mm:ss)
+							const newVal = e.target.value.replace( 'T', ' ' ) + ':00';
+							handleChange( newVal );
+						} }
+						disabled={ isPro }
+						className="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-primaryHover focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-primaryHover sm:wpuf-text-sm !wpuf-shadow-none !wpuf-border-gray-300"
+					/>
 				) }
 
 				{/* Description */}

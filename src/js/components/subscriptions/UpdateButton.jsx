@@ -42,7 +42,7 @@ const UpdateButton = ( {
 				<button
 					type="button"
 					onClick={ onPublish }
-					className={ `wpuf-flex wpuf-py-3 wpuf-items-center wpuf-px-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-primaryHover hover:wpuf-text-white wpuf-rounded-t-md ${
+					className={ `wpuf-flex wpuf-w-full wpuf-py-3 wpuf-items-center wpuf-px-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-primaryHover hover:wpuf-text-white wpuf-rounded-t-md ${
 						isUpdating ? 'wpuf-cursor-not-allowed wpuf-bg-gray-50' : ''
 					}` }
 					disabled={ isUpdating }
@@ -52,7 +52,7 @@ const UpdateButton = ( {
 				<button
 					type="button"
 					onClick={ onSaveDraft }
-					className={ `wpuf-flex wpuf-py-3 wpuf-items-center wpuf-px-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-primaryHover hover:wpuf-text-white wpuf-rounded-b-md ${
+					className={ `wpuf-flex wpuf-w-full wpuf-py-3 wpuf-items-center wpuf-px-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-primaryHover hover:wpuf-text-white wpuf-rounded-b-md ${
 						isUpdating ? 'wpuf-cursor-not-allowed wpuf-bg-gray-50' : ''
 					}` }
 					disabled={ isUpdating }

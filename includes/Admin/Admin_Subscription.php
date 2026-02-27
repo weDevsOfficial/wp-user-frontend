@@ -119,7 +119,7 @@ class Admin_Subscription
         if ( WPUF_USE_REACT_SUBSCRIPTIONS )
         {
             // Enqueue React version
-            wp_enqueue_script( 'wpuf-admin-subscriptions-react', WPUF_ASSET_URI . '/react-build/js/subscriptions-react.min.js', [ 'wp-element', 'wp-data', 'wp-api-fetch', 'wp-i18n' ], WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-admin-subscriptions-react', WPUF_ASSET_URI . '/react-build/js/subscriptions-react.min.js', [ 'wp-element', 'wp-data', 'wp-api-fetch', 'wp-i18n', 'wp-hooks', 'wp-components', 'wp-primitives' ], WPUF_VERSION, true );
             wp_enqueue_style( 'wpuf-subscriptions-react', WPUF_ASSET_URI . '/react-build/subscriptions-react.css', [], WPUF_VERSION );
             $script_handle = 'wpuf-admin-subscriptions-react';
         } else
@@ -155,6 +155,17 @@ class Admin_Subscription
                 'perPage'         => apply_filters( 'wpuf_subscription_per_page', 9 ),
             ]
         );
+
+        /**
+         * Fires after the subscription React scripts are enqueued.
+         * Pro and third-party plugins should use this hook to enqueue their own
+         * scripts with 'wpuf-admin-subscriptions-react' as a dependency.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param string $script_handle The handle of the subscription React script
+         */
+        do_action( 'wpuf_subscription_react_scripts_enqueued', $script_handle );
     }
 
     /**
@@ -166,7 +177,7 @@ class Admin_Subscription
      */
     public function enqueue_react_scripts() {
         // Always enqueue React version for the React page
-        wp_enqueue_script( 'wpuf-admin-subscriptions-react', WPUF_ASSET_URI . '/react-build/js/subscriptions-react.min.js', [ 'wp-element', 'wp-data', 'wp-api-fetch', 'wp-i18n' ], WPUF_VERSION, true );
+        wp_enqueue_script( 'wpuf-admin-subscriptions-react', WPUF_ASSET_URI . '/react-build/js/subscriptions-react.min.js', [ 'wp-element', 'wp-data', 'wp-api-fetch', 'wp-i18n', 'wp-hooks', 'wp-components', 'wp-primitives' ], WPUF_VERSION, true );
         wp_enqueue_style( 'wpuf-subscriptions-react', WPUF_ASSET_URI . '/react-build/subscriptions-react.css', [], WPUF_VERSION );
         $script_handle = 'wpuf-admin-subscriptions-react';
 
@@ -194,6 +205,17 @@ class Admin_Subscription
                 'perPage'         => apply_filters( 'wpuf_subscription_per_page', 9 ),
             ]
         );
+
+        /**
+         * Fires after the subscription React scripts are enqueued.
+         * Pro and third-party plugins should use this hook to enqueue their own
+         * scripts with 'wpuf-admin-subscriptions-react' as a dependency.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param string $script_handle The handle of the subscription React script
+         */
+        do_action( 'wpuf_subscription_react_scripts_enqueued', $script_handle );
     }
 
     /**

@@ -6,6 +6,7 @@ import { useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useDispatch } from '@wordpress/data';
 import SubscriptionSubsection from './SubscriptionSubsection';
+import { SubscriptionTabContent } from '../../slots';
 
 const SubscriptionDetails = ( { subscription, onFieldChange, currentTab: externalCurrentTab, onTabChange: externalOnTabChange } ) => {
 	const wpufSubscriptions = window.wpufSubscriptions || {};
@@ -22,13 +23,56 @@ const SubscriptionDetails = ( { subscription, onFieldChange, currentTab: externa
 
 	const dispatch = useDispatch( 'wpuf/subscriptions-field-dependency' );
 
-	// Initialize dependent fields in store on mount
+	// Initialize dependent fields in store and calculate initial visibility
 	useEffect( () => {
-		// Populate the field dependency store with dependent fields from PHP
-		if ( dependentFields && dispatch ) {
-			dispatch.addDependentFields( dependentFields );
+		if ( ! dependentFields || ! dispatch ) {
+			return;
 		}
-	}, [ dependentFields, dispatch ] );
+
+		dispatch.addDependentFields( dependentFields );
+
+		// Build initial modifier statuses from the subscription data and field definitions
+		const allFields = wpufSubscriptions.fields || {};
+		const initialStatuses = {};
+
+		for ( const modifierKey in dependentFields ) {
+			// Find the field definition for this modifier key across all sections/subsections
+			let fieldDef = null;
+
+			for ( const sectionId in allFields ) {
+				for ( const subSectionId in allFields[ sectionId ] ) {
+					if ( allFields[ sectionId ][ subSectionId ]?.[ modifierKey ] ) {
+						fieldDef = allFields[ sectionId ][ subSectionId ][ modifierKey ];
+						break;
+					}
+				}
+				if ( fieldDef ) {
+					break;
+				}
+			}
+
+			if ( ! fieldDef ) {
+				initialStatuses[ modifierKey ] = false;
+				continue;
+			}
+
+			// Read the current value from the subscription
+			let rawValue = fieldDef.default || '';
+
+			if ( subscription ) {
+				if ( fieldDef.db_type === 'meta' ) {
+					rawValue = subscription.meta_value?.[ fieldDef.db_key ] ?? fieldDef.default ?? '';
+				} else if ( fieldDef.db_type === 'post' ) {
+					rawValue = subscription[ fieldDef.db_key ] ?? fieldDef.default ?? '';
+				}
+			}
+
+			// Convert to boolean the same way SubscriptionField does
+			initialStatuses[ modifierKey ] = rawValue === 'on' || rawValue === 'yes' || rawValue === true;
+		}
+
+		dispatch.initializeFieldVisibility( initialStatuses );
+	}, [ dependentFields, dispatch, subscription ] );
 
 	return (
 		<>
@@ -64,6 +108,11 @@ const SubscriptionDetails = ( { subscription, onFieldChange, currentTab: externa
 						onFieldChange={ onFieldChange }
 					/>
 				) )}
+
+			{/* Extension slot: Pro and third-party plugins can add content per tab */}
+			<SubscriptionTabContent.Slot
+				fillProps={ { currentTab, subscription, onFieldChange } }
+			/>
 		</>
 	);
 };

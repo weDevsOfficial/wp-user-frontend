@@ -5,85 +5,78 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect, useCallback } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
-import apiFetch from '@wordpress/api-fetch';
+import { fetchSubscriptionSettings, saveSubscriptionSettings } from '../../api/subscription';
 
 const Preferences = () => {
-	const [ buttonColor, setButtonColor ] = useState( '' );
-	const [ isSaving, setIsSaving ] = useState( false );
+	const [buttonColor, setButtonColor] = useState('');
+	const [isSaving, setIsSaving] = useState(false);
 
-	const { addNotice } = useDispatch( 'wpuf/subscriptions-notice' );
+	const { addNotice } = useDispatch('wpuf/subscriptions-notice');
 
 	// Load settings on mount
-	useEffect( () => {
+	useEffect(() => {
 		const loadSettings = async () => {
 			try {
-				const response = await apiFetch( {
-					path: '/wpuf/v1/subscription-settings',
-					method: 'GET',
-				} );
+				const response = await fetchSubscriptionSettings();
 
-				if ( response.button_color !== undefined ) {
-					setButtonColor( response.button_color || '' );
+				if (response.button_color !== undefined) {
+					setButtonColor(response.button_color || '');
 				}
-			} catch ( error ) {
-				console.error( '[Preferences] Error loading settings:', error );
+			} catch (error) {
+				console.error('[Preferences] Error loading settings:', error);
 			}
 		};
 
 		loadSettings();
-	}, [] );
+	}, []);
 
 	// Save settings
-	const handleSave = useCallback( async () => {
-		setIsSaving( true );
+	const handleSave = useCallback(async () => {
+		setIsSaving(true);
 
 		try {
-			const response = await apiFetch( {
-				path: '/wpuf/v1/subscription-settings',
-				method: 'POST',
-				data: {
-					button_color: buttonColor,
-				},
-			} );
+			const response = await saveSubscriptionSettings({
+				button_color: buttonColor,
+			});
 
-			addNotice( {
-				content: __( 'Preferences saved successfully', 'wp-user-frontend' ),
+			addNotice({
+				content: __('Preferences saved successfully', 'wp-user-frontend'),
 				type: 'success',
-			} );
-		} catch ( error ) {
-			console.error( '[Preferences] Error saving settings:', error );
-			addNotice( {
-				content: __( 'Failed to save settings', 'wp-user-frontend' ),
+			});
+		} catch (error) {
+			console.error('[Preferences] Error saving settings:', error);
+			addNotice({
+				content: __('Failed to save settings', 'wp-user-frontend'),
 				type: 'error',
-			} );
+			});
 		} finally {
-			setIsSaving( false );
+			setIsSaving(false);
 		}
-	}, [ buttonColor, addNotice ] );
+	}, [buttonColor, addNotice]);
 
 	// Handle color input change from native color picker
-	const handleColorInputChange = useCallback( ( e ) => {
-		setButtonColor( e.target.value );
-	}, [] );
+	const handleColorInputChange = useCallback((e) => {
+		setButtonColor(e.target.value);
+	}, []);
 
 	// Clear color
-	const handleClearColor = useCallback( () => {
-		setButtonColor( '#079669' );
-	}, [] );
+	const handleClearColor = useCallback(() => {
+		setButtonColor('#079669');
+	}, []);
 
 	// Handle text input change
-	const handleTextInputChange = useCallback( ( e ) => {
-		setButtonColor( e.target.value );
-	}, [] );
+	const handleTextInputChange = useCallback((e) => {
+		setButtonColor(e.target.value);
+	}, []);
 
 	return (
 		<div className="wpuf-p-10 wpuf-max-w-4xl">
 			<div className="wpuf-mb-6">
 				<h2 className="wpuf-text-2xl wpuf-font-semibold wpuf-text-gray-900 wpuf-mb-2">
-					{ __( 'Subscription Preferences', 'wp-user-frontend' ) }
+					{__('Subscription Preferences', 'wp-user-frontend')}
 				</h2>
 				<p className="wpuf-text-sm wpuf-text-gray-600">
-					{ __( 'Configure subscription appearance preferences', 'wp-user-frontend' ) }
+					{__('Configure subscription appearance preferences', 'wp-user-frontend')}
 				</p>
 			</div>
 
@@ -92,17 +85,17 @@ const Preferences = () => {
 					{/* Button Appearance Section */}
 					<div>
 						<h3 className="wpuf-text-lg wpuf-font-medium wpuf-text-gray-900 wpuf-mb-4">
-							{ __( 'Color Settings', 'wp-user-frontend' ) }
+							{__('Color Settings', 'wp-user-frontend')}
 						</h3>
 
 						<div>
 							<div className="wpuf-flex wpuf-items-center wpuf-mb-1">
 								<label className="wpuf-text-sm wpuf-font-medium wpuf-text-gray-700">
-									{ __( 'Button Color', 'wp-user-frontend' ) }
+									{__('Button Color', 'wp-user-frontend')}
 								</label>
 								<span
 									className="wpuf-tooltip before:wpuf-bg-gray-700 before:wpuf-text-zinc-50 after:wpuf-border-t-gray-700 after:wpuf-border-x-transparent wpuf-cursor-pointer wpuf-ml-2 wpuf-z-10"
-									data-tip={ __( 'Custom color for subscription buttons. Leave empty to use the default primary color from theme.', 'wp-user-frontend' ) }
+									data-tip={__('Custom color for subscription buttons. Leave empty to use the default primary color from theme.', 'wp-user-frontend')}
 								>
 									<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none">
 										<path
@@ -119,51 +112,51 @@ const Preferences = () => {
 								<div className="wpuf-flex wpuf-flex-col wpuf-gap-2">
 									<div className="wpuf-flex wpuf-items-center wpuf-gap-2">
 										<input
-											value={ buttonColor }
-											onChange={ handleColorInputChange }
+											value={buttonColor}
+											onChange={handleColorInputChange}
 											type="color"
 											className="wpuf-w-12 wpuf-h-10 wpuf-rounded-md !wpuf-bg-transparent !wpuf-border-0 wpuf-cursor-pointer"
 										/>
 										<input
-											value={ buttonColor }
-											onChange={ handleTextInputChange }
+											value={buttonColor}
+											onChange={handleTextInputChange}
 											type="text"
-											placeholder={ __( 'Default', 'wp-user-frontend' ) }
+											placeholder={__('Default', 'wp-user-frontend')}
 											className="wpuf-rounded-md wpuf-border-gray-300 wpuf-shadow-sm focus:wpuf-border-primary focus:wpuf-ring-primary wpuf-text-sm wpuf-w-32"
 										/>
-										{ buttonColor && (
+										{buttonColor && (
 											<button
 												type="button"
-												onClick={ handleClearColor }
+												onClick={handleClearColor}
 												className="wpuf-text-xs wpuf-text-gray-500 hover:wpuf-text-gray-700 wpuf-underline"
 											>
-												{ __( 'Clear', 'wp-user-frontend' ) }
+												{__('Clear', 'wp-user-frontend')}
 											</button>
-										) }
+										)}
 									</div>
 								</div>
 								<div className="wpuf-ml-4 wpuf-w-32">
 									<button
 										type="button"
-										style={ buttonColor ? { backgroundColor: buttonColor } : {backgroundColor: "#079669"} }
-										onMouseOver={ ( e ) => {
-											if ( buttonColor ) {
+										style={buttonColor ? { backgroundColor: buttonColor } : { backgroundColor: "#079669" }}
+										onMouseOver={(e) => {
+											if (buttonColor) {
 												e.target.style.filter = 'brightness(0.9)';
 											}
-										} }
-										onMouseOut={ ( e ) => {
-											if ( buttonColor ) {
+										}}
+										onMouseOut={(e) => {
+											if (buttonColor) {
 												e.target.style.filter = 'brightness(1)';
 											}
-										} }
+										}}
 										className="wpuf-subscription-buy-btn wpuf-block wpuf-w-full wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm wpuf-ring-0 wpuf-transition-all wpuf-duration-200 wpuf-leading-6"
 									>
-										{ __( 'Buy Now', 'wp-user-frontend' ) }
+										{__('Buy Now', 'wp-user-frontend')}
 									</button>
 								</div>
 							</div>
 							<p className="wpuf-text-xs wpuf-text-gray-500 wpuf-mt-2">
-								{ __( 'Leave empty to use the default primary color from your Tailwind configuration.', 'wp-user-frontend' ) }
+								{__('Leave empty to use the default primary color from your Tailwind configuration.', 'wp-user-frontend')}
 							</p>
 						</div>
 					</div>
@@ -171,12 +164,12 @@ const Preferences = () => {
 					{/* Save Button */}
 					<div className="wpuf-pt-6 wpuf-flex wpuf-justify-end">
 						<button
-							onClick={ handleSave }
-							disabled={ isSaving }
+							onClick={handleSave}
+							disabled={isSaving}
 							type="button"
 							className="wpuf-rounded-md wpuf-bg-primary wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-primaryHover focus-visible:wpuf-outline focus-visible:wpuf-outline-2 focus-visible:wpuf-outline-offset-2 focus-visible:wpuf-outline-primary disabled:wpuf-opacity-50"
 						>
-							{ isSaving ? __( 'Saving...', 'wp-user-frontend' ) : __( 'Save Preferences', 'wp-user-frontend' ) }
+							{isSaving ? __('Saving...', 'wp-user-frontend') : __('Save Preferences', 'wp-user-frontend')}
 						</button>
 					</div>
 				</div>

@@ -59,6 +59,7 @@
     "@wordpress/data": "^9.0.0",
     "@wordpress/element": "^5.0.0",
     "@wordpress/i18n": "^4.52.0",
+    "@wordpress/icons": "^11.6.0",
     "@wordpress/router": "^1.37.0",
     "array-uniq": "^3.0.0",
     "cli": "^1.0.1",

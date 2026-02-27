@@ -11,42 +11,42 @@ import { useDispatch } from '@wordpress/data';
  * @return {Object} Navigation methods
  */
 export const useSubscriptionNavigation = () => {
-	const { navigate } = useDispatch( 'core/router' );
+	const { navigate } = useDispatch('wpuf/subscriptions-router');
 
 	/**
 	 * Navigate to edit subscription
 	 *
 	 * @param {number} id - Subscription ID
 	 */
-	const goToEdit = useCallback( ( id ) => {
-		navigate( { action: 'edit', id: String( id ), post_status: null, p: null } );
-	}, [ navigate ] );
+	const goToEdit = useCallback((id) => {
+		navigate({ action: 'edit', id: String(id), post_status: null, p: null });
+	}, [navigate]);
 
 	/**
 	 * Navigate to new subscription form
 	 */
-	const goToNew = useCallback( () => {
-		navigate( { action: 'new', id: null, post_status: null, p: null } );
-	}, [ navigate ] );
+	const goToNew = useCallback(() => {
+		navigate({ action: 'new', id: null, post_status: null, p: null });
+	}, [navigate]);
 
 	/**
 	 * Navigate to list view
 	 *
 	 * @param {string|null} status - Optional status filter (all, publish, draft, trash)
 	 */
-	const goToList = useCallback( ( status = null ) => {
+	const goToList = useCallback((status = null) => {
 		const params = {
 			action: null, // Clear action param to return to list view
 			id: null, // Clear id param
 			p: null, // Clear pagination
 		};
-		if ( status && status !== 'all' ) {
+		if (status && status !== 'all') {
 			params.post_status = status;
 		} else {
 			params.post_status = null; // Clear status filter if 'all'
 		}
-		navigate( params );
-	}, [ navigate ] );
+		navigate(params);
+	}, [navigate]);
 
 	/**
 	 * Navigate to specific page
@@ -54,13 +54,13 @@ export const useSubscriptionNavigation = () => {
 	 * @param {number} page - Page number
 	 * @param {string|null} status - Optional status filter
 	 */
-	const goToPage = useCallback( ( page, status = null ) => {
-		const params = { p: String( page ) };
-		if ( status && status !== 'all' ) {
+	const goToPage = useCallback((page, status = null) => {
+		const params = { p: String(page) };
+		if (status && status !== 'all') {
 			params.post_status = status;
 		}
-		navigate( params );
-	}, [ navigate ] );
+		navigate(params);
+	}, [navigate]);
 
 	return { goToEdit, goToNew, goToList, goToPage };
 };

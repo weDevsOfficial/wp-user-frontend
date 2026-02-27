@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
 import SubscriptionField from './SubscriptionField';
 import ProBadge from './ProBadge';
 import ProTooltip from './ProTooltip';
+import { SubscriptionAfterSubsection } from '../../slots';
 
 const SubscriptionSubsection = ( { subSection, fields, subscription, onFieldChange } ) => {
 	// Some sections should be open by default (first subsection of each section)
@@ -72,6 +73,11 @@ const SubscriptionSubsection = ( { subSection, fields, subscription, onFieldChan
 							onFieldChange={ onFieldChange }
 						/>
 					) ) }
+
+					{/* Extension slot: Pro and third-party plugins can add UI after subsection fields */}
+					<SubscriptionAfterSubsection.Slot
+						fillProps={ { subSection, subscription, onFieldChange } }
+					/>
 
 					{/* Notice */}
 					{ subSection.notice && (

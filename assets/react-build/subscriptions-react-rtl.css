@@ -1,6 +1,3 @@
-/*!*************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/css/subscriptions-react.css ***!
-  \*************************************************************************************************************************************************************************************/
 /* DESCRIPTION: Subscriptions React page styles with Tailwind CSS v3 */
 [type='text'],input:where(:not([type])),[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select {
   -webkit-appearance: none;
@@ -956,6 +953,9 @@ video:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription
 .\!wpuf-ml-6 {
   margin-right: 1.5rem !important;
 }
+.\!wpuf-ml-\[-20px\] {
+  margin-right: -20px !important;
+}
 .\!wpuf-mr-1 {
   margin-left: 0.25rem !important;
 }
@@ -1153,9 +1153,6 @@ video:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription
 }
 .wpuf-mt-\[40px\] {
   margin-top: 40px;
-}
-.\!wpuf-ml-\[-20px\] {
-  margin-right: -20px !important;
 }
 .wpuf-block {
   display: block;

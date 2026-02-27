@@ -31,6 +31,7 @@ const SubscriptionForm = ({ mode = 'add-new', subscriptionId = null }) => {
 		modifyItem,
 		setBlankItem,
 		updateItem: storeUpdateItem,
+		populateTaxonomyRestrictionData,
 	} = useSubscriptionActions();
 
 	// Fetch subscription data if in edit mode
@@ -42,6 +43,7 @@ const SubscriptionForm = ({ mode = 'add-new', subscriptionId = null }) => {
 					if (data.success && data.subscription) {
 						setItem(data.subscription);
 						setItemCopy(JSON.parse(JSON.stringify(data.subscription)));
+						populateTaxonomyRestrictionData(data.subscription);
 						doAction( 'wpuf.subscription.formMounted', data.subscription, mode );
 					} else {
 						setError(data.message || __('Subscription not found', 'wp-user-frontend'));

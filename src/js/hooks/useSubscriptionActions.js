@@ -24,6 +24,7 @@ export const useSubscriptionActions = () => {
 		setBlankItem: dispatch.setBlankItem,
 		validateFields: dispatch.validateFields,
 		setCurrentStatus: dispatch.setCurrentStatus,
+		populateTaxonomyRestrictionData: dispatch.populateTaxonomyRestrictionData,
 	};
 };
 

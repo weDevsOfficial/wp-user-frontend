@@ -1,12 +1,14 @@
 /**
  * DESCRIPTION: SubscriptionField component for rendering individual form fields
- * DESCRIPTION: Handles various field types: input-text, input-number, textarea, switcher, select, inline, time-date
+ * DESCRIPTION: Handles various field types: input-text, input-number, textarea, switcher, select, inline, time-date, multi-select
  */
+import { useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { applyFilters } from '@wordpress/hooks';
 import ProBadge from './ProBadge';
 import ProTooltip from './ProTooltip';
+import MultiSelect from './MultiSelect';
 
 const SubscriptionField = ( { field, fieldId, subscription, onFieldChange } ) => {
 	const wpufSubscriptions = window.wpufSubscriptions || {};
@@ -20,7 +22,40 @@ const SubscriptionField = ( { field, fieldId, subscription, onFieldChange } ) =>
 		[]
 	);
 
+	// Get taxonomy restriction values from store for multi-select fields
+	const isViewRestriction = field.db_key === '_sub_view_allowed_term_ids';
+	const { taxonomySelected, fullRestriction } = useSelect(
+		( select ) => {
+			if ( field.type !== 'multi-select' ) {
+				return { taxonomySelected: [], fullRestriction: {} };
+			}
+			const store = select( 'wpuf/subscriptions' );
+			const restriction = isViewRestriction
+				? store.getTaxonomyViewRestriction()
+				: store.getTaxonomyRestriction();
+			return {
+				taxonomySelected: restriction[ field.name ] || [],
+				fullRestriction: restriction,
+			};
+		},
+		[ field.type, field.name, field.db_key ]
+	);
+
 	const dispatch = useDispatch( 'wpuf/subscriptions-field-dependency' );
+	const subscriptionsDispatch = useDispatch( 'wpuf/subscriptions' );
+
+	// Convert term_fields array to options object for MultiSelect component
+	const multiSelectOptions = useMemo( () => {
+		if ( field.type !== 'multi-select' || ! field.term_fields ) {
+			return {};
+		}
+		const termsList = Array.isArray( field.term_fields ) ? field.term_fields : Object.values( field.term_fields );
+		const opts = {};
+		termsList.forEach( ( term ) => {
+			opts[ String( term.value ) ] = term.label;
+		} );
+		return opts;
+	}, [ field.type, field.term_fields ] );
 
 	// Check if field should be hidden
 	const isHidden = hiddenFields.includes( fieldId );
@@ -216,6 +251,31 @@ const SubscriptionField = ( { field, fieldId, subscription, onFieldChange } ) =>
 							</option>
 						) ) }
 					</select>
+				) }
+
+				{/* Multi-Select (taxonomy terms dropdown with pills) */}
+				{ field.type === 'multi-select' && field.term_fields && (
+					<MultiSelect
+						options={ multiSelectOptions }
+						value={ taxonomySelected.map( String ) }
+						onChange={ ( selected ) => {
+							const merged = {
+								...fullRestriction,
+								[ field.name ]: selected,
+							};
+
+							if ( isViewRestriction ) {
+								subscriptionsDispatch.setTaxonomyViewRestriction( merged );
+							} else {
+								subscriptionsDispatch.setTaxonomyRestriction( merged );
+							}
+							subscriptionsDispatch.setIsDirty( true );
+						} }
+						placeholder={ field.placeholder || __( 'Select terms...', 'wp-user-frontend' ) }
+						selectedLabel={ __( 'terms', 'wp-user-frontend' ) }
+						exclusiveOptions={ [] }
+						disabled={ isPro }
+					/>
 				) }
 
 				{/* Inline - compound field with multiple inputs */}

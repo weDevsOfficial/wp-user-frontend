@@ -97,9 +97,12 @@ const SubscriptionDetails = ( { subscription, onFieldChange, currentTab: externa
 				</ul>
 			</div>
 
-			{/* Subsections for current tab */}
+			{/* Subsections for current tab — Object.values handles PHP arrays that lost their sequential keys */}
 			{ subSections[ currentTab ] &&
-				subSections[ currentTab ].map( ( subSection ) => (
+				( Array.isArray( subSections[ currentTab ] )
+					? subSections[ currentTab ]
+					: Object.values( subSections[ currentTab ] )
+				).map( ( subSection ) => (
 					<SubscriptionSubsection
 						key={ subSection.id }
 						subSection={ subSection }

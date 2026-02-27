@@ -104,6 +104,8 @@ class Admin_Form_Builder {
         wp_enqueue_style( 'wp-color-picker' );
         do_action( 'wpuf_form_builder_enqueue_style' );
 
+        wp_enqueue_media();
+
         wp_enqueue_script( 'wpuf-vue' );
         wp_enqueue_script( 'wpuf-vuex' );
         wp_enqueue_script( 'wpuf-subscriptions' );
@@ -361,6 +363,12 @@ class Admin_Form_Builder {
                 'empty_field_options_msg' => __( 'To view field options, please start adding fields in the builder', 'wp-user-frontend' ),
                 'pro_field_message'       => $field_messages,
                 'something_went_wrong'    => __( 'Something went wrong. Please try again.', 'wp-user-frontend' ),
+                'custom_image'            => __( 'Custom image', 'wp-user-frontend' ),
+                'select_icon_or_upload'   => __( 'Select an icon or upload image', 'wp-user-frontend' ),
+                'select_icon_image'       => __( 'Select Icon Image', 'wp-user-frontend' ),
+                'use_as_icon'             => __( 'Use as Icon', 'wp-user-frontend' ),
+                'icons_found'             => __( 'icons found', 'wp-user-frontend' ),
+                'icons_available'         => __( 'icons available', 'wp-user-frontend' ),
             ]
         );
     }

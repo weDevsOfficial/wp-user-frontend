@@ -1,0 +1,68 @@
+<svg width="246" height="249" viewBox="0 0 246 249" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_dd_portfolio)">
+<path d="M3 10C3 5.58172 6.58172 2 11 2H235C239.418 2 243 5.58172 243 10V237C243 241.418 239.418 245 235 245H11C6.58173 245 3 241.418 3 237V10Z" fill="white"/>
+<path d="M3.5 10C3.5 5.85786 6.85786 2.5 11 2.5H235C239.142 2.5 242.5 5.85786 242.5 10V237C242.5 241.142 239.142 244.5 235 244.5H11C6.85787 244.5 3.5 241.142 3.5 237V10Z" stroke="#E2E8F0"/>
+</g>
+<!-- Portfolio Main Image -->
+<rect x="47" y="25" width="90" height="70" rx="4" fill="#7C3AED" opacity="0.9"/>
+<rect x="52" y="30" width="80" height="55" rx="2" fill="white" opacity="0.2"/>
+<circle cx="92" cy="52" r="15" fill="white" opacity="0.4"/>
+<path d="M72 68L92 50L112 68" fill="white" opacity="0.3"/>
+<!-- Portfolio Thumbnails -->
+<rect x="145" y="25" width="55" height="32" rx="3" fill="#A78BFA"/>
+<rect x="150" y="30" width="45" height="22" rx="2" fill="#C4B5FD"/>
+<rect x="145" y="63" width="55" height="32" rx="3" fill="#C4B5FD"/>
+<rect x="150" y="68" width="45" height="22" rx="2" fill="#DDD6FE"/>
+<!-- Project Title -->
+<rect x="47.25" y="102" width="152.5" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="105" width="90" height="4" rx="1" fill="#CBD5E1"/>
+<!-- Description -->
+<rect x="47.25" y="118" width="152.5" height="24" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="122" width="142" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="126" width="142" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="130" width="110" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="134" width="125" height="2" rx="1" fill="#E2E8F0"/>
+<!-- Client & URL Fields -->
+<rect x="47.25" y="148" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="151" width="50" height="4" rx="1" fill="#CBD5E1"/>
+<rect x="127.25" y="148" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<circle cx="132" cy="153" r="2" stroke="#7C3AED" stroke-width="0.8" fill="none"/>
+<rect x="137" y="151" width="55" height="4" rx="1" fill="#E2E8F0"/>
+<!-- Tags & Project Type -->
+<rect x="47.25" y="164" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="167" width="25" height="4" rx="2" fill="#7C3AED" opacity="0.2"/>
+<rect x="80" y="167" width="20" height="4" rx="2" fill="#A78BFA" opacity="0.3"/>
+<rect x="127.25" y="164" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<path d="M132 169L134 171L136 169" stroke="#979AA9" stroke-width="0.878788"/>
+<rect x="140" y="167" width="50" height="4" rx="1" fill="#E2E8F0"/>
+<!-- Featured Image & Files -->
+<rect x="47.25" y="180" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<path d="M52 183L54 185H58L60 183" stroke="#94A3B8" stroke-width="1" stroke-linecap="round"/>
+<rect x="65" y="183" width="45" height="4" rx="1" fill="#E2E8F0"/>
+<rect x="127.25" y="180" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="132" y="183" width="4" height="4" rx="1" fill="#7C3AED" opacity="0.3"/>
+<text x="139" y="186.5" font-family="system-ui, -apple-system, sans-serif" font-size="6" fill="#64748B">+</text>
+<rect x="145" y="183" width="45" height="4" rx="1" fill="#E2E8F0"/>
+<!-- Date & Role -->
+<rect x="47.25" y="196" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="199" width="30" height="4" rx="1" fill="#E2E8F0"/>
+<text x="85" y="202.5" font-family="system-ui, -apple-system, sans-serif" font-size="6" fill="#64748B">Date</text>
+<rect x="127.25" y="196" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="132" y="199" width="55" height="4" rx="1" fill="#CBD5E1"/>
+<defs>
+<filter id="filter0_dd_portfolio" x="0" y="0" width="246" height="249" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1.5"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="effect1_dropShadow" result="effect2_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow" result="shape"/>
+</filter>
+</defs>
+</svg>

@@ -152,7 +152,7 @@ class Admin_Installer {
     /**
      * Automatically add logout link to the primary navigation menu
      *
-     * @since WPUF_SINCE
+     * @since 4.2.10
      *
      * @return void
      */
@@ -171,7 +171,7 @@ class Admin_Installer {
     /**
      * Add logout link to classic theme menu
      *
-     * @since WPUF_SINCE
+     * @since 4.2.10
      *
      * @return bool
      */
@@ -232,7 +232,7 @@ class Admin_Installer {
     /**
      * Add logout link to FSE navigation
      *
-     * @since WPUF_SINCE
+     * @since 4.2.10
      *
      * @return bool
      */

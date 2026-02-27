@@ -942,7 +942,7 @@ function wpuf_settings_field_profile( $args = [] ) { // phpcs:ignore Generic.Cod
 /**
  * Render login form settings section header
  *
- * @since WPUF_SINCE
+ * @since 4.2.10
  *
  * @param array $args Settings field args.
  *

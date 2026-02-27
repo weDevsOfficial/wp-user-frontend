@@ -1,3 +1,10 @@
+= v4.2.10 (26 February, 2026) =
+* New – Add Logout link to navigation menu for Classic and FSE themes
+* New – Support custom image icons in Form Builder
+* New – Add Kazakhstani Tenge (KZT) and expand currency list to ISO 4217 standard
+* New – Add Cloudflare Turnstile validation
+* Enhance – Improve Login form stability and validation fixes
+
 = v4.2.9 (24 February, 2026) =
 * New – Integration-specific AI form builder support
 * New – Add Shortcodes Reference page under Tools menu

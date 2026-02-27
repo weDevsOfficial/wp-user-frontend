@@ -6503,7 +6503,7 @@ function wpuf_render_login_layout_field( $args ) {
  * Returns the logout URL with proper nonce. If WPUF login override is enabled,
  * it returns the WPUF logout URL, otherwise falls back to WordPress default.
  *
- * @since WPUF_SINCE
+ * @since 4.2.10
  *
  * @param string $redirect_to Optional. URL to redirect after logout.
  *
@@ -6533,7 +6533,7 @@ function wpuf_get_logout_url( $redirect_to = '' ) {
 /**
  * Add logout link to WordPress navigation menu
  *
- * @since WPUF_SINCE
+ * @since 4.2.10
  *
  * @param int    $menu_id     The menu ID to add the logout link to.
  * @param string $menu_label  Optional. The label for the logout menu item.
@@ -6569,7 +6569,7 @@ function wpuf_add_logout_to_menu( $menu_id, $menu_label = '', $parent_id = 0 ) {
 /**
  * Filter navigation menu items to hide logout link when user is not logged in
  *
- * @since WPUF_SINCE
+ * @since 4.2.10
  *
  * @param array $items The menu items.
  *
@@ -6602,7 +6602,7 @@ add_filter( 'wp_nav_menu_objects', 'wpuf_filter_logout_menu_items', 10, 1 );
  * This handles cases where the logout link is in a block navigation
  * that doesn't go through wp_nav_menu_objects filter.
  *
- * @since WPUF_SINCE
+ * @since 4.2.10
  *
  * @return void
  */

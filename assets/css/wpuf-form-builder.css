@@ -1244,6 +1244,13 @@ span.pro-icon svg path {
   /* emerald-600 */
   margin-right: 6px;
 }
+.wpuf-field-label-icon .wpuf-field-icon-img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  vertical-align: middle;
+  display: inline-block;
+}
 @media (min-width: 768px) and (max-width: 991px) {
   #wpuf-form-builder {
     width: 100% !important;

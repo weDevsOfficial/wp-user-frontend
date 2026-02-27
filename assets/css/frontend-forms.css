@@ -762,6 +762,19 @@ body #wpuf-login-form label {
 body #wpuf-login-form .forgetmenot label {
   display: inline-block;
 }
+body #wpuf-login-form .wpuf-action-links {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  line-height: 24px;
+}
+body #wpuf-login-form .wpuf-action-links a {
+  color: #3B82F6;
+  text-decoration: none;
+}
+body #wpuf-login-form .wpuf-action-links a:hover {
+  text-decoration: underline;
+}
 body .wpuf_sub_info {
   padding: 0;
   margin: 10px 5px;

@@ -2,3 +2,49 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Tooltip styles — DaisyUI's .tooltip class doesn't work with the wpuf- prefix,
+   so we define .wpuf-tooltip manually using data-tip + ::before pseudo-element. */
+.wpuf-tooltip {
+    position: relative;
+    display: inline-flex;
+}
+
+.wpuf-tooltip[data-tip]::before {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: normal;
+    max-width: 20rem;
+    width: max-content;
+    padding: 0.375rem 0.625rem;
+    font-size: 0.75rem;
+    line-height: 1.25;
+    border-radius: 0.375rem;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 50;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.wpuf-tooltip[data-tip]::after {
+    content: "";
+    position: absolute;
+    bottom: calc(100% + 0.125rem);
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 0.375rem;
+    border-style: solid;
+    border-color: transparent;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 50;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.wpuf-tooltip[data-tip]:hover::before,
+.wpuf-tooltip[data-tip]:hover::after {
+    opacity: 1;
+}

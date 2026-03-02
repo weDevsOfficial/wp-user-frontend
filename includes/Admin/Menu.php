@@ -44,7 +44,7 @@ class Menu {
                 __( 'Subscriptions', 'wp-user-frontend' ),
                 __( 'Subscriptions', 'wp-user-frontend' ),
                 $capability,
-                'wpuf_subscriptions_react',
+                'wpuf_subscriptions',
                 [ $this, 'subscription_menu_page' ]
             );
 

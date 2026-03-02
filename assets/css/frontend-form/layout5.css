@@ -300,30 +300,8 @@ body.mceContentBody {
     padding: 10px 35px;
 }
 
-.wpuf-form-add.wpuf-form-layout5 ul.wpuf-step-wizard {
+.wpuf-form-add.wpuf-form-layout5 .wpuf-step-wizard {
     overflow: visible;
-}
-
-.wpuf-form-add.wpuf-form-layout5 ul.wpuf-step-wizard li {
-    padding: 10px 30px 10px 40px;
-    border-radius: 0;
-}
-
-.wpuf-form-add.wpuf-form-layout5 ul.wpuf-step-wizard li:before {
-    margin-top: -14px;
-    border-left-color: #d5d3d3;
-}
-
-.wpuf-form-add.wpuf-form-layout5 ul.wpuf-step-wizard li:after {
-    border-width: 22px;
-    margin-top: -34px;
-    right: -40px;
-    border-radius: 0;
-}
-
-.wpuf-form-add.wpuf-form-layout5 ul.wpuf-step-wizard li.active-step:before {
-    border-left-color: #00a0d2;
-    right: -47px;
 }
 
 ul.wpuf-form li label.wpuf-form-sub-label {

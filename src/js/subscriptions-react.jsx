@@ -15,6 +15,7 @@ import Header from './components/Header';
 import ContentHeader from './components/subscriptions/ContentHeader';
 import QuickEdit from './components/subscriptions/QuickEdit';
 import UnsavedChanges from './components/subscriptions/UnsavedChanges';
+import Preferences from './components/subscriptions/Preferences';
 
 // Import stores to register them
 import './stores-react/subscription';
@@ -125,6 +126,8 @@ const SubscriptionsApp = () => {
                             onDiscardChanges={handleDiscardChanges}
                             onContinueEditing={handleContinueEditing}
                         />
+                    ) : status === 'preferences' ? (
+                        <Preferences />
                     ) : (
                         <SubscriptionList />
                     )}

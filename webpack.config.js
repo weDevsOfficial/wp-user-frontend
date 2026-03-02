@@ -6,7 +6,7 @@ const path = require('path');
 module.exports = {
     ...defaultConfig,
     entry: {
-        'subscriptions': path.resolve(process.cwd(), 'src/js/subscriptions-react.jsx'),
+        'subscriptions': path.resolve(process.cwd(), 'src/js/subscriptions.jsx'),
     },
     output: {
         filename: 'js/[name].min.js',

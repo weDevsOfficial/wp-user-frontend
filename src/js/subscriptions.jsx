@@ -26,7 +26,7 @@ import './stores-react/quickEdit';
 import './stores-react/router';
 
 // Import styles
-import '../css/subscriptions-react.css';
+import '../css/subscriptions.css';
 
 // Signal to Pro and third-party plugins that stores are registered and ready
 doAction( 'wpuf.subscription.init' );

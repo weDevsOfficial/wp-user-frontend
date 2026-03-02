@@ -1,15 +1,11 @@
 const colors = require('tailwindcss/colors');
 
-import {
-    scopedPreflightStyles,
-    isolateInsideOfContainer,
-} from 'tailwindcss-scoped-preflight';
+const { scopedPreflightStyles, isolateInsideOfContainer } = require('tailwindcss-scoped-preflight');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     prefix: 'wpuf-',
     content: [
-        // Original paths (critical for form builder - keeps @tailwindcss/forms styles)
         './assets/**/*.{js,jsx,ts,tsx,vue,html}',
         './includes/Admin/**/*.php',
         './includes/Free/Free_Loader.php',
@@ -18,12 +14,15 @@ module.exports = {
         './admin/form-builder/assets/js/**/*.php',
         './templates/**/*.php',
         'wpuf-functions.php',
-        // New paths from upstream (for subscription templates)
-        './templates/**/*.php',
+        // New upstream / react paths
         './src/**/*.{js,css}',
+        './assets/js/components-react/**/*.{js,jsx}',
+        './assets/js/subscriptions-react.jsx',
+        './src/js/components-react/**/*.{js,jsx}',
+        './src/js/subscriptions-react.jsx',
     ],
     theme: {
-         extend: {
+        extend: {
             colors: {
                 primary: colors.emerald[600],
                 primaryHover: colors.emerald[500],
@@ -33,7 +32,7 @@ module.exports = {
     plugins: [
         require('@tailwindcss/forms')({ strategy: 'class' }),
         require('daisyui'),
-        scopedPreflightStyles( {
+        scopedPreflightStyles({
             isolationStrategy: isolateInsideOfContainer(
                 [
                     '.wpuf_packs',

@@ -164,6 +164,20 @@ module.exports = function( grunt) {
                 }
             },
 
+            userDirectory: {
+                files: [
+                    'src/js/user-directory/**/*.js',
+                    'src/js/user-directory/**/*.jsx',
+                    'src/js/user-directory/**/*.css',
+                    'src/js/user-directory/styles/*.css',
+                    'modules/user-directory/**/*.php',
+                ],
+                tasks: ['build-user-directory'],
+                options: {
+                    spawn: false
+                }
+            },
+
         },
 
         // Clean up build directory
@@ -278,6 +292,9 @@ module.exports = function( grunt) {
             npm_build_ai_form_builder: {
                 command: 'npm run build:ai-form-builder',
             },
+            npm_build_user_directory: {
+                command: 'npm run build:user-directory',
+            },
             tailwind: {
                 command: function ( input, output ) {
                     return `npx tailwindcss -i ${input} -o ${output} --minify`;
@@ -306,7 +323,7 @@ module.exports = function( grunt) {
     grunt.loadNpmTasks( 'grunt-shell' );
     grunt.loadNpmTasks( 'grunt-postcss' );
 
-    grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n', 'tailwind' ] );
+    grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n', 'tailwind', 'build-user-directory' ] );
 
     // file auto generation
     grunt.registerTask( 'i18n', [ 'makepot' ] );
@@ -315,6 +332,11 @@ module.exports = function( grunt) {
     // build stuff
     grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme', 'tailwind', 'tailwind-minify' ] );
     grunt.registerTask( 'zip', [ 'shell:npm_build', 'clean', 'copy', 'compress' ] );
+
+    // User Directory CSS build task
+    grunt.registerTask( 'build-user-directory', 'Build User Directory CSS with Tailwind', function() {
+        grunt.task.run('shell:npm_build_user_directory');
+    });
 
     grunt.event.on('watch', function(action, filepath, target) {
         if (target === 'tailwind') {

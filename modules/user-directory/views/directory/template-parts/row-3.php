@@ -10,6 +10,10 @@
  * @since 4.2.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 // Get user data
 $user_name  = $user->display_name;
 $user_login = $user->user_login;
@@ -36,7 +40,7 @@ $avatar = wpuf_ud_get_user_avatar_html( $user, $card_avatar_size, '!wpuf-rounded
     <div class="wpuf-flex wpuf-flex-col wpuf-items-center wpuf-gap-3 wpuf-flex-grow">
         <!-- Avatar -->
         <div class="wpuf-flex-shrink-0">
-            <?php echo $avatar; ?>
+            <?php echo wp_kses_post( $avatar ); ?>
         </div>
 
         <!-- User Information -->
@@ -62,7 +66,7 @@ $avatar = wpuf_ud_get_user_avatar_html( $user, $card_avatar_size, '!wpuf-rounded
         <!-- Email -->
         <?php if ( $user_email ) : ?>
             <p class="wpuf-text-[14px] wpuf-font-normal wpuf-text-gray-600 !wpuf-m-0">
-                <a href="mailto:<?php echo esc_url( $user_email ); ?>" target="_blank" rel="noopener" class="wpuf-text-gray-500 hover:wpuf-text-gray-900">
+                <a href="<?php echo esc_url( 'mailto:' . $user_email ); ?>" target="_blank" rel="noopener" class="wpuf-text-gray-500 hover:wpuf-text-gray-900">
                     <?php echo esc_html( $user_email ); ?>
                 </a>
             </p>
@@ -132,19 +136,19 @@ $avatar = wpuf_ud_get_user_avatar_html( $user, $card_avatar_size, '!wpuf-rounded
         if ( ! empty( $all_data['orderby'] ) ) {
             $dir_params['orderby'] = sanitize_text_field( $all_data['orderby'] );
         } elseif ( isset( $_GET['orderby'] ) ) {
-            $dir_params['orderby'] = sanitize_text_field( $_GET['orderby'] );
+            $dir_params['orderby'] = sanitize_text_field( wp_unslash( $_GET['orderby'] ) );
         }
 
         if ( ! empty( $all_data['order'] ) ) {
             $dir_params['order'] = sanitize_text_field( $all_data['order'] );
         } elseif ( isset( $_GET['order'] ) ) {
-            $dir_params['order'] = sanitize_text_field( $_GET['order'] );
+            $dir_params['order'] = sanitize_text_field( wp_unslash( $_GET['order'] ) );
         }
 
         if ( ! empty( $all_data['search'] ) ) {
             $dir_params['search'] = sanitize_text_field( $all_data['search'] );
         } elseif ( isset( $_GET['search'] ) ) {
-            $dir_params['search'] = sanitize_text_field( $_GET['search'] );
+            $dir_params['search'] = sanitize_text_field( wp_unslash( $_GET['search'] ) );
         }
 
         // Add parameters to profile URL if any exist
@@ -152,7 +156,7 @@ $avatar = wpuf_ud_get_user_avatar_html( $user, $card_avatar_size, '!wpuf-rounded
             $profile_url = add_query_arg( $dir_params, $profile_url );
         }
         ?>
-        <a href="<?php echo esc_url( $profile_url ); ?>" class="wpuf-bg-purple-600 wpuf-text-white wpuf-no-underline wpuf-inline-flex wpuf-items-center wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-rounded-md" style="text-decoration: none;">
+        <a href="<?php echo esc_url( $profile_url ); ?>" class="wpuf-bg-emerald-600 wpuf-text-white wpuf-no-underline wpuf-inline-flex wpuf-items-center wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-rounded-md" style="text-decoration: none;">
             <?php esc_html_e( 'View Profile', 'wp-user-frontend' ); ?>
             <span class="wpuf-sr-only">, <?php echo esc_html( $user_name ); ?></span>
         </a>

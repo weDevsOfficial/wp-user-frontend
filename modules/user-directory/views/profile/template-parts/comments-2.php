@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $tab_title = ! empty( $tab_title ) ? $tab_title : __( 'Comments', 'wp-user-frontend' );
 
 // Get current page from query string for comments pagination
@@ -53,7 +57,7 @@ $pagination = [
                                 <?php echo esc_html( mysql2date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $comment->comment_date ) ); ?>
                             </div>
                         </div>
-                        <a href="<?php echo get_comment_link( $comment ); ?>" 
+                        <a href="<?php echo esc_url( get_comment_link( $comment ) ); ?>"
                            target="_blank"
                            class="comment-link !wpuf-inline-flex !wpuf-items-center !wpuf-gap-1 !wpuf-px-3 !wpuf-py-1.5 !wpuf-text-xs !wpuf-font-medium !wpuf-text-emerald-600 !wpuf-bg-emerald-50 !wpuf-rounded-lg hover:!wpuf-bg-emerald-100 !wpuf-transition-colors !wpuf-no-underline">
                             <?php esc_html_e( 'View', 'wp-user-frontend' ); ?>
@@ -63,7 +67,7 @@ $pagination = [
                         </a>
                     </div>
                     <div class="comment-content !wpuf-text-gray-700 !wpuf-leading-relaxed !wpuf-text-sm">
-                        <p><?php echo wp_trim_words( $comment->comment_content, 30, '...' ); ?></p>
+                        <p><?php echo esc_html( wp_trim_words( $comment->comment_content, 30, '...' ) ); ?></p>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -85,7 +89,7 @@ $pagination = [
     // Add pagination if there are multiple pages
     if ( $pagination['total_pages'] > 1 ) {
         // Build base URL and query args for pagination
-        $current_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $current_url = home_url( add_query_arg( null, null ) );
         $parsed_url = wp_parse_url( $current_url );
         $base_url = $parsed_url['path'] ?? '';
 
@@ -101,18 +105,6 @@ $pagination = [
         foreach ( $preserve_params as $param ) {
             if ( isset( $all_params[$param] ) ) {
                 $clean_query_args[$param] = $all_params[$param];
-            }
-        }
-
-        // Helper function to build pagination URLs for comments
-        if ( ! function_exists( 'wpuf_ud_build_comments_page_url' ) ) {
-            function wpuf_ud_build_comments_page_url( $base_url, $clean_args, $page ) {
-                // Set the tab and page for comments
-                $final_args = $clean_args;
-                $final_args['tab'] = 'comments';
-                $final_args['comments_page'] = $page;
-
-                return add_query_arg( $final_args, $base_url );
             }
         }
 

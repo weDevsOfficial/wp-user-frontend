@@ -52,6 +52,16 @@ const DirectoryWizard = ({ onClose, initialData, config = {} }) => {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const [fade, setFade] = useState(true);
     const prevStepIndex = useRef(0);
+    const fadeTimerRef = useRef(null);
+
+    // Cleanup fade timers on unmount
+    useEffect(() => {
+        return () => {
+            if (fadeTimerRef.current) {
+                clearTimeout(fadeTimerRef.current);
+            }
+        };
+    }, []);
 
     useEffect(() => {
         if (initialData && initialData.post_content) {
@@ -76,7 +86,7 @@ const DirectoryWizard = ({ onClose, initialData, config = {} }) => {
     // Navigation between steps
     const navigateToStep = (stepIndex) => {
         setFade(false);
-        setTimeout(() => {
+        fadeTimerRef.current = setTimeout(() => {
             prevStepIndex.current = currentStepIndex;
             setCurrentStepIndex(stepIndex);
             setFade(true);
@@ -85,10 +95,10 @@ const DirectoryWizard = ({ onClose, initialData, config = {} }) => {
 
     const handleNextStep = () => {
         const isLastStep = currentStepIndex === steps.length - 1;
-            
+
         if (!isLastStep) {
             setFade(false);
-            setTimeout(() => {
+            fadeTimerRef.current = setTimeout(() => {
                 prevStepIndex.current = currentStepIndex;
                 setCurrentStepIndex(currentStepIndex + 1);
                 setFade(true);
@@ -101,7 +111,7 @@ const DirectoryWizard = ({ onClose, initialData, config = {} }) => {
     const handlePrevStep = () => {
         if (currentStepIndex > 0) {
             setFade(false);
-            setTimeout(() => {
+            fadeTimerRef.current = setTimeout(() => {
                 prevStepIndex.current = currentStepIndex;
                 setCurrentStepIndex(currentStepIndex - 1);
                 setFade(true);

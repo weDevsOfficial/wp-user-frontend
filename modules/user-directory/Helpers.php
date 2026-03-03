@@ -23,16 +23,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array Colors array.
  */
 function wpuf_ud_free_get_layout_colors( $layout = 'layout-3' ) {
-    // Purple colors for Free version
+    // Emerald colors for Free version
     return [
-        'primary_600'            => '!wpuf-bg-purple-600',
-        'primary_700'            => '!wpuf-bg-purple-700',
-        'text_primary_600'       => '!wpuf-text-purple-600',
-        'border_primary_600'     => '!wpuf-border-purple-600',
-        'hover_primary_600'      => 'hover:!wpuf-text-purple-600',
-        'hover_primary_700'      => 'hover:!wpuf-bg-purple-700',
-        'hover_border_primary_600' => 'hover:!wpuf-border-purple-600',
-        'focus_ring_primary_500' => 'focus:!wpuf-ring-purple-500',
+        'primary_600'            => '!wpuf-bg-emerald-600',
+        'primary_700'            => '!wpuf-bg-emerald-700',
+        'text_primary_600'       => '!wpuf-text-emerald-600',
+        'border_primary_600'     => '!wpuf-border-emerald-600',
+        'hover_primary_600'      => 'hover:!wpuf-text-emerald-600',
+        'hover_primary_700'      => 'hover:!wpuf-bg-emerald-700',
+        'hover_border_primary_600' => 'hover:!wpuf-border-emerald-600',
+        'focus_ring_primary_500' => 'focus:!wpuf-ring-emerald-500',
     ];
 }
 
@@ -228,8 +228,10 @@ function wpuf_ud_get_user_avatar_html( $user, $size = 128, $class = '' ) {
     }
 
     // No avatar URL, show initials directly
+    // Note: Use Tailwind classes for flex centering because wp_kses_post() strips
+    // align-items and justify-content from inline styles (not in WP's allowed CSS list).
     return sprintf(
-        '<div class="%s" style="width: %dpx; height: %dpx; font-size: %dpx; background-color: #9ca3af; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; border-radius: 50%%;">%s</div>',
+        '<div class="%s !wpuf-flex !wpuf-items-center !wpuf-justify-center" style="width: %dpx; height: %dpx; font-size: %dpx; background-color: #9ca3af; color: #fff; font-weight: 600; border-radius: 50%%; line-height: 1; padding: 0; margin: 0 auto;">%s</div>',
         esc_attr( $class ),
         $size,
         $size,
@@ -847,4 +849,86 @@ function wpuf_ud_render_posts_table( $field, $user_id, $layout ) {
  */
 function wpuf_ud_render_files_grid( $field, $user_id, $template_data, $color ) {
     // Files grid is Pro feature
+}
+
+/**
+ * Build pagination URL for posts tab
+ *
+ * @since 4.3.0
+ *
+ * @param string $base_url   Base URL path.
+ * @param array  $clean_args Clean query args.
+ * @param int    $page       Page number.
+ *
+ * @return string URL.
+ */
+function wpuf_ud_build_posts_page_url( $base_url, $clean_args, $page ) {
+    $final_args               = $clean_args;
+    $final_args['tab']        = 'posts';
+    $final_args['posts_page'] = $page;
+
+    return add_query_arg( $final_args, $base_url );
+}
+
+/**
+ * Build pagination URL for comments tab
+ *
+ * @since 4.3.0
+ *
+ * @param string $base_url   Base URL path.
+ * @param array  $clean_args Clean query args.
+ * @param int    $page       Page number.
+ *
+ * @return string URL.
+ */
+function wpuf_ud_build_comments_page_url( $base_url, $clean_args, $page ) {
+    $final_args                  = $clean_args;
+    $final_args['tab']           = 'comments';
+    $final_args['comments_page'] = $page;
+
+    return add_query_arg( $final_args, $base_url );
+}
+
+/**
+ * Get actual dimensions from a WordPress image size name or number
+ *
+ * @since 4.3.0
+ *
+ * @param string|int $size WordPress image size name or numeric pixel value.
+ *
+ * @return array Array with 'size' (int) and 'wp_size' (string) keys.
+ */
+function wpuf_ud_get_image_size_dimensions( $size ) {
+    global $_wp_additional_image_sizes;
+
+    // If it's already a number, use it directly
+    if ( is_numeric( $size ) ) {
+        return [ 'size' => intval( $size ), 'wp_size' => 'custom' ];
+    }
+
+    // Default WordPress sizes
+    $default_sizes = [
+        'thumbnail'    => [ 'width' => get_option( 'thumbnail_size_w', 150 ), 'height' => get_option( 'thumbnail_size_h', 150 ) ],
+        'medium'       => [ 'width' => get_option( 'medium_size_w', 300 ), 'height' => get_option( 'medium_size_h', 300 ) ],
+        'medium_large' => [ 'width' => get_option( 'medium_large_size_w', 768 ), 'height' => get_option( 'medium_large_size_h', 0 ) ],
+        'large'        => [ 'width' => get_option( 'large_size_w', 1024 ), 'height' => get_option( 'large_size_h', 1024 ) ],
+        'full'         => [ 'width' => 1536, 'height' => 1536 ],
+    ];
+
+    // Check default sizes first
+    if ( isset( $default_sizes[ $size ] ) ) {
+        $width = $default_sizes[ $size ]['width'];
+
+        return [ 'size' => $width > 0 ? $width : 150, 'wp_size' => $size ];
+    }
+
+    // Check additional custom sizes
+    if ( isset( $_wp_additional_image_sizes[ $size ] ) ) {
+        $width = $_wp_additional_image_sizes[ $size ]['width'];
+
+        return [ 'size' => $width > 0 ? $width : 150, 'wp_size' => $size ];
+    }
+
+    // Fallback to thumbnail if size not found
+    return [ 'size' => get_option( 'thumbnail_size_w', 150 ), 'wp_size' => 'thumbnail' ];
 }

@@ -15,6 +15,10 @@
  * @since 4.2.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 // Exit if no pagination needed
 if ( empty( $pagination ) || ! isset( $pagination['total_pages'] ) || (int) $pagination['total_pages'] <= 1 ) {
     return;
@@ -43,7 +47,7 @@ $total   = (int) $pagination['total_pages'];
 
 // Determine base_url and query_args if not provided
 if ( ! isset( $base_url ) || ! isset( $query_args ) ) {
-    $current_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    $current_url = home_url( add_query_arg( null, null ) );
     $parsed_url = wp_parse_url( $current_url );
     $base_url = $parsed_url['path'] ?? '';
 

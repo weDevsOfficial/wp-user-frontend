@@ -19,10 +19,10 @@ if ( ! empty( $social_fields ) ) {
 }
 
 // Get social media links from user meta (only for allowed fields)
-$facebook_url = in_array( 'facebook', $allowed_social_fields ) ? get_user_meta( $user->ID, 'wpuf_social_facebook', true ) : '';
-$twitter_url = in_array( 'twitter', $allowed_social_fields ) ? get_user_meta( $user->ID, 'wpuf_social_twitter', true ) : '';
-$linkedin_url = in_array( 'linkedin', $allowed_social_fields ) ? get_user_meta( $user->ID, 'wpuf_social_linkedin', true ) : '';
-$instagram_url = in_array( 'instagram', $allowed_social_fields ) ? get_user_meta( $user->ID, 'wpuf_social_instagram', true ) : '';
+$facebook_url = in_array( 'facebook', $allowed_social_fields, true ) ? get_user_meta( $user->ID, 'wpuf_social_facebook', true ) : '';
+$twitter_url = in_array( 'twitter', $allowed_social_fields, true ) ? get_user_meta( $user->ID, 'wpuf_social_twitter', true ) : '';
+$linkedin_url = in_array( 'linkedin', $allowed_social_fields, true ) ? get_user_meta( $user->ID, 'wpuf_social_linkedin', true ) : '';
+$instagram_url = in_array( 'instagram', $allowed_social_fields, true ) ? get_user_meta( $user->ID, 'wpuf_social_instagram', true ) : '';
 
 // Check if any social links exist
 $has_social_links = $facebook_url || $twitter_url || $linkedin_url || $instagram_url;
@@ -56,13 +56,15 @@ if ( $has_social_links ) : ?>
             </a>
         <?php endif; ?>
 
-        <?php if ( $instagram_url ) : ?>
+        <?php if ( $instagram_url ) :
+            $gradient_id = 'wpuf-ig-gradient-' . esc_attr( $user->ID );
+        ?>
             <a href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener" class="wpuf-social-icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M24 12C24 18.6 18.6 24 12 24C5.4 24 0 18.6 0 12C0 5.4 5.4 0 12 0C18.6 0 24 5.4 24 12Z" fill="url(#paint0_linear_5793_2712)"/>
+                    <path d="M24 12C24 18.6 18.6 24 12 24C5.4 24 0 18.6 0 12C0 5.4 5.4 0 12 0C18.6 0 24 5.4 24 12Z" fill="url(#<?php echo esc_attr( $gradient_id ); ?>)"/>
                     <path d="M12 7.08093C13.6021 7.08093 13.7919 7.08693 14.4246 7.11583C15.0096 7.14252 15.3273 7.24016 15.5387 7.32239C15.8189 7.43131 16.0187 7.56116 16.2287 7.77112C16.4386 7.98109 16.5687 8.18092 16.6774 8.46107C16.7596 8.67248 16.8573 8.99016 16.884 9.57522C16.9128 10.2079 16.9189 10.3977 16.9189 11.9998C16.9189 13.602 16.9129 13.7916 16.884 14.4243C16.8573 15.0094 16.7596 15.3271 16.6774 15.5385C16.5685 15.8187 16.4387 16.0185 16.2287 16.2284C16.0187 16.4384 15.8189 16.5685 15.5387 16.6772C15.3273 16.7594 15.0096 16.857 14.4246 16.8837C13.7919 16.9126 13.6022 16.9186 12 16.9186C10.3978 16.9186 10.2082 16.9126 9.57546 16.8837C8.9904 16.857 8.67271 16.7594 8.46131 16.6772C8.18112 16.5682 7.98133 16.4384 7.77136 16.2284C7.56144 16.0185 7.43131 15.8186 7.32263 15.5385C7.24035 15.3271 7.14276 15.0094 7.11607 14.4243C7.08722 13.7917 7.08117 13.6019 7.08117 11.9998C7.08117 10.3977 7.08717 10.208 7.11607 9.57522C7.14276 8.99016 7.2404 8.67248 7.32263 8.46107C7.43155 8.18088 7.5614 7.98109 7.77136 7.77112C7.98133 7.5612 8.18116 7.43107 8.46131 7.32239C8.67271 7.24016 8.9904 7.14252 9.57546 7.11583C10.2081 7.08722 10.3979 7.08093 12 7.08093ZM12 6C10.3705 6 10.1661 6.00696 9.52616 6.03605C8.88743 6.06514 8.45142 6.16667 8.0698 6.315C7.67516 6.46841 7.34068 6.67358 7.0071 7.0071C6.67358 7.34068 6.46822 7.67516 6.315 8.0698C6.16662 8.45147 6.06514 8.88767 6.03605 9.52616C6.00696 10.1661 6 10.3705 6 12C6 13.6295 6.00696 13.8339 6.03605 14.4738C6.06514 15.1126 6.16667 15.5486 6.315 15.9302C6.46841 16.3248 6.67358 16.6593 7.0071 16.9929C7.34068 17.3265 7.6754 17.5316 8.0698 17.685C8.45147 17.8334 8.88767 17.9349 9.52616 17.964C10.1661 17.993 10.3705 18 12 18C13.6295 18 13.8339 17.993 14.4738 17.964C15.1126 17.9349 15.5486 17.8333 15.9302 17.685C16.3248 17.5315 16.6593 17.3264 16.9929 16.9929C17.3265 16.6593 17.5316 16.3246 17.685 15.9302C17.8334 15.5486 17.9349 15.1123 17.964 14.4738C17.993 13.8339 18 13.6295 18 12C18 10.3705 17.993 10.1661 17.964 9.52616C17.9349 8.88743 17.8333 8.45142 17.685 8.0698C17.5315 7.67516 17.3264 7.34068 16.9929 7.0071C16.6593 6.67358 16.3246 6.46841 15.9302 6.315C15.5486 6.16662 15.1123 6.06514 14.4738 6.03605C13.834 6.00696 13.6295 6 12 6ZM12 8.91897C10.2983 8.91897 8.91897 10.2983 8.91897 12C8.91897 13.7017 10.2983 15.0811 12 15.0811C13.7017 15.0811 15.0811 13.7017 15.0811 12C15.0811 10.2983 13.7017 8.91897 12 8.91897ZM12 14.0001C10.8955 14.0001 9.9999 13.1048 9.9999 12C9.9999 10.8953 10.8955 9.99995 12 9.99995C13.1045 9.99995 14.0001 10.8953 14.0001 12C14.0001 13.1048 13.1045 14.0001 12 14.0001ZM15.2028 8.07728C14.805 8.07728 14.4828 8.39953 14.4828 8.79728C14.4828 9.19504 14.805 9.51733 15.2028 9.51733C15.6005 9.51733 15.9228 9.19504 15.9228 8.79728C15.9228 8.39953 15.6006 8.07728 15.2028 8.07728Z" fill="white"/>
                     <defs>
-                        <linearGradient id="paint0_linear_5793_2712" x1="23.6394" y1="-4.87584e-07" x2="5.6394" y2="22" gradientUnits="userSpaceOnUse">
+                        <linearGradient id="<?php echo esc_attr( $gradient_id ); ?>" x1="23.6394" y1="-4.87584e-07" x2="5.6394" y2="22" gradientUnits="userSpaceOnUse">
                             <stop stop-color="#B900B3"/>
                             <stop offset="1" stop-color="#F40002"/>
                         </linearGradient>

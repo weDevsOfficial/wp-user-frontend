@@ -98,6 +98,15 @@ class Shortcode {
             WPUF_VERSION,
             true
         );
+
+        // Register file tabs script for profile page
+        wp_register_script(
+            'wpuf-ud-file-tabs',
+            WPUF_ASSET_URI . '/js/wpuf-ud-file-tabs.js',
+            [],
+            WPUF_VERSION,
+            true
+        );
     }
 
     /**
@@ -447,6 +456,9 @@ class Shortcode {
 
         // Add template_data key for Pro template compatibility
         $profile_data['template_data'] = $profile_data;
+
+        // Enqueue file tabs script for profile files tab
+        wp_enqueue_script( 'wpuf-ud-file-tabs' );
 
         // Load template
         ob_start();

@@ -6,7 +6,7 @@
  * @since 4.3.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { __ } from '@wordpress/i18n';
 import Header from './components/common/Header';
 import DirectoryList from './components/DirectoryList';
@@ -48,12 +48,7 @@ const App = () => {
     const config = window.wpuf_ud_free || window.wpuf_ud || {};
     const perPage = 10;
 
-    // Fetch directories on mount and when page changes
-    useEffect(() => {
-        fetchDirectories(currentPage);
-    }, [currentPage]);
-
-    const fetchDirectories = async (page = 1) => {
+    const fetchDirectories = useCallback(async (page = 1) => {
         setLoading(true);
         try {
             const restUrl = config.rest_url || '/wp-json/';
@@ -81,7 +76,12 @@ const App = () => {
             setTotalPages(1);
         }
         setLoading(false);
-    };
+    }, [config.rest_url, config.rest_nonce]);
+
+    // Fetch directories on mount and when page changes
+    useEffect(() => {
+        fetchDirectories(currentPage);
+    }, [currentPage, fetchDirectories]);
 
     const handlePageChange = (page) => {
         if (page < 1 || page > totalPages) return;

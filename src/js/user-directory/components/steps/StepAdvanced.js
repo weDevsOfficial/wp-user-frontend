@@ -3,6 +3,27 @@ import { __ } from '@wordpress/i18n';
 import Tooltip from '../common/Tooltip';
 import SingleSelect from '../common/SingleSelect';
 
+// Pro badge component - extracted to avoid re-creating on every render
+const ProBadge = ({ utm = 'wpuf-user-directory-advanced', config = {} }) => {
+    const wpuf = window.wpuf_admin_script || {};
+    const upgradeUrl = (wpuf.upgradeUrl || 'https://wedevs.com/wp-user-frontend-pro/pricing/') + '?utm_source=' + utm + '&utm_medium=pro-badge';
+
+    return (
+        <a
+            href={upgradeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: 'inline-block', pointerEvents: 'auto' }}
+        >
+            <img
+                src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'}
+                alt="Pro"
+                style={{ width: '39px', height: '22px' }}
+            />
+        </a>
+    );
+};
+
 const StepAdvanced = ({ formData, setFormData, config }) => {
     // Hover states for Pro features
     const [hoveredOption, setHoveredOption] = useState(null);
@@ -81,27 +102,6 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
         opacity: 1,
         boxSizing: 'border-box',
         fontSize: '16px'
-    };
-
-    // Pro badge component - clickable link to upgrade page
-    const ProBadge = ({ utm = 'wpuf-user-directory-advanced' }) => {
-        const wpuf = window.wpuf_admin_script || {};
-        const upgradeUrl = (wpuf.upgradeUrl || 'https://wedevs.com/wp-user-frontend-pro/pricing/') + '?utm_source=' + utm + '&utm_medium=pro-badge';
-
-        return (
-            <a
-                href={upgradeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ display: 'inline-block', pointerEvents: 'auto' }}
-            >
-                <img
-                    src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'}
-                    alt="Pro"
-                    style={{ width: '39px', height: '22px' }}
-                />
-            </a>
-        );
     };
 
     // Sort options with Pro status
@@ -226,7 +226,7 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                             options={sortOptions}
                             value={formData.default_sort_by || formData.orderby || 'id'}
                             onChange={(value) => handleChange({ target: { name: 'default_sort_by', value } })}
-                            ProBadge={() => <ProBadge utm="wpuf-user-directory-sort-by" />}
+                            ProBadge={() => <ProBadge utm="wpuf-user-directory-sort-by" config={config} />}
                         />
                         <SingleSelect
                             options={[
@@ -263,7 +263,7 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.375 9.375L9.40957 9.35771C9.88717 9.11891 10.4249 9.55029 10.2954 10.0683L9.70458 12.4317C9.57507 12.9497 10.1128 13.3811 10.5904 13.1423L10.625 13.125M17.5 10C17.5 14.1421 14.1421 17.5 10 17.5C5.85786 17.5 2.5 14.1421 2.5 10C2.5 5.85786 5.85786 2.5 10 2.5C14.1421 2.5 17.5 5.85786 17.5 10ZM10 6.875H10.0063V6.88125H10V6.875Z" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
                             </Tooltip>
                         </label>
-                        <ProBadge utm="wpuf-user-directory-social-profiles" />
+                        <ProBadge utm="wpuf-user-directory-social-profiles" config={config} />
                     </div>
                     <div
                         className="wpuf-flex wpuf-flex-wrap wpuf-gap-2 wpuf-p-3 wpuf-rounded-lg wpuf-cursor-not-allowed wpuf-opacity-60"
@@ -295,7 +295,7 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                         options={gallerySizes}
                         value={formData.profile_size || 'thumbnail'}
                         onChange={(value) => handleChange({ target: { name: 'profile_size', value } })}
-                        ProBadge={() => <ProBadge utm="wpuf-user-directory-gallery-size" />}
+                        ProBadge={() => <ProBadge utm="wpuf-user-directory-gallery-size" config={config} />}
                     />
                 </div>
 
@@ -306,7 +306,7 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                             <span className="wpuf-text-sm wpuf-font-medium wpuf-text-gray-700">
                                 {__('Show avatar in table layout', 'wp-user-frontend')}
                             </span>
-                            <ProBadge utm="wpuf-user-directory-show-avatar" />
+                            <ProBadge utm="wpuf-user-directory-show-avatar" config={config} />
                         </div>
                         <label
                             className="wpuf-flex wpuf-items-center wpuf-text-sm wpuf-text-gray-700 wpuf-cursor-not-allowed wpuf-opacity-60"
@@ -374,7 +374,7 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                                     {__('Recommended avatar size info available in Pro', 'wp-user-frontend')}
                                 </span>
                             </div>
-                            <ProBadge utm="wpuf-user-directory-avatar-info" />
+                            <ProBadge utm="wpuf-user-directory-avatar-info" config={config} />
                         </div>
                     )}
                     <div className="wpuf-flex wpuf-flex-wrap wpuf-gap-2">
@@ -433,7 +433,7 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                                     {/* Pro Badge on hover only */}
                                     {!size.isFree && isHovered && (
                                         <div className="wpuf-absolute wpuf-inset-0 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-white/90 wpuf-rounded-lg" style={{ pointerEvents: 'none' }}>
-                                            <ProBadge utm="wpuf-user-directory-avatar-size" />
+                                            <ProBadge utm="wpuf-user-directory-avatar-size" config={config} />
                                         </div>
                                     )}
                                 </label>

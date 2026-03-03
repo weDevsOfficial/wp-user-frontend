@@ -1,0 +1,79 @@
+<svg width="246" height="249" viewBox="0 0 246 249" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_dd_volunteer)">
+<path d="M3 10C3 5.58172 6.58172 2 11 2H235C239.418 2 243 5.58172 243 10V237C243 241.418 239.418 245 235 245H11C6.58173 245 3 241.418 3 237V10Z" fill="white"/>
+<path d="M3.5 10C3.5 5.85786 6.85786 2.5 11 2.5H235C239.142 2.5 242.5 5.85786 242.5 10V237C242.5 241.142 239.142 244.5 235 244.5H11C6.85787 244.5 3.5 241.142 3.5 237V10Z" stroke="#E2E8F0"/>
+</g>
+<!-- Volunteer Heart Hands Icon -->
+<rect x="85" y="20" width="76" height="55" rx="6" fill="#10B981" opacity="0.15"/>
+<path d="M123 30L123 28C123 24 119 22 115 24L107 32C105 34 105 37 107 39L123 55L139 39C141 37 141 34 139 32L131 24C127 22 123 24 123 28L123 30Z" fill="#10B981" opacity="0.8"/>
+<circle cx="113" cy="48" r="8" fill="#34D399" opacity="0.5"/>
+<circle cx="133" cy="48" r="8" fill="#34D399" opacity="0.5"/>
+<path d="M108 52L118 62" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+<path d="M138 52L128 62" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+<!-- Opportunity Title -->
+<rect x="47.25" y="82" width="152.5" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="85" width="100" height="4" rx="1" fill="#CBD5E1"/>
+<!-- Organization Name -->
+<rect x="47.25" y="98" width="152.5" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="101" width="80" height="4" rx="1" fill="#E2E8F0"/>
+<!-- Location (Address) -->
+<rect x="47.25" y="114" width="152.5" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<circle cx="54" cy="119" r="3" stroke="#10B981" stroke-width="0.8" fill="none"/>
+<circle cx="54" cy="118" r="1" fill="#10B981"/>
+<rect x="60" y="117" width="70" height="4" rx="1" fill="#E2E8F0"/>
+<!-- Description -->
+<rect x="47.25" y="130" width="152.5" height="20" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="134" width="142" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="138" width="142" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="142" width="100" height="2" rx="1" fill="#E2E8F0"/>
+<!-- Duration & Remote Option -->
+<rect x="47.25" y="156" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<circle cx="54" cy="161" r="2.5" stroke="#10B981" stroke-width="1" fill="none"/>
+<circle cx="54" cy="161" r="1" fill="#10B981"/>
+<rect x="60" y="159" width="40" height="4" rx="1" fill="#CBD5E1"/>
+<rect x="127.25" y="156" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<circle cx="134" cy="161" r="2.5" stroke="#94A3B8" stroke-width="1" fill="none"/>
+<circle cx="144" cy="161" r="2.5" stroke="#10B981" stroke-width="1" fill="none"/>
+<circle cx="144" cy="161" r="1" fill="#10B981"/>
+<circle cx="154" cy="161" r="2.5" stroke="#94A3B8" stroke-width="1" fill="none"/>
+<rect x="162" y="159" width="30" height="4" rx="1" fill="#E2E8F0"/>
+<!-- Start Date & End Date -->
+<rect x="47.25" y="172" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="175" width="30" height="4" rx="1" fill="#E2E8F0"/>
+<text x="85" y="178.5" font-family="system-ui, -apple-system, sans-serif" font-size="5" fill="#64748B">Start</text>
+<rect x="127.25" y="172" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="132" y="175" width="30" height="4" rx="1" fill="#E2E8F0"/>
+<text x="165" y="178.5" font-family="system-ui, -apple-system, sans-serif" font-size="5" fill="#64748B">End</text>
+<!-- Skills Required (Multi-select) -->
+<rect x="47.25" y="188" width="152.5" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="191" width="30" height="4" rx="2" fill="#10B981" opacity="0.2"/>
+<rect x="85" y="191" width="35" height="4" rx="2" fill="#34D399" opacity="0.3"/>
+<rect x="123" y="191" width="28" height="4" rx="2" fill="#6EE7B7" opacity="0.4"/>
+<rect x="154" y="191" width="25" height="4" rx="2" fill="#A7F3D0" opacity="0.5"/>
+<!-- Contact Email & Phone -->
+<rect x="47.25" y="204" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<text x="52" y="210.5" font-family="system-ui, -apple-system, sans-serif" font-size="6" fill="#10B981">@</text>
+<rect x="62" y="207" width="50" height="4" rx="1" fill="#E2E8F0"/>
+<rect x="127.25" y="204" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<text x="132" y="210.5" font-family="system-ui, -apple-system, sans-serif" font-size="6" fill="#64748B">☎</text>
+<rect x="142" y="207" width="50" height="4" rx="1" fill="#E2E8F0"/>
+<!-- Submit Button -->
+<rect x="82" y="222" width="82" height="14" rx="4" fill="#10B981"/>
+<text x="123" y="232" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="white" text-anchor="middle">Submit</text>
+<defs>
+<filter id="filter0_dd_volunteer" x="0" y="0" width="246" height="249" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1.5"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="effect1_dropShadow" result="effect2_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow" result="shape"/>
+</filter>
+</defs>
+</svg>

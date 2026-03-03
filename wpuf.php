@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 4.2.8
+Version: 4.2.10
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -23,7 +23,7 @@ if ( file_exists( $autoload ) ) {
     require_once $autoload;
 }
 
-define( 'WPUF_VERSION', '4.2.8' );
+define( 'WPUF_VERSION', '4.2.10' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -164,6 +164,9 @@ final class WP_User_Frontend {
 
         // AI Form Builder includes
         require_once __DIR__ . '/includes/AI_Manager.php';
+
+        // Gateway helper functions
+        require_once __DIR__ . '/Lib/Gateway/gateway-functions.php';
     }
 
     /**
@@ -176,8 +179,14 @@ final class WP_User_Frontend {
         $this->container['subscription'] = new WeDevs\Wpuf\Admin\Subscription();
         $this->container['fields']       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
         $this->container['customize']    = new WeDevs\Wpuf\Admin\Customizer_Options();
+
+        // Initialize legacy gateway classes for backward compatibility
         $this->container['bank']         = new WeDevs\Wpuf\Lib\Gateway\Bank();
         $this->container['paypal']       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
+
+        // Initialize new gateway manager inside init hook for translation issue
+        add_action( 'init', [ $this, 'init_gateway_manager' ] );
+
         $this->container['api']          = new WeDevs\Wpuf\API();
         $this->container['integrations'] = new WeDevs\Wpuf\Integrations();
         $this->container['ai_manager']   = new WeDevs\Wpuf\AI_Manager();
@@ -206,6 +215,17 @@ final class WP_User_Frontend {
      */
     public function init_ajax() {
         $this->container['ajax'] = new WeDevs\Wpuf\Ajax();
+    }
+
+    /**
+     * Initialize the gateway manager
+     *
+     * @since WPUF_PRO_SINCE
+     *
+     * @return void
+     */
+    public function init_gateway_manager() {
+        $this->container['gateway_manager'] = new WeDevs\Wpuf\Lib\Gateway\Gateway_Manager();
     }
 
     /**
@@ -284,11 +304,6 @@ final class WP_User_Frontend {
             $this->container['free_loader']->includes();
             $this->container['free_loader']->instantiate();
             $this->container['free_loader']->run_hooks();
-
-            // Load TEC venue/organizer fix when Pro is not active
-            if ( file_exists( WPUF_INCLUDES . '/Integrations/TEC_Venue_Organizer_Fix.php' ) ) {
-                require_once WPUF_INCLUDES . '/Integrations/TEC_Venue_Organizer_Fix.php';
-            }
         }
 
         // Remove the what's new option.

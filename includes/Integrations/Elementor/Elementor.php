@@ -31,7 +31,12 @@ class Elementor {
         add_action( 'elementor/editor/after_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 
         // Include Elementor pages with the User Directory widget in pretty URL rewrite rules
+        // (used by the free module's PrettyUrls class when Pro is not active)
         add_filter( 'wpuf_ud_directory_pages', [ $this, 'add_elementor_directory_pages' ], 10, 2 );
+
+        // Register pretty URL rewrite rules directly for Elementor pages — this runs regardless
+        // of which module is active, ensuring the rules are always registered.
+        add_action( 'init', [ $this, 'register_elementor_page_rewrite_rules' ], 5 );
 
         // Flush rewrite rules when Elementor saves a page with our widget
         add_action( 'elementor/editor/after_save', [ $this, 'maybe_flush_rules_on_elementor_save' ], 10, 2 );
@@ -341,8 +346,76 @@ class Elementor {
 
         $elementor_data = get_post_meta( $post_id, '_elementor_data', true );
 
-        if ( ! empty( $elementor_data ) && is_string( $elementor_data ) && strpos( $elementor_data, '"widgetType":"wpuf-user-directory"' ) !== false ) {
+        $has_widget = ! empty( $elementor_data ) && is_string( $elementor_data ) && strpos( $elementor_data, '"widgetType":"wpuf-user-directory"' ) !== false;
+
+        // Keep a queryable meta flag so register_elementor_page_rewrite_rules() can find
+        // these pages efficiently without scanning all _elementor_data values on every init.
+        if ( $has_widget ) {
+            update_post_meta( $post_id, '_wpuf_has_ud_elementor_widget', '1' );
             flush_rewrite_rules();
+        } else {
+            delete_post_meta( $post_id, '_wpuf_has_ud_elementor_widget' );
+        }
+    }
+
+    /**
+     * Register pretty URL rewrite rules for pages using the User Directory Elementor widget
+     *
+     * This runs directly on init (priority 5) so the rules are registered regardless of
+     * whether the free or Pro module is handling PrettyUrls. Pages are found via a post
+     * meta flag (_wpuf_has_ud_elementor_widget) set in maybe_flush_rules_on_elementor_save().
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function register_elementor_page_rewrite_rules() {
+        // Fast path: query only pages that have been flagged via the meta key.
+        // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+        $pages = get_posts( [
+            'post_type'      => 'page',
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
+            'meta_query'     => [
+                [
+                    'key'     => '_wpuf_has_ud_elementor_widget',
+                    'value'   => '1',
+                    'compare' => '=',
+                ],
+            ],
+        ] );
+
+        // Fallback: if no flagged pages exist (e.g. first deploy, meta not yet written),
+        // scan _elementor_data for existing pages and back-fill the meta flag so future
+        // requests use the fast path. This only runs once until a page is found.
+        if ( empty( $pages ) ) {
+            $all_pages = get_posts( [
+                'post_type'      => 'page',
+                'post_status'    => 'publish',
+                'posts_per_page' => -1,
+            ] );
+
+            foreach ( $all_pages as $page ) {
+                $elementor_data = get_post_meta( $page->ID, '_elementor_data', true );
+                if ( ! empty( $elementor_data ) && is_string( $elementor_data ) && strpos( $elementor_data, '"widgetType":"wpuf-user-directory"' ) !== false ) {
+                    update_post_meta( $page->ID, '_wpuf_has_ud_elementor_widget', '1' );
+                    $pages[] = $page;
+                }
+            }
+
+            // If we found pages via the fallback scan, flush so the new rules take effect.
+            if ( ! empty( $pages ) ) {
+                flush_rewrite_rules();
+            }
+        }
+
+        foreach ( $pages as $page ) {
+            $page_slug = $page->post_name;
+            add_rewrite_rule(
+                '^' . $page_slug . '/([^/]+)/?$',
+                'index.php?pagename=' . $page_slug . '&wpuf_user_profile=$matches[1]',
+                'top'
+            );
         }
     }
 

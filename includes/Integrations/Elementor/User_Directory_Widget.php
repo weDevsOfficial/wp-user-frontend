@@ -1280,12 +1280,33 @@ class User_Directory_Widget extends Widget_Base {
         echo '<div class="wpuf-elementor-profile-separator">';
         echo '<span>' . esc_html__( 'Profile Preview', 'wp-user-frontend' ) . '</span>';
         echo '</div>';
-        // Render profile template
-        // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
-        extract( $profile_data );
-        $template_file = WPUF_UD_FREE_VIEWS . '/profile/layout-2.php';
-        if ( file_exists( $template_file ) ) {
-            include $template_file;
+        // Render profile template — route to Pro's template when Pro is active so the
+        // editor preview matches what the frontend actually renders.
+        if ( wpuf_is_pro_active() && function_exists( 'wpuf_load_pro_template' ) && defined( 'WPUF_UD_TEMPLATES' ) ) {
+            $profile_layout = $settings['profile_layout'] ?? 'layout-1';
+            wpuf_load_pro_template(
+                'user-profile.php',
+                [
+                    'template_data'  => $profile_data,
+                    'profile_layout' => $profile_layout,
+                ],
+                WPUF_UD_TEMPLATES . '/shortcodes/profile/'
+            );
+        } else {
+            // Free path: WPUF_UD_FREE_VIEWS and WPUF_UD_FREE_TEMPLATES are defined by the free
+            // User_Directory module. Define them here as a fallback in case the module is not loaded.
+            if ( ! defined( 'WPUF_UD_FREE_VIEWS' ) ) {
+                define( 'WPUF_UD_FREE_VIEWS', WPUF_ROOT . '/modules/user-directory/views' );
+            }
+            if ( ! defined( 'WPUF_UD_FREE_TEMPLATES' ) ) {
+                define( 'WPUF_UD_FREE_TEMPLATES', WPUF_UD_FREE_VIEWS );
+            }
+            // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
+            extract( $profile_data );
+            $template_file = WPUF_UD_FREE_VIEWS . '/profile/layout-2.php';
+            if ( file_exists( $template_file ) ) {
+                include $template_file;
+            }
         }
         echo '</div>';
     }

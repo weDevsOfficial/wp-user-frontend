@@ -236,6 +236,14 @@ trait FieldableTrait {
         if ( $this->search( $post_vars, 'input_type', 'really_simple_captcha' ) ) {
             $this->validate_rs_captcha();
         }
+
+        // check Cloudflare Turnstile
+        $check_turnstile = $this->search( $this->form_fields, 'input_type', 'cloudflare_turnstile' );
+
+        if ( $check_turnstile ) {
+            $this->validate_cloudflare_turnstile();
+        }
+
         $no_captcha = '';
         $invisible_captcha = '';
         $recaptcha_type = '';
@@ -263,6 +271,60 @@ trait FieldableTrait {
                 }
             }
             $this->validate_re_captcha( $no_captcha, $invisible_captcha );
+        }
+    }
+
+    /**
+     * Cloudflare Turnstile validation
+     *
+     * @since 4.0.13
+     *
+     * @return void
+     */
+    public function validate_cloudflare_turnstile() {
+        $enable_turnstile = wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' );
+
+        if ( ! wpuf_is_checkbox_or_toggle_on( $enable_turnstile ) ) {
+            return;
+        }
+
+        $secret = wpuf_get_option( 'turnstile_secret_key', 'wpuf_general', '' );
+
+        if ( empty( $secret ) ) {
+            return;
+        }
+
+        $token = ! empty( $_POST['cf-turnstile-response'] ) ? sanitize_text_field( wp_unslash( $_POST['cf-turnstile-response'] ) ) : '';
+
+        if ( empty( $token ) ) {
+            wpuf()->ajax->send_error( __( 'Cloudflare Turnstile verification failed. Please complete the challenge.', 'wp-user-frontend' ) );
+        }
+
+        $remote_addr = ! empty( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+
+        $response = wp_remote_post(
+            'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+            [
+                'body' => [
+                    'secret'   => $secret,
+                    'response' => $token,
+                    'remoteip' => $remote_addr,
+                ],
+            ]
+        );
+
+        $body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+        if ( empty( $body['success'] ) ) {
+            $errors = ! empty( $body['error-codes'] ) ? implode( ', ', $body['error-codes'] ) : '';
+
+            wpuf()->ajax->send_error(
+                sprintf(
+                    // translators: %s is the error codes from Cloudflare
+                    __( 'Cloudflare Turnstile verification failed. Reasons: [%s]', 'wp-user-frontend' ),
+                    $errors
+                )
+            );
         }
     }
 

@@ -565,7 +565,7 @@ class RestController extends WP_REST_Controller {
      *
      * Returns list of available integrations based on installed plugins
      *
-     * @since WPUF_SINCE
+     * @since 4.2.9
      *
      * @param WP_REST_Request $request REST request object
      * @return WP_REST_Response Response object
@@ -1727,7 +1727,7 @@ class RestController extends WP_REST_Controller {
      * This is critical for integrations to properly trigger their hooks
      * (e.g., WooCommerce's update_price() hook to set _price meta).
      *
-     * @since WPUF_SINCE
+     * @since 4.2.9
      *
      * @param string $post_type The post type
      *

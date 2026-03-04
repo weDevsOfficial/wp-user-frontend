@@ -64,7 +64,7 @@ $custom_tab_labels = $config['custom_tab_labels'];
     <!-- Main Content Container -->
     <div class="!wpuf-max-w-6xl !wpuf-mx-auto !wpuf-px-4 wpuf-profile-header-overlap">
         <!-- Profile Header Card -->
-        <div class="!wpuf-bg-transparent !wpuf-rounded-lg !wpuf-mb-12">
+        <div class="wpuf-profile-header-card !wpuf-bg-transparent !wpuf-rounded-lg !wpuf-mb-12">
             <!-- Avatar and Basic Info -->
             <div class="!wpuf-flex !wpuf-flex-col !wpuf-items-center !wpuf-text-center">
                 <?php if ( $show_avatar ) : ?>
@@ -134,7 +134,7 @@ $custom_tab_labels = $config['custom_tab_labels'];
                         if ( $account_page_id ) :
                             $edit_profile_link = get_page_link( $account_page_id ) . '?section=edit-profile';
                     ?>
-                    <a href="<?php echo esc_url( $edit_profile_link ); ?>" class="!wpuf-inline-block !wpuf-h-11 !wpuf-py-2.5 !wpuf-px-[30px] !wpuf-bg-emerald-600 !wpuf-text-white !wpuf-rounded-lg hover:!wpuf-bg-emerald-700 !wpuf-transition-colors !wpuf-font-medium !wpuf-text-sm !wpuf-no-underline !wpuf-leading-[21px]">
+                    <a href="<?php echo esc_url( $edit_profile_link ); ?>" class="wpuf-edit-profile-btn !wpuf-inline-block !wpuf-h-11 !wpuf-py-2.5 !wpuf-px-[30px] !wpuf-bg-emerald-600 !wpuf-text-white !wpuf-rounded-lg hover:!wpuf-bg-emerald-700 !wpuf-transition-colors !wpuf-font-medium !wpuf-text-sm !wpuf-no-underline !wpuf-leading-[21px]">
                         <?php esc_html_e( 'Edit Profile', 'wp-user-frontend' ); ?>
                     </a>
                     <?php

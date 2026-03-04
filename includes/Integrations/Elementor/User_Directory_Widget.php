@@ -12,7 +12,6 @@ use Elementor\Controls_Manager;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
-use WeDevs\Wpuf\Modules\User_Directory\User_Directory;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -118,8 +117,8 @@ class User_Directory_Widget extends Widget_Base {
         $this->register_profile_name_style_controls();
         $this->register_profile_contact_style_controls();
         $this->register_profile_tab_style_controls();
-        $this->register_profile_tab_content_style_controls();
         $this->register_profile_bio_style_controls();
+        $this->register_profile_edit_button_style_controls();
     }
 
     /**
@@ -935,9 +934,9 @@ class User_Directory_Widget extends Widget_Base {
             [
                 'label'     => __( 'Icon Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
-                'default'   => '#6B7280',
+                'default'   => '#059669',
                 'selectors' => [
-                    '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-overlap svg' => 'color: {{VALUE}} !important;',
+                    '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-card svg path' => 'stroke: {{VALUE}} !important;',
                 ],
             ]
         );
@@ -948,8 +947,8 @@ class User_Directory_Widget extends Widget_Base {
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#111827',
                 'selectors' => [
-                    '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-overlap span' => 'color: {{VALUE}} !important;',
-                    '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-overlap a'    => 'color: {{VALUE}} !important;',
+                    '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-card span' => 'color: {{VALUE}} !important;',
+                    '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-card a:not(.wpuf-edit-profile-btn)' => 'color: {{VALUE}} !important;',
                 ],
             ]
         );
@@ -957,7 +956,7 @@ class User_Directory_Widget extends Widget_Base {
             Group_Control_Typography::get_type(),
             [
                 'name'     => 'profile_contact_typography',
-                'selector' => '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-overlap span',
+                'selector' => '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-card span',
             ]
         );
         $this->end_controls_section();
@@ -1033,45 +1032,6 @@ class User_Directory_Widget extends Widget_Base {
     }
 
     /**
-     * Register profile tab content style controls
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    protected function register_profile_tab_content_style_controls() {
-        $this->start_controls_section(
-            'section_profile_tab_content_style',
-            [
-                'label' => __( 'Profile - Tab Content', 'wp-user-frontend' ),
-                'tab'   => Controls_Manager::TAB_STYLE,
-            ]
-        );
-        $this->add_control(
-            'profile_tab_content_bg_color',
-            [
-                'label'     => __( 'Background Color', 'wp-user-frontend' ),
-                'type'      => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .wpuf-tab-content-2' => 'background-color: {{VALUE}} !important;',
-                ],
-            ]
-        );
-        $this->add_responsive_control(
-            'profile_tab_content_padding',
-            [
-                'label'      => __( 'Padding', 'wp-user-frontend' ),
-                'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => [ 'px', 'em' ],
-                'selectors'  => [
-                    '{{WRAPPER}} .wpuf-tab-content-2' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;',
-                ],
-            ]
-        );
-        $this->end_controls_section();
-    }
-
-    /**
      * Register profile bio text style controls
      *
      * @since WPUF_SINCE
@@ -1093,7 +1053,7 @@ class User_Directory_Widget extends Widget_Base {
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#9CA3AF',
                 'selectors' => [
-                    '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-overlap p' => 'color: {{VALUE}} !important;',
+                    '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-card p' => 'color: {{VALUE}} !important;',
                 ],
             ]
         );
@@ -1101,7 +1061,125 @@ class User_Directory_Widget extends Widget_Base {
             Group_Control_Typography::get_type(),
             [
                 'name'     => 'profile_bio_typography',
-                'selector' => '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-overlap p',
+                'selector' => '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-card p',
+            ]
+        );
+        $this->end_controls_section();
+    }
+
+    /**
+     * Register Edit Profile button style controls
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    protected function register_profile_edit_button_style_controls() {
+        $this->start_controls_section(
+            'section_profile_edit_btn_style',
+            [
+                'label' => __( 'Profile - Edit Profile Button', 'wp-user-frontend' ),
+                'tab'   => Controls_Manager::TAB_STYLE,
+            ]
+        );
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name'     => 'profile_edit_btn_typography',
+                'selector' => '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-card a.wpuf-edit-profile-btn',
+            ]
+        );
+        $this->start_controls_tabs( 'tabs_profile_edit_btn' );
+        $this->start_controls_tab(
+            'tab_profile_edit_btn_normal',
+            [ 'label' => __( 'Normal', 'wp-user-frontend' ) ]
+        );
+        $this->add_control(
+            'profile_edit_btn_color',
+            [
+                'label'     => __( 'Text Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'default'   => '#ffffff',
+                'selectors' => [
+                    '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-card a.wpuf-edit-profile-btn' => 'color: {{VALUE}} !important;',
+                ],
+            ]
+        );
+        $this->add_control(
+            'profile_edit_btn_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'default'   => '#059669',
+                'selectors' => [
+                    '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-card a.wpuf-edit-profile-btn' => 'background-color: {{VALUE}} !important;',
+                ],
+            ]
+        );
+        $this->end_controls_tab();
+        $this->start_controls_tab(
+            'tab_profile_edit_btn_hover',
+            [ 'label' => __( 'Hover', 'wp-user-frontend' ) ]
+        );
+        $this->add_control(
+            'profile_edit_btn_hover_color',
+            [
+                'label'     => __( 'Text Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-card a.wpuf-edit-profile-btn:hover' => 'color: {{VALUE}} !important;',
+                ],
+            ]
+        );
+        $this->add_control(
+            'profile_edit_btn_hover_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-card a.wpuf-edit-profile-btn:hover' => 'background-color: {{VALUE}} !important;',
+                ],
+            ]
+        );
+        $this->end_controls_tab();
+        $this->end_controls_tabs();
+        $this->add_control(
+            'profile_edit_btn_border_radius',
+            [
+                'label'      => __( 'Border Radius', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', '%' ],
+                'separator'  => 'before',
+                'default'    => [
+                    'top'      => '8',
+                    'right'    => '8',
+                    'bottom'   => '8',
+                    'left'     => '8',
+                    'unit'     => 'px',
+                    'isLinked' => true,
+                ],
+                'selectors'  => [
+                    '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-card a.wpuf-edit-profile-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;',
+                ],
+            ]
+        );
+        $this->add_responsive_control(
+            'profile_edit_btn_padding',
+            [
+                'label'      => __( 'Padding', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em' ],
+                'default'    => [
+                    'top'      => '10',
+                    'right'    => '30',
+                    'bottom'   => '10',
+                    'left'     => '30',
+                    'unit'     => 'px',
+                    'isLinked' => false,
+                ],
+                'selectors'  => [
+                    '{{WRAPPER}} .wpuf-profile-layout-2 .wpuf-profile-header-card a.wpuf-edit-profile-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;',
+                ],
             ]
         );
         $this->end_controls_section();
@@ -1126,7 +1204,7 @@ class User_Directory_Widget extends Widget_Base {
         }
         // Verify directory exists
         $post = get_post( $directory_id );
-        if ( ! $post || User_Directory::POST_TYPE !== $post->post_type ) {
+        if ( ! $post || 'wpuf_user_listing' !== $post->post_type ) {
             if ( $is_editor ) {
                 $this->render_empty_state( __( 'Selected directory no longer exists.', 'wp-user-frontend' ) );
             }
@@ -1174,7 +1252,10 @@ class User_Directory_Widget extends Widget_Base {
         if ( ! empty( $post->post_content ) ) {
             $settings = json_decode( $post->post_content, true ) ?: [];
         }
-        $settings = wp_parse_args( $settings, User_Directory::get_default_settings() );
+        $default_settings = class_exists( \WeDevs\Wpuf\Modules\User_Directory\User_Directory::class )
+            ? \WeDevs\Wpuf\Modules\User_Directory\User_Directory::get_default_settings()
+            : [];
+        $settings = wp_parse_args( $settings, $default_settings );
         // Build profile data matching what the Shortcode class provides
         $default_tabs = [ 'about', 'posts', 'comments', 'file' ];
         if ( ! empty( $settings['default_tabs'] ) && is_array( $settings['default_tabs'] ) ) {
@@ -1252,7 +1333,7 @@ class User_Directory_Widget extends Widget_Base {
      */
     protected function get_directories() {
         return get_posts( [
-            'post_type'      => User_Directory::POST_TYPE,
+            'post_type'      => 'wpuf_user_listing',
             'post_status'    => 'any',
             'posts_per_page' => -1,
             'orderby'        => 'title',

@@ -191,6 +191,9 @@ class Assets {
             'account'              => [
                 'src' => WPUF_ASSET_URI . '/css/frontend/account.css',
             ],
+            'elementor-user-directory' => [
+                'src' => WPUF_ASSET_URI . '/css/elementor-user-directory.css',
+            ],
         ];
 
         return apply_filters( 'wpuf_styles_to_register', $styles );

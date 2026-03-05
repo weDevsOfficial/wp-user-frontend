@@ -196,6 +196,17 @@ final class WP_User_Frontend {
             $this->container['setup_wizard'] = new WeDevs\Wpuf\Setup_Wizard();
             $this->container['pro_upgrades'] = new WeDevs\Wpuf\Pro_Upgrades();
             $this->container['privacy']      = new WeDevs\Wpuf\WPUF_Privacy();
+
+            // Load Frontend when in Elementor editor or Elementor AJAX so shortcodes
+            // like wpuf_account are registered and do_shortcode() works.
+            $get_action   = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
+            $request_act  = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
+            $is_elementor = ( $get_action === 'elementor' )
+                || ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) && $request_act === 'elementor_ajax' );
+
+            if ( $is_elementor ) {
+                $this->container['frontend'] = new WeDevs\Wpuf\Frontend();
+            }
         } else {
             $this->container['frontend'] = new WeDevs\Wpuf\Frontend();
         }

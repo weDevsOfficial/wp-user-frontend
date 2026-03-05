@@ -54,6 +54,17 @@ const DirectoryWizard = ({ onClose, initialData, config = {} }) => {
     const prevStepIndex = useRef(0);
     const fadeTimerRef = useRef(null);
 
+    // Track WP sidebar folded state reactively
+    const [isFolded, setIsFolded] = useState(() => document.body.classList.contains('folded'));
+
+    useEffect(() => {
+        const observer = new MutationObserver(() => {
+            setIsFolded(document.body.classList.contains('folded'));
+        });
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        return () => observer.disconnect();
+    }, []);
+
     // Cleanup fade timers on unmount
     useEffect(() => {
         return () => {
@@ -87,8 +98,10 @@ const DirectoryWizard = ({ onClose, initialData, config = {} }) => {
     const navigateToStep = (stepIndex) => {
         setFade(false);
         fadeTimerRef.current = setTimeout(() => {
-            prevStepIndex.current = currentStepIndex;
-            setCurrentStepIndex(stepIndex);
+            setCurrentStepIndex(prev => {
+                prevStepIndex.current = prev;
+                return stepIndex;
+            });
             setFade(true);
         }, 200);
     };
@@ -99,8 +112,10 @@ const DirectoryWizard = ({ onClose, initialData, config = {} }) => {
         if (!isLastStep) {
             setFade(false);
             fadeTimerRef.current = setTimeout(() => {
-                prevStepIndex.current = currentStepIndex;
-                setCurrentStepIndex(currentStepIndex + 1);
+                setCurrentStepIndex(prev => {
+                    prevStepIndex.current = prev;
+                    return prev + 1;
+                });
                 setFade(true);
             }, 200);
         } else {
@@ -112,8 +127,10 @@ const DirectoryWizard = ({ onClose, initialData, config = {} }) => {
         if (currentStepIndex > 0) {
             setFade(false);
             fadeTimerRef.current = setTimeout(() => {
-                prevStepIndex.current = currentStepIndex;
-                setCurrentStepIndex(currentStepIndex - 1);
+                setCurrentStepIndex(prev => {
+                    prevStepIndex.current = prev;
+                    return prev - 1;
+                });
                 setFade(true);
             }, 200);
         }
@@ -139,8 +156,14 @@ const DirectoryWizard = ({ onClose, initialData, config = {} }) => {
             });
 
             if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.message || __('Something went wrong', 'wp-user-frontend'));
+                let errorMessage;
+                try {
+                    const data = await response.json();
+                    errorMessage = data.message;
+                } catch {
+                    errorMessage = response.statusText || __('Something went wrong', 'wp-user-frontend');
+                }
+                throw new Error(errorMessage || __('Something went wrong', 'wp-user-frontend'));
             }
             
             setToastMessage({ text: __('Directory settings saved successfully!', 'wp-user-frontend'), type: 'success' });
@@ -278,7 +301,7 @@ const DirectoryWizard = ({ onClose, initialData, config = {} }) => {
             {/* Footer Navigation */}
             <div className="wpuf-fixed wpuf-bottom-0 !wpuf-bg-white wpuf-border-t wpuf-border-gray-200 wpuf-shadow-lg wpuf-z-50"
                  style={{
-                     left: document.body.classList.contains('folded') ? '36px' : '160px',
+                     left: isFolded ? '36px' : '160px',
                      right: '0'
                  }}>
                 <div className="wpuf-container wpuf-mx-auto">

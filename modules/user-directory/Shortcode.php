@@ -295,6 +295,7 @@ class Shortcode {
 
         // Build user query args - check users_per_page first (admin setting), then per_page
         $per_page = absint( $settings['users_per_page'] ?? ( $settings['per_page'] ?? 12 ) );
+        $per_page = max( $per_page, 1 );
         $offset   = ( $paged - 1 ) * $per_page;
 
         $args = [
@@ -422,10 +423,10 @@ class Shortcode {
     private function render_profile( $user, $settings, $directory_id ) {
         // Get default tabs from settings or use Free version defaults
         $default_tabs = [ 'about', 'posts', 'comments', 'file' ];
-        if ( ! empty( $settings['default_tabs'] ) && is_array( $settings['default_tabs'] ) ) {
-            $default_tabs = $settings['default_tabs'];
-        } elseif ( ! empty( $settings['default_tabs'] ) && is_string( $settings['default_tabs'] ) ) {
-            $default_tabs = array_map( 'trim', explode( ',', $settings['default_tabs'] ) );
+        if ( ! empty( $settings['profile_tabs'] ) && is_array( $settings['profile_tabs'] ) ) {
+            $default_tabs = $settings['profile_tabs'];
+        } elseif ( ! empty( $settings['profile_tabs'] ) && is_string( $settings['profile_tabs'] ) ) {
+            $default_tabs = array_map( 'trim', explode( ',', $settings['profile_tabs'] ) );
         }
 
         // Build profile data

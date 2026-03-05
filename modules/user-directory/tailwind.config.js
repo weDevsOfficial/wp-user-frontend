@@ -10,6 +10,7 @@ module.exports = {
         '../../src/js/user-directory/**/*.js',
         '../../src/js/user-directory/**/*.jsx',
         './views/**/*.php',
+        './Admin_Menu.php',
     ],
     safelist: [
         // Responsive classes used in components

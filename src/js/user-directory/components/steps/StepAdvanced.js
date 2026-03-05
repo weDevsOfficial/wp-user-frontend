@@ -121,7 +121,7 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
         { value: '128', label: '128×128', isFree: true },
         { value: '160', label: '160×160', isFree: false },
         { value: '192', label: '192×192', isFree: false },
-        { value: '265', label: '265×265', isFree: false },
+        { value: '256', label: '256×256', isFree: false },
     ];
 
     // Gallery image sizes with Pro status
@@ -432,7 +432,7 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                                     </div>
                                     {/* Pro Badge on hover only */}
                                     {!size.isFree && isHovered && (
-                                        <div className="wpuf-absolute wpuf-inset-0 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-white/90 wpuf-rounded-lg" style={{ pointerEvents: 'none' }}>
+                                        <div className="wpuf-absolute wpuf-inset-0 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-white/90 wpuf-rounded-lg">
                                             <ProBadge utm="wpuf-user-directory-avatar-size" config={config} />
                                         </div>
                                     )}

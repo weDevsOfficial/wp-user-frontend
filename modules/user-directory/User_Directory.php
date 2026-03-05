@@ -300,8 +300,8 @@ class User_Directory {
             'enable_search'      => true,
             'enable_pagination'  => true,
             // Profile tabs - all enabled by default (consistent with Pro)
-            'profile_tabs'       => [ 'about', 'posts', 'files', 'comments' ],
-            'profile_tabs_order' => [ 'about', 'posts', 'files', 'comments' ],
+            'profile_tabs'       => [ 'about', 'posts', 'file', 'comments' ],
+            'profile_tabs_order' => [ 'about', 'posts', 'file', 'comments' ],
             'about_fields'       => [],
         ];
 

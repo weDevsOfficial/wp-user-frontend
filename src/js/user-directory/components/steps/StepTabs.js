@@ -79,7 +79,9 @@ const StepTabs = ({ formData, setFormData, config }) => {
         }
         
         // Add remaining tabs
-        Object.values(tabsMap).forEach(tab => orderedTabs.push(tab));
+        Object.values(tabsMap).forEach(tab => {
+            orderedTabs.push(tab);
+        });
         
         return orderedTabs;
     });
@@ -339,7 +341,7 @@ const StepTabs = ({ formData, setFormData, config }) => {
             {/* Configure About Tab Section - Pro Feature Preview */}
             <div className="wpuf-mt-8">
                 <div className="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-mb-2">
-                    <h1
+                    <h3
                         style={{
                             fontWeight: 400,
                             fontSize: '18px',
@@ -349,7 +351,7 @@ const StepTabs = ({ formData, setFormData, config }) => {
                         }}
                     >
                         {__('Configure About Tab', 'wp-user-frontend')}
-                    </h1>
+                    </h3>
                 </div>
                 
                 <p className="wpuf-mb-6"
@@ -397,7 +399,7 @@ const StepTabs = ({ formData, setFormData, config }) => {
                 </button>
                 
                 {/* Content Type Buttons Preview - Disabled with Pro Badges on hover */}
-                <div className="wpuf-mt-4 wpuf-p-4 wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-lg" style={{ width: '590px' }}>
+                <div className="wpuf-mt-4 wpuf-p-4 wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-lg" style={{ width: '100%', maxWidth: '590px' }}>
                     <div className="wpuf-flex wpuf-gap-2 wpuf-items-center wpuf-justify-center">
                         {/* Meta Field */}
                         <button
@@ -417,7 +419,7 @@ const StepTabs = ({ formData, setFormData, config }) => {
                             </span>
                             {/* Pro Badge on hover only */}
                             {hoveredContentType === 'meta-field' && (
-                                <div className="wpuf-absolute wpuf-inset-0 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-white/90 wpuf-rounded-lg" style={{ pointerEvents: 'none' }}>
+                                <div className="wpuf-absolute wpuf-inset-0 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-white/90 wpuf-rounded-lg">
                                     <ProBadge utm="wpuf-user-directory-meta-field" />
                                 </div>
                             )}
@@ -441,7 +443,7 @@ const StepTabs = ({ formData, setFormData, config }) => {
                             </span>
                             {/* Pro Badge on hover only */}
                             {hoveredContentType === 'section' && (
-                                <div className="wpuf-absolute wpuf-inset-0 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-white/90 wpuf-rounded-lg" style={{ pointerEvents: 'none' }}>
+                                <div className="wpuf-absolute wpuf-inset-0 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-white/90 wpuf-rounded-lg">
                                     <ProBadge utm="wpuf-user-directory-section" />
                                 </div>
                             )}
@@ -465,7 +467,7 @@ const StepTabs = ({ formData, setFormData, config }) => {
                             </span>
                             {/* Pro Badge on hover only */}
                             {hoveredContentType === 'post-type' && (
-                                <div className="wpuf-absolute wpuf-inset-0 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-white/90 wpuf-rounded-lg" style={{ pointerEvents: 'none' }}>
+                                <div className="wpuf-absolute wpuf-inset-0 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-white/90 wpuf-rounded-lg">
                                     <ProBadge utm="wpuf-user-directory-post-type" />
                                 </div>
                             )}
@@ -489,7 +491,7 @@ const StepTabs = ({ formData, setFormData, config }) => {
                             </span>
                             {/* Pro Badge on hover only */}
                             {hoveredContentType === 'comment' && (
-                                <div className="wpuf-absolute wpuf-inset-0 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-white/90 wpuf-rounded-lg" style={{ pointerEvents: 'none' }}>
+                                <div className="wpuf-absolute wpuf-inset-0 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-white/90 wpuf-rounded-lg">
                                     <ProBadge utm="wpuf-user-directory-comment" />
                                 </div>
                             )}
@@ -513,7 +515,7 @@ const StepTabs = ({ formData, setFormData, config }) => {
                             </span>
                             {/* Pro Badge on hover only */}
                             {hoveredContentType === 'image-file' && (
-                                <div className="wpuf-absolute wpuf-inset-0 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-white/90 wpuf-rounded-lg" style={{ pointerEvents: 'none' }}>
+                                <div className="wpuf-absolute wpuf-inset-0 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-white/90 wpuf-rounded-lg">
                                     <ProBadge utm="wpuf-user-directory-image-file" />
                                 </div>
                             )}

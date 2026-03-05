@@ -94,7 +94,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Check if Pro User Directory module is active
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return bool
      */
@@ -109,7 +109,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Check if Free User Directory module is enabled
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return bool
      */
@@ -1151,7 +1151,7 @@ class Free_Loader extends Pro_Prompt {
 
             <?php // Free Modules Section ?>
             <?php if ( $free_modules ) : ?>
-            <h2 class="wpuf-modules-section-title" style="margin-top: 20px; margin-bottom: 10px; font-size: 16px; font-weight: 600;">
+            <h2 class="wpuf-modules-section-title">
                 <?php esc_html_e( 'Available Modules', 'wp-user-frontend' ); ?>
             </h2>
             <div class="wp-list-table widefat wpuf-modules wpuf-free-modules">
@@ -1194,13 +1194,13 @@ class Free_Loader extends Pro_Prompt {
             <?php endif; ?>
 
             <?php // Pro Modules Preview Section ?>
-            <h2 class="wpuf-modules-section-title" style="margin-top: 30px; margin-bottom: 10px; font-size: 16px; font-weight: 600;">
+            <h2 class="wpuf-modules-section-title wpuf-pro-modules-title">
                 <?php esc_html_e( 'Pro Modules', 'wp-user-frontend' ); ?>
-                <span style="font-size: 12px; font-weight: normal; color: #666; margin-left: 10px;">
+                <span class="wpuf-pro-badge">
                     <?php esc_html_e( '(Upgrade to Pro to unlock)', 'wp-user-frontend' ); ?>
                 </span>
             </h2>
-            <div class="wp-list-table widefat wpuf-modules wpuf-pro-modules-preview" style="position: relative;">
+            <div class="wp-list-table widefat wpuf-modules wpuf-pro-modules-preview">
                 <?php if ( $pro_modules ) {
                     foreach ( $pro_modules as $slug => $module ) {
                         ?>
@@ -1273,7 +1273,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Handle AJAX request to toggle a free module on/off
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return void
      */

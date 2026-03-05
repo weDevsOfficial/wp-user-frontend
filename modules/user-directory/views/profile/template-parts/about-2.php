@@ -2,7 +2,7 @@
 /**
  * About Tab Template 2 - Free Version (Pro Only Feature)
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

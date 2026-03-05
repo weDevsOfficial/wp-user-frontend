@@ -4,7 +4,7 @@
  *
  * @package WPUF
  * @subpackage Modules/User_Directory
- * @since 4.3.0
+ * @since WPUF_SINCE
  */
 
 namespace WeDevs\Wpuf\Modules\User_Directory;
@@ -19,14 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Registers the wpuf_user_listing post type for storing directory configurations.
  * Provides hooks for Pro version to modify registration.
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  */
 class Post_Type {
 
     /**
      * Constructor
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      */
     public function __construct() {
         add_action( 'init', [ $this, 'register_post_type' ] );
@@ -35,7 +35,7 @@ class Post_Type {
     /**
      * Register the wpuf_user_listing post type
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -46,7 +46,7 @@ class Post_Type {
          * When Pro is active, it can return true to prevent Free from registering.
          * This is useful when Pro has different post type arguments.
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param bool $skip_registration Whether to skip Free post type registration. Default false.
          */
@@ -70,7 +70,7 @@ class Post_Type {
         /**
          * Filter post type labels
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param array $labels The post type labels.
          */
@@ -82,9 +82,7 @@ class Post_Type {
             'publicly_queryable'  => false,
             'show_ui'             => false,
             'show_in_menu'        => false,
-            'show_in_rest'        => true,
-            'rest_base'           => 'wpuf_user_listing',
-            'rest_controller_class' => 'WP_REST_Posts_Controller',
+            'show_in_rest'        => false,
             'query_var'           => false,
             'rewrite'             => false,
             'capability_type'     => 'post',
@@ -99,7 +97,7 @@ class Post_Type {
          *
          * Pro can modify registration arguments.
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param array $args The post type arguments.
          */
@@ -110,7 +108,7 @@ class Post_Type {
         /**
          * Action fired after User Directory post type is registered
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param string $post_type The registered post type name.
          */

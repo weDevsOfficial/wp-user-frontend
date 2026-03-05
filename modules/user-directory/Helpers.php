@@ -6,7 +6,7 @@
  *
  * @package WPUF
  * @subpackage Modules/User_Directory
- * @since 4.3.0
+ * @since WPUF_SINCE
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,13 +16,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get layout colors for directory
  *
- * @since 4.3.0
+ * Free version always returns emerald colors regardless of layout.
  *
- * @param string $layout Layout name.
+ * @since WPUF_SINCE
  *
  * @return array Colors array.
  */
-function wpuf_ud_free_get_layout_colors( $layout = 'layout-3' ) {
+function wpuf_ud_free_get_layout_colors() {
     // Emerald colors for Free version
     return [
         'primary_600'            => '!wpuf-bg-emerald-600',
@@ -39,33 +39,33 @@ function wpuf_ud_free_get_layout_colors( $layout = 'layout-3' ) {
 /**
  * Alias for wpuf_ud_get_layout_colors (Pro compatibility)
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param string $layout Layout name.
  *
  * @return array Colors array.
  */
 function wpuf_ud_get_layout_colors( $layout = 'layout-3' ) {
-    return wpuf_ud_free_get_layout_colors( $layout );
+    return wpuf_ud_free_get_layout_colors();
 }
 
 /**
  * Get profile layout colors
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param string $layout Layout name.
  *
  * @return array Colors array.
  */
 function wpuf_ud_get_profile_layout_colors( $layout = 'layout-2' ) {
-    return wpuf_ud_free_get_layout_colors( $layout );
+    return wpuf_ud_free_get_layout_colors();
 }
 
 /**
  * Build page URL for pagination
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param string $base_url   Base URL.
  * @param array  $query_args Query args.
@@ -121,7 +121,7 @@ function wpuf_ud_build_page_url( $base_url, $query_args, $page ) {
 /**
  * Get avatar URL for a user (checks wpuf_profile_photo first, then gravatar)
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param WP_User $user User object.
  * @param int     $size Size in pixels.
@@ -175,7 +175,7 @@ function wpuf_ud_get_avatar_url( $user, $size = 128 ) {
 /**
  * Get user avatar HTML with fallback to initials (matching Pro behavior)
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param WP_User $user  User object.
  * @param int     $size  Avatar size.
@@ -243,7 +243,7 @@ function wpuf_ud_get_user_avatar_html( $user, $size = 128, $class = '' ) {
 /**
  * Get profile URL for a user
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param WP_User $user User object.
  * @param array   $data Profile data.
@@ -370,7 +370,7 @@ function wpuf_ud_get_profile_url( $user, $data = [] ) {
 /**
  * Get profile data for template
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param WP_User $user          User object.
  * @param array   $template_data Template data.
@@ -527,7 +527,7 @@ function wpuf_ud_get_profile_data( $user, $template_data = [], $layout = 'layout
 /**
  * Get default template config
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @return array Default config.
  */
@@ -550,7 +550,7 @@ function wpuf_ud_get_default_template_config() {
 /**
  * Get default user meta
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @return array Default user meta.
  */
@@ -568,7 +568,7 @@ function wpuf_ud_get_default_user_meta() {
 /**
  * Get default navigation
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @return array Default navigation.
  */
@@ -582,7 +582,7 @@ function wpuf_ud_get_default_navigation() {
 /**
  * Get default tab config
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @return array Default tab config.
  */
@@ -609,7 +609,7 @@ function wpuf_ud_get_default_tab_config() {
 /**
  * Get tab label
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param string $tab          Tab key.
  * @param array  $profile_data Profile data.
@@ -636,7 +636,7 @@ function wpuf_ud_get_tab_label( $tab, $profile_data = [] ) {
 /**
  * Get block avatar data
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param WP_User $user    User object.
  * @param int     $size    Avatar size.
@@ -682,7 +682,7 @@ function wpuf_ud_get_block_avatar_data( $user, $size = 128, $type = 'initials' )
 /**
  * Get user initials
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param WP_User $user User object.
  *
@@ -714,7 +714,7 @@ function wpuf_ud_get_user_initials( $user ) {
 /**
  * Get user social links (Free version - returns empty)
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param WP_User $user User object.
  *
@@ -728,7 +728,7 @@ function wpuf_ud_get_user_social_links( $user ) {
 /**
  * Get cover photo data for a user
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param WP_User|int $user User object or user ID.
  *
@@ -768,7 +768,7 @@ function wpuf_ud_get_cover_photo_data( $user ) {
 /**
  * Check if user has files (Free version - returns false)
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param int    $user_id  User ID.
  * @param string $meta_key Meta key.
@@ -783,7 +783,7 @@ function wpuf_ud_user_has_files( $user_id, $meta_key ) {
 /**
  * Render meta field (Free version - no-op)
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param array   $field   Field data.
  * @param WP_User $user    User object.
@@ -799,7 +799,7 @@ function wpuf_ud_render_meta_field( $field, $user, $user_id, $layout ) {
 /**
  * Get social fields (Free version - returns empty)
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @return array Empty array.
  */
@@ -810,7 +810,7 @@ function wpuf_ud_get_social_fields() {
 /**
  * Get social icons (Free version - returns empty)
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param string $class CSS class.
  *
@@ -823,7 +823,7 @@ function wpuf_ud_get_social_icons( $class = '' ) {
 /**
  * Render posts table (Free version - no-op)
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param array  $field   Field data.
  * @param int    $user_id User ID.
@@ -838,7 +838,7 @@ function wpuf_ud_render_posts_table( $field, $user_id, $layout ) {
 /**
  * Render files grid (Free version - no-op)
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param array  $field         Field data.
  * @param int    $user_id       User ID.
@@ -854,7 +854,7 @@ function wpuf_ud_render_files_grid( $field, $user_id, $template_data, $color ) {
 /**
  * Build pagination URL for posts tab
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param string $base_url   Base URL path.
  * @param array  $clean_args Clean query args.
@@ -873,7 +873,7 @@ function wpuf_ud_build_posts_page_url( $base_url, $clean_args, $page ) {
 /**
  * Build pagination URL for comments tab
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param string $base_url   Base URL path.
  * @param array  $clean_args Clean query args.
@@ -892,7 +892,7 @@ function wpuf_ud_build_comments_page_url( $base_url, $clean_args, $page ) {
 /**
  * Get actual dimensions from a WordPress image size name or number
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  *
  * @param string|int $size WordPress image size name or numeric pixel value.
  *

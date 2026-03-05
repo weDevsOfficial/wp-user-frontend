@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Handles REST API endpoints for User Directory CRUD operations.
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  */
 class Directory extends WP_REST_Controller {
 
@@ -46,7 +46,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Register REST routes
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -122,7 +122,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Check permissions for API access
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -143,7 +143,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Get all directories
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -204,7 +204,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Get single directory
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -236,7 +236,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Create a new directory
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -288,9 +288,6 @@ class Directory extends WP_REST_Controller {
             );
         }
 
-        // Flush rewrite rules for pretty URLs
-        flush_rewrite_rules();
-
         return rest_ensure_response( [
             'success' => true,
             'message' => __( 'Directory created successfully.', 'wp-user-frontend' ),
@@ -301,7 +298,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Update a directory
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -360,7 +357,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Delete a directory
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -397,7 +394,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Get user count based on filters
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -441,7 +438,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Search users for frontend AJAX
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -586,7 +583,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Sanitize settings from request
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @param array $params Request parameters.
      *
@@ -683,7 +680,7 @@ class Directory extends WP_REST_Controller {
      * Note: In Free version, we save all user settings to the database for Pro compatibility.
      * Restrictions are enforced during frontend rendering, not during save.
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @param array $settings Settings array.
      *
@@ -695,7 +692,7 @@ class Directory extends WP_REST_Controller {
          *
          * Pro can return true to skip all free version restrictions.
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param bool  $skip_limits Whether to skip free limits. Default false.
          * @param array $settings    The settings array.
@@ -714,7 +711,7 @@ class Directory extends WP_REST_Controller {
         /**
          * Filter settings after free limits are applied
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param array $settings The settings array with free limits applied.
          */
@@ -724,7 +721,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Extract user IDs from excluded_users array
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @param array $excluded_users Array of user objects or user IDs.
      *

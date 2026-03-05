@@ -4,7 +4,7 @@
  *
  * @package WPUF
  * @subpackage Modules/User_Directory
- * @since 4.3.0
+ * @since WPUF_SINCE
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

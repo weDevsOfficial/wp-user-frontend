@@ -3,7 +3,7 @@
  * Directory Custom Styles
  *
  * @package WPUF\Modules\UserDirectory
- * @since 4.3.0
+ * @since WPUF_SINCE
  */
 
 namespace WeDevs\Wpuf\Modules\User_Directory;
@@ -312,7 +312,7 @@ class DirectoryStyles {
         ];
 
         foreach ( $profile_params as $param ) {
-            if ( ! empty( $_GET[$param] ) ) {
+            if ( ! empty( sanitize_text_field( wp_unslash( $_GET[ $param ] ?? '' ) ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                 // Additional validation: ensure we're on a directory page
                 return $this->is_directory_page();
             }
@@ -330,7 +330,7 @@ class DirectoryStyles {
         }
 
         // Check URL structure
-        $current_uri = trim( $_SERVER['REQUEST_URI'], '/' );
+        $current_uri = trim( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ), '/' );
         $page_slug = $post->post_name;
 
         // Pattern: /page-slug/username-or-id/

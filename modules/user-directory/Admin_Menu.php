@@ -4,7 +4,7 @@
  *
  * @package WPUF
  * @subpackage Modules/User_Directory
- * @since 4.3.0
+ * @since WPUF_SINCE
  */
 
 namespace WeDevs\Wpuf\Modules\User_Directory;
@@ -19,14 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles the User Directories admin menu registration and rendering.
  * Provides hooks for Pro version to extend functionality.
  *
- * @since 4.3.0
+ * @since WPUF_SINCE
  */
 class Admin_Menu {
 
     /**
      * Constructor
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      */
     public function __construct() {
         // Hook to wpuf_admin_menu_top with priority 15 to position after Registration Forms
@@ -36,7 +36,7 @@ class Admin_Menu {
     /**
      * Add User Directories submenu
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -47,7 +47,7 @@ class Admin_Menu {
          * When Pro is active, it can return true to prevent Free from registering its menu.
          * Pro will then register its own menu with the same slug.
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param bool $skip_menu Whether to skip Free menu registration. Default false.
          */
@@ -69,7 +69,7 @@ class Admin_Menu {
         /**
          * Action fired after User Directory admin menu is registered
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param string $hook The hook suffix for the menu page.
          */
@@ -79,7 +79,7 @@ class Admin_Menu {
     /**
      * Render the admin page
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -87,7 +87,7 @@ class Admin_Menu {
         /**
          * Filter the admin page container ID
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param string $container_id The container element ID.
          */
@@ -96,7 +96,7 @@ class Admin_Menu {
         /**
          * Filter the admin page container CSS classes
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param string $container_class The container element CSS classes.
          */
@@ -122,7 +122,7 @@ class Admin_Menu {
         /**
          * Action fired after User Directory admin page is rendered
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          */
         do_action( 'wpuf_ud_admin_page_rendered' );
     }
@@ -130,7 +130,7 @@ class Admin_Menu {
     /**
      * Enqueue scripts and styles
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -141,7 +141,7 @@ class Admin_Menu {
          * When Pro is active, it can return true to prevent Free from enqueuing its scripts.
          * Pro will then enqueue its own scripts.
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param bool $skip_scripts Whether to skip Free script enqueuing. Default false.
          */
@@ -165,7 +165,7 @@ class Admin_Menu {
         /**
          * Filter script handle name
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param string $handle Script handle name.
          */
@@ -190,7 +190,7 @@ class Admin_Menu {
         /**
          * Filter the localized script variable name
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param string $var_name JavaScript variable name.
          */
@@ -206,7 +206,7 @@ class Admin_Menu {
         /**
          * Action fired after User Directory admin scripts are enqueued
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param string $script_handle The script handle name.
          */
@@ -216,7 +216,7 @@ class Admin_Menu {
     /**
      * Get localized data for JavaScript
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return array
      */
@@ -246,7 +246,7 @@ class Admin_Menu {
          *
          * This is the main extension point for Pro to add additional data.
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param array $data The localized data array.
          */
@@ -256,7 +256,7 @@ class Admin_Menu {
     /**
      * Get user roles
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return array
      */
@@ -277,7 +277,7 @@ class Admin_Menu {
     /**
      * Get directory layouts with free/pro status
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return array
      */
@@ -322,7 +322,7 @@ class Admin_Menu {
          *
          * Pro can modify layout availability by changing is_free flags.
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param array  $layouts    The layouts array.
          * @param string $image_base The base URL for layout images.
@@ -335,7 +335,7 @@ class Admin_Menu {
      *
      * Tries Pro plugin first, falls back to free plugin assets
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return string
      */
@@ -355,7 +355,7 @@ class Admin_Menu {
     /**
      * Get profile layouts with free/pro status
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return array
      */
@@ -385,7 +385,7 @@ class Admin_Menu {
          *
          * Pro can modify layout availability by changing is_free flags.
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param array  $layouts    The layouts array.
          * @param string $image_base The base URL for layout images.
@@ -396,7 +396,7 @@ class Admin_Menu {
     /**
      * Get avatar sizes with free/pro status
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return array
      */
@@ -437,7 +437,7 @@ class Admin_Menu {
          *
          * Pro can modify size availability by changing is_free flags.
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param array $sizes The avatar sizes array.
          */
@@ -447,7 +447,7 @@ class Admin_Menu {
     /**
      * Get profile image sizes with free/pro status
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return array
      */
@@ -463,7 +463,7 @@ class Admin_Menu {
         /**
          * Filter which profile sizes are available in free version
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param array $free_sizes Array of size names available in free version.
          */
@@ -481,7 +481,7 @@ class Admin_Menu {
          *
          * Pro can modify size availability by changing is_free flags.
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param array $sizes The profile sizes array.
          */
@@ -491,7 +491,7 @@ class Admin_Menu {
     /**
      * Get orderby options with free/pro status
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return array
      */
@@ -528,7 +528,7 @@ class Admin_Menu {
          *
          * Pro can modify option availability by changing is_free flags.
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param array $options The orderby options array.
          */
@@ -538,7 +538,7 @@ class Admin_Menu {
     /**
      * Get profile tabs configuration
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return array
      */
@@ -575,7 +575,7 @@ class Admin_Menu {
          *
          * Pro can add additional tabs or modify availability.
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param array $tabs The profile tabs array.
          */
@@ -585,7 +585,7 @@ class Admin_Menu {
     /**
      * Get i18n strings for JavaScript
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return array
      */
@@ -638,7 +638,7 @@ class Admin_Menu {
          *
          * Pro can add or modify translation strings.
          *
-         * @since 4.3.0
+         * @since WPUF_SINCE
          *
          * @param array $strings The i18n strings array.
          */
@@ -648,7 +648,7 @@ class Admin_Menu {
     /**
      * Get upgrade URL
      *
-     * @since 4.3.0
+     * @since WPUF_SINCE
      *
      * @return string
      */

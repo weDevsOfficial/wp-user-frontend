@@ -37,7 +37,7 @@ class Elementor {
         wp_dequeue_style('wpuf-layout4');
         wp_dequeue_style('wpuf-layout5');
 
-        $style_handles = [ 'wpuf-elementor-frontend-forms', 'wpuf-account', 'wpuf-elementor-account' ];
+        $style_handles = [ 'wpuf-elementor-frontend-forms', 'wpuf-account' ];
 
         /**
          * Filters the list of style handles to enqueue in Elementor context.
@@ -127,7 +127,6 @@ class Elementor {
         wp_enqueue_script( 'wpuf-sweetalert2' );
         wp_enqueue_script( 'wpuf-subscriptions' );
         wp_enqueue_script( 'wpuf-account' );
-
         // Localize wpuf-upload script
         wp_localize_script(
             'wpuf-upload',

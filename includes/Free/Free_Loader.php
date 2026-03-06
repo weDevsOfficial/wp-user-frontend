@@ -5,9 +5,11 @@ namespace WeDevs\Wpuf\Free;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_WooCommerce;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_Artwork;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_EDD;
+use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_Portfolio;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_Press_Release;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_Professional_Video;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_Testimonial;
+use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_Volunteer;
 use WeDevs\Wpuf\Pro\Admin\Coupon_Elements;
 use WeDevs\Wpuf\Hooks\Form_Settings_Cleanup;
 
@@ -990,6 +992,9 @@ class Free_Loader extends Pro_Prompt {
         $integrations['WPUF_Pro_Form_Preview_Professional_Video'] = new Pro_Form_Preview_Professional_Video();
         $integrations['WPUF_Pro_Form_Preview_Artwork']            = new Pro_Form_Preview_Artwork();
         $integrations['WPUF_Pro_Form_Preview_Testimonial']        = new Pro_Form_Preview_Testimonial();
+        $integrations['WPUF_Pro_Form_Preview_Artwork'] = new Pro_Form_Preview_Artwork();
+        $integrations['WPUF_Pro_Form_Preview_Portfolio'] = new Pro_Form_Preview_Portfolio();
+        $integrations['WPUF_Pro_Form_Preview_Volunteer'] = new Pro_Form_Preview_Volunteer();
 
         return $integrations;
     }

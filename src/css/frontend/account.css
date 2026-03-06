@@ -79,7 +79,7 @@
     }
 
     .wpuf-logout-link {
-        @apply wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-px-4 wpuf-py-3 wpuf-text-red-600 wpuf-rounded-md hover:wpuf-bg-red-50 wpuf-transition-colors wpuf-no-underline wpuf-text-base wpuf-leading-none focus:wpuf-outline-none;
+        @apply wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-px-4 wpuf-py-3 wpuf-text-red-600 hover:wpuf-bg-red-50 wpuf-transition-colors wpuf-no-underline wpuf-text-base wpuf-leading-none focus:wpuf-outline-none;
     }
 
     .wpuf-logout-link svg {

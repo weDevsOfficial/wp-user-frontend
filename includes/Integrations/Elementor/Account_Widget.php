@@ -98,7 +98,6 @@ class Account_Widget extends Widget_Base {
         $this->register_content_controls();
 
         // Style Tab
-        $this->register_container_style_controls();
         $this->register_sidebar_style_controls();
         $this->register_profile_section_style_controls();
         $this->register_edit_profile_btn_style_controls();
@@ -128,103 +127,6 @@ class Account_Widget extends Widget_Base {
                 'type'            => Controls_Manager::RAW_HTML,
                 'raw'             => __( 'This widget displays the full WPUF User Account dashboard, including the sidebar navigation, profile section, and all account content tabs (Dashboard, Posts, Subscription, Edit Profile, Billing Address).', 'wp-user-frontend' ),
                 'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
-            ]
-        );
-
-        $this->end_controls_section();
-    }
-
-    /**
-     * Register layout container style controls
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    protected function register_container_style_controls() {
-        $this->start_controls_section(
-            'section_container_style',
-            [
-                'label' => __( 'Layout Container', 'wp-user-frontend' ),
-                'tab'   => Controls_Manager::TAB_STYLE,
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Background::get_type(),
-            [
-                'name'     => 'container_background',
-                'label'    => __( 'Background', 'wp-user-frontend' ),
-                'types'    => [ 'classic', 'gradient' ],
-                'selector' => '{{WRAPPER}} .wpuf-account-container',
-            ]
-        );
-
-        $this->add_responsive_control(
-            'container_padding',
-            [
-                'label'      => __( 'Padding', 'wp-user-frontend' ),
-                'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => [ 'px', 'em', '%' ],
-                'default'    => [
-                    'top'      => '16',
-                    'right'    => '16',
-                    'bottom'   => '16',
-                    'left'     => '16',
-                    'unit'     => 'px',
-                    'isLinked' => true,
-                ],
-                'selectors'  => [
-                    '{{WRAPPER}} .wpuf-account-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'container_gap',
-            [
-                'label'      => __( 'Gap Between Sidebar and Content', 'wp-user-frontend' ),
-                'type'       => Controls_Manager::SLIDER,
-                'size_units' => [ 'px', 'em' ],
-                'range'      => [
-                    'px' => [ 'min' => 0, 'max' => 100 ],
-                    'em' => [ 'min' => 0, 'max' => 10 ],
-                ],
-                'default'    => [
-                    'size' => 48,
-                    'unit' => 'px',
-                ],
-                'selectors'  => [
-                    '{{WRAPPER}} .wpuf-account-container' => 'gap: {{SIZE}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Border::get_type(),
-            [
-                'name'     => 'container_border',
-                'selector' => '{{WRAPPER}} .wpuf-account-container',
-            ]
-        );
-
-        $this->add_control(
-            'container_border_radius',
-            [
-                'label'      => __( 'Border Radius', 'wp-user-frontend' ),
-                'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => [ 'px', '%' ],
-                'selectors'  => [
-                    '{{WRAPPER}} .wpuf-account-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Box_Shadow::get_type(),
-            [
-                'name'     => 'container_box_shadow',
-                'selector' => '{{WRAPPER}} .wpuf-account-container',
             ]
         );
 
@@ -351,6 +253,33 @@ class Account_Widget extends Widget_Base {
                 'label'    => __( 'Background', 'wp-user-frontend' ),
                 'types'    => [ 'classic', 'gradient' ],
                 'selector' => '{{WRAPPER}} .wpuf-profile-section',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'profile_section_alignment',
+            [
+                'label'     => __( 'Alignment', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::CHOOSE,
+                'options'   => [
+                    'left'   => [
+                        'title' => __( 'Left', 'wp-user-frontend' ),
+                        'icon'  => 'eicon-text-align-left',
+                    ],
+                    'center' => [
+                        'title' => __( 'Center', 'wp-user-frontend' ),
+                        'icon'  => 'eicon-text-align-center',
+                    ],
+                    'right'  => [
+                        'title' => __( 'Right', 'wp-user-frontend' ),
+                        'icon'  => 'eicon-text-align-right',
+                    ],
+                ],
+                'default'   => 'left',
+                'selectors' => [
+                    '{{WRAPPER}} .wpuf-profile-section' => 'text-align: {{VALUE}};',
+                    '{{WRAPPER}} .wpuf-profile-avatar'  => 'justify-content: {{VALUE}};',
+                ],
             ]
         );
 
@@ -805,6 +734,23 @@ class Account_Widget extends Widget_Base {
             ]
         );
 
+        $this->add_responsive_control(
+            'nav_item_width',
+            [
+                'label'      => __( 'Width', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::SLIDER,
+                'size_units' => [ 'px', 'em', '%' ],
+                'range'      => [
+                    'px' => [ 'min' => 50, 'max' => 500 ],
+                    '%'  => [ 'min' => 10, 'max' => 100 ],
+                    'em' => [ 'min' => 3, 'max' => 30 ],
+                ],
+                'selectors'  => [
+                    $item_selector => 'width: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
         $this->end_controls_section();
     }
 
@@ -866,7 +812,7 @@ class Account_Widget extends Widget_Base {
                 'label'     => __( 'Text Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#DC2626',
-                'selectors' => [ $link_selector => 'color: {{VALUE}};' ],
+                'selectors' => [ $link_selector => 'color: {{VALUE}} !important;' ],
             ]
         );
 
@@ -887,7 +833,17 @@ class Account_Widget extends Widget_Base {
             [
                 'label'     => __( 'Text Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
-                'selectors' => [ $link_selector . ':hover' => 'color: {{VALUE}};' ],
+                'selectors' => [ $link_selector . ':hover' => 'color: {{VALUE}} !important;' ],
+            ]
+        );
+
+        $this->add_control(
+            'logout_link_hover_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'default'   => '#FEF2F2',
+                'selectors' => [ $link_selector . ':hover' => 'background-color: {{VALUE}} !important;' ],
             ]
         );
 
@@ -947,8 +903,26 @@ class Account_Widget extends Widget_Base {
         $this->add_group_control(
             Group_Control_Border::get_type(),
             [
-                'name'     => 'content_area_border',
-                'selector' => '{{WRAPPER}} .wpuf-account-content',
+                'name'           => 'content_area_border',
+                'selector'       => '{{WRAPPER}} .wpuf-account-content',
+                'fields_options' => [
+                    'border' => [
+                        'default' => 'solid',
+                    ],
+                    'width'  => [
+                        'default' => [
+                            'top'      => '0',
+                            'right'    => '0',
+                            'bottom'   => '0',
+                            'left'     => '1',
+                            'unit'     => 'px',
+                            'isLinked' => false,
+                        ],
+                    ],
+                    'color'  => [
+                        'default' => '#E5E7EB',
+                    ],
+                ],
             ]
         );
 
@@ -983,6 +957,9 @@ class Account_Widget extends Widget_Base {
      * @return void
      */
     protected function render() {
+        // Reset container padding and gap so Elementor's Advanced tab controls take over
+        echo '<style>.elementor-widget-wpuf-account .wpuf-account-container { padding: 0; gap: 0; }</style>';
+
         echo do_shortcode( '[wpuf_account]' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- shortcode output
 
         /**

@@ -5703,7 +5703,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
         'post_form_template_edd'               => __( 'EDD Download Form', 'wp-user-frontend' ),
         'post_form_template_events_calendar'   => __( 'Event Form', 'wp-user-frontend' ),
         'post_form_template_video'             => __( 'Video Form', 'wp-user-frontend' ),
-        'post_form_template_paid_guest_post'      => __( 'Paid Guest Post Form', 'wp-user-frontend' ),
+        'post_form_template_paid_guest_post'      => __( 'Paid Guest Post', 'wp-user-frontend' ),
         'post_form_template_guest_post_recurring' => __( 'Guest Post (Recurring Subscription)', 'wp-user-frontend' ),
         'post_form_template_professional_video' => __( 'Professional Video Form', 'wp-user-frontend' ),
         'post_form_template_artwork'           => __( 'Artwork Form', 'wp-user-frontend' ),

@@ -2,14 +2,14 @@
 module.exports = function( grunt) {
     const tailwindFileMap = {
         'admin/form-builder/views/form-builder-v4.1.php': 'admin/form-builder.css',
-        'admin/form-builder/views/post-form-settings.php': 'admin/form-builder.css',
-        'assets/js/forms-list.js': 'admin/form-builder.css',
         'templates/account.php': 'frontend/account.css',
         'ai-form-builder': 'ai-form-builder.css',
-        'forms-list': 'forms-list.css'
+        // Vue cleanup: forms-list CSS now handled by React build
+        // 'forms-list': 'forms-list.css'
     }
 
-    var formBuilderAssets = require('./admin/form-builder/assets/js/form-builder-assets.js');
+    // Vue cleanup: form builder assets manifest no longer needed (React replaces Vue)
+    // var formBuilderAssets = require('./admin/form-builder/assets/js/form-builder-assets.js');
 
     var pkg = grunt.file.readJSON('package.json');
 
@@ -35,7 +35,8 @@ module.exports = function( grunt) {
 
             admin: {
                 files: {
-                    '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/assets/less/form-builder.less'],
+                    // Vue cleanup: form-builder LESS no longer compiled (React uses Tailwind/CSS)
+                    // '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/assets/less/form-builder.less'],
                     '<%= dirs.css %>/admin.css': ['<%= dirs.less %>/admin.less'],
                     '<%= dirs.css %>/admin/whats-new.css': ['<%= dirs.less %>/whats-new.less'],
                     '<%= dirs.css %>/registration-forms.css': ['<%= dirs.less %>/registration-forms.less']
@@ -98,23 +99,25 @@ module.exports = function( grunt) {
                 tasks: ['less:front', 'less:admin']
             },
 
-            formBuilder: {
-                files: [
-                    'admin/form-builder/assets/less/*',
-                    'admin/form-builder/assets/js/**/*',
-                    'assets/js/wpuf-form-builder-wpuf-forms.js',
-                    '<%= dirs.css %>/frontend-forms.less',
-                ],
-                tasks: [
-                    'jshint:formBuilder', 'less:admin',
-                    'concat:formBuilder', 'concat:templates', 'less:front'
-                ]
-            },
+            // Vue cleanup: old Vue form builder watch removed (React has its own watch)
+            // formBuilder: {
+            //     files: [
+            //         'admin/form-builder/assets/less/*',
+            //         'admin/form-builder/assets/js/**/*',
+            //         'assets/js/wpuf-form-builder-wpuf-forms.js',
+            //         '<%= dirs.css %>/frontend-forms.less',
+            //     ],
+            //     tasks: [
+            //         'jshint:formBuilder', 'less:admin',
+            //         'concat:formBuilder', 'concat:templates', 'less:front'
+            //     ]
+            // },
 
             vue: {
                 files: [
                     'assets/js/subscriptions.js',
-                    'assets/js/forms-list.js',
+                    // Vue cleanup: forms-list.js removed (React replaces Vue forms list)
+                    // 'assets/js/forms-list.js',
                     'assets/css/admin/subscriptions.css',
                     'assets/js/components/**/*.vue',
                     'assets/js/stores/**/*.js',
@@ -148,14 +151,16 @@ module.exports = function( grunt) {
                 files: [
                     'src/css/**/*.css',
                     'admin/form-builder/views/*.php',
-                    'admin/form-builder/assets/js/**/*.php',
-                    'admin/form-builder/assets/js/**/*.js',
+                    // Vue cleanup: old Vue component PHP templates removed
+                    // 'admin/form-builder/assets/js/**/*.php',
+                    // 'admin/form-builder/assets/js/**/*.js',
                     'admin/form-builder/src/**/*.{js,jsx}',
                     'includes/Admin/**/*.php',
                     'templates/**/*.php',
                     'includes/Free/Free_Loader.php',
                     'wpuf-functions.php',
-                    'assets/js/forms-list.js',
+                    // Vue cleanup: forms-list.js removed (React replaces Vue)
+                    // 'assets/js/forms-list.js',
                 ],
                 tasks: ['tailwind'],
                 options: {
@@ -242,44 +247,40 @@ module.exports = function( grunt) {
             }
         },
 
-        // jshint
-        jshint: {
-            options: {
-                jshintrc: '.jshintrc',
-                reporter: require('jshint-stylish')
-            },
+        // Vue cleanup: jshint and concat for Vue form builder removed (React replaces Vue)
+        // jshint: {
+        //     options: {
+        //         jshintrc: '.jshintrc',
+        //         reporter: require('jshint-stylish')
+        //     },
+        //     formBuilder: [
+        //         'admin/form-builder/assets/js/**/*.js',
+        //         '!admin/form-builder/assets/js/jquery-siaf-start.js',
+        //         '!admin/form-builder/assets/js/jquery-siaf-end.js',
+        //         'assets/js/wpuf-form-builder-wpuf-forms.js',
+        //     ]
+        // },
 
-            formBuilder: [
-                'admin/form-builder/assets/js/**/*.js',
-                '!admin/form-builder/assets/js/jquery-siaf-start.js',
-                '!admin/form-builder/assets/js/jquery-siaf-end.js',
-                'assets/js/wpuf-form-builder-wpuf-forms.js',
-            ]
-        },
-
-        // concat/join files
-        concat: {
-            formBuilder: {
-                files: {
-                    '<%= dirs.js %>/wpuf-form-builder.js': 'admin/form-builder/assets/js/form-builder.js',
-                    '<%= dirs.js %>/wpuf-form-builder-mixins.js': formBuilderAssets.mixins,
-                    '<%= dirs.js %>/wpuf-form-builder-components.js': formBuilderAssets.components,
-                },
-            },
-
-            templates: {
-                options: {
-                    process: function(src, filepath) {
-                        var id = filepath.replace('/template.php', '').split('/').pop();
-
-                        return '<script type="text/x-template" id="tmpl-wpuf-' + id + '">\n' + src + '</script>\n';
-                    }
-                },
-                files: {
-                    '<%= dirs.template %>/form-components.php': formBuilderAssets.componentTemplates,
-                }
-            }
-        },
+        // concat: {
+        //     formBuilder: {
+        //         files: {
+        //             '<%= dirs.js %>/wpuf-form-builder.js': 'admin/form-builder/assets/js/form-builder.js',
+        //             '<%= dirs.js %>/wpuf-form-builder-mixins.js': formBuilderAssets.mixins,
+        //             '<%= dirs.js %>/wpuf-form-builder-components.js': formBuilderAssets.components,
+        //         },
+        //     },
+        //     templates: {
+        //         options: {
+        //             process: function(src, filepath) {
+        //                 var id = filepath.replace('/template.php', '').split('/').pop();
+        //                 return '<script type="text/x-template" id="tmpl-wpuf-' + id + '">\n' + src + '</script>\n';
+        //             }
+        //         },
+        //         files: {
+        //             '<%= dirs.template %>/form-components.php': formBuilderAssets.componentTemplates,
+        //         }
+        //     }
+        // },
 
         // is to run NPM commands through Grunt
         shell: {
@@ -307,8 +308,9 @@ module.exports = function( grunt) {
 
     // Load NPM tasks to be used here
     grunt.loadNpmTasks( 'grunt-contrib-less' );
-    grunt.loadNpmTasks( 'grunt-contrib-concat' );
-    grunt.loadNpmTasks( 'grunt-contrib-jshint' );
+    // Vue cleanup: concat and jshint no longer needed for form builder
+    // grunt.loadNpmTasks( 'grunt-contrib-concat' );
+    // grunt.loadNpmTasks( 'grunt-contrib-jshint' );
     grunt.loadNpmTasks( 'grunt-wp-i18n' );
     grunt.loadNpmTasks( 'grunt-contrib-uglify' );
     grunt.loadNpmTasks( 'grunt-contrib-watch' );
@@ -320,14 +322,16 @@ module.exports = function( grunt) {
     grunt.loadNpmTasks( 'grunt-shell' );
     grunt.loadNpmTasks( 'grunt-postcss' );
 
-    grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n', 'tailwind' ] );
+    // Vue cleanup: removed 'concat' (Vue form builder concat no longer needed)
+    grunt.registerTask( 'default', [ 'less', 'uglify', 'i18n', 'tailwind' ] );
 
     // file auto generation
     grunt.registerTask( 'i18n', [ 'makepot' ] );
     grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
 
     // build stuff
-    grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme', 'tailwind', 'tailwind-minify' ] );
+    // Vue cleanup: removed 'concat' (Vue form builder concat no longer needed)
+    grunt.registerTask( 'release', [ 'less', 'uglify', 'i18n', 'readme', 'tailwind', 'tailwind-minify' ] );
     grunt.registerTask( 'zip', [ 'shell:npm_build', 'clean', 'copy', 'compress' ] );
 
     grunt.event.on('watch', function(action, filepath, target) {
@@ -356,7 +360,8 @@ module.exports = function( grunt) {
 
     grunt.registerTask('tailwind-minify', function() {
         const cssFiles = [
-            { input: 'assets/css/forms-list.css', output: 'assets/css/forms-list.min.css' },
+            // Vue cleanup: forms-list CSS minification handled by React build pipeline
+            // { input: 'assets/css/forms-list.css', output: 'assets/css/forms-list.min.css' },
             { input: 'assets/css/frontend-subscriptions.css', output: 'assets/css/frontend-subscriptions.min.css' },
             { input: 'assets/css/ai-form-builder.css', output: 'assets/css/ai-form-builder.min.css' },
             { input: 'assets/css/admin/subscriptions.css', output: 'assets/css/admin/subscriptions.min.css' }

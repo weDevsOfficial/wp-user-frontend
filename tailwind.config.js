@@ -9,17 +9,16 @@ import {
 module.exports = {
     prefix: 'wpuf-',
     content: [
-        // Original paths (critical for form builder - keeps @tailwindcss/forms styles)
         './assets/**/*.{js,jsx,ts,tsx,vue,html}',
         './includes/Admin/**/*.php',
         './includes/Free/Free_Loader.php',
         './includes/Admin/template-parts/*.php',
         './admin/form-builder/views/*.php',
         './admin/form-builder/assets/js/**/*.php',
+        './admin/form-builder/src/**/*.{js,jsx}',
+        './admin/forms-list/src/**/*.{js,jsx}',
         './templates/**/*.php',
         'wpuf-functions.php',
-        // New paths from upstream (for subscription templates)
-        './templates/**/*.php',
         './src/**/*.{js,css}',
     ],
     theme: {
@@ -27,7 +26,20 @@ module.exports = {
             colors: {
                 primary: colors.emerald[600],
                 primaryHover: colors.emerald[500],
-            }
+            },
+            spacing: {
+                '1.75': '7px',
+                '3.75': '15px',
+                '4.5': '18px',
+                '13': '52px',
+            },
+            fontSize: {
+                '2xs': '13px',
+            },
+            minWidth: {
+                'btn-cancel': '101px',
+                'btn-save': '158px',
+            },
         },
     },
     plugins: [

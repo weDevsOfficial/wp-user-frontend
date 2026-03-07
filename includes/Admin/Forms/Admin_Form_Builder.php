@@ -102,12 +102,14 @@ class Admin_Form_Builder {
         wp_enqueue_style( 'wpuf-tooltip' );
         wp_enqueue_style( 'wpuf-jquery-ui' );
         wp_enqueue_style( 'wp-color-picker' );
+        wp_enqueue_style( 'wpuf-admin-form-builder' );
         do_action( 'wpuf_form_builder_enqueue_style' );
 
         wp_enqueue_media();
 
-        wp_enqueue_script( 'wpuf-vue' );
-        wp_enqueue_script( 'wpuf-vuex' );
+        // Vue 2 scripts — replaced by React form builder.
+        // wp_enqueue_script( 'wpuf-vue' );
+        // wp_enqueue_script( 'wpuf-vuex' );
         wp_enqueue_script( 'wpuf-subscriptions' );
         wp_enqueue_script( 'wpuf-sweetalert2' );
         wp_enqueue_script( 'wpuf-jquery-scrollTo' );
@@ -119,7 +121,7 @@ class Admin_Form_Builder {
         wp_enqueue_script( 'wpuf-admin' );
         wp_enqueue_script( 'zxcvbn' );
         wp_enqueue_script( 'password-strength-meter' );
-        wp_enqueue_script( 'wpuf-form-builder-wpuf-forms' );
+        // wp_enqueue_script( 'wpuf-form-builder-wpuf-forms' );
         /**
          * Unique fields list. Only 1 field can be added in a form.
          */
@@ -149,20 +151,30 @@ class Admin_Form_Builder {
         );
         $taxonomy_terms = array_keys( get_taxonomies() );
         $single_objects = array_merge( $single_objects, $taxonomy_terms );
-        wp_enqueue_script( 'wpuf-form-builder-mixins' );
-
-        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_single_objects', $single_objects );
-
-        do_action( 'wpuf_form_builder_enqueue_after_mixins' );
-
-        wp_enqueue_script( 'wpuf-form-builder-components' );
-
-        do_action( 'wpuf_form_builder_enqueue_after_components' );
-
-        wp_enqueue_script( 'wpuf-form-builder' );
+        // Vue form builder scripts — replaced by React.
+        // wp_enqueue_script( 'wpuf-form-builder-mixins' );
+        // wp_enqueue_script( 'wpuf-form-builder-components' );
+        // wp_enqueue_script( 'wpuf-form-builder' );
         wp_enqueue_script( 'wp-color-picker' );
 
+        do_action( 'wpuf_form_builder_enqueue_after_mixins' );
+        do_action( 'wpuf_form_builder_enqueue_after_components' );
+
         do_action( 'wpuf_form_builder_enqueue_after_main_instance' );
+
+        // React form builder bundle
+        $react_asset_file = WPUF_ROOT . '/assets/js/form-builder.min.asset.php';
+        $react_asset      = file_exists( $react_asset_file ) ? require $react_asset_file : [ 'dependencies' => [], 'version' => WPUF_VERSION ];
+
+        wp_enqueue_script(
+            'wpuf-form-builder-react',
+            WPUF_ASSET_URI . '/js/form-builder.min.js',
+            $react_asset['dependencies'],
+            $react_asset['version'],
+            true
+        );
+        wp_set_script_translations( 'wpuf-form-builder-react', 'wp-user-frontend' );
+
         /*
          * Data required for building the form
          */
@@ -222,18 +234,24 @@ class Admin_Form_Builder {
                 'defaultIcons'     => $icon_config['defaultIcons'],
                 'ai_configured'    => $ai_configured,
                 'ai_settings_url'  => $ai_settings_url,
+                'forms'            => $this->get_form_list(),
+                'shortcodes'       => $this->settings['shortcodes'],
+                'roles'            => wp_roles()->get_names(),
+                'subscriptions'    => $this->get_subscriptions(),
+                'preview_url'      => get_wpuf_preview_page(),
             ]
         );
         $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
-        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_form_builder', $wpuf_form_builder );
-        // mixins
+        $wpuf_form_builder['wpuf_single_objects'] = $single_objects;
+        wp_localize_script( 'wpuf-form-builder-react', 'wpuf_form_builder', $wpuf_form_builder );
+        // mixins — kept for Pro hooks compatibility
         $wpuf_mixins = [
             'root'          => apply_filters( 'wpuf_form_builder_js_root_mixins', [] ),
             'builder_stage' => apply_filters( 'wpuf_form_builder_js_builder_stage_mixins', [] ),
             'form_fields'   => apply_filters( 'wpuf_form_builder_js_form_fields_mixins', [] ),
             'field_options' => apply_filters( 'wpuf_form_builder_js_field_options_mixins', [] ),
         ];
-        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_mixins', $wpuf_mixins );
+        wp_localize_script( 'wpuf-form-builder-react', 'wpuf_mixins', $wpuf_mixins );
     }
 
     /**
@@ -494,6 +512,52 @@ class Admin_Form_Builder {
          *                           - defaultIcons: array of default icons
          */
         return apply_filters( 'wpuf_form_builder_icon_config', $icon_config );
+    }
+
+    /**
+     * Get list of forms for the form switcher dropdown.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    protected function get_form_list() {
+        $forms = get_posts( [
+            'post_type'   => $this->settings['post_type'],
+            'post_status' => 'any',
+            'numberposts' => -1,
+            'orderby'     => 'title',
+            'order'       => 'ASC',
+        ] );
+
+        return array_map( function ( $form ) {
+            return [
+                'id'    => $form->ID,
+                'title' => $form->post_title ?: __( '(no title)', 'wp-user-frontend' ),
+            ];
+        }, $forms );
+    }
+
+    /**
+     * Get subscription packs for visibility settings.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    protected function get_subscriptions() {
+        $packs = get_posts( [
+            'post_type'   => 'wpuf_subscription',
+            'post_status' => 'publish',
+            'numberposts' => -1,
+        ] );
+
+        return array_map( function ( $pack ) {
+            return [
+                'id'    => $pack->ID,
+                'title' => $pack->post_title,
+            ];
+        }, $packs );
     }
 
     /**

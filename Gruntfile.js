@@ -5,7 +5,8 @@ module.exports = function( grunt) {
         'admin/form-builder/views/post-form-settings.php': 'admin/form-builder.css',
         'assets/js/forms-list.js': 'admin/form-builder.css',
         'templates/account.php': 'frontend/account.css',
-        'ai-form-builder': 'ai-form-builder.css'
+        'ai-form-builder': 'ai-form-builder.css',
+        'forms-list': 'forms-list.css'
     }
 
     var formBuilderAssets = require('./admin/form-builder/assets/js/form-builder-assets.js');
@@ -123,6 +124,15 @@ module.exports = function( grunt) {
                 ]
             },
 
+            reactFormBuilder: {
+                files: [
+                    'admin/form-builder/src/**/*.{js,jsx}',
+                ],
+                tasks: [
+                    'shell:npm_build_form_builder_react'
+                ]
+            },
+
             aiFormBuilderVue: {
                 files: [
                     'assets/js/ai-form-builder.js',
@@ -140,6 +150,7 @@ module.exports = function( grunt) {
                     'admin/form-builder/views/*.php',
                     'admin/form-builder/assets/js/**/*.php',
                     'admin/form-builder/assets/js/**/*.js',
+                    'admin/form-builder/src/**/*.{js,jsx}',
                     'includes/Admin/**/*.php',
                     'templates/**/*.php',
                     'includes/Free/Free_Loader.php',
@@ -277,6 +288,9 @@ module.exports = function( grunt) {
             },
             npm_build_ai_form_builder: {
                 command: 'npm run build:ai-form-builder',
+            },
+            npm_build_form_builder_react: {
+                command: 'npm run build:form-builder',
             },
             tailwind: {
                 command: function ( input, output ) {

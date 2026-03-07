@@ -6,6 +6,7 @@ import { STORE_NAME } from '../../store';
 import SettingsNav from './SettingsNav';
 import SettingsSection from './SettingsSection';
 import ModulesEmptyState from './ModulesEmptyState';
+import useFormSave from '../../hooks/useFormSave';
 
 /**
  * Main form settings component — mirrors post-form-settings.php Vue template.
@@ -13,6 +14,7 @@ import ModulesEmptyState from './ModulesEmptyState';
 export default function FormSettings() {
     const data = window.wpuf_form_builder || {};
     const isProActive = useSelect( ( select ) => select( STORE_NAME ).getIsProActive(), [] );
+    const { isSaving, saveForm } = useFormSave();
     const settingsTitles = useMemo( () => {
         const titles = data.settings_titles || {};
         return applyFilters( 'wpuf.formBuilder.settingsTabs', titles );
@@ -103,16 +105,14 @@ export default function FormSettings() {
                     </a>
                     <button
                         type="button"
-                        onClick={ () => {
-                            // Trigger save via the existing form builder save mechanism
-                            const saveBtn = document.querySelector( '#wpuf-form-builder-save-form' );
-                            if ( saveBtn ) {
-                                saveBtn.click();
-                            }
-                        } }
+                        onClick={ saveForm }
+                        disabled={ isSaving }
                         className="wpuf-btn-primary wpuf-w-full"
                     >
-                        { __( 'Save Form', 'wp-user-frontend' ) }
+                        { isSaving
+                            ? __( 'Saving…', 'wp-user-frontend' )
+                            : __( 'Save Form', 'wp-user-frontend' )
+                        }
                     </button>
                 </div>
             </div>

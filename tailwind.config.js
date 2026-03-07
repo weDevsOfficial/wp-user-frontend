@@ -14,7 +14,8 @@ module.exports = {
         './includes/Free/Free_Loader.php',
         './includes/Admin/template-parts/*.php',
         './admin/form-builder/views/*.php',
-        './admin/form-builder/assets/js/**/*.php',
+        // Vue cleanup: old Vue component PHP templates deleted
+        // './admin/form-builder/assets/js/**/*.php',
         './admin/form-builder/src/**/*.{js,jsx}',
         './admin/forms-list/src/**/*.{js,jsx}',
         './templates/**/*.php',

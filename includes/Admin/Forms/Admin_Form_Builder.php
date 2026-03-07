@@ -296,8 +296,8 @@ class Admin_Form_Builder {
      * @return void
      */
     public function admin_footer() {
-        // get all vue component names
-        include WPUF_ROOT . '/assets/js-templates/form-components.php';
+        // Vue cleanup: x-template includes removed — React renders all components
+        // include WPUF_ROOT . '/assets/js-templates/form-components.php';
         do_action( 'wpuf_form_builder_add_js_templates' );
     }
 

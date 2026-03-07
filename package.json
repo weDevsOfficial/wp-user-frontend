@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "release": "grunt release",
-    "build": "npm run build:form-builder && npm run build:forms-list-react && npm run build:forms-list && npm run build:subscriptions && npm run build:frontend-subscriptions && npm run build:ai-form-builder && npm run build:account && npm run build:css",
+    "build": "npm run build:form-builder && npm run build:forms-list-react && npm run build:subscriptions && npm run build:frontend-subscriptions && npm run build:ai-form-builder && npm run build:account && npm run build:css",
     "build:form-builder": "webpack --config admin/form-builder/webpack.config.js --mode=production",
     "dev:form-builder": "webpack --config admin/form-builder/webpack.config.js --watch --mode=development",
     "build:forms-list-react": "webpack --config admin/forms-list/webpack.config.js --mode=production",

@@ -1,10 +1,21 @@
 import { useCallback } from '@wordpress/element';
 
 /**
- * Picture radio field — matches Vue wpuf_render_settings_field() for type="pic-radio".
+ * Get the asset URL for images.
+ *
+ * @return {string}
+ */
+function getAssetUrl() {
+    return ( window.wpuf_admin_script || window.wpuf_form_builder || {} ).asset_url || '';
+}
+
+/**
+ * Picture radio field — matches wpuf_render_settings_field() for type="pic-radio".
+ * Includes the green checkmark overlay on the selected option.
  */
 export default function PicRadioField( { field, name, value, onChange } ) {
     const options = field.options || {};
+    const checkedIcon = getAssetUrl() + '/images/checked-green.svg';
 
     const handleChange = useCallback( ( e ) => {
         onChange( name, e.target.value );
@@ -30,6 +41,11 @@ export default function PicRadioField( { field, name, value, onChange } ) {
                                 checked={ value === optKey }
                                 onChange={ handleChange }
                                 className="wpuf-absolute wpuf-opacity-0 wpuf-peer"
+                            />
+                            <img
+                                className="wpuf-absolute wpuf-opacity-0 peer-checked:wpuf-opacity-100 wpuf-top-[7%] wpuf-right-[12%] wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out"
+                                src={ checkedIcon }
+                                alt=""
                             />
                             { option.image && (
                                 <img

@@ -34,7 +34,12 @@ function resolveSettingValue( settings, fieldName, fieldDef ) {
         }
     }
 
-    return settings[ fieldName ];
+    if ( settings[ fieldName ] !== undefined ) {
+        return settings[ fieldName ];
+    }
+
+    // Fall back to the PHP-defined default value
+    return fieldDef.value;
 }
 
 /**

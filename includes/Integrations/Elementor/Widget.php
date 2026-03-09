@@ -210,7 +210,7 @@ class Widget extends Widget_Base {
                 'label'     => __( 'Text Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .wpuf-form .wpuf-label, {{WRAPPER}} .wpuf-form .wpuf-form-sub-label' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .wpuf-form .wpuf-label, {{WRAPPER}} .wpuf-form .wpuf-form-sub-label, {{WRAPPER}} .wpuf-form .wpuf-repeat-container > p' => 'color: {{VALUE}};',
                 ],
             ]
         );
@@ -219,7 +219,7 @@ class Widget extends Widget_Base {
             Group_Control_Typography::get_type(),
             [
                 'name'     => 'label_typography',
-                'selector' => '{{WRAPPER}} .wpuf-form .wpuf-label, {{WRAPPER}} .wpuf-form .wpuf-form-sub-label',
+                'selector' => '{{WRAPPER}} .wpuf-form .wpuf-label, {{WRAPPER}} .wpuf-form .wpuf-form-sub-label, {{WRAPPER}} .wpuf-form .wpuf-repeat-container > p',
             ]
         );
 

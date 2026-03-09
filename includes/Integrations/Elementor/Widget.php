@@ -137,6 +137,7 @@ class Widget extends Widget_Base {
         $this->register_help_text_style_controls();
         $this->register_input_style_controls();
         $this->register_placeholder_style_controls();
+        $this->register_richtext_style_controls();
         $this->register_radio_checkbox_style_controls();
         $this->register_upload_button_style_controls();
         $this->register_submit_button_style_controls();
@@ -447,6 +448,211 @@ class Widget extends Widget_Base {
                 'selectors' => [ $placeholder_selector => 'color: {{VALUE}};' ],
             ]
         );
+
+        $this->end_controls_section();
+    }
+
+    /**
+     * Register rich text editor style controls
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    protected function register_richtext_style_controls() {
+        $toolbar_selector = '{{WRAPPER}} .wpuf-form .mce-toolbar-grp';
+        $insert_image_btn = '{{WRAPPER}} .wpuf-form .wpuf-insert-image';
+
+        $this->start_controls_section(
+            'section_richtext_style',
+            [
+                'label' => __( 'Rich Text Editor', 'wp-user-frontend' ),
+                'tab'   => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name'     => 'richtext_border',
+                'label'    => __( 'Border', 'wp-user-frontend' ),
+                'selector' => '{{WRAPPER}} .wpuf-form .mce-tinymce',
+            ]
+        );
+
+        $this->add_control(
+            'richtext_border_radius',
+            [
+                'label'      => __( 'Border Radius', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', '%' ],
+                'selectors'  => [
+                    '{{WRAPPER}} .wpuf-form .mce-tinymce' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'richtext_toolbar_heading',
+            [
+                'label'     => __( 'Toolbar', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_control(
+            'richtext_toolbar_text_color',
+            [
+                'label'     => __( 'Text Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $toolbar_selector . ' .mce-btn button' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'richtext_toolbar_icon_color',
+            [
+                'label'     => __( 'Icon Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $toolbar_selector . ' .mce-ico' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'richtext_toolbar_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $toolbar_selector => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'richtext_insert_image_heading',
+            [
+                'label'     => __( 'Insert Photo Button', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->start_controls_tabs( 'tabs_insert_image_style' );
+
+        $this->start_controls_tab( 'tab_insert_image_normal', [ 'label' => __( 'Normal', 'wp-user-frontend' ) ] );
+
+        $this->add_control(
+            'richtext_insert_image_color',
+            [
+                'label'     => __( 'Text Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $insert_image_btn => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'richtext_insert_image_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $insert_image_btn => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name'     => 'richtext_insert_image_border',
+                'selector' => $insert_image_btn,
+            ]
+        );
+
+        $this->add_control(
+            'richtext_insert_image_border_radius',
+            [
+                'label'      => __( 'Border Radius', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', '%' ],
+                'selectors'  => [
+                    $insert_image_btn => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'richtext_insert_image_padding',
+            [
+                'label'      => __( 'Padding', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em', '%' ],
+                'selectors'  => [
+                    $insert_image_btn => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'richtext_insert_image_margin',
+            [
+                'label'      => __( 'Margin', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em', '%' ],
+                'selectors'  => [
+                    '{{WRAPPER}} .wpuf-form #wpuf-insert-image-container' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab( 'tab_insert_image_hover', [ 'label' => __( 'Hover', 'wp-user-frontend' ) ] );
+
+        $this->add_control(
+            'richtext_insert_image_hover_color',
+            [
+                'label'     => __( 'Text Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $insert_image_btn . ':hover' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'richtext_insert_image_hover_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $insert_image_btn . ':hover' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'richtext_insert_image_hover_border_color',
+            [
+                'label'     => __( 'Border Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $insert_image_btn . ':hover' => 'border-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->end_controls_tabs();
 
         $this->end_controls_section();
     }
@@ -1048,15 +1254,15 @@ class Widget extends Widget_Base {
                     }
                     return false;
                 };
-                
+
                 var wrapper = document.querySelector('.wpuf-elementor-widget-wrapper');
                 if (wrapper) {
                     var textareas = wrapper.querySelectorAll('textarea.wp-editor-area');
-                    
+
                     // Function to initialize TinyMCE for a textarea
                     function initializeTinyMCE(textarea) {
                         var editorId = textarea.id;
-                        
+
                         // Wait for wp.editor to be available
                         if (typeof wp === 'undefined' || typeof wp.editor === 'undefined') {
                             setTimeout(function() {
@@ -1064,21 +1270,21 @@ class Widget extends Widget_Base {
                             }, 100);
                             return false;
                         }
-                        
+
                         if (typeof wp.editor.initialize !== 'function') {
                             return false;
                         }
-                        
+
                         // Check if already initialized
                         if (typeof tinymce !== 'undefined' && tinymce.get(editorId)) {
                             return true;
                         }
-                        
+
                         // Get editor settings - try to match WordPress default settings
                         // Check if there's a wp-editor-wrap parent to determine settings
                         var wrap = textarea.closest('.wp-editor-wrap');
                         var isTeeny = wrap && wrap.classList.contains('html-active') ? false : (wrap && wrap.classList.contains('tmce-active') ? false : true);
-                        
+
                         var editorSettings = {
                             tinymce: {
                                 wpautop: true,
@@ -1090,13 +1296,13 @@ class Widget extends Widget_Base {
                             quicktags: false,
                             textarea_name: textarea.name || editorId
                         };
-                        
+
                         // If teeny mode, use simpler toolbar
                         if (isTeeny || textarea.closest('.wpuf-fields').querySelector('.mce-tinymce')) {
                             editorSettings.tinymce.toolbar1 = 'bold,italic,bullist,numlist';
                             editorSettings.teeny = true;
                         }
-                        
+
                         try {
                             wp.editor.initialize(editorId, editorSettings);
                             return true;
@@ -1104,7 +1310,7 @@ class Widget extends Widget_Base {
                             return false;
                         }
                     }
-                    
+
                     // Check existing instances and initialize if needed
                     textareas.forEach(function(textarea) {
                         var editorId = textarea.id;
@@ -1112,7 +1318,7 @@ class Widget extends Widget_Base {
                             initializeTinyMCE(textarea);
                         }
                     });
-                    
+
                     // Check after a delay to see if TinyMCE initializes or retry if needed
                     setTimeout(function() {
                         textareas.forEach(function(textarea) {
@@ -1122,7 +1328,7 @@ class Widget extends Widget_Base {
                             }
                         });
                     }, 500);
-                    
+
                     // Also check when Elementor triggers content refresh
                     if (typeof elementorFrontend !== 'undefined' && elementorFrontend.hooks) {
                         elementorFrontend.hooks.addAction('frontend/element_ready/wpuf-form.default', function($scope) {
@@ -1152,7 +1358,7 @@ class Widget extends Widget_Base {
                         });
                     }
                 }
-                
+
                 // Restore original error handler after initialization
                 setTimeout(function() {
                     if (originalErrorHandler) {

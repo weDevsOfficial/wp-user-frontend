@@ -138,6 +138,7 @@ class Widget extends Widget_Base {
         $this->register_input_style_controls();
         $this->register_placeholder_style_controls();
         $this->register_richtext_style_controls();
+        $this->register_section_break_style_controls();
         $this->register_radio_checkbox_style_controls();
         $this->register_upload_button_style_controls();
         $this->register_submit_button_style_controls();
@@ -653,6 +654,180 @@ class Widget extends Widget_Base {
         $this->end_controls_tab();
 
         $this->end_controls_tabs();
+
+        $this->end_controls_section();
+    }
+
+    /**
+     * Register section break style controls
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    protected function register_section_break_style_controls() {
+        $section_wrap  = '{{WRAPPER}} .wpuf-form .wpuf-section-wrap';
+        $section_title = '{{WRAPPER}} .wpuf-form .wpuf-section-title';
+        $section_desc  = '{{WRAPPER}} .wpuf-form .wpuf-section-details';
+
+        $this->start_controls_section(
+            'section_break_style',
+            [
+                'label' => __( 'Section Break', 'wp-user-frontend' ),
+                'tab'   => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_control(
+            'section_break_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $section_wrap => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'section_break_padding',
+            [
+                'label'      => __( 'Padding', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em', '%' ],
+                'selectors'  => [
+                    $section_wrap => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'section_break_margin',
+            [
+                'label'      => __( 'Margin', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em', '%' ],
+                'selectors'  => [
+                    $section_wrap => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name'     => 'section_break_border',
+                'selector' => $section_wrap,
+            ]
+        );
+
+        $this->add_control(
+            'section_break_border_radius',
+            [
+                'label'      => __( 'Border Radius', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', '%' ],
+                'selectors'  => [
+                    $section_wrap => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'section_break_title_heading',
+            [
+                'label'     => __( 'Title', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_control(
+            'section_break_title_color',
+            [
+                'label'     => __( 'Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $section_title => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name'     => 'section_break_title_typography',
+                'selector' => $section_title,
+            ]
+        );
+
+        $this->add_responsive_control(
+            'section_break_title_alignment',
+            [
+                'label'   => __( 'Alignment', 'wp-user-frontend' ),
+                'type'    => Controls_Manager::CHOOSE,
+                'options' => [
+                    'left'   => [ 'title' => __( 'Left', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-left' ],
+                    'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-center' ],
+                    'right'  => [ 'title' => __( 'Right', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-right' ],
+                ],
+                'selectors' => [ $section_title => 'text-align: {{VALUE}};' ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'section_break_title_margin',
+            [
+                'label'      => __( 'Margin', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em', '%' ],
+                'selectors'  => [
+                    $section_title => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'section_break_desc_heading',
+            [
+                'label'     => __( 'Description', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_control(
+            'section_break_desc_color',
+            [
+                'label'     => __( 'Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $section_desc => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name'     => 'section_break_desc_typography',
+                'selector' => $section_desc,
+            ]
+        );
+
+        $this->add_responsive_control(
+            'section_break_desc_alignment',
+            [
+                'label'   => __( 'Alignment', 'wp-user-frontend' ),
+                'type'    => Controls_Manager::CHOOSE,
+                'options' => [
+                    'left'   => [ 'title' => __( 'Left', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-left' ],
+                    'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-center' ],
+                    'right'  => [ 'title' => __( 'Right', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-right' ],
+                ],
+                'selectors' => [ $section_desc => 'text-align: {{VALUE}};' ],
+            ]
+        );
 
         $this->end_controls_section();
     }

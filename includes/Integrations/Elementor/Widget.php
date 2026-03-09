@@ -892,7 +892,7 @@ class Widget extends Widget_Base {
                 'label'     => __( 'Options Text Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .wpuf-form .wpuf-radio-block, {{WRAPPER}} .wpuf-form .wpuf-checkbox-block, {{WRAPPER}} .wpuf-form .wpuf-radio-inline, {{WRAPPER}} .wpuf-form .wpuf-checkbox-inline, {{WRAPPER}} .wpuf-form .wpuf-price-label' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .wpuf-form .wpuf-radio-block, {{WRAPPER}} .wpuf-form .wpuf-checkbox-block, {{WRAPPER}} .wpuf-form .wpuf-radio-inline, {{WRAPPER}} .wpuf-form .wpuf-checkbox-inline, {{WRAPPER}} .wpuf-form .wpuf-price-label, {{WRAPPER}} .wpuf-form .wpuf-fields[data-type="radio"] > label' => 'color: {{VALUE}};',
                 ],
             ]
         );

@@ -206,6 +206,9 @@ class Assets {
     public function get_scripts() {
         $this->scheme         = is_ssl() ? 'https' : 'http';
         $api_key              = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
+
+        $forms_list_asset_file = WPUF_ROOT . '/assets/js/forms-list-react.min.asset.php';
+        $forms_list_asset      = file_exists( $forms_list_asset_file ) ? require $forms_list_asset_file : [ 'dependencies' => [], 'version' => WPUF_VERSION ];
         $form_builder_js_deps = apply_filters(
             'wpuf_form_builder_js_deps',
             [
@@ -409,6 +412,12 @@ class Assets {
             ],
             'forms-list'         => [
                 'src'       => WPUF_ASSET_URI . '/js/forms-list.min.js',
+                'in_footer' => true,
+            ],
+            'forms-list-react'   => [
+                'src'       => WPUF_ASSET_URI . '/js/forms-list-react.min.js',
+                'deps'      => $forms_list_asset['dependencies'],
+                'version'   => $forms_list_asset['version'],
                 'in_footer' => true,
             ],
             'frontend-subscriptions' => [

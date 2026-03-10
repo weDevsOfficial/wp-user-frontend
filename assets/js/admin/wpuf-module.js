@@ -16,11 +16,50 @@
         swiffyslider.initSlider( document.getElementById( 'wpuf-slider' ) );
     } );
 
-    // show the overlay on hovering over to each modules
-    $( '.wp-list-table.wpuf-modules .plugin-card' ).on( 'mouseover', function () {
+    // show the overlay on hovering over to each pro modules preview
+    $( '.wp-list-table.wpuf-pro-modules-preview .plugin-card' ).on( 'mouseover', function () {
         let overlay = $( '.form-create-overlay' );
         overlay.appendTo( this );
     } );
+
+    // Handle free module toggle
+    $( '.wpuf-toggle-free-module' ).on( 'change', function () {
+        var $toggle = $( this );
+        var moduleId = $toggle.data( 'module' );
+        var isActive = $toggle.is( ':checked' );
+        var status = isActive ? 'active' : 'inactive';
+
+        // Disable the toggle while processing
+        $toggle.prop( 'disabled', true );
+
+        $.ajax({
+            url: wpuf_free_modules.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'wpuf_toggle_free_module',
+                module: moduleId,
+                status: status,
+                nonce: wpuf_free_modules.nonce
+            },
+            success: function( response ) {
+                if ( response.success ) {
+                    // Re-enable the toggle
+                    $toggle.prop( 'disabled', false );
+                } else {
+                    // Revert the toggle state on error
+                    $toggle.prop( 'checked', ! isActive );
+                    $toggle.prop( 'disabled', false );
+                    alert( response.data.message || 'An error occurred' );
+                }
+            },
+            error: function() {
+                // Revert the toggle state on error
+                $toggle.prop( 'checked', ! isActive );
+                $toggle.prop( 'disabled', false );
+                alert( 'An error occurred while toggling the module' );
+            }
+        });
+    });
 
     $( '#wpuf-upgrade-popup' ).on( 'click', function( e ) {
         let modal = $( '.modal-window' );

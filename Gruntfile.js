@@ -1,5 +1,13 @@
 'use strict';
-module.exports = function(grunt) {
+module.exports = function( grunt) {
+    const tailwindFileMap = {
+        'admin/form-builder/views/form-builder-v4.1.php': 'admin/form-builder.css',
+        'admin/form-builder/views/post-form-settings.php': 'admin/form-builder.css',
+        'assets/js/forms-list.js': 'admin/form-builder.css',
+        'templates/account.php': 'frontend/account.css',
+        'ai-form-builder': 'ai-form-builder.css'
+    }
+
     var formBuilderAssets = require('./admin/form-builder/assets/js/form-builder-assets.js');
 
     var pkg = grunt.file.readJSON('package.json');
@@ -27,7 +35,9 @@ module.exports = function(grunt) {
             admin: {
                 files: {
                     '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/assets/less/form-builder.less'],
-                    '<%= dirs.css %>/admin.css': ['<%= dirs.less %>/admin.less']
+                    '<%= dirs.css %>/admin.css': ['<%= dirs.less %>/admin.less'],
+                    '<%= dirs.css %>/admin/whats-new.css': ['<%= dirs.less %>/whats-new.less'],
+                    '<%= dirs.css %>/registration-forms.css': ['<%= dirs.less %>/registration-forms.less']
                 }
             }
         },
@@ -56,7 +66,7 @@ module.exports = function(grunt) {
         makepot: {
             target: {
                 options: {
-                    exclude: ['build/.*', 'node_modules/*', 'assets/*'],
+                    exclude: ['build/.*', 'node_modules/*'],
                     mainFile: 'wpuf.php',
                     domainPath: '/languages/',
                     potFilename: 'wp-user-frontend.pot',
@@ -98,7 +108,62 @@ module.exports = function(grunt) {
                     'jshint:formBuilder', 'less:admin',
                     'concat:formBuilder', 'concat:templates', 'less:front'
                 ]
-            }
+            },
+
+            vue: {
+                files: [
+                    'assets/js/subscriptions.js',
+                    'assets/js/forms-list.js',
+                    'assets/css/admin/subscriptions.css',
+                    'assets/js/components/**/*.vue',
+                    'assets/js/stores/**/*.js',
+                ],
+                tasks: [
+                    'shell:npm_build'
+                ]
+            },
+
+            aiFormBuilderVue: {
+                files: [
+                    'assets/js/ai-form-builder.js',
+                    'assets/js/components/**/*.vue',
+                    'assets/js/stores/**/*.js',
+                ],
+                tasks: [
+                    'shell:npm_build_ai_form_builder'
+                ]
+            },
+
+            tailwind: {
+                files: [
+                    'src/css/**/*.css',
+                    'admin/form-builder/views/*.php',
+                    'admin/form-builder/assets/js/**/*.php',
+                    'admin/form-builder/assets/js/**/*.js',
+                    'includes/Admin/**/*.php',
+                    'templates/**/*.php',
+                    'includes/Free/Free_Loader.php',
+                    'wpuf-functions.php',
+                    'assets/js/forms-list.js',
+                ],
+                tasks: ['tailwind'],
+                options: {
+                    spawn: false
+                }
+            },
+
+            aiFormBuilder: {
+                files: [
+                    'src/css/ai-form-builder.css',
+                    'assets/**/*.{js,jsx,ts,tsx,vue,html}',
+                    'includes/Admin/**/*.php',
+                ],
+                tasks: ['shell:tailwind:src/css/ai-form-builder.css:assets/css/ai-form-builder.css'],
+                options: {
+                    spawn: false
+                }
+            },
+
         },
 
         // Clean up build directory
@@ -131,20 +196,22 @@ module.exports = function(grunt) {
                     '!config.codekit',
                     '!**/nbproject/**',
                     '!assets/less/**',
+                    '!assets/tailwind/**',
                     '!tests/**',
                     '!**/Gruntfile.js',
                     '!**/package.json',
                     '!**/readme.md',
                     '!**/docs.md',
                     '!**/*~',
-                    '!vendor/**',
                     '!**/log.txt',
                     '!**/package-lock.json',
                     '!**/appsero.json',
-                    '!**/composer.json',
                     '!**/composer.lock',
                     '!**/phpcs-report.txt',
-                    '!**/phpcs.xml.dist'
+                    '!**/phpcs.xml.dist',
+                    '!**/postcss.config.js',
+                    '!**/tailwind.config.js',
+                    '!**/vite.config.mjs',
                 ],
                 dest: 'build/'
             }
@@ -202,6 +269,26 @@ module.exports = function(grunt) {
                 }
             }
         },
+
+        // is to run NPM commands through Grunt
+        shell: {
+            npm_build: {
+                command: 'npm run build',
+            },
+            npm_build_ai_form_builder: {
+                command: 'npm run build:ai-form-builder',
+            },
+            tailwind: {
+                command: function ( input, output ) {
+                    return `npx tailwindcss -i ${input} -o ${output} --minify`;
+                }
+            },
+            tailwind_minify: {
+                command: function ( input, output ) {
+                    return `npx tailwindcss -i ${input} -o ${output} --minify`;
+                }
+            }
+        }
     });
 
     // Load NPM tasks to be used here
@@ -214,16 +301,57 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-contrib-clean' );
     grunt.loadNpmTasks( 'grunt-contrib-copy' );
     grunt.loadNpmTasks( 'grunt-contrib-compress' );
-    grunt.loadNpmTasks( 'grunt-notify' );
+    // grunt.loadNpmTasks( 'grunt-notify' );
     grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
+    grunt.loadNpmTasks( 'grunt-shell' );
+    grunt.loadNpmTasks( 'grunt-postcss' );
 
-    grunt.registerTask( 'default', [ 'less', 'concat' ] );
+    grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n', 'tailwind' ] );
 
     // file auto generation
     grunt.registerTask( 'i18n', [ 'makepot' ] );
     grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
 
     // build stuff
-    grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme' ] );
-    grunt.registerTask( 'zip', [ 'clean', 'copy', 'compress' ] );
+    grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme', 'tailwind', 'tailwind-minify' ] );
+    grunt.registerTask( 'zip', [ 'shell:npm_build', 'clean', 'copy', 'compress' ] );
+
+    grunt.event.on('watch', function(action, filepath, target) {
+        if (target === 'tailwind') {
+            grunt.task.run('tailwind');
+        }
+    });
+
+    grunt.registerTask('tailwind', function() {
+        const done = this.async();
+
+        // Process each file mapping
+        Object.entries(tailwindFileMap).forEach(([phpFile, cssFile]) => {
+            const inputFile = `src/css/${cssFile}`;
+            const outputFile = `assets/css/${cssFile}`;
+
+            // Ensure the input file exists
+            if (grunt.file.exists(inputFile)) {
+                // Run the tailwind command
+                grunt.task.run(`shell:tailwind:${inputFile}:${outputFile}`);
+            }
+        });
+
+        done();
+    });
+
+    grunt.registerTask('tailwind-minify', function() {
+        const cssFiles = [
+            { input: 'assets/css/forms-list.css', output: 'assets/css/forms-list.min.css' },
+            { input: 'assets/css/frontend-subscriptions.css', output: 'assets/css/frontend-subscriptions.min.css' },
+            { input: 'assets/css/ai-form-builder.css', output: 'assets/css/ai-form-builder.min.css' },
+            { input: 'assets/css/admin/subscriptions.css', output: 'assets/css/admin/subscriptions.min.css' }
+        ];
+
+        cssFiles.forEach(file => {
+            if (grunt.file.exists(file.input)) {
+                grunt.task.run(`shell:tailwind_minify:${file.input}:${file.output}`);
+            }
+        });
+    });
 };

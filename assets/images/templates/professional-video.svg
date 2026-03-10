@@ -1,0 +1,80 @@
+<svg width="246" height="249" viewBox="0 0 246 249" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_dd_pro_video)">
+<path d="M3 10C3 5.58172 6.58172 2 11 2H235C239.418 2 243 5.58172 243 10V237C243 241.418 239.418 245 235 245H11C6.58173 245 3 241.418 3 237V10Z" fill="white"/>
+<path d="M3.5 10C3.5 5.85786 6.85786 2.5 11 2.5H235C239.142 2.5 242.5 5.85786 242.5 10V237C242.5 241.142 239.142 244.5 235 244.5H11C6.85787 244.5 3.5 241.142 3.5 237V10Z" stroke="#E2E8F0"/>
+</g>
+<!-- Professional Badge -->
+<rect x="170" y="35" width="24" height="10" rx="2" fill="#7C3AED"/>
+<text x="182" y="41.5" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="6" font-weight="600" fill="white">PRO</text>
+<!-- Film Camera Icon -->
+<rect x="47" y="30" width="110" height="70" rx="4" fill="#1E293B"/>
+<rect x="57" y="40" width="90" height="50" rx="2" fill="#0F172A"/>
+<!-- Camera Lens -->
+<circle cx="77" cy="65" r="15" stroke="#475569" stroke-width="2" fill="none"/>
+<circle cx="77" cy="65" r="10" fill="#334155"/>
+<circle cx="77" cy="65" r="6" fill="#475569"/>
+<circle cx="79" cy="63" r="2" fill="#64748B"/>
+<!-- Film Reels -->
+<circle cx="117" cy="50" r="8" stroke="#475569" stroke-width="1.5" fill="none"/>
+<circle cx="117" cy="80" r="8" stroke="#475569" stroke-width="1.5" fill="none"/>
+<rect x="115" y="50" width="4" height="30" fill="#334155"/>
+<!-- Title & Description -->
+<rect x="47.25" y="106" width="152.5" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="109" width="80" height="4" rx="1" fill="#CBD5E1"/>
+<rect x="47.25" y="120" width="152.5" height="24" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="124" width="142" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="128" width="142" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="132" width="110" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="136" width="125" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="140" width="90" height="2" rx="1" fill="#E2E8F0"/>
+<!-- Video Source Section -->
+<rect x="47.25" y="150" width="72" height="12.5" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<text x="52" y="157.5" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#64748B">Video URL</text>
+<rect x="127.25" y="150" width="72" height="12.5" rx="3.25" fill="#F8FAFC" stroke="#D4DBE3" stroke-width="0.5"/>
+<path d="M156 154L161 157L156 160V154Z" fill="#7C3AED"/>
+<text x="138" y="157.5" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#64748B">Upload</text>
+<!-- Production Details -->
+<rect x="47.25" y="168" width="46" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<circle cx="52" cy="173" r="1.5" fill="#CBD5E1"/>
+<rect x="56" y="171.5" width="30" height="3" rx="1" fill="#E2E8F0"/>
+<rect x="99.25" y="168" width="46" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<path d="M104 173L106 175L108 173" stroke="#979AA9" stroke-width="0.878788"/>
+<rect x="110" y="171.5" width="25" height="3" rx="1" fill="#E2E8F0"/>
+<rect x="151.25" y="168" width="48" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="156" y="171.5" width="20" height="3" rx="1" fill="#E2E8F0"/>
+<text x="178" y="175" font-family="system-ui, -apple-system, sans-serif" font-size="6" fill="#64748B">min</text>
+<!-- Rights & Terms -->
+<rect x="47.25" y="184" width="152.5" height="20" rx="3.25" fill="#FEF3C7" stroke="#F59E0B" stroke-width="0.5"/>
+<rect x="52" y="189" width="4" height="4" rx="1" fill="#F59E0B"/>
+<text x="60" y="191.5" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#92400E">Usage Rights</text>
+<rect x="52" y="196" width="4" height="4" rx="1" stroke="#F59E0B" stroke-width="0.5" fill="none"/>
+<text x="60" y="199" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#92400E">I agree to terms and conditions</text>
+<!-- Contact Info -->
+<rect x="47.25" y="210" width="72" height="20" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<path d="M52 216H54V218L56 219L54 220V222H52V220L50 219L52 218V216Z" fill="#94A3B8"/>
+<rect x="60" y="215" width="40" height="2" rx="1" fill="#CBD5E1"/>
+<rect x="60" y="219" width="30" height="2" rx="1" fill="#CBD5E1"/>
+<rect x="60" y="223" width="50" height="2" rx="1" fill="#CBD5E1"/>
+<rect x="127.25" y="210" width="72" height="20" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<circle cx="135" cy="220" r="4" stroke="#94A3B8" stroke-width="0.8" fill="none"/>
+<circle cx="135" cy="220" r="1.5" fill="#94A3B8"/>
+<rect x="143" y="215" width="35" height="2" rx="1" fill="#CBD5E1"/>
+<rect x="143" y="219" width="25" height="2" rx="1" fill="#CBD5E1"/>
+<rect x="143" y="223" width="40" height="2" rx="1" fill="#CBD5E1"/>
+<defs>
+<filter id="filter0_dd_pro_video" x="0" y="0" width="246" height="249" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1.5"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="effect1_dropShadow" result="effect2_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow" result="shape"/>
+</filter>
+</defs>
+</svg>

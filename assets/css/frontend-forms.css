@@ -1,6 +1,166 @@
 /* DivTable.com */
 body {
-  font-family: 'Open Sans', sans-serif;
+  /* Commented out to allow Tailwind styles for subscription packs
+.entry-content ul.wpuf_packs,
+ul.wpuf_packs {
+    overflow: hidden;
+    margin: 15px 0;
+    max-width: initial;
+    width: 100%;
+    padding-left: 0;
+
+    > li {
+        background: #fff;
+        display: inline-block;
+        vertical-align: top;
+        border: 1px solid #DDD;
+        border-radius: 5px 5px 5px 5px;
+        list-style: none outside none;
+        margin: 0 25px 25px 0;
+        position: relative;
+        width: 200px;
+        box-shadow: 0 2px 6px rgba(100, 100, 100, 0.3);
+    }
+    @media (max-width: @mediaSM) {
+        text-align: center;
+        padding-left: 25px;
+    }
+    @media (max-width: 500px) {
+        padding-left: 0;
+        > li {
+            width: 100%;
+            margin-left: 0;
+        }
+    }
+
+    h3 {
+        background: #52B5D5;
+        color: #fff;
+        font-size: 18px;
+        font-weight: normal;
+        margin: 0;
+        padding: 10px !important;
+        text-align: center;
+        border-bottom: 1px solid darken(#52B5D5, 5%);
+    }
+
+    .wpuf-pricing-wrap {
+        background: @mainColor;
+
+        .wpuf-sub-amount {
+            position: relative;
+            text-align: center;
+            color: #FFF;
+            border-bottom: 1px solid darken(@mainColor, 5%);
+            padding: 10px 0;
+
+            .wpuf-sub-symbol {
+                font-size: 19px;
+                position: absolute;
+                top: 25px;
+                line-height: 10px;
+            }
+
+            .wpuf-sub-cost {
+                font-size: 40px;
+                margin-left: 10px;
+                line-height: 50px;
+            }
+
+            .wpuf-pack-cycle {
+                font-size: 13px;
+                padding-bottom: 5px;
+            }
+        }
+    }
+
+    .wpuf-sub-body {
+        margin: 0;
+        padding: 8px 0 0 8px;
+        background: #fff;
+        font-size: 11px;
+        color: #999;
+    }
+
+    .wpuf-sub-button {
+        text-align: center;
+        margin-bottom: 20px;
+        margin-top: 20px;
+        overflow: hidden;
+
+        a {
+            // .core-button();
+            background: @mainColor;
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            .border-radius(3px);
+            display: inline-block;
+
+            &:hover {
+                background: darken(@mainColor, 10%);
+            }
+        }
+
+        a:hover {
+            background: none repeat scroll 0 0 #1E8CBE;
+            border-color: #0074A2;
+            box-shadow: 0 1px 0 rgba(120, 200, 230, 0.6) inset;
+            color: #FFFFFF;
+        }
+    }
+
+    .wpuf-sub-desciption {
+        margin-top: 15px;
+
+        ul, li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        li {
+            text-align: center;
+            border-top: 1px solid #eee;
+            padding: 7px 0;
+
+            &:last-child {
+                border-bottom: 1px solid #eee;
+            }
+
+            &:first-child {
+                border-top: none;
+            }
+        }
+
+        p {
+            padding: 0 10px;
+            margin-bottom: 15px;
+        }
+    }
+
+    .button {
+        background: none repeat scroll 0 0 #2EA2CC;
+        border-color: #0074A2;
+        box-shadow: 0 1px 0 rgba(120, 200, 230, 0.5) inset, 0 1px 0 rgba(0, 0, 0, 0.15);
+        color: #FFFFFF;
+        text-decoration: none;
+        padding: 0 12px 2px;
+        color: #fff;
+    }
+
+    .cost {
+        background: red;
+        border-radius: 30px 30px 30px 30px;
+        color: #FFFFFF;
+        margin: -16px -12px 0 0;
+        padding: 10px 8px 8px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+}
+End of commented pack styles */
   /* css for timepicker */
   /** author info **/
   /** jQuery Suggest **/
@@ -11,9 +171,6 @@ body {
   /* Front End Posts List Tools */
   /* CSS for custom columns */
   /* Upload Button */
-}
-body #wpfooter {
-  position: fixed !important;
 }
 body .has-error {
   background: #FFE4E4;
@@ -85,7 +242,7 @@ body .wpuf-error {
   background-color: #f2dede;
   color: #a94442;
   border: 1px solid #ebccd1;
-  margin: 10px 10px 20px;
+  margin: 10px 0 20px 0;
   padding: 10px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -241,9 +398,13 @@ body ul.wpuf-form li.has-error {
   background: #FFE4E4;
 }
 body ul.wpuf-form li .wp-editor-wrap {
-  border: 1px solid #eee;
+  border: none;
 }
-body ul.wpuf-form li.wpuf_hidden_field {
+body ul.wpuf-form liwpuf-el {
+  position: relative;
+  display: flex;
+}
+body ul.wpuf-form li.wpuf_hidden_field.wpuf-el {
   display: none;
 }
 body ul.wpuf-form li .wpuf-label {
@@ -254,18 +415,6 @@ body ul.wpuf-form li .wpuf-label {
 }
 body ul.wpuf-form li .wpuf-label .required {
   color: red;
-}
-body ul.wpuf-form li.field-size-large .wpuf-fields {
-  float: left;
-  width: 70%;
-}
-body ul.wpuf-form li.field-size-medium .wpuf-fields {
-  float: left;
-  width: 50%;
-}
-body ul.wpuf-form li.field-size-small .wpuf-fields {
-  float: left;
-  width: 30%;
 }
 body ul.wpuf-form li .wpuf-fields {
   float: left;
@@ -280,31 +429,6 @@ body ul.wpuf-form li .wpuf-fields .wpuf-radio-block,
 body ul.wpuf-form li .wpuf-fields .wpuf-checkbox-block {
   display: block;
   margin-bottom: 6px;
-}
-body ul.wpuf-form li .wpuf-fields a.file-selector {
-  display: inline;
-  text-decoration: none;
-  padding: 5px 12px;
-  margin: 0;
-  height: 30px;
-  line-height: 28px;
-  border: 1px solid #ccc;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  background: #fafafa;
-  color: #23282d;
-  box-shadow: 0 1px 0 #cccccc;
-  vertical-align: top;
-  cursor: pointer;
-  -webkit-appearance: none;
-  white-space: nowrap;
-}
-body ul.wpuf-form li .wpuf-fields a.file-selector:hover,
-body ul.wpuf-form li .wpuf-fields a.file-selector:focus {
-  background: #fafafa;
-  border-color: #999;
-  color: #23282d;
 }
 body ul.wpuf-form li .wpuf-fields .google-map img {
   max-width: none !important;
@@ -351,7 +475,8 @@ body ul.wpuf-form li .wpuf-fields .wpuf-name-field-wrap.format-first-middle-last
   float: right;
   width: 37%;
 }
-body ul.wpuf-form li .wpuf-fields .wpuf-help {
+body ul.wpuf-form li .wpuf-fields .wpuf-help,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message {
   color: #666;
   margin: 2px 0 5px 0;
   font-size: 12px;
@@ -359,14 +484,18 @@ body ul.wpuf-form li .wpuf-fields .wpuf-help {
   font-family: sans-serif;
   display: block;
 }
-body ul.wpuf-form li .wpuf-fields .wpuf-help .text-danger {
+body ul.wpuf-form li .wpuf-fields .wpuf-help .text-danger,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message .text-danger {
   color: red;
 }
-body ul.wpuf-form li .wpuf-fields .wpuf-help .text-success {
+body ul.wpuf-form li .wpuf-fields .wpuf-help .text-success,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message .text-success {
   color: green;
 }
 body ul.wpuf-form li .wpuf-fields .wpuf-help #url-alart,
-body ul.wpuf-form li .wpuf-fields .wpuf-help #url-alart-mgs {
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message #url-alart,
+body ul.wpuf-form li .wpuf-fields .wpuf-help #url-alart-mgs,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message #url-alart-mgs {
   font-style: normal;
   font-size: 16px;
 }
@@ -496,24 +625,29 @@ body ul.wpuf-form li .wpuf-fields .wpuf-fields-list.wpuf-list-inline li {
   padding-left: 5px;
   padding-right: 5px;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field {
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field {
   border-collapse: collapse;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field * {
-  box-sizing: border-box;
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field.wpuf-field-columns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field input {
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field .wpuf-column-field-inner-columns {
   width: 100%;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field .wpuf-repeater-buttons {
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field * {
+  box-sizing: border-box;
+}
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field .wpuf-repeater-buttons {
   width: 75px;
   padding-left: 12px;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field .wpuf-repeater-buttons img {
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field .wpuf-repeater-buttons img {
   width: 100%;
   height: auto;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field .wpuf-repeater-buttons i {
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field .wpuf-repeater-buttons i {
   display: inline-block;
   width: 15px;
   height: 15px;
@@ -534,13 +668,6 @@ body ul.wpuf-form li .wpuf-address-field:after {
   display: table;
 }
 body ul.wpuf-form li .wpuf-address-field.city_name,
-body ul.wpuf-form li .wpuf-address-field.state,
-body ul.wpuf-form li .wpuf-address-field.zip,
-body ul.wpuf-form li .wpuf-address-field.country_select {
-  float: left;
-  width: 47%;
-}
-body ul.wpuf-form li .wpuf-address-field.city_name,
 body ul.wpuf-form li .wpuf-address-field.zip {
   margin-right: 4%;
 }
@@ -549,7 +676,6 @@ body ul.wpuf-form li .wpuf-address-field.zip {
 }
 body ul.wpuf-form li .wpuf-section-wrap {
   border-bottom: 1px solid #ccc;
-  margin: 15px 0;
 }
 body ul.wpuf-form li .wpuf-section-wrap h2.wpuf-section-title {
   margin: 0;
@@ -721,175 +847,6 @@ body .wpuf-coupon-info-wrap a.wpuf-apply-coupon {
 body .wpuf-coupon-info-wrap .wpuf-copon-cancel {
   text-decoration: none;
   font-size: 11px;
-}
-body .entry-content ul.wpuf_packs,
-body ul.wpuf_packs {
-  overflow: hidden;
-  margin: 15px 0;
-  max-width: initial;
-  width: 100%;
-  padding-left: 0;
-}
-body .entry-content ul.wpuf_packs > li,
-body ul.wpuf_packs > li {
-  background: #fff;
-  display: inline-block;
-  vertical-align: top;
-  border: 1px solid #DDD;
-  border-radius: 5px 5px 5px 5px;
-  list-style: none outside none;
-  margin: 0 25px 25px 0;
-  position: relative;
-  width: 200px;
-  box-shadow: 0 2px 6px rgba(100, 100, 100, 0.3);
-}
-@media (max-width: 991px) {
-  body .entry-content ul.wpuf_packs,
-  body ul.wpuf_packs {
-    text-align: center;
-    padding-left: 25px;
-  }
-}
-@media (max-width: 500px) {
-  body .entry-content ul.wpuf_packs,
-  body ul.wpuf_packs {
-    padding-left: 0;
-  }
-  body .entry-content ul.wpuf_packs > li,
-  body ul.wpuf_packs > li {
-    width: 100%;
-    margin-left: 0;
-  }
-}
-body .entry-content ul.wpuf_packs h3,
-body ul.wpuf_packs h3 {
-  background: #52B5D5;
-  color: #fff;
-  font-size: 18px;
-  font-weight: normal;
-  margin: 0;
-  padding: 10px !important;
-  text-align: center;
-  border-bottom: 1px solid #3dacd0;
-}
-body .entry-content ul.wpuf_packs .wpuf-pricing-wrap,
-body ul.wpuf_packs .wpuf-pricing-wrap {
-  background: #64C3DE;
-}
-body .entry-content ul.wpuf_packs .wpuf-pricing-wrap .wpuf-sub-amount,
-body ul.wpuf_packs .wpuf-pricing-wrap .wpuf-sub-amount {
-  position: relative;
-  text-align: center;
-  color: #FFF;
-  border-bottom: 1px solid #4fbbda;
-  padding: 10px 0;
-}
-body .entry-content ul.wpuf_packs .wpuf-pricing-wrap .wpuf-sub-amount .wpuf-sub-symbol,
-body ul.wpuf_packs .wpuf-pricing-wrap .wpuf-sub-amount .wpuf-sub-symbol {
-  font-size: 19px;
-  position: absolute;
-  top: 25px;
-  line-height: 10px;
-}
-body .entry-content ul.wpuf_packs .wpuf-pricing-wrap .wpuf-sub-amount .wpuf-sub-cost,
-body ul.wpuf_packs .wpuf-pricing-wrap .wpuf-sub-amount .wpuf-sub-cost {
-  font-size: 40px;
-  margin-left: 10px;
-  line-height: 50px;
-}
-body .entry-content ul.wpuf_packs .wpuf-pricing-wrap .wpuf-sub-amount .wpuf-pack-cycle,
-body ul.wpuf_packs .wpuf-pricing-wrap .wpuf-sub-amount .wpuf-pack-cycle {
-  font-size: 13px;
-  padding-bottom: 5px;
-}
-body .entry-content ul.wpuf_packs .wpuf-sub-body,
-body ul.wpuf_packs .wpuf-sub-body {
-  margin: 0;
-  padding: 8px 0 0 8px;
-  background: #fff;
-  font-size: 11px;
-  color: #999;
-}
-body .entry-content ul.wpuf_packs .wpuf-sub-button,
-body ul.wpuf_packs .wpuf-sub-button {
-  text-align: center;
-  margin-bottom: 20px;
-  margin-top: 20px;
-  overflow: hidden;
-}
-body .entry-content ul.wpuf_packs .wpuf-sub-button a,
-body ul.wpuf_packs .wpuf-sub-button a {
-  background: #64C3DE;
-  color: #fff;
-  text-decoration: none;
-  padding: 5px 10px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  display: inline-block;
-}
-body .entry-content ul.wpuf_packs .wpuf-sub-button a:hover,
-body ul.wpuf_packs .wpuf-sub-button a:hover {
-  background: #3ab3d5;
-}
-body .entry-content ul.wpuf_packs .wpuf-sub-button a:hover,
-body ul.wpuf_packs .wpuf-sub-button a:hover {
-  background: none repeat scroll 0 0 #1E8CBE;
-  border-color: #0074A2;
-  box-shadow: 0 1px 0 rgba(120, 200, 230, 0.6) inset;
-  color: #FFFFFF;
-}
-body .entry-content ul.wpuf_packs .wpuf-sub-desciption,
-body ul.wpuf_packs .wpuf-sub-desciption {
-  margin-top: 15px;
-}
-body .entry-content ul.wpuf_packs .wpuf-sub-desciption ul,
-body ul.wpuf_packs .wpuf-sub-desciption ul,
-body .entry-content ul.wpuf_packs .wpuf-sub-desciption li,
-body ul.wpuf_packs .wpuf-sub-desciption li {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-body .entry-content ul.wpuf_packs .wpuf-sub-desciption li,
-body ul.wpuf_packs .wpuf-sub-desciption li {
-  text-align: center;
-  border-top: 1px solid #eee;
-  padding: 7px 0;
-}
-body .entry-content ul.wpuf_packs .wpuf-sub-desciption li:last-child,
-body ul.wpuf_packs .wpuf-sub-desciption li:last-child {
-  border-bottom: 1px solid #eee;
-}
-body .entry-content ul.wpuf_packs .wpuf-sub-desciption li:first-child,
-body ul.wpuf_packs .wpuf-sub-desciption li:first-child {
-  border-top: none;
-}
-body .entry-content ul.wpuf_packs .wpuf-sub-desciption p,
-body ul.wpuf_packs .wpuf-sub-desciption p {
-  padding: 0 10px;
-  margin-bottom: 15px;
-}
-body .entry-content ul.wpuf_packs .button,
-body ul.wpuf_packs .button {
-  background: none repeat scroll 0 0 #2EA2CC;
-  border-color: #0074A2;
-  box-shadow: 0 1px 0 rgba(120, 200, 230, 0.5) inset, 0 1px 0 rgba(0, 0, 0, 0.15);
-  color: #FFFFFF;
-  text-decoration: none;
-  padding: 0 12px 2px;
-  color: #fff;
-}
-body .entry-content ul.wpuf_packs .cost,
-body ul.wpuf_packs .cost {
-  background: red;
-  border-radius: 30px 30px 30px 30px;
-  color: #FFFFFF;
-  margin: -16px -12px 0 0;
-  padding: 10px 8px 8px;
-  position: absolute;
-  right: 0;
-  top: 0;
 }
 body .ui-timepicker-div .ui-widget-header {
   margin-bottom: 8px;
@@ -1238,7 +1195,6 @@ body .wpuf-form .required {
   border: 0;
 }
 body .wpuf-dashboard-container {
-  font-family: 'Open Sans', sans-serif;
   max-width: 85rem !important;
   /*Responsive css for post table*/
 }
@@ -1254,7 +1210,6 @@ body .wpuf-dashboard-container .wpuf-dashboard-navigation {
 body .wpuf-dashboard-container .wpuf-dashboard-navigation a {
   text-decoration: none;
   box-shadow: none;
-  font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   font-weight: bold;
   color: #000;
@@ -1313,6 +1268,9 @@ body .wpuf-dashboard-container .wpuf-dashboard-content .wpuf-fields textarea:not
 body .wpuf-dashboard-container .wpuf-dashboard-content .wpuf-fields input:not([type="reset"]) {
   width: 100%;
 }
+body .wpuf-dashboard-container .wpuf-dashboard-content .wpuf-fields input[type="radio"] {
+  width: initial;
+}
 body .wpuf-dashboard-container .items-table-container,
 body .wpuf-dashboard-container .wpuf-dashboard-content.invoices {
   max-width: 100%;
@@ -1322,7 +1280,6 @@ body .wpuf-dashboard-container table.items-table {
   width: 100%;
   margin-top: 0px;
   border: 1.0218px solid #DAE1F5;
-  font-family: 'Open Sans', sans-serif !important;
   color: #000 !important;
   font-size: 16px !important;
   font-weight: 400 !important;
@@ -1480,7 +1437,6 @@ body input[type="text"].wpuf-google-map-search {
   background-color: #fff !important;
   text-overflow: ellipsis !important;
   width: 170px !important;
-  font-family: Roboto !important;
   font-size: 15px !important;
   font-weight: 300 !important;
   padding: 0 11px 0 13px !important;
@@ -1661,9 +1617,6 @@ body .weforms-quiz-feedback .wrong-answer .wpuf-fields label.checked {
   color: red;
   padding: 6px 0;
 }
-body ul.wpuf-form .wpuf-el {
-  position: relative;
-}
 body ul.wpuf-form .weforms-frontend-field-points {
   position: absolute;
   top: 0;
@@ -1750,8 +1703,8 @@ body ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-col
   padding: 0;
   border: 0;
   float: none;
+  display: flex;
   width: 100%;
-  overflow: hidden;
 }
 body ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields {
   padding: 0 5px 0 0;
@@ -1783,6 +1736,7 @@ body ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-col
 body ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="color"],
 body ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li textarea {
   width: 100%;
+  max-width: fit-content;
 }
 body .ac_results {
   z-index: 99999 !important;
@@ -1828,4 +1782,44 @@ body .wpuf-attachment-upload-filelist + .moxie-shim {
 /* field specific style to override our default padding*/
 .iti--allow-dropdown input[type="text"] {
   padding-left: 52px !important;
+}
+.form-preview-stage-dropzone {
+  background-color: #f0fdf4;
+  border: 1px solid #4ade80;
+  height: 50px;
+}
+img.wpuf-eye {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%) translateX(-6%);
+}
+/* CSS utility classes for hiding fields on frontend */
+.wpuf-form .hidden,
+.wpuf-form .Hidden,
+.wpuf-form .HIDDEN,
+.wpuf-form .d-none,
+.wpuf-form .D-none,
+.wpuf-form .D-None,
+.wpuf-form .hide,
+.wpuf-form .Hide,
+.wpuf-form .HIDE {
+  display: none !important;
+}
+.wpuf-form .invisible,
+.wpuf-form .Invisible,
+.wpuf-form .INVISIBLE {
+  visibility: hidden !important;
+}
+.wpuf-form .sr-only,
+.wpuf-form .visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }

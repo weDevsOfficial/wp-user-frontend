@@ -5,6 +5,14 @@ Vue.mixin({
     computed: {
         i18n: function () {
             return wpuf_form_builder.i18n;
+        },
+
+        is_pro_active: function () {
+            return wpuf_form_builder.is_pro_active === '1';
+        },
+
+        pro_link: function () {
+            return wpuf_form_builder.pro_link;
         }
     },
 
@@ -27,7 +35,7 @@ Vue.mixin({
                 cancelButtonText: this.i18n.cancel,
             }, settings);
 
-            new swal(settings, callback);
+            Swal.fire(settings, callback);
         },
 
         is_failed_to_validate: function (template) {
@@ -44,6 +52,10 @@ Vue.mixin({
             return (wpuf_form_builder.recaptcha_site && wpuf_form_builder.recaptcha_secret) ? true : false;
         },
 
+        has_turnstile_api_keys: function () {
+            return wpuf_form_builder.turnstile_site && wpuf_form_builder.turnstile_secret;
+        },
+
         containsField: function(field_name) {
             var self = this,
                 i = 0;
@@ -58,8 +70,8 @@ Vue.mixin({
                     return true;
                 }
 
-                // check if the single instance field exist in column fields
-                if (self.$store.state.form_fields[i].template === 'column_field') {
+                // check if the single instance field exist in column fields or repeat field
+                if (self.$store.state.form_fields[i].template.match(/^(column|repeat)_field$/)) {
                     var innerColumnFields = self.$store.state.form_fields[i].inner_fields;
 
                     for (const columnFields in innerColumnFields) {

@@ -1,6 +1,6 @@
 <div id="form-preview-stage" class="wpuf-style">
     <h4 v-if="!form_fields.length" class="text-center">
-        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
+        <?php esc_html_e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
     </h4>
 
     <ul :class="['wpuf-form', 'sortable-list', 'form-label-' + label_type]">
@@ -17,16 +17,26 @@
             data-source="stage"
         >
             <div v-if="!is_full_width(field.template)" class="wpuf-label">
+                <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'left_label'"
+                      class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-mr-1">
+                      <img v-if="field.field_icon.indexOf('http') === 0 || field.field_icon.indexOf('/') === 0" :src="field.field_icon" alt="" class="wpuf-field-icon wpuf-field-icon-img" />
+                      <i v-else :class="[field.field_icon, 'wpuf-field-icon']"></i>
+                </span>
                 <label v-if="!is_invisible(field)" :for="'wpuf-' + field.name ? field.name : 'cls'">
                     {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
                 </label>
+                <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'right_label'"
+                      class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2">
+                      <img v-if="field.field_icon.indexOf('http') === 0 || field.field_icon.indexOf('/') === 0" :src="field.field_icon" alt="" class="wpuf-field-icon wpuf-field-icon-img" />
+                      <i v-else :class="[field.field_icon, 'wpuf-field-icon']"></i>
+                </span>
             </div>
 
             <component v-if="is_template_available(field)" :is="'form-' + field.template" :field="field"></component>
 
             <div v-if="is_pro_feature(field.template)" class="stage-pro-alert">
                 <label class="wpuf-pro-text-alert">
-                    <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
+                    <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php esc_html_e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
                 </label>
             </div>
 
@@ -52,7 +62,7 @@
         <li class="wpuf-submit">
             <div class="wpuf-label">&nbsp;</div>
 
-            <?php do_action( 'wpuf-form-builder-template-builder-stage-submit-area' ); ?>
+            <?php do_action( 'wpuf_form_builder_template_builder_stage_submit_area' ); ?>
         </li>
     </ul><!-- .wpuf-form -->
 
@@ -77,5 +87,5 @@
         </ul>
     </div>
 
-    <?php do_action( 'wpuf-form-builder-template-builder-stage-bottom-area' ); ?>
+    <?php do_action( 'wpuf_form_builder_template_builder_stage_bottom_area' ); ?>
 </div><!-- #form-preview-stage -->

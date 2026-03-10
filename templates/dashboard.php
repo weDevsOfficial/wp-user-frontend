@@ -1,7 +1,9 @@
 <div class="wpuf-dashboard-container">
 
     <h2 class="page-head">
-        <span class="colour"><?php printf( esc_attr( __( "%s's Dashboard", 'wp-user-frontend' ) ), esc_html( $userdata->display_name )); ?></span>
+        <span class="colour"><?php printf( 
+            // translators: %s is displayname
+            esc_attr( __( "%s's Dashboard", 'wp-user-frontend' ) ), esc_html( $userdata->display_name )); ?></span>
     </h2>
 
     <?php if ( wpuf_get_option( 'show_post_count', 'wpuf_dashboard', 'on' ) == 'on' ) { ?>
@@ -17,7 +19,9 @@
                 }
 
                 printf(
-                    wp_kses_post( __( 'You have created <span>%d</span> (%s)', 'wp-user-frontend' ) ),
+                    wp_kses_post( 
+                        // translators: %1$s is Post and %2$s is labels
+                        __( 'You have created <span>%1$d</span> (%2$s)', 'wp-user-frontend' ) ),
                     wp_kses_post( $dashboard_query->found_posts ),
                     wp_kses_post( implode( ', ', $labels ) )
                 );
@@ -83,7 +87,7 @@
         $featured_img_size = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
         $enable_payment    = wpuf_get_option( 'enable_payment', 'wpuf_payment' );
         $current_user      = wpuf_get_user();
-        $user_subscription = new WPUF_User_Subscription( $current_user );
+        $user_subscription = new WeDevs\Wpuf\User_Subscription( $current_user );
         $user_sub          = $user_subscription->current_pack();
         $sub_id            = $current_user->subscription()->current_pack_id();
 
@@ -133,7 +137,9 @@
     <?php
         } else {
             if ( !empty( $post_type_obj ) && !empty( $labels ) ) {
-                printf( '<div class="wpuf-message">' . wp_kses_post( __( 'No %s found', 'wp-user-frontend' ) ) . '</div>', esc_html( implode( ', ', $labels ) ) );
+                printf( '<div class="wpuf-message">' . wp_kses_post( 
+                    // translators: %s is label
+                    __( 'No %s found', 'wp-user-frontend' ) ) . '</div>', esc_html( implode( ', ', $labels ) ) );
                 do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
             }
         }

@@ -1,0 +1,13 @@
+{
+  "phpVersion": "7.4",
+  "plugins": [
+    "../../",
+    "../../plugins/wpuf-pro",
+    "../../plugins/wp-mail-log",
+    "../../plugins/dokan-lite",
+    "../../plugins/woocommerce",
+    "../../plugins/easy-digital-downloads",
+    "../../plugins/wc-vendors",
+    "../../plugins/wc-multivendor-membership"
+  ]
+}

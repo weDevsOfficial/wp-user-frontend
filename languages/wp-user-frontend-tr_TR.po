@@ -3231,11 +3231,11 @@ msgid "Please select your payment page from admin panel"
 msgstr "Lütfen ödeme sayfasını yönetici panelinden seçin"
 
 #: class/payment.php:118
-msgid "Your free package has been activated. Enjoy!"
+msgid "Your Free package has been activated. Enjoy!"
 msgstr "Ücretsiz paketiniz etkinleştirildi. Tadını çıkarın!"
 
 #: class/payment.php:120
-msgid "You already have activated a free package previously."
+msgid "You already have activated a Free package previously."
 msgstr "Daha önceden zaten bir ücretsiz paketi etkinleştirmişsiniz."
 
 #: class/payment.php:144

@@ -3,26 +3,28 @@
 /**
  * WPUF settings
  */
+
+#[AllowDynamicProperties]
 class WPUF_Admin_Settings {
 
     /**
      * Settings API
      *
-     * @var \WeDevs_Settings_API
+     * @var WeDevs_Settings_API
      */
     private $settings_api;
 
     /**
      * Static instance of this class
      *
-     * @var \self
+     * @var self
      */
     private static $_instance;
 
     /**
      * Public instance of this class
      *
-     * @var \self
+     * @var self
      */
     public $subscribers_list_table_obj;
 
@@ -123,7 +125,7 @@ class WPUF_Admin_Settings {
         if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
             $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Premium', 'wp-user-frontend' ), __( 'Premium', 'wp-user-frontend' ), $capability, 'wpuf_premium', [ $this, 'premium_page' ] );
         }
-        $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Help', 'wp-user-frontend' ), __( '<span style="color:#f18500">Help</span>', 'wp-user-frontend' ), $capability, 'wpuf-support', [ $this, 'support_page' ] );
+        $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Help', 'wp-user-frontend' ), '<span style="color:#f18500">' . __( 'Help', 'wp-user-frontend' ) . '</span>', $capability, 'wpuf-support', [ $this, 'support_page' ] );
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Settings', 'wp-user-frontend' ), __( 'Settings', 'wp-user-frontend' ), $capability, 'wpuf-settings', [ $this, 'plugin_page' ] );
 
         $this->menu_pages[] = add_submenu_page( 'edit.php?post_type=wpuf_subscription', __( 'Subscribers', 'wp-user-frontend' ), __( 'Subscribers', 'wp-user-frontend' ), $capability, 'wpuf_subscribers', [ $this, 'subscribers_page' ] );
@@ -671,13 +673,23 @@ class WPUF_Admin_Settings {
         }
 
         wp_enqueue_style( 'wpuf-admin', WPUF_ASSET_URI . '/css/admin.css', false, WPUF_VERSION );
-        wp_enqueue_script( 'wpuf-admin-script', WPUF_ASSET_URI . '/js/wpuf-admin.js', [ 'jquery' ], WPUF_VERSION, false );
+        wp_enqueue_script( 'wpuf-admin' );
 
         wp_localize_script(
-            'wpuf-admin-script', 'wpuf_admin_script', [
-                'ajaxurl'               => admin_url( 'admin-ajax.php' ),
-                'nonce'                 => wp_create_nonce( 'wpuf_nonce' ),
-                'cleared_schedule_lock' => __( 'Post lock has been cleared', 'wp-user-frontend' ),
+            'wpuf-admin', 'wpuf_admin_script', [
+                'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
+                'nonce'                        => wp_create_nonce( 'wpuf_nonce' ),
+                'cleared_schedule_lock'        => __( 'Post lock has been cleared', 'wp-user-frontend' ),
+                'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
+                'protected_shortcodes_message' => sprintf(
+                    // translators: %1$s opening div tag, %2$s shortcode, %3$s opening strong tag, %4$s closing strong tag, %5$s closing div tag.
+                    __( '%1$sThis post contains a sensitive short-code %2$s, that may allow others to sign-up with distinguished roles. If unsure, remove the short-code before publishing (recommended) %3$sas this may be exploited as a security vulnerability.%4$s', 'wp-user-frontend' ),
+                    '<div style="font-size: 1em; text-align: justify; color: darkgray">',
+                    '[wpuf-registration]',
+                    '<strong>',
+                    '</strong>',
+                    '</div>'
+                )
             ]
         );
     }
@@ -736,12 +748,67 @@ class WPUF_Admin_Settings {
      * Allow json file to upload with async uploader
      *
      * @since 3.2.0
+     * @since 4.2.9 Added security validation to prevent arbitrary file uploads
      *
-     * @param array $info
+     * @param array  $info            File data array with 'ext', 'type', and 'proper_filename' keys
+     * @param string $file            Full path to the file
+     * @param string $filename        The name of the file (may differ from $file due to $file being in a tmp directory)
+     * @param array  $mimes           Array of mime types keyed by their file extension regex
+     * @param string $real_mime       The actual mime type or false if the type cannot be determined
      *
      * @return array
      */
-    public function check_filetype_and_ext( $info ) {
+    public function check_filetype_and_ext( $info, $file, $filename, $mimes, $real_mime ) {
+        // Security: Validate this is actually a JSON file
+
+        // 1. Check the file extension is .json
+        $filetype = wp_check_filetype( $filename, [ 'json' => 'application/json' ] );
+
+        if ( 'json' !== $filetype['ext'] ) {
+            // Not a .json file - reject it
+            return $info;
+        }
+
+        // 2. Verify the file exists and is readable
+        if ( ! file_exists( $file ) || ! is_readable( $file ) ) {
+            return $info;
+        }
+
+        // 3. Check for dangerous file extensions that might be disguised
+        $dangerous_extensions = [ 'php', 'php3', 'php4', 'php5', 'php7', 'phtml', 'phar', 'exe', 'sh', 'bat', 'cmd' ];
+        $file_parts = pathinfo( $filename );
+
+        // Check for double extensions (e.g., shell.php.json)
+        $filename_lower = strtolower( $filename );
+        foreach ( $dangerous_extensions as $ext ) {
+            if ( strpos( $filename_lower, '.' . $ext ) !== false ) {
+                // Dangerous extension found - reject
+                return $info;
+            }
+        }
+
+        // 4. Validate the file content is actually valid JSON
+        $file_content = file_get_contents( $file );
+
+        if ( false === $file_content ) {
+            return $info;
+        }
+
+        // Try to decode the JSON
+        json_decode( $file_content );
+
+        if ( json_last_error() !== JSON_ERROR_NONE ) {
+            // Not valid JSON - reject it
+            return $info;
+        }
+
+        // 5. Additional security: Check file doesn't contain PHP tags
+        if ( preg_match( '/<\?php|<\?=|<script[^>]*>.*?<\/script>/i', $file_content ) ) {
+            // Contains PHP or script tags - reject it
+            return $info;
+        }
+
+        // All validations passed - it's a legitimate JSON file
         $info['ext']  = 'json';
         $info['type'] = 'application/json';
 
@@ -752,6 +819,7 @@ class WPUF_Admin_Settings {
      * Enable json file upload via ajax in tools page
      *
      * @since 3.2.0
+     * @since 4.2.9 Added admin capability check for security
      *
      * @todo Move this method to WPUF_Admin_Tools class
      *
@@ -770,7 +838,14 @@ class WPUF_Admin_Settings {
         ) {
             // @see wp_ajax_upload_attachment
             check_ajax_referer( 'media-form' );
-            add_filter( 'wp_check_filetype_and_ext', [ $this, 'check_filetype_and_ext' ] );
+
+            // Security: Only allow admins to upload JSON files
+            if ( ! current_user_can( 'manage_options' ) ) {
+                $file['error'] = __( 'You do not have permission to upload files here.', 'wp-user-frontend' );
+                return $file;
+            }
+
+            add_filter( 'wp_check_filetype_and_ext', [ $this, 'check_filetype_and_ext' ], 10, 5 );
         }
 
         return $file;
@@ -787,6 +862,10 @@ class WPUF_Admin_Settings {
      */
     public function import_forms() {
         check_ajax_referer( 'wpuf_admin_tools' );
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'You do not have sufficient permissions to do this action', 'wp-user-frontend' ) );
+        }
 
         if ( ! isset( $_POST['file_id'] ) ) {
             wp_send_json_error(

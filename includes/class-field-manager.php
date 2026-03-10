@@ -43,12 +43,12 @@ class WPUF_Field_Manager {
      *
      * @param string $field_type
      *
-     * @return \WPUF_Field_Contract
+     * @return WPUF_Field_Contract
      */
     public function get_field( $field_type ) {
         $fields = $this->get_fields();
 
-        if ( isset( $field_type, $fields ) ) {
+        if ( isset( $field_type, $fields, $fields[ $field_type ] ) ) {
             return $fields[ $field_type ];
         }
     }
@@ -287,8 +287,9 @@ class WPUF_Field_Manager {
                 $show_field = true;
             }
 
-            if ( $visibility_selected == 'hidden' ) {
-                $form_field['css'] .= 'wpuf_hidden_field';
+            if ( 'hidden' === $visibility_selected ) {
+                $form_field['css'] = ! empty( $form_field['css'] ) ? esc_attr( $form_field['css'] ) : '';
+                $form_field['css'] .= ' wpuf_hidden_field';
                 $show_field = true;
             }
 

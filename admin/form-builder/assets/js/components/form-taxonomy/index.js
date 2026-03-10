@@ -27,6 +27,16 @@ Vue.component('form-taxonomy', {
             return [];
         },
 
+        should_show_text_input: function () {
+            // Show text input for ajax type
+            return this.field.type === 'ajax';
+        },
+
+        should_show_ajax_dropdown: function () {
+            // Never show ajax dropdown - always use text input for ajax type
+            return false;
+        },
+
         sorted_terms: function () {
             var self  = this;
             var terms = $.extend(true, [], this.terms);

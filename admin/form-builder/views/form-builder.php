@@ -12,7 +12,7 @@
             <?php do_action( "wpuf-form-builder-tabs-{$form_type}" ); ?>
 
             <span class="pull-right">
-                <a :href="'<?php echo get_wpuf_preview_page(); ?>?wpuf_preview=1&form_id=' + post.ID" target="_blank" class="button"><span class="dashicons dashicons-visibility" style="padding-top: 3px;"></span> <?php esc_html_e( 'Preview', 'wp-user-frontend' ); ?></a>
+                <a :href="'<?php echo esc_url( get_wpuf_preview_page() ); ?>?wpuf_preview=1&form_id=' + post.ID" target="_blank" class="button"><span class="dashicons dashicons-visibility" style="padding-top: 3px;"></span> <?php esc_html_e( 'Preview', 'wp-user-frontend' ); ?></a>
 
                 <button v-if="!is_form_saving" type="button" class="button button-primary" @click="save_form_builder">
                     <?php esc_html_e( 'Save Form', 'wp-user-frontend' ); ?>
@@ -39,7 +39,7 @@
 
                         <i :class="(is_form_switcher ? 'fa fa-angle-up' : 'fa fa-angle-down') + ' form-switcher-arrow'" @click.prevent="switch_form"></i>
                         <?php
-                            $form_id = isset( $_GET['id'] ) ? intval( wp_unslash( $_GET['id'] ) ) : 0;
+                        $form_id = isset( $_GET['id'] ) ? intval( wp_unslash( $_GET['id'] ) ) : 0;
 
                         if ( count( $shortcodes ) > 1 && isset( $shortcodes[0]['type'] ) ) {
                             foreach ( $shortcodes as $shortcode ) {
@@ -56,7 +56,7 @@
                         <?php
                         foreach ( $forms as $form ) {
                             ?>
-                                <li><a class="<?php echo ( (int) $form->ID === $_GET['id'] ) ? 'active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-' . $form_type . '-forms&action=edit&id=' . $form->ID ) ); ?>"><?php echo esc_html( $form->post_title ); ?></a></li>
+                            <li class="button ui-draggable ui-draggable-handle"><a class="<?php echo ( (int) $form->ID === $_GET['id'] ) ? 'active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-' . $form_type . '-forms&action=edit&id=' . $form->ID ) ); ?>"><?php echo esc_html( $form->post_title ); ?></a></li>
                             <?php
                         }
                         ?>

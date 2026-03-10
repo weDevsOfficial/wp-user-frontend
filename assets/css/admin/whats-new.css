@@ -1,0 +1,101 @@
+.notice.wpuf-whats-new-notice {
+  display: flex;
+  position: relative;
+  padding: 0;
+  height: 65px;
+}
+.notice.wpuf-whats-new-notice .wpuf-whats-new-icon {
+  width: 75px;
+  height: 65px;
+  overflow: hidden;
+}
+.notice.wpuf-whats-new-notice .wpuf-whats-new-icon img {
+  max-width: 65px;
+}
+.notice.wpuf-whats-new-notice .wpuf-whats-new-text {
+  width: calc(100% - 240px);
+}
+.notice.wpuf-whats-new-notice .wpuf-whats-new-actions {
+  width: 165px;
+}
+.notice.wpuf-whats-new-notice .wpuf-whats-new-actions a {
+  display: inline-block;
+  margin-top: 20px;
+}
+.wpuf-whats-new .error,
+.wpuf-whats-new .udpated,
+.wpuf-whats-new .info,
+.wpuf-whats-new .notice {
+  display: none;
+}
+.wpuf-whats-new h1 {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 30px;
+}
+.wpuf-whats-new .wedevs-changelog {
+  display: flex;
+  max-width: 920px;
+  border: 1px solid #e5e5e5;
+  padding: 12px 20px 20px 20px;
+  margin: 20px auto;
+  background: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-version {
+  width: 360px;
+}
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-version .released {
+  font-style: italic;
+}
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history {
+  width: 100%;
+  font-size: 14px;
+}
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history li {
+  margin-bottom: 20px;
+}
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history h4 {
+  margin: 0 0 10px 0;
+  font-size: 1.3em;
+  line-height: 26px;
+}
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history img {
+  margin-top: 30px;
+  max-width: 100%;
+}
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label {
+  margin-left: 10px;
+  position: relative;
+  color: #fff;
+  border-radius: 20px;
+  padding: 0 8px;
+  font-size: 12px;
+  height: 20px;
+  line-height: 19px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-weight: normal;
+}
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.new {
+  background: #3778ff;
+  border: 1px solid #3778ff;
+}
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.improvement,
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.enhancement {
+  background: #3aaa55;
+  border: 1px solid #3aaa a;
+}
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.fix {
+  background: #ff4772;
+  border: 1px solid #ff4772;
+}
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.tweak {
+  background: #f9a825;
+  border: 1px solid #ffa000;
+}

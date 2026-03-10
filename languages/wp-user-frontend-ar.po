@@ -260,8 +260,8 @@ msgid "Product form was unable to show the single gallery image"
 msgstr "تعذر على نموذج المنتج إظهار صورة المعرض الفردي"
 
 #: admin/html/whats-new.php:134
-msgid "It was unable to install WP User Frontend with PHP 5.4 or lower version. Here is the error details: <br><br><strong>Fatal error: Can't use method return value in write context in /wp-user-frontend/class/frontend-form-post.php on line 194</strong>"
-msgstr "تعذر تثبيت WP User Frontend مع PHP 5.4 أو إصدار أقل. هنا تفاصيل الخطأ: <br><br><strong>Fatal error: Can't use method return value in write context in /wp-user-frontend/class/frontend-form-post.php on line 194</strong>"
+msgid "It was unable to install WP User Frontend with PHP 5.4 or lower version. Here is the error details: <br><br><strong>Fatal error: Can't use method return value in write context in /wp-user-frontend/class/frontend-form-WPUF_Post_Form_Template_Post.php on line 194</strong>"
+msgstr "تعذر تثبيت WP User Frontend مع PHP 5.4 أو إصدار أقل. هنا تفاصيل الخطأ: <br><br><strong>Fatal error: Can't use method return value in write context in /wp-user-frontend/class/frontend-form-WPUF_Post_Form_Template_Post.php on line 194</strong>"
 
 #: admin/html/whats-new.php:132
 msgid "Fatal error when use PHP lower version (5.4 or lower)"
@@ -4562,11 +4562,11 @@ msgid "Pricing & Plans"
 msgstr "الأسعار والخطط"
 
 #: class/payment.php:123
-msgid "You already have activated a free package previously."
+msgid "You already have activated a Free package previously."
 msgstr "لقد قمت بالفعل بتنشيط حزمة مجانية مسبقًا."
 
 #: class/payment.php:121
-msgid "Your free package has been activated. Enjoy!"
+msgid "Your Free package has been activated. Enjoy!"
 msgstr "حزمتك المجانية نشطة. التحق!"
 
 #: class/payment.php:71

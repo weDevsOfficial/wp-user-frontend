@@ -124,8 +124,8 @@ $avatar = wpuf_ud_get_user_avatar_html( $user, $card_avatar_size, '!wpuf-rounded
             $current_page = get_query_var( 'paged' );
         } elseif ( get_query_var( 'page' ) ) {
             $current_page = get_query_var( 'page' );
-        } elseif ( isset( $_GET['page'] ) ) {
-            $current_page = intval( $_GET['page'] );
+        } elseif ( isset( $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $current_page = absint( wp_unslash( $_GET['page'] ) );
         }
 
         if ( $current_page > 1 ) {
@@ -135,19 +135,19 @@ $avatar = wpuf_ud_get_user_avatar_html( $user, $card_avatar_size, '!wpuf-rounded
         // Preserve sorting and search parameters - check all_data first (AJAX), then GET
         if ( ! empty( $all_data['orderby'] ) ) {
             $dir_params['orderby'] = sanitize_text_field( $all_data['orderby'] );
-        } elseif ( isset( $_GET['orderby'] ) ) {
+        } elseif ( isset( $_GET['orderby'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             $dir_params['orderby'] = sanitize_text_field( wp_unslash( $_GET['orderby'] ) );
         }
 
         if ( ! empty( $all_data['order'] ) ) {
             $dir_params['order'] = sanitize_text_field( $all_data['order'] );
-        } elseif ( isset( $_GET['order'] ) ) {
+        } elseif ( isset( $_GET['order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             $dir_params['order'] = sanitize_text_field( wp_unslash( $_GET['order'] ) );
         }
 
         if ( ! empty( $all_data['search'] ) ) {
             $dir_params['search'] = sanitize_text_field( $all_data['search'] );
-        } elseif ( isset( $_GET['search'] ) ) {
+        } elseif ( isset( $_GET['search'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             $dir_params['search'] = sanitize_text_field( wp_unslash( $_GET['search'] ) );
         }
 

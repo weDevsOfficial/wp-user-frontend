@@ -13,6 +13,39 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+// Register cron handler for background Gravatar checks (Issue #20 performance fix)
+add_action( 'wpuf_ud_check_gravatar', 'wpuf_ud_do_gravatar_check', 10, 2 );
+
+/**
+ * Background cron callback to check Gravatar existence
+ *
+ * @since WPUF_SINCE
+ *
+ * @param int $user_id User ID.
+ * @param int $size    Avatar size.
+ *
+ * @return void
+ */
+function wpuf_ud_do_gravatar_check( $user_id, $size = 128 ) {
+    $user = get_user_by( 'id', $user_id );
+
+    if ( ! $user ) {
+        return;
+    }
+
+    $cache_key  = 'wpuf_gravatar_check_' . md5( $user->user_email );
+    $email_hash = md5( strtolower( trim( $user->user_email ) ) );
+    $url        = "https://www.gravatar.com/avatar/{$email_hash}?d=404&s={$size}";
+
+    $response = wp_remote_head( $url, [ 'timeout' => 5 ] );
+
+    if ( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
+        set_transient( $cache_key, 'yes', DAY_IN_SECONDS );
+    } else {
+        set_transient( $cache_key, 'no', DAY_IN_SECONDS );
+    }
+}
+
 /**
  * Get layout colors for directory
  *
@@ -148,19 +181,13 @@ function wpuf_ud_get_avatar_url( $user, $size = 128 ) {
     $has_gravatar = get_transient( $cache_key );
 
     if ( false === $has_gravatar ) {
-        $email_hash = md5( strtolower( trim( $user->user_email ) ) );
-        $gravatar_check_url = "https://www.gravatar.com/avatar/{$email_hash}?d=404&s={$size}";
+        // Schedule background check instead of blocking the current request
+        $has_gravatar = 'pending';
+        set_transient( $cache_key, $has_gravatar, HOUR_IN_SECONDS );
 
-        $response = wp_remote_head( $gravatar_check_url, [ 'timeout' => 2 ] );
-
-        if ( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
-            $has_gravatar = 'yes';
-        } else {
-            $has_gravatar = 'no';
+        if ( ! wp_next_scheduled( 'wpuf_ud_check_gravatar', [ $user->ID, $size ] ) ) {
+            wp_schedule_single_event( time(), 'wpuf_ud_check_gravatar', [ $user->ID, $size ] );
         }
-
-        // Cache for 1 day
-        set_transient( $cache_key, $has_gravatar, DAY_IN_SECONDS );
     }
 
     if ( 'yes' === $has_gravatar ) {
@@ -266,11 +293,9 @@ function wpuf_ud_get_profile_url( $user, $data = [] ) {
         // Use the base URL provided from AJAX request
         $current_url = $data['base_url'];
 
-        // If it's just a path, build a full URL
+        // If it's just a path, build a full URL using home_url()
         if ( strpos( $current_url, 'http' ) !== 0 ) {
-            $scheme = is_ssl() ? 'https' : 'http';
-            $host   = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
-            $current_url = $scheme . '://' . $host . $current_url;
+            $current_url = home_url( $current_url );
         }
     } else {
         // Fallback to detecting current URL
@@ -282,9 +307,10 @@ function wpuf_ud_get_profile_url( $user, $data = [] ) {
         } elseif ( is_front_page() ) {
             $current_url = home_url();
         } else {
-            // Fallback to current request URL - strip query string
-            $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
-            $current_url = ( is_ssl() ? 'https://' : 'http://' ) . ( isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '' ) . strtok( $request_uri, '?' );
+            // Fallback to current request URL using home_url()
+            $current_url = home_url( add_query_arg( [], false ) );
+            // Strip query string
+            $current_url = strtok( $current_url, '?' );
         }
     }
 

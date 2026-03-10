@@ -208,6 +208,10 @@ class Shortcode {
             [
                 'restUrl' => rest_url( 'wpuf/v1/user_directory/search' ),
                 'nonce'   => wp_create_nonce( 'wp_rest' ),
+                'i18n'    => [
+                    'noUsersFound' => __( 'No users found matching your search criteria.', 'wp-user-frontend' ),
+                    'tryAdjusting' => __( 'Try adjusting your search or filter to find what you\'re looking for.', 'wp-user-frontend' ),
+                ],
             ]
         );
 
@@ -479,9 +483,9 @@ class Shortcode {
      * @return void
      */
     private function load_template( $template, $data ) {
-        // Extract data for template use
+        // Use EXTR_SKIP to prevent variable injection — filters on $data cannot overwrite existing locals
         // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
-        extract( $data );
+        extract( $data, EXTR_SKIP );
 
         $template_file = WPUF_UD_FREE_VIEWS . '/' . $template . '.php';
 
@@ -496,7 +500,11 @@ class Shortcode {
          */
         $template_file = apply_filters( 'wpuf_ud_free_template_path', $template_file, $template, $data );
 
-        if ( file_exists( $template_file ) ) {
+        // Validate that template path is within allowed directories to prevent arbitrary file inclusion
+        $real_path = realpath( $template_file );
+        $allowed_base = realpath( WPUF_UD_FREE_VIEWS );
+
+        if ( $real_path && $allowed_base && strpos( $real_path, $allowed_base ) === 0 ) {
             include $template_file;
         }
     }

@@ -371,6 +371,9 @@ jQuery(document).ready(function($) {
         return cleanUrl.toString();
     }
 
+    // Allowlist of valid tab names to prevent DOM-based XSS via selector injection
+    var validTabs = ['about', 'posts', 'comments', 'file', 'message', 'activity'];
+
     // IMPORTANT: Always prioritize tab parameter from URL over any other detection
     var urlTab = getUrlParameter('tab');
 
@@ -385,9 +388,12 @@ jQuery(document).ready(function($) {
         }
     }
 
-    if (urlTab) {
-        // Activate the tab from URL
-        var $targetTabButton = $('.wpuf-tab-button-2[data-tab="' + urlTab + '"]');
+    // Validate urlTab against allowlist before using in selectors
+    if (urlTab && validTabs.indexOf(urlTab) !== -1) {
+        // Activate the tab from URL using .filter() + .data() for safe DOM selection
+        var $targetTabButton = $('.wpuf-tab-button-2').filter(function() {
+            return $(this).data('tab') === urlTab;
+        });
         if ($targetTabButton.length) {
             // Remove active class from all tabs
             $('.wpuf-tab-button-2').removeClass('active');
@@ -398,8 +404,10 @@ jQuery(document).ready(function($) {
             // Hide all tab content
             $('.wpuf-tab-content-2 > div').hide();
 
-            // Show target tab content
-            $('.wpuf-tab-content-' + urlTab).show();
+            // Show target tab content using .filter() for safe selection
+            $('.wpuf-tab-content-2 > div').filter(function() {
+                return $(this).hasClass('wpuf-tab-content-' + urlTab);
+            }).show();
         }
     }
 
@@ -419,8 +427,10 @@ jQuery(document).ready(function($) {
         // Hide all tab content
         $tabsContainer.find('.wpuf-tab-content-2 > div').hide();
 
-        // Show target tab content
-        $tabsContainer.find('.wpuf-tab-content-' + targetTab).show();
+        // Show target tab content using .filter() for safe selection
+        $tabsContainer.find('.wpuf-tab-content-2 > div').filter(function() {
+            return $(this).hasClass('wpuf-tab-content-' + targetTab);
+        }).show();
 
         // Update URL without reloading page
         if (history.pushState) {

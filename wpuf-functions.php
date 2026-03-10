@@ -5,6 +5,9 @@ use WeDevs\Wpuf\Encryption_Helper;
 use WeDevs\Wpuf\Free\Pro_Prompt;
 use WeDevs\Wpuf\Frontend\Payment;
 
+// Include modules functions
+require_once WPUF_INCLUDES . '/functions/modules.php';
+
 /**
  * Start output buffering
  *
@@ -1959,7 +1962,18 @@ function wpuf_get_form_fields( $form_id ) {
         $form_fields[] = apply_filters( 'wpuf-get-form-fields', $field );
     }
 
-    return $form_fields;
+    /**
+     * Filter form fields data array before returning
+     *
+     * Allows filtering the complete form fields array. Used to filter out
+     * pro-only fields when pro plugin is not active.
+     *
+     * @since 4.2.9
+     *
+     * @param array $form_fields The array of form fields data
+     * @param int   $form_id     The form ID
+     */
+    return apply_filters( 'wpuf_form_fields_data', $form_fields, $form_id );
 }
 
 add_action( 'wp_ajax_wpuf_get_child_cat', 'wpuf_get_child_cats' );
@@ -2540,278 +2554,778 @@ function wpuf_get_currencies() {
     $currencies = [
         [
             'currency' => 'AED',
-            'label' => __( 'United Arab Emirates Dirham', 'wp-user-frontend' ),
-            'symbol' => 'د.إ',
+            'label'    => __( 'United Arab Emirates Dirham', 'wp-user-frontend' ),
+            'symbol'   => 'د.إ',
+        ],
+        [
+            'currency' => 'AFN',
+            'label'    => __( 'Afghan Afghani', 'wp-user-frontend' ),
+            'symbol'   => '؋',
+        ],
+        [
+            'currency' => 'ALL',
+            'label'    => __( 'Albanian Lek', 'wp-user-frontend' ),
+            'symbol'   => 'L',
+        ],
+        [
+            'currency' => 'AMD',
+            'label'    => __( 'Armenian Dram', 'wp-user-frontend' ),
+            'symbol'   => '&#1423;',
+        ],
+        [
+            'currency' => 'ANG',
+            'label'    => __( 'Netherlands Antillean Guilder', 'wp-user-frontend' ),
+            'symbol'   => 'ƒ',
+        ],
+        [
+            'currency' => 'AOA',
+            'label'    => __( 'Angolan Kwanza', 'wp-user-frontend' ),
+            'symbol'   => 'Kz',
+        ],
+        [
+            'currency' => 'ARS',
+            'label'    => __( 'Argentine Peso', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
         ],
         [
             'currency' => 'AUD',
-            'label' => __( 'Australian Dollars', 'wp-user-frontend' ),
-            'symbol' => '&#36;',
+            'label'    => __( 'Australian Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
         ],
         [
-            'currency' => 'AZD',
-            'label' => __( 'Argentine Peso', 'wp-user-frontend' ),
-            'symbol' => '&#36;',
+            'currency' => 'AWG',
+            'label'    => __( 'Aruban Florin', 'wp-user-frontend' ),
+            'symbol'   => 'ƒ',
+        ],
+        [
+            'currency' => 'AZN',
+            'label'    => __( 'Azerbaijani Manat', 'wp-user-frontend' ),
+            'symbol'   => '&#8380;',
+        ],
+        [
+            'currency' => 'BAM',
+            'label'    => __( 'Bosnia and Herzegovina Convertible Mark', 'wp-user-frontend' ),
+            'symbol'   => 'KM',
+        ],
+        [
+            'currency' => 'BBD',
+            'label'    => __( 'Barbadian Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
         ],
         [
             'currency' => 'BDT',
-            'label' => __( 'Bangladeshi Taka', 'wp-user-frontend' ),
-            'symbol' => '&#2547;',
-        ],
-        [
-            'currency' => 'BRL',
-            'label' => __( 'Brazilian Real', 'wp-user-frontend' ),
-            'symbol' => '&#82;&#36;',
+            'label'    => __( 'Bangladeshi Taka', 'wp-user-frontend' ),
+            'symbol'   => '&#2547;',
         ],
         [
             'currency' => 'BGN',
-            'label' => __( 'Bulgarian Lev', 'wp-user-frontend' ),
-            'symbol' => '&#1083;&#1074;.',
+            'label'    => __( 'Bulgarian Lev', 'wp-user-frontend' ),
+            'symbol'   => '&#1083;&#1074;.',
+        ],
+        [
+            'currency' => 'BHD',
+            'label'    => __( 'Bahraini Dinar', 'wp-user-frontend' ),
+            'symbol'   => '.د.ب',
+        ],
+        [
+            'currency' => 'BIF',
+            'label'    => __( 'Burundian Franc', 'wp-user-frontend' ),
+            'symbol'   => 'FBu',
+        ],
+        [
+            'currency' => 'BMD',
+            'label'    => __( 'Bermudian Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
+        ],
+        [
+            'currency' => 'BND',
+            'label'    => __( 'Brunei Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
+        ],
+        [
+            'currency' => 'BOB',
+            'label'    => __( 'Bolivian Boliviano', 'wp-user-frontend' ),
+            'symbol'   => 'Bs.',
+        ],
+        [
+            'currency' => 'BRL',
+            'label'    => __( 'Brazilian Real', 'wp-user-frontend' ),
+            'symbol'   => '&#82;&#36;',
+        ],
+        [
+            'currency' => 'BSD',
+            'label'    => __( 'Bahamian Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
+        ],
+        [
+            'currency' => 'BTN',
+            'label'    => __( 'Bhutanese Ngultrum', 'wp-user-frontend' ),
+            'symbol'   => 'Nu.',
+        ],
+        [
+            'currency' => 'BWP',
+            'label'    => __( 'Botswana Pula', 'wp-user-frontend' ),
+            'symbol'   => 'P',
+        ],
+        [
+            'currency' => 'BYN',
+            'label'    => __( 'Belarusian Ruble', 'wp-user-frontend' ),
+            'symbol'   => 'Br',
+        ],
+        [
+            'currency' => 'BZD',
+            'label'    => __( 'Belize Dollar', 'wp-user-frontend' ),
+            'symbol'   => 'BZ&#36;',
         ],
         [
             'currency' => 'CAD',
-            'label' => __( 'Canadian Dollars', 'wp-user-frontend' ),
-            'symbol' => '&#36;',
+            'label'    => __( 'Canadian Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
         ],
         [
-            'currency' => 'CLP',
-            'label' => __( 'Chilean Peso', 'wp-user-frontend' ),
-            'symbol' => '&#36;',
-        ],
-        [
-            'currency' => 'CNY',
-            'label' => __( 'Chinese Yuan', 'wp-user-frontend' ),
-            'symbol' => '&yen;',
-        ],
-        [
-            'currency' => 'COP',
-            'label' => __( 'Colombian Peso', 'wp-user-frontend' ),
-            'symbol' => '&#36;',
-        ],
-        [
-            'currency' => 'CZK',
-            'label' => __( 'Czech Koruna', 'wp-user-frontend' ),
-            'symbol' => '&#75;&#269;',
-        ],
-        [
-            'currency' => 'DKK',
-            'label' => __( 'Danish Krone', 'wp-user-frontend' ),
-            'symbol' => 'kr.',
-        ],
-        [
-            'currency' => 'DOP',
-            'label' => __( 'Dominican Peso', 'wp-user-frontend' ),
-            'symbol' => 'RD&#36;',
-        ],
-        [
-            'currency' => 'DZD',
-            'label' => __( 'Algerian Dinar', 'wp-user-frontend' ),
-            'symbol' => 'DA;',
-        ],
-        [
-            'currency' => 'EUR',
-            'label' => __( 'Euros', 'wp-user-frontend' ),
-            'symbol' => '&euro;',
-        ],
-        [
-            'currency' => 'HKD',
-            'label' => __( 'Hong Kong Dollar', 'wp-user-frontend' ),
-            'symbol' => '&#36;',
-        ],
-        [
-            'currency' => 'HRK',
-            'label' => __( 'Croatia kuna', 'wp-user-frontend' ),
-            'symbol' => 'Kn',
-        ],
-        [
-            'currency' => 'HUF',
-            'label' => __( 'Hungarian Forint', 'wp-user-frontend' ),
-            'symbol' => '&#70;&#116;',
-        ],
-        [
-            'currency' => 'ISK',
-            'label' => __( 'Icelandic krona', 'wp-user-frontend' ),
-            'symbol' => 'Kr.',
-        ],
-        [
-            'currency' => 'IDR',
-            'label' => __( 'Indonesia Rupiah', 'wp-user-frontend' ),
-            'symbol' => 'Rp',
-        ],
-        [
-            'currency' => 'INR',
-            'label' => __( 'Indian Rupee', 'wp-user-frontend' ),
-            'symbol' => 'Rs',
-        ],
-        [
-            'currency' => 'MUR',
-            'label' => __( 'Mauritian Rupee', 'wp-user-frontend' ),
-            'symbol' => '&#8377;',
-        ],
-        [
-            'currency' => 'NPR',
-            'label' => __( 'Nepali Rupee', 'wp-user-frontend' ),
-            'symbol' => 'Rs.',
-        ],
-        [
-            'currency' => 'ILS',
-            'label' => __( 'Israeli Shekel', 'wp-user-frontend' ),
-            'symbol' => '&#8362;',
-        ],
-        [
-            'currency' => 'JPY',
-            'label' => __( 'Japanese Yen', 'wp-user-frontend' ),
-            'symbol' => '&yen;',
-        ],
-        [
-            'currency' => 'KIP',
-            'label' => __( 'Lao Kip', 'wp-user-frontend' ),
-            'symbol' => '&#8365;',
-        ],
-        [
-            'currency' => 'KRW',
-            'label' => __( 'South Korean Won', 'wp-user-frontend' ),
-            'symbol' => '&#8361;',
-        ],
-        [
-            'currency' => 'MYR',
-            'label' => __( 'Malaysian Ringgits', 'wp-user-frontend' ),
-            'symbol' => '&#82;&#77;',
-        ],
-        [
-            'currency' => 'MXN',
-            'label' => __( 'Mexican Peso', 'wp-user-frontend' ),
-            'symbol' => '&#36;',
-        ],
-        [
-            'currency' => 'NGN',
-            'label' => __( 'Nigerian Naira', 'wp-user-frontend' ),
-            'symbol' => '&#8358;',
-        ],
-        [
-            'currency' => 'NOK',
-            'label' => __( 'Norwegian Krone', 'wp-user-frontend' ),
-            'symbol' => '&#107;&#114;',
-        ],
-        [
-            'currency' => 'NZD',
-            'label' => __( 'New Zealand Dollar', 'wp-user-frontend' ),
-            'symbol' => '&#36;',
-        ],
-        [
-            'currency' => 'NAD',
-            'label' => __( 'Namibian dollar', 'wp-user-frontend' ),
-            'symbol' => 'N&#36;',
-        ],
-        [
-            'currency' => 'OMR',
-            'label' => __( 'Omani Rial', 'wp-user-frontend' ),
-            'symbol' => 'ر.ع.',
-        ],
-        [
-            'currency' => 'IRR',
-            'label' => __( 'Iranian Rial', 'wp-user-frontend' ),
-            'symbol' => '﷼',
-        ],
-        [
-            'currency' => 'PKR',
-            'label' => __( 'Pakistani Rupee', 'wp-user-frontend' ),
-            'symbol' => 'Rs',
-        ],
-        [
-            'currency' => 'PYG',
-            'label' => __( 'Paraguayan Guaraní', 'wp-user-frontend' ),
-            'symbol' => '&#8370;',
-        ],
-        [
-            'currency' => 'PHP',
-            'label' => __( 'Philippine Pesos', 'wp-user-frontend' ),
-            'symbol' => '&#8369;',
-        ],
-        [
-            'currency' => 'PLN',
-            'label' => __( 'Polish Zloty', 'wp-user-frontend' ),
-            'symbol' => '&#122;&#322;',
-        ],
-        [
-            'currency' => 'GBP',
-            'label' => __( 'Pounds Sterling', 'wp-user-frontend' ),
-            'symbol' => '&pound;',
-        ],
-        [
-            'currency' => 'RON',
-            'label' => __( 'Romanian Leu', 'wp-user-frontend' ),
-            'symbol' => 'lei',
-        ],
-        [
-            'currency' => 'RUB',
-            'label' => __( 'Russian Ruble', 'wp-user-frontend' ),
-            'symbol' => '&#1088;&#1091;&#1073;.',
-        ],
-        [
-            'currency' => 'SR',
-            'label' => __( 'Saudi Riyal', 'wp-user-frontend' ),
-            'symbol' => 'SR',
-        ],
-        [
-            'currency' => 'SGD',
-            'label' => __( 'Singapore Dollar', 'wp-user-frontend' ),
-            'symbol' => '&#36;',
-        ],
-        [
-            'currency' => 'ZAR',
-            'label' => __( 'South African rand', 'wp-user-frontend' ),
-            'symbol' => '&#82;',
-        ],
-        [
-            'currency' => 'SEK',
-            'label' => __( 'Swedish Krona', 'wp-user-frontend' ),
-            'symbol' => '&#107;&#114;',
+            'currency' => 'CDF',
+            'label'    => __( 'Congolese Franc', 'wp-user-frontend' ),
+            'symbol'   => 'FC',
         ],
         [
             'currency' => 'CHF',
-            'label' => __( 'Swiss Franc', 'wp-user-frontend' ),
-            'symbol' => '&#67;&#72;&#70;',
+            'label'    => __( 'Swiss Franc', 'wp-user-frontend' ),
+            'symbol'   => '&#67;&#72;&#70;',
         ],
         [
-            'currency' => 'TWD',
-            'label' => __( 'Taiwan New Dollars', 'wp-user-frontend' ),
-            'symbol' => '&#78;&#84;&#36;',
+            'currency' => 'CLP',
+            'label'    => __( 'Chilean Peso', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
         ],
         [
-            'currency' => 'THB',
-            'label' => __( 'Thai Baht', 'wp-user-frontend' ),
-            'symbol' => '&#3647;',
+            'currency' => 'CNY',
+            'label'    => __( 'Chinese Yuan', 'wp-user-frontend' ),
+            'symbol'   => '&yen;',
         ],
         [
-            'currency' => 'TRY',
-            'label' => __( 'Turkish Lira', 'wp-user-frontend' ),
-            'symbol' => '&#8378;',
+            'currency' => 'COP',
+            'label'    => __( 'Colombian Peso', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
         ],
         [
-            'currency' => 'TTD',
-            'label' => __( 'Trinidad and Tobago Dollar', 'wp-user-frontend' ),
-            'symbol' => '&#84;&#84;&#36;',
+            'currency' => 'CRC',
+            'label'    => __( 'Costa Rican Colón', 'wp-user-frontend' ),
+            'symbol'   => '&#8353;',
         ],
         [
-            'currency' => 'USD',
-            'label' => __( 'US Dollar', 'wp-user-frontend' ),
-            'symbol' => '&#36;',
+            'currency' => 'CUP',
+            'label'    => __( 'Cuban Peso', 'wp-user-frontend' ),
+            'symbol'   => '&#8369;',
         ],
         [
-            'currency' => 'VND',
-            'label' => __( 'Vietnamese Dong', 'wp-user-frontend' ),
-            'symbol' => '&#8363;',
+            'currency' => 'CVE',
+            'label'    => __( 'Cape Verdean Escudo', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
+        ],
+        [
+            'currency' => 'CZK',
+            'label'    => __( 'Czech Koruna', 'wp-user-frontend' ),
+            'symbol'   => '&#75;&#269;',
+        ],
+        [
+            'currency' => 'DJF',
+            'label'    => __( 'Djiboutian Franc', 'wp-user-frontend' ),
+            'symbol'   => 'Fdj',
+        ],
+        [
+            'currency' => 'DKK',
+            'label'    => __( 'Danish Krone', 'wp-user-frontend' ),
+            'symbol'   => 'kr.',
+        ],
+        [
+            'currency' => 'DOP',
+            'label'    => __( 'Dominican Peso', 'wp-user-frontend' ),
+            'symbol'   => 'RD&#36;',
+        ],
+        [
+            'currency' => 'DZD',
+            'label'    => __( 'Algerian Dinar', 'wp-user-frontend' ),
+            'symbol'   => 'DA',
         ],
         [
             'currency' => 'EGP',
-            'label' => __( 'Egyptian Pound', 'wp-user-frontend' ),
-            'symbol' => 'EGP',
+            'label'    => __( 'Egyptian Pound', 'wp-user-frontend' ),
+            'symbol'   => 'E&pound;',
+        ],
+        [
+            'currency' => 'ERN',
+            'label'    => __( 'Eritrean Nakfa', 'wp-user-frontend' ),
+            'symbol'   => 'Nfk',
+        ],
+        [
+            'currency' => 'ETB',
+            'label'    => __( 'Ethiopian Birr', 'wp-user-frontend' ),
+            'symbol'   => 'Br',
+        ],
+        [
+            'currency' => 'EUR',
+            'label'    => __( 'Euro', 'wp-user-frontend' ),
+            'symbol'   => '&euro;',
+        ],
+        [
+            'currency' => 'FJD',
+            'label'    => __( 'Fijian Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
+        ],
+        [
+            'currency' => 'FKP',
+            'label'    => __( 'Falkland Islands Pound', 'wp-user-frontend' ),
+            'symbol'   => '&pound;',
+        ],
+        [
+            'currency' => 'GBP',
+            'label'    => __( 'British Pound Sterling', 'wp-user-frontend' ),
+            'symbol'   => '&pound;',
+        ],
+        [
+            'currency' => 'GEL',
+            'label'    => __( 'Georgian Lari', 'wp-user-frontend' ),
+            'symbol'   => '&#8382;',
+        ],
+        [
+            'currency' => 'GHS',
+            'label'    => __( 'Ghanaian Cedi', 'wp-user-frontend' ),
+            'symbol'   => '&#8373;',
+        ],
+        [
+            'currency' => 'GIP',
+            'label'    => __( 'Gibraltar Pound', 'wp-user-frontend' ),
+            'symbol'   => '&pound;',
+        ],
+        [
+            'currency' => 'GMD',
+            'label'    => __( 'Gambian Dalasi', 'wp-user-frontend' ),
+            'symbol'   => 'D',
+        ],
+        [
+            'currency' => 'GNF',
+            'label'    => __( 'Guinean Franc', 'wp-user-frontend' ),
+            'symbol'   => 'FG',
+        ],
+        [
+            'currency' => 'GTQ',
+            'label'    => __( 'Guatemalan Quetzal', 'wp-user-frontend' ),
+            'symbol'   => 'Q',
+        ],
+        [
+            'currency' => 'GYD',
+            'label'    => __( 'Guyanese Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
+        ],
+        [
+            'currency' => 'HKD',
+            'label'    => __( 'Hong Kong Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
+        ],
+        [
+            'currency' => 'HNL',
+            'label'    => __( 'Honduran Lempira', 'wp-user-frontend' ),
+            'symbol'   => 'L',
+        ],
+        [
+            'currency' => 'HRK',
+            'label'    => __( 'Croatian Kuna', 'wp-user-frontend' ),
+            'symbol'   => 'Kn',
+        ],
+        [
+            'currency' => 'HTG',
+            'label'    => __( 'Haitian Gourde', 'wp-user-frontend' ),
+            'symbol'   => 'G',
+        ],
+        [
+            'currency' => 'HUF',
+            'label'    => __( 'Hungarian Forint', 'wp-user-frontend' ),
+            'symbol'   => '&#70;&#116;',
+        ],
+        [
+            'currency' => 'IDR',
+            'label'    => __( 'Indonesian Rupiah', 'wp-user-frontend' ),
+            'symbol'   => 'Rp',
+        ],
+        [
+            'currency' => 'ILS',
+            'label'    => __( 'Israeli New Shekel', 'wp-user-frontend' ),
+            'symbol'   => '&#8362;',
+        ],
+        [
+            'currency' => 'INR',
+            'label'    => __( 'Indian Rupee', 'wp-user-frontend' ),
+            'symbol'   => '&#8377;',
+        ],
+        [
+            'currency' => 'IQD',
+            'label'    => __( 'Iraqi Dinar', 'wp-user-frontend' ),
+            'symbol'   => 'ع.د',
+        ],
+        [
+            'currency' => 'IRR',
+            'label'    => __( 'Iranian Rial', 'wp-user-frontend' ),
+            'symbol'   => '&#65020;',
+        ],
+        [
+            'currency' => 'ISK',
+            'label'    => __( 'Icelandic Króna', 'wp-user-frontend' ),
+            'symbol'   => 'kr',
+        ],
+        [
+            'currency' => 'JMD',
+            'label'    => __( 'Jamaican Dollar', 'wp-user-frontend' ),
+            'symbol'   => 'J&#36;',
         ],
         [
             'currency' => 'JOD',
-            'label' => __( 'Jordanian dinar', 'wp-user-frontend' ),
-            'symbol' => 'د.أ',
+            'label'    => __( 'Jordanian Dinar', 'wp-user-frontend' ),
+            'symbol'   => 'د.أ',
+        ],
+        [
+            'currency' => 'JPY',
+            'label'    => __( 'Japanese Yen', 'wp-user-frontend' ),
+            'symbol'   => '&yen;',
+        ],
+        [
+            'currency' => 'KES',
+            'label'    => __( 'Kenyan Shilling', 'wp-user-frontend' ),
+            'symbol'   => 'KSh',
+        ],
+        [
+            'currency' => 'KGS',
+            'label'    => __( 'Kyrgyzstani Som', 'wp-user-frontend' ),
+            'symbol'   => 'сом',
+        ],
+        [
+            'currency' => 'KHR',
+            'label'    => __( 'Cambodian Riel', 'wp-user-frontend' ),
+            'symbol'   => '&#6107;',
+        ],
+        [
+            'currency' => 'KMF',
+            'label'    => __( 'Comorian Franc', 'wp-user-frontend' ),
+            'symbol'   => 'CF',
+        ],
+        [
+            'currency' => 'KPW',
+            'label'    => __( 'North Korean Won', 'wp-user-frontend' ),
+            'symbol'   => '&#8361;',
+        ],
+        [
+            'currency' => 'KRW',
+            'label'    => __( 'South Korean Won', 'wp-user-frontend' ),
+            'symbol'   => '&#8361;',
+        ],
+        [
+            'currency' => 'KWD',
+            'label'    => __( 'Kuwaiti Dinar', 'wp-user-frontend' ),
+            'symbol'   => 'د.ك',
+        ],
+        [
+            'currency' => 'KYD',
+            'label'    => __( 'Cayman Islands Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
+        ],
+        [
+            'currency' => 'KZT',
+            'label'    => __( 'Kazakhstani Tenge', 'wp-user-frontend' ),
+            'symbol'   => '&#8376;',
+        ],
+        [
+            'currency' => 'LAK',
+            'label'    => __( 'Lao Kip', 'wp-user-frontend' ),
+            'symbol'   => '&#8365;',
+        ],
+        [
+            'currency' => 'LBP',
+            'label'    => __( 'Lebanese Pound', 'wp-user-frontend' ),
+            'symbol'   => 'ل.ل',
+        ],
+        [
+            'currency' => 'LKR',
+            'label'    => __( 'Sri Lankan Rupee', 'wp-user-frontend' ),
+            'symbol'   => '&#8360;',
+        ],
+        [
+            'currency' => 'LRD',
+            'label'    => __( 'Liberian Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
+        ],
+        [
+            'currency' => 'LSL',
+            'label'    => __( 'Lesotho Loti', 'wp-user-frontend' ),
+            'symbol'   => 'L',
+        ],
+        [
+            'currency' => 'LYD',
+            'label'    => __( 'Libyan Dinar', 'wp-user-frontend' ),
+            'symbol'   => 'ل.د',
+        ],
+        [
+            'currency' => 'MAD',
+            'label'    => __( 'Moroccan Dirham', 'wp-user-frontend' ),
+            'symbol'   => 'د.م.',
+        ],
+        [
+            'currency' => 'MDL',
+            'label'    => __( 'Moldovan Leu', 'wp-user-frontend' ),
+            'symbol'   => 'L',
+        ],
+        [
+            'currency' => 'MGA',
+            'label'    => __( 'Malagasy Ariary', 'wp-user-frontend' ),
+            'symbol'   => 'Ar',
+        ],
+        [
+            'currency' => 'MKD',
+            'label'    => __( 'Macedonian Denar', 'wp-user-frontend' ),
+            'symbol'   => 'ден',
+        ],
+        [
+            'currency' => 'MMK',
+            'label'    => __( 'Myanmar Kyat', 'wp-user-frontend' ),
+            'symbol'   => 'K',
+        ],
+        [
+            'currency' => 'MNT',
+            'label'    => __( 'Mongolian Tögrög', 'wp-user-frontend' ),
+            'symbol'   => '&#8366;',
+        ],
+        [
+            'currency' => 'MOP',
+            'label'    => __( 'Macanese Pataca', 'wp-user-frontend' ),
+            'symbol'   => 'MOP&#36;',
+        ],
+        [
+            'currency' => 'MRU',
+            'label'    => __( 'Mauritanian Ouguiya', 'wp-user-frontend' ),
+            'symbol'   => 'UM',
+        ],
+        [
+            'currency' => 'MUR',
+            'label'    => __( 'Mauritian Rupee', 'wp-user-frontend' ),
+            'symbol'   => '&#8360;',
+        ],
+        [
+            'currency' => 'MVR',
+            'label'    => __( 'Maldivian Rufiyaa', 'wp-user-frontend' ),
+            'symbol'   => 'Rf',
+        ],
+        [
+            'currency' => 'MWK',
+            'label'    => __( 'Malawian Kwacha', 'wp-user-frontend' ),
+            'symbol'   => 'MK',
+        ],
+        [
+            'currency' => 'MXN',
+            'label'    => __( 'Mexican Peso', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
+        ],
+        [
+            'currency' => 'MYR',
+            'label'    => __( 'Malaysian Ringgit', 'wp-user-frontend' ),
+            'symbol'   => '&#82;&#77;',
+        ],
+        [
+            'currency' => 'MZN',
+            'label'    => __( 'Mozambican Metical', 'wp-user-frontend' ),
+            'symbol'   => 'MT',
+        ],
+        [
+            'currency' => 'NAD',
+            'label'    => __( 'Namibian Dollar', 'wp-user-frontend' ),
+            'symbol'   => 'N&#36;',
+        ],
+        [
+            'currency' => 'NGN',
+            'label'    => __( 'Nigerian Naira', 'wp-user-frontend' ),
+            'symbol'   => '&#8358;',
+        ],
+        [
+            'currency' => 'NIO',
+            'label'    => __( 'Nicaraguan Córdoba', 'wp-user-frontend' ),
+            'symbol'   => 'C&#36;',
+        ],
+        [
+            'currency' => 'NOK',
+            'label'    => __( 'Norwegian Krone', 'wp-user-frontend' ),
+            'symbol'   => '&#107;&#114;',
+        ],
+        [
+            'currency' => 'NPR',
+            'label'    => __( 'Nepalese Rupee', 'wp-user-frontend' ),
+            'symbol'   => '&#8360;',
+        ],
+        [
+            'currency' => 'NZD',
+            'label'    => __( 'New Zealand Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
+        ],
+        [
+            'currency' => 'OMR',
+            'label'    => __( 'Omani Rial', 'wp-user-frontend' ),
+            'symbol'   => 'ر.ع.',
+        ],
+        [
+            'currency' => 'PAB',
+            'label'    => __( 'Panamanian Balboa', 'wp-user-frontend' ),
+            'symbol'   => 'B/.',
+        ],
+        [
+            'currency' => 'PEN',
+            'label'    => __( 'Peruvian Sol', 'wp-user-frontend' ),
+            'symbol'   => 'S/',
+        ],
+        [
+            'currency' => 'PGK',
+            'label'    => __( 'Papua New Guinean Kina', 'wp-user-frontend' ),
+            'symbol'   => 'K',
+        ],
+        [
+            'currency' => 'PHP',
+            'label'    => __( 'Philippine Peso', 'wp-user-frontend' ),
+            'symbol'   => '&#8369;',
+        ],
+        [
+            'currency' => 'PKR',
+            'label'    => __( 'Pakistani Rupee', 'wp-user-frontend' ),
+            'symbol'   => '&#8360;',
+        ],
+        [
+            'currency' => 'PLN',
+            'label'    => __( 'Polish Zloty', 'wp-user-frontend' ),
+            'symbol'   => '&#122;&#322;',
+        ],
+        [
+            'currency' => 'PYG',
+            'label'    => __( 'Paraguayan Guaraní', 'wp-user-frontend' ),
+            'symbol'   => '&#8370;',
+        ],
+        [
+            'currency' => 'QAR',
+            'label'    => __( 'Qatari Riyal', 'wp-user-frontend' ),
+            'symbol'   => 'ر.ق',
+        ],
+        [
+            'currency' => 'RON',
+            'label'    => __( 'Romanian Leu', 'wp-user-frontend' ),
+            'symbol'   => 'lei',
+        ],
+        [
+            'currency' => 'RSD',
+            'label'    => __( 'Serbian Dinar', 'wp-user-frontend' ),
+            'symbol'   => 'дин.',
+        ],
+        [
+            'currency' => 'RUB',
+            'label'    => __( 'Russian Ruble', 'wp-user-frontend' ),
+            'symbol'   => '&#8381;',
+        ],
+        [
+            'currency' => 'RWF',
+            'label'    => __( 'Rwandan Franc', 'wp-user-frontend' ),
+            'symbol'   => 'FRw',
+        ],
+        [
+            'currency' => 'SAR',
+            'label'    => __( 'Saudi Riyal', 'wp-user-frontend' ),
+            'symbol'   => 'ر.س',
+        ],
+        [
+            'currency' => 'SBD',
+            'label'    => __( 'Solomon Islands Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
+        ],
+        [
+            'currency' => 'SCR',
+            'label'    => __( 'Seychellois Rupee', 'wp-user-frontend' ),
+            'symbol'   => '&#8360;',
+        ],
+        [
+            'currency' => 'SDG',
+            'label'    => __( 'Sudanese Pound', 'wp-user-frontend' ),
+            'symbol'   => 'ج.س.',
+        ],
+        [
+            'currency' => 'SEK',
+            'label'    => __( 'Swedish Krona', 'wp-user-frontend' ),
+            'symbol'   => '&#107;&#114;',
+        ],
+        [
+            'currency' => 'SGD',
+            'label'    => __( 'Singapore Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
+        ],
+        [
+            'currency' => 'SHP',
+            'label'    => __( 'Saint Helena Pound', 'wp-user-frontend' ),
+            'symbol'   => '&pound;',
+        ],
+        [
+            'currency' => 'SLE',
+            'label'    => __( 'Sierra Leonean Leone', 'wp-user-frontend' ),
+            'symbol'   => 'Le',
+        ],
+        [
+            'currency' => 'SOS',
+            'label'    => __( 'Somali Shilling', 'wp-user-frontend' ),
+            'symbol'   => 'S',
+        ],
+        [
+            'currency' => 'SRD',
+            'label'    => __( 'Surinamese Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
+        ],
+        [
+            'currency' => 'SSP',
+            'label'    => __( 'South Sudanese Pound', 'wp-user-frontend' ),
+            'symbol'   => '&pound;',
+        ],
+        [
+            'currency' => 'STN',
+            'label'    => __( 'São Tomé and Príncipe Dobra', 'wp-user-frontend' ),
+            'symbol'   => 'Db',
+        ],
+        [
+            'currency' => 'SYP',
+            'label'    => __( 'Syrian Pound', 'wp-user-frontend' ),
+            'symbol'   => '&pound;',
+        ],
+        [
+            'currency' => 'SZL',
+            'label'    => __( 'Eswatini Lilangeni', 'wp-user-frontend' ),
+            'symbol'   => 'L',
+        ],
+        [
+            'currency' => 'THB',
+            'label'    => __( 'Thai Baht', 'wp-user-frontend' ),
+            'symbol'   => '&#3647;',
+        ],
+        [
+            'currency' => 'TJS',
+            'label'    => __( 'Tajikistani Somoni', 'wp-user-frontend' ),
+            'symbol'   => 'SM',
+        ],
+        [
+            'currency' => 'TMT',
+            'label'    => __( 'Turkmenistani Manat', 'wp-user-frontend' ),
+            'symbol'   => 'T',
+        ],
+        [
+            'currency' => 'TND',
+            'label'    => __( 'Tunisian Dinar', 'wp-user-frontend' ),
+            'symbol'   => 'د.ت',
+        ],
+        [
+            'currency' => 'TOP',
+            'label'    => __( 'Tongan Paʻanga', 'wp-user-frontend' ),
+            'symbol'   => 'T&#36;',
+        ],
+        [
+            'currency' => 'TRY',
+            'label'    => __( 'Turkish Lira', 'wp-user-frontend' ),
+            'symbol'   => '&#8378;',
+        ],
+        [
+            'currency' => 'TTD',
+            'label'    => __( 'Trinidad and Tobago Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#84;&#84;&#36;',
+        ],
+        [
+            'currency' => 'TWD',
+            'label'    => __( 'New Taiwan Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#78;&#84;&#36;',
+        ],
+        [
+            'currency' => 'TZS',
+            'label'    => __( 'Tanzanian Shilling', 'wp-user-frontend' ),
+            'symbol'   => 'TSh',
+        ],
+        [
+            'currency' => 'UAH',
+            'label'    => __( 'Ukrainian Hryvnia', 'wp-user-frontend' ),
+            'symbol'   => '&#8372;',
+        ],
+        [
+            'currency' => 'UGX',
+            'label'    => __( 'Ugandan Shilling', 'wp-user-frontend' ),
+            'symbol'   => 'USh',
+        ],
+        [
+            'currency' => 'USD',
+            'label'    => __( 'US Dollar', 'wp-user-frontend' ),
+            'symbol'   => '&#36;',
+        ],
+        [
+            'currency' => 'UYU',
+            'label'    => __( 'Uruguayan Peso', 'wp-user-frontend' ),
+            'symbol'   => '&#36;U',
+        ],
+        [
+            'currency' => 'UZS',
+            'label'    => __( 'Uzbekistani Som', 'wp-user-frontend' ),
+            'symbol'   => 'сўм',
+        ],
+        [
+            'currency' => 'VES',
+            'label'    => __( 'Venezuelan Bolívar', 'wp-user-frontend' ),
+            'symbol'   => 'Bs.',
+        ],
+        [
+            'currency' => 'VND',
+            'label'    => __( 'Vietnamese Đồng', 'wp-user-frontend' ),
+            'symbol'   => '&#8363;',
+        ],
+        [
+            'currency' => 'VUV',
+            'label'    => __( 'Vanuatu Vatu', 'wp-user-frontend' ),
+            'symbol'   => 'VT',
+        ],
+        [
+            'currency' => 'WST',
+            'label'    => __( 'Samoan Tālā', 'wp-user-frontend' ),
+            'symbol'   => 'WS&#36;',
+        ],
+        [
+            'currency' => 'XAF',
+            'label'    => __( 'Central African CFA Franc', 'wp-user-frontend' ),
+            'symbol'   => 'FCFA',
+        ],
+        [
+            'currency' => 'XCD',
+            'label'    => __( 'East Caribbean Dollar', 'wp-user-frontend' ),
+            'symbol'   => 'EC&#36;',
+        ],
+        [
+            'currency' => 'XOF',
+            'label'    => __( 'West African CFA Franc', 'wp-user-frontend' ),
+            'symbol'   => 'CFA',
+        ],
+        [
+            'currency' => 'XPF',
+            'label'    => __( 'CFP Franc', 'wp-user-frontend' ),
+            'symbol'   => '&#8355;',
+        ],
+        [
+            'currency' => 'YER',
+            'label'    => __( 'Yemeni Rial', 'wp-user-frontend' ),
+            'symbol'   => '&#65020;',
+        ],
+        [
+            'currency' => 'ZAR',
+            'label'    => __( 'South African Rand', 'wp-user-frontend' ),
+            'symbol'   => '&#82;',
+        ],
+        [
+            'currency' => 'ZMW',
+            'label'    => __( 'Zambian Kwacha', 'wp-user-frontend' ),
+            'symbol'   => 'ZK',
+        ],
+        [
+            'currency' => 'ZWL',
+            'label'    => __( 'Zimbabwean Dollar', 'wp-user-frontend' ),
+            'symbol'   => 'Z&#36;',
         ],
     ];
 
@@ -4671,45 +5185,38 @@ function wpuf_unset_conditional( $settings ) {
 /**
  * Check if current post is editable
  *
- * @param $post
+ * This is a backward-compatible wrapper around wpuf_user_can_edit_post()
+ * for use in templates. Returns boolean instead of WP_Error.
+ *
+ * @param WP_Post|int $post Post object or post ID
  *
  * @since 3.5.27
+ * @since 4.2.9 Refactored to use wpuf_user_can_edit_post(). Now accepts post ID or post object.
  *
- * @return bool
+ * @return bool True if editable, false otherwise
  */
 function wpuf_is_post_editable( $post ) {
-    $show_edit = false;
-
-    $current_user      = wpuf_get_user();
-    $user_subscription = new WeDevs\Wpuf\User_Subscription( $current_user );
-    $user_sub          = $user_subscription->current_pack();
-    $sub_id            = $current_user->subscription()->current_pack_id();
-
-    if ( $sub_id ) {
-        $subs_expired = $user_subscription->expired();
-    } else {
-        $subs_expired = false;
+    // Handle WordPress post object
+    if ( ! $post instanceof WP_Post ) {
+        return false;
     }
 
-    if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
-        $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
-        $disable_publish_edit = wpuf_get_option( 'disable_publish_edit', 'wpuf_dashboard', 'off' );
+    if ( is_numeric( $post ) ) {
+        $post_id = absint( $post );
 
-        $show_edit = true;
-        if ( ( 'pending' === $post->post_status && 'on' === $disable_pending_edit ) || ( 'publish' === $post->post_status && 'off' !==  $disable_publish_edit ) ) {
-            $show_edit = false;
+        if ( ! $post_id ) {
+            return false;
         }
 
-        if ( ( $post->post_status == 'draft' || $post->post_status == 'pending' ) && ( ! empty( $payment_status ) && $payment_status != 'completed' ) ) {
-            $show_edit = false;
-        }
+        $can_edit = wpuf_user_can_edit_post( $post_id );
 
-        if ( $subs_expired ) {
-            $show_edit = false;
-        }
+        return ! is_wp_error( $can_edit );
     }
 
-    return $show_edit;
+    $can_edit = wpuf_user_can_edit_post( $post->ID );
+
+    // Return true if not an error, false otherwise
+    return ! is_wp_error( $can_edit );
 }
 
 /**
@@ -5200,6 +5707,8 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
         'post_form_template_professional_video' => __( 'Professional Video Form', 'wp-user-frontend' ),
         'post_form_template_artwork'           => __( 'Artwork Form', 'wp-user-frontend' ),
         'post_form_template_press_release'     => __( 'Press Release Form', 'wp-user-frontend' ),
+        'post_form_template_portfolio'         => __( 'Portfolio Form', 'wp-user-frontend' ),
+        'post_form_template_volunteer'         => __( 'Volunteer Opportunity Form', 'wp-user-frontend' ),
     ];
 
     $registry = wpuf_get_post_form_templates();
@@ -5989,4 +6498,285 @@ function wpuf_render_login_layout_field( $args ) {
     }
 
     echo '</fieldset>';
+}
+
+/**
+ * Get WPUF logout URL
+ *
+ * Returns the logout URL with proper nonce. If WPUF login override is enabled,
+ * it returns the WPUF logout URL, otherwise falls back to WordPress default.
+ *
+ * @since 4.2.10
+ *
+ * @param string $redirect_to Optional. URL to redirect after logout.
+ *
+ * @return string The logout URL
+ */
+function wpuf_get_logout_url( $redirect_to = '' ) {
+    $override = wpuf_get_option( 'register_link_override', 'wpuf_profile', 'off' );
+
+    if ( 'on' === $override ) {
+        $login_page_id = wpuf_get_option( 'login_page', 'wpuf_profile', false );
+
+        if ( $login_page_id ) {
+            $root_url   = get_permalink( $login_page_id );
+            $logout_url = wp_nonce_url( add_query_arg( [ 'action' => 'logout' ], $root_url ), 'log-out' );
+
+            if ( ! empty( $redirect_to ) ) {
+                $logout_url = add_query_arg( 'redirect_to', urlencode( $redirect_to ), $logout_url );
+            }
+
+            return $logout_url;
+        }
+    }
+
+    return wp_logout_url( $redirect_to );
+}
+
+/**
+ * Add logout link to WordPress navigation menu
+ *
+ * @since 4.2.10
+ *
+ * @param int    $menu_id     The menu ID to add the logout link to.
+ * @param string $menu_label  Optional. The label for the logout menu item.
+ * @param int    $parent_id   Optional. The parent menu item ID.
+ *
+ * @return int|WP_Error The menu item ID on success, WP_Error on failure.
+ */
+function wpuf_add_logout_to_menu( $menu_id, $menu_label = '', $parent_id = 0 ) {
+    if ( empty( $menu_label ) ) {
+        $menu_label = __( 'Logout', 'wp-user-frontend' );
+    }
+
+    $logout_url = wpuf_get_logout_url();
+
+    $menu_item_data = [
+        'menu-item-title'   => $menu_label,
+        'menu-item-url'     => $logout_url,
+        'menu-item-status'  => 'publish',
+        'menu-item-type'    => 'custom',
+        'menu-item-parent-id' => $parent_id,
+    ];
+
+    $menu_item_id = wp_update_nav_menu_item( $menu_id, 0, $menu_item_data );
+
+    // Add CSS class to identify WPUF logout menu items
+    if ( ! is_wp_error( $menu_item_id ) ) {
+        update_post_meta( $menu_item_id, '_menu_item_classes', [ 'wpuf-logout-link' ] );
+    }
+
+    return $menu_item_id;
+}
+
+/**
+ * Filter navigation menu items to hide logout link when user is not logged in
+ *
+ * @since 4.2.10
+ *
+ * @param array $items The menu items.
+ *
+ * @return array Filtered menu items.
+ */
+function wpuf_filter_logout_menu_items( $items ) {
+    // If user is logged in, show all items
+    if ( is_user_logged_in() ) {
+        return $items;
+    }
+
+    // Remove logout items for non-logged-in users
+    foreach ( $items as $key => $item ) {
+        // Check if this is a logout link by URL or CSS class
+        if (
+            strpos( $item->url, 'action=logout' ) !== false ||
+            ( is_array( $item->classes ) && in_array( 'wpuf-logout-link', $item->classes, true ) )
+        ) {
+            unset( $items[ $key ] );
+        }
+    }
+
+    return $items;
+}
+add_filter( 'wp_nav_menu_objects', 'wpuf_filter_logout_menu_items', 10, 1 );
+
+/**
+ * Add CSS to hide logout links for non-logged-in users (for FSE themes)
+ *
+ * This handles cases where the logout link is in a block navigation
+ * that doesn't go through wp_nav_menu_objects filter.
+ *
+ * @since 4.2.10
+ *
+ * @return void
+ */
+function wpuf_logout_visibility_css() {
+    // Only output CSS if user is NOT logged in
+    if ( is_user_logged_in() ) {
+        return;
+    }
+
+    ?>
+    <style type="text/css">
+        /* Hide logout links for non-logged-in users */
+        .wp-block-navigation a[href*="action=logout"],
+        .wp-block-navigation-item a[href*="action=logout"],
+        a.wpuf-logout-link,
+        .wpuf-logout-link {
+            display: none !important;
+        }
+    </style>
+    <?php
+}
+add_action( 'wp_head', 'wpuf_logout_visibility_css', 100 );
+
+/**
+ * Check if current user can edit a specific post
+ *
+ * Validates user authorization to edit a post by checking:
+ * - User is logged in
+ * - WPUF global and user-specific edit settings
+ * - Post-specific lock settings
+ * - User is post author with edit_post capability
+ * - User has edit_others_posts capability for posts they don't own
+ *
+ * @since SINCE_WPUF
+ *
+ * @param int  $post_id         Post ID to check
+ * @param bool $check_settings  Whether to check WPUF settings (default true). Set false for AJAX/admin operations
+ *
+ * @return true|WP_Error True if user can edit, WP_Error on failure
+ */
+function wpuf_user_can_edit_post( $post_id, $check_settings = true ) {
+
+    $post_id = absint( $post_id );
+
+    if ( ! $post_id ) {
+        return new WP_Error(
+            'wpuf_invalid_post',
+            __( 'Invalid post ID.', 'wp-user-frontend' )
+        );
+    }
+
+    // Get the post
+    $post = get_post( $post_id );
+
+    if ( ! $post || is_wp_error( $post ) ) {
+        return new WP_Error(
+            'wpuf_post_not_found',
+            __( 'Post not found.', 'wp-user-frontend' )
+        );
+    }
+
+    // Get current user and post author
+    $current_user_id = get_current_user_id();
+    $post_author_id  = (int) $post->post_author;
+
+    // Early return: user must be logged in
+    if ( $current_user_id <= 0 ) {
+        return new WP_Error(
+            'wpuf_user_not_logged_in',
+            __( 'You must be logged in to edit posts.', 'wp-user-frontend' )
+        );
+    }
+
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        return new WP_Error(
+            'wpuf_unauthorized_edit',
+            __( 'You are not authorized to edit this post.', 'wp-user-frontend' )
+        );
+    }
+
+    // Check WPUF-specific settings (only for non-admin users)
+    if ( $check_settings && ! current_user_can( 'edit_others_posts' ) ) {
+
+        // Check if post editing is globally enabled
+        if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) !== 'yes' ) {
+            return new WP_Error(
+                'wpuf_post_edit_disabled',
+                __( 'Post editing is disabled.', 'wp-user-frontend' )
+            );
+        }
+
+        // Check user-level post lock
+        if ( wpuf_get_user()->edit_post_locked() ) {
+            $reason = wpuf_get_user()->edit_post_lock_reason();
+
+            return new WP_Error(
+                'wpuf_user_edit_locked',
+                $reason ?: __( 'Your post edit access has been locked by an administrator.', 'wp-user-frontend' )
+            );
+        }
+
+        // Check post-specific lock (admin can lock individual posts)
+        $post_lock = get_post_meta( $post_id, '_wpuf_lock_editing_post', true );
+
+        if ( 'yes' === $post_lock ) {
+            return new WP_Error(
+                'wpuf_post_locked',
+                apply_filters(
+                    'wpuf_edit_post_lock_user_notice',
+                    __( 'Your edit access for this post has been locked by an administrator.', 'wp-user-frontend' )
+                )
+            );
+        }
+
+        // Check time-based lock
+        $lock_time = get_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', true );
+
+        if ( ! empty( $lock_time ) && $lock_time < time() ) {
+            return new WP_Error(
+                'wpuf_post_lock_expired',
+                apply_filters(
+                    'wpuf_edit_post_lock_expire_notice',
+                    __( 'Your allocated time for editing this post has expired.', 'wp-user-frontend' )
+                )
+            );
+        }
+
+        // Check post status restrictions
+        $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
+        $disable_publish_edit = wpuf_get_option( 'disable_publish_edit', 'wpuf_dashboard', 'off' );
+
+        if ( 'pending' === $post->post_status && 'on' === $disable_pending_edit ) {
+            return new WP_Error(
+                'wpuf_pending_edit_disabled',
+                __( 'You can\'t edit a post while in pending mode.', 'wp-user-frontend' )
+            );
+        }
+
+        if ( 'publish' === $post->post_status && 'off' !== $disable_publish_edit ) {
+            return new WP_Error(
+                'wpuf_publish_edit_disabled',
+                __( 'You\'re not allowed to edit this post.', 'wp-user-frontend' )
+            );
+        }
+
+        // Check subscription expiration
+        $current_user      = wpuf_get_user();
+        $user_subscription = new \WeDevs\Wpuf\User_Subscription( $current_user );
+        $sub_id            = $current_user->subscription()->current_pack_id();
+
+        if ( $sub_id ) {
+            $subs_expired = $user_subscription->expired();
+
+            if ( $subs_expired ) {
+                return new WP_Error(
+                    'wpuf_subscription_expired',
+                    __( 'Your subscription has expired. Please renew to edit posts.', 'wp-user-frontend' )
+                );
+            }
+        }
+
+        // Check payment status for draft/pending posts
+        $payment_status = get_post_meta( $post_id, '_wpuf_payment_status', true );
+
+        if ( ( 'draft' === $post->post_status || 'pending' === $post->post_status ) && ! empty( $payment_status ) && 'completed' !== $payment_status ) {
+            return new WP_Error(
+                'wpuf_payment_incomplete',
+                __( 'You cannot edit this post until payment is completed.', 'wp-user-frontend' )
+            );
+        }
+    }
+
+    return true;
 }

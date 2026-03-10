@@ -50,7 +50,13 @@ class Form_Builder {
             }
 
             // Extract custom properties (everything except template and label)
-            $raw_custom_props = array_diff_key( $minimal_field, [ 'template' => '', 'label' => '' ] );
+            $raw_custom_props = array_diff_key(
+                $minimal_field,
+                [
+                    'template' => '',
+                    'label'    => '',
+                ]
+            );
 
             // Filter out null/empty values to prevent overriding template defaults
             // This is critical for fields like google_map that have automatic defaults
@@ -67,7 +73,7 @@ class Form_Builder {
 
             if ( ! empty( $complete_field ) ) {
                 $complete_fields[] = $complete_field;
-                $field_counter++;
+                ++$field_counter;
             }
         }
 
@@ -75,8 +81,27 @@ class Form_Builder {
             'form_title'       => $ai_response['form_title'] ?? 'Untitled Form',
             'form_description' => $ai_response['form_description'] ?? '',
             'wpuf_fields'      => $complete_fields,
-            'form_settings'    => self::get_default_settings(),
+            'form_settings'    => self::merge_form_settings( $ai_response['form_settings'] ?? [] ),
         ];
+    }
+
+    /**
+     * Merge AI form settings with defaults
+     *
+     * @param array $ai_settings Settings from AI response
+     * @return array
+     */
+    private static function merge_form_settings( $ai_settings ) {
+        $defaults = self::get_default_settings();
+
+        // Ensure $ai_settings is an array to prevent warnings
+        if ( ! is_array( $ai_settings ) ) {
+            $ai_settings = [];
+        }
+
+        // Recursive merge so nested defaults (e.g., 'notification') are preserved
+        // while AI-specified values override defaults at any level
+        return array_replace_recursive( $defaults, $ai_settings );
     }
 
     /**

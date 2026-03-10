@@ -21,6 +21,9 @@ module.exports = {
         // New paths from upstream (for subscription templates)
         './templates/**/*.php',
         './src/**/*.{js,css}',
+        // Free User Directory module templates
+        './modules/user-directory/**/*.php',
+        './modules/user-directory/views/**/*.php',
     ],
     theme: {
          extend: {
@@ -31,7 +34,7 @@ module.exports = {
         },
     },
     plugins: [
-        require('@tailwindcss/forms'),
+        require('@tailwindcss/forms')({ strategy: 'class' }),
         require('daisyui'),
         scopedPreflightStyles( {
             isolationStrategy: isolateInsideOfContainer(
@@ -41,14 +44,16 @@ module.exports = {
                     '#wpuf-form-builder',
                     '#wpuf-profile-forms-list-table-view',
                     '#wpuf-post-forms-list-table-view',
+                    '#wpuf-ai-form-builder',
+                    '.wpuf-ai-form-wrapper',
                     '.swal2-container',
-                    '.wpuf-account-container'
+                    '.wpuf-account-container',
+                    '.wpuf-form-template-modal'
                 ], {}
             ),
         } ),
-        require('@tailwindcss/forms'),
     ],
     daisyui: {
-        themes: [],
+        themes: []
     },
 }

@@ -4,7 +4,7 @@
  *
  * @package WPUF
  * @subpackage Modules/User_Directory
- * @since WPUF_SINCE
+ * @since 4.3.0
  */
 
 namespace WeDevs\Wpuf\Modules\User_Directory;
@@ -19,14 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Registers the wpuf_user_listing post type for storing directory configurations.
  * Provides hooks for Pro version to modify registration.
  *
- * @since WPUF_SINCE
+ * @since 4.3.0
  */
 class Post_Type {
 
     /**
      * Constructor
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      */
     public function __construct() {
         add_action( 'init', [ $this, 'register_post_type' ] );
@@ -35,7 +35,7 @@ class Post_Type {
     /**
      * Register the wpuf_user_listing post type
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return void
      */
@@ -46,7 +46,7 @@ class Post_Type {
          * When Pro is active, it can return true to prevent Free from registering.
          * This is useful when Pro has different post type arguments.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param bool $skip_registration Whether to skip Free post type registration. Default false.
          */
@@ -70,7 +70,7 @@ class Post_Type {
         /**
          * Filter post type labels
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param array $labels The post type labels.
          */
@@ -97,7 +97,7 @@ class Post_Type {
          *
          * Pro can modify registration arguments.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param array $args The post type arguments.
          */
@@ -108,7 +108,7 @@ class Post_Type {
         /**
          * Action fired after User Directory post type is registered
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param string $post_type The registered post type name.
          */

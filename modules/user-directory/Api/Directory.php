@@ -4,7 +4,7 @@
  *
  * @package WPUF
  * @subpackage Modules/User_Directory
- * @since WPUF_SINCE
+ * @since 4.3.0
  */
 
 namespace WeDevs\Wpuf\Modules\User_Directory\Api;
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Handles REST API endpoints for User Directory CRUD operations.
  *
- * @since WPUF_SINCE
+ * @since 4.3.0
  */
 class Directory extends WP_REST_Controller {
 
@@ -46,7 +46,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Register REST routes
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return void
      */
@@ -181,7 +181,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Check permissions for API access
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -202,7 +202,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Get all directories
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -263,7 +263,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Get single directory
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -295,7 +295,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Create a new directory
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -357,7 +357,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Update a directory
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -416,7 +416,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Delete a directory
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -453,7 +453,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Get user count based on filters
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -497,7 +497,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Search users for frontend AJAX
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param WP_REST_Request $request Request object.
      *
@@ -648,7 +648,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Sanitize settings from request
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param array $params Request parameters.
      *
@@ -745,7 +745,7 @@ class Directory extends WP_REST_Controller {
      * Note: In Free version, we save all user settings to the database for Pro compatibility.
      * Restrictions are enforced during frontend rendering, not during save.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param array $settings Settings array.
      *
@@ -757,7 +757,7 @@ class Directory extends WP_REST_Controller {
          *
          * Pro can return true to skip all free version restrictions.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param bool  $skip_limits Whether to skip free limits. Default false.
          * @param array $settings    The settings array.
@@ -776,7 +776,7 @@ class Directory extends WP_REST_Controller {
         /**
          * Filter settings after free limits are applied
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param array $settings The settings array with free limits applied.
          */
@@ -786,7 +786,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Recursively sanitize excluded_users array
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param array $excluded_users Raw excluded users data.
      *
@@ -822,7 +822,7 @@ class Directory extends WP_REST_Controller {
     /**
      * Extract user IDs from excluded_users array
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param array $excluded_users Array of user objects or user IDs.
      *

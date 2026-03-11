@@ -6,7 +6,7 @@
  * Functions to handle Free version modules similar to Pro
  *
  * @package WPUF
- * @since WPUF_SINCE
+ * @since 4.3.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get available Free modules
  *
- * @since WPUF_SINCE
+ * @since 4.3.0
  *
  * @return array
  */
@@ -36,7 +36,7 @@ function wpuf_free_get_modules() {
 /**
  * Get the meta key to store the active module list
  *
- * @since WPUF_SINCE
+ * @since 4.3.0
  *
  * @return string
  */
@@ -47,7 +47,7 @@ function wpuf_free_active_module_key() {
 /**
  * Get active modules
  *
- * @since WPUF_SINCE
+ * @since 4.3.0
  *
  * @return array
  */
@@ -58,7 +58,7 @@ function wpuf_free_get_active_modules() {
 /**
  * Check if a module is active
  *
- * @since WPUF_SINCE
+ * @since 4.3.0
  *
  * @param string $module Module id (e.g., 'user_directory')
  *
@@ -71,7 +71,7 @@ function wpuf_free_is_module_active( $module ) {
 /**
  * Check if a module is inactive
  *
- * @since WPUF_SINCE
+ * @since 4.3.0
  *
  * @param string $module Module id
  *
@@ -84,7 +84,7 @@ function wpuf_free_is_module_inactive( $module ) {
 /**
  * Activate a module
  *
- * @since WPUF_SINCE
+ * @since 4.3.0
  *
  * @param string $module Module id
  *
@@ -112,7 +112,7 @@ function wpuf_free_activate_module( $module ) {
 /**
  * Deactivate a module
  *
- * @since WPUF_SINCE
+ * @since 4.3.0
  *
  * @param string $module Module id
  *

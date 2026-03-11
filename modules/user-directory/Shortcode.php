@@ -4,7 +4,7 @@
  *
  * @package WPUF
  * @subpackage Modules/User_Directory
- * @since WPUF_SINCE
+ * @since 4.3.0
  */
 
 namespace WeDevs\Wpuf\Modules\User_Directory;
@@ -19,14 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles the [wpuf_user_listing] shortcode rendering.
  * Provides hooks for Pro version to extend functionality.
  *
- * @since WPUF_SINCE
+ * @since 4.3.0
  */
 class Shortcode {
 
     /**
      * Constructor
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      */
     public function __construct() {
         $this->register_hooks();
@@ -35,7 +35,7 @@ class Shortcode {
     /**
      * Register hooks
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return void
      */
@@ -46,7 +46,7 @@ class Shortcode {
          * When Pro is active, it can return true to prevent Free from registering its shortcode.
          * Pro will then register its own shortcode with the same name.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param bool $skip_shortcode Whether to skip Free shortcode registration. Default false.
          */
@@ -61,7 +61,7 @@ class Shortcode {
         /**
          * Action fired after User Directory shortcodes are registered
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          */
         do_action( 'wpuf_ud_shortcodes_registered' );
     }
@@ -69,7 +69,7 @@ class Shortcode {
     /**
      * Register frontend assets
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return void
      */
@@ -112,7 +112,7 @@ class Shortcode {
     /**
      * Render shortcode output
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param array $atts Shortcode attributes.
      *
@@ -147,7 +147,7 @@ class Shortcode {
     /**
      * Render shortcode with ID as value
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param array $atts Shortcode attributes.
      *
@@ -166,7 +166,7 @@ class Shortcode {
     /**
      * Render from stored directory settings
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param int $directory_id Directory post ID.
      *
@@ -229,7 +229,7 @@ class Shortcode {
     /**
      * Get profile user from URL
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param array $settings Directory settings.
      *
@@ -266,7 +266,7 @@ class Shortcode {
     /**
      * Render user directory list
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param array $settings     Directory settings.
      * @param int   $directory_id Directory post ID.
@@ -332,7 +332,7 @@ class Shortcode {
         /**
          * Filter user query args
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param array $args         User query args.
          * @param array $settings     Directory settings.
@@ -398,7 +398,7 @@ class Shortcode {
         /**
          * Filter template data
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param array $template_data Template data.
          * @param array $settings      Directory settings.
@@ -416,7 +416,7 @@ class Shortcode {
     /**
      * Render user profile
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param \WP_User $user         User object.
      * @param array    $settings     Directory settings.
@@ -450,7 +450,7 @@ class Shortcode {
         /**
          * Filter profile data
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param array    $profile_data Profile data.
          * @param \WP_User $user         User object.
@@ -475,7 +475,7 @@ class Shortcode {
     /**
      * Load template file
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param string $template Template name.
      * @param array  $data     Template data.
@@ -492,7 +492,7 @@ class Shortcode {
         /**
          * Filter template file path
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param string $template_file Template file path.
          * @param string $template      Template name.
@@ -512,7 +512,7 @@ class Shortcode {
     /**
      * Get directory URL (current page without profile params)
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return string URL.
      */
@@ -525,7 +525,7 @@ class Shortcode {
     /**
      * Generate profile URL for a user
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param \WP_User $user     User object.
      * @param array    $settings Directory settings.
@@ -557,7 +557,7 @@ class Shortcode {
     /**
      * Render no directory message
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return string HTML output.
      */
@@ -572,7 +572,7 @@ class Shortcode {
         /**
          * Filter the no directory message
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param string $message The message HTML.
          */

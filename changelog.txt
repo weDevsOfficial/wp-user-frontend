@@ -1,3 +1,6 @@
+= v4.3.0 (11 March, 2026) =
+* New – Add User Directory Module
+
 = v4.2.10 (26 February, 2026) =
 * New – Add Logout link to navigation menu for Classic and FSE themes
 * New – Support custom image icons in Form Builder

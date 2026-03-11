@@ -5,6 +5,9 @@ use WeDevs\Wpuf\Encryption_Helper;
 use WeDevs\Wpuf\Free\Pro_Prompt;
 use WeDevs\Wpuf\Frontend\Payment;
 
+// Include modules functions
+require_once WPUF_INCLUDES . '/functions/modules.php';
+
 /**
  * Start output buffering
  *

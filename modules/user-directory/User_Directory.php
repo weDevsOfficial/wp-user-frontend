@@ -7,7 +7,7 @@
  *
  * @package WPUF
  * @subpackage Modules/User_Directory
- * @since WPUF_SINCE
+ * @since 4.3.0
  */
 
 namespace WeDevs\Wpuf\Modules\User_Directory;
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * User Directory Main Class
  *
- * @since WPUF_SINCE
+ * @since 4.3.0
  */
 class User_Directory {
 
@@ -89,7 +89,7 @@ class User_Directory {
     /**
      * Get singleton instance
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return User_Directory
      */
@@ -104,7 +104,7 @@ class User_Directory {
     /**
      * Constructor
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      */
     private function __construct() {
         $this->define_constants();
@@ -115,7 +115,7 @@ class User_Directory {
     /**
      * Define constants
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return void
      */
@@ -141,7 +141,7 @@ class User_Directory {
     /**
      * Include required files
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return void
      */
@@ -158,7 +158,7 @@ class User_Directory {
     /**
      * Initialize hooks
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return void
      */
@@ -187,7 +187,7 @@ class User_Directory {
     /**
      * Register REST API routes
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return void
      */
@@ -199,7 +199,7 @@ class User_Directory {
     /**
      * Check if free directory limit has been reached
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return bool
      */
@@ -216,7 +216,7 @@ class User_Directory {
     /**
      * Get the count of directories
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return int
      */
@@ -238,7 +238,7 @@ class User_Directory {
     /**
      * Get the first directory (for free version)
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return \WP_Post|null
      */
@@ -257,7 +257,7 @@ class User_Directory {
     /**
      * Check if a layout is available in free version
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param string $layout Layout ID.
      * @param string $type   Layout type (directory or profile).
@@ -283,7 +283,7 @@ class User_Directory {
     /**
      * Get default settings for a new directory
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return array
      */
@@ -312,7 +312,7 @@ class User_Directory {
         /**
          * Filter default directory settings
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param array $defaults Default settings.
          */

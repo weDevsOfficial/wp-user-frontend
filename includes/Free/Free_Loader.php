@@ -94,7 +94,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Check if Pro User Directory module is active
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return bool
      */
@@ -109,7 +109,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Check if Free User Directory module is enabled
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return bool
      */
@@ -1273,7 +1273,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Handle AJAX request to toggle a free module on/off
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return void
      */

@@ -4,7 +4,7 @@
  *
  * @package WPUF
  * @subpackage Modules/User_Directory
- * @since WPUF_SINCE
+ * @since 4.3.0
  */
 
 namespace WeDevs\Wpuf\Modules\User_Directory;
@@ -19,14 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles pretty URL rewrite rules for user profile pages.
  * Provides hooks for Pro version to extend functionality.
  *
- * @since WPUF_SINCE
+ * @since 4.3.0
  */
 class PrettyUrls {
 
     /**
      * Constructor
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      */
     public function __construct() {
         /**
@@ -34,7 +34,7 @@ class PrettyUrls {
          *
          * When Pro is active, it can return true to prevent Free from registering its rewrite rules.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param bool $skip_pretty_urls Whether to skip Free pretty URL registration. Default false.
          */
@@ -49,7 +49,7 @@ class PrettyUrls {
         /**
          * Action fired after User Directory pretty URLs are initialized
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          */
         do_action( 'wpuf_ud_pretty_urls_initialized' );
     }
@@ -57,7 +57,7 @@ class PrettyUrls {
     /**
      * Add rewrite rules for user profile pages
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return void
      */
@@ -77,7 +77,7 @@ class PrettyUrls {
             /**
              * Filter the rewrite rule pattern for a directory page
              *
-             * @since WPUF_SINCE
+             * @since 4.3.0
              *
              * @param string   $pattern   The regex pattern for the rewrite rule.
              * @param \WP_Post $page      The page object.
@@ -93,7 +93,7 @@ class PrettyUrls {
             /**
              * Filter the rewrite rule redirect for a directory page
              *
-             * @since WPUF_SINCE
+             * @since 4.3.0
              *
              * @param string   $redirect  The redirect query string.
              * @param \WP_Post $page      The page object.
@@ -113,7 +113,7 @@ class PrettyUrls {
         /**
          * Action fired after User Directory rewrite rules are added
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param array $pages The directory pages.
          */
@@ -123,7 +123,7 @@ class PrettyUrls {
     /**
      * Add query vars
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param array $vars Query vars.
      *
@@ -135,7 +135,7 @@ class PrettyUrls {
         /**
          * Filter query vars for User Directory
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param array $vars The query vars array.
          */
@@ -145,7 +145,7 @@ class PrettyUrls {
     /**
      * Get pages containing directory shortcodes
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return array Array of WP_Post objects.
      */
@@ -175,7 +175,7 @@ class PrettyUrls {
         /**
          * Filter the directory pages for rewrite rules
          *
-         * @since WPUF_SINCE
+         * @since 4.3.0
          *
          * @param array $directory_pages The directory pages.
          * @param array $pages           All published pages.
@@ -190,7 +190,7 @@ class PrettyUrls {
     /**
      * Flush rewrite rules when a page with directory shortcode is saved
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param int $post_id Post ID.
      *

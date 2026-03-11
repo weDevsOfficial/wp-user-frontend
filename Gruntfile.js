@@ -190,7 +190,7 @@ module.exports = function( grunt) {
             main: {
                 src: [
                     '**',
-                    '!node_modules/**',
+                    '!**/node_modules/**',
                     '!build/**',
                     '!admin/form-builder/assets/**',
                     '!assets/css/*.less',

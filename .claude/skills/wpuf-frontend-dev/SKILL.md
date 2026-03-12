@@ -1,6 +1,6 @@
 ---
 name: wpuf-frontend-dev
-description: Add or modify WPUF frontend code (React, jQuery, vanilla JS, Tailwind). Use when creating components, modifying build configuration, or working with frontend assets.
+description: Add or modify WPUF frontend code (jQuery, vanilla JS, Vue legacy, Tailwind). Use when creating components, modifying build configuration, or working with frontend assets.
 ---
 
 # WPUF Frontend Development
@@ -9,19 +9,17 @@ This skill provides guidance for developing WP User Frontend frontend code.
 
 ## Framework Policy
 
-**New UI must use React, vanilla JS, or jQuery.** Vue is legacy — only touch existing Vue code for bug fixes. Do not create new Vue components or entry points.
+**New UI must use vanilla JS or jQuery.** Vue is legacy — only touch existing Vue code for bug fixes. Do not create new Vue components or entry points.
 
 ## Tech Stack
 
 | Technology | Usage | Files |
 |---|---|---|
-| React 18.2 | New UI development (preferred for new features) | `.jsx`/`.tsx` files, Webpack entry |
 | jQuery | Frontend forms, form builder, general interactivity | `assets/js/` |
 | Vue 3.4 | **Legacy only** — existing admin pages (subscriptions, forms list, AI builder, account) | `.vue` files, Vite entry points |
 | Tailwind CSS 3.3.5 | Styling with scoped preflight | `tailwind.config.js` |
-| Less | Legacy admin/frontend styles | `assets/src/less/` |
-| Vite 5.1 | Bundler for legacy Vue entry points (5 entries) | `vite.config.mjs` |
-| Webpack 5 | React builds | `webpack.config.js` |
+| Less | Legacy admin/frontend styles | `assets/less/` |
+| Vite 5.1 | Bundler for Vue entry points (5 entries) | `vite.config.mjs` |
 | Grunt | Legacy tasks (Less, i18n, release) | `Gruntfile.js` |
 
 ## Build System
@@ -41,29 +39,20 @@ This skill provides guidance for developing WP User Frontend frontend code.
 Build commands:
 
 ```bash
-npm run build                        # Full build (all modules)
+npm run build                        # Full build (all modules + user-directory + CSS)
 npm run build:forms-list             # Single: ENTRY=forms-list vite build
 npm run build:subscriptions          # Single: ENTRY=subscriptions vite build
 npm run build:frontend-subscriptions # Single: ENTRY=frontend-subscriptions vite build
 npm run build:ai-form-builder        # Single: ENTRY=ai-form-builder vite build
 npm run build:account                # Single: ENTRY=account vite build
+npm run build:user-directory         # Build user directory module (Webpack)
+npm run dev:user-directory           # Dev watch mode for user directory module
 ```
 
 Vite output config:
 -   JS: `assets/js/[name].min.js` (IIFE format, global name `WPUF`)
 -   CSS: `assets/css/[name].min.css`
 -   Source maps enabled
-
-### Webpack (React Subscription)
-
-Single entry point extending `@wordpress/scripts` config:
-
-```bash
-npm run build:subscriptions-react    # wp-scripts build
-npm run start:subscriptions-react    # wp-scripts start (dev watch)
-```
-
-Output: `assets/react-build/js/subscriptions-react.min.js`
 
 ### Grunt (Legacy Tasks)
 
@@ -86,7 +75,7 @@ npm run build:css     # grunt tailwind && grunt tailwind-minify
 
 ## Vue 3 Components (Legacy)
 
-Vue 3.4 exists for **legacy admin pages only**. Do not create new Vue components — use React instead.
+Vue 3.4 exists for **legacy admin pages only**. Do not create new Vue components.
 
 ### Key Libraries
 
@@ -111,27 +100,6 @@ assets/js/
 ├── forms-list.js             # Vue entry: forms listing
 ├── account.js                # Vue entry: user account
 └── ai-form-builder.js        # Vue entry: AI form builder
-```
-
-## React Components
-
-React 18.2 is used for the newer subscription management UI.
-
-### Key Libraries
-
--   `@wordpress/element` — React wrapper for WordPress
--   `@wordpress/data` — State management
--   `@wordpress/api-fetch` — REST API client
--   `react-select 5.8` — Select inputs
--   `react-datepicker 6.0` — Date pickers
--   `@headlessui/react 1.7` — Accessible UI primitives
--   `@heroicons/react 2.1` — Icon set
-
-### Source
-
-```
-src/js/
-└── subscriptions-react.jsx   # React entry point
 ```
 
 ## jQuery (Legacy)
@@ -217,7 +185,6 @@ Scripts and styles are registered in `includes/Assets.php`. When adding new asse
 ## Key Reference Files
 
 -   `vite.config.mjs` — Vite configuration (5 entry points)
--   `webpack.config.js` — Webpack config (React subscriptions)
 -   `tailwind.config.js` — Tailwind with `wpuf-` prefix and scoped preflight
 -   `postcss.config.js` — PostCSS configuration
 -   `Gruntfile.js` — Legacy tasks (Less, i18n, release)

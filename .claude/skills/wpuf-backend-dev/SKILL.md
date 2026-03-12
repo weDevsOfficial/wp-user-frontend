@@ -54,7 +54,7 @@ Classes that use the container import `WeDevs\WpUtils\ContainerTrait`.
 | `WP_User_Frontend` | Main singleton, top-level container | `wpuf()` |
 | `Admin` | Admin subsystem bootstrap (16+ services) | `wpuf()->admin` |
 | `Frontend` | Frontend subsystem bootstrap (7+ services) | `wpuf()->frontend` |
-| `API` | REST API bootstrap (2 controllers) | `wpuf()->api` |
+| `API` | REST API bootstrap (2 controllers under `Api/`) | `wpuf()->api` |
 
 ### Adding a New Service
 
@@ -156,7 +156,7 @@ class MyController extends WP_REST_Controller {
 ### API Namespace
 
 -   **Base namespace:** `wpuf/v1`
--   **Current controllers:** `Api\Subscription`, `Api\FormList`
+-   **Current controllers:** `Api\Subscription`, `Api\FormList`, `AI\RestController` (registered via `AI_Manager`)
 
 ### Registering a Controller
 
@@ -288,6 +288,7 @@ __( 'Welcome, ', 'wp-user-frontend' ) . $name
 -   `includes/API.php` — REST API bootstrap
 -   `includes/Api/Subscription.php` — Subscription REST controller
 -   `includes/Api/FormList.php` — Form list REST controller
+-   `includes/AI/RestController.php` — AI form builder REST controller (registered via `AI_Manager`)
 -   `includes/Assets.php` — Script/style registration
 -   `includes/Free/Free_Loader.php` — Free-only features (conditional on Pro absence)
 -   `includes/Integrations.php` — Third-party integrations (Dokan, WC Vendors, ACF, n8n)

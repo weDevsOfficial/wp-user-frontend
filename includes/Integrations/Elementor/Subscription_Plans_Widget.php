@@ -110,9 +110,11 @@ class Subscription_Plans_Widget extends Widget_Base {
 		// Style Controls
 		$this->register_container_style_controls();
 		$this->register_plan_name_style_controls();
+		$this->register_plan_description_style_controls();
 		$this->register_price_style_controls();
 		$this->register_trial_description_style_controls();
 		$this->register_features_list_style_controls();
+		$this->register_see_more_style_controls();
 		$this->register_button_style_controls();
 	}
 
@@ -176,24 +178,8 @@ class Subscription_Plans_Widget extends Widget_Base {
 		$this->start_controls_section(
 			'section_container_style',
 			[
-				'label' => __( 'Container', 'wp-user-frontend' ),
+				'label' => __( 'Subscription Cards', 'wp-user-frontend' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
-			]
-		);
-
-		$this->add_responsive_control(
-			'container_width',
-			[
-				'label'      => __( 'Container Width', 'wp-user-frontend' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em', '%' ],
-				'range'      => [
-					'px' => [ 'min' => 100, 'max' => 1500 ],
-					'%'  => [ 'min' => 10, 'max' => 100 ],
-				],
-				'selectors'  => [
-					'{{WRAPPER}} .wpuf-subscription-plans-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
-				],
 			]
 		);
 
@@ -397,6 +383,87 @@ class Subscription_Plans_Widget extends Widget_Base {
 	}
 
 	/**
+	 * Register plan description style controls
+	 *
+	 * @since WPUF_SINCE
+	 *
+	 * @return void
+	 */
+	protected function register_plan_description_style_controls() {
+		$this->start_controls_section(
+			'section_plan_description_style',
+			[
+				'label' => __( 'Plan Description', 'wp-user-frontend' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'plan_description_color',
+			[
+				'label'     => __( 'Text Color', 'wp-user-frontend' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#6b7280',
+				'selectors' => [
+					'{{WRAPPER}} .wpuf-sub-description' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'plan_description_typography',
+				'selector' => '{{WRAPPER}} .wpuf-sub-description',
+				'fields_options' => [
+					'font_size' => [
+						'default' => [
+							'size' => '14',
+							'unit' => 'px',
+						],
+					],
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'plan_description_align',
+			[
+				'label'     => __( 'Text Alignment', 'wp-user-frontend' ),
+				'type'      => Controls_Manager::CHOOSE,
+				'options'   => [
+					'left'   => [ 'title' => __( 'Left', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-left' ],
+					'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-center' ],
+					'right'  => [ 'title' => __( 'Right', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-right' ],
+				],
+				'default'   => 'left',
+				'selectors' => [
+					'{{WRAPPER}} .wpuf-sub-description' => 'text-align: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'plan_description_margin_bottom',
+			[
+				'label'      => __( 'Margin Bottom', 'wp-user-frontend' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'      => [ 'px' => [ 'min' => 0, 'max' => 50 ] ],
+				'default'    => [
+					'size' => '16',
+					'unit' => 'px',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .wpuf-sub-description' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+	}
+
+	/**
 	 * Register price style controls
 	 *
 	 * @since WPUF_SINCE
@@ -409,74 +476,6 @@ class Subscription_Plans_Widget extends Widget_Base {
 			[
 				'label' => __( 'Price', 'wp-user-frontend' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
-			]
-		);
-
-		$this->add_control(
-			'price_color',
-			[
-				'label'     => __( 'Text Color', 'wp-user-frontend' ),
-				'type'      => Controls_Manager::COLOR,
-				'default'   => '#111827',
-				'selectors' => [
-					'{{WRAPPER}} .wpuf-sub-price' => 'color: {{VALUE}};',
-				],
-			]
-		);
-
-		$this->add_control(
-			'currency_color',
-			[
-				'label'     => __( 'Currency Symbol Color', 'wp-user-frontend' ),
-				'type'      => Controls_Manager::COLOR,
-				'default'   => '#6b7280',
-				'selectors' => [
-					'{{WRAPPER}} .wpuf-sub-currency' => 'color: {{VALUE}};',
-				],
-			]
-		);
-
-		$this->add_control(
-			'billing_cycle_color',
-			[
-				'label'     => __( 'Billing Cycle Text Color', 'wp-user-frontend' ),
-				'type'      => Controls_Manager::COLOR,
-				'default'   => '#6b7280',
-				'selectors' => [
-					'{{WRAPPER}} .wpuf-sub-billing-cycle' => 'color: {{VALUE}};',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'billing_cycle_font_size',
-			[
-				'label'      => __( 'Billing Cycle Text Size', 'wp-user-frontend' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em' ],
-				'range'      => [ 'px' => [ 'min' => 8, 'max' => 50 ] ],
-				'selectors'  => [
-					'{{WRAPPER}} .wpuf-sub-billing-cycle' => 'font-size: {{SIZE}}{{UNIT}};',
-				],
-			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			[
-				'name'     => 'price_typography',
-				'selector' => '{{WRAPPER}} .wpuf-sub-price',
-				'fields_options' => [
-					'font_size' => [
-						'default' => [
-							'size' => '36',
-							'unit' => 'px',
-						],
-					],
-					'font_weight' => [
-						'default' => '700',
-					],
-				],
 			]
 		);
 
@@ -512,6 +511,100 @@ class Subscription_Plans_Widget extends Widget_Base {
 				'selectors'  => [
 					'{{WRAPPER}} .wpuf-sub-price-wrapper' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'currency_symbol_size',
+			[
+				'label'      => __( 'Currency Symbol Size', 'wp-user-frontend' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em' ],
+				'range'      => [ 'px' => [ 'min' => 8, 'max' => 80 ] ],
+				'selectors'  => [
+					'{{WRAPPER}} .wpuf-sub-currency' => 'font-size: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'currency_color',
+			[
+				'label'     => __( 'Currency Symbol Color', 'wp-user-frontend' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#6b7280',
+				'selectors' => [
+					'{{WRAPPER}} .wpuf-sub-currency' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'billing_amount_heading',
+			[
+				'label'     => __( 'Billing Amount', 'wp-user-frontend' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+        $this->add_control(
+			'price_color',
+			[
+				'label'     => __( 'Price Text Color', 'wp-user-frontend' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#111827',
+				'selectors' => [
+					'{{WRAPPER}} .wpuf-sub-price' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'billing_amount_typography',
+				'selector' => '{{WRAPPER}} .wpuf-sub-amount',
+				'fields_options' => [
+					'font_size' => [
+						'default' => [
+							'size' => '36',
+							'unit' => 'px',
+						],
+					],
+					'font_weight' => [
+						'default' => '700',
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'billing_cycle_heading',
+			[
+				'label'     => __( 'Billing Cycle', 'wp-user-frontend' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'billing_cycle_color',
+			[
+				'label'     => __( 'Billing Cycle Text Color', 'wp-user-frontend' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#6b7280',
+				'selectors' => [
+					'{{WRAPPER}} .wpuf-sub-billing-cycle' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'billing_cycle_typography',
+				'selector' => '{{WRAPPER}} .wpuf-sub-billing-cycle',
 			]
 		);
 
@@ -669,6 +762,24 @@ class Subscription_Plans_Widget extends Widget_Base {
 		);
 
 		$this->add_responsive_control(
+			'features_align',
+			[
+				'label'     => __( 'Text Alignment', 'wp-user-frontend' ),
+				'type'      => Controls_Manager::CHOOSE,
+				'options'   => [
+					'left'   => [ 'title' => __( 'Left', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-left' ],
+					'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-center' ],
+					'right'  => [ 'title' => __( 'Right', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-right' ],
+				],
+				'default'   => 'left',
+				'selectors' => [
+					'{{WRAPPER}} .wpuf-sub-features-list' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .wpuf-sub-feature-item'  => 'justify-content: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
 			'features_line_spacing',
 			[
 				'label'      => __( 'Line Spacing', 'wp-user-frontend' ),
@@ -694,6 +805,98 @@ class Subscription_Plans_Widget extends Widget_Base {
 				'range'      => [ 'px' => [ 'min' => 0, 'max' => 50 ] ],
 				'selectors'  => [
 					'{{WRAPPER}} .wpuf-sub-features-list' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+	}
+
+	/**
+	 * Register see more toggle style controls
+	 *
+	 * @since WPUF_SINCE
+	 *
+	 * @return void
+	 */
+	protected function register_see_more_style_controls() {
+		$this->start_controls_section(
+			'section_see_more_style',
+			[
+				'label' => __( 'See More Toggle', 'wp-user-frontend' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'see_more_color',
+			[
+				'label'     => __( 'Text Color', 'wp-user-frontend' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#6366f1',
+				'selectors' => [
+					'{{WRAPPER}} .wpuf-sub-features-toggle' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'see_more_hover_color',
+			[
+				'label'     => __( 'Hover Color', 'wp-user-frontend' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .wpuf-sub-features-toggle:hover' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'see_more_typography',
+				'selector' => '{{WRAPPER}} .wpuf-sub-features-toggle',
+				'fields_options' => [
+					'font_size' => [
+						'default' => [
+							'size' => '13',
+							'unit' => 'px',
+						],
+					],
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'see_more_align',
+			[
+				'label'     => __( 'Text Alignment', 'wp-user-frontend' ),
+				'type'      => Controls_Manager::CHOOSE,
+				'options'   => [
+					'left'   => [ 'title' => __( 'Left', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-left' ],
+					'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-center' ],
+					'right'  => [ 'title' => __( 'Right', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-right' ],
+				],
+				'default'   => 'left',
+				'selectors' => [
+					'{{WRAPPER}} .wpuf-sub-features-toggle-wrapper' => 'text-align: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'see_more_margin_top',
+			[
+				'label'      => __( 'Margin Top', 'wp-user-frontend' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'      => [ 'px' => [ 'min' => 0, 'max' => 30 ] ],
+				'default'    => [
+					'size' => '8',
+					'unit' => 'px',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .wpuf-sub-features-toggle-wrapper' => 'margin-top: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);

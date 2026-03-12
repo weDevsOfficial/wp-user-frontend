@@ -1,0 +1,550 @@
+/**
+ * User Directory Free - Frontend Styles
+ *
+ * @package WPUF
+ * @subpackage Free/User_Directory
+ * @since 4.3.0
+ */
+
+/* ==========================================================================
+   Directory Layout 3 - Grid with Round Avatars
+   ========================================================================== */
+
+.wpuf-user-directory {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Header with Search */
+.wpuf-ud-header {
+    margin-bottom: 2rem;
+}
+
+.wpuf-ud-search-form {
+    max-width: 400px;
+}
+
+.wpuf-ud-search-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.wpuf-ud-search-input {
+    width: 100%;
+    padding: 0.75rem 3rem 0.75rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #374151;
+    background-color: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.wpuf-ud-search-input:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.wpuf-ud-search-input::placeholder {
+    color: #9ca3af;
+}
+
+.wpuf-ud-search-btn {
+    position: absolute;
+    right: 0.75rem;
+    padding: 0.25rem;
+    color: #6b7280;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.wpuf-ud-search-btn:hover {
+    color: #374151;
+}
+
+.wpuf-ud-search-clear {
+    position: absolute;
+    right: 2.5rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-decoration: none;
+}
+
+.wpuf-ud-search-clear:hover {
+    color: #ef4444;
+}
+
+/* User Grid */
+.wpuf-ud-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.wpuf-ud-grid-3 {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.wpuf-ud-grid-4 {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+@media (min-width: 768px) {
+    .wpuf-ud-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .wpuf-ud-grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* User Card */
+.wpuf-ud-user-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    text-align: center;
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.wpuf-ud-user-card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+.wpuf-ud-user-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.wpuf-ud-avatar {
+    margin-bottom: 1rem;
+}
+
+.wpuf-ud-avatar-img {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto;
+    display: block;
+}
+
+.wpuf-ud-user-info {
+    min-height: 60px;
+}
+
+.wpuf-ud-user-name {
+    margin: 0 0 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.4;
+}
+
+.wpuf-ud-user-email {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #6b7280;
+    word-break: break-all;
+}
+
+/* No Users Found */
+.wpuf-ud-no-users {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    text-align: center;
+    padding: 2rem;
+    background: #f9fafb;
+    border-radius: 0.75rem;
+}
+
+.wpuf-ud-no-users-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5e7eb;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    color: #6b7280;
+}
+
+.wpuf-ud-no-users-title {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.wpuf-ud-no-users-text {
+    margin: 0 0 1rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.wpuf-ud-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #fff;
+    background-color: #10b981;
+    border: none;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.wpuf-ud-btn:hover {
+    background-color: #059669;
+    color: #fff;
+}
+
+/* Pagination */
+.wpuf-ud-pagination {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.wpuf-ud-pagination ul {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.wpuf-ud-pagination li {
+    margin: 0;
+}
+
+.wpuf-ud-pagination a,
+.wpuf-ud-pagination span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    transition: all 0.15s ease-in-out;
+}
+
+.wpuf-ud-pagination a:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+    color: #111827;
+}
+
+.wpuf-ud-pagination .current {
+    background: #10b981;
+    border-color: #10b981;
+    color: #fff;
+}
+
+/* ==========================================================================
+   Profile Layout 2 - Centered Profile
+   ========================================================================== */
+
+.wpuf-profile {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Back Button */
+.wpuf-profile-back {
+    margin-bottom: 2rem;
+}
+
+.wpuf-profile-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6b7280;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.15s ease-in-out;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.wpuf-profile-back-btn:hover {
+    background: #f9fafb;
+    color: #10b981;
+    border-color: #10b981;
+}
+
+.wpuf-profile-back-btn svg {
+    flex-shrink: 0;
+}
+
+/* Profile Card */
+.wpuf-profile-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    padding: 2.5rem;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Avatar */
+.wpuf-profile-avatar {
+    margin-bottom: 1.5rem;
+}
+
+.wpuf-profile-avatar-img {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Name */
+.wpuf-profile-name {
+    margin: 0 0 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.3;
+}
+
+/* Contact Info */
+.wpuf-profile-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    padding: 1.5rem 0;
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 1.5rem;
+}
+
+.wpuf-profile-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.wpuf-profile-contact-item svg {
+    color: #6b7280;
+    flex-shrink: 0;
+}
+
+.wpuf-profile-contact-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.wpuf-profile-contact-label {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.wpuf-profile-contact-value {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #111827;
+    text-decoration: none;
+}
+
+.wpuf-profile-contact-value:hover {
+    color: #10b981;
+}
+
+/* Actions */
+.wpuf-profile-actions {
+    margin-bottom: 1.5rem;
+}
+
+.wpuf-profile-edit-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #fff;
+    background-color: #10b981;
+    border: none;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.wpuf-profile-edit-btn:hover {
+    background-color: #059669;
+    color: #fff;
+}
+
+/* Bio Section */
+.wpuf-profile-bio {
+    margin-top: 2rem;
+    text-align: left;
+}
+
+.wpuf-profile-section-title {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.wpuf-profile-bio-text {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: #6b7280;
+}
+
+.wpuf-profile-bio-text p {
+    margin: 0 0 1rem;
+}
+
+.wpuf-profile-bio-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Pro CTA */
+.wpuf-profile-pro-cta {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px dashed #e5e7eb;
+}
+
+.wpuf-profile-pro-cta-inner {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+    border: 1px solid #a7f3d0;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.wpuf-profile-pro-cta-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #065f46;
+}
+
+.wpuf-profile-pro-cta-title svg {
+    color: #10b981;
+}
+
+.wpuf-profile-pro-cta-text {
+    margin: 0 0 1rem;
+    font-size: 0.875rem;
+    color: #047857;
+}
+
+.wpuf-profile-pro-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #fff;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: none;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.15s ease-in-out;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+
+.wpuf-profile-pro-cta-btn:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4);
+}
+
+/* Notice */
+.wpuf-ud-notice {
+    padding: 1rem 1.5rem;
+    background: #fef3c7;
+    border: 1px solid #fcd34d;
+    border-radius: 0.5rem;
+    color: #92400e;
+    font-size: 0.875rem;
+}
+
+.wpuf-ud-notice a {
+    color: #92400e;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.wpuf-ud-notice a:hover {
+    color: #78350f;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .wpuf-ud-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .wpuf-ud-user-card {
+        padding: 1.25rem;
+    }
+    
+    .wpuf-ud-avatar-img {
+        width: 96px;
+        height: 96px;
+    }
+    
+    .wpuf-profile-card {
+        padding: 1.5rem;
+    }
+    
+    .wpuf-profile-contact {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .wpuf-profile-contact-item {
+        justify-content: center;
+    }
+    
+    .wpuf-profile-contact-info {
+        text-align: center;
+    }
+}

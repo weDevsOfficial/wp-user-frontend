@@ -21,6 +21,9 @@ module.exports = {
         // New paths from upstream (for subscription templates)
         './templates/**/*.php',
         './src/**/*.{js,css}',
+        // Free User Directory module templates
+        './modules/user-directory/**/*.php',
+        './modules/user-directory/views/**/*.php',
     ],
     theme: {
          extend: {
@@ -44,7 +47,8 @@ module.exports = {
                     '#wpuf-ai-form-builder',
                     '.wpuf-ai-form-wrapper',
                     '.swal2-container',
-                    '.wpuf-account-container'
+                    '.wpuf-account-container',
+                    '.wpuf-form-template-modal'
                 ], {}
             ),
         } ),

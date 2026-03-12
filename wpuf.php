@@ -135,11 +135,28 @@ final class WP_User_Frontend {
         add_action( 'plugins_loaded', [ $this, 'instantiate' ] );
 
         add_action( 'init', [ $this, 'load_textdomain' ] );
+        add_action( 'init', [ $this, 'schedule_log_cleanup' ] );
 
         // do plugin upgrades
         add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), [ $this, 'plugin_action_links' ] );
 
         add_action( 'widgets_init', [ $this, 'register_widgets' ] );
+    }
+
+    /**
+     * Schedule log cleanup cron event if not already scheduled.
+     *
+     * Ensures existing installs that didn't go through activation
+     * still get the cleanup cron registered.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function schedule_log_cleanup() {
+        if ( ! wp_next_scheduled( 'wpuf_cleanup_logs' ) ) {
+            wp_schedule_event( time() + ( 3 * HOUR_IN_SECONDS ), 'daily', 'wpuf_cleanup_logs' );
+        }
     }
 
     public function init_insights() {
@@ -155,6 +172,8 @@ final class WP_User_Frontend {
     public function includes() {
         require_once __DIR__ . '/wpuf-functions.php';
         require_once __DIR__ . '/includes/class-frontend-render-form.php';
+
+        include_once WPUF_ROOT . '/includes/Log/class-wpuf-file-logger.php';
 
         // add reCaptcha library if not found
         if ( ! function_exists( 'recaptcha_get_html' ) ) {
@@ -318,6 +337,7 @@ final class WP_User_Frontend {
      */
     public static function uninstall() {
         wp_clear_scheduled_hook( 'wpuf_remove_expired_post_hook' );
+        wp_clear_scheduled_hook( 'wpuf_cleanup_logs' );
     }
 
     /**

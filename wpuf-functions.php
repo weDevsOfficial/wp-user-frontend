@@ -5261,6 +5261,60 @@ function wpuf_get_image_sizes_array( $size = '' ) {
 }
 
 /**
+ * Helper function for logging in wp-content/uploads/wpuf-logs/ directory
+ *
+ * Description of levels:
+ * 'emergency': System is unusable.
+ * 'alert': Action must be taken immediately.
+ * 'critical': Critical conditions.
+ * 'error': Error conditions.
+ * 'warning': Warning conditions.
+ * 'notice': Normal but significant condition.
+ * 'info': Informational messages.
+ * 'debug': Debug-level messages.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string          $message  The message to log.
+ * @param string          $level    The log level. Default 'info'.
+ * @param string|resource $log_file Optional. Log file path or resource. Default null.
+ *
+ * @return bool
+ */
+function wpuf_log( $message, $level = 'info', $log_file = null ) {
+    // return if function called early
+    if ( ! function_exists( 'wp_hash' ) ) {
+        _doing_it_wrong( __FUNCTION__, __( 'This method should not be called before plugins_loaded.', 'wp-user-frontend' ), '3.5.29' );
+        return false;
+    }
+
+    // allow site owners to control logging independently of WP_DEBUG
+    $enabled = apply_filters( 'wpuf_log_enabled', defined( 'WP_DEBUG' ) && WP_DEBUG );
+
+    if ( ! $enabled ) {
+        return false;
+    }
+
+    $logger = WPUF_File_Logger::instance();
+
+    return $logger->log( $message, $level, $log_file );
+}
+
+/**
+ * Trigger logging cleanup using the logging class.
+ *
+ * @since WPUF_SINCE
+ *
+ * @return void
+ */
+function wpuf_cleanup_logs() {
+    $logger = WPUF_File_Logger::instance();
+
+    $logger->clear_expired_logs();
+}
+add_action( 'wpuf_cleanup_logs', 'wpuf_cleanup_logs' );
+
+/**
  * The HTML preview part when hovering over a pro settings field
  *
  * @since 3.6.0

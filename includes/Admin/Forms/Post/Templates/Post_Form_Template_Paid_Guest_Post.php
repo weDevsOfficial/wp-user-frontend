@@ -7,7 +7,7 @@ use WeDevs\Wpuf\Admin\Forms\Form_Template;
 /**
  * Paid guest post submission form template
  *
- * @since 4.2.2
+ * @since WPUF_SINCE
  */
 class Post_Form_Template_Paid_Guest_Post extends Form_Template {
 
@@ -145,8 +145,8 @@ class Post_Form_Template_Paid_Guest_Post extends Form_Template {
             'post_permission'       => 'guest_post',
             'guest_post'            => 'true',
             'guest_details'         => 'on',
-            'name_label'            => 'Name',
-            'email_label'           => 'E-Mail',
+            'name_label'            => __( 'Name', 'wp-user-frontend' ),
+            'email_label'           => __( 'E-Mail', 'wp-user-frontend' ),
             'guest_email_verify'    => 'on',
             'message_restrict'      => __( 'This page is restricted. Please {login} / {register} to view this page.', 'wp-user-frontend' ),
             'redirect_to'           => 'post',

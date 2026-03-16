@@ -1031,9 +1031,8 @@ class Free_Loader extends Pro_Prompt {
         $integrations['WPUF_Pro_Form_Preview_Professional_Video'] = new Pro_Form_Preview_Professional_Video();
         $integrations['WPUF_Pro_Form_Preview_Artwork']            = new Pro_Form_Preview_Artwork();
         $integrations['WPUF_Pro_Form_Preview_Testimonial']        = new Pro_Form_Preview_Testimonial();
-        $integrations['WPUF_Pro_Form_Preview_Artwork'] = new Pro_Form_Preview_Artwork();
-        $integrations['WPUF_Pro_Form_Preview_Portfolio'] = new Pro_Form_Preview_Portfolio();
-        $integrations['WPUF_Pro_Form_Preview_Volunteer'] = new Pro_Form_Preview_Volunteer();
+        $integrations['WPUF_Pro_Form_Preview_Portfolio']          = new Pro_Form_Preview_Portfolio();
+        $integrations['WPUF_Pro_Form_Preview_Volunteer']          = new Pro_Form_Preview_Volunteer();
 
         return $integrations;
     }

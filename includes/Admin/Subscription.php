@@ -3,7 +3,6 @@
 namespace WeDevs\Wpuf\Admin;
 
 use WeDevs\Wpuf\Admin\Forms\Form;
-use WeDevs\Wpuf\Traits\TaxableTrait;
 use WeDevs\Wpuf\User_Subscription;
 use WP_Post;
 
@@ -15,8 +14,6 @@ use WP_Post;
  * @author Tareq Hasan
  */
 class Subscription {
-    use TaxableTrait;
-
     public function __construct() {
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_filter( 'wpuf_add_post_args', [ $this, 'set_pending' ], 10, 4 );
@@ -932,9 +929,9 @@ class Subscription {
             ?>
 
             <p><i><?php esc_html_e( 'You have a subscription pack activated.', 'wp-user-frontend' ); ?></i></p>
-            <p><i><?php 
+            <p><i><?php
                 // translators: %s: pack title
-                printf( esc_html__( 'Pack name: %s', 'wp-user-frontend' ), esc_html( get_the_title( $current_pack['pack_id'] ) ) ); 
+                printf( esc_html__( 'Pack name: %s', 'wp-user-frontend' ), esc_html( get_the_title( $current_pack['pack_id'] ) ) );
             ?></i></p>
 
             <?php echo '<p><i>' . esc_html__( 'To cancel the pack, press the following cancel button', 'wp-user-frontend' ) . '</i></p>'; ?>
@@ -1002,7 +999,7 @@ class Subscription {
      * @param bool   $coupon_status
      */
     public function pack_details( $pack, $details_meta, $current_pack_id = '', $coupon_status = false ) {
-        $price_with_tax = $this->wpuf_prices_include_tax();
+        // $price_with_tax = $this->wpuf_prices_include_tax();
 
         $user_id = get_current_user_id();
 
@@ -1019,9 +1016,7 @@ class Subscription {
         $trial_des      = '';
         $recurring_des  = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">' . __( 'One time payment', 'wp-user-frontend' ) . '</div>';
 
-        if ( isset( $price_with_tax ) && $price_with_tax ) {
-            $billing_amount = apply_filters( 'wpuf_payment_amount', $billing_amount );
-        }
+        $billing_amount = apply_filters( 'wpuf_payment_amount', $billing_amount );
 
         if ( $billing_amount && wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay'] ) ) {
             $cycle_number = ! empty( $pack->meta_value['billing_cycle_number'] ) && '1' !== $pack->meta_value['billing_cycle_number'] ? $pack->meta_value['billing_cycle_number'] : '';
@@ -1100,7 +1095,7 @@ class Subscription {
         $current_pack      = $current_user->subscription()->current_pack();
         $payment_enabled   = $form->is_charging_enabled();
 
-        $price_with_tax = $this->wpuf_prices_include_tax();
+        // $price_with_tax = $this->wpuf_prices_include_tax();
 
         if (
             ( self::has_user_error( $form_settings ) && ! ( $force_pack && $form->is_enabled_fallback_cost() ) )
@@ -1112,9 +1107,8 @@ class Subscription {
                 $form              = new Form( $form_id );
                 $pay_per_post_cost = (float) $form->get_pay_per_post_cost();
 
-                if ( isset( $price_with_tax ) && $price_with_tax ) {
-                    $pay_per_post_cost = apply_filters( 'wpuf_payment_amount', $pay_per_post_cost );
-                }
+                $pay_per_post_cost = apply_filters( 'wpuf_payment_amount', $pay_per_post_cost );
+
                 /* translators: %s: amount */
                 $text = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wp-user-frontend' ), wpuf_format_price( $pay_per_post_cost ) );
 
@@ -1129,9 +1123,8 @@ class Subscription {
                 $form          = new Form( $form_id );
                 $fallback_cost = (float) $form->get_subs_fallback_cost();
 
-                if ( isset( $price_with_tax ) && $price_with_tax ) {
-                    $fallback_cost = apply_filters( 'wpuf_payment_amount', $fallback_cost );
-                }
+                $fallback_cost = apply_filters( 'wpuf_payment_amount', $fallback_cost );
+
                 /* translators: %s: amount */
                 $text = sprintf( __( 'Your Subscription pack is exhausted. There is a <strong>%s</strong> charge to add a new post.', 'wp-user-frontend' ), wpuf_format_price( $fallback_cost ) );
 

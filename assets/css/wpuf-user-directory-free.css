@@ -1,0 +1,3210 @@
+/**
+ * User Directory Free - Main Styles
+ *
+ * Tailwind CSS with wpuf- prefix
+ * Matches Pro's wpuf-ud.css exactly
+ *
+ * @package WPUF
+ * @subpackage Free/User_Directory
+ * @since 4.3.0
+ */
+
+*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+/*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *)::before,
+:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *)::after {
+  box-sizing: border-box; /* 1 */
+  border-width: 0; /* 2 */
+  border-style: solid; /* 2 */
+  border-color: #e5e7eb; /* 2 */
+}
+
+:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *)::before,
+:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *)::after {
+  --tw-content: '';
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
+.wpuf-user-directory,
+.wpuf-user-directory-setup,
+.wpuf-user-listing,
+.wpuf-user-profile {
+  line-height: 1.5; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  -moz-tab-size: 4; /* 3 */
+  -o-tab-size: 4;
+     tab-size: 4; /* 3 */
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 4 */
+  font-feature-settings: normal; /* 5 */
+  font-variation-settings: normal; /* 6 */
+  -webkit-tap-highlight-color: transparent; /* 7 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
+.wpuf-user-directory,
+.wpuf-user-directory-setup,
+.wpuf-user-listing,
+.wpuf-user-profile {
+  margin: 0; /* 1 */
+  line-height: inherit; /* 2 */
+}
+
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+
+hr:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  height: 0; /* 1 */
+  color: inherit; /* 2 */
+  border-top-width: 1px; /* 3 */
+}
+
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]):where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  -webkit-text-decoration: underline dotted;
+          text-decoration: underline dotted;
+}
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+h2:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+h3:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+h4:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+h5:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+h6:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
+Add the correct font weight in Edge and Safari.
+*/
+
+b:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+strong:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  font-weight: bolder;
+}
+
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+kbd:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+samp:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+pre:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-feature-settings: normal; /* 2 */
+  font-variation-settings: normal; /* 3 */
+  font-size: 1em; /* 4 */
+}
+
+/*
+Add the correct font size in all browsers.
+*/
+
+small:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  font-size: 80%;
+}
+
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+sup:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  bottom: -0.25em;
+}
+
+sup:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  top: -0.5em;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
+table:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  text-indent: 0; /* 1 */
+  border-color: inherit; /* 2 */
+  border-collapse: collapse; /* 3 */
+}
+
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+input:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+optgroup:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+select:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+textarea:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  font-family: inherit; /* 1 */
+  font-feature-settings: inherit; /* 1 */
+  font-variation-settings: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  font-weight: inherit; /* 1 */
+  line-height: inherit; /* 1 */
+  letter-spacing: inherit; /* 1 */
+  color: inherit; /* 1 */
+  margin: 0; /* 2 */
+  padding: 0; /* 3 */
+}
+
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+select:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  text-transform: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+input:where([type='button']):where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+input:where([type='reset']):where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+input:where([type='submit']):where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  -webkit-appearance: button; /* 1 */
+  background-color: transparent; /* 2 */
+  background-image: none; /* 2 */
+}
+
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  outline: auto;
+}
+
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  box-shadow: none;
+}
+
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  vertical-align: baseline;
+}
+
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) ::-webkit-inner-spin-button,
+:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) ::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type='search']:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) ::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+
+:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) ::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  display: list-item;
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+dl:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+dd:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+h1:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+h2:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+h3:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+h4:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+h5:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+h6:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+hr:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+figure:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+p:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+pre:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  margin: 0;
+}
+
+fieldset:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  margin: 0;
+  padding: 0;
+}
+
+legend:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  padding: 0;
+}
+
+ol:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+ul:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+menu:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+
+dialog:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  padding: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  resize: vertical;
+}
+
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+
+:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) input::-moz-placeholder, :where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) textarea::-moz-placeholder {
+  opacity: 1; /* 1 */
+  color: #9ca3af; /* 2 */
+}
+
+:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) input::placeholder,
+:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) textarea::placeholder {
+  opacity: 1; /* 1 */
+  color: #9ca3af; /* 2 */
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+[role="button"]:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+
+:disabled:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+svg:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+video:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+canvas:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+audio:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+iframe:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+embed:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+object:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  display: block; /* 1 */
+  vertical-align: middle; /* 2 */
+}
+
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *),
+video:where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default */
+
+[hidden]:where(:not([hidden="until-found"])):where(.wpuf-user-directory,.wpuf-user-directory *,.wpuf-user-directory-setup,.wpuf-user-directory-setup *,.wpuf-user-listing,.wpuf-user-listing *,.wpuf-user-profile,.wpuf-user-profile *) {
+  display: none;
+}
+
+input:where([type='text']),input:where(:not([type])),input:where([type='email']),input:where([type='url']),input:where([type='password']),input:where([type='number']),input:where([type='date']),input:where([type='datetime-local']),input:where([type='month']),input:where([type='search']),input:where([type='tel']),input:where([type='time']),input:where([type='week']),select:where([multiple]),textarea,select {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: #fff;
+  border-color: #6b7280;
+  border-width: 1px;
+  border-radius: 0px;
+  padding-top: 0.5rem;
+  padding-right: 0.75rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  --tw-shadow: 0 0 #0000;
+}
+
+input:where([type='text']):focus, input:where(:not([type])):focus, input:where([type='email']):focus, input:where([type='url']):focus, input:where([type='password']):focus, input:where([type='number']):focus, input:where([type='date']):focus, input:where([type='datetime-local']):focus, input:where([type='month']):focus, input:where([type='search']):focus, input:where([type='tel']):focus, input:where([type='time']):focus, input:where([type='week']):focus, select:where([multiple]):focus, textarea:focus, select:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/);
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: #2563eb;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  border-color: #2563eb;
+}
+
+input::-moz-placeholder, textarea::-moz-placeholder {
+  color: #6b7280;
+  opacity: 1;
+}
+
+input::placeholder,textarea::placeholder {
+  color: #6b7280;
+  opacity: 1;
+}
+
+::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+::-webkit-date-and-time-value {
+  min-height: 1.5em;
+  text-align: inherit;
+}
+
+::-webkit-datetime-edit {
+  display: inline-flex;
+}
+
+::-webkit-datetime-edit,::-webkit-datetime-edit-year-field,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute-field,::-webkit-datetime-edit-second-field,::-webkit-datetime-edit-millisecond-field,::-webkit-datetime-edit-meridiem-field {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3e%3cpath stroke=%27%236b7280%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27M6 8l4 4 4-4%27/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+}
+
+select:where([multiple]),select:where([size]:not([size="1"])) {
+  background-image: initial;
+  background-position: initial;
+  background-repeat: unset;
+  background-size: initial;
+  padding-right: 0.75rem;
+  -webkit-print-color-adjust: unset;
+          print-color-adjust: unset;
+}
+
+input:where([type='checkbox']),input:where([type='radio']) {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  padding: 0;
+  -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+  display: inline-block;
+  vertical-align: middle;
+  background-origin: border-box;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  flex-shrink: 0;
+  height: 1rem;
+  width: 1rem;
+  color: #2563eb;
+  background-color: #fff;
+  border-color: #6b7280;
+  border-width: 1px;
+  --tw-shadow: 0 0 #0000;
+}
+
+input:where([type='checkbox']) {
+  border-radius: 0px;
+}
+
+input:where([type='radio']) {
+  border-radius: 100%;
+}
+
+input:where([type='checkbox']):focus,input:where([type='radio']):focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/);
+  --tw-ring-offset-width: 2px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: #2563eb;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+input:where([type='checkbox']):checked,input:where([type='radio']):checked {
+  border-color: transparent;
+  background-color: currentColor;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+input:where([type='checkbox']):checked {
+  background-image: url("data:image/svg+xml,%3csvg viewBox=%270 0 16 16%27 fill=%27white%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3cpath d=%27M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z%27/%3e%3c/svg%3e");
+}
+
+@media (forced-colors: active)  {
+
+  input:where([type='checkbox']):checked {
+    -webkit-appearance: auto;
+       -moz-appearance: auto;
+            appearance: auto;
+  }
+}
+
+input:where([type='radio']):checked {
+  background-image: url("data:image/svg+xml,%3csvg viewBox=%270 0 16 16%27 fill=%27white%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3ccircle cx=%278%27 cy=%278%27 r=%273%27/%3e%3c/svg%3e");
+}
+
+@media (forced-colors: active)  {
+
+  input:where([type='radio']):checked {
+    -webkit-appearance: auto;
+       -moz-appearance: auto;
+            appearance: auto;
+  }
+}
+
+input:where([type='checkbox']):checked:hover,input:where([type='checkbox']):checked:focus,input:where([type='radio']):checked:hover,input:where([type='radio']):checked:focus {
+  border-color: transparent;
+  background-color: currentColor;
+}
+
+input:where([type='checkbox']):indeterminate {
+  background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 16 16%27%3e%3cpath stroke=%27white%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27M4 8h8%27/%3e%3c/svg%3e");
+  border-color: transparent;
+  background-color: currentColor;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media (forced-colors: active)  {
+
+  input:where([type='checkbox']):indeterminate {
+    -webkit-appearance: auto;
+       -moz-appearance: auto;
+            appearance: auto;
+  }
+}
+
+input:where([type='checkbox']):indeterminate:hover,input:where([type='checkbox']):indeterminate:focus {
+  border-color: transparent;
+  background-color: currentColor;
+}
+
+input:where([type='file']) {
+  background: unset;
+  border-color: inherit;
+  border-width: 0;
+  border-radius: 0;
+  padding: 0;
+  font-size: unset;
+  line-height: inherit;
+}
+
+input:where([type='file']):focus {
+  outline: 1px solid ButtonText;
+  outline: 1px auto -webkit-focus-ring-color;
+}
+.wpuf-container {
+  width: 100%;
+}
+@media (min-width: 640px) {
+
+  .wpuf-container {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+
+  .wpuf-container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+
+  .wpuf-container {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+
+  .wpuf-container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1536px) {
+
+  .wpuf-container {
+    max-width: 1536px;
+  }
+}
+.wpuf-btn-primary {
+  border-radius: 0.375rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1)) !important;
+}
+.wpuf-btn-primary:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(4 120 87 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.wpuf-btn-primary:focus {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.wpuf-btn-white {
+  border-radius: 0.375rem;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity, 1));
+}
+.wpuf-btn-white:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
+}
+.wpuf-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.wpuf-fixed {
+  position: fixed;
+}
+.wpuf-absolute {
+  position: absolute;
+}
+.\!wpuf-relative {
+  position: relative !important;
+}
+.wpuf-relative {
+  position: relative;
+}
+.wpuf-sticky {
+  position: sticky;
+}
+.wpuf-inset-0 {
+  inset: 0px;
+}
+.wpuf-bottom-0 {
+  bottom: 0px;
+}
+.wpuf-bottom-full {
+  bottom: 100%;
+}
+.wpuf-left-1\/2 {
+  left: 50%;
+}
+.wpuf-left-2 {
+  left: 0.5rem;
+}
+.wpuf-left-\[-35px\] {
+  left: -35px;
+}
+.wpuf-right-0 {
+  right: 0px;
+}
+.wpuf-right-2 {
+  right: 0.5rem;
+}
+.wpuf-right-6 {
+  right: 1.5rem;
+}
+.wpuf-right-8 {
+  right: 2rem;
+}
+.wpuf-top-0 {
+  top: 0px;
+}
+.wpuf-top-2 {
+  top: 0.5rem;
+}
+.wpuf-top-6 {
+  top: 1.5rem;
+}
+.wpuf-top-8 {
+  top: 2rem;
+}
+.wpuf-z-10 {
+  z-index: 10;
+}
+.wpuf-z-50 {
+  z-index: 50;
+}
+.wpuf-z-\[99999\] {
+  z-index: 99999;
+}
+.wpuf-z-\[9999\] {
+  z-index: 9999;
+}
+.\!wpuf-col-span-3 {
+  grid-column: span 3 / span 3 !important;
+}
+.\!wpuf-col-span-6 {
+  grid-column: span 6 / span 6 !important;
+}
+.\!wpuf-m-0 {
+  margin: 0px !important;
+}
+.wpuf-m-0 {
+  margin: 0px;
+}
+.wpuf-m-4 {
+  margin: 1rem;
+}
+.wpuf-m-8 {
+  margin: 2rem;
+}
+.\!wpuf-mx-auto {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.\!wpuf-my-8 {
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+}
+.wpuf-mx-1 {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+.wpuf-mx-3 {
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+}
+.wpuf-mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.wpuf-my-10 {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+.\!wpuf-mb-0 {
+  margin-bottom: 0px !important;
+}
+.\!wpuf-mb-0\.5 {
+  margin-bottom: 0.125rem !important;
+}
+.\!wpuf-mb-1 {
+  margin-bottom: 0.25rem !important;
+}
+.\!wpuf-mb-12 {
+  margin-bottom: 3rem !important;
+}
+.\!wpuf-mb-2 {
+  margin-bottom: 0.5rem !important;
+}
+.\!wpuf-mb-4 {
+  margin-bottom: 1rem !important;
+}
+.\!wpuf-mb-5 {
+  margin-bottom: 1.25rem !important;
+}
+.\!wpuf-mb-6 {
+  margin-bottom: 1.5rem !important;
+}
+.\!wpuf-mb-8 {
+  margin-bottom: 2rem !important;
+}
+.\!wpuf-ml-1 {
+  margin-left: 0.25rem !important;
+}
+.\!wpuf-ml-\[-20px\] {
+  margin-left: -20px !important;
+}
+.\!wpuf-mr-1 {
+  margin-right: 0.25rem !important;
+}
+.\!wpuf-mr-2 {
+  margin-right: 0.5rem !important;
+}
+.\!wpuf-mt-1 {
+  margin-top: 0.25rem !important;
+}
+.\!wpuf-mt-10 {
+  margin-top: 2.5rem !important;
+}
+.\!wpuf-mt-3 {
+  margin-top: 0.75rem !important;
+}
+.\!wpuf-mt-4 {
+  margin-top: 1rem !important;
+}
+.\!wpuf-mt-6 {
+  margin-top: 1.5rem !important;
+}
+.\!wpuf-mt-8 {
+  margin-top: 2rem !important;
+}
+.wpuf-mb-1 {
+  margin-bottom: 0.25rem;
+}
+.wpuf-mb-2 {
+  margin-bottom: 0.5rem;
+}
+.wpuf-mb-3 {
+  margin-bottom: 0.75rem;
+}
+.wpuf-mb-4 {
+  margin-bottom: 1rem;
+}
+.wpuf-mb-6 {
+  margin-bottom: 1.5rem;
+}
+.wpuf-mb-8 {
+  margin-bottom: 2rem;
+}
+.wpuf-ml-1 {
+  margin-left: 0.25rem;
+}
+.wpuf-ml-2 {
+  margin-left: 0.5rem;
+}
+.wpuf-ml-3 {
+  margin-left: 0.75rem;
+}
+.wpuf-ml-4 {
+  margin-left: 1rem;
+}
+.wpuf-ml-\[-20px\] {
+  margin-left: -20px;
+}
+.wpuf-mr-1 {
+  margin-right: 0.25rem;
+}
+.wpuf-mr-2 {
+  margin-right: 0.5rem;
+}
+.wpuf-mr-3 {
+  margin-right: 0.75rem;
+}
+.wpuf-mr-4 {
+  margin-right: 1rem;
+}
+.wpuf-mr-\[16px\] {
+  margin-right: 16px;
+}
+.wpuf-mt-1 {
+  margin-top: 0.25rem;
+}
+.wpuf-mt-10 {
+  margin-top: 2.5rem;
+}
+.wpuf-mt-12 {
+  margin-top: 3rem;
+}
+.wpuf-mt-16 {
+  margin-top: 4rem;
+}
+.wpuf-mt-2 {
+  margin-top: 0.5rem;
+}
+.wpuf-mt-20 {
+  margin-top: 5rem;
+}
+.wpuf-mt-3 {
+  margin-top: 0.75rem;
+}
+.wpuf-mt-4 {
+  margin-top: 1rem;
+}
+.wpuf-mt-7 {
+  margin-top: 1.75rem;
+}
+.wpuf-mt-8 {
+  margin-top: 2rem;
+}
+.wpuf-mt-\[25px\] {
+  margin-top: 25px;
+}
+.\!wpuf-block {
+  display: block !important;
+}
+.wpuf-block {
+  display: block;
+}
+.\!wpuf-inline-block {
+  display: inline-block !important;
+}
+.wpuf-inline-block {
+  display: inline-block;
+}
+.\!wpuf-flex {
+  display: flex !important;
+}
+.wpuf-flex {
+  display: flex;
+}
+.\!wpuf-inline-flex {
+  display: inline-flex !important;
+}
+.wpuf-inline-flex {
+  display: inline-flex;
+}
+.wpuf-flow-root {
+  display: flow-root;
+}
+.\!wpuf-grid {
+  display: grid !important;
+}
+.wpuf-grid {
+  display: grid;
+}
+.\!wpuf-h-11 {
+  height: 2.75rem !important;
+}
+.\!wpuf-h-12 {
+  height: 3rem !important;
+}
+.\!wpuf-h-24 {
+  height: 6rem !important;
+}
+.\!wpuf-h-28 {
+  height: 7rem !important;
+}
+.\!wpuf-h-3 {
+  height: 0.75rem !important;
+}
+.\!wpuf-h-32 {
+  height: 8rem !important;
+}
+.\!wpuf-h-4 {
+  height: 1rem !important;
+}
+.\!wpuf-h-5 {
+  height: 1.25rem !important;
+}
+.\!wpuf-h-8 {
+  height: 2rem !important;
+}
+.\!wpuf-h-\[200px\] {
+  height: 200px !important;
+}
+.\!wpuf-h-\[42px\] {
+  height: 42px !important;
+}
+.\!wpuf-h-\[50px\] {
+  height: 50px !important;
+}
+.\!wpuf-h-\[58px\] {
+  height: 58px !important;
+}
+.\!wpuf-h-auto {
+  height: auto !important;
+}
+.\!wpuf-h-full {
+  height: 100% !important;
+}
+.wpuf-h-0\.5 {
+  height: 0.125rem;
+}
+.wpuf-h-16 {
+  height: 4rem;
+}
+.wpuf-h-20 {
+  height: 5rem;
+}
+.wpuf-h-28 {
+  height: 7rem;
+}
+.wpuf-h-3 {
+  height: 0.75rem;
+}
+.wpuf-h-4 {
+  height: 1rem;
+}
+.wpuf-h-5 {
+  height: 1.25rem;
+}
+.wpuf-h-6 {
+  height: 1.5rem;
+}
+.wpuf-h-8 {
+  height: 2rem;
+}
+.wpuf-h-\[18px\] {
+  height: 18px;
+}
+.wpuf-h-\[440px\] {
+  height: 440px;
+}
+.wpuf-h-\[50px\] {
+  height: 50px;
+}
+.wpuf-h-\[52px\] {
+  height: 52px;
+}
+.wpuf-h-\[calc\(100vh-12rem\)\] {
+  height: calc(100vh - 12rem);
+}
+.wpuf-h-auto {
+  height: auto;
+}
+.wpuf-max-h-60 {
+  max-height: 15rem;
+}
+.\!wpuf-min-h-\[300px\] {
+  min-height: 300px !important;
+}
+.\!wpuf-min-h-\[400px\] {
+  min-height: 400px !important;
+}
+.wpuf-min-h-\[350px\] {
+  min-height: 350px;
+}
+.\!wpuf-w-11 {
+  width: 2.75rem !important;
+}
+.\!wpuf-w-12 {
+  width: 3rem !important;
+}
+.\!wpuf-w-24 {
+  width: 6rem !important;
+}
+.\!wpuf-w-3 {
+  width: 0.75rem !important;
+}
+.\!wpuf-w-32 {
+  width: 8rem !important;
+}
+.\!wpuf-w-4 {
+  width: 1rem !important;
+}
+.\!wpuf-w-5 {
+  width: 1.25rem !important;
+}
+.\!wpuf-w-8 {
+  width: 2rem !important;
+}
+.\!wpuf-w-\[calc\(100\%\+40px\)\] {
+  width: calc(100% + 40px) !important;
+}
+.\!wpuf-w-full {
+  width: 100% !important;
+}
+.wpuf-w-1\/2 {
+  width: 50%;
+}
+.wpuf-w-12 {
+  width: 3rem;
+}
+.wpuf-w-2\/3 {
+  width: 66.666667%;
+}
+.wpuf-w-2\/4 {
+  width: 50%;
+}
+.wpuf-w-20 {
+  width: 5rem;
+}
+.wpuf-w-28 {
+  width: 7rem;
+}
+.wpuf-w-3 {
+  width: 0.75rem;
+}
+.wpuf-w-4 {
+  width: 1rem;
+}
+.wpuf-w-40 {
+  width: 10rem;
+}
+.wpuf-w-5 {
+  width: 1.25rem;
+}
+.wpuf-w-6 {
+  width: 1.5rem;
+}
+.wpuf-w-64 {
+  width: 16rem;
+}
+.wpuf-w-8 {
+  width: 2rem;
+}
+.wpuf-w-\[101px\] {
+  width: 101px;
+}
+.wpuf-w-\[102px\] {
+  width: 102px;
+}
+.wpuf-w-\[103px\] {
+  width: 103px;
+}
+.wpuf-w-\[151px\] {
+  width: 151px;
+}
+.wpuf-w-\[18px\] {
+  width: 18px;
+}
+.wpuf-w-\[660px\] {
+  width: 660px;
+}
+.wpuf-w-\[calc\(100\%\+40px\)\] {
+  width: calc(100% + 40px);
+}
+.wpuf-w-full {
+  width: 100%;
+}
+.wpuf-w-max {
+  width: -moz-max-content;
+  width: max-content;
+}
+.wpuf-min-w-\[300px\] {
+  min-width: 300px;
+}
+.wpuf-min-w-full {
+  min-width: 100%;
+}
+.\!wpuf-max-w-2xl {
+  max-width: 42rem !important;
+}
+.\!wpuf-max-w-6xl {
+  max-width: 72rem !important;
+}
+.\!wpuf-max-w-\[383px\] {
+  max-width: 383px !important;
+}
+.\!wpuf-max-w-md {
+  max-width: 28rem !important;
+}
+.wpuf-max-w-3xl {
+  max-width: 48rem;
+}
+.wpuf-max-w-4xl {
+  max-width: 56rem;
+}
+.wpuf-max-w-\[400px\] {
+  max-width: 400px;
+}
+.wpuf-max-w-full {
+  max-width: 100%;
+}
+.wpuf-flex-1 {
+  flex: 1 1 0%;
+}
+.\!wpuf-flex-shrink-0 {
+  flex-shrink: 0 !important;
+}
+.wpuf-flex-shrink-0 {
+  flex-shrink: 0;
+}
+.wpuf-flex-grow {
+  flex-grow: 1;
+}
+.wpuf-origin-top-right {
+  transform-origin: top right;
+}
+.-wpuf-translate-x-1\/2 {
+  --tw-translate-x: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.wpuf-translate-x-0 {
+  --tw-translate-x: 0px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.wpuf-translate-x-full {
+  --tw-translate-x: 100%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.wpuf-scale-\[0\.98\] {
+  --tw-scale-x: 0.98;
+  --tw-scale-y: 0.98;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.wpuf-transform {
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@keyframes wpuf-spin {
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+.wpuf-animate-spin {
+  animation: wpuf-spin 1s linear infinite;
+}
+.\!wpuf-cursor-not-allowed {
+  cursor: not-allowed !important;
+}
+.\!wpuf-cursor-pointer {
+  cursor: pointer !important;
+}
+.wpuf-cursor-move {
+  cursor: move;
+}
+.wpuf-cursor-not-allowed {
+  cursor: not-allowed;
+}
+.wpuf-cursor-pointer {
+  cursor: pointer;
+}
+.wpuf-list-none {
+  list-style-type: none;
+}
+.\!wpuf-appearance-none {
+  -webkit-appearance: none !important;
+     -moz-appearance: none !important;
+          appearance: none !important;
+}
+.\!wpuf-grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+}
+.\!wpuf-grid-cols-12 {
+  grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+}
+.\!wpuf-grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+.wpuf-grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.wpuf-grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.\!wpuf-flex-col {
+  flex-direction: column !important;
+}
+.wpuf-flex-col {
+  flex-direction: column;
+}
+.\!wpuf-flex-wrap {
+  flex-wrap: wrap !important;
+}
+.wpuf-flex-wrap {
+  flex-wrap: wrap;
+}
+.\!wpuf-items-start {
+  align-items: flex-start !important;
+}
+.wpuf-items-end {
+  align-items: flex-end;
+}
+.\!wpuf-items-center {
+  align-items: center !important;
+}
+.wpuf-items-center {
+  align-items: center;
+}
+.\!wpuf-items-stretch {
+  align-items: stretch !important;
+}
+.wpuf-justify-start {
+  justify-content: flex-start;
+}
+.wpuf-justify-end {
+  justify-content: flex-end;
+}
+.\!wpuf-justify-center {
+  justify-content: center !important;
+}
+.wpuf-justify-center {
+  justify-content: center;
+}
+.\!wpuf-justify-between {
+  justify-content: space-between !important;
+}
+.wpuf-justify-between {
+  justify-content: space-between;
+}
+.\!wpuf-gap-1 {
+  gap: 0.25rem !important;
+}
+.\!wpuf-gap-2 {
+  gap: 0.5rem !important;
+}
+.\!wpuf-gap-2\.5 {
+  gap: 0.625rem !important;
+}
+.\!wpuf-gap-3 {
+  gap: 0.75rem !important;
+}
+.\!wpuf-gap-4 {
+  gap: 1rem !important;
+}
+.\!wpuf-gap-6 {
+  gap: 1.5rem !important;
+}
+.\!wpuf-gap-8 {
+  gap: 2rem !important;
+}
+.wpuf-gap-1 {
+  gap: 0.25rem;
+}
+.wpuf-gap-2 {
+  gap: 0.5rem;
+}
+.wpuf-gap-3 {
+  gap: 0.75rem;
+}
+.wpuf-gap-6 {
+  gap: 1.5rem;
+}
+.\!wpuf-gap-x-6 {
+  -moz-column-gap: 1.5rem !important;
+       column-gap: 1.5rem !important;
+}
+.\!wpuf-gap-y-6 {
+  row-gap: 1.5rem !important;
+}
+.\!wpuf-space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0 !important;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse))) !important;
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse)) !important;
+}
+.wpuf-space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+.wpuf-divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+.wpuf-divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-divide-opacity, 1));
+}
+.wpuf-divide-gray-300 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-divide-opacity, 1));
+}
+.wpuf-overflow-auto {
+  overflow: auto;
+}
+.\!wpuf-overflow-hidden {
+  overflow: hidden !important;
+}
+.wpuf-overflow-hidden {
+  overflow: hidden;
+}
+.\!wpuf-truncate {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+.wpuf-whitespace-nowrap {
+  white-space: nowrap;
+}
+.\!wpuf-rounded-full {
+  border-radius: 9999px !important;
+}
+.\!wpuf-rounded-lg {
+  border-radius: 0.5rem !important;
+}
+.\!wpuf-rounded-md {
+  border-radius: 0.375rem !important;
+}
+.\!wpuf-rounded-xl {
+  border-radius: 0.75rem !important;
+}
+.wpuf-rounded {
+  border-radius: 0.25rem;
+}
+.wpuf-rounded-\[10px\] {
+  border-radius: 10px;
+}
+.wpuf-rounded-\[4px\] {
+  border-radius: 4px;
+}
+.wpuf-rounded-\[5px\] {
+  border-radius: 5px;
+}
+.wpuf-rounded-\[6px\] {
+  border-radius: 6px;
+}
+.wpuf-rounded-full {
+  border-radius: 9999px;
+}
+.wpuf-rounded-lg {
+  border-radius: 0.5rem;
+}
+.wpuf-rounded-md {
+  border-radius: 0.375rem;
+}
+.wpuf-rounded-xl {
+  border-radius: 0.75rem;
+}
+.\!wpuf-border {
+  border-width: 1px !important;
+}
+.\!wpuf-border-0 {
+  border-width: 0px !important;
+}
+.\!wpuf-border-4 {
+  border-width: 4px !important;
+}
+.wpuf-border {
+  border-width: 1px;
+}
+.wpuf-border-0 {
+  border-width: 0px;
+}
+.wpuf-border-2 {
+  border-width: 2px;
+}
+.\!wpuf-border-b {
+  border-bottom-width: 1px !important;
+}
+.\!wpuf-border-b-2 {
+  border-bottom-width: 2px !important;
+}
+.\!wpuf-border-t {
+  border-top-width: 1px !important;
+}
+.\!wpuf-border-t-2 {
+  border-top-width: 2px !important;
+}
+.wpuf-border-b {
+  border-bottom-width: 1px;
+}
+.wpuf-border-t {
+  border-top-width: 1px;
+}
+.wpuf-border-t-2 {
+  border-top-width: 2px;
+}
+.\!wpuf-border-emerald-500 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(16 185 129 / var(--tw-border-opacity, 1)) !important;
+}
+.\!wpuf-border-emerald-600 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(5 150 105 / var(--tw-border-opacity, 1)) !important;
+}
+.\!wpuf-border-emerald-700 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(4 120 87 / var(--tw-border-opacity, 1)) !important;
+}
+.\!wpuf-border-gray-100 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(243 244 246 / var(--tw-border-opacity, 1)) !important;
+}
+.\!wpuf-border-gray-200 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1)) !important;
+}
+.\!wpuf-border-gray-300 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1)) !important;
+}
+.\!wpuf-border-gray-700 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(55 65 81 / var(--tw-border-opacity, 1)) !important;
+}
+.\!wpuf-border-gray-800 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(31 41 55 / var(--tw-border-opacity, 1)) !important;
+}
+.\!wpuf-border-purple-600 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(147 51 234 / var(--tw-border-opacity, 1)) !important;
+}
+.\!wpuf-border-purple-700 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(126 34 206 / var(--tw-border-opacity, 1)) !important;
+}
+.\!wpuf-border-white {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1)) !important;
+}
+.wpuf-border-emerald-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(16 185 129 / var(--tw-border-opacity, 1));
+}
+.wpuf-border-emerald-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(5 150 105 / var(--tw-border-opacity, 1));
+}
+.wpuf-border-gray-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(243 244 246 / var(--tw-border-opacity, 1));
+}
+.wpuf-border-gray-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
+}
+.wpuf-border-gray-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
+}
+.wpuf-border-gray-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(75 85 99 / var(--tw-border-opacity, 1));
+}
+.wpuf-border-indigo-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(79 70 229 / var(--tw-border-opacity, 1));
+}
+.wpuf-border-primary {
+  --tw-border-opacity: 1;
+  border-color: rgb(5 150 105 / var(--tw-border-opacity, 1));
+}
+.wpuf-border-purple-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 51 234 / var(--tw-border-opacity, 1));
+}
+.wpuf-border-purple-700 {
+  --tw-border-opacity: 1;
+  border-color: rgb(126 34 206 / var(--tw-border-opacity, 1));
+}
+.wpuf-border-red-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(254 202 202 / var(--tw-border-opacity, 1));
+}
+.wpuf-border-transparent {
+  border-color: transparent;
+}
+.wpuf-border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+.\!wpuf-border-b-green-500 {
+  --tw-border-opacity: 1 !important;
+  border-bottom-color: rgb(34 197 94 / var(--tw-border-opacity, 1)) !important;
+}
+.\!wpuf-border-b-transparent {
+  border-bottom-color: transparent !important;
+}
+.wpuf-border-t-transparent {
+  border-top-color: transparent;
+}
+.\!wpuf-bg-emerald-100 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(209 250 229 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-emerald-50 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-emerald-500 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-emerald-600 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-emerald-700 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(4 120 87 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-gray-100 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-gray-200 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-gray-400 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(156 163 175 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-gray-50 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-gray-700 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-gray-800 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-green-100 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(220 252 231 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-green-700 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(21 128 61 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-purple-500 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(168 85 247 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-purple-600 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(147 51 234 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-purple-700 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(126 34 206 / var(--tw-bg-opacity, 1)) !important;
+}
+.\!wpuf-bg-transparent {
+  background-color: transparent !important;
+}
+.\!wpuf-bg-white {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1)) !important;
+}
+.wpuf-bg-\[\#EF4444\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-blue-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-emerald-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-emerald-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-gray-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-gray-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-gray-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-gray-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-gray-900\/80 {
+  background-color: rgb(17 24 39 / 0.8);
+}
+.wpuf-bg-green-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 252 231 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-green-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(21 128 61 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-indigo-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(238 242 255 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-indigo-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(79 70 229 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-purple-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(168 85 247 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-purple-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(147 51 234 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-purple-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(126 34 206 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-red-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-transparent {
+  background-color: transparent;
+}
+.wpuf-bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-white\/80 {
+  background-color: rgb(255 255 255 / 0.8);
+}
+.wpuf-bg-white\/90 {
+  background-color: rgb(255 255 255 / 0.9);
+}
+.wpuf-bg-yellow-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(234 179 8 / var(--tw-bg-opacity, 1));
+}
+.wpuf-bg-opacity-30 {
+  --tw-bg-opacity: 0.3;
+}
+.\!wpuf-bg-\[url\(\'data\:image\/svg\+xml\;charset\=US-ASCII\2c \%3Csvg\%20width\%3D\%2714\%27\%20height\%3D\%278\%27\%20viewBox\%3D\%270\%200\%2014\%208\%27\%20xmlns\%3D\%27http\%3A\/\/www\.w3\.org\/2000\/svg\%27\%3E\%3Cpath\%20d\%3D\%27M1\%201l6\%206\%206-6\%27\%20stroke\%3D\%27\%239CA3AF\%27\%20stroke-width\%3D\%272\%27\%20fill\%3D\%27none\%27\%20fill-rule\%3D\%27evenodd\%27\/\%3E\%3C\/svg\%3E\'\)\] {
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2714%27%20height%3D%278%27%20viewBox%3D%270%200%2014%208%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%3E%3Cpath%20d%3D%27M1%201l6%206%206-6%27%20stroke%3D%27%239CA3AF%27%20stroke-width%3D%272%27%20fill%3D%27none%27%20fill-rule%3D%27evenodd%27/%3E%3C/svg%3E") !important;
+}
+.wpuf-bg-gradient-to-br {
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+}
+.wpuf-bg-gradient-to-r {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+.wpuf-from-amber-500 {
+  --tw-gradient-from: #f59e0b var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(245 158 11 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.wpuf-from-indigo-100 {
+  --tw-gradient-from: #e0e7ff var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(224 231 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.wpuf-to-amber-600 {
+  --tw-gradient-to: #d97706 var(--tw-gradient-to-position);
+}
+.wpuf-to-purple-100 {
+  --tw-gradient-to: #f3e8ff var(--tw-gradient-to-position);
+}
+.\!wpuf-bg-\[size\:14px\] {
+  background-size: 14px !important;
+}
+.\!wpuf-bg-\[position\:right_0\.75rem_center\] {
+  background-position: right 0.75rem center !important;
+}
+.\!wpuf-bg-no-repeat {
+  background-repeat: no-repeat !important;
+}
+.wpuf-object-contain {
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+.\!wpuf-object-cover {
+  -o-object-fit: cover !important;
+     object-fit: cover !important;
+}
+.wpuf-object-cover {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.\!wpuf-p-0 {
+  padding: 0px !important;
+}
+.\!wpuf-p-4 {
+  padding: 1rem !important;
+}
+.\!wpuf-p-6 {
+  padding: 1.5rem !important;
+}
+.wpuf-p-0 {
+  padding: 0px;
+}
+.wpuf-p-1 {
+  padding: 0.25rem;
+}
+.wpuf-p-2 {
+  padding: 0.5rem;
+}
+.wpuf-p-3 {
+  padding: 0.75rem;
+}
+.wpuf-p-4 {
+  padding: 1rem;
+}
+.\!wpuf-px-1\.5 {
+  padding-left: 0.375rem !important;
+  padding-right: 0.375rem !important;
+}
+.\!wpuf-px-3 {
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+}
+.\!wpuf-px-4 {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+.\!wpuf-px-6 {
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+}
+.\!wpuf-px-\[20px\] {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+.\!wpuf-px-\[30px\] {
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+}
+.\!wpuf-py-0 {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+.\!wpuf-py-0\.5 {
+  padding-top: 0.125rem !important;
+  padding-bottom: 0.125rem !important;
+}
+.\!wpuf-py-1\.5 {
+  padding-top: 0.375rem !important;
+  padding-bottom: 0.375rem !important;
+}
+.\!wpuf-py-2 {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+.\!wpuf-py-2\.5 {
+  padding-top: 0.625rem !important;
+  padding-bottom: 0.625rem !important;
+}
+.\!wpuf-py-20 {
+  padding-top: 5rem !important;
+  padding-bottom: 5rem !important;
+}
+.\!wpuf-py-4 {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+.\!wpuf-py-8 {
+  padding-top: 2rem !important;
+  padding-bottom: 2rem !important;
+}
+.\!wpuf-py-\[9px\] {
+  padding-top: 9px !important;
+  padding-bottom: 9px !important;
+}
+.wpuf-px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.wpuf-px-20 {
+  padding-left: 5rem;
+  padding-right: 5rem;
+}
+.wpuf-px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.wpuf-px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.wpuf-px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+.wpuf-px-\[10px\] {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.wpuf-px-\[20px\] {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.wpuf-py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.wpuf-py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.wpuf-py-3\.5 {
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+}
+.wpuf-py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.wpuf-py-\[5px\] {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.\!wpuf-pb-4 {
+  padding-bottom: 1rem !important;
+}
+.\!wpuf-pl-4 {
+  padding-left: 1rem !important;
+}
+.\!wpuf-pl-\[17px\] {
+  padding-left: 17px !important;
+}
+.\!wpuf-pr-10 {
+  padding-right: 2.5rem !important;
+}
+.\!wpuf-pr-\[15px\] {
+  padding-right: 15px !important;
+}
+.wpuf-pb-1 {
+  padding-bottom: 0.25rem;
+}
+.wpuf-pb-14 {
+  padding-bottom: 3.5rem;
+}
+.wpuf-pb-24 {
+  padding-bottom: 6rem;
+}
+.wpuf-pb-\[13px\] {
+  padding-bottom: 13px;
+}
+.wpuf-pl-3 {
+  padding-left: 0.75rem;
+}
+.wpuf-pl-4 {
+  padding-left: 1rem;
+}
+.wpuf-pl-\[25px\] {
+  padding-left: 25px;
+}
+.wpuf-pr-3 {
+  padding-right: 0.75rem;
+}
+.wpuf-pr-4 {
+  padding-right: 1rem;
+}
+.wpuf-pr-40 {
+  padding-right: 10rem;
+}
+.wpuf-pr-\[23px\] {
+  padding-right: 23px;
+}
+.wpuf-pr-\[25px\] {
+  padding-right: 25px;
+}
+.wpuf-pt-14 {
+  padding-top: 3.5rem;
+}
+.wpuf-pt-\[13px\] {
+  padding-top: 13px;
+}
+.wpuf-text-left {
+  text-align: left;
+}
+.\!wpuf-text-center {
+  text-align: center !important;
+}
+.wpuf-text-center {
+  text-align: center;
+}
+.\!wpuf-text-right {
+  text-align: right !important;
+}
+.wpuf-text-right {
+  text-align: right;
+}
+.wpuf-align-middle {
+  vertical-align: middle;
+}
+.\!wpuf-text-2xl {
+  font-size: 1.5rem !important;
+  line-height: 2rem !important;
+}
+.\!wpuf-text-base {
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
+}
+.\!wpuf-text-sm {
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+}
+.\!wpuf-text-xl {
+  font-size: 1.25rem !important;
+  line-height: 1.75rem !important;
+}
+.\!wpuf-text-xs {
+  font-size: 0.75rem !important;
+  line-height: 1rem !important;
+}
+.wpuf-text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.wpuf-text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.wpuf-text-\[10px\] {
+  font-size: 10px;
+}
+.wpuf-text-\[14px\] {
+  font-size: 14px;
+}
+.wpuf-text-\[15px\] {
+  font-size: 15px;
+}
+.wpuf-text-\[16px\] {
+  font-size: 16px;
+}
+.wpuf-text-\[20px\] {
+  font-size: 20px;
+}
+.wpuf-text-\[30px\] {
+  font-size: 30px;
+}
+.wpuf-text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.wpuf-text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.wpuf-text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.wpuf-text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.\!wpuf-font-bold {
+  font-weight: 700 !important;
+}
+.\!wpuf-font-medium {
+  font-weight: 500 !important;
+}
+.\!wpuf-font-normal {
+  font-weight: 400 !important;
+}
+.\!wpuf-font-semibold {
+  font-weight: 600 !important;
+}
+.wpuf-font-bold {
+  font-weight: 700;
+}
+.wpuf-font-extrabold {
+  font-weight: 800;
+}
+.wpuf-font-medium {
+  font-weight: 500;
+}
+.wpuf-font-normal {
+  font-weight: 400;
+}
+.wpuf-font-semibold {
+  font-weight: 600;
+}
+.wpuf-uppercase {
+  text-transform: uppercase;
+}
+.\!wpuf-leading-\[21px\] {
+  line-height: 21px !important;
+}
+.\!wpuf-leading-\[27\.6px\] {
+  line-height: 27.6px !important;
+}
+.\!wpuf-leading-none {
+  line-height: 1 !important;
+}
+.\!wpuf-leading-relaxed {
+  line-height: 1.625 !important;
+}
+.wpuf-leading-5 {
+  line-height: 1.25rem;
+}
+.wpuf-leading-7 {
+  line-height: 1.75rem;
+}
+.wpuf-leading-\[24px\] {
+  line-height: 24px;
+}
+.wpuf-leading-\[28px\] {
+  line-height: 28px;
+}
+.wpuf-leading-\[36px\] {
+  line-height: 36px;
+}
+.wpuf-leading-none {
+  line-height: 1;
+}
+.wpuf-leading-tight {
+  line-height: 1.25;
+}
+.\!wpuf-tracking-\[-0\.72px\] {
+  letter-spacing: -0.72px !important;
+}
+.wpuf-tracking-wide {
+  letter-spacing: 0.025em;
+}
+.wpuf-tracking-wider {
+  letter-spacing: 0.05em;
+}
+.\!wpuf-text-emerald-600 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1)) !important;
+}
+.\!wpuf-text-emerald-700 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(4 120 87 / var(--tw-text-opacity, 1)) !important;
+}
+.\!wpuf-text-emerald-800 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(6 95 70 / var(--tw-text-opacity, 1)) !important;
+}
+.\!wpuf-text-gray-300 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(209 213 219 / var(--tw-text-opacity, 1)) !important;
+}
+.\!wpuf-text-gray-400 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(156 163 175 / var(--tw-text-opacity, 1)) !important;
+}
+.\!wpuf-text-gray-500 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(107 114 128 / var(--tw-text-opacity, 1)) !important;
+}
+.\!wpuf-text-gray-600 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(75 85 99 / var(--tw-text-opacity, 1)) !important;
+}
+.\!wpuf-text-gray-700 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(55 65 81 / var(--tw-text-opacity, 1)) !important;
+}
+.\!wpuf-text-gray-800 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(31 41 55 / var(--tw-text-opacity, 1)) !important;
+}
+.\!wpuf-text-gray-900 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(17 24 39 / var(--tw-text-opacity, 1)) !important;
+}
+.\!wpuf-text-green-500 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(34 197 94 / var(--tw-text-opacity, 1)) !important;
+}
+.\!wpuf-text-green-600 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(22 163 74 / var(--tw-text-opacity, 1)) !important;
+}
+.\!wpuf-text-purple-600 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(147 51 234 / var(--tw-text-opacity, 1)) !important;
+}
+.\!wpuf-text-purple-700 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(126 34 206 / var(--tw-text-opacity, 1)) !important;
+}
+.\!wpuf-text-white {
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1)) !important;
+}
+.wpuf-text-emerald-600 {
+  --tw-text-opacity: 1;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+}
+.wpuf-text-gray-400 {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity, 1));
+}
+.wpuf-text-gray-500 {
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity, 1));
+}
+.wpuf-text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity, 1));
+}
+.wpuf-text-gray-700 {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity, 1));
+}
+.wpuf-text-gray-800 {
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity, 1));
+}
+.wpuf-text-gray-900 {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity, 1));
+}
+.wpuf-text-green-600 {
+  --tw-text-opacity: 1;
+  color: rgb(22 163 74 / var(--tw-text-opacity, 1));
+}
+.wpuf-text-green-700 {
+  --tw-text-opacity: 1;
+  color: rgb(21 128 61 / var(--tw-text-opacity, 1));
+}
+.wpuf-text-indigo-600 {
+  --tw-text-opacity: 1;
+  color: rgb(79 70 229 / var(--tw-text-opacity, 1));
+}
+.wpuf-text-primary {
+  --tw-text-opacity: 1;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+}
+.wpuf-text-purple-600 {
+  --tw-text-opacity: 1;
+  color: rgb(147 51 234 / var(--tw-text-opacity, 1));
+}
+.wpuf-text-purple-700 {
+  --tw-text-opacity: 1;
+  color: rgb(126 34 206 / var(--tw-text-opacity, 1));
+}
+.wpuf-text-red-600 {
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+}
+.wpuf-text-red-700 {
+  --tw-text-opacity: 1;
+  color: rgb(185 28 28 / var(--tw-text-opacity, 1));
+}
+.wpuf-text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.\!wpuf-no-underline {
+  text-decoration-line: none !important;
+}
+.wpuf-no-underline {
+  text-decoration-line: none;
+}
+.\!wpuf-placeholder-gray-400::-moz-placeholder {
+  --tw-placeholder-opacity: 1 !important;
+  color: rgb(156 163 175 / var(--tw-placeholder-opacity, 1)) !important;
+}
+.\!wpuf-placeholder-gray-400::placeholder {
+  --tw-placeholder-opacity: 1 !important;
+  color: rgb(156 163 175 / var(--tw-placeholder-opacity, 1)) !important;
+}
+.wpuf-opacity-0 {
+  opacity: 0;
+}
+.wpuf-opacity-100 {
+  opacity: 1;
+}
+.wpuf-opacity-50 {
+  opacity: 0.5;
+}
+.wpuf-opacity-60 {
+  opacity: 0.6;
+}
+.\!wpuf-shadow-md {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color) !important;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+}
+.\!wpuf-shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color) !important;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+}
+.wpuf-shadow {
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.wpuf-shadow-lg {
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.wpuf-shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.wpuf-shadow-xl {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.\!wpuf-outline-none {
+  outline: 2px solid transparent !important;
+  outline-offset: 2px !important;
+}
+.wpuf-outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.wpuf-ring-1 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.wpuf-ring-2 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.wpuf-ring-inset {
+  --tw-ring-inset: inset;
+}
+.\!wpuf-ring-emerald-500 {
+  --tw-ring-opacity: 1 !important;
+  --tw-ring-color: rgb(16 185 129 / var(--tw-ring-opacity, 1)) !important;
+}
+.\!wpuf-ring-gray-800 {
+  --tw-ring-opacity: 1 !important;
+  --tw-ring-color: rgb(31 41 55 / var(--tw-ring-opacity, 1)) !important;
+}
+.\!wpuf-ring-purple-500 {
+  --tw-ring-opacity: 1 !important;
+  --tw-ring-color: rgb(168 85 247 / var(--tw-ring-opacity, 1)) !important;
+}
+.wpuf-ring-black {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(0 0 0 / var(--tw-ring-opacity, 1));
+}
+.wpuf-ring-green-600\/20 {
+  --tw-ring-color: rgb(22 163 74 / 0.2);
+}
+.wpuf-ring-primary {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(5 150 105 / var(--tw-ring-opacity, 1));
+}
+.wpuf-ring-purple-500 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(168 85 247 / var(--tw-ring-opacity, 1));
+}
+.wpuf-ring-opacity-5 {
+  --tw-ring-opacity: 0.05;
+}
+.wpuf-ring-offset-2 {
+  --tw-ring-offset-width: 2px;
+}
+.wpuf-grayscale {
+  --tw-grayscale: grayscale(100%);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.\!wpuf-transition-all {
+  transition-property: all !important;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition-duration: 150ms !important;
+}
+.\!wpuf-transition-colors {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke !important;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition-duration: 150ms !important;
+}
+.wpuf-transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.wpuf-transition-colors {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.wpuf-transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.\!wpuf-duration-150 {
+  transition-duration: 150ms !important;
+}
+.\!wpuf-duration-200 {
+  transition-duration: 200ms !important;
+}
+.\!wpuf-duration-300 {
+  transition-duration: 300ms !important;
+}
+.wpuf-duration-150 {
+  transition-duration: 150ms;
+}
+.wpuf-duration-200 {
+  transition-duration: 200ms;
+}
+.wpuf-duration-300 {
+  transition-duration: 300ms;
+}
+.wpuf-ease-in-out {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset WordPress core select styles for the wizard */
+.wp-core-ui select {
+    min-height: unset !important;
+    max-width: unset !important;
+}
+
+/* Set white background for WordPress admin body - matches forms-list.css pattern */
+/* This file is only loaded on User Directory page, so no scoping needed */
+#wpbody,
+#wpcontent,
+#wpbody-content {
+    background: #fff !important;
+}
+
+#wpbody-content {
+    min-height: 100vh;
+}
+
+.wpuf-user-directory-empty {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+    font-style: italic;
+}
+
+
+.wpuf-ud-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.wpuf-ud-thead {
+    background-color: #FFFFFF;
+}
+
+.wpuf-ud-tbody {
+    background-color: white;
+}
+
+.wpuf-ud-row {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.wpuf-ud-row:hover {
+    background-color: #f9fafb;
+}
+
+/* User field styles - Basic typography */
+.wpuf-user-email,
+.wpuf-user-role,
+.wpuf-user-posts,
+.wpuf-user-joined,
+.wpuf-user-field {
+    color: #374151;
+    font-size: 0.875rem;
+}
+
+/* Profile link styles */
+.wpuf-text-indigo-600 {
+    color: #4f46e5;
+}
+
+.hover\:wpuf-text-indigo-900:hover {
+    color: #312e81;
+}
+
+/* Loading States */
+.wpuf-directory-loading {
+    text-align: center;
+    padding: 3rem;
+}
+
+.wpuf-directory-loading .wpuf-animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Empty State */
+.wpuf-directory-empty {
+    text-align: center;
+    padding: 3rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+/* Custom Field Styles - Basic */
+.wpuf-custom-field {
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+/* WordPress Block Editor Color Support for Custom Fields */
+.wpuf-custom-field.has-text-color,
+.wpuf-custom-field.has-text-color * {
+    color: inherit !important;
+}
+
+.wpuf-custom-field[style*="color"],
+.wpuf-custom-field[style*="color"] * {
+    color: inherit !important;
+}
+
+/* Focus States */
+.wpuf-btn:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+    .wpuf-pagination,
+    .wpuf-action-buttons {
+        display: none !important;
+    }
+
+    .wpuf-table-body {
+        border: 1px solid #000;
+    }
+
+    .wpuf-user-row {
+        border-bottom: 1px solid #000;
+    }
+}
+
+/* Dropdown Text Truncation - Prevent caret overlap */
+.wpuf-ud-search-in,
+.wpuf-ud-sort-by,
+.wpuf-ud-sort-order {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    /* Ensure sufficient space for caret icon */
+    padding-right: 3rem !important;
+    /* Ensure consistent appearance across all dropdowns */
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Ensure dropdown options are also properly truncated */
+.wpuf-ud-search-in option,
+.wpuf-ud-sort-by option,
+.wpuf-ud-sort-order option {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+/* Override any theme/plugin styles that might affect layout preview images */
+.wpuf-user-directory-setup img {
+    width: auto !important;
+    height: auto !important;
+    max-width: none !important;
+    max-height: none !important;
+    -o-object-fit: initial !important;
+       object-fit: initial !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+/* Dropdown menu z-index fix for table rows */
+.wpuf-z-\[9999\] {
+    z-index: 9999 !important;
+}
+
+/* Ensure table container doesn't create stacking context */
+.wpuf-overflow-hidden {
+    overflow: visible !important;
+}
+
+/* Loading spinner - Free version specific */
+.wpuf-loader {
+    width: 24px;
+    height: 24px;
+    border: 3px solid #e5e7eb;
+    border-top-color: #059669;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/**
+ * Layout-3 specific styles for User Directory Listing
+ * Matches Pro's wpuf-ud.css layout-3 styles
+ */
+
+/* Remove empty paragraph elements from layout */
+.wpuf-ud-list-layout-3 p:empty {
+    display: none !important;
+}
+
+/* Add spacing only between non-empty elements */
+.wpuf-ud-list-layout-3 p:not(:empty) + p:not(:empty) {
+    margin-top: 0.25rem;
+}
+
+/* Dynamic card heights - prevent excessive whitespace */
+.wpuf-ud-list-layout-3 li {
+    height: auto !important;
+    min-height: 280px;
+}
+
+/* Hide empty flex containers */
+.wpuf-ud-list .wpuf-flex-col > *:empty {
+    display: none !important;
+}
+
+/* Social icons container - hide if empty */
+.wpuf-social-icons:empty {
+    display: none !important;
+}
+
+/* Ensure View Profile button stays at bottom with proper spacing */
+.wpuf-ud-list-layout-3 .wpuf-flex-shrink-0:last-child {
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+/* Ensure button area doesn't collapse */
+.wpuf-ud-list a[href*="profile"] {
+    display: inline-flex !important;
+}
+
+/* Optimize spacing for user info sections */
+.wpuf-ud-list .wpuf-flex-col.wpuf-text-center > :first-child {
+    margin-top: 0;
+}
+
+.wpuf-ud-list .wpuf-flex-col.wpuf-text-center > :last-child {
+    margin-bottom: 0;
+}
+
+/* Compact spacing when minimal data is present */
+.wpuf-ud-list li:has(p:empty) {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+}
+
+/* Grid adjustments for responsive behavior */
+@media (max-width: 768px) {
+    .wpuf-ud-list-layout-3 ul {
+        gap: 1rem;
+    }
+
+    .wpuf-ud-list-layout-3 li {
+        min-height: auto;
+    }
+}
+
+/* Ensure consistent avatar spacing */
+.wpuf-ud-list .wpuf-flex-shrink-0:has(img) {
+    flex-shrink: 0;
+}
+
+/* Handle empty bio/description fields */
+.wpuf-ud-list .wpuf-user-bio:empty {
+    display: none !important;
+}
+
+/* Dropdown menu z-index fix for table rows */
+.wpuf-z-\[9999\] {
+    z-index: 9999 !important;
+}
+
+/* Ensure table container doesn't create stacking context */
+.wpuf-overflow-hidden {
+    overflow: visible !important;
+}
+.placeholder\:wpuf-text-gray-400::-moz-placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity, 1));
+}
+.placeholder\:wpuf-text-gray-400::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity, 1));
+}
+.last\:\!wpuf-border-b-0:last-child {
+  border-bottom-width: 0px !important;
+}
+.hover\:wpuf-cursor-pointer:hover {
+  cursor: pointer;
+}
+.hover\:\!wpuf-border-t-2:hover {
+  border-top-width: 2px !important;
+}
+.hover\:\!wpuf-border-emerald-200:hover {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(167 243 208 / var(--tw-border-opacity, 1)) !important;
+}
+.hover\:\!wpuf-border-emerald-600:hover {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(5 150 105 / var(--tw-border-opacity, 1)) !important;
+}
+.hover\:\!wpuf-border-purple-600:hover {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(147 51 234 / var(--tw-border-opacity, 1)) !important;
+}
+.hover\:wpuf-border-emerald-600:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(5 150 105 / var(--tw-border-opacity, 1));
+}
+.hover\:wpuf-border-gray-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
+}
+.hover\:wpuf-border-gray-400:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(156 163 175 / var(--tw-border-opacity, 1));
+}
+.hover\:wpuf-border-primary:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(5 150 105 / var(--tw-border-opacity, 1));
+}
+.hover\:wpuf-border-purple-600:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 51 234 / var(--tw-border-opacity, 1));
+}
+.hover\:\!wpuf-border-b-green-300:hover {
+  --tw-border-opacity: 1 !important;
+  border-bottom-color: rgb(134 239 172 / var(--tw-border-opacity, 1)) !important;
+}
+.hover\:\!wpuf-bg-emerald-100:hover {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(209 250 229 / var(--tw-bg-opacity, 1)) !important;
+}
+.hover\:\!wpuf-bg-emerald-50:hover {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1)) !important;
+}
+.hover\:\!wpuf-bg-emerald-700:hover {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(4 120 87 / var(--tw-bg-opacity, 1)) !important;
+}
+.hover\:\!wpuf-bg-gray-50:hover {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1)) !important;
+}
+.hover\:\!wpuf-bg-green-500:hover {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(34 197 94 / var(--tw-bg-opacity, 1)) !important;
+}
+.hover\:\!wpuf-bg-purple-100:hover {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(243 232 255 / var(--tw-bg-opacity, 1)) !important;
+}
+.hover\:\!wpuf-bg-purple-50:hover {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(250 245 255 / var(--tw-bg-opacity, 1)) !important;
+}
+.hover\:\!wpuf-bg-purple-700:hover {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(126 34 206 / var(--tw-bg-opacity, 1)) !important;
+}
+.hover\:\!wpuf-bg-transparent:hover {
+  background-color: transparent !important;
+}
+.hover\:wpuf-bg-emerald-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
+}
+.hover\:wpuf-bg-emerald-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(4 120 87 / var(--tw-bg-opacity, 1));
+}
+.hover\:wpuf-bg-gray-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
+}
+.hover\:wpuf-bg-gray-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
+}
+.hover\:wpuf-bg-green-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(240 253 244 / var(--tw-bg-opacity, 1));
+}
+.hover\:wpuf-bg-indigo-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(67 56 202 / var(--tw-bg-opacity, 1));
+}
+.hover\:wpuf-bg-primaryHover:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
+}
+.hover\:wpuf-bg-purple-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(126 34 206 / var(--tw-bg-opacity, 1));
+}
+.hover\:wpuf-bg-red-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));
+}
+.hover\:wpuf-bg-slate-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.hover\:\!wpuf-text-emerald-600:hover {
+  --tw-text-opacity: 1 !important;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1)) !important;
+}
+.hover\:\!wpuf-text-emerald-700:hover {
+  --tw-text-opacity: 1 !important;
+  color: rgb(4 120 87 / var(--tw-text-opacity, 1)) !important;
+}
+.hover\:\!wpuf-text-gray-900:hover {
+  --tw-text-opacity: 1 !important;
+  color: rgb(17 24 39 / var(--tw-text-opacity, 1)) !important;
+}
+.hover\:\!wpuf-text-green-700:hover {
+  --tw-text-opacity: 1 !important;
+  color: rgb(21 128 61 / var(--tw-text-opacity, 1)) !important;
+}
+.hover\:\!wpuf-text-purple-600:hover {
+  --tw-text-opacity: 1 !important;
+  color: rgb(147 51 234 / var(--tw-text-opacity, 1)) !important;
+}
+.hover\:\!wpuf-text-purple-700:hover {
+  --tw-text-opacity: 1 !important;
+  color: rgb(126 34 206 / var(--tw-text-opacity, 1)) !important;
+}
+.hover\:wpuf-text-gray-200:hover {
+  --tw-text-opacity: 1;
+  color: rgb(229 231 235 / var(--tw-text-opacity, 1));
+}
+.hover\:wpuf-text-gray-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity, 1));
+}
+.hover\:wpuf-text-gray-900:hover {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity, 1));
+}
+.hover\:wpuf-text-primary:hover {
+  --tw-text-opacity: 1;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+}
+.hover\:wpuf-text-purple-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(147 51 234 / var(--tw-text-opacity, 1));
+}
+.hover\:wpuf-text-red-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(153 27 27 / var(--tw-text-opacity, 1));
+}
+.hover\:wpuf-text-white:hover {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.hover\:wpuf-opacity-80:hover {
+  opacity: 0.8;
+}
+.hover\:\!wpuf-shadow-lg:hover {
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color) !important;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+}
+.hover\:wpuf-shadow-md:hover {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.focus\:wpuf-border-transparent:focus {
+  border-color: transparent;
+}
+.focus\:wpuf-bg-primaryHover:focus {
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
+}
+.focus\:wpuf-bg-slate-100:focus {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+.focus\:wpuf-text-white:focus {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.focus\:wpuf-shadow-none:focus {
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.focus\:\!wpuf-outline-none:focus {
+  outline: 2px solid transparent !important;
+  outline-offset: 2px !important;
+}
+.focus\:wpuf-outline-none:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.focus\:\!wpuf-ring-0:focus {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color) !important;
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color) !important;
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000) !important;
+}
+.focus\:\!wpuf-ring-2:focus {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color) !important;
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color) !important;
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000) !important;
+}
+.focus\:wpuf-ring-2:focus {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.focus\:\!wpuf-ring-purple-500:focus {
+  --tw-ring-opacity: 1 !important;
+  --tw-ring-color: rgb(168 85 247 / var(--tw-ring-opacity, 1)) !important;
+}
+.focus\:wpuf-ring-blue-500:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity, 1));
+}
+.focus\:wpuf-ring-emerald-500:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(16 185 129 / var(--tw-ring-opacity, 1));
+}
+.focus\:wpuf-ring-gray-500:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(107 114 128 / var(--tw-ring-opacity, 1));
+}
+.focus\:wpuf-ring-purple-500:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(168 85 247 / var(--tw-ring-opacity, 1));
+}
+.focus\:wpuf-ring-transparent:focus {
+  --tw-ring-color: transparent;
+}
+.focus\:\!wpuf-ring-offset-2:focus {
+  --tw-ring-offset-width: 2px !important;
+}
+.focus\:wpuf-ring-offset-2:focus {
+  --tw-ring-offset-width: 2px;
+}
+.focus-visible\:wpuf-outline:focus-visible {
+  outline-style: solid;
+}
+.focus-visible\:wpuf-outline-2:focus-visible {
+  outline-width: 2px;
+}
+.focus-visible\:wpuf-outline-offset-2:focus-visible {
+  outline-offset: 2px;
+}
+.active\:\!wpuf-bg-transparent:active {
+  background-color: transparent !important;
+}
+.disabled\:wpuf-cursor-not-allowed:disabled {
+  cursor: not-allowed;
+}
+.disabled\:wpuf-opacity-50:disabled {
+  opacity: 0.5;
+}
+.wpuf-group:hover .group-hover\:\!wpuf-scale-105 {
+  --tw-scale-x: 1.05 !important;
+  --tw-scale-y: 1.05 !important;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
+}
+.wpuf-group\/item:hover .group-hover\/item\:wpuf-opacity-100 {
+  opacity: 1;
+}
+.wpuf-group:hover .group-hover\:wpuf-opacity-100 {
+  opacity: 1;
+}
+.wpuf-group:hover .group-hover\:wpuf-grayscale-0 {
+  --tw-grayscale: grayscale(0);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+@media (min-width: 640px) {
+
+  .sm\:\!wpuf-grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .sm\:\!wpuf-grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .sm\:wpuf-pl-6 {
+    padding-left: 1.5rem;
+  }
+
+  .sm\:wpuf-pr-6 {
+    padding-right: 1.5rem;
+  }
+}
+@media (min-width: 768px) {
+
+  .md\:wpuf-inline-block {
+    display: inline-block;
+  }
+
+  .md\:\!wpuf-w-\[100px\] {
+    width: 100px !important;
+  }
+
+  .md\:\!wpuf-w-\[140px\] {
+    width: 140px !important;
+  }
+
+  .md\:\!wpuf-w-\[280px\] {
+    width: 280px !important;
+  }
+
+  .md\:\!wpuf-w-auto {
+    width: auto !important;
+  }
+
+  .md\:\!wpuf-grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+
+  .md\:\!wpuf-flex-row {
+    flex-direction: row !important;
+  }
+
+  .md\:\!wpuf-items-center {
+    align-items: center !important;
+  }
+
+  .md\:\!wpuf-gap-3 {
+    gap: 0.75rem !important;
+  }
+}
+@media (min-width: 1024px) {
+
+  .lg\:\!wpuf-mx-0 {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+  }
+
+  .lg\:\!wpuf-max-w-none {
+    max-width: none !important;
+  }
+
+  .lg\:\!wpuf-grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .lg\:\!wpuf-grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+}
+.\[\&\:hover_svg_path\]\:wpuf-fill-emerald-600:hover svg path {
+  fill: #059669;
+}
+
+
+/*# sourceMappingURL=wpuf-user-directory-free.css.map*/

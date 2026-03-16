@@ -1593,3 +1593,13 @@ body.wpuf-modal-open {
 .wpuf-subscription-pack-settings .subscription-nav-content section .form-table td {
   padding: 15px 0;
 }
+.wpuf-login-tab-link:hover {
+  color: #2271b1 !important;
+}
+.wpuf-login-tab-link.active {
+  color: #2271b1 !important;
+  border-bottom-color: #2271b1 !important;
+}
+.wpuf-login-settings-row.hidden {
+  display: none !important;
+}

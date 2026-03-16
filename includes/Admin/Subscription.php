@@ -1120,7 +1120,6 @@ class Subscription {
             ?>
             <div class="wpuf-info">
                 <?php
-                $form          = new Form( $form_id );
                 $fallback_cost = (float) $form->get_subs_fallback_cost();
 
                 $fallback_cost = apply_filters( 'wpuf_payment_amount', $fallback_cost );

@@ -165,16 +165,16 @@ class Form {
         $current_user  = wpuf_get_user();
         $guest_post_enabled = $this->guest_post();
 
-        // Admin users bypass all subscription and payment restrictions
-        if ( current_user_can( wpuf_admin_role() ) ) {
-            return [ 'yes', '' ];
-        }
-
         if ( isset( $this->form_settings['message_restrict'] ) && ! $guest_post_enabled && ! is_user_logged_in() ) {
             $user_can_post = 'no';
             $info          = $this->form_settings['message_restrict'];
 
             return [ $user_can_post, $info ];
+        }
+
+        // Admin users bypass all subscription and payment restrictions
+        if ( current_user_can( wpuf_admin_role() ) ) {
+            return [ 'yes', '' ];
         }
 
         $post_type = ! empty( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';

@@ -31,5 +31,7 @@ use WeDevs\Wpuf\Free\Simple_Login;
 		</p>
 	</form>
 
-	<?php echo wp_kses_post( Simple_Login::init()->get_action_links( [ 'lostpassword' => false ] ) ); ?>
+	<div class="wpuf-action-links">
+		<?php echo wp_kses_post( Simple_Login::init()->get_action_links( [ 'lostpassword' => false ] ) ); ?>
+	</div>
 </div>

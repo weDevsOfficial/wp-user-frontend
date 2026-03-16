@@ -7,6 +7,7 @@ export.sh
 .github/prompts
 .cursor
 /.DS_Store
+/bin
 nbproject
 node_modules
 includes/pro

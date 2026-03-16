@@ -3,8 +3,8 @@ Contributors: wedevs, tareq1988, nizamuddinbabu
 Donate link: https://tareq.co/donate/
 Tags: frontend post, user directory, membership, user profile, user registration, content restriction, guest post, submit post, subscriptions, directory, login form, registration form, user profile, profile builder, forms
 Requires at least: 5.0
-Tested up to: 6.9.1
-Stable tag: 4.2.9
+Tested up to: 6.9.3
+Stable tag: 4.3.0
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -359,6 +359,16 @@ Please report security bugs found in the source code of the User Frontend plugin
 15. Create AI Powered Post Form
 
 == Changelog ==
+= v4.3.0 (11 March, 2026) =
+* New – Add User Directory Module
+
+= v4.2.10 (26 February, 2026) =
+* New – Add Logout link to navigation menu for Classic and FSE themes
+* New – Support custom image icons in Form Builder
+* New – Add Kazakhstani Tenge (KZT) and expand currency list to ISO 4217 standard
+* New – Add Cloudflare Turnstile validation
+* Enhance – Improve Login form stability and validation fixes
+
 = v4.2.9 (24 February, 2026) =
 * New – Integration-specific AI form builder support
 * New – Add Shortcodes Reference page under Tools menu

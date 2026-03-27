@@ -178,3 +178,29 @@ WPUF integrates with several marketplace and third-party plugins:
 - **ACF** — Advanced Custom Fields compatibility
 - **n8n** — Workflow automation integration
 - **Events Calendar** — Event post type support
+
+## Code Review Prevention (MANDATORY)
+
+**Apply these rules to ALL new/modified code. Top causes of review rejection.**
+
+### Zero-Tolerance Rules
+
+1. **Strict comparisons only** — `===`/`!==` always, never `==`/`!=`
+2. **`in_array()`/`array_search()` strict** — always pass `true` as 3rd arg
+3. **Superglobals** — `wp_unslash()` + sanitize every `$_POST/$_GET/$_REQUEST/$_SERVER` access. Use `sanitize_text_field(wp_unslash(...))`, `absint()`, `sanitize_email(wp_unslash(...))`, `esc_url_raw(wp_unslash(...))`, `sanitize_key(wp_unslash(...))`
+4. **Escape all output** — `esc_html()` for text, `esc_attr()` for attributes, `esc_url()` for URLs, `wp_kses_post()` for HTML
+5. **SQL safety** — `$wpdb->prepare()` for ALL dynamic values. Allowlist column names for ORDER BY
+6. **Nonce + permission** — every form/AJAX: `check_ajax_referer()` + `current_user_can(wpuf_admin_role())`
+
+### Required Standards
+
+7. **snake_case methods** — never camelCase in PHP
+8. **DocBlocks** — `@since WPUF_SINCE` on every new public/protected method
+9. **Translator comments** — `/* translators: */` before every `sprintf()` with `__()`
+10. **Text domain** — `'wp-user-frontend'` (free), `'wpuf-pro'` (pro), never `'wpuf'`
+11. **Hook prefix** — all `do_action()`/`apply_filters()` names start with `wpuf_`
+12. **WP spacing** — `if ( $x )` not `if($x)`, `! $x` not `!$x`
+
+### Pre-PR Checklist
+
+Run `composer phpcs` — zero violations before submitting. See `wpuf-backend-dev` skill for full examples.

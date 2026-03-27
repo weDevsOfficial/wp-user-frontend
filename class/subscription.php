@@ -83,7 +83,12 @@ class WPUF_Subscription {
             $gateway     = isset( $_POST['gateway'] ) ? sanitize_text_field( wp_unslash( $_POST['gateway'] ) ) : 0;
             $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 
-            if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-sub-cancel' ) ) {
+            if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-sub-cancel-' . $user_id ) ) {
+                return;
+            }
+
+            // Ensure the user can only cancel their own subscription
+            if ( $user_id !== get_current_user_id() && ! current_user_can( wpuf_admin_role() ) ) {
                 return;
             }
 
@@ -893,7 +898,7 @@ class WPUF_Subscription {
             <?php echo '<p><i>' . esc_html__( 'To cancel the pack, press the following cancel button', 'wp-user-frontend' ) . '</i></p>'; ?>
 
             <form action="" id="wpuf_cancel_subscription" method="post">
-                <?php wp_nonce_field( 'wpuf-sub-cancel' ); ?>
+                <?php wp_nonce_field( 'wpuf-sub-cancel-' . get_current_user_id() ); ?>
                 <input type="hidden" name="user_id" value="<?php echo esc_attr( get_current_user_id() ); ?>">
                 <input type="hidden" name="gateway" value="<?php echo esc_attr( $payment_gateway ); ?>">
                 <input type="hidden" name="wpuf_cancel_subscription" value="Cancel">

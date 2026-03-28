@@ -472,27 +472,6 @@ class Widget extends Widget_Base {
             ]
         );
 
-        $this->add_group_control(
-            Group_Control_Border::get_type(),
-            [
-                'name'     => 'richtext_border',
-                'label'    => __( 'Border', 'wp-user-frontend' ),
-                'selector' => '{{WRAPPER}} .wpuf-form .mce-tinymce',
-            ]
-        );
-
-        $this->add_control(
-            'richtext_border_radius',
-            [
-                'label'      => __( 'Border Radius', 'wp-user-frontend' ),
-                'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => [ 'px', '%' ],
-                'selectors'  => [
-                    '{{WRAPPER}} .wpuf-form .mce-tinymce' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-            ]
-        );
-
         $this->add_control(
             'richtext_toolbar_heading',
             [

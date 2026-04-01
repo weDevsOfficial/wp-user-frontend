@@ -20,8 +20,18 @@ if ( 'wpuf_pay' === $action || ! empty( $coupon_status ) ) {
     return;
 }
 
+// Block config defaults — when loaded via shortcode, $block_config may not be set
+$block_config = isset( $block_config ) ? $block_config : [
+    'columns'          => 3,
+    'show_price'       => true,
+    'show_features'    => true,
+    'show_description' => true,
+    'button_color'     => '',
+    'button_text'      => '',
+];
+
 // Get the button color from settings and validate it
-$button_color = wpuf_get_option( 'button_color', 'wpuf_subscription_settings', '' );
+$button_color = ! empty( $block_config['button_color'] ) ? $block_config['button_color'] : wpuf_get_option( 'button_color', 'wpuf_subscription_settings', '' );
 
 // Check if custom color is set, otherwise use Tailwind primary class
 $use_custom_color = false;
@@ -58,13 +68,14 @@ if ( is_string( $button_color ) && ! empty( $button_color ) ) {
         <?php } ?>
     </div>
     
-    <?php if ( ! empty( $pack->post_content ) ) : ?>
+    <?php if ( $block_config['show_description'] && ! empty( $pack->post_content ) ) : ?>
     <div class="wpuf-mt-3 wpuf-text-sm wpuf-leading-5 wpuf-text-gray-600">
         <?php echo wp_kses_post( wpautop( $pack->post_content ) ); ?>
     </div>
     <?php endif; ?>
     
     <!-- Price Section -->
+    <?php if ( $block_config['show_price'] ) : ?>
     <div class="wpuf-mt-4">
     <div class="wpuf-flex wpuf-items-baseline wpuf-gap-x-1">
         <?php if ( $billing_amount != '0.00' ) { ?>
@@ -89,7 +100,14 @@ if ( is_string( $button_color ) && ! empty( $button_color ) ) {
         </div>
     <?php } ?>
     </div>
-    
+    <?php endif; ?>
+
+    <?php
+    // Override button text if set in block config
+    if ( ! empty( $block_config['button_text'] ) ) {
+        $button_name = $block_config['button_text'];
+    }
+    ?>
     <!-- Button Section -->
     <div class="wpuf-mt-6">
         <?php if ( 'completed' === $current_pack_status ) : ?>
@@ -318,7 +336,7 @@ if ( is_string( $button_color ) && ! empty( $button_color ) ) {
     }
     
     // Show the features list with expandable functionality
-    if ( ! empty( $features_list ) ) :
+    if ( $block_config['show_features'] && ! empty( $features_list ) ) :
         $features_count = count( $features_list );
         $initial_display_count = 5; // Show first 5 features initially
         ?>

@@ -954,7 +954,16 @@ class WPUF_Subscription {
      * @param string $current_pack_id
      * @param bool   $coupon_status
      */
-    public function pack_details( $pack, $details_meta, $current_pack_id = '', $coupon_status = false ) {
+    public function pack_details( $pack, $details_meta, $current_pack_id = '', $coupon_status = false, $block_config = [] ) {
+        $block_config = wp_parse_args( $block_config, [
+            'columns'          => 3,
+            'show_price'       => true,
+            'show_features'    => true,
+            'show_description' => true,
+            'button_color'     => '',
+            'button_text'      => '',
+        ] );
+
         if ( function_exists( 'wpuf_prices_include_tax' ) ) {
             $price_with_tax = wpuf_prices_include_tax();
         }
@@ -1032,6 +1041,7 @@ class WPUF_Subscription {
                     'button_name'           => $button_name,
                     'query_args'            => $query_args,
                     'query_url'             => $query_url,
+                    'block_config'          => $block_config,
                 ]
             )
         );

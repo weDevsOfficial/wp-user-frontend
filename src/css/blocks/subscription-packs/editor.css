@@ -1,0 +1,10 @@
+/* DESCRIPTION: Editor-only styles for the subscription packs block. */
+/* Adjusts ServerSideRender preview styling within the block editor. */
+
+.wp-block-wpuf-subscription-packs .components-server-side-render {
+    pointer-events: none;
+}
+
+.wp-block-wpuf-subscription-packs .components-placeholder {
+    min-height: 100px;
+}

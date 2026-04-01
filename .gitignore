@@ -6,6 +6,8 @@ export.sh
 .vscode
 .github/prompts
 .cursor
+.superpowers
+docs/superpowers
 /.DS_Store
 /bin
 nbproject

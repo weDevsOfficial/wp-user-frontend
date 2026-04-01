@@ -14,12 +14,21 @@
 
 // Block config defaults — when loaded via shortcode, $block_config is not set
 $block_config = isset( $block_config ) ? $block_config : [
-    'columns'          => 3,
-    'show_price'       => true,
-    'show_features'    => true,
-    'show_description' => true,
-    'button_color'     => '',
-    'button_text'      => '',
+    'columns'               => 3,
+    'show_price'            => true,
+    'show_features'         => true,
+    'show_description'      => true,
+    'button_color'          => '',
+    'button_text'           => '',
+    'pack_background_color' => '#ffffff',
+    'pack_border_color'     => '#e5e7eb',
+    'pack_border_radius'    => 12,
+    'pack_padding'          => 24,
+    'pack_shadow'           => 'md',
+    'title_font_size'       => 18,
+    'price_font_size'       => 30,
+    'card_gap'              => 16,
+    'recurring_font_size'   => 14,
 ];
 
 do_action( 'wpuf_before_subscription_listing', $packs );
@@ -38,7 +47,8 @@ do_action( 'wpuf_before_subscription_listing', $packs );
 <?php
 if ( $packs ) {
     $columns_class = 'lg:wpuf-grid-cols-' . absint( $block_config['columns'] );
-    echo wp_kses_post( '<ul class="wpuf_packs wpuf-grid wpuf-grid-cols-1 md:wpuf-grid-cols-2 ' . esc_attr( $columns_class ) . ' wpuf-gap-4 wpuf-max-w-5xl wpuf-mx-auto wpuf-px-4 wpuf-items-start wpuf-mt-6">' );
+    $gap_px        = isset( $block_config['card_gap'] ) ? absint( $block_config['card_gap'] ) : 16;
+    echo wp_kses_post( '<ul class="wpuf_packs wpuf-grid wpuf-grid-cols-1 md:wpuf-grid-cols-2 ' . esc_attr( $columns_class ) . ' wpuf-max-w-5xl wpuf-mx-auto wpuf-px-4 wpuf-items-start wpuf-mt-6" style="gap:' . esc_attr( $gap_px ) . 'px">' );
 
     if ( isset( $args['include'] ) && $args['include'] != '' ) {
         for ( $i = 0; $i < count( $pack_order ); $i++ ) {

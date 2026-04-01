@@ -75,7 +75,7 @@ class SubscriptionPacks {
         wp_register_style(
             'wpuf-subscription-packs-editor-style',
             WPUF_ASSET_URI . '/js/subscription-packs.css',
-            [],
+            [ 'wpuf-frontend-subscriptions' ],
             $asset['version']
         );
 
@@ -100,7 +100,7 @@ class SubscriptionPacks {
      * @return array
      */
     private function get_editor_data() {
-        $subscription = \WPUF_Subscription::init();
+        $subscription = wpuf()->subscription;
         $packs        = $subscription->get_subscriptions();
         $packs_list   = [];
 
@@ -135,16 +135,25 @@ class SubscriptionPacks {
      */
     public function render( $attributes ) {
         $defaults = [
-            'include'         => [],
-            'exclude'         => [],
-            'columns'         => 3,
-            'order'           => '',
-            'orderby'         => '',
-            'showPrice'       => true,
-            'showFeatures'    => true,
-            'showDescription' => true,
-            'buttonColor'     => '',
-            'buttonText'      => '',
+            'include'              => [],
+            'exclude'              => [],
+            'columns'              => 3,
+            'order'                => '',
+            'orderby'              => '',
+            'showPrice'            => true,
+            'showFeatures'         => true,
+            'showDescription'      => true,
+            'buttonColor'          => '',
+            'buttonText'           => '',
+            'packBackgroundColor'  => '#ffffff',
+            'packBorderColor'      => '#e5e7eb',
+            'packBorderRadius'     => 12,
+            'packPadding'          => 24,
+            'packShadow'           => 'md',
+            'titleFontSize'        => 18,
+            'priceFontSize'        => 30,
+            'cardGap'              => 16,
+            'recurringFontSize'    => 14,
         ];
 
         $attributes = wp_parse_args( $attributes, $defaults );
@@ -168,19 +177,28 @@ class SubscriptionPacks {
             $subscription_args['orderby'] = $attributes['orderby'];
         }
 
-        $subscription = \WPUF_Subscription::init();
+        $subscription = wpuf()->subscription;
         $packs        = $subscription->get_subscriptions( $subscription_args );
         $details_meta = $subscription->get_details_meta_value();
-        $current_pack = \WPUF_Subscription::get_user_pack( get_current_user_id() );
+        $current_pack = $subscription->get_user_pack( get_current_user_id() );
 
         // Build block_config for templates
         $block_config = [
-            'columns'          => absint( $attributes['columns'] ),
-            'show_price'       => (bool) $attributes['showPrice'],
-            'show_features'    => (bool) $attributes['showFeatures'],
-            'show_description' => (bool) $attributes['showDescription'],
-            'button_color'     => sanitize_hex_color( $attributes['buttonColor'] ),
-            'button_text'      => sanitize_text_field( $attributes['buttonText'] ),
+            'columns'               => absint( $attributes['columns'] ),
+            'show_price'            => (bool) $attributes['showPrice'],
+            'show_features'         => (bool) $attributes['showFeatures'],
+            'show_description'      => (bool) $attributes['showDescription'],
+            'button_color'          => sanitize_hex_color( $attributes['buttonColor'] ),
+            'button_text'           => sanitize_text_field( $attributes['buttonText'] ),
+            'pack_background_color' => sanitize_hex_color( $attributes['packBackgroundColor'] ),
+            'pack_border_color'     => sanitize_hex_color( $attributes['packBorderColor'] ),
+            'pack_border_radius'    => absint( $attributes['packBorderRadius'] ),
+            'pack_padding'          => absint( $attributes['packPadding'] ),
+            'pack_shadow'           => sanitize_key( $attributes['packShadow'] ),
+            'title_font_size'       => absint( $attributes['titleFontSize'] ),
+            'price_font_size'       => absint( $attributes['priceFontSize'] ),
+            'card_gap'              => absint( $attributes['cardGap'] ),
+            'recurring_font_size'   => absint( $attributes['recurringFontSize'] ),
         ];
 
         /**
@@ -194,7 +212,7 @@ class SubscriptionPacks {
         $block_config = apply_filters( 'wpuf_subscription_block_config', $block_config, $attributes );
 
         // Enqueue frontend styles
-        wp_enqueue_style( 'wpuf-frontend-subscription' );
+        wp_enqueue_style( 'wpuf-frontend-subscriptions' );
 
         // Determine pack order for include
         $pack_order = [];

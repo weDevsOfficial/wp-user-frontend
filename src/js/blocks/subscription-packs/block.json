@@ -49,13 +49,45 @@
         "buttonText": {
             "type": "string",
             "default": ""
+        },
+        "packBackgroundColor": {
+            "type": "string",
+            "default": "#ffffff"
+        },
+        "packBorderColor": {
+            "type": "string",
+            "default": "#e5e7eb"
+        },
+        "packBorderRadius": {
+            "type": "number",
+            "default": 12
+        },
+        "packPadding": {
+            "type": "number",
+            "default": 24
+        },
+        "packShadow": {
+            "type": "string",
+            "default": "md"
+        },
+        "titleFontSize": {
+            "type": "number",
+            "default": 18
+        },
+        "priceFontSize": {
+            "type": "number",
+            "default": 30
+        },
+        "cardGap": {
+            "type": "number",
+            "default": 16
+        },
+        "recurringFontSize": {
+            "type": "number",
+            "default": 14
         }
     },
     "supports": {
-        "color": {
-            "background": true,
-            "text": true
-        },
         "spacing": {
             "margin": true,
             "padding": true

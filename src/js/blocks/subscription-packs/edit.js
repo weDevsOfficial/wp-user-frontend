@@ -2,6 +2,7 @@
 // Renders InspectorControls sidebar and ServerSideRender live preview.
 
 import { InspectorControls, PanelColorSettings, useBlockProps } from '@wordpress/block-editor';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import {
     PanelBody,
     ToggleControl,
@@ -40,6 +41,26 @@ export default function Edit( { attributes, setAttributes } ) {
     } = attributes;
 
     const blockProps = useBlockProps();
+
+    const [ isUpdating, setIsUpdating ] = useState( false );
+    const debounceTimerRef = useRef( null );
+    const isFirstRender = useRef( true );
+
+    // Debounce attribute changes so rapid slider drags collapse into one loading state
+    useEffect( () => {
+        // Skip the very first render — no change has happened yet
+        if ( isFirstRender.current ) {
+            isFirstRender.current = false;
+            return;
+        }
+        if ( debounceTimerRef.current ) {
+            clearTimeout( debounceTimerRef.current );
+        }
+        debounceTimerRef.current = setTimeout( () => {
+            setIsUpdating( true );
+        }, 150 );
+        return () => clearTimeout( debounceTimerRef.current );
+    }, [ attributes ] );
 
     const packs = window.wpufSubscriptionPacks?.packs || [];
     const orderByOptions = window.wpufSubscriptionPacks?.orderByOptions || [];
@@ -255,10 +276,29 @@ export default function Edit( { attributes, setAttributes } ) {
                 />
             </InspectorControls>
 
-            <ServerSideRender
-                block="wpuf/subscription-packs"
-                attributes={ attributes }
-            />
+            <div style={ { position: 'relative' } }>
+                { isUpdating && (
+                    <div className="wpuf-ssr-loading-overlay">
+                        <div className="wpuf-ssr-loading" />
+                        <p style={ { marginTop: '12px', fontSize: '13px' } }>
+                            { __( 'Updating preview…', 'wp-user-frontend' ) }
+                        </p>
+                    </div>
+                ) }
+                <ServerSideRender
+                    block="wpuf/subscription-packs"
+                    attributes={ attributes }
+                    LoadingResponsePlaceholder={ () => {
+                        // eslint-disable-next-line react-hooks/rules-of-hooks
+                        useEffect( () => {
+                            return () => {
+                                setIsUpdating( false );
+                            };
+                        }, [] );
+                        return null;
+                    } }
+                />
+            </div>
         </div>
     );
 }

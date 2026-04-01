@@ -9,6 +9,32 @@
     min-height: 100px;
 }
 
+/* Loading overlay for ServerSideRender */
+.wpuf-ssr-loading-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.75);
+    min-height: 80px;
+}
+
+.wpuf-ssr-loading {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e0e0e0;
+    border-top-color: #007cba;
+    border-radius: 50%;
+    animation: wpuf-ssr-spin 0.7s linear infinite;
+}
+
+@keyframes wpuf-ssr-spin {
+    to { transform: rotate(360deg); }
+}
+
 /* MultiSelect component */
 .wpuf-block-multiselect {
     position: relative;

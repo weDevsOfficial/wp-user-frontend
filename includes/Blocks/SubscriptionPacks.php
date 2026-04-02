@@ -49,35 +49,16 @@ class SubscriptionPacks {
     }
 
     /**
-     * Register the Gutenberg block and its assets
+     * Register the Gutenberg block
      *
      * @since WPUF_SINCE
      *
      * @return void
      */
     public function register_block() {
-        $asset_file = WPUF_ROOT . '/assets/js/subscription-packs.asset.php';
-
-        if ( ! file_exists( $asset_file ) ) {
+        if ( ! wp_script_is( 'wpuf-subscription-packs-editor', 'registered' ) ) {
             return;
         }
-
-        $asset = require $asset_file;
-
-        wp_register_script(
-            'wpuf-subscription-packs-editor',
-            WPUF_ASSET_URI . '/js/subscription-packs.js',
-            $asset['dependencies'],
-            $asset['version'],
-            true
-        );
-
-        wp_register_style(
-            'wpuf-subscription-packs-editor-style',
-            WPUF_ASSET_URI . '/js/subscription-packs.css',
-            [ 'wpuf-frontend-subscriptions' ],
-            $asset['version']
-        );
 
         wp_localize_script(
             'wpuf-subscription-packs-editor',

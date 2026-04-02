@@ -20,8 +20,27 @@ if ( 'wpuf_pay' === $action || ! empty( $coupon_status ) ) {
     return;
 }
 
+// Block config defaults — when loaded via shortcode, $block_config may not be set
+$block_config = isset( $block_config ) ? $block_config : [
+    'columns'               => 3,
+    'show_price'            => true,
+    'show_features'         => true,
+    'show_description'      => true,
+    'button_color'          => '',
+    'button_text'           => '',
+    'pack_background_color' => '#ffffff',
+    'pack_border_color'     => '#e5e7eb',
+    'pack_border_radius'    => 12,
+    'pack_padding'          => 24,
+    'pack_shadow'           => 'md',
+    'title_font_size'       => 18,
+    'price_font_size'       => 30,
+    'card_gap'              => 16,
+    'recurring_font_size'   => 14,
+];
+
 // Get the button color from settings and validate it
-$button_color = wpuf_get_option( 'button_color', 'wpuf_subscription_settings', '' );
+$button_color = ! empty( $block_config['button_color'] ) ? $block_config['button_color'] : wpuf_get_option( 'button_color', 'wpuf_subscription_settings', '' );
 
 // Check if custom color is set, otherwise use Tailwind primary class
 $use_custom_color = false;
@@ -33,6 +52,44 @@ if ( is_string( $button_color ) && ! empty( $button_color ) ) {
         $use_custom_color = true;
     }
 }
+// Build card inline styles from block_config
+$card_style_parts = [];
+
+$bg_color = ! empty( $block_config['pack_background_color'] ) ? sanitize_hex_color( $block_config['pack_background_color'] ) : '#ffffff';
+if ( $bg_color ) {
+    $card_style_parts[] = 'background-color:' . $bg_color;
+}
+
+$border_color = ! empty( $block_config['pack_border_color'] ) ? sanitize_hex_color( $block_config['pack_border_color'] ) : '#e5e7eb';
+if ( $border_color ) {
+    $card_style_parts[] = 'border:1px solid ' . $border_color;
+}
+
+if ( isset( $block_config['pack_border_radius'] ) ) {
+    $card_style_parts[] = 'border-radius:' . absint( $block_config['pack_border_radius'] ) . 'px';
+}
+
+if ( isset( $block_config['pack_padding'] ) ) {
+    $card_style_parts[] = 'padding:' . absint( $block_config['pack_padding'] ) . 'px';
+}
+
+// Shadow map
+$shadow_map = [
+    'none' => 'none',
+    'sm'   => '0 1px 2px 0 rgba(0,0,0,0.05)',
+    'md'   => '0 4px 6px -1px rgba(0,0,0,0.1),0 2px 4px -2px rgba(0,0,0,0.1)',
+    'lg'   => '0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -4px rgba(0,0,0,0.1)',
+];
+$shadow_key = isset( $block_config['pack_shadow'] ) ? sanitize_key( $block_config['pack_shadow'] ) : 'md';
+if ( isset( $shadow_map[ $shadow_key ] ) ) {
+    $card_style_parts[] = 'box-shadow:' . $shadow_map[ $shadow_key ];
+}
+
+$card_style = implode( ';', $card_style_parts );
+
+$title_font_size     = isset( $block_config['title_font_size'] ) ? absint( $block_config['title_font_size'] ) : 18;
+$price_font_size     = isset( $block_config['price_font_size'] ) ? absint( $block_config['price_font_size'] ) : 30;
+$recurring_font_size = isset( $block_config['recurring_font_size'] ) ? absint( $block_config['recurring_font_size'] ) : 14;
 ?>
 <style>
 /* Critical inline styles to prevent FOUC */
@@ -45,10 +102,10 @@ if ( is_string( $button_color ) && ! empty( $button_color ) ) {
     display: none !important;
 }
 </style>
-<div class="wpuf-rounded-xl wpuf-p-6 wpuf-ring-1 wpuf-ring-gray-200 wpuf-bg-white wpuf-shadow-md hover:wpuf-shadow-lg wpuf-transition-all wpuf-duration-300 wpuf-relative wpuf-mt-2">
+<div class="wpuf-transition-all wpuf-duration-300 wpuf-relative wpuf-mt-2" style="<?php echo esc_attr( $card_style ); ?>">
     <!-- Header Section -->
     <div class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-gap-x-4">
-        <h3 class="wpuf-text-lg wpuf-font-semibold wpuf-text-gray-900 wpuf-leading-8">
+        <h3 class="wpuf-font-semibold wpuf-text-gray-900 wpuf-leading-8" style="font-size:<?php echo esc_attr( $title_font_size ); ?>px">
             <?php echo wp_kses_post( $pack->post_title ); ?>
         </h3>
         <?php if ( isset( $pack->featured ) && $pack->featured ) { ?>
@@ -58,24 +115,25 @@ if ( is_string( $button_color ) && ! empty( $button_color ) ) {
         <?php } ?>
     </div>
     
-    <?php if ( ! empty( $pack->post_content ) ) : ?>
+    <?php if ( $block_config['show_description'] && ! empty( $pack->post_content ) ) : ?>
     <div class="wpuf-mt-3 wpuf-text-sm wpuf-leading-5 wpuf-text-gray-600">
         <?php echo wp_kses_post( wpautop( $pack->post_content ) ); ?>
     </div>
     <?php endif; ?>
     
     <!-- Price Section -->
+    <?php if ( $block_config['show_price'] ) : ?>
     <div class="wpuf-mt-4">
     <div class="wpuf-flex wpuf-items-baseline wpuf-gap-x-1">
         <?php if ( $billing_amount != '0.00' ) { ?>
-            <span class="wpuf-text-3xl wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900">
+            <span class="wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900" style="font-size:<?php echo esc_attr( $price_font_size ); ?>px">
                 <?php echo esc_html( wpuf_format_price( $billing_amount ) ); ?>
             </span>
-            <span class="wpuf-text-sm wpuf-font-semibold wpuf-text-gray-600 wpuf-leading-6">
+            <span class="wpuf-font-semibold wpuf-text-gray-600 wpuf-leading-6" style="font-size:<?php echo esc_attr( $recurring_font_size ); ?>px">
                 <?php echo wp_kses_post( $recurring_des ); ?>
             </span>
         <?php } else { ?>
-            <span class="wpuf-text-3xl wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900">
+            <span class="wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900" style="font-size:<?php echo esc_attr( $price_font_size ); ?>px">
                 <?php esc_html_e( 'Free', 'wp-user-frontend' ); ?>
             </span>
         <?php } ?>
@@ -89,7 +147,14 @@ if ( is_string( $button_color ) && ! empty( $button_color ) ) {
         </div>
     <?php } ?>
     </div>
-    
+    <?php endif; ?>
+
+    <?php
+    // Override button text if set in block config
+    if ( ! empty( $block_config['button_text'] ) ) {
+        $button_name = $block_config['button_text'];
+    }
+    ?>
     <!-- Button Section -->
     <div class="wpuf-mt-6">
         <?php if ( 'completed' === $current_pack_status ) : ?>
@@ -318,7 +383,7 @@ if ( is_string( $button_color ) && ! empty( $button_color ) ) {
     }
     
     // Show the features list with expandable functionality
-    if ( ! empty( $features_list ) ) :
+    if ( $block_config['show_features'] && ! empty( $features_list ) ) :
         $features_count = count( $features_list );
         $initial_display_count = 5; // Show first 5 features initially
         ?>

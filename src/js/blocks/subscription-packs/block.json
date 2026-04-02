@@ -1,0 +1,100 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "wpuf/subscription-packs",
+    "version": "1.0.0",
+    "title": "Subscription Packs",
+    "category": "wpuf",
+    "description": "Display WPUF subscription packs with customizable layout and styling.",
+    "textdomain": "wp-user-frontend",
+    "icon": "cart",
+    "keywords": [ "subscription", "pricing", "plans", "wpuf" ],
+    "attributes": {
+        "include": {
+            "type": "array",
+            "default": []
+        },
+        "exclude": {
+            "type": "array",
+            "default": []
+        },
+        "columns": {
+            "type": "number",
+            "default": 3
+        },
+        "order": {
+            "type": "string",
+            "default": ""
+        },
+        "orderby": {
+            "type": "string",
+            "default": ""
+        },
+        "showPrice": {
+            "type": "boolean",
+            "default": true
+        },
+        "showFeatures": {
+            "type": "boolean",
+            "default": true
+        },
+        "showDescription": {
+            "type": "boolean",
+            "default": true
+        },
+        "buttonColor": {
+            "type": "string",
+            "default": ""
+        },
+        "buttonText": {
+            "type": "string",
+            "default": ""
+        },
+        "packBackgroundColor": {
+            "type": "string",
+            "default": "#ffffff"
+        },
+        "packBorderColor": {
+            "type": "string",
+            "default": "#e5e7eb"
+        },
+        "packBorderRadius": {
+            "type": "number",
+            "default": 12
+        },
+        "packPadding": {
+            "type": "number",
+            "default": 24
+        },
+        "packShadow": {
+            "type": "string",
+            "default": "md"
+        },
+        "titleFontSize": {
+            "type": "number",
+            "default": 18
+        },
+        "priceFontSize": {
+            "type": "number",
+            "default": 30
+        },
+        "cardGap": {
+            "type": "number",
+            "default": 16
+        },
+        "recurringFontSize": {
+            "type": "number",
+            "default": 14
+        }
+    },
+    "supports": {
+        "spacing": {
+            "margin": true,
+            "padding": true
+        },
+        "align": [ "wide", "full" ],
+        "html": false
+    },
+    "editorScript": "wpuf-subscription-packs-editor",
+    "editorStyle": "wpuf-subscription-packs-editor-style"
+}

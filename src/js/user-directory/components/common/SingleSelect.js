@@ -115,7 +115,7 @@ const SingleSelect = ({
                                         const isFree = option.isFree !== false; // Default to true if not specified
 
                                         return (
-                                            <div
+                                            <li
                                                 key={option.value}
                                                 className={`wpuf-p-3 wpuf-flex wpuf-items-center wpuf-justify-between wpuf-transition-colors ${
                                                     isFree
@@ -128,7 +128,7 @@ const SingleSelect = ({
                                                     {option.label}
                                                 </span>
                                                 {!isFree && ProBadge && <ProBadge />}
-                                            </div>
+                                            </li>
                                         );
                                     })}
                                 </li>

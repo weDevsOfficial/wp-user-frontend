@@ -3,7 +3,7 @@
  *
  * @package WPUF
  * @subpackage Free/User_Directory
- * @since 4.3.0
+ * @since WPUF_SINCE
  */
 
 (function($) {

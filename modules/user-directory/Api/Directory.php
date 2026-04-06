@@ -101,6 +101,51 @@ class Directory extends WP_REST_Controller {
                     'methods'             => WP_REST_Server::READABLE,
                     'callback'            => [ $this, 'search_users' ],
                     'permission_callback' => '__return_true', // Public endpoint
+                    'args'                => [
+                        'directory_id' => [
+                            'type'              => 'integer',
+                            'sanitize_callback' => 'absint',
+                        ],
+                        'search'       => [
+                            'type'              => 'string',
+                            'sanitize_callback' => 'sanitize_text_field',
+                        ],
+                        'page'         => [
+                            'type'              => 'integer',
+                            'default'           => 1,
+                            'sanitize_callback' => 'absint',
+                            'validate_callback' => function ( $value ) {
+                                return is_numeric( $value ) && (int) $value >= 1;
+                            },
+                        ],
+                        'orderby'      => [
+                            'type'              => 'string',
+                            'sanitize_callback' => 'sanitize_text_field',
+                            'validate_callback' => function ( $value ) {
+                                $allowed = [ 'id', 'username', 'email', 'display_name', 'user_registered', 'ID' ];
+                                return empty( $value ) || in_array( strtolower( $value ), array_map( 'strtolower', $allowed ), true );
+                            },
+                        ],
+                        'order'        => [
+                            'type'              => 'string',
+                            'sanitize_callback' => 'sanitize_text_field',
+                            'validate_callback' => function ( $value ) {
+                                return empty( $value ) || in_array( strtoupper( $value ), [ 'ASC', 'DESC' ], true );
+                            },
+                        ],
+                        'max_item'     => [
+                            'type'              => 'integer',
+                            'sanitize_callback' => 'absint',
+                        ],
+                        'avatar_size'  => [
+                            'type'              => 'integer',
+                            'sanitize_callback' => 'absint',
+                        ],
+                        'base_url'     => [
+                            'type'              => 'string',
+                            'sanitize_callback' => 'esc_url_raw',
+                        ],
+                    ],
                 ],
             ]
         );
@@ -114,6 +159,20 @@ class Directory extends WP_REST_Controller {
                     'methods'             => WP_REST_Server::READABLE,
                     'callback'            => [ $this, 'get_user_count' ],
                     'permission_callback' => [ $this, 'permissions_check' ],
+                    'args'                => [
+                        'roles'         => [
+                            'type'              => 'string',
+                            'sanitize_callback' => 'sanitize_text_field',
+                        ],
+                        'exclude_users' => [
+                            'type'              => 'string',
+                            'sanitize_callback' => 'sanitize_text_field',
+                        ],
+                        'max_item'      => [
+                            'type'              => 'integer',
+                            'sanitize_callback' => 'absint',
+                        ],
+                    ],
                 ],
             ]
         );
@@ -288,9 +347,6 @@ class Directory extends WP_REST_Controller {
             );
         }
 
-        // Flush rewrite rules for pretty URLs
-        flush_rewrite_rules();
-
         return rest_ensure_response( [
             'success' => true,
             'message' => __( 'Directory created successfully.', 'wp-user-frontend' ),
@@ -455,14 +511,20 @@ class Directory extends WP_REST_Controller {
         $order        = ! empty( $request['order'] ) ? strtoupper( sanitize_text_field( $request['order'] ) ) : 'DESC';
         $max_item     = ! empty( $request['max_item'] ) ? absint( $request['max_item'] ) : 12;
         $avatar_size  = ! empty( $request['avatar_size'] ) ? absint( $request['avatar_size'] ) : 128;
-        $base_url     = ! empty( $request['base_url'] ) ? sanitize_text_field( $request['base_url'] ) : '';
+        $base_url     = ! empty( $request['base_url'] ) ? esc_url_raw( $request['base_url'] ) : '';
 
         // Get directory settings
         $settings = [];
         if ( $directory_id ) {
             $post = get_post( $directory_id );
-            if ( $post && User_Directory::POST_TYPE === $post->post_type ) {
+            if ( $post && User_Directory::POST_TYPE === $post->post_type && 'publish' === $post->post_status ) {
                 $settings = json_decode( $post->post_content, true ) ?: [];
+            } elseif ( $post && 'publish' !== $post->post_status ) {
+                return new WP_Error(
+                    'directory_not_published',
+                    __( 'Directory is not available.', 'wp-user-frontend' ),
+                    [ 'status' => 403 ]
+                );
             }
         }
 
@@ -505,10 +567,10 @@ class Directory extends WP_REST_Controller {
             $args['exclude'] = $exclude_ids;
         }
 
-        // Search
+        // Search — exclude user_email from public search columns to prevent email harvesting
         if ( $search ) {
             $args['search'] = '*' . $search . '*';
-            $args['search_columns'] = [ 'user_login', 'user_nicename', 'display_name', 'user_email' ];
+            $args['search_columns'] = [ 'user_login', 'user_nicename', 'display_name' ];
         }
 
         // Execute query
@@ -668,9 +730,9 @@ class Directory extends WP_REST_Controller {
 
         // Handle excluded_users array (like Pro version) - convert to exclude_users string
         if ( isset( $params['excluded_users'] ) && is_array( $params['excluded_users'] ) ) {
-            $settings['excluded_users'] = $params['excluded_users'];
+            $settings['excluded_users'] = $this->sanitize_excluded_users( $params['excluded_users'] );
             // Also store as exclude_users string for backward compatibility
-            $user_ids = $this->extract_user_ids_from_excluded_users( $params['excluded_users'] );
+            $user_ids = $this->extract_user_ids_from_excluded_users( $settings['excluded_users'] );
             $settings['exclude_users'] = $user_ids;
         }
 
@@ -719,6 +781,42 @@ class Directory extends WP_REST_Controller {
          * @param array $settings The settings array with free limits applied.
          */
         return apply_filters( 'wpuf_ud_free_limited_settings', $settings );
+    }
+
+    /**
+     * Recursively sanitize excluded_users array
+     *
+     * @since 4.3.0
+     *
+     * @param array $excluded_users Raw excluded users data.
+     *
+     * @return array Sanitized excluded users.
+     */
+    private function sanitize_excluded_users( $excluded_users ) {
+        if ( ! is_array( $excluded_users ) ) {
+            return [];
+        }
+
+        $sanitized = [];
+
+        foreach ( $excluded_users as $user ) {
+            if ( is_array( $user ) ) {
+                $sanitized_user = [];
+                foreach ( $user as $key => $value ) {
+                    $safe_key = sanitize_text_field( $key );
+                    if ( in_array( $safe_key, [ 'id', 'ID' ], true ) ) {
+                        $sanitized_user[ $safe_key ] = absint( $value );
+                    } else {
+                        $sanitized_user[ $safe_key ] = sanitize_text_field( $value );
+                    }
+                }
+                $sanitized[] = $sanitized_user;
+            } elseif ( is_numeric( $user ) ) {
+                $sanitized[] = absint( $user );
+            }
+        }
+
+        return $sanitized;
     }
 
     /**

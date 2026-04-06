@@ -11,7 +11,7 @@ export const getOptimalAvatarSize = (layout) => {
         'layout-3': '128',  // Card layout - medium avatars
         'layout-4': '192',  // Large card layout - larger avatars
         'layout-5': '128',  // Grid layout - medium avatars
-        'layout-6': '265'   // Grid layout - medium avatars
+        'layout-6': '256'   // Grid layout - medium avatars
     };
     return sizeMap[layout] || '48'; // Default to 48 if layout not found
 };

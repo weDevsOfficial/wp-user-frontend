@@ -9,7 +9,7 @@
 module.exports = {
     plugins: {
         tailwindcss: {
-            config: './tailwind.user-directory.config.js',
+            config: './modules/user-directory/tailwind.config.js',
         },
         autoprefixer: {},
     },

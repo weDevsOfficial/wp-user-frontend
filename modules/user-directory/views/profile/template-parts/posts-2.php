@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $user_id = $user->ID;
 
 // Get current page from query string for posts pagination
@@ -53,7 +57,7 @@ $pagination = [
                     <div class="!wpuf-grid !wpuf-grid-cols-12 !wpuf-gap-4 !wpuf-px-6 !wpuf-items-center !wpuf-w-full">
                         <div class="!wpuf-col-span-6">
                             <div class="!wpuf-text-base !wpuf-font-normal !wpuf-text-gray-900 !wpuf-leading-none">
-                                <?php echo wp_trim_words( get_the_title(), 10 ); ?>
+                                <?php echo esc_html( wp_trim_words( get_the_title(), 10 ) ); ?>
                             </div>
                         </div>
                         <div class="!wpuf-col-span-3">
@@ -62,7 +66,7 @@ $pagination = [
                             </div>
                         </div>
                         <div class="!wpuf-col-span-3 !wpuf-text-right">
-                            <a href="<?php echo get_permalink(); ?>" 
+                            <a href="<?php echo esc_url( get_permalink() ); ?>"
                                target="_blank"
                                class="!wpuf-inline-flex !wpuf-items-center !wpuf-gap-1 !wpuf-text-base !wpuf-font-normal !wpuf-text-gray-700 hover:!wpuf-text-emerald-600 !wpuf-transition-colors !wpuf-no-underline">
                                 <?php esc_html_e( 'Post Link', 'wp-user-frontend' ); ?>
@@ -93,7 +97,7 @@ $pagination = [
     // Add pagination if there are multiple pages
     if ( $pagination['total_pages'] > 1 ) {
         // Build base URL and query args for pagination
-        $current_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $current_url = home_url( add_query_arg( null, null ) );
         $parsed_url = wp_parse_url( $current_url );
         $base_url = $parsed_url['path'] ?? '';
 
@@ -109,18 +113,6 @@ $pagination = [
         foreach ( $preserve_params as $param ) {
             if ( isset( $all_params[$param] ) ) {
                 $clean_query_args[$param] = $all_params[$param];
-            }
-        }
-
-        // Helper function to build pagination URLs for posts
-        if ( ! function_exists( 'wpuf_ud_build_posts_page_url' ) ) {
-            function wpuf_ud_build_posts_page_url( $base_url, $clean_args, $page ) {
-                // Set the tab and page for posts
-                $final_args = $clean_args;
-                $final_args['tab'] = 'posts';
-                $final_args['posts_page'] = $page;
-
-                return add_query_arg( $final_args, $base_url );
             }
         }
 

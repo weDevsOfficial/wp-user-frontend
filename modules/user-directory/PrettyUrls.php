@@ -62,6 +62,12 @@ class PrettyUrls {
      * @return void
      */
     public function add_rewrite_rules() {
+        // Check if a deferred flush was requested
+        if ( get_option( 'wpuf_ud_flush_rewrite_rules' ) ) {
+            delete_option( 'wpuf_ud_flush_rewrite_rules' );
+            flush_rewrite_rules();
+        }
+
         // Get pages with directory shortcodes
         $pages = $this->get_directory_pages();
 
@@ -144,6 +150,13 @@ class PrettyUrls {
      * @return array Array of WP_Post objects.
      */
     private function get_directory_pages() {
+        $cache_key = 'wpuf_ud_directory_pages';
+        $cached    = get_transient( $cache_key );
+
+        if ( false !== $cached ) {
+            return $cached;
+        }
+
         $pages = get_posts( [
             'post_type'      => 'page',
             'post_status'    => 'publish',
@@ -167,7 +180,11 @@ class PrettyUrls {
          * @param array $directory_pages The directory pages.
          * @param array $pages           All published pages.
          */
-        return apply_filters( 'wpuf_ud_directory_pages', $directory_pages, $pages );
+        $directory_pages = apply_filters( 'wpuf_ud_directory_pages', $directory_pages, $pages );
+
+        set_transient( $cache_key, $directory_pages, DAY_IN_SECONDS );
+
+        return $directory_pages;
     }
 
     /**
@@ -194,7 +211,13 @@ class PrettyUrls {
         // Check if page has directory shortcode
         if ( has_shortcode( $post->post_content, 'wpuf_user_listing' ) ||
              has_shortcode( $post->post_content, 'wpuf_user_listing_id' ) ) {
-            flush_rewrite_rules();
+            // Invalidate the directory pages cache
+            delete_transient( 'wpuf_ud_directory_pages' );
+
+            // Defer flush to next init instead of flushing on every save
+            if ( ! get_option( 'wpuf_ud_flush_rewrite_rules' ) ) {
+                update_option( 'wpuf_ud_flush_rewrite_rules', true );
+            }
         }
     }
 }

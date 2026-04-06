@@ -1,8 +1,11 @@
-import { useState } from '@wordpress/element';
+import { useState, useRef } from '@wordpress/element';
+
+let tooltipCounter = 0;
 
 const Tooltip = ( { content, children, className = '' } ) => {
     const [visible, setVisible] = useState(false);
-    const tooltipId = `wpuf-tooltip-${Math.random().toString(36).substr(2, 9)}`;
+    const idRef = useRef( `wpuf-tooltip-${++tooltipCounter}` );
+    const tooltipId = idRef.current;
 
     return (
         <span

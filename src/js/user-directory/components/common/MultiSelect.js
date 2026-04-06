@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from '@wordpress/element';
+import { useState, useRef, useEffect, cloneElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
     const MultiSelect = ({ options, value, onChange, placeholder, sortable = false, searchable = true, selectedLabel = 'items' }) => {
@@ -26,15 +26,15 @@ import { __ } from '@wordpress/i18n';
         if (option && typeof option === 'object' && option.icon) {
             // Clone the icon and modify its fill color if selected
             if (isSelected) {
-                return React.cloneElement(option.icon, {
-                    children: React.cloneElement(option.icon.props.children, {
+                return cloneElement(option.icon, {
+                    children: cloneElement(option.icon.props.children, {
                         fill: '#059669' // Emerald-600
                     })
                 });
             }
             // For unselected state, add transition styles
-            return React.cloneElement(option.icon, {
-                children: React.cloneElement(option.icon.props.children, {
+            return cloneElement(option.icon, {
+                children: cloneElement(option.icon.props.children, {
                     style: {
                         transition: 'fill 0.2s ease-in-out'
                     }

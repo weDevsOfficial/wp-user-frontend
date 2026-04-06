@@ -15,6 +15,10 @@
  * @since 4.2.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 // Exit if no pagination needed
 if ( empty( $pagination ) || ! isset( $pagination['total_pages'] ) || (int) $pagination['total_pages'] <= 1 ) {
     return;
@@ -43,7 +47,7 @@ $total   = (int) $pagination['total_pages'];
 
 // Determine base_url and query_args if not provided
 if ( ! isset( $base_url ) || ! isset( $query_args ) ) {
-    $current_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    $current_url = home_url( add_query_arg( null, null ) );
     $parsed_url = wp_parse_url( $current_url );
     $base_url = $parsed_url['path'] ?? '';
 
@@ -97,7 +101,7 @@ if ( $total <= $max_visible ) {
 
         <!-- Previous Button -->
         <?php if ( $current > 1 ) : ?>
-            <a href="<?php echo wpuf_ud_build_page_url( $base_url, $query_args, $current - 1 ); ?>"
+            <a href="<?php echo esc_url( wpuf_ud_build_page_url( $base_url, $query_args, $current - 1 ) ); ?>"
                class="wpuf-pagination-link !wpuf-inline-flex !wpuf-items-center !wpuf-px-3 !wpuf-py-2 !wpuf-text-sm !wpuf-text-gray-700 hover:!wpuf-text-gray-900">
                 <svg class="!wpuf-w-5 !wpuf-h-5 !wpuf-mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -126,7 +130,7 @@ if ( $total <= $max_visible ) {
                         <?php echo esc_html( $page ); ?>
                     </span>
                 <?php else : ?>
-                    <a href="<?php echo wpuf_ud_build_page_url( $base_url, $query_args, $page ); ?>"
+                    <a href="<?php echo esc_url( wpuf_ud_build_page_url( $base_url, $query_args, $page ) ); ?>"
                        class="!wpuf-no-underline wpuf-pagination-link !wpuf-relative !wpuf-inline-flex !wpuf-items-center !wpuf-px-4 !wpuf-py-2 !wpuf-text-sm !wpuf-font-medium !wpuf-text-gray-700 <?php echo esc_attr( $colors['hover_primary_600'] ); ?> <?php echo esc_attr( $colors['hover_border_primary_600'] ); ?> hover:!wpuf-border-t-2 !wpuf-transition-colors">
                         <?php echo esc_html( $page ); ?>
                     </a>
@@ -136,7 +140,7 @@ if ( $total <= $max_visible ) {
 
         <!-- Next Button -->
         <?php if ( $current < $total ) : ?>
-            <a href="<?php echo wpuf_ud_build_page_url( $base_url, $query_args, $current + 1 ); ?>"
+            <a href="<?php echo esc_url( wpuf_ud_build_page_url( $base_url, $query_args, $current + 1 ) ); ?>"
                class="wpuf-pagination-link !wpuf-inline-flex !wpuf-items-center !wpuf-px-3 !wpuf-py-2 !wpuf-text-sm !wpuf-text-gray-700 hover:!wpuf-text-gray-900">
                 <?php esc_html_e( 'Next', 'wp-user-frontend' ); ?>
                 <svg class="!wpuf-w-5 !wpuf-h-5 !wpuf-ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

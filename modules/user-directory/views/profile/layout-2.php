@@ -64,7 +64,7 @@ $custom_tab_labels = $config['custom_tab_labels'];
     <!-- Main Content Container -->
     <div class="!wpuf-max-w-6xl !wpuf-mx-auto !wpuf-px-4 wpuf-profile-header-overlap">
         <!-- Profile Header Card -->
-        <div class="wpuf-profile-header-card !wpuf-bg-transparent !wpuf-rounded-lg !wpuf-mb-12">
+        <div class="!wpuf-bg-transparent !wpuf-rounded-lg !wpuf-mb-12">
             <!-- Avatar and Basic Info -->
             <div class="!wpuf-flex !wpuf-flex-col !wpuf-items-center !wpuf-text-center">
                 <?php if ( $show_avatar ) : ?>
@@ -87,7 +87,11 @@ $custom_tab_labels = $config['custom_tab_labels'];
                     <?php foreach ( $contact_info as $contact_key => $contact_item ) : ?>
                     <div class="!wpuf-flex !wpuf-items-center !wpuf-gap-3">
                         <div class="!wpuf-relative">
-                            <?php echo $contact_item['icon']; ?>
+                            <?php echo wp_kses( $contact_item['icon'], [
+                                'svg'  => [ 'width' => [], 'height' => [], 'viewBox' => [], 'fill' => [], 'xmlns' => [], 'class' => [] ],
+                                'rect' => [ 'width' => [], 'height' => [], 'rx' => [], 'fill' => [] ],
+                                'path' => [ 'd' => [], 'stroke' => [], 'stroke-width' => [], 'stroke-linecap' => [], 'stroke-linejoin' => [], 'fill' => [], 'fill-rule' => [], 'clip-rule' => [] ],
+                            ] ); ?>
                         </div>
                         <div class="!wpuf-flex !wpuf-flex-col">
                             <span class="!wpuf-text-xs !wpuf-text-gray-500 !wpuf-mb-0.5"><?php echo esc_html( $contact_item['label'] ); ?></span>
@@ -134,7 +138,7 @@ $custom_tab_labels = $config['custom_tab_labels'];
                         if ( $account_page_id ) :
                             $edit_profile_link = get_page_link( $account_page_id ) . '?section=edit-profile';
                     ?>
-                    <a href="<?php echo esc_url( $edit_profile_link ); ?>" class="wpuf-edit-profile-btn !wpuf-inline-block !wpuf-h-11 !wpuf-py-2.5 !wpuf-px-[30px] !wpuf-bg-emerald-600 !wpuf-text-white !wpuf-rounded-lg hover:!wpuf-bg-emerald-700 !wpuf-transition-colors !wpuf-font-medium !wpuf-text-sm !wpuf-no-underline !wpuf-leading-[21px]">
+                    <a href="<?php echo esc_url( $edit_profile_link ); ?>" class="!wpuf-inline-block !wpuf-h-11 !wpuf-py-2.5 !wpuf-px-[30px] !wpuf-bg-emerald-600 !wpuf-text-white !wpuf-rounded-lg hover:!wpuf-bg-emerald-700 !wpuf-transition-colors !wpuf-font-medium !wpuf-text-sm !wpuf-no-underline !wpuf-leading-[21px]">
                         <?php esc_html_e( 'Edit Profile', 'wp-user-frontend' ); ?>
                     </a>
                     <?php
@@ -199,7 +203,7 @@ $custom_tab_labels = $config['custom_tab_labels'];
                         continue;
                     }
 
-                    if ( in_array( $tab, [ 'about', 'posts', 'comments', 'file', 'message', 'activity' ] ) ) :
+                    if ( in_array( $tab, [ 'about', 'posts', 'comments', 'file', 'message', 'activity' ], true ) ) :
                     ?>
                         <button class="wpuf-tab-button-2 <?php echo $tab === $default_active_tab ? 'active' : ''; ?> !wpuf-px-6 !wpuf-py-4 !wpuf-text-sm !wpuf-font-medium !wpuf-text-gray-500 hover:!wpuf-text-emerald-600 !wpuf-transition-colors !wpuf-relative hover:!wpuf-bg-transparent active:!wpuf-bg-transparent !wpuf-bg-transparent"
                                 data-tab="<?php echo esc_attr( $tab ); ?>">
@@ -230,7 +234,7 @@ echo esc_html( wpuf_ud_get_tab_label( $tab, $profile_data ) );
                 </div>
 
                 <!-- Posts Tab -->
-                <?php if ( in_array( 'posts', $default_tabs ) ) : ?>
+                <?php if ( in_array( 'posts', $default_tabs, true ) ) : ?>
                     <div class="wpuf-tab-content-posts" style="<?php echo $default_active_tab !== 'posts' ? 'display: none;' : ''; ?>">
                         <?php
                         if ( file_exists( WPUF_UD_FREE_TEMPLATES . '/profile/template-parts/posts-2.php' ) ) {
@@ -246,7 +250,7 @@ echo esc_html( wpuf_ud_get_tab_label( $tab, $profile_data ) );
                 <?php endif; ?>
 
                 <!-- Comments Tab -->
-                <?php if ( in_array( 'comments', $default_tabs ) ) : ?>
+                <?php if ( in_array( 'comments', $default_tabs, true ) ) : ?>
                     <div class="wpuf-tab-content-comments" style="<?php echo $default_active_tab !== 'comments' ? 'display: none;' : ''; ?>">
                         <?php
                         if ( file_exists( WPUF_UD_FREE_TEMPLATES . '/profile/template-parts/comments-2.php' ) ) {
@@ -262,7 +266,7 @@ echo esc_html( wpuf_ud_get_tab_label( $tab, $profile_data ) );
                 <?php endif; ?>
 
                 <!-- File Tab -->
-                <?php if ( in_array( 'file', $default_tabs ) ) : ?>
+                <?php if ( in_array( 'file', $default_tabs, true ) ) : ?>
                     <div class="wpuf-tab-content-file" style="<?php echo $default_active_tab !== 'file' ? 'display: none;' : ''; ?>">
                         <?php
                         $tab_title = __( 'Files', 'wp-user-frontend' );
@@ -280,7 +284,7 @@ echo esc_html( wpuf_ud_get_tab_label( $tab, $profile_data ) );
                 <?php endif; ?>
 
                 <!-- Message Tab -->
-                <?php if ( in_array( 'message', $default_tabs ) ) : ?>
+                <?php if ( in_array( 'message', $default_tabs, true ) ) : ?>
                     <div class="wpuf-tab-content-message" style="<?php echo $default_active_tab !== 'message' ? 'display: none;' : ''; ?>">
                         <div class="!wpuf-text-center !wpuf-py-8">
                             <p class="!wpuf-text-gray-500"><?php esc_html_e( 'Message functionality coming soon.', 'wp-user-frontend' ); ?></p>
@@ -289,7 +293,7 @@ echo esc_html( wpuf_ud_get_tab_label( $tab, $profile_data ) );
                 <?php endif; ?>
 
                 <!-- Activity Tab -->
-                <?php if ( in_array( 'activity', $default_tabs ) && class_exists( 'WPUF_User_Activity' ) ) : ?>
+                <?php if ( in_array( 'activity', $default_tabs, true ) && class_exists( 'WPUF_User_Activity' ) ) : ?>
                     <div class="wpuf-tab-content-activity" style="<?php echo $default_active_tab !== 'activity' ? 'display: none;' : ''; ?>">
                         <?php
                         if ( file_exists( WPUF_UD_FREE_TEMPLATES . '/profile/template-parts/activity-2.php' ) ) {
@@ -367,6 +371,9 @@ jQuery(document).ready(function($) {
         return cleanUrl.toString();
     }
 
+    // Allowlist of valid tab names to prevent DOM-based XSS via selector injection
+    var validTabs = ['about', 'posts', 'comments', 'file', 'message', 'activity'];
+
     // IMPORTANT: Always prioritize tab parameter from URL over any other detection
     var urlTab = getUrlParameter('tab');
 
@@ -381,9 +388,12 @@ jQuery(document).ready(function($) {
         }
     }
 
-    if (urlTab) {
-        // Activate the tab from URL
-        var $targetTabButton = $('.wpuf-tab-button-2[data-tab="' + urlTab + '"]');
+    // Validate urlTab against allowlist before using in selectors
+    if (urlTab && validTabs.indexOf(urlTab) !== -1) {
+        // Activate the tab from URL using .filter() + .data() for safe DOM selection
+        var $targetTabButton = $('.wpuf-tab-button-2').filter(function() {
+            return $(this).data('tab') === urlTab;
+        });
         if ($targetTabButton.length) {
             // Remove active class from all tabs
             $('.wpuf-tab-button-2').removeClass('active');
@@ -394,8 +404,10 @@ jQuery(document).ready(function($) {
             // Hide all tab content
             $('.wpuf-tab-content-2 > div').hide();
 
-            // Show target tab content
-            $('.wpuf-tab-content-' + urlTab).show();
+            // Show target tab content using .filter() for safe selection
+            $('.wpuf-tab-content-2 > div').filter(function() {
+                return $(this).hasClass('wpuf-tab-content-' + urlTab);
+            }).show();
         }
     }
 
@@ -415,8 +427,10 @@ jQuery(document).ready(function($) {
         // Hide all tab content
         $tabsContainer.find('.wpuf-tab-content-2 > div').hide();
 
-        // Show target tab content
-        $tabsContainer.find('.wpuf-tab-content-' + targetTab).show();
+        // Show target tab content using .filter() for safe selection
+        $tabsContainer.find('.wpuf-tab-content-2 > div').filter(function() {
+            return $(this).hasClass('wpuf-tab-content-' + targetTab);
+        }).show();
 
         // Update URL without reloading page
         if (history.pushState) {

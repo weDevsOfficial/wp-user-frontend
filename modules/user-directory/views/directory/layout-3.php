@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+?>
 <div class="wpuf-user-listing" data-block-id="<?php echo esc_attr( $block_id ); ?>" data-page-id="<?php echo esc_attr( $page_id ); ?>" data-layout="<?php echo esc_attr( ! empty( $directory_layout ) ? $directory_layout : 'layout-3' ); ?>" <?php if ( ! empty( $all_data['id'] ) ) : ?>data-directory-id="<?php echo esc_attr( $all_data['id'] ); ?>"<?php endif; ?> <?php if ( ! empty( $avatar_size ) ) : ?>data-avatar-size="<?php echo esc_attr( $avatar_size ); ?>"<?php endif; ?> <?php if ( ! empty( $all_data['max_item'] ) ) : ?>data-max-item="<?php echo esc_attr( $all_data['max_item'] ); ?>"<?php endif; ?>>
     <!-- Search and Filter Controls -->
     <?php 
@@ -69,7 +74,7 @@
                 $layout = ! empty( $directory_layout ) ? $directory_layout : 'layout-3';
                 
                 // Prepare query args for pagination links
-                $current_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                $current_url = home_url( add_query_arg( null, null ) );
                 $parsed_url = wp_parse_url( $current_url );
                 $base_url = $parsed_url['path'] ?? '';
                 

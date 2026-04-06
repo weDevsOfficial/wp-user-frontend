@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $placeholder = ! empty( $all_data['search_placeholder'] ) ? $all_data['search_placeholder'] : __( 'Search users...', 'wp-user-frontend' );
 
 // Get current search_by parameter from URL
-$current_search_by = ! empty( $_GET['search_by'] ) ? sanitize_text_field( $_GET['search_by'] ) : '';
+$current_search_by = ! empty( $_GET['search_by'] ) ? sanitize_text_field( wp_unslash( $_GET['search_by'] ) ) : '';
 
 // Get layout-specific colors
 $layout = isset( $layout ) ? $layout : 'layout-1';

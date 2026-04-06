@@ -49,8 +49,14 @@
         if (max_item) params.append('max_item', max_item);
         params.append('base_url', window.location.pathname);
 
+        const headers = {};
+        if (typeof wpufUserDirectorySearch !== 'undefined' && wpufUserDirectorySearch.nonce) {
+            headers['X-WP-Nonce'] = wpufUserDirectorySearch.nonce;
+        }
+
         fetch(apiUrl + '?' + params.toString(), {
             credentials: 'same-origin',
+            headers: headers,
         })
             .then(res => res.json())
             .then(data => {

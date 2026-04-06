@@ -116,21 +116,28 @@ function wpuf_free_activate_module( $module ) {
  *
  * @param string $module Module id
  *
- * @return bool
+ * @return WP_Error|null WP_Error on invalid module or null on success
  */
 function wpuf_free_deactivate_module( $module ) {
-    $current = wpuf_free_get_active_modules();
+    $modules = wpuf_free_get_modules();
 
-    if ( wpuf_free_is_module_active( $module ) ) {
-        $key = array_search( $module, $current, true );
-
-        if ( false !== $key ) {
-            unset( $current[ $key ] );
-            $current = array_values( $current ); // Re-index array
-        }
-
-        update_option( wpuf_free_active_module_key(), $current );
+    if ( ! isset( $modules[ $module ] ) ) {
+        return new WP_Error( 'invalid-module', __( 'The module is invalid', 'wp-user-frontend' ) );
     }
 
-    return true;
+    if ( ! wpuf_free_is_module_active( $module ) ) {
+        return new WP_Error( 'not-active', __( 'The module is not active', 'wp-user-frontend' ) );
+    }
+
+    $current = wpuf_free_get_active_modules();
+    $key     = array_search( $module, $current, true );
+
+    if ( false !== $key ) {
+        unset( $current[ $key ] );
+        $current = array_values( $current ); // Re-index array
+    }
+
+    update_option( wpuf_free_active_module_key(), $current );
+
+    return null;
 }

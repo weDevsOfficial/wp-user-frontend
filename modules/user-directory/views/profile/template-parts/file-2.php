@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $user_id = $user->ID;
 $tab_title = ! empty( $tab_title ) ? $tab_title : __( 'Files', 'wp-user-frontend' );
 
@@ -22,18 +26,18 @@ if ( $table_exists ) {
     $private_message_attachment_ids = array_unique( array_map( 'intval', $private_message_attachment_ids ) );
 }
 
-// Get user uploaded files from attachments
+// Get user uploaded files from attachments (cap at 200 to prevent memory issues)
 $all_files = get_posts([
     'post_type'      => 'attachment',
     'author'         => $user_id,
-    'posts_per_page' => -1, // Get all files for grouping
-    'post_status'    => 'inherit'
+    'posts_per_page' => 200,
+    'post_status'    => 'inherit',
 ]);
 
 // Filter out private message attachments
 $files = [];
 foreach ( $all_files as $file ) {
-    if ( ! in_array( $file->ID, $private_message_attachment_ids ) ) {
+    if ( ! in_array( $file->ID, $private_message_attachment_ids, true ) ) {
         $files[] = $file;
     }
 }
@@ -53,43 +57,7 @@ if ( ! empty( $template_data['profile_size'] ) ) {
 }
 
 if ( ! empty( $size_value ) ) {
-    // Function to get actual size from WordPress image size name or number
-    if ( ! function_exists( 'wpuf_get_image_size_dimensions_file2' ) ) {
-        function wpuf_get_image_size_dimensions_file2( $size ) {
-            global $_wp_additional_image_sizes;
-            
-            // If it's already a number, use it directly
-            if ( is_numeric( $size ) ) {
-                return array( 'size' => intval( $size ), 'wp_size' => 'custom' );
-            }
-            
-            // Default WordPress sizes
-            $default_sizes = array(
-                'thumbnail' => array( 'width' => get_option( 'thumbnail_size_w', 150 ), 'height' => get_option( 'thumbnail_size_h', 150 ) ),
-                'medium' => array( 'width' => get_option( 'medium_size_w', 300 ), 'height' => get_option( 'medium_size_h', 300 ) ),
-                'medium_large' => array( 'width' => get_option( 'medium_large_size_w', 768 ), 'height' => get_option( 'medium_large_size_h', 0 ) ),
-                'large' => array( 'width' => get_option( 'large_size_w', 1024 ), 'height' => get_option( 'large_size_h', 1024 ) ),
-                'full' => array( 'width' => 1536, 'height' => 1536 ) // Fallback for full size
-            );
-            
-            // Check default sizes first
-            if ( isset( $default_sizes[ $size ] ) ) {
-                $width = $default_sizes[ $size ]['width'];
-                return array( 'size' => $width > 0 ? $width : 150, 'wp_size' => $size );
-            }
-            
-            // Check additional custom sizes
-            if ( isset( $_wp_additional_image_sizes[ $size ] ) ) {
-                $width = $_wp_additional_image_sizes[ $size ]['width'];
-                return array( 'size' => $width > 0 ? $width : 150, 'wp_size' => $size );
-            }
-            
-            // Fallback to thumbnail if size not found
-            return array( 'size' => get_option( 'thumbnail_size_w', 150 ), 'wp_size' => 'thumbnail' );
-        }
-    }
-    
-    $size_info = wpuf_get_image_size_dimensions_file2( $size_value );
+    $size_info = wpuf_ud_get_image_size_dimensions( $size_value );
     $gallery_image_size = $size_info['size'];
     $wp_image_size = $size_info['wp_size'];
 }
@@ -118,13 +86,13 @@ foreach ( $files as $file ) {
     
     if ( strpos( $file_type, 'image/' ) === 0 ) {
         $grouped_files['images'][] = $file;
-    } elseif ( in_array( $file_type, ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'text/plain'] ) ) {
+    } elseif ( in_array( $file_type, ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'text/plain'], true ) ) {
         $grouped_files['documents'][] = $file;
     } elseif ( strpos( $file_type, 'video/' ) === 0 ) {
         $grouped_files['videos'][] = $file;
     } elseif ( strpos( $file_type, 'audio/' ) === 0 ) {
         $grouped_files['audio'][] = $file;
-    } elseif ( in_array( $file_type, ['application/zip', 'application/x-rar-compressed', 'application/x-7z-compressed', 'application/x-tar', 'application/gzip'] ) ) {
+    } elseif ( in_array( $file_type, ['application/zip', 'application/x-rar-compressed', 'application/x-7z-compressed', 'application/x-tar', 'application/gzip'], true ) ) {
         $grouped_files['archives'][] = $file;
     } else {
         $grouped_files['others'][] = $file;
@@ -170,7 +138,7 @@ $type_icons = [
                 foreach ( $grouped_files as $type => $type_files ) : 
                     $count = count( $type_files );
                 ?>
-                    <button class="wpuf-file-tab-btn-2 !wpuf-flex !wpuf-items-center !wpuf-gap-2 !wpuf-px-3 !wpuf-py-2 !wpuf-text-sm !wpuf-font-medium !wpuf-border-b-2 !wpuf-transition-all !wpuf-bg-transparent !wpuf-border-0 !wpuf-border-b-2 !wpuf-outline-none !wpuf-cursor-pointer <?php echo $first_tab ? '!wpuf-border-b-green-500 !wpuf-text-green-600' : '!wpuf-border-b-transparent !wpuf-text-green-500 hover:!wpuf-text-green-700 hover:!wpuf-border-b-green-300'; ?>" 
+                    <button class="wpuf-file-tab-btn-2 !wpuf-flex !wpuf-items-center !wpuf-gap-2 !wpuf-px-3 !wpuf-py-2 !wpuf-text-sm !wpuf-font-medium !wpuf-transition-all !wpuf-bg-transparent !wpuf-border-0 !wpuf-border-b-2 !wpuf-outline-none !wpuf-cursor-pointer <?php echo $first_tab ? '!wpuf-border-b-green-500 !wpuf-text-green-600' : '!wpuf-border-b-transparent !wpuf-text-green-500 hover:!wpuf-text-green-700 hover:!wpuf-border-b-green-300'; ?>" 
                             data-tab="<?php echo esc_attr( $type ); ?>"
                             <?php echo $first_tab ? 'data-active="true"' : ''; ?>
                             style="background: transparent !important; border-top: none !important; border-left: none !important; border-right: none !important;">
@@ -277,41 +245,3 @@ $type_icons = [
     <?php endif; ?>
 </div>
 
-<?php if ( ! empty( $grouped_files ) ) : ?>
-<script type="text/javascript">
-(function() {
-    document.addEventListener('DOMContentLoaded', function() {
-        const tabButtons = document.querySelectorAll('.wpuf-file-tab-btn-2');
-        const fileGroups = document.querySelectorAll('.wpuf-file-group-2');
-        
-        tabButtons.forEach(function(button) {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetType = this.getAttribute('data-tab');
-                
-                // Update button states
-                tabButtons.forEach(function(btn) {
-                    btn.classList.remove('!wpuf-border-b-green-500', '!wpuf-text-green-600');
-                    btn.classList.add('!wpuf-border-b-transparent', '!wpuf-text-green-500');
-                    btn.removeAttribute('data-active');
-                });
-                
-                this.classList.remove('!wpuf-border-b-transparent', '!wpuf-text-green-500');
-                this.classList.add('!wpuf-border-b-green-500', '!wpuf-text-green-600');
-                this.setAttribute('data-active', 'true');
-                
-                // Show/hide file groups
-                fileGroups.forEach(function(group) {
-                    if (group.getAttribute('data-type') === targetType) {
-                        group.style.display = 'block';
-                    } else {
-                        group.style.display = 'none';
-                    }
-                });
-            });
-        });
-    });
-})();
-</script>
-<?php endif; ?>

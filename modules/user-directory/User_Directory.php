@@ -106,7 +106,7 @@ class User_Directory {
      *
      * @since 4.3.0
      */
-    public function __construct() {
+    private function __construct() {
         $this->define_constants();
         $this->includes();
         $this->init_hooks();
@@ -221,14 +221,18 @@ class User_Directory {
      * @return int
      */
     public static function get_directory_count() {
-        $directories = get_posts( [
-            'post_type'      => self::POST_TYPE,
-            'post_status'    => 'any',
-            'posts_per_page' => -1,
-            'fields'         => 'ids',
-        ] );
+        $counts = wp_count_posts( self::POST_TYPE );
 
-        return count( $directories );
+        if ( ! $counts ) {
+            return 0;
+        }
+
+        $total = 0;
+        foreach ( $counts as $status => $count ) {
+            $total += (int) $count;
+        }
+
+        return $total;
     }
 
     /**
@@ -300,8 +304,8 @@ class User_Directory {
             'enable_search'      => true,
             'enable_pagination'  => true,
             // Profile tabs - all enabled by default (consistent with Pro)
-            'profile_tabs'       => [ 'about', 'posts', 'files', 'comments' ],
-            'profile_tabs_order' => [ 'about', 'posts', 'files', 'comments' ],
+            'profile_tabs'       => [ 'about', 'posts', 'file', 'comments' ],
+            'profile_tabs_order' => [ 'about', 'posts', 'file', 'comments' ],
             'about_fields'       => [],
         ];
 

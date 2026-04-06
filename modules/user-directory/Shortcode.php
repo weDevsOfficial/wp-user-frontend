@@ -98,6 +98,15 @@ class Shortcode {
             WPUF_VERSION,
             true
         );
+
+        // Register file tabs script for profile page
+        wp_register_script(
+            'wpuf-ud-file-tabs',
+            WPUF_ASSET_URI . '/js/wpuf-ud-file-tabs.js',
+            [],
+            WPUF_VERSION,
+            true
+        );
     }
 
     /**
@@ -199,6 +208,10 @@ class Shortcode {
             [
                 'restUrl' => rest_url( 'wpuf/v1/user_directory/search' ),
                 'nonce'   => wp_create_nonce( 'wp_rest' ),
+                'i18n'    => [
+                    'noUsersFound' => __( 'No users found matching your search criteria.', 'wp-user-frontend' ),
+                    'tryAdjusting' => __( 'Try adjusting your search or filter to find what you\'re looking for.', 'wp-user-frontend' ),
+                ],
             ]
         );
 
@@ -286,6 +299,7 @@ class Shortcode {
 
         // Build user query args - check users_per_page first (admin setting), then per_page
         $per_page = absint( $settings['users_per_page'] ?? ( $settings['per_page'] ?? 12 ) );
+        $per_page = max( $per_page, 1 );
         $offset   = ( $paged - 1 ) * $per_page;
 
         $args = [
@@ -413,10 +427,10 @@ class Shortcode {
     private function render_profile( $user, $settings, $directory_id ) {
         // Get default tabs from settings or use Free version defaults
         $default_tabs = [ 'about', 'posts', 'comments', 'file' ];
-        if ( ! empty( $settings['default_tabs'] ) && is_array( $settings['default_tabs'] ) ) {
-            $default_tabs = $settings['default_tabs'];
-        } elseif ( ! empty( $settings['default_tabs'] ) && is_string( $settings['default_tabs'] ) ) {
-            $default_tabs = array_map( 'trim', explode( ',', $settings['default_tabs'] ) );
+        if ( ! empty( $settings['profile_tabs'] ) && is_array( $settings['profile_tabs'] ) ) {
+            $default_tabs = $settings['profile_tabs'];
+        } elseif ( ! empty( $settings['profile_tabs'] ) && is_string( $settings['profile_tabs'] ) ) {
+            $default_tabs = array_map( 'trim', explode( ',', $settings['profile_tabs'] ) );
         }
 
         // Build profile data
@@ -448,6 +462,9 @@ class Shortcode {
         // Add template_data key for Pro template compatibility
         $profile_data['template_data'] = $profile_data;
 
+        // Enqueue file tabs script for profile files tab
+        wp_enqueue_script( 'wpuf-ud-file-tabs' );
+
         // Load template
         ob_start();
         $this->load_template( 'profile/layout-2', $profile_data );
@@ -466,9 +483,9 @@ class Shortcode {
      * @return void
      */
     private function load_template( $template, $data ) {
-        // Extract data for template use
+        // Use EXTR_SKIP to prevent variable injection — filters on $data cannot overwrite existing locals
         // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
-        extract( $data );
+        extract( $data, EXTR_SKIP );
 
         $template_file = WPUF_UD_FREE_VIEWS . '/' . $template . '.php';
 
@@ -483,7 +500,11 @@ class Shortcode {
          */
         $template_file = apply_filters( 'wpuf_ud_free_template_path', $template_file, $template, $data );
 
-        if ( file_exists( $template_file ) ) {
+        // Validate that template path is within allowed directories to prevent arbitrary file inclusion
+        $real_path = realpath( $template_file );
+        $allowed_base = realpath( WPUF_UD_FREE_VIEWS );
+
+        if ( $real_path && $allowed_base && strpos( $real_path, $allowed_base ) === 0 ) {
             include $template_file;
         }
     }

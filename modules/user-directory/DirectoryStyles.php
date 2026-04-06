@@ -16,11 +16,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * DirectoryStyles class
  *
  * Handles custom styling for user directory pages
+ *
+ * @since 4.3.0
  */
 class DirectoryStyles {
 
     /**
      * Constructor
+     *
+     * @since 4.3.0
      */
     public function __construct() {
         // Primary hook for filtering titles
@@ -45,8 +49,11 @@ class DirectoryStyles {
     /**
      * Filter block content to remove title blocks on profile pages
      *
+     * @since 4.3.0
+     *
      * @param string $block_content The block content
      * @param array  $block The block data
+     *
      * @return string Modified block content
      */
     public function filter_block_content( $block_content, $block ) {
@@ -72,9 +79,12 @@ class DirectoryStyles {
     /**
      * Filter specifically for post-title blocks
      *
+     * @since 4.3.0
+     *
      * @param string $block_content The block content
      * @param array  $parsed_block The parsed block
      * @param object $block The block instance
+     *
      * @return string Modified block content
      */
     public function filter_post_title_block( $block_content, $parsed_block, $block ) {
@@ -87,8 +97,11 @@ class DirectoryStyles {
     /**
      * Pre-filter blocks before rendering
      *
+     * @since 4.3.0
+     *
      * @param string|null $pre_render The pre-rendered content
      * @param array       $block The block being rendered
+     *
      * @return string|null
      */
     public function pre_filter_block( $pre_render, $block ) {
@@ -109,6 +122,10 @@ class DirectoryStyles {
 
     /**
      * Add styles for directory pages
+     *
+     * @since 4.3.0
+     *
+     * @return void
      */
     public function add_styles() {
         // Check if we're on a directory page
@@ -128,6 +145,10 @@ class DirectoryStyles {
 
     /**
      * Add minimal CSS to hide titles on profile pages
+     *
+     * @since 4.3.0
+     *
+     * @return void
      */
     private function add_profile_hide_css() {
         ?>
@@ -163,6 +184,10 @@ class DirectoryStyles {
 
     /**
      * Check if current page has directory functionality
+     *
+     * @since 4.3.0
+     *
+     * @return bool
      */
     private function is_directory_page() {
         global $post;
@@ -180,6 +205,10 @@ class DirectoryStyles {
 
     /**
      * Output listing page title styles
+     *
+     * @since 4.3.0
+     *
+     * @return void
      */
     private function output_listing_title_styles() {
         ?>
@@ -222,6 +251,10 @@ class DirectoryStyles {
 
     /**
      * Add dynamic detection script for block-based directory
+     *
+     * @since 4.3.0
+     *
+     * @return void
      */
     public function add_dynamic_detection_script() {
         // Only add on pages with directory shortcodes
@@ -287,6 +320,8 @@ class DirectoryStyles {
     /**
      * Check if current page is viewing a single user profile
      *
+     * @since 4.3.0
+     *
      * @return bool
      */
     private function is_single_profile_page() {
@@ -312,7 +347,7 @@ class DirectoryStyles {
         ];
 
         foreach ( $profile_params as $param ) {
-            if ( ! empty( $_GET[$param] ) ) {
+            if ( ! empty( sanitize_text_field( wp_unslash( $_GET[ $param ] ?? '' ) ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                 // Additional validation: ensure we're on a directory page
                 return $this->is_directory_page();
             }
@@ -330,7 +365,7 @@ class DirectoryStyles {
         }
 
         // Check URL structure
-        $current_uri = trim( $_SERVER['REQUEST_URI'], '/' );
+        $current_uri = trim( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ), '/' );
         $page_slug = $post->post_name;
 
         // Pattern: /page-slug/username-or-id/
@@ -349,6 +384,12 @@ class DirectoryStyles {
 
     /**
      * Check if post has directory shortcode
+     *
+     * @since 4.3.0
+     *
+     * @param \WP_Post $post Post object.
+     *
+     * @return bool
      */
     private function has_directory_shortcode( $post ) {
         if ( ! is_a( $post, 'WP_Post' ) ) {
@@ -365,8 +406,11 @@ class DirectoryStyles {
     /**
      * Filter the page title
      *
+     * @since 4.3.0
+     *
      * @param string $title The post title
      * @param int    $id    The post ID
+     *
      * @return string
      */
     public function filter_page_title( $title, $id = null ) {
@@ -380,6 +424,12 @@ class DirectoryStyles {
 
     /**
      * Check if this is the main page title (not widget titles, menu titles, etc.)
+     *
+     * @since 4.3.0
+     *
+     * @param int $id Post ID.
+     *
+     * @return bool
      */
     private function is_main_page_title( $id ) {
         global $post;
@@ -395,7 +445,7 @@ class DirectoryStyles {
         }
 
         // Check if this is the current page's title
-        if ( $id && is_a( $post, 'WP_Post' ) && $post->ID == $id ) {
+        if ( $id && is_a( $post, 'WP_Post' ) && (int) $post->ID === (int) $id ) {
             return true;
         }
 
@@ -405,8 +455,11 @@ class DirectoryStyles {
     /**
      * Filter single post title
      *
+     * @since 4.3.0
+     *
      * @param string $title The single post title
      * @param object $post  The post object
+     *
      * @return string
      */
     public function filter_single_post_title( $title, $post = null ) {
@@ -419,6 +472,10 @@ class DirectoryStyles {
 
     /**
      * Determine if title should be hidden
+     *
+     * @since 4.3.0
+     *
+     * @return bool
      */
     private function should_hide_title() {
         // Must be on a directory page first
@@ -438,7 +495,10 @@ class DirectoryStyles {
     /**
      * Add body class for CSS targeting
      *
+     * @since 4.3.0
+     *
      * @param array $classes Body classes
+     *
      * @return array
      */
     public function add_body_class( $classes ) {

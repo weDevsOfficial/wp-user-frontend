@@ -930,6 +930,13 @@ function wpuf_get_gateways( $context = 'admin' ) {
     foreach ( $gateways as $id => $gate ) {
         if ( 'admin' === $context ) {
             $return[ $id ] = $gate['admin_label'];
+        } elseif ( 'gateway_selector' === $context ) {
+            $return[ $id ] = [
+                'admin_label'           => $gate['admin_label'],
+                'icon'                  => isset( $gate['icon'] ) ? $gate['icon'] : '',
+                'supports_subscription' => ! empty( $gate['supports_subscription'] ),
+                'is_pro_preview'        => ! empty( $gate['is_pro_preview'] ) ? $gate['is_pro_preview'] : false,
+            ];
         } else {
             $return[ $id ] = [
                 'label'          => $gate['checkout_label'],

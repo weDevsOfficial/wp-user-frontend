@@ -937,6 +937,9 @@ body #wpuf-payment-gateway ul.wpuf-payment-gateways {
 body #wpuf-payment-gateway ul.wpuf-payment-gateways li {
   margin: 0;
 }
+body #wpuf-payment-gateway ul.wpuf-payment-gateways li.wpuf-gateway-paypal img {
+  max-width: 15px;
+}
 body #wpuf-payment-gateway ul.wpuf-payment-gateways li .wpuf-payment-instruction {
   padding: 8px 10px;
   margin: 0 10px;

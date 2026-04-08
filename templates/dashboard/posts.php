@@ -425,3 +425,5 @@ if ( $action == 'del' ) {
         }
 
         wp_reset_postdata();
+?>
+</div>

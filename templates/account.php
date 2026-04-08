@@ -40,7 +40,7 @@
             <a href="<?php echo esc_url( add_query_arg( [ 'section' => 'edit-profile' ], get_permalink() ) ); ?>" class="wpuf-edit-profile-btn">
                 <?php esc_html_e( 'Edit Profile', 'wp-user-frontend' ); ?>
                 <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M7.75 2.75H2.75C1.64543 2.75 0.75 3.64543 0.75 4.75V15.75C0.75 16.8546 1.64543 17.75 2.75 17.75H13.75C14.8546 17.75 15.75 16.8546 15.75 15.75V10.75M14.3358 1.33579C15.1168 0.554738 16.3832 0.554738 17.1642 1.33579C17.9453 2.11683 17.9453 3.38316 17.1642 4.16421L8.57842 12.75H5.75L5.75 9.92157L14.3358 1.33579Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.75 2.75H2.75C1.64543 2.75 0.75 3.64543 0.75 4.75V15.75C0.75 16.8546 1.64543 17.75 2.75 17.75H13.75C14.8546 17.75 15.75 16.8546 15.75 15.75V10.75M14.3358 1.33579C15.1168 0.554738 16.3832 0.554738 17.1642 1.33579C17.9453 2.11683 17.9453 3.38316 17.1642 4.16421L8.57842 12.75H5.75L5.75 9.92157L14.3358 1.33579Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </a>
         </div>
@@ -107,9 +107,11 @@
                                     $icon = '<svg class="wpuf-w-5 wpuf-h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>';
                             }
 
+                            $link_href = esc_url( add_query_arg( [ 'section' => $section ], get_permalink() ) );
+
                             echo sprintf(
                                 '<li><a href="%s" class="%s">%s<span>%s</span></a></li>',
-                                esc_url( add_query_arg( [ 'section' => $section ], get_permalink() ) ),
+                                $link_href,
                                 esc_attr( $active_class ),
                                 $icon,
                                 esc_html( $label )
@@ -133,10 +135,8 @@
 
     <!-- Main Content Area -->
     <main class="wpuf-account-content">
-        <?php
-            if ( !empty( $current_section ) && is_user_logged_in() ) {
-                do_action( "wpuf_account_content_{$current_section}", $sections, $current_section );
-            }
-        ?>
+        <?php if ( ! empty( $current_section ) && is_user_logged_in() ) : ?>
+            <?php do_action( "wpuf_account_content_{$current_section}", $sections, $current_section ); ?>
+        <?php endif; ?>
     </main>
 </div>

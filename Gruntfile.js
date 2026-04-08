@@ -28,7 +28,8 @@ module.exports = function( grunt) {
             // one to one
             front: {
                 files: {
-                    '<%= dirs.css %>/frontend-forms.css': '<%= dirs.less %>/frontend-forms.less'
+                    '<%= dirs.css %>/frontend-forms.css': '<%= dirs.less %>/frontend-forms.less',
+                    '<%= dirs.css %>/elementor-frontend-forms.css': '<%= dirs.less %>/elementor-frontend-forms.less'
                 }
             },
 

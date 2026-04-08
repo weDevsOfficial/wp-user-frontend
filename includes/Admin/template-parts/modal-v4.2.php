@@ -454,8 +454,6 @@ if ( ! empty( $registry ) ) {
                     $( '.wpuf-ai-forms-template a' ).on( 'click', $.proxy( this.handleAIFormsClick, this ) );
                     $( '#ai-config-cancel' ).on( 'click', $.proxy( this.closeAIConfigModal, this ) );
                     $( '#ai-config-settings' ).on( 'click', $.proxy( this.goToSettings, this ) );
-                } else {
-                    console.log('NOT attaching AI click handler - AI is configured or template not found');
                 }
             },
 

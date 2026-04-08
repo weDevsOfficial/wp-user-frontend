@@ -198,11 +198,14 @@ final class WP_User_Frontend {
             $this->container['privacy']      = new WeDevs\Wpuf\WPUF_Privacy();
 
             // Load Frontend when in Elementor editor or Elementor AJAX so shortcodes
-            // like wpuf_account are registered and do_shortcode() works.
+            // like wpuf_form and wpuf_account are registered and do_shortcode() works.
+            // Covers: (1) editor page ?action=elementor,
+            // (2) render_widget AJAX when changing widget settings (action=elementor_ajax).
             $get_action   = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
             $request_act  = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
             $is_elementor = ( $get_action === 'elementor' )
                 || ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) && $request_act === 'elementor_ajax' );
+
 
             if ( $is_elementor ) {
                 $this->container['frontend'] = new WeDevs\Wpuf\Frontend();

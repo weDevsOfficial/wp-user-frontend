@@ -377,11 +377,11 @@ class Assets {
             ],
             'enhanced-select'          => [
                 'src'  => WPUF_ASSET_URI . '/js/admin/wpuf-enhanced-select' . $this->suffix . '.min.js',
-                'deps' => [ 'jquery', 'selectWoo' ],
+                'deps' => [ 'jquery', 'wpuf-selectWoo' ],
             ],
             'setup'                    => [
                 'src'  => WPUF_ASSET_URI . '/js/admin/wpuf-setup' . $this->suffix . '.js',
-                'deps' => [ 'jquery', 'wpuf-enhanced-select', 'jquery-blockui' ],
+                'deps' => [ 'jquery', 'wpuf-enhanced-select', 'wpuf-jquery-blockui' ],
             ],
             'frontend-form'            => [
                 'src'  => WPUF_ASSET_URI . '/js/frontend-form' . $this->suffix . '.js',

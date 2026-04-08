@@ -37,7 +37,7 @@ class Elementor {
         wp_dequeue_style('wpuf-layout4');
         wp_dequeue_style('wpuf-layout5');
 
-        $style_handles = [ 'wpuf-elementor-frontend-forms' ];
+        $style_handles = [ 'wpuf-elementor-frontend-forms', 'wpuf-account' ];
 
         /**
          * Filters the list of style handles to enqueue in Elementor context.
@@ -126,6 +126,7 @@ class Elementor {
         wp_enqueue_script( 'wpuf-frontend-form' );
         wp_enqueue_script( 'wpuf-sweetalert2' );
         wp_enqueue_script( 'wpuf-subscriptions' );
+        wp_enqueue_script( 'wpuf-account' );
 
         // Localize wpuf-upload script
         wp_localize_script(
@@ -253,7 +254,9 @@ class Elementor {
      */
     public function register_widgets( $widgets_manager ) {
         require_once __DIR__ . '/Widget.php';
+        require_once __DIR__ . '/Account_Widget.php';
 
         $widgets_manager->register( new Widget() );
+        $widgets_manager->register( new Account_Widget() );
     }
 }

@@ -86,12 +86,17 @@ class Subscription {
             $gateway     = isset( $_POST['gateway'] ) ? sanitize_text_field( wp_unslash( $_POST['gateway'] ) ) : 0;
             $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 
-            if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-sub-cancel-' . $user_id ) ) {
+            if ( empty( $nonce ) ) {
+                return false;
+            }
+
+            if ( ! wp_verify_nonce( $nonce, 'wpuf-sub-cancel-' . $user_id ) ) {
                 // Legacy nonce compat for theme-overridden templates; self-cancel only.
-                if (
-                    $user_id !== get_current_user_id()
-                    || ! wp_verify_nonce( $nonce, 'wpuf-sub-cancel' )
-                ) {
+                if ( $user_id !== get_current_user_id() ) {
+                    return false;
+                }
+
+                if ( ! wp_verify_nonce( $nonce, 'wpuf-sub-cancel' ) ) {
                     return false;
                 }
             }

@@ -207,6 +207,7 @@ final class WP_User_Frontend {
             $is_elementor = ( $get_action === 'elementor' )
                 || ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) && $request_act === 'elementor_ajax' );
 
+
             if ( $is_elementor ) {
                 $this->container['frontend'] = new WeDevs\Wpuf\Frontend();
             }

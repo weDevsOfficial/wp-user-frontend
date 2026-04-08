@@ -136,8 +136,11 @@ class Widget extends Widget_Base {
         // Style Tab
         $this->register_container_style_controls();
         $this->register_label_style_controls();
+        $this->register_help_text_style_controls();
         $this->register_input_style_controls();
         $this->register_placeholder_style_controls();
+        $this->register_richtext_style_controls();
+        $this->register_section_break_style_controls();
         $this->register_radio_checkbox_style_controls();
         $this->register_upload_button_style_controls();
         $this->register_submit_button_style_controls();
@@ -333,7 +336,7 @@ class Widget extends Widget_Base {
                 'label'     => __( 'Text Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .wpuf-form .wpuf-label' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .wpuf-form .wpuf-label, {{WRAPPER}} .wpuf-form .wpuf-form-sub-label, {{WRAPPER}} .wpuf-form .wpuf-repeat-container > p' => 'color: {{VALUE}};',
                 ],
             ]
         );
@@ -342,7 +345,7 @@ class Widget extends Widget_Base {
             Group_Control_Typography::get_type(),
             [
                 'name'     => 'label_typography',
-                'selector' => '{{WRAPPER}} .wpuf-form .wpuf-label',
+                'selector' => '{{WRAPPER}} .wpuf-form .wpuf-label, {{WRAPPER}} .wpuf-form .wpuf-form-sub-label, {{WRAPPER}} .wpuf-form .wpuf-repeat-container > p',
             ]
         );
 
@@ -352,7 +355,7 @@ class Widget extends Widget_Base {
                 'label'     => __( 'Asterisk Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .wpuf-form .wpuf-label .required' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .wpuf-form .wpuf-label .required, {{WRAPPER}} .wpuf-form .wpuf-form-sub-label .required' => 'color: {{VALUE}};',
                 ],
                 'separator' => 'before',
             ]
@@ -369,8 +372,46 @@ class Widget extends Widget_Base {
                     '%'  => [ 'min' => 0, 'max' => 30, 'step' => 1 ],
                 ],
                 'selectors'  => [
-                    '{{WRAPPER}} .wpuf-form .wpuf-label .required' => 'font-size: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .wpuf-form .wpuf-label .required, {{WRAPPER}} .wpuf-form .wpuf-form-sub-label .required' => 'font-size: {{SIZE}}{{UNIT}};',
                 ],
+            ]
+        );
+
+        $this->end_controls_section();
+    }
+
+    /**
+     * Register help text style controls
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    protected function register_help_text_style_controls() {
+        $this->start_controls_section(
+            'section_help_text_style',
+            [
+                'label' => __( 'Help Text', 'wp-user-frontend' ),
+                'tab'   => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_control(
+            'help_text_color',
+            [
+                'label'     => __( 'Text Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .wpuf-form .wpuf-help' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name'     => 'help_text_typography',
+                'selector' => '{{WRAPPER}} .wpuf-form .wpuf-help',
             ]
         );
 
@@ -539,6 +580,364 @@ class Widget extends Widget_Base {
     }
 
     /**
+     * Register rich text editor style controls
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    protected function register_richtext_style_controls() {
+        $toolbar_selector = '{{WRAPPER}} .wpuf-form .mce-toolbar-grp';
+        $insert_image_btn = '{{WRAPPER}} .wpuf-form .wpuf-insert-image';
+
+        $this->start_controls_section(
+            'section_richtext_style',
+            [
+                'label' => __( 'Rich Text Editor', 'wp-user-frontend' ),
+                'tab'   => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_control(
+            'richtext_toolbar_heading',
+            [
+                'label'     => __( 'Toolbar', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_control(
+            'richtext_toolbar_text_color',
+            [
+                'label'     => __( 'Text Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $toolbar_selector . ' .mce-btn button' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'richtext_toolbar_icon_color',
+            [
+                'label'     => __( 'Icon Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $toolbar_selector . ' .mce-ico' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'richtext_toolbar_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $toolbar_selector => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'richtext_insert_image_heading',
+            [
+                'label'     => __( 'Insert Photo Button', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->start_controls_tabs( 'tabs_insert_image_style' );
+
+        $this->start_controls_tab( 'tab_insert_image_normal', [ 'label' => __( 'Normal', 'wp-user-frontend' ) ] );
+
+        $this->add_control(
+            'richtext_insert_image_color',
+            [
+                'label'     => __( 'Text Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $insert_image_btn => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'richtext_insert_image_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $insert_image_btn => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name'     => 'richtext_insert_image_border',
+                'selector' => $insert_image_btn,
+            ]
+        );
+
+        $this->add_control(
+            'richtext_insert_image_border_radius',
+            [
+                'label'      => __( 'Border Radius', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', '%' ],
+                'selectors'  => [
+                    $insert_image_btn => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'richtext_insert_image_padding',
+            [
+                'label'      => __( 'Padding', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em', '%' ],
+                'selectors'  => [
+                    $insert_image_btn => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'richtext_insert_image_margin',
+            [
+                'label'      => __( 'Margin', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em', '%' ],
+                'selectors'  => [
+                    '{{WRAPPER}} .wpuf-form #wpuf-insert-image-container' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab( 'tab_insert_image_hover', [ 'label' => __( 'Hover', 'wp-user-frontend' ) ] );
+
+        $this->add_control(
+            'richtext_insert_image_hover_color',
+            [
+                'label'     => __( 'Text Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $insert_image_btn . ':hover' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'richtext_insert_image_hover_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $insert_image_btn . ':hover' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'richtext_insert_image_hover_border_color',
+            [
+                'label'     => __( 'Border Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $insert_image_btn . ':hover' => 'border-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->end_controls_tabs();
+
+        $this->end_controls_section();
+    }
+
+    /**
+     * Register section break style controls
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    protected function register_section_break_style_controls() {
+        $section_wrap  = '{{WRAPPER}} .wpuf-form .wpuf-section-wrap';
+        $section_title = '{{WRAPPER}} .wpuf-form .wpuf-section-title';
+        $section_desc  = '{{WRAPPER}} .wpuf-form .wpuf-section-details';
+
+        $this->start_controls_section(
+            'section_break_style',
+            [
+                'label' => __( 'Section Break', 'wp-user-frontend' ),
+                'tab'   => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_control(
+            'section_break_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $section_wrap => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'section_break_padding',
+            [
+                'label'      => __( 'Padding', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em', '%' ],
+                'selectors'  => [
+                    $section_wrap => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'section_break_margin',
+            [
+                'label'      => __( 'Margin', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em', '%' ],
+                'selectors'  => [
+                    $section_wrap => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name'     => 'section_break_border',
+                'selector' => $section_wrap,
+            ]
+        );
+
+        $this->add_control(
+            'section_break_border_radius',
+            [
+                'label'      => __( 'Border Radius', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', '%' ],
+                'selectors'  => [
+                    $section_wrap => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'section_break_title_heading',
+            [
+                'label'     => __( 'Title', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_control(
+            'section_break_title_color',
+            [
+                'label'     => __( 'Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $section_title => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name'     => 'section_break_title_typography',
+                'selector' => $section_title,
+            ]
+        );
+
+        $this->add_responsive_control(
+            'section_break_title_alignment',
+            [
+                'label'   => __( 'Alignment', 'wp-user-frontend' ),
+                'type'    => Controls_Manager::CHOOSE,
+                'options' => [
+                    'left'   => [ 'title' => __( 'Left', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-left' ],
+                    'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-center' ],
+                    'right'  => [ 'title' => __( 'Right', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-right' ],
+                ],
+                'selectors' => [ $section_title => 'text-align: {{VALUE}};' ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'section_break_title_margin',
+            [
+                'label'      => __( 'Margin', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em', '%' ],
+                'selectors'  => [
+                    $section_title => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'section_break_desc_heading',
+            [
+                'label'     => __( 'Description', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_control(
+            'section_break_desc_color',
+            [
+                'label'     => __( 'Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    $section_desc => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name'     => 'section_break_desc_typography',
+                'selector' => $section_desc,
+            ]
+        );
+
+        $this->add_responsive_control(
+            'section_break_desc_alignment',
+            [
+                'label'   => __( 'Alignment', 'wp-user-frontend' ),
+                'type'    => Controls_Manager::CHOOSE,
+                'options' => [
+                    'left'   => [ 'title' => __( 'Left', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-left' ],
+                    'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-center' ],
+                    'right'  => [ 'title' => __( 'Right', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-right' ],
+                ],
+                'selectors' => [ $section_desc => 'text-align: {{VALUE}};' ],
+            ]
+        );
+
+        $this->end_controls_section();
+    }
+
+    /**
      * Register radio and checkbox style controls.
      *
      * @since WPUF_SINCE
@@ -598,7 +997,7 @@ class Widget extends Widget_Base {
                 'label'     => __( 'Options Text Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .wpuf-form .wpuf-radio-block, {{WRAPPER}} .wpuf-form .wpuf-checkbox-block, {{WRAPPER}} .wpuf-form .wpuf-radio-inline, {{WRAPPER}} .wpuf-form .wpuf-checkbox-inline' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .wpuf-form .wpuf-radio-block, {{WRAPPER}} .wpuf-form .wpuf-checkbox-block, {{WRAPPER}} .wpuf-form .wpuf-radio-inline, {{WRAPPER}} .wpuf-form .wpuf-checkbox-inline, {{WRAPPER}} .wpuf-form .wpuf-price-label, {{WRAPPER}} .wpuf-form .wpuf-fields[data-type="radio"] > label' => 'color: {{VALUE}};',
                 ],
             ]
         );
@@ -1139,15 +1538,15 @@ class Widget extends Widget_Base {
                     }
                     return false;
                 };
-                
+
                 var wrapper = document.querySelector('.wpuf-elementor-widget-wrapper');
                 if (wrapper) {
                     var textareas = wrapper.querySelectorAll('textarea.wp-editor-area');
-                    
+
                     // Function to initialize TinyMCE for a textarea
                     function initializeTinyMCE(textarea) {
                         var editorId = textarea.id;
-                        
+
                         // Wait for wp.editor to be available
                         if (typeof wp === 'undefined' || typeof wp.editor === 'undefined') {
                             setTimeout(function() {
@@ -1155,21 +1554,21 @@ class Widget extends Widget_Base {
                             }, 100);
                             return false;
                         }
-                        
+
                         if (typeof wp.editor.initialize !== 'function') {
                             return false;
                         }
-                        
+
                         // Check if already initialized
                         if (typeof tinymce !== 'undefined' && tinymce.get(editorId)) {
                             return true;
                         }
-                        
+
                         // Get editor settings - try to match WordPress default settings
                         // Check if there's a wp-editor-wrap parent to determine settings
                         var wrap = textarea.closest('.wp-editor-wrap');
                         var isTeeny = wrap && wrap.classList.contains('html-active') ? false : (wrap && wrap.classList.contains('tmce-active') ? false : true);
-                        
+
                         var editorSettings = {
                             tinymce: {
                                 wpautop: true,
@@ -1181,13 +1580,13 @@ class Widget extends Widget_Base {
                             quicktags: false,
                             textarea_name: textarea.name || editorId
                         };
-                        
+
                         // If teeny mode, use simpler toolbar
                         if (isTeeny || textarea.closest('.wpuf-fields').querySelector('.mce-tinymce')) {
                             editorSettings.tinymce.toolbar1 = 'bold,italic,bullist,numlist';
                             editorSettings.teeny = true;
                         }
-                        
+
                         try {
                             wp.editor.initialize(editorId, editorSettings);
                             return true;
@@ -1195,7 +1594,7 @@ class Widget extends Widget_Base {
                             return false;
                         }
                     }
-                    
+
                     // Check existing instances and initialize if needed
                     textareas.forEach(function(textarea) {
                         var editorId = textarea.id;
@@ -1203,7 +1602,7 @@ class Widget extends Widget_Base {
                             initializeTinyMCE(textarea);
                         }
                     });
-                    
+
                     // Check after a delay to see if TinyMCE initializes or retry if needed
                     setTimeout(function() {
                         textareas.forEach(function(textarea) {
@@ -1213,7 +1612,7 @@ class Widget extends Widget_Base {
                             }
                         });
                     }, 500);
-                    
+
                     // Also check when Elementor triggers content refresh
                     if (typeof elementorFrontend !== 'undefined' && elementorFrontend.hooks) {
                         elementorFrontend.hooks.addAction('frontend/element_ready/wpuf-form.default', function($scope) {
@@ -1243,7 +1642,7 @@ class Widget extends Widget_Base {
                         });
                     }
                 }
-                
+
                 // Restore original error handler after initialization
                 setTimeout(function() {
                     if (originalErrorHandler) {

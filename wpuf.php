@@ -199,8 +199,9 @@ final class WP_User_Frontend {
 
             // Load Frontend when in Elementor editor or Elementor AJAX so shortcodes
             // like wpuf_form and wpuf_account are registered and do_shortcode() works.
-            // Covers: (1) editor page ?action=elementor,
-            // (2) render_widget AJAX when changing widget settings (action=elementor_ajax).
+            // Without this, is_admin() is true and Frontend is skipped, so do_shortcode()
+            // returns the raw shortcode. Covers: (1) editor page ?action=elementor,
+            // (2) render_widget AJAX when changing "Select Form" (action=elementor_ajax).
             $get_action   = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
             $request_act  = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
             $is_elementor = ( $get_action === 'elementor' )

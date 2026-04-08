@@ -1,3 +1,13 @@
+= v4.3.1 (8 April, 2026) =
+* New – Add Elementor Account page widget
+* New – Add Elementor Subscription widget
+* New – Add Elementor Post Form Builder widget
+* New – Introduce card grid UI for payment gateway selection
+* Enhance – Bind cancel nonce to user and enforce ownership
+* Enhance – Clean up What's New page assets and remove unused code
+* Fix – Improve wording of plugin update notice
+* Fix – Resolve CSS/JS warning in setup wizard
+
 = v4.3.0 (11 March, 2026) =
 * New – Add User Directory Module
 

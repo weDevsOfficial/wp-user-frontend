@@ -142,7 +142,7 @@ class Frontend_Account {
             /**
              * Filters the template arguments passed to account.php
              *
-             * @since WPUF_SINCE
+             * @since 4.3.1
              *
              * @param array $template_args Template arguments.
              */

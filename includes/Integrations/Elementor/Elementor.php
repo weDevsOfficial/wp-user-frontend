@@ -24,7 +24,7 @@ class Elementor {
     /**
      * Enqueue Elementor Specific Styles for both frontend and editor
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -42,7 +42,7 @@ class Elementor {
         /**
          * Filters the list of style handles to enqueue in Elementor context.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.1
          *
          * @param string[] $style_handles Array of style handles to enqueue.
          */
@@ -60,7 +60,7 @@ class Elementor {
         /**
          * Fires after WPUF has enqueued its styles in Elementor context.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.1
          */
         do_action( 'wpuf_elementor_after_enqueue_styles' );
     }
@@ -71,7 +71,7 @@ class Elementor {
      * Ensures TinyMCE editor scripts are loaded when WPUF forms with rich text
      * fields are rendered in Elementor preview.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -99,7 +99,7 @@ class Elementor {
         /**
          * Fires after WPUF has enqueued its scripts in Elementor context.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.1
          */
         do_action( 'wpuf_elementor_after_enqueue_scripts' );
     }
@@ -110,7 +110,7 @@ class Elementor {
      * Ensures all necessary styles and scripts are loaded for WPUF forms
      * to render properly in Elementor preview and frontend.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */

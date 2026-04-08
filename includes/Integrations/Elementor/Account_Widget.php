@@ -23,7 +23,7 @@ class Account_Widget extends Widget_Base {
     /**
      * Retrieve the widget name
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return string Widget name
      */
@@ -34,7 +34,7 @@ class Account_Widget extends Widget_Base {
     /**
      * Retrieve the widget title
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return string Widget title
      */
@@ -45,7 +45,7 @@ class Account_Widget extends Widget_Base {
     /**
      * Retrieve the widget icon
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return string Widget icon
      */
@@ -56,7 +56,7 @@ class Account_Widget extends Widget_Base {
     /**
      * Retrieve the list of widget categories
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return array Widget categories
      */
@@ -67,7 +67,7 @@ class Account_Widget extends Widget_Base {
     /**
      * Retrieve the list of keywords associated with the widget
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return array Widget keywords
      */
@@ -78,7 +78,7 @@ class Account_Widget extends Widget_Base {
     /**
      * Retrieve the list of styles the widget depends on
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return array
      */
@@ -89,7 +89,7 @@ class Account_Widget extends Widget_Base {
     /**
      * Register widget controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -109,7 +109,7 @@ class Account_Widget extends Widget_Base {
     /**
      * Register content controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -136,7 +136,7 @@ class Account_Widget extends Widget_Base {
     /**
      * Register sidebar style controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -233,7 +233,7 @@ class Account_Widget extends Widget_Base {
     /**
      * Register profile section style controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -442,7 +442,7 @@ class Account_Widget extends Widget_Base {
     /**
      * Register edit profile button style controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -586,7 +586,7 @@ class Account_Widget extends Widget_Base {
     /**
      * Register navigation menu style controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -757,7 +757,7 @@ class Account_Widget extends Widget_Base {
     /**
      * Register logout section style controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -857,7 +857,7 @@ class Account_Widget extends Widget_Base {
     /**
      * Register main content area style controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -952,7 +952,7 @@ class Account_Widget extends Widget_Base {
     /**
      * Render the widget output on the frontend
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -965,7 +965,7 @@ class Account_Widget extends Widget_Base {
         /**
          * Fires after the account widget has rendered its output.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.1
          *
          * @param \Elementor\Widget_Base $this The widget instance.
          */
@@ -978,7 +978,7 @@ class Account_Widget extends Widget_Base {
      * Intentionally empty — Elementor falls back to render() for live preview,
      * which is correct since the admin is logged in and the real account page renders.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      */
     protected function content_template() {}
 }

@@ -769,7 +769,7 @@ abstract class Field_Contract {
      * Returns true for admin dashboard, but false for Elementor editor
      * since Elementor editor needs frontend-style markup for proper preview.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return bool
      */

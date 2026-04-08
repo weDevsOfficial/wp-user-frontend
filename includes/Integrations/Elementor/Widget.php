@@ -23,7 +23,7 @@ class Widget extends Widget_Base {
     /**
      * Retrieve the widget name
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return string Widget name
      */
@@ -34,7 +34,7 @@ class Widget extends Widget_Base {
     /**
      * Retrieve the widget title
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return string Widget title
      */
@@ -45,7 +45,7 @@ class Widget extends Widget_Base {
     /**
      * Retrieve the widget icon
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return string Widget icon
      */
@@ -56,7 +56,7 @@ class Widget extends Widget_Base {
     /**
      * Retrieve the list of widget categories
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return array Widget categories
      */
@@ -77,7 +77,7 @@ class Widget extends Widget_Base {
         /**
          * Filters the list of style handles the widget depends on.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.1
          *
          * @param string[]        $depends Array of style handles.
          * @param \Elementor\Widget_Base $this  The widget instance.
@@ -88,7 +88,7 @@ class Widget extends Widget_Base {
     /**
      * Retrieve the list of scripts the widget depends on.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return array
      */
@@ -98,7 +98,7 @@ class Widget extends Widget_Base {
         /**
          * Filters the list of script handles the widget depends on.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.1
          *
          * @param string[]        $depends Array of script handles.
          * @param \Elementor\Widget_Base $this  The widget instance.
@@ -109,7 +109,7 @@ class Widget extends Widget_Base {
     /**
      * Register widget controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -150,7 +150,7 @@ class Widget extends Widget_Base {
          *
          * Use this to add additional style sections (e.g. for Pro features like multistep).
          *
-         * @since WPUF_SINCE
+         * @since 4.3.1
          *
          * @param \Elementor\Widget_Base $this The widget instance.
          */
@@ -160,7 +160,7 @@ class Widget extends Widget_Base {
     /**
      * Retrieve all published WPUF forms
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return array Array of forms formatted as select options
      */
@@ -182,7 +182,7 @@ class Widget extends Widget_Base {
         /**
          * Filters the form options shown in the widget's form dropdown.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.1
          *
          * @param array           $options Associative array of form_id => form_title.
          * @param \Elementor\Widget_Base $this   The widget instance.
@@ -193,7 +193,7 @@ class Widget extends Widget_Base {
     /**
      * Register container style controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -317,7 +317,7 @@ class Widget extends Widget_Base {
     /**
      * Register label style controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -383,7 +383,7 @@ class Widget extends Widget_Base {
     /**
      * Register help text style controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -421,7 +421,7 @@ class Widget extends Widget_Base {
     /**
      * Register input field style controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -552,7 +552,7 @@ class Widget extends Widget_Base {
     /**
      * Register placeholder style controls.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -582,7 +582,7 @@ class Widget extends Widget_Base {
     /**
      * Register rich text editor style controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -766,7 +766,7 @@ class Widget extends Widget_Base {
     /**
      * Register section break style controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -940,7 +940,7 @@ class Widget extends Widget_Base {
     /**
      * Register radio and checkbox style controls.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -1010,7 +1010,7 @@ class Widget extends Widget_Base {
      *
      * Styles the file/image upload buttons (e.g. "Select File", "Select Image") within WPUF forms.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -1234,7 +1234,7 @@ class Widget extends Widget_Base {
     /**
      * Register submit button style controls
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -1457,7 +1457,7 @@ class Widget extends Widget_Base {
     /**
      * Render the widget output on the frontend
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -1482,7 +1482,7 @@ class Widget extends Widget_Base {
         /**
          * Filters the CSS classes applied to the widget wrapper.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.1
          *
          * @param string[] $wrapper_classes Array of class names.
          * @param array    $settings       Widget settings.
@@ -1658,7 +1658,7 @@ class Widget extends Widget_Base {
         /**
          * Fires after the widget has rendered its output.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.1
          *
          * @param \Elementor\Widget_Base $this The widget instance.
          */
@@ -1671,7 +1671,7 @@ class Widget extends Widget_Base {
      * When empty, Elementor will fall back to using the render() method for
      * both frontend and editor preview.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @access protected
      */

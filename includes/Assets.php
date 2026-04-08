@@ -188,9 +188,6 @@ class Assets {
                 'src'  => WPUF_ASSET_URI . '/css/admin/wpuf-setup.css',
                 'deps' => [ 'dashicons', 'install' ],
             ],
-            'whats-new'           => [
-                'src' => WPUF_ASSET_URI . '/css/admin/whats-new.css',
-            ],
             'forms-list'           => [
                 'src' => WPUF_ASSET_URI . '/css/forms-list.min.css',
             ],

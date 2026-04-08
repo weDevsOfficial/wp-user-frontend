@@ -37,7 +37,6 @@ module.exports = function( grunt) {
                 files: {
                     '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/assets/less/form-builder.less'],
                     '<%= dirs.css %>/admin.css': ['<%= dirs.less %>/admin.less'],
-                    '<%= dirs.css %>/admin/whats-new.css': ['<%= dirs.less %>/whats-new.less'],
                     '<%= dirs.css %>/registration-forms.css': ['<%= dirs.less %>/registration-forms.less']
                 }
             }

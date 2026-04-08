@@ -22,7 +22,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Retrieve the widget name
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return string Widget name
 	 */
@@ -33,7 +33,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Retrieve the widget title
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return string Widget title
 	 */
@@ -44,7 +44,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Retrieve the widget icon
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return string Widget icon
 	 */
@@ -55,7 +55,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Retrieve the list of widget categories
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return array Widget categories
 	 */
@@ -66,7 +66,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Retrieve the list of keywords associated with the widget
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return array Widget keywords
 	 */
@@ -77,7 +77,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Retrieve the list of styles the widget depends on
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return array
 	 */
@@ -88,7 +88,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Retrieve the list of scripts the widget depends on
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return array
 	 */
@@ -99,7 +99,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Register widget controls
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return void
 	 */
@@ -121,7 +121,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Register content controls
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return void
 	 */
@@ -170,7 +170,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Register container style controls
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return void
 	 */
@@ -301,7 +301,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Register plan name style controls
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return void
 	 */
@@ -385,7 +385,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Register plan description style controls
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return void
 	 */
@@ -466,7 +466,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Register price style controls
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return void
 	 */
@@ -614,7 +614,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Register trial description style controls
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return void
 	 */
@@ -691,7 +691,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Register features list style controls
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return void
 	 */
@@ -815,7 +815,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Register see more toggle style controls
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return void
 	 */
@@ -907,7 +907,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Register button style controls
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return void
 	 */
@@ -1115,7 +1115,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Retrieve subscription plans based on widget settings
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @param array $settings Widget settings.
 	 * @return array Array of subscription packs
@@ -1165,7 +1165,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Get the CSS class for plans per row
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @param string $plans_per_row Number of plans per row.
 	 * @return string CSS class
@@ -1177,7 +1177,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Render the widget output on the frontend
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return void
 	 */
@@ -1232,7 +1232,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Render empty state for Elementor editor
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return void
 	 */
@@ -1253,7 +1253,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Render a single plan card
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @param \WP_Post $pack              The subscription plan post object.
 	 * @param string   $current_pack_id   Current active pack ID.
@@ -1329,7 +1329,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Render the subscribe button
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @param \WP_Post $pack              The subscription plan post object.
 	 * @param string   $current_pack_id   Current active pack ID.
@@ -1394,7 +1394,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Render the features list for a plan
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @param \WP_Post $pack The subscription plan post object.
 	 * @return void
@@ -1637,7 +1637,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Render toggle script for expandable features
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return void
 	 */
@@ -1684,7 +1684,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	/**
 	 * Check if rendering in Elementor editor
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @return bool
 	 */
@@ -1701,7 +1701,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 	 * When empty, Elementor will fall back to using the render() method for
 	 * both frontend and editor preview.
 	 *
-	 * @since WPUF_SINCE
+	 * @since 4.3.1
 	 *
 	 * @access protected
 	 */

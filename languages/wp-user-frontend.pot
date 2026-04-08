@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 4.3.0\n"
+"Project-Id-Version: WP User Frontend 4.3.1\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2026-03-13 08:08:30+00:00\n"
+"POT-Creation-Date: 2026-04-08 07:08:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,6 +23,22 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 "X-Generator: grunt-wp-i18n 1.0.3\n"
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:143
+msgid "1"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:144
+msgid "2"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:145
+msgid "3"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:146
+msgid "4"
+msgstr ""
 
 #: Lib/Gateway/Bank.php:32
 msgid "Bank Instruction"
@@ -231,6 +247,7 @@ msgid "WP User Frontend"
 msgstr ""
 
 #: admin/class-admin-settings.php:89 includes/Admin/Menu.php:24
+#: includes/Integrations/Elementor/Elementor.php:242
 msgid "User Frontend"
 msgstr ""
 
@@ -282,11 +299,11 @@ msgstr ""
 msgid "Number of items per page:"
 msgstr ""
 
-#: admin/class-admin-settings.php:497 includes/Admin.php:109
+#: admin/class-admin-settings.php:497 includes/Admin.php:108
 msgid "Post lock has been cleared"
 msgstr ""
 
-#: admin/class-admin-settings.php:501 includes/Admin.php:121
+#: admin/class-admin-settings.php:501 includes/Admin.php:120
 #. translators: %1$s opening div tag, %2$s shortcode, %3$s opening strong tag,
 #. %4$s closing strong tag, %5$s closing div tag.
 #. translators: %1$s is the opening div tag, %2$s is the shortcode
@@ -648,26 +665,26 @@ msgstr ""
 msgid "Learn More"
 msgstr ""
 
-#: admin/html/form-settings-display.php:11 wpuf-functions.php:6119
+#: admin/html/form-settings-display.php:11 wpuf-functions.php:6124
 msgid "Label Position"
 msgstr ""
 
-#: admin/html/form-settings-display.php:16 wpuf-functions.php:6122
+#: admin/html/form-settings-display.php:16 wpuf-functions.php:6127
 msgid "Above Element"
 msgstr ""
 
-#: admin/html/form-settings-display.php:17 wpuf-functions.php:6123
+#: admin/html/form-settings-display.php:17 wpuf-functions.php:6128
 msgid "Left of Element"
 msgstr ""
 
-#: admin/html/form-settings-display.php:18 wpuf-functions.php:6124
+#: admin/html/form-settings-display.php:18 wpuf-functions.php:6129
 msgid "Right of Element"
 msgstr ""
 
 #: admin/html/form-settings-display.php:19
 #: includes/Admin/Customizer_Options.php:119
 #: includes/Fields/Field_Contract.php:400
-#: includes/Fields/Form_Field_Column.php:112 wpuf-functions.php:6125
+#: includes/Fields/Form_Field_Column.php:112 wpuf-functions.php:6130
 msgid "Hidden"
 msgstr ""
 
@@ -675,7 +692,7 @@ msgstr ""
 msgid "Where the labels of the form should display"
 msgstr ""
 
-#: admin/html/form-settings-display.php:35 wpuf-functions.php:6112
+#: admin/html/form-settings-display.php:35 wpuf-functions.php:6117
 msgid "Use Theme CSS"
 msgstr ""
 
@@ -690,7 +707,8 @@ msgstr ""
 #: includes/Fields/Field_Contract.php:519
 #: includes/Fields/Form_Field_Checkbox.php:86
 #: includes/Fields/Form_Field_Radio.php:86 includes/Free/Form_Element.php:525
-#: includes/Frontend.php:122 includes/functions/settings-options.php:128
+#: includes/Frontend.php:125 includes/Integrations/Elementor/Elementor.php:173
+#: includes/functions/settings-options.php:128
 #: includes/functions/settings-options.php:147
 #: includes/functions/settings-options.php:268
 #: includes/functions/settings-options.php:279
@@ -708,7 +726,8 @@ msgstr ""
 #: includes/Fields/Field_Contract.php:518
 #: includes/Fields/Form_Field_Checkbox.php:85
 #: includes/Fields/Form_Field_Radio.php:85 includes/Free/Form_Element.php:524
-#: includes/Frontend.php:121 includes/functions/settings-options.php:127
+#: includes/Frontend.php:124 includes/Integrations/Elementor/Elementor.php:172
+#: includes/functions/settings-options.php:127
 #: includes/functions/settings-options.php:146
 #: includes/functions/settings-options.php:267
 #: includes/functions/settings-options.php:278
@@ -728,7 +747,7 @@ msgid "Payment Options"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:26 includes/Setup_Wizard.php:339
-#: includes/functions/settings-options.php:669 wpuf-functions.php:5993
+#: includes/functions/settings-options.php:669 wpuf-functions.php:5998
 msgid "Enable Payments"
 msgstr ""
 
@@ -793,7 +812,7 @@ msgid "Amount to be charged per post"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:88
-#: includes/functions/settings-options.php:755 wpuf-functions.php:6028
+#: includes/functions/settings-options.php:755 wpuf-functions.php:6033
 msgid "Payment Success Page"
 msgstr ""
 
@@ -815,7 +834,7 @@ msgstr ""
 msgid "Set Post Status to"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:24 wpuf-functions.php:5851
+#: admin/html/form-settings-post-edit.php:24 wpuf-functions.php:5856
 msgid "No Change"
 msgstr ""
 
@@ -825,7 +844,7 @@ msgid "Redirect To"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:36
-#: admin/html/form-settings-post.php:138 wpuf-functions.php:5779
+#: admin/html/form-settings-post.php:138 wpuf-functions.php:5784
 msgid "Newly created post"
 msgstr ""
 
@@ -836,13 +855,13 @@ msgstr ""
 
 #: admin/html/form-settings-post-edit.php:38
 #: admin/html/form-settings-post.php:140 includes/Free/Form_Element.php:422
-#: wpuf-functions.php:5781 wpuf-functions.php:5866
+#: wpuf-functions.php:5786 wpuf-functions.php:5871
 msgid "To a page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:39
 #: admin/html/form-settings-post.php:141 includes/Free/Form_Element.php:423
-#: wpuf-functions.php:5782 wpuf-functions.php:5867
+#: wpuf-functions.php:5787 wpuf-functions.php:5872
 msgid "To a custom URL"
 msgstr ""
 
@@ -850,19 +869,19 @@ msgstr ""
 msgid "After successfull submit, where the page will redirect to"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:54 wpuf-functions.php:5871
+#: admin/html/form-settings-post-edit.php:54 wpuf-functions.php:5876
 msgid "Post Update Message"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:61
 #: admin/html/form-settings-post.php:163 includes/Free/Form_Element.php:452
-#: wpuf-functions.php:5791 wpuf-functions.php:5885
+#: wpuf-functions.php:5796 wpuf-functions.php:5890
 msgid "Page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:76
 #: admin/html/form-settings-post.php:178 includes/Free/Form_Element.php:475
-#: wpuf-functions.php:5797 wpuf-functions.php:5891
+#: wpuf-functions.php:5802 wpuf-functions.php:5896
 msgid "Custom URL"
 msgstr ""
 
@@ -892,7 +911,7 @@ msgstr ""
 msgid "This page is restricted. Please {login} / {register} to view this page."
 msgstr ""
 
-#: admin/html/form-settings-post.php:15 wpuf-functions.php:5788
+#: admin/html/form-settings-post.php:15 wpuf-functions.php:5793
 msgid "Post saved"
 msgstr ""
 
@@ -907,7 +926,7 @@ msgstr ""
 msgid "Save Draft"
 msgstr ""
 
-#: admin/html/form-settings-post.php:29 wpuf-functions.php:5752
+#: admin/html/form-settings-post.php:29 wpuf-functions.php:5757
 msgid "Post Type"
 msgstr ""
 
@@ -949,7 +968,7 @@ msgstr ""
 msgid "After successful submit, where the page will redirect to"
 msgstr ""
 
-#: admin/html/form-settings-post.php:156 wpuf-functions.php:5786
+#: admin/html/form-settings-post.php:156 wpuf-functions.php:5791
 msgid "Message to show"
 msgstr ""
 
@@ -957,11 +976,11 @@ msgstr ""
 msgid "Comment Status"
 msgstr ""
 
-#: admin/html/form-settings-post.php:188 wpuf-functions.php:6143
+#: admin/html/form-settings-post.php:188 wpuf-functions.php:6148
 msgid "Open"
 msgstr ""
 
-#: admin/html/form-settings-post.php:189 wpuf-functions.php:6144
+#: admin/html/form-settings-post.php:189 wpuf-functions.php:6149
 msgid "Closed"
 msgstr ""
 
@@ -1000,7 +1019,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:29 wpuf-functions.php:5925
+#: admin/html/form-submission-restriction.php:29 wpuf-functions.php:5930
 msgid "Guest Post"
 msgstr ""
 
@@ -1020,7 +1039,7 @@ msgstr ""
 msgid "User Details"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:46 wpuf-functions.php:5934
+#: admin/html/form-submission-restriction.php:46 wpuf-functions.php:5939
 msgid "Require Name and Email address"
 msgstr ""
 
@@ -1030,7 +1049,7 @@ msgid ""
 "name and email address"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:53 wpuf-functions.php:5944
+#: admin/html/form-submission-restriction.php:53 wpuf-functions.php:5949
 msgid "Name Label"
 msgstr ""
 
@@ -1038,7 +1057,7 @@ msgstr ""
 msgid "Label text for name field"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:63 wpuf-functions.php:5952
+#: admin/html/form-submission-restriction.php:63 wpuf-functions.php:5957
 msgid "E-Mail Label"
 msgstr ""
 
@@ -1079,7 +1098,7 @@ msgid "Choose which roles can submit posts."
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:117
-#: includes/functions/settings-options.php:338 wpuf-functions.php:5976
+#: includes/functions/settings-options.php:338 wpuf-functions.php:5981
 msgid "Unauthorized Message"
 msgstr ""
 
@@ -1105,16 +1124,16 @@ msgstr ""
 msgid "Schedule Period"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:140 wpuf-functions.php:6157
+#: admin/html/form-submission-restriction.php:140 wpuf-functions.php:6162
 msgid "From"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:151 wpuf-functions.php:6167
+#: admin/html/form-submission-restriction.php:151 wpuf-functions.php:6172
 msgid "Form Pending Message"
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:158
-#: includes/Free/Free_Loader.php:1922 wpuf-functions.php:6171
+#: includes/Free/Free_Loader.php:1922 wpuf-functions.php:6176
 msgid "Form Expired Message"
 msgstr ""
 
@@ -1130,11 +1149,11 @@ msgstr ""
 msgid "Limit the number of entries allowed for this form"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:180 wpuf-functions.php:6180
+#: admin/html/form-submission-restriction.php:180 wpuf-functions.php:6185
 msgid "Number of Entries"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:187 wpuf-functions.php:6185
+#: admin/html/form-submission-restriction.php:187 wpuf-functions.php:6190
 msgid "Limit Reached Message"
 msgstr ""
 
@@ -1163,7 +1182,7 @@ msgstr ""
 
 #: admin/installer.php:84 includes/Admin/Admin_Installer.php:86
 #: includes/Admin/Shortcodes_Button.php:85
-#: includes/functions/settings-options.php:24 wpuf-functions.php:2313
+#: includes/functions/settings-options.php:24 wpuf-functions.php:2318
 msgid "Dashboard"
 msgstr ""
 
@@ -1193,7 +1212,7 @@ msgstr ""
 #: includes/Admin/Shortcodes_Button.php:105 includes/Admin/Subscription.php:482
 #: includes/Admin/Subscription.php:501 includes/Admin/Subscription.php:502
 #: includes/Admin/Subscription.php:503 templates/dashboard/subscription.php:169
-#: wpuf-functions.php:2294
+#: wpuf-functions.php:2299
 msgid "Subscription"
 msgstr ""
 
@@ -1241,40 +1260,47 @@ msgid "Sample Form"
 msgstr ""
 
 #: admin/posting.php:74 class/render-form.php:1703
-#: includes/Admin/Posting.php:130 includes/Admin.php:172
-#: includes/Fields/Field_Contract.php:1008 includes/Frontend.php:81
+#: includes/Admin/Posting.php:130 includes/Admin.php:171
+#: includes/Fields/Field_Contract.php:1035 includes/Frontend.php:84
+#: includes/Integrations/Elementor/Elementor.php:136
 #: includes/Render_Form.php:1594
 msgid "Are you sure?"
 msgstr ""
 
 #: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:344
-#: includes/Admin/Posting.php:131 includes/Admin.php:173
-#: includes/Fields/Field_Contract.php:1009 includes/Frontend.php:82
+#: includes/Admin/Posting.php:131 includes/Admin.php:172
+#: includes/Fields/Field_Contract.php:1036 includes/Frontend.php:85
+#: includes/Integrations/Elementor/Elementor.php:137
 msgid "Yes, delete it"
 msgstr ""
 
-#: admin/posting.php:76 includes/Admin/Posting.php:132 includes/Admin.php:174
-#: includes/Fields/Field_Contract.php:1010 includes/Frontend.php:83
+#: admin/posting.php:76 includes/Admin/Posting.php:132 includes/Admin.php:173
+#: includes/Fields/Field_Contract.php:1037 includes/Frontend.php:86
+#: includes/Integrations/Elementor/Elementor.php:138
 msgid "No, cancel it"
 msgstr ""
 
-#: admin/posting.php:82 includes/Admin/Posting.php:138 includes/Admin.php:182
-#: includes/Fields/Field_Contract.php:1020 includes/Frontend.php:93
+#: admin/posting.php:82 includes/Admin/Posting.php:138 includes/Admin.php:181
+#: includes/Fields/Field_Contract.php:1047 includes/Frontend.php:96
+#: includes/Integrations/Elementor/Elementor.php:146
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:85 includes/Admin/Posting.php:141 includes/Admin.php:188
-#: includes/Fields/Field_Contract.php:1026 includes/Frontend.php:99
+#: admin/posting.php:85 includes/Admin/Posting.php:141 includes/Admin.php:187
+#: includes/Fields/Field_Contract.php:1053 includes/Frontend.php:102
+#: includes/Integrations/Elementor/Elementor.php:152
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:86 includes/Admin/Posting.php:142 includes/Admin.php:189
-#: includes/Fields/Field_Contract.php:1027 includes/Frontend.php:100
+#: admin/posting.php:86 includes/Admin/Posting.php:142 includes/Admin.php:188
+#: includes/Fields/Field_Contract.php:1054 includes/Frontend.php:103
+#: includes/Integrations/Elementor/Elementor.php:153
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:87 includes/Admin/Posting.php:143 includes/Admin.php:190
-#: includes/Fields/Field_Contract.php:1031 includes/Frontend.php:104
+#: admin/posting.php:87 includes/Admin/Posting.php:143 includes/Admin.php:189
+#: includes/Fields/Field_Contract.php:1058 includes/Frontend.php:107
+#: includes/Integrations/Elementor/Elementor.php:154
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
@@ -1346,12 +1372,12 @@ msgid "Unauthorized operation"
 msgstr ""
 
 #: admin/template-post.php:36 includes/Admin/Forms/Template_Post.php:39
-#: includes/Fields/Form_Field_Post_Content.php:167
+#: includes/Fields/Form_Field_Post_Content.php:169
 msgid "Enable Image Insertion"
 msgstr ""
 
 #: admin/template-post.php:42 includes/Admin/Forms/Template_Post.php:49
-#: includes/Fields/Form_Field_Post_Content.php:169
+#: includes/Fields/Form_Field_Post_Content.php:171
 msgid "Enable image upload in post area"
 msgstr ""
 
@@ -1407,6 +1433,7 @@ msgstr ""
 
 #: admin/template-post.php:158 includes/Admin/Forms/Template_Post.php:175
 #: includes/Fields/Field_Contract.php:530
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:154
 msgid "Order By"
 msgstr ""
 
@@ -1623,6 +1650,7 @@ msgstr ""
 
 #: admin/template.php:127 includes/Admin/Forms/Admin_Template.php:146
 #: includes/Fields/Field_Contract.php:652
+#: includes/Integrations/Elementor/Widget.php:959
 msgid "Size"
 msgstr ""
 
@@ -1663,6 +1691,14 @@ msgstr ""
 
 #: admin/template.php:188 includes/Admin/Forms/Admin_Template.php:217
 #: includes/Fields/Field_Contract.php:740
+#: includes/Integrations/Elementor/Account_Widget.php:462
+#: includes/Integrations/Elementor/Account_Widget.php:616
+#: includes/Integrations/Elementor/Account_Widget.php:807
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:982
+#: includes/Integrations/Elementor/Widget.php:455
+#: includes/Integrations/Elementor/Widget.php:654
+#: includes/Integrations/Elementor/Widget.php:1072
+#: includes/Integrations/Elementor/Widget.php:1295
 msgid "Normal"
 msgstr ""
 
@@ -1727,8 +1763,10 @@ msgstr ""
 #: includes/Ajax/Upload_Ajax.php:227
 #: includes/Fields/Form_Field_Cloudflare_Turnstile.php:108
 #: includes/Fields/Form_Field_SectionBreak.php:57
-#: includes/Fields/Form_Field_reCaptcha.php:160 templates/dashboard/list.php:10
-#: templates/dashboard/posts.php:129 wpuf-functions.php:1169
+#: includes/Fields/Form_Field_reCaptcha.php:160
+#: includes/Integrations/Elementor/Widget.php:844
+#: templates/dashboard/list.php:10 templates/dashboard/posts.php:129
+#: wpuf-functions.php:1169
 msgid "Title"
 msgstr ""
 
@@ -1749,7 +1787,8 @@ msgstr ""
 #: admin/template.php:583 includes/Admin/Admin_Tools.php:562
 #: includes/Admin/Forms/Admin_Template.php:668
 #: includes/Ajax/Upload_Ajax.php:235
-#: includes/Fields/Form_Field_SectionBreak.php:65 wpuf-functions.php:1177
+#: includes/Fields/Form_Field_SectionBreak.php:65
+#: includes/Integrations/Elementor/Widget.php:898 wpuf-functions.php:1177
 msgid "Description"
 msgstr ""
 
@@ -1941,6 +1980,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: class/subscription.php:975 includes/Admin/Subscription.php:1012
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1305
 msgid "One time payment"
 msgstr ""
 
@@ -1957,15 +1997,18 @@ msgid "installments"
 msgstr ""
 
 #: class/subscription.php:991 includes/Admin/Subscription.php:1032
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1316
 #. translators: %s: trial days
 msgid "Trial available for first %1$s %2$s"
 msgstr ""
 
 #: class/subscription.php:995 includes/Admin/Subscription.php:1036
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1354
 msgid "Buy Now"
 msgstr ""
 
 #: class/subscription.php:999 includes/Admin/Subscription.php:1040
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1348
 msgid "Sign Up"
 msgstr ""
 
@@ -1973,7 +2016,9 @@ msgstr ""
 #: includes/Admin/Admin_Subscription.php:732
 #: includes/Admin/Subscription.php:1043
 #: includes/Free/templates/page-registration-form.php:120
-#: includes/Frontend/Frontend_Account.php:227
+#: includes/Frontend/Frontend_Account.php:238
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1309
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1351
 #: includes/User_Subscription.php:320
 #: templates/subscriptions/pack-details.php:79
 msgid "Free"
@@ -2153,8 +2198,8 @@ msgstr ""
 #: includes/Integrations/WPUF_ACF_Compatibility.php:90
 #: includes/Integrations/WPUF_ACF_Compatibility.php:156
 #: includes/Widgets/Login_Widget.php:36 includes/Widgets/Login_Widget.php:62
-#: includes/Widgets/Login_Widget.php:79 wpuf-functions.php:1726
-#: wpuf-functions.php:2010
+#: includes/Widgets/Login_Widget.php:79 wpuf-functions.php:1731
+#: wpuf-functions.php:2015
 msgid "Permission denied"
 msgstr ""
 
@@ -2499,7 +2544,8 @@ msgstr ""
 #: includes/Admin/Admin_Installer.php:225
 #: includes/Admin/Admin_Installer.php:252 includes/Admin/Admin_Tools.php:479
 #: includes/Admin/Admin_Tools.php:1102 includes/Admin/Admin_Tools.php:1130
-#: wpuf-functions.php:6556
+#: includes/Integrations/Elementor/Account_Widget.php:770
+#: wpuf-functions.php:6561
 msgid "Logout"
 msgstr ""
 
@@ -2567,7 +2613,7 @@ msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:436
 #: includes/Admin/Admin_Subscription.php:1053
-#: includes/Admin/views/support.php:77 wpuf-functions.php:5635
+#: includes/Admin/views/support.php:77 wpuf-functions.php:5640
 msgid "Payment Settings"
 msgstr ""
 
@@ -2606,7 +2652,7 @@ msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:532
 #: includes/Admin/Admin_Subscription.php:1085 includes/Free/Form_Element.php:59
-#: wpuf-functions.php:5661
+#: wpuf-functions.php:5666
 msgid "Post Expiration"
 msgstr ""
 
@@ -2686,7 +2732,7 @@ msgid "For each %1$s %2$s"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:741
-#: includes/Frontend/Frontend_Account.php:237
+#: includes/Frontend/Frontend_Account.php:248
 #. translators: %s is Billing limit
 #. translators: %s: number of installments
 msgid ", for %s installments"
@@ -2733,8 +2779,8 @@ msgid "Select Package:"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:950
-#: includes/functions/settings-options.php:916 wpuf-functions.php:2062
-#: wpuf-functions.php:2330
+#: includes/functions/settings-options.php:916 wpuf-functions.php:2067
+#: wpuf-functions.php:2335
 msgid "&mdash; Select &mdash;"
 msgstr ""
 
@@ -2793,6 +2839,7 @@ msgid "Additional Options"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:1151
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:312
 msgid "Plan Name"
 msgstr ""
 
@@ -2882,12 +2929,12 @@ msgid "Publish"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:1284 wpuf-functions.php:71
-#: wpuf-functions.php:5804 wpuf-functions.php:5847
+#: wpuf-functions.php:5809 wpuf-functions.php:5852
 msgid "Draft"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1285 wpuf-functions.php:5805
-#: wpuf-functions.php:5848
+#: includes/Admin/Admin_Subscription.php:1285 wpuf-functions.php:5810
+#: wpuf-functions.php:5853
 msgid "Pending Review"
 msgstr ""
 
@@ -2930,6 +2977,7 @@ msgid "If enabled, number of posts will be restored if the post is deleted."
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:1356
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:545
 msgid "Billing Amount"
 msgstr ""
 
@@ -3065,8 +3113,8 @@ msgstr ""
 
 #: includes/Admin/Admin_Tools.php:56 includes/Admin/Admin_Tools.php:119
 #: includes/Admin/List_Table_Subscribers.php:170
-#: includes/Admin/List_Table_Transactions.php:97 wpuf-functions.php:4265
-#: wpuf-functions.php:6238
+#: includes/Admin/List_Table_Transactions.php:97 wpuf-functions.php:4270
+#: wpuf-functions.php:6243
 msgid "All"
 msgstr ""
 
@@ -3285,7 +3333,7 @@ msgstr ""
 msgid "Shortcodes marked with %s require WP User Frontend Pro."
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:541 includes/Admin.php:247
+#: includes/Admin/Admin_Tools.php:541 includes/Admin.php:246
 #: includes/Free/Free_Loader.php:936 modules/user-directory/Admin_Menu.php:602
 msgid "Upgrade to Pro"
 msgstr ""
@@ -3481,7 +3529,7 @@ msgid "Customize WPUF Settings"
 msgstr ""
 
 #: includes/Admin/Customizer_Options.php:75 includes/Frontend/Payment.php:174
-#: wpuf-functions.php:2295
+#: wpuf-functions.php:2300
 msgid "Billing Address"
 msgstr ""
 
@@ -3640,7 +3688,7 @@ msgid "Okay"
 msgstr ""
 
 #: includes/Admin/Forms/Admin_Form_Builder.php:348
-#: includes/Admin/views/shortcode-builder.php:70 includes/Admin.php:249
+#: includes/Admin/views/shortcode-builder.php:70 includes/Admin.php:248
 msgid "Close"
 msgstr ""
 
@@ -3689,7 +3737,7 @@ msgstr ""
 msgid "To view field options, please start adding fields in the builder"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:365 includes/Admin.php:241
+#: includes/Admin/Forms/Admin_Form_Builder.php:365 includes/Admin.php:240
 msgid "Something went wrong. Please try again."
 msgstr ""
 
@@ -3792,7 +3840,7 @@ msgid "&mdash; No Template &mdash;"
 msgstr ""
 
 #: includes/Admin/Forms/Post/Templates/Form_Template.php:231
-#: includes/Free/Free_Loader.php:1850 wpuf-functions.php:5828
+#: includes/Free/Free_Loader.php:1850 wpuf-functions.php:5833
 msgid ""
 "If selected a form template, it will try to execute that integration "
 "options when new post created and updated."
@@ -3803,7 +3851,7 @@ msgstr ""
 #: includes/Admin/views/shortcode-builder.php:8
 #: includes/Free/Free_Loader.php:1856 includes/Free/Free_Loader.php:1860
 #: includes/Free/Free_Loader.php:1864 includes/Free/Free_Loader.php:1868
-#: includes/Free/Free_Loader.php:1872 wpuf-functions.php:5709
+#: includes/Free/Free_Loader.php:1872 wpuf-functions.php:5714
 msgid "Post Form"
 msgstr ""
 
@@ -5285,7 +5333,7 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: includes/Admin.php:240 includes/Free/Simple_Login.php:536
+#: includes/Admin.php:239 includes/Free/Simple_Login.php:536
 #: includes/Free/Simple_Login.php:577 includes/Frontend/Registration.php:184
 #: includes/Frontend/Registration.php:191
 #: includes/Frontend/Registration.php:198
@@ -5299,33 +5347,34 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: includes/Admin.php:242
+#: includes/Admin.php:241
 msgid "Invalid Request"
 msgstr ""
 
-#: includes/Admin.php:243
+#: includes/Admin.php:242
 msgid "I can only help with form creation. Try: \"Create a contact form\""
 msgstr ""
 
-#: includes/Admin.php:244
+#: includes/Admin.php:243
 msgid "Pro Feature Required"
 msgstr ""
 
-#: includes/Admin.php:245
+#: includes/Admin.php:244
 msgid ""
 "This field type requires WP User Frontend Pro. You can continue without it "
 "or upgrade to Pro for full functionality."
 msgstr ""
 
-#: includes/Admin.php:246
+#: includes/Admin.php:245
 msgid "Continue without Pro"
 msgstr ""
 
-#: includes/Admin.php:248
+#: includes/Admin.php:247
 msgid "Try Again"
 msgstr ""
 
-#: includes/Ajax/Address_Form_Ajax.php:40 includes/Frontend.php:178
+#: includes/Ajax/Address_Form_Ajax.php:40 includes/Frontend.php:181
+#: includes/Integrations/Elementor/Elementor.php:219
 msgid "Some Required Fields are not filled!"
 msgstr ""
 
@@ -5414,7 +5463,7 @@ msgstr ""
 msgid "Using %s as shortcode is restricted"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:172 wpuf-functions.php:6685
+#: includes/Ajax/Frontend_Form_Ajax.php:172 wpuf-functions.php:6690
 msgid "You must be logged in to edit posts."
 msgstr ""
 
@@ -5873,6 +5922,7 @@ msgid "Radio"
 msgstr ""
 
 #: includes/Fields/Form_Field_SectionBreak.php:11
+#: includes/Integrations/Elementor/Widget.php:781
 msgid "Section Break"
 msgstr ""
 
@@ -6203,7 +6253,7 @@ msgstr ""
 msgid "Choose how you want the progressbar"
 msgstr ""
 
-#: includes/Free/Form_Element.php:227 wpuf-functions.php:6062
+#: includes/Free/Form_Element.php:227 wpuf-functions.php:6067
 msgid "New post created"
 msgstr ""
 
@@ -6211,8 +6261,8 @@ msgstr ""
 msgid "A post has been edited"
 msgstr ""
 
-#: includes/Free/Form_Element.php:236 wpuf-functions.php:6041
-#: wpuf-functions.php:6048
+#: includes/Free/Form_Element.php:236 wpuf-functions.php:6046
+#: wpuf-functions.php:6053
 msgid "New Post Notification"
 msgstr ""
 
@@ -6229,13 +6279,13 @@ msgid "Learn more about Email Notification"
 msgstr ""
 
 #: includes/Free/Form_Element.php:255 includes/Free/Form_Element.php:292
-#: includes/Free/Free_Loader.php:1780 wpuf-functions.php:6054
-#: wpuf-functions.php:6161
+#: includes/Free/Free_Loader.php:1780 wpuf-functions.php:6059
+#: wpuf-functions.php:6166
 msgid "To"
 msgstr ""
 
 #: includes/Free/Form_Element.php:262 includes/Free/Form_Element.php:297
-#: includes/Free/Free_Loader.php:1785 wpuf-functions.php:6060
+#: includes/Free/Free_Loader.php:1785 wpuf-functions.php:6065
 msgid "Subject"
 msgstr ""
 
@@ -6243,7 +6293,7 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-#: includes/Free/Form_Element.php:274 wpuf-functions.php:6090
+#: includes/Free/Form_Element.php:274 wpuf-functions.php:6095
 msgid "Update Post Notification"
 msgstr ""
 
@@ -6348,7 +6398,7 @@ msgstr ""
 
 #: includes/Free/Free_Loader.php:326
 #: modules/user-directory/views/profile/layout-2.php:142
-#: templates/account.php:41 wpuf-functions.php:2293
+#: templates/account.php:41 wpuf-functions.php:2298
 msgid "Edit Profile"
 msgstr ""
 
@@ -6904,6 +6954,25 @@ msgid "Background color for progressbar or active step."
 msgstr ""
 
 #: includes/Free/Free_Loader.php:1753
+#: includes/Integrations/Elementor/Account_Widget.php:467
+#: includes/Integrations/Elementor/Account_Widget.php:555
+#: includes/Integrations/Elementor/Account_Widget.php:621
+#: includes/Integrations/Elementor/Account_Widget.php:653
+#: includes/Integrations/Elementor/Account_Widget.php:675
+#: includes/Integrations/Elementor/Account_Widget.php:843
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:189
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:999
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1089
+#: includes/Integrations/Elementor/Widget.php:460
+#: includes/Integrations/Elementor/Widget.php:521
+#: includes/Integrations/Elementor/Widget.php:635
+#: includes/Integrations/Elementor/Widget.php:670
+#: includes/Integrations/Elementor/Widget.php:740
+#: includes/Integrations/Elementor/Widget.php:789
+#: includes/Integrations/Elementor/Widget.php:1077
+#: includes/Integrations/Elementor/Widget.php:1201
+#: includes/Integrations/Elementor/Widget.php:1300
+#: includes/Integrations/Elementor/Widget.php:1424
 msgid "Background Color"
 msgstr ""
 
@@ -6915,7 +6984,7 @@ msgstr ""
 msgid "Enable Update Post Notification"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1790 wpuf-functions.php:6066
+#: includes/Free/Free_Loader.php:1790 wpuf-functions.php:6071
 msgid "Email Body"
 msgstr ""
 
@@ -6923,7 +6992,7 @@ msgstr ""
 msgid "Conditional Logic on Submit"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1848 wpuf-functions.php:6105
+#: includes/Free/Free_Loader.php:1848 wpuf-functions.php:6110
 msgid "Choose Form Style"
 msgstr ""
 
@@ -7319,66 +7388,66 @@ msgid ""
 "account page."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:202
+#: includes/Frontend/Frontend_Account.php:213
 msgid "You have not subscribed to any package yet."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:209
+#: includes/Frontend/Frontend_Account.php:220
 msgid "You may have processed your payment, but the pack is not active yet."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:218
+#: includes/Frontend/Frontend_Account.php:229
 #. translators: %1$s and %2$s are HTML tags
 msgid "%1$sYour subscription pack is not exists. Please contact admin.%2$s"
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:231
+#: includes/Frontend/Frontend_Account.php:242
 #. translators: %s: billing cycle number, %s: billing cycle period
 msgid "For each"
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:302
+#: includes/Frontend/Frontend_Account.php:313
 msgid "Nonce failure"
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:313
+#: includes/Frontend/Frontend_Account.php:324
 msgid "First Name is a required field."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:316
+#: includes/Frontend/Frontend_Account.php:327
 msgid "Last Name is a required field."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:319
+#: includes/Frontend/Frontend_Account.php:330
 msgid "Email is a required field."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:328
+#: includes/Frontend/Frontend_Account.php:339
 msgid "Please provide a valid email address."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:330
+#: includes/Frontend/Frontend_Account.php:341
 msgid "This email address is already registered."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:335
+#: includes/Frontend/Frontend_Account.php:346
 msgid "Please fill out all password fields."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:338
+#: includes/Frontend/Frontend_Account.php:349
 msgid "Please enter your current password."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:341
+#: includes/Frontend/Frontend_Account.php:352
 msgid "Please re-enter your password."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:344
+#: includes/Frontend/Frontend_Account.php:355
 msgid "New passwords do not match."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:348
-#: includes/Frontend/Frontend_Account.php:356
+#: includes/Frontend/Frontend_Account.php:359
+#: includes/Frontend/Frontend_Account.php:367
 msgid "Your current password is incorrect."
 msgstr ""
 
@@ -7409,7 +7478,7 @@ msgstr ""
 msgid "Invalid post"
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:74 wpuf-functions.php:6725
+#: includes/Frontend/Frontend_Form.php:74 wpuf-functions.php:6730
 msgid "Your edit access for this post has been locked by an administrator."
 msgstr ""
 
@@ -7417,7 +7486,7 @@ msgstr ""
 msgid "Your allocated time for editing this post has been expired."
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:86 wpuf-functions.php:6713
+#: includes/Frontend/Frontend_Form.php:86 wpuf-functions.php:6718
 msgid "Your post edit access has been locked by an administrator."
 msgstr ""
 
@@ -7433,11 +7502,11 @@ msgstr ""
 msgid "I don't know how to edit this post, I don't have the form ID"
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:125 wpuf-functions.php:6750
+#: includes/Frontend/Frontend_Form.php:125 wpuf-functions.php:6755
 msgid "You can't edit a post while in pending mode."
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:129 wpuf-functions.php:6757
+#: includes/Frontend/Frontend_Form.php:129 wpuf-functions.php:6762
 msgid "You're not allowed to edit this post."
 msgstr ""
 
@@ -7658,86 +7727,86 @@ msgstr ""
 msgid "Subscription Page settings not set in admin settings"
 msgstr ""
 
-#: includes/Frontend.php:115
+#: includes/Frontend.php:118 includes/Integrations/Elementor/Elementor.php:168
 msgid "Please fix the errors to proceed"
 msgstr ""
 
-#: includes/Frontend.php:117
+#: includes/Frontend.php:120 includes/Integrations/Elementor/Elementor.php:170
 msgid "Word limit reached"
 msgstr ""
 
-#: includes/Frontend.php:118
+#: includes/Frontend.php:121 includes/Integrations/Elementor/Elementor.php:171
 msgid "Are you sure you want to cancel your current subscription ?"
 msgstr ""
 
-#: includes/Frontend.php:123
+#: includes/Frontend.php:126 includes/Integrations/Elementor/Elementor.php:174
 msgid "Maximum word limit reached. Please shorten your texts."
 msgstr ""
 
-#: includes/Frontend.php:126
+#: includes/Frontend.php:129 includes/Integrations/Elementor/Elementor.php:175
 msgid ""
 "This field supports a maximum of %number% words, and the limit is reached. "
 "Remove a few words to reach the acceptable limit of the field."
 msgstr ""
 
-#: includes/Frontend.php:130
+#: includes/Frontend.php:133 includes/Integrations/Elementor/Elementor.php:176
 msgid "Minimum word required."
 msgstr ""
 
-#: includes/Frontend.php:131
+#: includes/Frontend.php:134 includes/Integrations/Elementor/Elementor.php:177
 msgid "This field requires minimum %number% words. Please add some more text."
 msgstr ""
 
-#: includes/Frontend.php:134
+#: includes/Frontend.php:137 includes/Integrations/Elementor/Elementor.php:178
 msgid "Maximum character limit reached. Please shorten your texts."
 msgstr ""
 
-#: includes/Frontend.php:137
+#: includes/Frontend.php:140 includes/Integrations/Elementor/Elementor.php:179
 msgid ""
 "This field supports a maximum of %number% characters, and the limit is "
 "reached. Remove a few characters to reach the acceptable limit of the field."
 msgstr ""
 
-#: includes/Frontend.php:141
+#: includes/Frontend.php:144 includes/Integrations/Elementor/Elementor.php:180
 msgid "Minimum character required."
 msgstr ""
 
-#: includes/Frontend.php:142
+#: includes/Frontend.php:145 includes/Integrations/Elementor/Elementor.php:181
 msgid ""
 "This field requires minimum %number% characters. Please add some more "
 "character."
 msgstr ""
 
-#: includes/Frontend.php:148
+#: includes/Frontend.php:151 includes/Integrations/Elementor/Elementor.php:183
 #. translators: %shortcode% is the shortcode name
 msgid "Using %shortcode% is restricted"
 msgstr ""
 
-#: includes/Frontend.php:149
+#: includes/Frontend.php:152 includes/Integrations/Elementor/Elementor.php:184
 msgid "Your password should be at least weak in strength"
 msgstr ""
 
-#: includes/Frontend.php:150
+#: includes/Frontend.php:153 includes/Integrations/Elementor/Elementor.php:185
 msgid "Your password needs to be medium strength for better protection"
 msgstr ""
 
-#: includes/Frontend.php:151
+#: includes/Frontend.php:154 includes/Integrations/Elementor/Elementor.php:186
 msgid "Create a strong password for maximum security"
 msgstr ""
 
-#: includes/Frontend.php:157
+#: includes/Frontend.php:160 includes/Integrations/Elementor/Elementor.php:195
 msgid "is required"
 msgstr ""
 
-#: includes/Frontend.php:158
+#: includes/Frontend.php:161 includes/Integrations/Elementor/Elementor.php:196
 msgid "does not match"
 msgstr ""
 
-#: includes/Frontend.php:159
+#: includes/Frontend.php:162 includes/Integrations/Elementor/Elementor.php:197
 msgid "is not valid"
 msgstr ""
 
-#: includes/Frontend.php:168
+#: includes/Frontend.php:171 includes/Integrations/Elementor/Elementor.php:208
 msgid "Please Cancel Your Currently Active Pack first!"
 msgstr ""
 
@@ -7756,6 +7825,694 @@ msgstr ""
 #. translators: %1$s is Post type and %2$d is item
 #. translators: %1$s is Post type and %2$s is total feature item
 msgid "Mark the %1$s as featured (remaining %2$d)"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:42
+msgid "User Account"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:120
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:132
+#: includes/Integrations/Elementor/Widget.php:120
+msgid "Content"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:128
+msgid ""
+"This widget displays the full WPUF User Account dashboard, including the "
+"sidebar navigation, profile section, and all account content tabs "
+"(Dashboard, Posts, Subscription, Edit Profile, Billing Address)."
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:147
+msgid "Sidebar"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:156
+#: includes/Integrations/Elementor/Account_Widget.php:253
+#: includes/Integrations/Elementor/Account_Widget.php:877
+#: includes/Integrations/Elementor/Widget.php:213
+msgid "Background"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:165
+#: includes/Integrations/Elementor/Account_Widget.php:740
+#: includes/Integrations/Elementor/Widget.php:1032
+#: includes/Integrations/Elementor/Widget.php:1061
+#: includes/Integrations/Elementor/Widget.php:1255
+#: includes/Integrations/Elementor/Widget.php:1284
+msgid "Width"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:185
+#: includes/Integrations/Elementor/Account_Widget.php:289
+#: includes/Integrations/Elementor/Account_Widget.php:523
+#: includes/Integrations/Elementor/Account_Widget.php:720
+#: includes/Integrations/Elementor/Account_Widget.php:886
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1055
+#: includes/Integrations/Elementor/Widget.php:265
+#: includes/Integrations/Elementor/Widget.php:498
+#: includes/Integrations/Elementor/Widget.php:701
+#: includes/Integrations/Elementor/Widget.php:800
+#: includes/Integrations/Elementor/Widget.php:1157
+#: includes/Integrations/Elementor/Widget.php:1380
+msgid "Padding"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:213
+#: includes/Integrations/Elementor/Account_Widget.php:309
+#: includes/Integrations/Elementor/Account_Widget.php:330
+#: includes/Integrations/Elementor/Account_Widget.php:503
+#: includes/Integrations/Elementor/Account_Widget.php:699
+#: includes/Integrations/Elementor/Account_Widget.php:932
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:226
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1036
+#: includes/Integrations/Elementor/Widget.php:297
+#: includes/Integrations/Elementor/Widget.php:488
+#: includes/Integrations/Elementor/Widget.php:689
+#: includes/Integrations/Elementor/Widget.php:832
+#: includes/Integrations/Elementor/Widget.php:1140
+#: includes/Integrations/Elementor/Widget.php:1363
+msgid "Border Radius"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:244
+msgid "Profile Card"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:262
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:966
+#: includes/Integrations/Elementor/Widget.php:238
+#: includes/Integrations/Elementor/Widget.php:442
+#: includes/Integrations/Elementor/Widget.php:872
+#: includes/Integrations/Elementor/Widget.php:926
+#: includes/Integrations/Elementor/Widget.php:1045
+#: includes/Integrations/Elementor/Widget.php:1268
+msgid "Alignment"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:266
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:354
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:435
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:488
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:677
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:770
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:876
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:969
+#: includes/Integrations/Elementor/Widget.php:246
+#: includes/Integrations/Elementor/Widget.php:445
+#: includes/Integrations/Elementor/Widget.php:875
+#: includes/Integrations/Elementor/Widget.php:929
+#: includes/Integrations/Elementor/Widget.php:1049
+#: includes/Integrations/Elementor/Widget.php:1272
+#: includes/functions/settings-options.php:700
+msgid "Left"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:270
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:355
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:436
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:489
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:678
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:771
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:877
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:970
+#: includes/Integrations/Elementor/Widget.php:250
+#: includes/Integrations/Elementor/Widget.php:446
+#: includes/Integrations/Elementor/Widget.php:876
+#: includes/Integrations/Elementor/Widget.php:930
+#: includes/Integrations/Elementor/Widget.php:1050
+#: includes/Integrations/Elementor/Widget.php:1273
+msgid "Center"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:274
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:356
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:437
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:490
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:679
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:772
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:878
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:971
+#: includes/Integrations/Elementor/Widget.php:254
+#: includes/Integrations/Elementor/Widget.php:447
+#: includes/Integrations/Elementor/Widget.php:877
+#: includes/Integrations/Elementor/Widget.php:931
+#: includes/Integrations/Elementor/Widget.php:1051
+#: includes/Integrations/Elementor/Widget.php:1274
+#: includes/functions/settings-options.php:702
+msgid "Right"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:321
+msgid "Avatar"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:350
+#: includes/Integrations/Elementor/Account_Widget.php:396
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:368
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:449
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:503
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:802
+msgid "Margin Bottom"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:367
+#: modules/user-directory/Admin_Menu.php:505
+msgid "Display Name"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:376
+#: includes/Integrations/Elementor/Account_Widget.php:422
+#: includes/Integrations/Elementor/Widget.php:853
+#: includes/Integrations/Elementor/Widget.php:907
+msgid "Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:413
+msgid "Role Text"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:455
+msgid "Edit Profile Button"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:477
+#: includes/Integrations/Elementor/Account_Widget.php:564
+#: includes/Integrations/Elementor/Account_Widget.php:631
+#: includes/Integrations/Elementor/Account_Widget.php:662
+#: includes/Integrations/Elementor/Account_Widget.php:685
+#: includes/Integrations/Elementor/Account_Widget.php:812
+#: includes/Integrations/Elementor/Account_Widget.php:834
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:320
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:404
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:633
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:710
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:834
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:987
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1078
+#: includes/Integrations/Elementor/Widget.php:336
+#: includes/Integrations/Elementor/Widget.php:402
+#: includes/Integrations/Elementor/Widget.php:469
+#: includes/Integrations/Elementor/Widget.php:573
+#: includes/Integrations/Elementor/Widget.php:613
+#: includes/Integrations/Elementor/Widget.php:659
+#: includes/Integrations/Elementor/Widget.php:729
+#: includes/Integrations/Elementor/Widget.php:1087
+#: includes/Integrations/Elementor/Widget.php:1211
+#: includes/Integrations/Elementor/Widget.php:1310
+#: includes/Integrations/Elementor/Widget.php:1434
+msgid "Text Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:550
+#: includes/Integrations/Elementor/Account_Widget.php:648
+#: includes/Integrations/Elementor/Account_Widget.php:829
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1073
+#: includes/Integrations/Elementor/Widget.php:724
+#: includes/Integrations/Elementor/Widget.php:1196
+#: includes/Integrations/Elementor/Widget.php:1419
+msgid "Hover"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:573
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1100
+#: includes/Integrations/Elementor/Widget.php:751
+#: includes/Integrations/Elementor/Widget.php:1221
+#: includes/Integrations/Elementor/Widget.php:1444
+msgid "Border Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:600
+msgid "Navigation Menu"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:608
+msgid "Nav Item"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:670
+msgid "Active"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:779
+msgid "Section Background"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:788
+msgid "Section Padding"
+msgstr ""
+
+#: includes/Integrations/Elementor/Account_Widget.php:868
+msgid "Content Area"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:41
+msgid "Subscription Plans"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:139
+msgid "Plans Per Row"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:157
+msgid ""
+"Choose how to sort the subscription plans. Custom Order uses the sort order "
+"set in each plan's settings."
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:159
+msgid "Custom Order"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:160
+msgid "Plan ID"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:161
+msgid "Price (Low to High)"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:162
+msgid "Price (High to Low)"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:181
+msgid "Subscription Cards"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:253
+msgid "Card Padding"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:272
+msgid "Card Margin"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:284
+msgid "Gap Between Cards"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:351
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:432
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:485
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:674
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:767
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:873
+msgid "Text Alignment"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:396
+msgid "Plan Description"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:477
+msgid "Price"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:520
+msgid "Currency Symbol Size"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:533
+msgid "Currency Symbol Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:554
+msgid "Price Text Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:585
+msgid "Billing Cycle"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:594
+msgid "Billing Cycle Text Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:625
+msgid "Trial Description"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:661
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:945
+msgid "Text Size"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:702
+msgid "Features List"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:722
+#: includes/Integrations/Elementor/Widget.php:624
+msgid "Icon Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:734
+msgid "Icon Size"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:785
+msgid "Line Spacing"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:826
+msgid "See More Toggle"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:846
+msgid "Hover Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:890
+msgid "Margin Top"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:918
+msgid "Subscribe Button"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1247
+msgid "No subscription plans available."
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1248
+msgid "Create a subscription plan in WPUF settings."
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1302
+msgid "Every %s %s"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1419
+#: templates/subscriptions/pack-details.php:139
+msgid "Unlimited posts"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1421
+#: templates/subscriptions/pack-details.php:141
+msgid "%d posts allowed"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1428
+#: templates/subscriptions/pack-details.php:148
+msgid "Unlimited pages"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1430
+#: templates/subscriptions/pack-details.php:150
+msgid "%d pages allowed"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1437
+#: templates/subscriptions/pack-details.php:157
+msgid "Unlimited user requests"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1439
+#: templates/subscriptions/pack-details.php:159
+msgid "%d user requests allowed"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1446
+#: templates/subscriptions/pack-details.php:166
+msgid "Unlimited products"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1448
+#: templates/subscriptions/pack-details.php:168
+msgid "%d products allowed"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1455
+#: templates/subscriptions/pack-details.php:175
+msgid "Unlimited reusable blocks"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1457
+#: templates/subscriptions/pack-details.php:177
+msgid "%d reusable blocks allowed"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1464
+#: templates/subscriptions/pack-details.php:184
+msgid "Unlimited templates"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1466
+#: templates/subscriptions/pack-details.php:186
+msgid "%d templates allowed"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1473
+#: templates/subscriptions/pack-details.php:193
+msgid "Unlimited template parts"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1475
+#: templates/subscriptions/pack-details.php:195
+msgid "%d template parts allowed"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1482
+#: templates/subscriptions/pack-details.php:202
+msgid "Unlimited navigation menus"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1484
+#: templates/subscriptions/pack-details.php:204
+msgid "%d navigation menus allowed"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1491
+#: templates/subscriptions/pack-details.php:211
+msgid "Unlimited global styles"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1493
+#: templates/subscriptions/pack-details.php:213
+msgid "%d global styles allowed"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1500
+#: templates/subscriptions/pack-details.php:220
+msgid "Unlimited font families"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1502
+#: templates/subscriptions/pack-details.php:222
+msgid "%d font families allowed"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1509
+#: templates/subscriptions/pack-details.php:229
+msgid "Unlimited font faces"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1511
+#: templates/subscriptions/pack-details.php:231
+msgid "%d font faces allowed"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1518
+#: templates/subscriptions/pack-details.php:238
+msgid "Unlimited product variations"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1520
+#: templates/subscriptions/pack-details.php:240
+msgid "%d product variations allowed"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1527
+#: templates/subscriptions/pack-details.php:247
+msgid "Unlimited shop orders"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1529
+#: templates/subscriptions/pack-details.php:249
+msgid "%d shop orders allowed"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1536
+#: templates/subscriptions/pack-details.php:256
+msgid "Unlimited shop refunds"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1538
+#: templates/subscriptions/pack-details.php:258
+msgid "%d shop refunds allowed"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1545
+#: templates/subscriptions/pack-details.php:265
+msgid "Unlimited shop coupons"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1547
+#: templates/subscriptions/pack-details.php:267
+msgid "%d shop coupons allowed"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1554
+#: templates/subscriptions/pack-details.php:274
+msgid "Unlimited featured items"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1556
+#: templates/subscriptions/pack-details.php:276
+msgid "%d featured items"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1566
+#: templates/subscriptions/pack-details.php:286
+msgid "Posts expire after %d %s"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1568
+#: templates/subscriptions/pack-details.php:288
+msgid "Post expiration enabled"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1574
+#: templates/subscriptions/pack-details.php:294
+msgid "Recurring subscription"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1583
+#: templates/subscriptions/pack-details.php:303
+msgid "%d %s free trial"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1585
+#: templates/subscriptions/pack-details.php:305
+msgid "Free trial available"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1591
+#: templates/subscriptions/pack-details.php:311
+msgid "Email notifications on post expiry"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1596
+#: templates/subscriptions/pack-details.php:316
+msgid "Full website access"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1627
+#: templates/subscriptions/pack-details.php:353
+msgid "See %d more features"
+msgstr ""
+
+#: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1630
+#: templates/subscriptions/pack-details.php:369
+msgid "See less"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:42
+msgid "User Frontend Form"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:127
+msgid "Select Form"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:174
+msgid "Select a Form"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:204
+msgid "Form Container"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:222
+msgid "Max Width"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:242
+#: includes/functions/settings-options.php:116
+msgid "Default"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:277
+#: includes/Integrations/Elementor/Widget.php:713
+#: includes/Integrations/Elementor/Widget.php:812
+#: includes/Integrations/Elementor/Widget.php:886
+msgid "Margin"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:328
+msgid "Labels"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:355
+msgid "Asterisk Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:367
+msgid "Asterisk Size"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:394
+msgid "Help Text"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:434
+msgid "Input & Textarea"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:516
+msgid "Focus"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:563
+msgid "Placeholder"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:596
+msgid "Rich Text Editor"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:604
+msgid "Toolbar"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:646
+msgid "Insert Photo Button"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:951
+msgid "Radio & Checkbox"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:973
+msgid "Spacing"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:986
+msgid "Selector Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:997
+msgid "Options Text Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:1024
+msgid "Upload Button"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:1036
+#: includes/Integrations/Elementor/Widget.php:1259
+msgid "Full Width"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:1037
+#: includes/Integrations/Elementor/Widget.php:1260
+msgid "Custom"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:1247
+msgid "Submit Button"
 msgstr ""
 
 #: includes/Integrations/Events_Calendar/Templates/Event_Form_Template.php:24
@@ -8042,7 +8799,7 @@ msgstr ""
 msgid "Select the authentication type for the N8N integration."
 msgstr ""
 
-#: includes/Integrations/WPUF_N8N_Integration.php:193 wpuf-functions.php:4266
+#: includes/Integrations/WPUF_N8N_Integration.php:193 wpuf-functions.php:4271
 msgid "None"
 msgstr ""
 
@@ -8685,7 +9442,7 @@ msgstr ""
 msgid "Username or E-mail:"
 msgstr ""
 
-#: includes/Widgets/Login_Widget.php:278 templates/account.php:129
+#: includes/Widgets/Login_Widget.php:278 templates/account.php:131
 msgid "Log out"
 msgstr ""
 
@@ -8821,10 +9578,6 @@ msgstr ""
 
 #: includes/functions/settings-options.php:115
 msgid "Admins, Editors, Authors, Contributors"
-msgstr ""
-
-#: includes/functions/settings-options.php:116
-msgid "Default"
 msgstr ""
 
 #: includes/functions/settings-options.php:121
@@ -9222,7 +9975,7 @@ msgstr ""
 msgid "Login Form"
 msgstr ""
 
-#: includes/functions/settings-options.php:581 wpuf-functions.php:5747
+#: includes/functions/settings-options.php:581 wpuf-functions.php:5752
 msgid "Form Description"
 msgstr ""
 
@@ -9327,14 +10080,6 @@ msgstr ""
 
 #: includes/functions/settings-options.php:696
 msgid "Currency Position"
-msgstr ""
-
-#: includes/functions/settings-options.php:700
-msgid "Left"
-msgstr ""
-
-#: includes/functions/settings-options.php:702
-msgid "Right"
 msgstr ""
 
 #: includes/functions/settings-options.php:704
@@ -9642,10 +10387,6 @@ msgstr ""
 msgid "Spotlight"
 msgstr ""
 
-#: modules/user-directory/Admin_Menu.php:505
-msgid "Display Name"
-msgstr ""
-
 #: modules/user-directory/Admin_Menu.php:517
 msgid "Registration Date"
 msgstr ""
@@ -9735,7 +10476,7 @@ msgstr ""
 msgid "Profile Tabs"
 msgstr ""
 
-#: modules/user-directory/Admin_Menu.php:608 wpuf-functions.php:5655
+#: modules/user-directory/Admin_Menu.php:608 wpuf-functions.php:5660
 msgid "Advanced"
 msgstr ""
 
@@ -10364,170 +11105,6 @@ msgstr ""
 msgid "Most popular"
 msgstr ""
 
-#: templates/subscriptions/pack-details.php:139
-msgid "Unlimited posts"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:141
-msgid "%d posts allowed"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:148
-msgid "Unlimited pages"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:150
-msgid "%d pages allowed"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:157
-msgid "Unlimited user requests"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:159
-msgid "%d user requests allowed"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:166
-msgid "Unlimited products"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:168
-msgid "%d products allowed"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:175
-msgid "Unlimited reusable blocks"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:177
-msgid "%d reusable blocks allowed"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:184
-msgid "Unlimited templates"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:186
-msgid "%d templates allowed"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:193
-msgid "Unlimited template parts"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:195
-msgid "%d template parts allowed"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:202
-msgid "Unlimited navigation menus"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:204
-msgid "%d navigation menus allowed"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:211
-msgid "Unlimited global styles"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:213
-msgid "%d global styles allowed"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:220
-msgid "Unlimited font families"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:222
-msgid "%d font families allowed"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:229
-msgid "Unlimited font faces"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:231
-msgid "%d font faces allowed"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:238
-msgid "Unlimited product variations"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:240
-msgid "%d product variations allowed"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:247
-msgid "Unlimited shop orders"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:249
-msgid "%d shop orders allowed"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:256
-msgid "Unlimited shop refunds"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:258
-msgid "%d shop refunds allowed"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:265
-msgid "Unlimited shop coupons"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:267
-msgid "%d shop coupons allowed"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:274
-msgid "Unlimited featured items"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:276
-msgid "%d featured items"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:286
-msgid "Posts expire after %d %s"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:288
-msgid "Post expiration enabled"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:294
-msgid "Recurring subscription"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:303
-msgid "%d %s free trial"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:305
-msgid "Free trial available"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:311
-msgid "Email notifications on post expiry"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:316
-msgid "Full website access"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:353
-msgid "See %d more features"
-msgstr ""
-
-#: templates/subscriptions/pack-details.php:369
-msgid "See less"
-msgstr ""
-
 #: templates/wc-vendors/post-listing.php:3
 msgid "+ Add New Post"
 msgstr ""
@@ -10552,11 +11129,11 @@ msgstr ""
 msgid "Scheduled"
 msgstr ""
 
-#: wpuf-functions.php:47 wpuf-functions.php:5806 wpuf-functions.php:5849
+#: wpuf-functions.php:47 wpuf-functions.php:5811 wpuf-functions.php:5854
 msgid "Private"
 msgstr ""
 
-#: wpuf-functions.php:68 wpuf-functions.php:5807 wpuf-functions.php:5850
+#: wpuf-functions.php:68 wpuf-functions.php:5812 wpuf-functions.php:5855
 msgid "Published"
 msgstr ""
 
@@ -10580,952 +11157,952 @@ msgstr ""
 msgid "Directions »"
 msgstr ""
 
-#: wpuf-functions.php:2564
+#: wpuf-functions.php:2569
 msgid "United Arab Emirates Dirham"
 msgstr ""
 
-#: wpuf-functions.php:2569
+#: wpuf-functions.php:2574
 msgid "Afghan Afghani"
 msgstr ""
 
-#: wpuf-functions.php:2574
+#: wpuf-functions.php:2579
 msgid "Albanian Lek"
 msgstr ""
 
-#: wpuf-functions.php:2579
+#: wpuf-functions.php:2584
 msgid "Armenian Dram"
 msgstr ""
 
-#: wpuf-functions.php:2584
+#: wpuf-functions.php:2589
 msgid "Netherlands Antillean Guilder"
 msgstr ""
 
-#: wpuf-functions.php:2589
+#: wpuf-functions.php:2594
 msgid "Angolan Kwanza"
 msgstr ""
 
-#: wpuf-functions.php:2594
+#: wpuf-functions.php:2599
 msgid "Argentine Peso"
 msgstr ""
 
-#: wpuf-functions.php:2599
+#: wpuf-functions.php:2604
 msgid "Australian Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2604
+#: wpuf-functions.php:2609
 msgid "Aruban Florin"
 msgstr ""
 
-#: wpuf-functions.php:2609
+#: wpuf-functions.php:2614
 msgid "Azerbaijani Manat"
 msgstr ""
 
-#: wpuf-functions.php:2614
+#: wpuf-functions.php:2619
 msgid "Bosnia and Herzegovina Convertible Mark"
 msgstr ""
 
-#: wpuf-functions.php:2619
+#: wpuf-functions.php:2624
 msgid "Barbadian Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2624
+#: wpuf-functions.php:2629
 msgid "Bangladeshi Taka"
 msgstr ""
 
-#: wpuf-functions.php:2629
+#: wpuf-functions.php:2634
 msgid "Bulgarian Lev"
 msgstr ""
 
-#: wpuf-functions.php:2634
+#: wpuf-functions.php:2639
 msgid "Bahraini Dinar"
 msgstr ""
 
-#: wpuf-functions.php:2639
+#: wpuf-functions.php:2644
 msgid "Burundian Franc"
 msgstr ""
 
-#: wpuf-functions.php:2644
+#: wpuf-functions.php:2649
 msgid "Bermudian Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2649
+#: wpuf-functions.php:2654
 msgid "Brunei Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2654
+#: wpuf-functions.php:2659
 msgid "Bolivian Boliviano"
 msgstr ""
 
-#: wpuf-functions.php:2659
+#: wpuf-functions.php:2664
 msgid "Brazilian Real"
 msgstr ""
 
-#: wpuf-functions.php:2664
+#: wpuf-functions.php:2669
 msgid "Bahamian Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2669
+#: wpuf-functions.php:2674
 msgid "Bhutanese Ngultrum"
 msgstr ""
 
-#: wpuf-functions.php:2674
+#: wpuf-functions.php:2679
 msgid "Botswana Pula"
 msgstr ""
 
-#: wpuf-functions.php:2679
+#: wpuf-functions.php:2684
 msgid "Belarusian Ruble"
 msgstr ""
 
-#: wpuf-functions.php:2684
+#: wpuf-functions.php:2689
 msgid "Belize Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2689
+#: wpuf-functions.php:2694
 msgid "Canadian Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2694
+#: wpuf-functions.php:2699
 msgid "Congolese Franc"
 msgstr ""
 
-#: wpuf-functions.php:2699
+#: wpuf-functions.php:2704
 msgid "Swiss Franc"
 msgstr ""
 
-#: wpuf-functions.php:2704
+#: wpuf-functions.php:2709
 msgid "Chilean Peso"
 msgstr ""
 
-#: wpuf-functions.php:2709
+#: wpuf-functions.php:2714
 msgid "Chinese Yuan"
 msgstr ""
 
-#: wpuf-functions.php:2714
+#: wpuf-functions.php:2719
 msgid "Colombian Peso"
 msgstr ""
 
-#: wpuf-functions.php:2719
+#: wpuf-functions.php:2724
 msgid "Costa Rican Colón"
 msgstr ""
 
-#: wpuf-functions.php:2724
+#: wpuf-functions.php:2729
 msgid "Cuban Peso"
 msgstr ""
 
-#: wpuf-functions.php:2729
+#: wpuf-functions.php:2734
 msgid "Cape Verdean Escudo"
 msgstr ""
 
-#: wpuf-functions.php:2734
+#: wpuf-functions.php:2739
 msgid "Czech Koruna"
 msgstr ""
 
-#: wpuf-functions.php:2739
+#: wpuf-functions.php:2744
 msgid "Djiboutian Franc"
 msgstr ""
 
-#: wpuf-functions.php:2744
+#: wpuf-functions.php:2749
 msgid "Danish Krone"
 msgstr ""
 
-#: wpuf-functions.php:2749
+#: wpuf-functions.php:2754
 msgid "Dominican Peso"
 msgstr ""
 
-#: wpuf-functions.php:2754
+#: wpuf-functions.php:2759
 msgid "Algerian Dinar"
 msgstr ""
 
-#: wpuf-functions.php:2759
+#: wpuf-functions.php:2764
 msgid "Egyptian Pound"
 msgstr ""
 
-#: wpuf-functions.php:2764
+#: wpuf-functions.php:2769
 msgid "Eritrean Nakfa"
 msgstr ""
 
-#: wpuf-functions.php:2769
+#: wpuf-functions.php:2774
 msgid "Ethiopian Birr"
 msgstr ""
 
-#: wpuf-functions.php:2774
+#: wpuf-functions.php:2779
 msgid "Euro"
 msgstr ""
 
-#: wpuf-functions.php:2779
+#: wpuf-functions.php:2784
 msgid "Fijian Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2784
+#: wpuf-functions.php:2789
 msgid "Falkland Islands Pound"
 msgstr ""
 
-#: wpuf-functions.php:2789
+#: wpuf-functions.php:2794
 msgid "British Pound Sterling"
 msgstr ""
 
-#: wpuf-functions.php:2794
+#: wpuf-functions.php:2799
 msgid "Georgian Lari"
 msgstr ""
 
-#: wpuf-functions.php:2799
+#: wpuf-functions.php:2804
 msgid "Ghanaian Cedi"
 msgstr ""
 
-#: wpuf-functions.php:2804
+#: wpuf-functions.php:2809
 msgid "Gibraltar Pound"
 msgstr ""
 
-#: wpuf-functions.php:2809
+#: wpuf-functions.php:2814
 msgid "Gambian Dalasi"
 msgstr ""
 
-#: wpuf-functions.php:2814
+#: wpuf-functions.php:2819
 msgid "Guinean Franc"
 msgstr ""
 
-#: wpuf-functions.php:2819
+#: wpuf-functions.php:2824
 msgid "Guatemalan Quetzal"
 msgstr ""
 
-#: wpuf-functions.php:2824
+#: wpuf-functions.php:2829
 msgid "Guyanese Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2829
+#: wpuf-functions.php:2834
 msgid "Hong Kong Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2834
+#: wpuf-functions.php:2839
 msgid "Honduran Lempira"
 msgstr ""
 
-#: wpuf-functions.php:2839
+#: wpuf-functions.php:2844
 msgid "Croatian Kuna"
 msgstr ""
 
-#: wpuf-functions.php:2844
+#: wpuf-functions.php:2849
 msgid "Haitian Gourde"
 msgstr ""
 
-#: wpuf-functions.php:2849
+#: wpuf-functions.php:2854
 msgid "Hungarian Forint"
 msgstr ""
 
-#: wpuf-functions.php:2854
+#: wpuf-functions.php:2859
 msgid "Indonesian Rupiah"
 msgstr ""
 
-#: wpuf-functions.php:2859
+#: wpuf-functions.php:2864
 msgid "Israeli New Shekel"
 msgstr ""
 
-#: wpuf-functions.php:2864
+#: wpuf-functions.php:2869
 msgid "Indian Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2869
+#: wpuf-functions.php:2874
 msgid "Iraqi Dinar"
 msgstr ""
 
-#: wpuf-functions.php:2874
+#: wpuf-functions.php:2879
 msgid "Iranian Rial"
 msgstr ""
 
-#: wpuf-functions.php:2879
+#: wpuf-functions.php:2884
 msgid "Icelandic Króna"
 msgstr ""
 
-#: wpuf-functions.php:2884
+#: wpuf-functions.php:2889
 msgid "Jamaican Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2889
+#: wpuf-functions.php:2894
 msgid "Jordanian Dinar"
 msgstr ""
 
-#: wpuf-functions.php:2894
+#: wpuf-functions.php:2899
 msgid "Japanese Yen"
 msgstr ""
 
-#: wpuf-functions.php:2899
+#: wpuf-functions.php:2904
 msgid "Kenyan Shilling"
 msgstr ""
 
-#: wpuf-functions.php:2904
+#: wpuf-functions.php:2909
 msgid "Kyrgyzstani Som"
 msgstr ""
 
-#: wpuf-functions.php:2909
+#: wpuf-functions.php:2914
 msgid "Cambodian Riel"
 msgstr ""
 
-#: wpuf-functions.php:2914
+#: wpuf-functions.php:2919
 msgid "Comorian Franc"
 msgstr ""
 
-#: wpuf-functions.php:2919
+#: wpuf-functions.php:2924
 msgid "North Korean Won"
 msgstr ""
 
-#: wpuf-functions.php:2924
+#: wpuf-functions.php:2929
 msgid "South Korean Won"
 msgstr ""
 
-#: wpuf-functions.php:2929
+#: wpuf-functions.php:2934
 msgid "Kuwaiti Dinar"
 msgstr ""
 
-#: wpuf-functions.php:2934
+#: wpuf-functions.php:2939
 msgid "Cayman Islands Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2939
+#: wpuf-functions.php:2944
 msgid "Kazakhstani Tenge"
 msgstr ""
 
-#: wpuf-functions.php:2944
+#: wpuf-functions.php:2949
 msgid "Lao Kip"
 msgstr ""
 
-#: wpuf-functions.php:2949
+#: wpuf-functions.php:2954
 msgid "Lebanese Pound"
 msgstr ""
 
-#: wpuf-functions.php:2954
+#: wpuf-functions.php:2959
 msgid "Sri Lankan Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2959
+#: wpuf-functions.php:2964
 msgid "Liberian Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2964
+#: wpuf-functions.php:2969
 msgid "Lesotho Loti"
 msgstr ""
 
-#: wpuf-functions.php:2969
+#: wpuf-functions.php:2974
 msgid "Libyan Dinar"
 msgstr ""
 
-#: wpuf-functions.php:2974
+#: wpuf-functions.php:2979
 msgid "Moroccan Dirham"
 msgstr ""
 
-#: wpuf-functions.php:2979
+#: wpuf-functions.php:2984
 msgid "Moldovan Leu"
 msgstr ""
 
-#: wpuf-functions.php:2984
+#: wpuf-functions.php:2989
 msgid "Malagasy Ariary"
 msgstr ""
 
-#: wpuf-functions.php:2989
+#: wpuf-functions.php:2994
 msgid "Macedonian Denar"
 msgstr ""
 
-#: wpuf-functions.php:2994
+#: wpuf-functions.php:2999
 msgid "Myanmar Kyat"
 msgstr ""
 
-#: wpuf-functions.php:2999
+#: wpuf-functions.php:3004
 msgid "Mongolian Tögrög"
 msgstr ""
 
-#: wpuf-functions.php:3004
+#: wpuf-functions.php:3009
 msgid "Macanese Pataca"
 msgstr ""
 
-#: wpuf-functions.php:3009
+#: wpuf-functions.php:3014
 msgid "Mauritanian Ouguiya"
 msgstr ""
 
-#: wpuf-functions.php:3014
+#: wpuf-functions.php:3019
 msgid "Mauritian Rupee"
 msgstr ""
 
-#: wpuf-functions.php:3019
+#: wpuf-functions.php:3024
 msgid "Maldivian Rufiyaa"
 msgstr ""
 
-#: wpuf-functions.php:3024
+#: wpuf-functions.php:3029
 msgid "Malawian Kwacha"
 msgstr ""
 
-#: wpuf-functions.php:3029
+#: wpuf-functions.php:3034
 msgid "Mexican Peso"
 msgstr ""
 
-#: wpuf-functions.php:3034
+#: wpuf-functions.php:3039
 msgid "Malaysian Ringgit"
 msgstr ""
 
-#: wpuf-functions.php:3039
+#: wpuf-functions.php:3044
 msgid "Mozambican Metical"
 msgstr ""
 
-#: wpuf-functions.php:3044
+#: wpuf-functions.php:3049
 msgid "Namibian Dollar"
 msgstr ""
 
-#: wpuf-functions.php:3049
+#: wpuf-functions.php:3054
 msgid "Nigerian Naira"
 msgstr ""
 
-#: wpuf-functions.php:3054
+#: wpuf-functions.php:3059
 msgid "Nicaraguan Córdoba"
 msgstr ""
 
-#: wpuf-functions.php:3059
+#: wpuf-functions.php:3064
 msgid "Norwegian Krone"
 msgstr ""
 
-#: wpuf-functions.php:3064
+#: wpuf-functions.php:3069
 msgid "Nepalese Rupee"
 msgstr ""
 
-#: wpuf-functions.php:3069
+#: wpuf-functions.php:3074
 msgid "New Zealand Dollar"
 msgstr ""
 
-#: wpuf-functions.php:3074
+#: wpuf-functions.php:3079
 msgid "Omani Rial"
 msgstr ""
 
-#: wpuf-functions.php:3079
+#: wpuf-functions.php:3084
 msgid "Panamanian Balboa"
 msgstr ""
 
-#: wpuf-functions.php:3084
+#: wpuf-functions.php:3089
 msgid "Peruvian Sol"
 msgstr ""
 
-#: wpuf-functions.php:3089
+#: wpuf-functions.php:3094
 msgid "Papua New Guinean Kina"
 msgstr ""
 
-#: wpuf-functions.php:3094
+#: wpuf-functions.php:3099
 msgid "Philippine Peso"
 msgstr ""
 
-#: wpuf-functions.php:3099
+#: wpuf-functions.php:3104
 msgid "Pakistani Rupee"
 msgstr ""
 
-#: wpuf-functions.php:3104
+#: wpuf-functions.php:3109
 msgid "Polish Zloty"
 msgstr ""
 
-#: wpuf-functions.php:3109
+#: wpuf-functions.php:3114
 msgid "Paraguayan Guaraní"
 msgstr ""
 
-#: wpuf-functions.php:3114
+#: wpuf-functions.php:3119
 msgid "Qatari Riyal"
 msgstr ""
 
-#: wpuf-functions.php:3119
+#: wpuf-functions.php:3124
 msgid "Romanian Leu"
 msgstr ""
 
-#: wpuf-functions.php:3124
+#: wpuf-functions.php:3129
 msgid "Serbian Dinar"
 msgstr ""
 
-#: wpuf-functions.php:3129
+#: wpuf-functions.php:3134
 msgid "Russian Ruble"
 msgstr ""
 
-#: wpuf-functions.php:3134
+#: wpuf-functions.php:3139
 msgid "Rwandan Franc"
 msgstr ""
 
-#: wpuf-functions.php:3139
+#: wpuf-functions.php:3144
 msgid "Saudi Riyal"
 msgstr ""
 
-#: wpuf-functions.php:3144
+#: wpuf-functions.php:3149
 msgid "Solomon Islands Dollar"
 msgstr ""
 
-#: wpuf-functions.php:3149
+#: wpuf-functions.php:3154
 msgid "Seychellois Rupee"
 msgstr ""
 
-#: wpuf-functions.php:3154
+#: wpuf-functions.php:3159
 msgid "Sudanese Pound"
 msgstr ""
 
-#: wpuf-functions.php:3159
+#: wpuf-functions.php:3164
 msgid "Swedish Krona"
 msgstr ""
 
-#: wpuf-functions.php:3164
+#: wpuf-functions.php:3169
 msgid "Singapore Dollar"
 msgstr ""
 
-#: wpuf-functions.php:3169
+#: wpuf-functions.php:3174
 msgid "Saint Helena Pound"
 msgstr ""
 
-#: wpuf-functions.php:3174
+#: wpuf-functions.php:3179
 msgid "Sierra Leonean Leone"
 msgstr ""
 
-#: wpuf-functions.php:3179
+#: wpuf-functions.php:3184
 msgid "Somali Shilling"
 msgstr ""
 
-#: wpuf-functions.php:3184
+#: wpuf-functions.php:3189
 msgid "Surinamese Dollar"
 msgstr ""
 
-#: wpuf-functions.php:3189
+#: wpuf-functions.php:3194
 msgid "South Sudanese Pound"
 msgstr ""
 
-#: wpuf-functions.php:3194
+#: wpuf-functions.php:3199
 msgid "São Tomé and Príncipe Dobra"
 msgstr ""
 
-#: wpuf-functions.php:3199
+#: wpuf-functions.php:3204
 msgid "Syrian Pound"
 msgstr ""
 
-#: wpuf-functions.php:3204
+#: wpuf-functions.php:3209
 msgid "Eswatini Lilangeni"
 msgstr ""
 
-#: wpuf-functions.php:3209
+#: wpuf-functions.php:3214
 msgid "Thai Baht"
 msgstr ""
 
-#: wpuf-functions.php:3214
+#: wpuf-functions.php:3219
 msgid "Tajikistani Somoni"
 msgstr ""
 
-#: wpuf-functions.php:3219
+#: wpuf-functions.php:3224
 msgid "Turkmenistani Manat"
 msgstr ""
 
-#: wpuf-functions.php:3224
+#: wpuf-functions.php:3229
 msgid "Tunisian Dinar"
 msgstr ""
 
-#: wpuf-functions.php:3229
+#: wpuf-functions.php:3234
 msgid "Tongan Paʻanga"
 msgstr ""
 
-#: wpuf-functions.php:3234
+#: wpuf-functions.php:3239
 msgid "Turkish Lira"
 msgstr ""
 
-#: wpuf-functions.php:3239
+#: wpuf-functions.php:3244
 msgid "Trinidad and Tobago Dollar"
 msgstr ""
 
-#: wpuf-functions.php:3244
+#: wpuf-functions.php:3249
 msgid "New Taiwan Dollar"
 msgstr ""
 
-#: wpuf-functions.php:3249
+#: wpuf-functions.php:3254
 msgid "Tanzanian Shilling"
 msgstr ""
 
-#: wpuf-functions.php:3254
+#: wpuf-functions.php:3259
 msgid "Ukrainian Hryvnia"
 msgstr ""
 
-#: wpuf-functions.php:3259
+#: wpuf-functions.php:3264
 msgid "Ugandan Shilling"
 msgstr ""
 
-#: wpuf-functions.php:3264
+#: wpuf-functions.php:3269
 msgid "US Dollar"
 msgstr ""
 
-#: wpuf-functions.php:3269
+#: wpuf-functions.php:3274
 msgid "Uruguayan Peso"
 msgstr ""
 
-#: wpuf-functions.php:3274
+#: wpuf-functions.php:3279
 msgid "Uzbekistani Som"
 msgstr ""
 
-#: wpuf-functions.php:3279
+#: wpuf-functions.php:3284
 msgid "Venezuelan Bolívar"
 msgstr ""
 
-#: wpuf-functions.php:3284
+#: wpuf-functions.php:3289
 msgid "Vietnamese Đồng"
 msgstr ""
 
-#: wpuf-functions.php:3289
+#: wpuf-functions.php:3294
 msgid "Vanuatu Vatu"
 msgstr ""
 
-#: wpuf-functions.php:3294
+#: wpuf-functions.php:3299
 msgid "Samoan Tālā"
 msgstr ""
 
-#: wpuf-functions.php:3299
+#: wpuf-functions.php:3304
 msgid "Central African CFA Franc"
 msgstr ""
 
-#: wpuf-functions.php:3304
+#: wpuf-functions.php:3309
 msgid "East Caribbean Dollar"
 msgstr ""
 
-#: wpuf-functions.php:3309
+#: wpuf-functions.php:3314
 msgid "West African CFA Franc"
 msgstr ""
 
-#: wpuf-functions.php:3314
+#: wpuf-functions.php:3319
 msgid "CFP Franc"
 msgstr ""
 
-#: wpuf-functions.php:3319
+#: wpuf-functions.php:3324
 msgid "Yemeni Rial"
 msgstr ""
 
-#: wpuf-functions.php:3324
+#: wpuf-functions.php:3329
 msgid "South African Rand"
 msgstr ""
 
-#: wpuf-functions.php:3329
+#: wpuf-functions.php:3334
 msgid "Zambian Kwacha"
 msgstr ""
 
-#: wpuf-functions.php:3334
+#: wpuf-functions.php:3339
 msgid "Zimbabwean Dollar"
 msgstr ""
 
-#: wpuf-functions.php:5629
+#: wpuf-functions.php:5634
 msgid "General"
 msgstr ""
 
-#: wpuf-functions.php:5643
+#: wpuf-functions.php:5648
 msgid "Notification Settings"
 msgstr ""
 
-#: wpuf-functions.php:5649
+#: wpuf-functions.php:5654
 msgid "Display Settings"
 msgstr ""
 
-#: wpuf-functions.php:5673
+#: wpuf-functions.php:5678
 msgid "Post Settings"
 msgstr ""
 
-#: wpuf-functions.php:5708
+#: wpuf-functions.php:5713
 msgid "-- Select Template --"
 msgstr ""
 
-#: wpuf-functions.php:5710
+#: wpuf-functions.php:5715
 msgid "WooCommerce Product Form"
 msgstr ""
 
-#: wpuf-functions.php:5711
+#: wpuf-functions.php:5716
 msgid "EDD Download Form"
 msgstr ""
 
-#: wpuf-functions.php:5712
+#: wpuf-functions.php:5717
 msgid "Event Form"
 msgstr ""
 
-#: wpuf-functions.php:5713
+#: wpuf-functions.php:5718
 msgid "Video Form"
 msgstr ""
 
-#: wpuf-functions.php:5714
+#: wpuf-functions.php:5719
 msgid "Professional Video Form"
 msgstr ""
 
-#: wpuf-functions.php:5715
+#: wpuf-functions.php:5720
 msgid "Artwork Form"
 msgstr ""
 
-#: wpuf-functions.php:5716
+#: wpuf-functions.php:5721
 msgid "Press Release Form"
 msgstr ""
 
-#: wpuf-functions.php:5717
+#: wpuf-functions.php:5722
 msgid "Portfolio Form"
 msgstr ""
 
-#: wpuf-functions.php:5718
+#: wpuf-functions.php:5723
 msgid "Volunteer Opportunity Form"
 msgstr ""
 
-#: wpuf-functions.php:5735
+#: wpuf-functions.php:5740
 msgid "Before Post Settings"
 msgstr ""
 
-#: wpuf-functions.php:5736
+#: wpuf-functions.php:5741
 msgid ""
 "Configure how the form behaves before submission, including content type, "
 "default category, post status, draft-saving options, and submit button "
 "customization"
 msgstr ""
 
-#: wpuf-functions.php:5742
+#: wpuf-functions.php:5747
 msgid "Show Form Title"
 msgstr ""
 
-#: wpuf-functions.php:5744
+#: wpuf-functions.php:5749
 msgid "Toggle whether the form title should be displayed on the frontend"
 msgstr ""
 
-#: wpuf-functions.php:5749
+#: wpuf-functions.php:5754
 msgid ""
 "Add a brief message or instruction that will be displayed before the form — "
 "helpful for guiding users before they start filling it out"
 msgstr ""
 
-#: wpuf-functions.php:5755
+#: wpuf-functions.php:5760
 msgid ""
 "Select the content type this form will create, like a post, product, or "
 "custom type"
 msgstr ""
 
-#: wpuf-functions.php:5764
+#: wpuf-functions.php:5769
 msgid "Default Category"
 msgstr ""
 
-#: wpuf-functions.php:5766
+#: wpuf-functions.php:5771
 msgid "Select the default category for posts submitted through this form"
 msgstr ""
 
-#: wpuf-functions.php:5772 wpuf-functions.php:5858
+#: wpuf-functions.php:5777 wpuf-functions.php:5863
 msgid "Successful Redirection"
 msgstr ""
 
-#: wpuf-functions.php:5774
+#: wpuf-functions.php:5779
 msgid "Select where users will be redirected after successfully submitting the form"
 msgstr ""
 
-#: wpuf-functions.php:5780 wpuf-functions.php:5865
+#: wpuf-functions.php:5785 wpuf-functions.php:5870
 msgid "Same page"
 msgstr ""
 
-#: wpuf-functions.php:5794 wpuf-functions.php:5888
+#: wpuf-functions.php:5799 wpuf-functions.php:5893
 msgid "Choose the default category for the post"
 msgstr ""
 
-#: wpuf-functions.php:5801
+#: wpuf-functions.php:5806
 msgid "Post Submission Status"
 msgstr ""
 
-#: wpuf-functions.php:5809
+#: wpuf-functions.php:5814
 msgid "Select the status of the post after submission"
 msgstr ""
 
-#: wpuf-functions.php:5812
+#: wpuf-functions.php:5817
 msgid "Enable saving as draft"
 msgstr ""
 
-#: wpuf-functions.php:5814
+#: wpuf-functions.php:5819
 msgid "Allow users to save posts before final submission"
 msgstr ""
 
-#: wpuf-functions.php:5819
+#: wpuf-functions.php:5824
 msgid "Submit Post Button Text"
 msgstr ""
 
-#: wpuf-functions.php:5821
+#: wpuf-functions.php:5826
 msgid "Customize the text on the 'Submit' button for this form"
 msgstr ""
 
-#: wpuf-functions.php:5826
+#: wpuf-functions.php:5831
 msgid "Choose Form Template"
 msgstr ""
 
-#: wpuf-functions.php:5837
+#: wpuf-functions.php:5842
 msgid "After Post Settings"
 msgstr ""
 
-#: wpuf-functions.php:5838
+#: wpuf-functions.php:5843
 msgid ""
 "Manage what happens after submission, such as setting post update status, "
 "displaying success messages, redirecting users, limiting edit time, and "
 "customizing the update button"
 msgstr ""
 
-#: wpuf-functions.php:5844
+#: wpuf-functions.php:5849
 msgid "Post Update Status"
 msgstr ""
 
-#: wpuf-functions.php:5853
+#: wpuf-functions.php:5858
 msgid "Select the status the post will have after being updated"
 msgstr ""
 
-#: wpuf-functions.php:5860
+#: wpuf-functions.php:5865
 msgid "After successfully submit, where the page will redirect to"
 msgstr ""
 
-#: wpuf-functions.php:5864
+#: wpuf-functions.php:5869
 msgid "Updated post"
 msgstr ""
 
-#: wpuf-functions.php:5874
+#: wpuf-functions.php:5879
 msgid ""
 "Post has been updated successfully. <a target=\"_blank\" href=\"%s\">View "
 "post</a>"
 msgstr ""
 
-#: wpuf-functions.php:5879
+#: wpuf-functions.php:5884
 msgid "Customize the message displayed after a post is successfully updated"
 msgstr ""
 
-#: wpuf-functions.php:5895
+#: wpuf-functions.php:5900
 msgid "Lock User Editing After"
 msgstr ""
 
-#: wpuf-functions.php:5897
+#: wpuf-functions.php:5902
 msgid ""
 "Set the number of hours after which users can no longer edit their "
 "submitted post"
 msgstr ""
 
-#: wpuf-functions.php:5902
+#: wpuf-functions.php:5907
 msgid "Hours"
 msgstr ""
 
-#: wpuf-functions.php:5905
+#: wpuf-functions.php:5910
 msgid "Update Post Button Text"
 msgstr ""
 
-#: wpuf-functions.php:5907
+#: wpuf-functions.php:5912
 msgid "Customize the text on the 'Update' button for this form"
 msgstr ""
 
-#: wpuf-functions.php:5914
+#: wpuf-functions.php:5919
 msgid "Posting Control"
 msgstr ""
 
-#: wpuf-functions.php:5915
+#: wpuf-functions.php:5920
 msgid ""
 "Define who can submit posts using this form. Choose whether to allow guest "
 "submissions or restrict access based on user roles"
 msgstr ""
 
-#: wpuf-functions.php:5921
+#: wpuf-functions.php:5926
 msgid "Post Permission"
 msgstr ""
 
-#: wpuf-functions.php:5924
+#: wpuf-functions.php:5929
 msgid "- Select Post Permission -"
 msgstr ""
 
-#: wpuf-functions.php:5926
+#: wpuf-functions.php:5931
 msgid "Role Based Post"
 msgstr ""
 
-#: wpuf-functions.php:5928
+#: wpuf-functions.php:5933
 msgid ""
 "Select who can submit posts using this form, either guests or specific user "
 "roles"
 msgstr ""
 
-#: wpuf-functions.php:5936
+#: wpuf-functions.php:5941
 msgid ""
 "If enabled, guest users will be automatically registered using their name "
 "and email"
 msgstr ""
 
-#: wpuf-functions.php:5946
+#: wpuf-functions.php:5951
 msgid "Customize the label for the name field in guest submissions"
 msgstr ""
 
-#: wpuf-functions.php:5954
+#: wpuf-functions.php:5959
 msgid "Customize the label for the email field in guest submissions"
 msgstr ""
 
-#: wpuf-functions.php:5962
+#: wpuf-functions.php:5967
 msgid "Require email verification"
 msgstr ""
 
-#: wpuf-functions.php:5964
+#: wpuf-functions.php:5969
 msgid "If enabled, users must verify their email before submitting a post"
 msgstr ""
 
-#: wpuf-functions.php:5969
+#: wpuf-functions.php:5974
 msgid "Choose who can submit post"
 msgstr ""
 
-#: wpuf-functions.php:5971
+#: wpuf-functions.php:5976
 msgid "Select the user roles who can submit posts"
 msgstr ""
 
-#: wpuf-functions.php:5978
+#: wpuf-functions.php:5983
 msgid ""
 "Display this message to non-logged-in users. Use {login} and {register} "
 "placeholders to add login and registration links"
 msgstr ""
 
-#: wpuf-functions.php:5995
+#: wpuf-functions.php:6000
 msgid "Enable payments for this form to charge users for submissions"
 msgstr ""
 
-#: wpuf-functions.php:6000
+#: wpuf-functions.php:6005
 msgid "Choose Payment Option"
 msgstr ""
 
-#: wpuf-functions.php:6003
+#: wpuf-functions.php:6008
 msgid "Mandatory Subscription"
 msgstr ""
 
-#: wpuf-functions.php:6004
+#: wpuf-functions.php:6009
 msgid "Pay as you post"
 msgstr ""
 
-#: wpuf-functions.php:6006
+#: wpuf-functions.php:6011
 msgid "Select how users will pay for submitting posts"
 msgstr ""
 
-#: wpuf-functions.php:6011
+#: wpuf-functions.php:6016
 msgid "Pay-per-post billing when limit exceeds"
 msgstr ""
 
-#: wpuf-functions.php:6013
+#: wpuf-functions.php:6018
 msgid "Switch to pay-per-post billing if pack limit is exceeded"
 msgstr ""
 
-#: wpuf-functions.php:6016
+#: wpuf-functions.php:6021
 msgid "Cost for each additional post after pack limit is reached"
 msgstr ""
 
-#: wpuf-functions.php:6018
+#: wpuf-functions.php:6023
 msgid ""
 "This field is required when Pay-per-post billing when limit exceeds is "
 "enabled."
 msgstr ""
 
-#: wpuf-functions.php:6021
+#: wpuf-functions.php:6026
 msgid "Charge for each post"
 msgstr ""
 
-#: wpuf-functions.php:6023
+#: wpuf-functions.php:6028
 msgid ""
 "Set a fee for each post submission. This field is required when Pay as you "
 "post is selected."
 msgstr ""
 
-#: wpuf-functions.php:6031
+#: wpuf-functions.php:6036
 msgid "Select the page to redirect after successful payment."
 msgstr ""
 
-#: wpuf-functions.php:6042
+#: wpuf-functions.php:6047
 msgid ""
 "Enable email alerts for new post submissions via the frontend form. This "
 "feature keeps you updated on user activity, allowing for timely review and "
 "approval of content"
 msgstr ""
 
-#: wpuf-functions.php:6050
+#: wpuf-functions.php:6055
 msgid "Enable email alerts for new submissions through this form"
 msgstr ""
 
-#: wpuf-functions.php:6091
+#: wpuf-functions.php:6096
 msgid ""
 "Enable this feature to receive email alerts whenever an existing post is "
 "updated through the frontend form. This ensures you're promptly informed "
@@ -11533,123 +12110,123 @@ msgid ""
 "updates"
 msgstr ""
 
-#: wpuf-functions.php:6106
+#: wpuf-functions.php:6111
 msgid ""
 "Customize the appearance and layout of your form. Select a form template "
 "that best suits your website's design for a cohesive look and feel"
 msgstr ""
 
-#: wpuf-functions.php:6114
+#: wpuf-functions.php:6119
 msgid "Apply your site's theme CSS for consistent styling and appearance"
 msgstr ""
 
-#: wpuf-functions.php:6127
+#: wpuf-functions.php:6132
 msgid ""
 "Customize the position of form labels for improved user navigation and "
 "clarity"
 msgstr ""
 
-#: wpuf-functions.php:6139
+#: wpuf-functions.php:6144
 msgid "Enable User Comment"
 msgstr ""
 
-#: wpuf-functions.php:6141
+#: wpuf-functions.php:6146
 msgid "Allow users to comment on posts submitted via this form"
 msgstr ""
 
-#: wpuf-functions.php:6148
+#: wpuf-functions.php:6153
 msgid "Enable Form Scheduling"
 msgstr ""
 
-#: wpuf-functions.php:6150
+#: wpuf-functions.php:6155
 msgid "Set specific dates and times for when the form will be accessible to users"
 msgstr ""
 
-#: wpuf-functions.php:6175
+#: wpuf-functions.php:6180
 msgid "Limit Form Entries"
 msgstr ""
 
-#: wpuf-functions.php:6177
+#: wpuf-functions.php:6182
 msgid "Limit the number of submissions allowed for the form"
 msgstr ""
 
-#: wpuf-functions.php:6239
+#: wpuf-functions.php:6244
 msgid "Saved"
 msgstr ""
 
-#: wpuf-functions.php:6240
+#: wpuf-functions.php:6245
 msgid "Trash"
 msgstr ""
 
-#: wpuf-functions.php:6283
+#: wpuf-functions.php:6288
 msgid "JPG"
 msgstr ""
 
-#: wpuf-functions.php:6284
+#: wpuf-functions.php:6289
 msgid "JPEG"
 msgstr ""
 
-#: wpuf-functions.php:6285
+#: wpuf-functions.php:6290
 msgid "PNG"
 msgstr ""
 
-#: wpuf-functions.php:6286
+#: wpuf-functions.php:6291
 msgid "GIF"
 msgstr ""
 
-#: wpuf-functions.php:6431
+#: wpuf-functions.php:6436
 msgid "Layout 1 - Classic"
 msgstr ""
 
-#: wpuf-functions.php:6432
+#: wpuf-functions.php:6437
 msgid "Layout 2 - Modern Dark"
 msgstr ""
 
-#: wpuf-functions.php:6433
+#: wpuf-functions.php:6438
 msgid "Layout 3 - Minimal"
 msgstr ""
 
-#: wpuf-functions.php:6434
+#: wpuf-functions.php:6439
 msgid "Layout 4 - Bordered"
 msgstr ""
 
-#: wpuf-functions.php:6435
+#: wpuf-functions.php:6440
 msgid "Layout 5 - Rounded"
 msgstr ""
 
-#: wpuf-functions.php:6436
+#: wpuf-functions.php:6441
 msgid "Layout 6 - Clean"
 msgstr ""
 
-#: wpuf-functions.php:6437
+#: wpuf-functions.php:6442
 msgid "Layout 7 - Premium"
 msgstr ""
 
-#: wpuf-functions.php:6663
+#: wpuf-functions.php:6668
 msgid "Invalid post ID."
 msgstr ""
 
-#: wpuf-functions.php:6673
+#: wpuf-functions.php:6678
 msgid "Post not found."
 msgstr ""
 
-#: wpuf-functions.php:6692
+#: wpuf-functions.php:6697
 msgid "You are not authorized to edit this post."
 msgstr ""
 
-#: wpuf-functions.php:6703
+#: wpuf-functions.php:6708
 msgid "Post editing is disabled."
 msgstr ""
 
-#: wpuf-functions.php:6738
+#: wpuf-functions.php:6743
 msgid "Your allocated time for editing this post has expired."
 msgstr ""
 
-#: wpuf-functions.php:6772
+#: wpuf-functions.php:6777
 msgid "Your subscription has expired. Please renew to edit posts."
 msgstr ""
 
-#: wpuf-functions.php:6783
+#: wpuf-functions.php:6788
 msgid "You cannot edit this post until payment is completed."
 msgstr ""
 
@@ -11665,17 +12242,17 @@ msgstr ""
 msgid "</strong> or greater."
 msgstr ""
 
-#: wpuf.php:280
+#: wpuf.php:295
 msgid "Your WP User Frontend Pro is almost ready!"
 msgstr ""
 
-#: wpuf.php:284
-#. translators: 1: opening anchor tag, 2: closing anchor tag.
+#: wpuf.php:300
 msgid ""
-"We've pushed a major update on both <b>WP User Frontend Free</b> and <b>WP "
-"User Frontend Pro</b> that requires you to use latest version of both. "
-"Please update the WPUF pro to the latest version. <br><strong>Please make "
-"sure to take a complete backup of your site before updating.</strong>"
+"We've pushed a major update on both <b>WP User Frontend Free</b> and "
+"<b>%1$sWP User Frontend Pro%2$s</b> that requires you to use latest version "
+"of both. Please update the WPUF pro to the latest version. "
+"<br><strong>Please make sure to take a complete backup of your site before "
+"updating.</strong>"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
@@ -11761,7 +12338,7 @@ msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""
 
-#: wpuf-functions.php:1741
+#: wpuf-functions.php:1746
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""

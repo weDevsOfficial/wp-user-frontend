@@ -52,7 +52,7 @@ class Integrations {
     /**
      * Initialize Elementor integration
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */

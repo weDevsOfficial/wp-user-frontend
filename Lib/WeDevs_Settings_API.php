@@ -351,7 +351,7 @@ class WeDevs_Settings_API {
      * Multiple cards can be checked (multi-select). Clicking a card
      * also reveals that gateway's settings panel below the grid.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @param array $args settings field args
      *

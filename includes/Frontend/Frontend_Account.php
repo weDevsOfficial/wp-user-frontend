@@ -134,10 +134,21 @@ class Frontend_Account {
                     break;
                 }
             }
-            wpuf_load_template( 'account.php', [
+            $template_args = [
                 'sections'        => $sections,
                 'current_section' => $current_section,
-            ] );
+            ];
+
+            /**
+             * Filters the template arguments passed to account.php
+             *
+             * @since WPUF_SINCE
+             *
+             * @param array $template_args Template arguments.
+             */
+            $template_args = apply_filters( 'wpuf_account_template_args', $template_args );
+
+            wpuf_load_template( 'account.php', $template_args );
         } else {
             $message = wpuf_get_option( 'un_auth_msg', 'wpuf_dashboard' );
             wpuf_load_template( 'unauthorized.php', [ 'message' => $message ] );

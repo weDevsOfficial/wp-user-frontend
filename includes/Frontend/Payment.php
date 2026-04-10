@@ -133,16 +133,17 @@ class Payment {
             } else {
                 $selected_gateway = 'paypal';
             }
-            ob_start();
-            if ( is_user_logged_in() ) {
-                $current_user = wp_get_current_user();
-                $user_id_param = isset( $_GET['user_id'] ) ? intval( wp_unslash( $_GET['user_id'] ) ) : 0;
-                if ( $user_id_param > 0 && $user_id_param !== get_current_user_id() ) {
-                    return;
-                }
-            } else {
-                return;
+            if ( ! is_user_logged_in() ) {
+                return $content;
             }
+
+            $current_user  = wp_get_current_user();
+            $user_id_param = isset( $_GET['user_id'] ) ? intval( wp_unslash( $_GET['user_id'] ) ) : 0;
+            if ( $user_id_param > 0 && $user_id_param !== get_current_user_id() ) {
+                return $content;
+            }
+
+            ob_start();
             if ( $pack_id && $is_free ) {
                 $wpuf_subscription = wpuf()->subscription;
                 $wpuf_user         = new WPUF_User( $current_user->ID );

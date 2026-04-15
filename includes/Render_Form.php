@@ -1339,7 +1339,7 @@ class Render_Form {
         if ( wpuf_is_pro_active() ) {
             return false;
         }
-        
+
         // Get free taxonomies (built-in + taxonomies for post/page)
         $free_taxonomies = wpuf_get_free_taxonomies();
         return ! in_array( $form_field['name'], $free_taxonomies, true );

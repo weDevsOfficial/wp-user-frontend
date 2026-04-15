@@ -42,7 +42,7 @@ body.mceContentBody {
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input,
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields textarea,
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields select {
-    width: auto;
+    width: 100%;
     background: transparent;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;

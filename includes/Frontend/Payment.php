@@ -179,6 +179,7 @@ class Payment {
                             'title'          => $order_title,
                             'subtotal'       => $pack_cost,
                             'billing_amount' => $billing_amount,
+                            'recurring_pay'  => isset( $pack->meta_value['recurring_pay'] ) ? $pack->meta_value['recurring_pay'] : 'no',
                         ] );
                     } elseif ( $post_id ) {
                         $form              = new Admin\Forms\Form(
@@ -352,12 +353,17 @@ class Payment {
      * @return void
      */
     private function render_order_item( $billing_data ) {
+        $recurring_pay = isset( $billing_data['recurring_pay'] ) ? $billing_data['recurring_pay'] : '';
         ?>
         <div class="wpuf-order-row wpuf-order-item">
             <span class="wpuf-order-label"><?php echo esc_html( $billing_data['title'] ); ?></span>
             <span class="wpuf-order-value" id="wpuf_pay_page_cost"><?php echo esc_html( wpuf_format_price( $billing_data['subtotal'] ) ); ?></span>
         </div>
-        <?php
+        <?php if ( 'pack' === $billing_data['type'] ) { ?>
+        <div class="wpuf-order-subtitle">
+            <?php echo ( 'yes' === $recurring_pay || 'on' === $recurring_pay ) ? esc_html__( 'Recurring payment', 'wp-user-frontend' ) : esc_html__( 'One time payment', 'wp-user-frontend' ); ?>
+        </div>
+        <?php }
     }
 
     /**

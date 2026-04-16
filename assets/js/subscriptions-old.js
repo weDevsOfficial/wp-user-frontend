@@ -124,7 +124,9 @@
 
                     _wpnonce: wpuf_frontend.nonce,
 
-                    pack_id: self.data('pack_id')
+                    pack_id: self.data('pack_id'),
+
+                    type: $( '#wpuf_type' ).text() || 'pack'
 
                 },
 
@@ -158,7 +160,8 @@
                 data = {
                     action: 'wpuf_coupon_cancel',
                     _wpnonce: wpuf_frontend.nonce,
-                    pack_id: self.data('pack_id')
+                    pack_id: self.data('pack_id'),
+                    type: $( '#wpuf_type' ).text() || 'pack'
                 };
 
             $.post( wpuf_frontend.ajaxurl, data, function( res ) {
@@ -212,7 +215,9 @@
 
                     coupon: coupon,
 
-                    pack_id: self.data('pack_id')
+                    pack_id: self.data('pack_id'),
+
+                    type: $( '#wpuf_type' ).text() || 'pack'
 
                 };
 

@@ -8,11 +8,15 @@
 
 			$('input#wpuf-trial-status').on('click', this.showSubscriptionPack );
 
-            $('.wpuf-coupon-info-wrap').on( 'click','a.wpuf-apply-coupon', this.couponApply );
+            $('.wpuf-order-summary').on( 'click', 'a.wpuf-apply-coupon', this.couponApply );
 
-            $('.wpuf-coupon-info-wrap').on( 'click','a.wpuf-copon-show', this.couponShow );
+            $('.wpuf-order-summary').on( 'click', 'a.wpuf-copon-show', this.couponShow );
 
-            $('.wpuf-coupon-info-wrap').on( 'click','a.wpuf-copon-cancel', this.couponCancel );
+            $('.wpuf-order-summary').on( 'click', 'a.wpuf-copon-cancel', this.couponCancel );
+
+            $('.wpuf-order-summary').on( 'click', '.wpuf-coupon-remove', this.couponRemove );
+
+            $( '#wpuf-payment-gateway' ).on( 'submit', this.checkoutSubmit );
 
             $('.wpuf-assing-pack-btn').on( 'click', this.showPackDropdown );
 
@@ -124,7 +128,7 @@
 
                 },
 
-                coupon_field = self.parents('.wpuf-coupon-info-wrap').find('input.wpuf-coupon-field');
+                coupon_field = self.closest('.wpuf-order-summary').find('input.wpuf-coupon-field');
 
 
 
@@ -135,19 +139,37 @@
                 coupon_field.removeClass('wpuf-coupon-field-spinner');
 
                 if ( res.success ) {
-                    $('.wpuf-pack-inner' ).html( res.data.append_data );
-                    $('.wpuf-coupon-id-field').val('');
-
-                    var coupon_wrap = self.closest('.wpuf-copon-wrap');
-
-                    coupon_wrap.hide();
-                    coupon_wrap.siblings('.wpuf-copon-show').show();
-
-                    $('.wpuf-subscription-success').html('');
-                    $('.wpuf-subscription-error').html('');
+                    var orderSummary = self.closest('.wpuf-order-summary');
+                    orderSummary.find('.wpuf-pack-inner').html( res.data.append_data );
+                    orderSummary.find('.wpuf-coupon-id-field').val('');
+                    orderSummary.find('.wpuf-coupon-applied').remove();
+                    orderSummary.find('.wpuf-copon-show').show();
                 }
 
             });
+        },
+
+        couponRemove: function(e) {
+
+            e.preventDefault();
+
+            var self = $(this),
+                orderSummary = self.closest('.wpuf-order-summary'),
+                data = {
+                    action: 'wpuf_coupon_cancel',
+                    _wpnonce: wpuf_frontend.nonce,
+                    pack_id: self.data('pack_id')
+                };
+
+            $.post( wpuf_frontend.ajaxurl, data, function( res ) {
+                if ( res.success ) {
+                    orderSummary.find('.wpuf-pack-inner').html( res.data.append_data );
+                    orderSummary.find('.wpuf-coupon-id-field').val('');
+                    orderSummary.find('.wpuf-coupon-applied').remove();
+                    orderSummary.find('.wpuf-copon-show').show();
+                }
+            });
+
         },
 
         couponShow: function(e) {
@@ -158,7 +180,7 @@
 
             self.hide();
 
-            self.parents('.wpuf-coupon-info-wrap').find('.wpuf-copon-wrap').show();
+            self.siblings('.wpuf-copon-wrap').show();
 
         },
 
@@ -168,13 +190,16 @@
 
             var self = $(this),
 
-                coupon_field = self.parents('.wpuf-coupon-info-wrap').find('input.wpuf-coupon-field'),
+                orderSummary = self.closest('.wpuf-order-summary'),
+
+                coupon_field = orderSummary.find('input.wpuf-coupon-field'),
 
                 coupon = coupon_field.val();
 
+
             if ( coupon === '' ) {
 
-                $('.wpuf-subscription-error').html( wpuf_frontend.coupon_error );
+                orderSummary.find('.wpuf-coupon-error').html( wpuf_frontend.coupon_error );
                 return;
 
             }
@@ -191,6 +216,7 @@
 
                 };
 
+
             if ( self.attr('disabled') === 'disabled' ) {
 
                 //return;
@@ -205,18 +231,27 @@
                 coupon_field.removeClass('wpuf-coupon-field-spinner');
 
                 if ( res.success ) {
-                    $('.wpuf-pack-inner' ).html( res.data.append_data );
-                    $('.wpuf-coupon-id-field').val( res.data.coupon_id );
+                    orderSummary.find('.wpuf-pack-inner').html( res.data.append_data );
+                    orderSummary.find('.wpuf-coupon-id-field').val( res.data.coupon_id );
+                    orderSummary.find('.wpuf-coupon-error').html('');
 
                     if ( res.data.amount <= 0 ) {
                         $('.wpuf-nullamount-hide').hide();
                     }
 
-                    $('.wpuf-subscription-success').html(res.data.message);
-                    $('.wpuf-subscription-error').html('');
+                    // Hide the coupon input wrap and show the applied bar
+                    var coponWrap = orderSummary.find('.wpuf-copon-wrap');
+                    coponWrap.hide();
+                    orderSummary.find('.wpuf-coupon-applied').remove();
+                    orderSummary.append(
+                        '<div class="wpuf-coupon-applied">' +
+                            '<span class="wpuf-coupon-applied-label">Coupon code applied</span>' +
+                            '<button type="button" class="wpuf-coupon-remove" data-pack_id="' + self.data('pack_id') + '">&times;</button>' +
+                        '</div>'
+                    );
                 } else {
-                    $('.wpuf-subscription-success').html('');
-                    $('.wpuf-subscription-error').html(res.data.message);
+                    self.attr( 'disabled', false );
+                    orderSummary.find('.wpuf-coupon-error').html( res.data.message );
                 }
 
             });
@@ -297,6 +332,16 @@
             } else {
                 $('.wpuf_subscription_expiration_field').hide();
             }
+        },
+
+        checkoutSubmit: function() {
+            var btn = $( '#wpuf-payment-gateway .wpuf-checkout-btn' );
+            btn.prop( 'disabled', true )
+               .addClass( 'wpuf-checkout-btn--loading' )
+               .html(
+                   '<span class="wpuf-btn-spinner"></span>' +
+                   '<span class="wpuf-btn-text">Processing&hellip;</span>'
+               );
         },
 
 	};

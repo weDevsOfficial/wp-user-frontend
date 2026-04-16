@@ -168,12 +168,18 @@ class Payment {
                         $details_meta = wpuf()->subscription->get_details_meta_value();
                         $currency     = wpuf_get_currency( 'symbol' );
 
-                        if ( ! class_exists( 'WeDevs\Wpuf\Pro\Coupons' ) ) {
-                            $pack_cost      = $pack->meta_value['billing_amount'];
-                            $billing_amount = apply_filters( 'wpuf_payment_amount', $pack->meta_value['billing_amount'] );
-                        }
+                        $pack_cost      = $pack->meta_value['billing_amount'];
+                        $billing_amount = apply_filters( 'wpuf_payment_amount', $pack->meta_value['billing_amount'] );
 
                         $order_title = $pack->post_title;
+
+                        $billing_data = apply_filters( 'wpuf_billing_data', [
+                            'type'           => 'pack',
+                            'id'             => $pack_id,
+                            'title'          => $order_title,
+                            'subtotal'       => $pack_cost,
+                            'billing_amount' => $billing_amount,
+                        ] );
                     } elseif ( $post_id ) {
                         $form              = new Admin\Forms\Form(
                             get_post_meta( $post_id, '_wpuf_form_id', true )
@@ -196,6 +202,14 @@ class Payment {
 
                         $post_obj    = get_post( $post_id );
                         $order_title = $post_obj ? $post_obj->post_title : __( 'Post Submission', 'wp-user-frontend' );
+
+                        $billing_data = apply_filters( 'wpuf_billing_data', [
+                            'type'           => 'post',
+                            'id'             => $post_id,
+                            'title'          => $order_title,
+                            'subtotal'       => $post_cost,
+                            'billing_amount' => $billing_amount,
+                        ] );
                     }
                     ?>
                     <form id="wpuf-payment-gateway" action="" method="POST">
@@ -267,67 +281,23 @@ class Payment {
                                             <input type="hidden" name="user_id" value="<?php echo esc_attr( $current_user->ID ); ?>">
                                             <?php
                                         }
+                                    }
+                                    ?>
 
-                                        ?>
-                                        <div class="wpuf-pack-inner">
-                                        <?php
-                                        if ( class_exists( 'WeDevs\Wpuf\Pro\Coupons' ) ) {
-                                            echo wp_kses_post( wpuf_pro()->coupons->after_apply_coupon( $pack ) );
-                                        } else {
-                                            ?>
-                                            <div class="wpuf-order-row wpuf-order-item">
-                                                <span class="wpuf-order-label"><?php echo esc_html( $order_title ); ?></span>
-                                                <span class="wpuf-order-value" id="wpuf_pay_page_cost"><?php echo esc_html( wpuf_format_price( $pack_cost ) ); ?></span>
-                                            </div>
+                                    <div class="wpuf-pack-inner">
+                                        <?php $this->render_order_summary( $billing_data ); ?>
+                                    </div><!-- .wpuf-pack-inner -->
 
-                                            <?php do_action( 'wpuf_before_pack_payment_total' ); ?>
+                                    <?php do_action( 'wpuf_checkout_after_order_summary', $billing_data ); ?>
 
-                                            <div class="wpuf-order-divider"></div>
-                                            <div class="wpuf-order-row wpuf-order-total">
-                                                <span class="wpuf-order-label"><?php esc_html_e( 'Total', 'wp-user-frontend' ); ?></span>
-                                                <span class="wpuf-order-value" id="wpuf_pay_page_total"><?php echo esc_html( wpuf_format_price( $billing_amount ) ); ?></span>
-                                            </div>
-                                            <?php
-                                        }
-                                        ?>
-                                        </div><!-- .wpuf-pack-inner --><?php
-
-                                        if ( class_exists( 'WeDevs\Wpuf\Pro\Coupons' ) ) {
-                                            ?>
-                                            <div class="wpuf-copon-wrap" style="display:none;">
-                                                <div class="wpuf-coupon-error" style="color: red;"></div>
-                                                <input type="text" name="coupon_code" size="20" class="wpuf-coupon-field">
-                                                <input type="hidden" name="coupon_id" size="20" class="wpuf-coupon-id-field">
-                                                <div>
-                                                    <a href="#" data-pack_id="<?php echo esc_attr( $pack_id ); ?>"
-                                                       class="wpuf-apply-coupon"><?php esc_html_e( 'Apply Coupon', 'wp-user-frontend' ); ?></a>
-                                                    <a href="#" data-pack_id="<?php echo esc_attr( $pack_id ); ?>"
-                                                       class="wpuf-copon-cancel"><?php esc_html_e( 'Cancel', 'wp-user-frontend' ); ?></a>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="wpuf-copon-show"><?php esc_html_e( 'Have a discount code?', 'wp-user-frontend' ); ?></a>
-                                            <?php
-                                        }
-
+                                    <?php
+                                    if ( $pack_id ) {
                                         ?>
                                         <div id="wpuf_type" style="display: none"><?php echo 'pack'; ?></div>
                                         <div id="wpuf_id" style="display: none"><?php echo esc_attr( $pack_id ); ?></div>
                                         <?php
                                     } elseif ( $post_id ) {
                                         ?>
-                                        <div class="wpuf-order-row wpuf-order-item">
-                                            <span class="wpuf-order-label"><?php echo esc_html( $order_title ); ?></span>
-                                            <span class="wpuf-order-value" id="wpuf_pay_page_cost"><?php echo esc_html( wpuf_format_price( $post_cost ) ); ?></span>
-                                        </div>
-
-                                        <?php do_action( 'wpuf_before_pack_payment_total' ); ?>
-
-                                        <div class="wpuf-order-divider"></div>
-                                        <div class="wpuf-order-row wpuf-order-total">
-                                            <span class="wpuf-order-label"><?php esc_html_e( 'Total', 'wp-user-frontend' ); ?></span>
-                                            <span class="wpuf-order-value" id="wpuf_pay_page_total"><?php echo esc_html( wpuf_format_price( $billing_amount ) ); ?></span>
-                                        </div>
-
                                         <div id="wpuf_type" style="display: none"><?php echo 'post'; ?></div>
                                         <div id="wpuf_id" style="display: none"><?php echo esc_attr( $post_id ); ?></div>
                                         <?php
@@ -370,6 +340,67 @@ class Payment {
         }
 
         return $content;
+    }
+
+    /**
+     * Render the order item row
+     *
+     * @since 4.3.2
+     *
+     * @param array $billing_data Billing data array with keys: title, subtotal, billing_amount, type, id
+     *
+     * @return void
+     */
+    private function render_order_item( $billing_data ) {
+        ?>
+        <div class="wpuf-order-row wpuf-order-item">
+            <span class="wpuf-order-label"><?php echo esc_html( $billing_data['title'] ); ?></span>
+            <span class="wpuf-order-value" id="wpuf_pay_page_cost"><?php echo esc_html( wpuf_format_price( $billing_data['subtotal'] ) ); ?></span>
+        </div>
+        <?php
+    }
+
+    /**
+     * Render the order total row
+     *
+     * @since 4.3.2
+     *
+     * @param array $billing_data Billing data array with keys: title, subtotal, billing_amount, type, id
+     *
+     * @return void
+     */
+    private function render_order_total( $billing_data ) {
+        ?>
+        <div class="wpuf-order-divider"></div>
+        <div class="wpuf-order-row wpuf-order-total">
+            <span class="wpuf-order-label"><?php esc_html_e( 'Total', 'wp-user-frontend' ); ?></span>
+            <span class="wpuf-order-value" id="wpuf_pay_page_total"><?php echo esc_html( wpuf_format_price( $billing_data['billing_amount'] ) ); ?></span>
+        </div>
+        <?php
+    }
+
+    /**
+     * Render the full order summary using a hookable sequence
+     *
+     * Hook sequence:
+     * - wpuf_order_summary_before     — before the item row
+     * - wpuf_order_summary_after_item — after item row, before total (Pro injects coupon/tax rows here)
+     * - wpuf_before_pack_payment_total — existing hook, kept for back-compat
+     * - wpuf_order_summary_after_total — after the total row
+     *
+     * @since 4.3.2
+     *
+     * @param array $billing_data Billing data array with keys: title, subtotal, billing_amount, type, id
+     *
+     * @return void
+     */
+    private function render_order_summary( $billing_data ) {
+        do_action( 'wpuf_order_summary_before', $billing_data );
+        $this->render_order_item( $billing_data );
+        do_action( 'wpuf_order_summary_after_item', $billing_data );
+        do_action( 'wpuf_before_pack_payment_total' );
+        $this->render_order_total( $billing_data );
+        do_action( 'wpuf_order_summary_after_total', $billing_data );
     }
 
     /**

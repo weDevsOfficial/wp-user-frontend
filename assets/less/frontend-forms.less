@@ -853,12 +853,6 @@ ul.wpuf-form {
     }
 }
 
-// Active/selected gateway card — border uses theme link color via currentColor fallback
-li:has(input[type="radio"]:checked) .wpuf-gateway-card {
-    border-color: currentColor;
-    box-shadow: 0 0 0 1px currentColor;
-}
-
 // Order summary card
 .wpuf-order-summary {
     border: 1px solid #e5e7eb;
@@ -872,7 +866,7 @@ li:has(input[type="radio"]:checked) .wpuf-gateway-card {
     align-items: baseline;
 }
 
-.wpuf-order-item {
+.wpuf-order-item, .wpuf-order-row {
     .wpuf-order-label {
         font-size: 1rem;
         font-weight: 500;
@@ -899,41 +893,9 @@ li:has(input[type="radio"]:checked) .wpuf-gateway-card {
     margin: 12px 0;
 }
 
-.wpuf-order-tax {
-    .wpuf-order-label {
-        font-size: 1rem;
-        font-weight: 500;
-        color: #0F172A;
-    }
-
-    .wpuf-order-value {
-        font-size: 1rem;
-        font-weight: 500;
-        color: #0F172A;
-    }
-}
-
-.wpuf-order-total {
-    .wpuf-order-label {
-        font-size: 1rem;
-        font-weight: 500;
-        color: #0F172A;
-    }
-
-    .wpuf-order-value {
-        font-size: 1rem;
-        font-weight: 500;
-        color: #0F172A;
-    }
-}
-
 // Coupon styles inside order summary
 .wpuf-order-summary {
-    .wpuf-copon-show {
-        display: block;
-        width: 100%;
-        margin-top: 16px;
-        padding: 10px 16px;
+    .wpuf-coupon-btn {
         border: 1px solid #e5e7eb;
         border-radius: 8px;
         background: #fff;
@@ -941,11 +903,18 @@ li:has(input[type="radio"]:checked) .wpuf-gateway-card {
         text-align: center;
         text-decoration: none;
         cursor: pointer;
-        box-sizing: border-box;
         transition: border-color 0.2s ease, color 0.2s ease;
     }
 
-    .wpuf-copon-wrap {
+    .wpuf-coupon-show {
+        display: block;
+        width: 100%;
+        margin-top: 16px;
+        padding: 10px 16px;
+        box-sizing: border-box;
+    }
+
+    .wpuf-coupon-wrap {
         margin: 16px 0 0;
 
         .wpuf-coupon-field {
@@ -960,17 +929,14 @@ li:has(input[type="radio"]:checked) .wpuf-gateway-card {
     }
 
     a.wpuf-apply-coupon {
-        text-decoration: none;
-        font-size: 13px;
         margin-right: 10px;
         padding: 6px 14px;
         display: inline-block;
-        .border-radius(6px);
     }
 
-    .wpuf-copon-cancel {
-        text-decoration: none;
-        font-size: 13px;
+    .wpuf-coupon-cancel {
+        padding: 6px 14px;
+        display: inline-block;
     }
 
     .wpuf-coupon-field-spinner {
@@ -1024,6 +990,16 @@ li:has(input[type="radio"]:checked) .wpuf-gateway-card {
 // Checkout footer with CTA button — colors inherit from theme via .wpuf-btn
 .wpuf-checkout-footer {
     margin-top: 24px;
+
+    .wpuf-checkout-errors {
+        padding: 10px 14px;
+        margin-bottom: 12px;
+        border-radius: 6px;
+        background-color: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #b91c1c;
+        font-size: 14px;
+    }
 
     .wpuf-checkout-btn {
         display: block;

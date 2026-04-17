@@ -10,9 +10,9 @@
 
             $('.wpuf-order-summary').on( 'click', 'a.wpuf-apply-coupon', this.couponApply );
 
-            $('.wpuf-order-summary').on( 'click', 'a.wpuf-copon-show', this.couponShow );
+            $('.wpuf-order-summary').on( 'click', 'a.wpuf-coupon-show', this.couponShow );
 
-            $('.wpuf-order-summary').on( 'click', 'a.wpuf-copon-cancel', this.couponCancel );
+            $('.wpuf-order-summary').on( 'click', 'a.wpuf-coupon-cancel', this.couponCancel );
 
             $('.wpuf-order-summary').on( 'click', '.wpuf-coupon-remove', this.couponRemove );
 
@@ -145,7 +145,7 @@
                     orderSummary.find('.wpuf-pack-inner').html( res.data.append_data );
                     orderSummary.find('.wpuf-coupon-id-field').val('');
                     orderSummary.find('.wpuf-coupon-applied').remove();
-                    orderSummary.find('.wpuf-copon-show').show();
+                    orderSummary.find('.wpuf-coupon-show').show();
                 }
 
             });
@@ -169,7 +169,7 @@
                     orderSummary.find('.wpuf-pack-inner').html( res.data.append_data );
                     orderSummary.find('.wpuf-coupon-id-field').val('');
                     orderSummary.find('.wpuf-coupon-applied').remove();
-                    orderSummary.find('.wpuf-copon-show').show();
+                    orderSummary.find('.wpuf-coupon-show').show();
                 }
             });
 
@@ -183,7 +183,7 @@
 
             self.hide();
 
-            self.siblings('.wpuf-copon-wrap').show();
+            self.siblings('.wpuf-coupon-wrap').show();
 
         },
 
@@ -245,7 +245,7 @@
                     }
 
                     // Hide the coupon input wrap and show the applied bar
-                    var coponWrap = orderSummary.find('.wpuf-copon-wrap');
+                    var coponWrap = orderSummary.find('.wpuf-coupon-wrap');
                     coponWrap.hide();
                     orderSummary.find('.wpuf-coupon-applied').remove();
                     orderSummary.append(
@@ -339,14 +339,50 @@
             }
         },
 
-        checkoutSubmit: function() {
-            var btn = $( '#wpuf-payment-gateway .wpuf-checkout-btn' );
-            btn.prop( 'disabled', true )
+        checkoutSubmit: function( e ) {
+            var form            = $( '#wpuf-payment-gateway' );
+            var selectedGateway = form.find( "input[name='wpuf_payment_method']:checked" ).val();
+            var btn             = form.find( '.wpuf-checkout-btn' );
+            var originalLabel   = btn.data( 'original-label' ) || btn.text().trim();
+
+            // Show loading immediately so the user gets instant feedback.
+            btn.data( 'original-label', originalLabel )
+               .prop( 'disabled', true )
                .addClass( 'wpuf-checkout-btn--loading' )
                .html(
                    '<span class="wpuf-btn-spinner"></span>' +
                    '<span class="wpuf-btn-text">Processing&hellip;</span>'
                );
+
+            // Helper to roll back the button if validation fails.
+            function resetBtn() {
+                btn.prop( 'disabled', false )
+                   .removeClass( 'wpuf-checkout-btn--loading' )
+                   .text( originalLabel );
+            }
+
+            // Stripe intercepts and processes everything itself — our loading state
+            // would get stuck because Stripe never does a real form POST.
+            if ( selectedGateway === 'stripe' ) {
+                resetBtn();
+                return;
+            }
+
+            // validateForm() returns false on error, serialized string on success.
+            if ( typeof WP_User_Frontend !== 'undefined' ) {
+                if ( WP_User_Frontend.validateForm( form ) === false ) {
+                    resetBtn();
+                    return;
+                }
+            }
+
+            // Billing address validation when the address form is present.
+            if ( $( '#wpuf-ajax-address-form' ).length && typeof wpuf_validate_address === 'function' ) {
+                if ( ! wpuf_validate_address() ) {
+                    resetBtn();
+                    return;
+                }
+            }
         },
 
 	};

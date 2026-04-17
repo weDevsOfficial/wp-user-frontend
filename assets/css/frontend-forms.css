@@ -891,12 +891,7 @@ body .wpuf-gateway-card .wpuf-payment-instruction {
   padding-top: 12px;
   border-top: 1px solid #f3f4f6;
 }
-body li:has(input[type="radio"]:checked) .wpuf-gateway-card {
-  border-color: currentColor;
-  box-shadow: 0 0 0 1px currentColor;
-}
 body .wpuf-order-summary {
-  background: #f9fafb;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 24px;
@@ -906,12 +901,14 @@ body .wpuf-order-row {
   justify-content: space-between;
   align-items: baseline;
 }
-body .wpuf-order-item .wpuf-order-label {
+body .wpuf-order-item .wpuf-order-label,
+body .wpuf-order-row .wpuf-order-label {
   font-size: 1rem;
   font-weight: 500;
   color: #0F172A;
 }
-body .wpuf-order-item .wpuf-order-value {
+body .wpuf-order-item .wpuf-order-value,
+body .wpuf-order-row .wpuf-order-value {
   font-size: 1rem;
   font-weight: 500;
   color: #0F172A;
@@ -927,43 +924,7 @@ body .wpuf-order-divider {
   border-top: 1px solid #e5e7eb;
   margin: 12px 0;
 }
-body .wpuf-order-tax .wpuf-order-label {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #0F172A;
-}
-body .wpuf-order-tax .wpuf-order-value {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #0F172A;
-}
-body .wpuf-order-coupon .wpuf-order-label {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: #475569;
-  display: inline-flex;
-  align-items: center;
-}
-body .wpuf-order-coupon .wpuf-order-discount {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #16a34a;
-}
-body .wpuf-order-total .wpuf-order-label {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #0F172A;
-}
-body .wpuf-order-total .wpuf-order-value {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #0F172A;
-}
-body .wpuf-order-summary .wpuf-copon-show {
-  display: block;
-  width: 100%;
-  margin-top: 16px;
-  padding: 10px 16px;
+body .wpuf-order-summary .wpuf-coupon-btn {
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: #fff;
@@ -971,13 +932,19 @@ body .wpuf-order-summary .wpuf-copon-show {
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  box-sizing: border-box;
   transition: border-color 0.2s ease, color 0.2s ease;
 }
-body .wpuf-order-summary .wpuf-copon-wrap {
+body .wpuf-order-summary .wpuf-coupon-show {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px 16px;
+  box-sizing: border-box;
+}
+body .wpuf-order-summary .wpuf-coupon-wrap {
   margin: 16px 0 0;
 }
-body .wpuf-order-summary .wpuf-copon-wrap .wpuf-coupon-field {
+body .wpuf-order-summary .wpuf-coupon-wrap .wpuf-coupon-field {
   width: 100%;
   padding: 8px 12px;
   border: 1px solid #e5e7eb;
@@ -987,18 +954,13 @@ body .wpuf-order-summary .wpuf-copon-wrap .wpuf-coupon-field {
   margin-bottom: 8px;
 }
 body .wpuf-order-summary a.wpuf-apply-coupon {
-  text-decoration: none;
-  font-size: 13px;
   margin-right: 10px;
   padding: 6px 14px;
   display: inline-block;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
 }
-body .wpuf-order-summary .wpuf-copon-cancel {
-  text-decoration: none;
-  font-size: 13px;
+body .wpuf-order-summary .wpuf-coupon-cancel {
+  padding: 6px 14px;
+  display: inline-block;
 }
 body .wpuf-order-summary .wpuf-coupon-field-spinner {
   background: url('../images/wpspin_light.gif') no-repeat right scroll rgba(0, 0, 0, 0);
@@ -1044,6 +1006,15 @@ body .wpuf-order-summary .wpuf-coupon-applied .wpuf-coupon-remove:hover {
 body .wpuf-checkout-footer {
   margin-top: 24px;
 }
+body .wpuf-checkout-footer .wpuf-checkout-errors {
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  font-size: 14px;
+}
 body .wpuf-checkout-footer .wpuf-checkout-btn {
   display: block;
   width: 100%;
@@ -1075,7 +1046,9 @@ body .wpuf-checkout-footer .wpuf-btn-spinner {
   flex-shrink: 0;
 }
 @keyframes wpuf-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 body .wpuf-coupon-info-wrap {
   border: 1px solid #eee;

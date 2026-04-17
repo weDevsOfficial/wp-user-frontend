@@ -333,7 +333,7 @@ class Paypal {
                 // Validate breakdown: item_total + tax_total should equal total (within rounding)
                 $breakdown_total = $subtotal + $tax;
                 $difference = abs( $breakdown_total - $total_amount );
-                
+
                 // If breakdown doesn't add up correctly, recalculate from total
                 // This handles cases where PayPal returns incorrect breakdown values
                 if ( $difference > 0.01 ) {
@@ -386,7 +386,7 @@ class Paypal {
                         $total_amount,
                         $custom_data['type']
                     );
-                    
+
                     if ( $recalculated && is_array( $recalculated ) ) {
                         $subtotal = isset( $recalculated['subtotal'] ) ? floatval( $recalculated['subtotal'] ) : $subtotal;
                         $tax = isset( $recalculated['tax'] ) ? floatval( $recalculated['tax'] ) : $tax;
@@ -1031,7 +1031,7 @@ class Paypal {
                 // Validate breakdown: item_total + tax_total should equal total (within rounding)
                 $breakdown_total = $subtotal + $tax;
                 $difference = abs( $breakdown_total - $total_amount );
-                
+
                 // If breakdown doesn't add up correctly, recalculate from total
                 // This handles cases where PayPal returns incorrect breakdown values
                 if ( $difference > 0.01 ) {
@@ -1084,7 +1084,7 @@ class Paypal {
                         $total_amount,
                         'pack'
                     );
-                    
+
                     if ( $recalculated && is_array( $recalculated ) ) {
                         $subtotal = isset( $recalculated['subtotal'] ) ? floatval( $recalculated['subtotal'] ) : $subtotal;
                         $tax = isset( $recalculated['tax'] ) ? floatval( $recalculated['tax'] ) : $tax;
@@ -1199,7 +1199,7 @@ class Paypal {
             'name'    => 'gate_instruct_paypal',
             'label'   => __( 'PayPal Instruction', 'wp-user-frontend' ),
             'type'    => 'wysiwyg',
-            'default' => "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account",
+            'default' => "Pay via PayPal. You can pay with your credit card if you don't have a PayPal account",
         ];
 
         // New REST API options
@@ -1561,7 +1561,7 @@ class Paypal {
 
                 // Create a plan with base amount (without tax, as tax will be added via subscription override)
                 $plan_base_amount = isset( $payment_data['breakdown']['item_total'] ) ? $payment_data['breakdown']['item_total'] : $billing_amount;
-                
+
                 $plan_id = $this->get_or_create_plan( $pack, $plan_base_amount, $period, $interval, $trial_period_days );
 
                 if ( ! $plan_id ) {
@@ -1592,10 +1592,10 @@ class Paypal {
                 if ( isset( $payment_data['breakdown']['tax_total'] ) && $payment_data['breakdown']['tax_total'] > 0 ) {
                     $tax_amount = $payment_data['breakdown']['tax_total'];
                     $subtotal = $payment_data['breakdown']['item_total'] ?? $payment_data['amount'];
-                    
+
                     // Calculate tax percentage
                     $tax_percentage = ( $tax_amount / $subtotal ) * 100;
-                    
+
                     // Add plan override with tax
                     $subscription_data['plan'] = [
                         'taxes' => [
@@ -1788,11 +1788,11 @@ class Paypal {
     private function get_or_create_plan( $pack, $amount, $period, $interval, $trial_period_days = 0 ) {
         try {
             $access_token = $this->get_access_token();
-            
+
             if ( ! $access_token ) {
                 return false;
             }
-            
+
             // Create plan name (tax will be added separately via subscription override)
             $plan_name = 'WPUF-' . $pack->post_title . '-' . uniqid();
             $plan_id = get_post_meta( $pack->ID, '_paypal_plan_id', true );
@@ -1822,7 +1822,7 @@ class Paypal {
             // Create new plan (tax will be added separately via subscription override)
             // Ensure interval_count is at least 1 (PayPal doesn't accept 0 or negative values)
             $interval_count = max( 1, intval( $interval ) );
-            
+
             $plan_data = [
                 'product_id' => $this->get_or_create_product( $pack ),
                 'name' => $plan_name,
@@ -1882,7 +1882,7 @@ class Paypal {
                 // Update the regular billing cycle sequence
                 $plan_data['billing_cycles'][1]['sequence'] = 2;
             }
-            
+
             $response = wp_remote_post(
                 ( $this->test_mode ? 'https://api-m.sandbox.paypal.com' : 'https://api-m.paypal.com' ) . '/v1/billing/plans',
                 [
@@ -1901,7 +1901,7 @@ class Paypal {
 
             $response_code = wp_remote_retrieve_response_code( $response );
             $body = json_decode( wp_remote_retrieve_body( $response ), true );
-        
+
 
             if ( ! isset( $body['id'] ) ) {
                 throw new \Exception( 'Invalid response from PayPal - no plan ID' );
@@ -2202,7 +2202,7 @@ class Paypal {
     private function handle_subscription_cancelled( $subscription ) {
         try {
             $subscription_id = isset( $subscription['id'] ) ? $subscription['id'] : 'UNKNOWN';
-            
+
             // Extract custom data
             $custom_data = [];
             if ( isset( $subscription['custom_id'] ) ) {
@@ -2255,7 +2255,7 @@ class Paypal {
     private function handle_subscription_activated( $subscription ) {
         try {
             $subscription_id = isset( $subscription['id'] ) ? $subscription['id'] : 'UNKNOWN';
-            
+
             // Extract custom data
             $custom_data = [];
             if ( isset( $subscription['custom_id'] ) ) {

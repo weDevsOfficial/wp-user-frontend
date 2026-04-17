@@ -1488,6 +1488,7 @@ class Free_Loader extends Pro_Prompt {
             ),
             'checkout_label' => __( 'Credit Card', 'wp-user-frontend' ),
             'label_class'    => 'pro-preview',
+            'is_pro_preview' => true,
         ];
 
         return $gateways;

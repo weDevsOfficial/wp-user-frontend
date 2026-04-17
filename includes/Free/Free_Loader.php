@@ -1012,6 +1012,11 @@ class Free_Loader extends Pro_Prompt {
             $integrations['post_form_template_events_calendar'] = new \WeDevs\Wpuf\Integrations\Events_Calendar\Templates\Event_Form_Template();
         }
 
+        // Enable WP Job Manager free template.
+        if ( class_exists( 'WP_Job_Manager' ) ) {
+            $integrations['post_form_template_wp_job_manager'] = new \WeDevs\Wpuf\Integrations\WP_Job_Manager\Template_Free();
+        }
+
         return $integrations;
     }
 

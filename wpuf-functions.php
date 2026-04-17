@@ -6384,6 +6384,13 @@ if ( ! function_exists( 'wpuf_get_free_taxonomies' ) ) {
         // Built-in taxonomies that are always available
         $free_taxonomies = [ 'category', 'post_tag' ];
 
+        // WP Job Manager taxonomies — allowed in free so users can build
+        // functional job submission forms without a Pro license.
+        if ( class_exists( 'WP_Job_Manager' ) ) {
+            $free_taxonomies[] = 'job_listing_category';
+            $free_taxonomies[] = 'job_listing_type';
+        }
+
         // Allow filtering to add more free taxonomies
         //$free_taxonomies = apply_filters( 'wpuf_free_taxonomies', $free_taxonomies );
 

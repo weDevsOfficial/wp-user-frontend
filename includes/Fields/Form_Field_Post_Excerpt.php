@@ -56,6 +56,7 @@ class Form_Field_Post_Excerpt extends Field_Contract {
                     ];
 
                     $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
+
                     wp_editor( $value, $textarea_id, $editor_settings );
                 } elseif ( ! empty( $field_settings['rich'] ) && $field_settings['rich'] == 'teeny' ) {
                     $editor_settings = [
@@ -68,6 +69,7 @@ class Form_Field_Post_Excerpt extends Field_Contract {
                     ];
 
                     $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
+
                     wp_editor( $value, $textarea_id, $editor_settings );
                 } else {
                     ?>

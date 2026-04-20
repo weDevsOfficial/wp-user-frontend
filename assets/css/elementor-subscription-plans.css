@@ -1,0 +1,195 @@
+/**
+ * DESCRIPTION: Elementor-specific WPUF subscription plans styles
+ *
+ * This file contains subscription plans display styles scoped to the
+ * Elementor widget wrapper to avoid conflicts with the theme.
+ * Design values (colors, fonts, spacing) are controlled by Elementor widget settings.
+ *
+ * @package WPUF\Elementor
+ */
+
+/* Widget Container */
+.wpuf-subscription-plans-wrapper {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Grid Layout */
+.wpuf-subscription-plans-grid {
+  display: grid;
+}
+
+/* Responsive: Mobile - 1 column */
+@media (max-width: 767px) {
+  .wpuf-subscription-plans-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Plans Per Row: 1 column */
+.wpuf-subscription-plans-wrapper.wpuf-sub-plans-1 .wpuf-subscription-plans-grid {
+  grid-template-columns: 1fr;
+}
+
+/* Plans Per Row: 2 columns */
+@media (min-width: 768px) {
+  .wpuf-subscription-plans-wrapper.wpuf-sub-plans-2 .wpuf-subscription-plans-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Plans Per Row: 3 columns */
+@media (min-width: 768px) {
+  .wpuf-subscription-plans-wrapper.wpuf-sub-plans-3 .wpuf-subscription-plans-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Plans Per Row: 4 columns */
+@media (min-width: 768px) {
+  .wpuf-subscription-plans-wrapper.wpuf-sub-plans-4 .wpuf-subscription-plans-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Plan Card */
+.wpuf-sub-card {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.wpuf-sub-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Plan Name */
+.wpuf-sub-plan-name {
+  margin: 0 0 0 0;
+  line-height: 1.3;
+}
+
+/* Description */
+.wpuf-sub-description {
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.wpuf-sub-description p {
+  margin: 0 0 12px 0;
+}
+
+.wpuf-sub-description p:last-child {
+  margin-bottom: 0;
+}
+
+/* Price Wrapper */
+.wpuf-sub-price-wrapper {
+  margin-bottom: 20px;
+}
+
+/* Price */
+.wpuf-sub-price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px;
+  line-height: 1.2;
+}
+
+/* Trial Description */
+.wpuf-sub-trial-description {
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* Button Wrapper */
+.wpuf-sub-button-wrapper {
+  margin-bottom: 20px;
+}
+
+/* Subscribe Button */
+.wpuf-sub-button {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.wpuf-sub-button:hover {
+  opacity: 0.9;
+}
+
+.wpuf-sub-button-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Features List */
+.wpuf-sub-features-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wpuf-sub-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  line-height: 1.5;
+}
+
+.wpuf-sub-feature-item:last-child {
+  margin-bottom: 0;
+}
+
+.wpuf-sub-feature-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.wpuf-sub-feature-hidden {
+  display: none;
+}
+
+/* Features Toggle Button */
+.wpuf-sub-features-toggle-wrapper {
+  margin-top: 16px;
+}
+
+.wpuf-sub-features-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.wpuf-sub-features-toggle:hover {
+  opacity: 0.8;
+}
+
+/* Empty State (Editor) */
+.wpuf-subscription-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+}
+
+.wpuf-subscription-empty-icon {
+  margin-bottom: 16px;
+}
+
+.wpuf-subscription-empty-text {
+  margin: 0 0 8px 0;
+}
+
+.wpuf-subscription-empty-hint {
+  margin: 0;
+}

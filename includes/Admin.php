@@ -88,7 +88,6 @@ class Admin {
             return;
         }
 
-        wp_enqueue_style( 'wpuf-whats-new' );
         wp_enqueue_style( 'wpuf-admin' );
         wp_enqueue_style( 'wpuf-sweetalert2' );
         wp_enqueue_script( 'wpuf-sweetalert2' );

@@ -3,7 +3,7 @@
  * Directory Custom Styles
  *
  * @package WPUF\Modules\UserDirectory
- * @since WPUF_SINCE
+ * @since 4.3.0
  */
 
 namespace WeDevs\Wpuf\Modules\User_Directory;
@@ -17,14 +17,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Handles custom styling for user directory pages
  *
- * @since WPUF_SINCE
+ * @since 4.3.0
  */
 class DirectoryStyles {
 
     /**
      * Constructor
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      */
     public function __construct() {
         // Primary hook for filtering titles
@@ -49,7 +49,7 @@ class DirectoryStyles {
     /**
      * Filter block content to remove title blocks on profile pages
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param string $block_content The block content
      * @param array  $block The block data
@@ -79,7 +79,7 @@ class DirectoryStyles {
     /**
      * Filter specifically for post-title blocks
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param string $block_content The block content
      * @param array  $parsed_block The parsed block
@@ -97,7 +97,7 @@ class DirectoryStyles {
     /**
      * Pre-filter blocks before rendering
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param string|null $pre_render The pre-rendered content
      * @param array       $block The block being rendered
@@ -123,7 +123,7 @@ class DirectoryStyles {
     /**
      * Add styles for directory pages
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return void
      */
@@ -146,7 +146,7 @@ class DirectoryStyles {
     /**
      * Add minimal CSS to hide titles on profile pages
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return void
      */
@@ -185,7 +185,7 @@ class DirectoryStyles {
     /**
      * Check if current page has directory functionality
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return bool
      */
@@ -206,7 +206,7 @@ class DirectoryStyles {
     /**
      * Output listing page title styles
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return void
      */
@@ -252,7 +252,7 @@ class DirectoryStyles {
     /**
      * Add dynamic detection script for block-based directory
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return void
      */
@@ -320,7 +320,7 @@ class DirectoryStyles {
     /**
      * Check if current page is viewing a single user profile
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return bool
      */
@@ -385,7 +385,7 @@ class DirectoryStyles {
     /**
      * Check if post has directory shortcode
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param \WP_Post $post Post object.
      *
@@ -406,7 +406,7 @@ class DirectoryStyles {
     /**
      * Filter the page title
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param string $title The post title
      * @param int    $id    The post ID
@@ -425,7 +425,7 @@ class DirectoryStyles {
     /**
      * Check if this is the main page title (not widget titles, menu titles, etc.)
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param int $id Post ID.
      *
@@ -455,7 +455,7 @@ class DirectoryStyles {
     /**
      * Filter single post title
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param string $title The single post title
      * @param object $post  The post object
@@ -473,7 +473,7 @@ class DirectoryStyles {
     /**
      * Determine if title should be hidden
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @return bool
      */
@@ -495,7 +495,7 @@ class DirectoryStyles {
     /**
      * Add body class for CSS targeting
      *
-     * @since WPUF_SINCE
+     * @since 4.3.0
      *
      * @param array $classes Body classes
      *

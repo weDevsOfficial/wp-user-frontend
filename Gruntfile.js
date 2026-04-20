@@ -28,7 +28,8 @@ module.exports = function( grunt) {
             // one to one
             front: {
                 files: {
-                    '<%= dirs.css %>/frontend-forms.css': '<%= dirs.less %>/frontend-forms.less'
+                    '<%= dirs.css %>/frontend-forms.css': '<%= dirs.less %>/frontend-forms.less',
+                    '<%= dirs.css %>/elementor-frontend-forms.css': '<%= dirs.less %>/elementor-frontend-forms.less'
                 }
             },
 
@@ -36,7 +37,6 @@ module.exports = function( grunt) {
                 files: {
                     '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/assets/less/form-builder.less'],
                     '<%= dirs.css %>/admin.css': ['<%= dirs.less %>/admin.less'],
-                    '<%= dirs.css %>/admin/whats-new.css': ['<%= dirs.less %>/whats-new.less'],
                     '<%= dirs.css %>/registration-forms.css': ['<%= dirs.less %>/registration-forms.less']
                 }
             }
@@ -190,7 +190,7 @@ module.exports = function( grunt) {
             main: {
                 src: [
                     '**',
-                    '!node_modules/**',
+                    '!**/node_modules/**',
                     '!build/**',
                     '!admin/form-builder/assets/**',
                     '!assets/css/*.less',

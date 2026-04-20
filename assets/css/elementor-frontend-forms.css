@@ -1,0 +1,197 @@
+/**
+ * DESCRIPTION: Elementor-specific WPUF frontend form styles
+ *
+ * This file contains form styles scoped to the Elementor widget wrapper
+ * to avoid conflicts with the theme and provide better Elementor integration.
+ *
+ * @package WPUF\Elementor
+ */
+.wpuf-elementor-widget-wrapper {
+  --wpuf-border-color: #dadbdd;
+  --wpuf-border-radius: 7px;
+  --wpuf-text-color: #606266;
+  --wpuf-primary-color: #1a7efb;
+  --wpuf-danger-color: #F56C6C;
+}
+.wpuf-elementor-widget-wrapper .wpuf-fields input[type="text"],
+.wpuf-elementor-widget-wrapper .wpuf-fields input[type="email"],
+.wpuf-elementor-widget-wrapper .wpuf-fields input[type="url"],
+.wpuf-elementor-widget-wrapper .wpuf-fields input[type="password"],
+.wpuf-elementor-widget-wrapper .wpuf-fields input[type="number"],
+.wpuf-elementor-widget-wrapper .wpuf-fields input[type="tel"],
+.wpuf-elementor-widget-wrapper .wpuf-fields textarea,
+.wpuf-elementor-widget-wrapper .wpuf-fields select {
+  padding: 12px 15px;
+  color: var(--wpuf-text-color);
+  border: 1px solid var(--wpuf-border-color);
+  border-radius: var(--wpuf-border-radius);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  margin-bottom: 0;
+  width: 100%;
+}
+.wpuf-elementor-widget-wrapper .wpuf-fields input[type="text"]:focus,
+.wpuf-elementor-widget-wrapper .wpuf-fields input[type="email"]:focus,
+.wpuf-elementor-widget-wrapper .wpuf-fields input[type="url"]:focus,
+.wpuf-elementor-widget-wrapper .wpuf-fields input[type="password"]:focus,
+.wpuf-elementor-widget-wrapper .wpuf-fields input[type="number"]:focus,
+.wpuf-elementor-widget-wrapper .wpuf-fields input[type="tel"]:focus,
+.wpuf-elementor-widget-wrapper .wpuf-fields textarea:focus,
+.wpuf-elementor-widget-wrapper .wpuf-fields select:focus {
+  color: var(--wpuf-text-color);
+  background-color: #fff;
+  border-color: var(--wpuf-primary-color);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(26, 126, 251, 0.1);
+}
+.wpuf-elementor-widget-wrapper .wpuf-fields .wpuf-radio-block,
+.wpuf-elementor-widget-wrapper .wpuf-fields .wpuf-checkbox-block {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.wpuf-elementor-widget-wrapper ul.wpuf-form {
+  list-style: none;
+}
+.wpuf-elementor-widget-wrapper ul.wpuf-form li:not(:first-child) {
+  margin-top: 2rem;
+}
+.wpuf-elementor-widget-wrapper ul.wpuf-form li.wpuf-el .wpuf-label {
+  margin-bottom: 1rem;
+}
+.wpuf-elementor-widget-wrapper[data-align="left"] {
+  margin: 0 auto 0 0;
+}
+.wpuf-elementor-widget-wrapper[data-align="center"] {
+  margin: 0 auto;
+}
+.wpuf-elementor-widget-wrapper[data-align="right"] {
+  margin: 0 0 0 auto;
+}
+.wpuf-elementor-widget-wrapper.wpuf-elementor-submit-full .wpuf-submit .wpuf-submit-button {
+  width: 100%;
+  display: block;
+}
+.wpuf-elementor-widget-wrapper.wpuf-elementor-upload-full .wpuf-attachment-upload-filelist .file-selector {
+  width: 100%;
+  display: block;
+}
+.wpuf-elementor-widget-wrapper.wpuf-elementor-hide-labels .wpuf-label {
+  display: none !important;
+}
+.wpuf-elementor-widget-wrapper.wpuf-elementor-hide-errors .wpuf-error,
+.wpuf-elementor-widget-wrapper.wpuf-elementor-hide-errors .error {
+  display: none;
+}
+.wpuf-elementor-widget-wrapper.wpuf-elementor-hide-placeholder input::-webkit-input-placeholder,
+.wpuf-elementor-widget-wrapper.wpuf-elementor-hide-placeholder textarea::-webkit-input-placeholder {
+  opacity: 0;
+  visibility: hidden;
+}
+.wpuf-elementor-widget-wrapper.wpuf-elementor-hide-placeholder input::-moz-placeholder,
+.wpuf-elementor-widget-wrapper.wpuf-elementor-hide-placeholder textarea::-moz-placeholder {
+  opacity: 0;
+  visibility: hidden;
+}
+.wpuf-elementor-widget-wrapper.wpuf-elementor-hide-placeholder input:-moz-placeholder,
+.wpuf-elementor-widget-wrapper.wpuf-elementor-hide-placeholder textarea:-moz-placeholder {
+  opacity: 0;
+  visibility: hidden;
+}
+.wpuf-elementor-widget-wrapper.wpuf-elementor-hide-placeholder input:-ms-input-placeholder,
+.wpuf-elementor-widget-wrapper.wpuf-elementor-hide-placeholder textarea:-ms-input-placeholder {
+  opacity: 0;
+  visibility: hidden;
+}
+.wpuf-elementor-widget-wrapper.wpuf-elementor-hide-placeholder input::-ms-input-placeholder,
+.wpuf-elementor-widget-wrapper.wpuf-elementor-hide-placeholder textarea::-ms-input-placeholder {
+  opacity: 0;
+  visibility: hidden;
+}
+.wpuf-elementor-widget-wrapper.wpuf-elementor-custom-radio-checkbox input[type="checkbox"],
+.wpuf-elementor-widget-wrapper.wpuf-elementor-custom-radio-checkbox input[type="radio"] {
+  outline: none;
+  min-width: 1px;
+  width: 15px;
+  height: 15px;
+  background: #ddd;
+  padding: 3px;
+}
+.wpuf-elementor-widget-wrapper.wpuf-elementor-custom-radio-checkbox input[type="radio"] {
+  border-radius: 50%;
+}
+.wpuf-elementor-widget-wrapper.wpuf-elementor-submit-center .wpuf-submit {
+  text-align: center;
+}
+.wpuf-elementor-widget-wrapper.wpuf-elementor-submit-center .wpuf-submit .wpuf-submit-button {
+  margin: 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.wpuf-elementor-widget-wrapper.wpuf-elementor-submit-right .wpuf-submit {
+  text-align: right;
+}
+.wpuf-elementor-widget-wrapper.wpuf-elementor-submit-left .wpuf-submit {
+  text-align: left;
+}
+.wpuf-elementor-widget-wrapper .wpuf-math-captcha .captcha {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.wpuf-elementor-widget-wrapper .wpuf-math-captcha .captcha .refresh {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+.wpuf-elementor-widget-wrapper .wpuf-math-captcha .captcha .refresh:hover {
+  opacity: 0.7;
+}
+.wpuf-elementor-widget-wrapper .wpuf-math-captcha .captcha .refresh svg {
+  display: block;
+}
+.wpuf-elementor-widget-wrapper .wpuf-math-captcha .captcha .captcha-number-area .captcha-number {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--wpuf-text-color);
+}
+.wpuf-elementor-widget-wrapper .wpuf-math-captcha .captcha .captcha-equal {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--wpuf-text-color);
+}
+.wpuf-elementor-widget-wrapper .wpuf-math-captcha .captcha .wpuf-captcha-input-wrapper {
+  flex: 1;
+  min-width: 80px;
+  position: relative;
+}
+.wpuf-elementor-widget-wrapper .wpuf-math-captcha .captcha .wpuf-captcha-input-wrapper .wpuf-captcha-input {
+  padding: 11px 15px;
+  color: var(--wpuf-text-color);
+  border: 1px solid var(--wpuf-border-color);
+  border-radius: var(--wpuf-border-radius);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  margin-bottom: 0;
+  width: 100%;
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+.wpuf-elementor-widget-wrapper .wpuf-math-captcha .captcha .wpuf-captcha-input-wrapper .wpuf-captcha-input:focus {
+  color: var(--wpuf-text-color);
+  background-color: #fff;
+  border-color: var(--wpuf-primary-color);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(26, 126, 251, 0.1);
+}
+.wpuf-elementor-widget-wrapper .wpuf-math-captcha .captcha .wpuf-captcha-input-wrapper .wpuf-captcha-error {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+  color: var(--wpuf-danger-color);
+}
+.lity {
+  z-index: 9999 !important;
+}

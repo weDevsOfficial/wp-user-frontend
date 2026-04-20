@@ -930,6 +930,13 @@ function wpuf_get_gateways( $context = 'admin' ) {
     foreach ( $gateways as $id => $gate ) {
         if ( 'admin' === $context ) {
             $return[ $id ] = $gate['admin_label'];
+        } elseif ( 'gateway_selector' === $context ) {
+            $return[ $id ] = [
+                'admin_label'           => $gate['admin_label'],
+                'icon'                  => isset( $gate['icon'] ) ? $gate['icon'] : '',
+                'supports_subscription' => ! empty( $gate['supports_subscription'] ),
+                'is_pro_preview'        => ! empty( $gate['is_pro_preview'] ) ? $gate['is_pro_preview'] : false,
+            ];
         } else {
             $return[ $id ] = [
                 'label'          => $gate['checkout_label'],
@@ -1495,6 +1502,11 @@ function wpuf_shortcode_map( $location, $post_id = null, $args = [], $meta_key =
 
     <script type="text/javascript">
         jQuery(function($){
+            // Check if Google Maps API is loaded (may not be available in Elementor preview)
+            if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
+                return;
+            }
+
             var curpoint = new google.maps.LatLng(<?php echo esc_html( $def_lat ); ?>, <?php echo esc_html( $def_long ); ?>);
 
             var gmap = new google.maps.Map( $('#wpuf-map-<?php echo esc_attr( $meta_key . $post->ID ); ?>')[0], {

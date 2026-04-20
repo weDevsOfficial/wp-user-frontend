@@ -175,7 +175,7 @@ class Post_Form_Template_Guest_Post_Recurring extends Form_Template {
             'choose_payment_option' => 'force_pack_purchase',
             'force_pack_purchase'   => 'true',
             'enable_pay_per_post'   => 'false',
-            'fallback_ppp_enable'   => 'on',
+            'fallback_ppp_enable'   => 'true',
             'use_theme_css'         => 'wpuf-style',
             'form_layout'           => 'layout1',
             'form_template'         => 'post_form_template_guest_post_recurring',

@@ -139,6 +139,14 @@ class Admin_Installer {
         }
         update_option( '_wpuf_page_created', '1' );
 
+        // User Directory page (Pro only): created when WPUF_User_Listing is available.
+        if ( class_exists( 'WPUF_User_Listing' ) ) {
+            $this->create_page(
+                __( 'User Directory', 'wp-user-frontend' ),
+                $this->get_user_directory_page_content()
+            );
+        }
+
         // Auto-add logout link to the primary menu
         $this->auto_add_logout_to_menu();
 
@@ -276,6 +284,100 @@ class Admin_Installer {
         }
 
         return $updated;
+    }
+
+    /**
+     * Get the post content for the User Directory page.
+     *
+     * Returns the wpuf-ud/directory Gutenberg block markup for block themes and
+     * the [wpuf_user_listing] shortcode for classic themes. Wrapped in a filter
+     * so integrations can customize the generated content.
+     *
+     * @since 4.3.2
+     *
+     * @return string
+     */
+    public function get_user_directory_page_content() {
+        $is_block_theme = function_exists( 'wp_is_block_theme' ) && wp_is_block_theme();
+
+        if ( $is_block_theme ) {
+            $content = $this->get_user_directory_block_content();
+        } else {
+            $content = '[wpuf_user_listing]';
+        }
+
+        /**
+         * Filter the User Directory page content generated during page installation.
+         *
+         * @since 4.3.2
+         *
+         * @param string $content        Rendered page content (block markup or shortcode).
+         * @param bool   $is_block_theme Whether the active theme is a block (FSE) theme.
+         */
+        return apply_filters( 'wpuf_user_directory_page_content', $content, $is_block_theme );
+    }
+
+    /**
+     * Get the default Gutenberg block markup for the User Directory page.
+     *
+     * @since 4.3.2
+     *
+     * @return string
+     */
+    private function get_user_directory_block_content() {
+        return <<<'HTML'
+<!-- wp:wpuf-ud/directory {"directory_layout":"roundGrids","hasSelectedLayout":true,"selectedLayout":"roundGrids"} -->
+<div class="wp-block-wpuf-ud-directory"><!-- wp:wpuf-ud/directory-item -->
+<div class="wp-block-wpuf-ud-directory-item"><!-- wp:group {"className":"is-style-default","style":{"border":{"radius":"8px","color":"#d1d5db","width":"1px"},"spacing":{"margin":{"top":"0","bottom":"0"},"blockGap":"0","padding":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30","left":"0","right":"0"}}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"center"}} -->
+<div class="wp-block-group is-style-default has-border-color" style="border-color:#d1d5db;border-width:1px;border-radius:8px;margin-top:0;margin-bottom:0;padding-top:var(--wp--preset--spacing--30);padding-right:0;padding-bottom:var(--wp--preset--spacing--30);padding-left:0"><!-- wp:wpuf-ud/avatar {"avatarSize":"custom","fallbackType":"gravatar","customSize":128,"style":{"spacing":{"padding":{"bottom":"15px"},"margin":{"top":"3px"}}}} /-->
+
+<!-- wp:wpuf-ud/name {"style":{"color":"#0F172A","fontWeight":"bold","typography":{"fontStyle":"normal","fontWeight":"600","fontSize":"20px","lineHeight":"2"},"spacing":{"margin":{"bottom":"2px"}}}} /-->
+
+<!-- wp:wpuf-ud/contact {"showIcons":false,"iconSize":"small","showLabels":false,"className":"wpuf-user-contact-info wpuf-contact-layout-inline","style":{"color":{"text":"#64748B"},"typography":{"lineHeight":"1","textAlign":"center","fontSize":"14px"},"spacing":{"margin":{"bottom":"5px"}}}} /-->
+
+<!-- wp:wpuf-ud/social {"iconSize":"medium","style":{"spacing":{"padding":{"top":"5px","bottom":"5px"},"margin":{"top":"5px","bottom":"5px"}}}} /-->
+
+<!-- wp:wpuf-ud/profile-button {"textColor":"base","style":{"border":{"radius":"6px"},"spacing":{"padding":{"top":"9px","right":"17px","bottom":"9px","left":"17px"},"margin":{"top":"14px","bottom":"8px"}},"marginTop":"16px","typography":{"fontStyle":"normal","fontWeight":"400","fontSize":"14px"},"color":{"background":"#7c3aed"}}} /--></div>
+<!-- /wp:group --></div>
+<!-- /wp:wpuf-ud/directory-item --></div>
+<!-- /wp:wpuf-ud/directory -->
+
+<!-- wp:wpuf-ud/profile {"block_instance_id":"b59d61da-fb6c-4cec-8e65-64e7c236a593","userId":1,"userObject":{"id":1,"user_login":"admin101","display_name":"John Doe","user_email":"mail@mail.com","user_url":"https://wpuf.test","bio":"Curabitur euismod neque vel accumsan aliquet. Donec quis massa ac sem congue ullamcorper. Morbi at sodales ligula. Sed laoreet in odio a cursus. Integer quis nisi sit amet tortor aliquam ornare luctus non orci. Pellentesque porttitor nunc sed augue luctus auctor. Phasellus feugiat quis dui sit amet lacinia. Nullam et venenatis ligula, id iaculis ligula. Maecenas cursus ex vitae neque elementum, convallis condimentum ex aliquet. Maecenas eu orci ac nunc interdum tristique. Nunc id odio massa. Praesent et diam nec ipsum congue lobortis. Aliquam erat volutpat.","avatar":"https://secure.gravatar.com/avatar/74a43f5a2491b706609180d3059d0b4269b25d859801497ec0d248fe75f37ac4?s=96\u0026d=mm\u0026r=g","first_name":"John","last_name":"Doe","nickname":"user nickname","user_registered":"2025-08-19 09:33:34","roles":["administrator"],"class_list":"","username":"admin101","name":"John Doe"},"canEdit":"1","hasSelectedPattern":true} -->
+<div class="wp-block-wpuf-ud-profile wpuf-user-profile"><!-- wp:columns {"className":"wpuf-flex wpuf-flex-row wpuf-gap-8 wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-p-8"} -->
+<div class="wp-block-columns wpuf-flex wpuf-flex-row wpuf-gap-8 wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-p-8"><!-- wp:column {"width":"35%","className":"wpuf-profile-sidebar","style":{"border":{"style":"none","width":"0px"},"spacing":{"padding":{"right":"var:preset|spacing|40","top":"0","bottom":"0","left":"0"}}},"layout":{"type":"constrained","justifyContent":"left","contentSize":"75%"}} -->
+<div class="wp-block-column wpuf-profile-sidebar" style="border-style:none;border-width:0px;padding-top:0;padding-right:var(--wp--preset--spacing--40);padding-bottom:0;padding-left:0;flex-basis:35%"><!-- wp:wpuf-ud/avatar {"avatarSize":"custom","fallbackType":"gravatar","customSize":100,"style":{"spacing":{"margin":{"bottom":"10px"}}}} /-->
+
+<!-- wp:wpuf-ud/name {"nameFormat":"first_last","headingLevel":"h2","fontFamily":"manrope","style":{"typography":{"fontStyle":"normal","fontWeight":"700"}}} /-->
+
+<!-- wp:wpuf-ud/contact {"showFields":["email","website"],"layoutStyle":"vertical","showLabels":false,"iconColor":"#707070","style":{"typography":{"fontSize":"14px","lineHeight":"1.7"},"spacing":{"margin":{"bottom":"20px","top":"var:preset|spacing|20"}}}} /-->
+
+<!-- wp:heading {"level":4,"style":{"spacing":{"margin":{"top":"var:preset|spacing|40","right":"0"}},"color":{"text":"#707070"},"elements":{"link":{"color":{"text":"#707070"}}},"typography":{"fontStyle":"normal","fontWeight":"700"}},"fontSize":"small"} -->
+<h4 class="wp-block-heading has-text-color has-link-color has-small-font-size" style="color:#707070;margin-top:var(--wp--preset--spacing--40);margin-right:0;font-style:normal;font-weight:700">SOCIAL</h4>
+<!-- /wp:heading -->
+
+<!-- wp:wpuf-ud/social {"layoutStyle":"layout-2","style":{"spacing":{"margin":{"right":"0","top":"var:preset|spacing|20"},"padding":{"right":"var:preset|spacing|20","left":"0","top":"0"}}}} /-->
+
+<!-- wp:heading {"level":4,"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}},"color":{"text":"#707070"},"elements":{"link":{"color":{"text":"#707070"}}},"typography":{"fontStyle":"normal","fontWeight":"700"}},"fontSize":"small"} -->
+<h4 class="wp-block-heading has-text-color has-link-color has-small-font-size" style="color:#707070;margin-top:var(--wp--preset--spacing--40);font-style:normal;font-weight:700">BIO</h4>
+<!-- /wp:heading -->
+
+<!-- wp:wpuf-ud/bio {"characterLimit":100,"style":{"spacing":{"margin":{"top":"var:preset|spacing|20"},"padding":{"right":"0"}},"typography":{"fontSize":"14px"}}} /-->
+
+<!-- wp:wpuf-ud/unmatched-blocks /--></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"65%","className":"wpuf-profile-content","layout":{"type":"default"}} -->
+<div class="wp-block-column wpuf-profile-content" style="flex-basis:65%"><!-- wp:wpuf-ud/tabs {"style":{"spacing":{"margin":{"top":"100px"}}}} -->
+<div class="wpuf-user-tabs" data-about-content="[]"><!-- wp:heading {"level":4,"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}},"color":{"text":"#707070"},"elements":{"link":{"color":{"text":"#707070"}}},"typography":{"fontStyle":"normal","fontWeight":"700"}},"fontSize":"small"} -->
+<h4 class="wp-block-heading has-text-color has-link-color has-small-font-size" style="color:#707070;margin-top:var(--wp--preset--spacing--40);font-style:normal;font-weight:700">BIO</h4>
+<!-- /wp:heading -->
+
+<!-- wp:wpuf-ud/bio {"characterLimit":100,"style":{"spacing":{"margin":{"top":"var:preset|spacing|20"},"padding":{"right":"0"}},"typography":{"fontSize":"14px"}}} /--></div>
+<!-- /wp:wpuf-ud/tabs --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns --></div>
+<!-- /wp:wpuf-ud/profile -->
+HTML;
     }
 
     /**

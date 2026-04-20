@@ -9,6 +9,18 @@ body.mceContentBody {
     background: #454F4F;
     padding: 50px;
 }
+.wpuf-form-add .wpuf-price-label {
+  color: var(--wpuf-l2-muted);
+}
+.wpuf-form-add .wpuf-upload-instructions {
+  color: var(--wpuf-l2-muted);
+}
+.wpuf-form-add .wpuf-repeat-container p {
+  color: var(--wpuf-l2-muted);
+}
+body ul.wpuf-form li label.wpuf-form-sub-label {
+  color: var(--wpuf-l2-muted);
+}
 
 .wpuf-form-add.wpuf-form-layout5 ul {
     overflow: hidden;
@@ -35,7 +47,7 @@ body.mceContentBody {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.has-error .wpuf-fields input,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.has-error .wpuf-fields textarea,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.has-error .wpuf-fields select {
-    width: auto;
+    width: 100%;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.has-error .wpuf-fields .wpuf-error-msg {
@@ -45,7 +57,7 @@ body.mceContentBody {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields textarea,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields select {
-    width: auto;
+    width: 100%;
     background: #394141;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
@@ -273,7 +285,7 @@ body.mceContentBody {
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.field-size-small .wpuf-fields {
-    width: auto;
+    width: 100%;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .br-theme-css-stars .br-widget {

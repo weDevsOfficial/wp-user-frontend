@@ -133,6 +133,21 @@ class Assets {
             'layout5'             => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-form/layout5.css',
             ],
+            'post-form-layout1'   => [
+                'src' => WPUF_ASSET_URI . '/css/frontend-form/layout1.css',
+            ],
+            'post-form-layout2'   => [
+                'src' => WPUF_ASSET_URI . '/css/frontend-form/layout2.css',
+            ],
+            'post-form-layout3'   => [
+                'src' => WPUF_ASSET_URI . '/css/frontend-form/layout3.css',
+            ],
+            'post-form-layout4'   => [
+                'src' => WPUF_ASSET_URI . '/css/frontend-form/layout4.css',
+            ],
+            'post-form-layout5'   => [
+                'src' => WPUF_ASSET_URI . '/css/frontend-form/layout5.css',
+            ],
             'jquery-ui'           => [
                 'src'     => WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css',
                 'version' => '1.9.1',

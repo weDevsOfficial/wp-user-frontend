@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.3.1\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2026-04-08 07:08:05+00:00\n"
+"POT-Creation-Date: 2026-04-13 06:36:06+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,7 +22,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
-"X-Generator: grunt-wp-i18n 1.0.3\n"
+"X-Generator: grunt-wp-i18n 1.0.4\n"
 
 #: includes/Integrations/Elementor/Subscription_Plans_Widget.php:143
 msgid "1"
@@ -665,26 +665,26 @@ msgstr ""
 msgid "Learn More"
 msgstr ""
 
-#: admin/html/form-settings-display.php:11 wpuf-functions.php:6124
+#: admin/html/form-settings-display.php:11 wpuf-functions.php:6150
 msgid "Label Position"
 msgstr ""
 
-#: admin/html/form-settings-display.php:16 wpuf-functions.php:6127
+#: admin/html/form-settings-display.php:16 wpuf-functions.php:6153
 msgid "Above Element"
 msgstr ""
 
-#: admin/html/form-settings-display.php:17 wpuf-functions.php:6128
+#: admin/html/form-settings-display.php:17 wpuf-functions.php:6154
 msgid "Left of Element"
 msgstr ""
 
-#: admin/html/form-settings-display.php:18 wpuf-functions.php:6129
+#: admin/html/form-settings-display.php:18 wpuf-functions.php:6155
 msgid "Right of Element"
 msgstr ""
 
 #: admin/html/form-settings-display.php:19
 #: includes/Admin/Customizer_Options.php:119
 #: includes/Fields/Field_Contract.php:400
-#: includes/Fields/Form_Field_Column.php:112 wpuf-functions.php:6130
+#: includes/Fields/Form_Field_Column.php:112 wpuf-functions.php:6156
 msgid "Hidden"
 msgstr ""
 
@@ -692,7 +692,7 @@ msgstr ""
 msgid "Where the labels of the form should display"
 msgstr ""
 
-#: admin/html/form-settings-display.php:35 wpuf-functions.php:6117
+#: admin/html/form-settings-display.php:35 wpuf-functions.php:6143
 msgid "Use Theme CSS"
 msgstr ""
 
@@ -976,11 +976,11 @@ msgstr ""
 msgid "Comment Status"
 msgstr ""
 
-#: admin/html/form-settings-post.php:188 wpuf-functions.php:6148
+#: admin/html/form-settings-post.php:188 wpuf-functions.php:6174
 msgid "Open"
 msgstr ""
 
-#: admin/html/form-settings-post.php:189 wpuf-functions.php:6149
+#: admin/html/form-settings-post.php:189 wpuf-functions.php:6175
 msgid "Closed"
 msgstr ""
 
@@ -1124,16 +1124,16 @@ msgstr ""
 msgid "Schedule Period"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:140 wpuf-functions.php:6162
+#: admin/html/form-submission-restriction.php:140 wpuf-functions.php:6188
 msgid "From"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:151 wpuf-functions.php:6172
+#: admin/html/form-submission-restriction.php:151 wpuf-functions.php:6198
 msgid "Form Pending Message"
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:158
-#: includes/Free/Free_Loader.php:1922 wpuf-functions.php:6176
+#: includes/Free/Free_Loader.php:1889 wpuf-functions.php:6202
 msgid "Form Expired Message"
 msgstr ""
 
@@ -1149,11 +1149,11 @@ msgstr ""
 msgid "Limit the number of entries allowed for this form"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:180 wpuf-functions.php:6185
+#: admin/html/form-submission-restriction.php:180 wpuf-functions.php:6211
 msgid "Number of Entries"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:187 wpuf-functions.php:6190
+#: admin/html/form-submission-restriction.php:187 wpuf-functions.php:6216
 msgid "Limit Reached Message"
 msgstr ""
 
@@ -2545,7 +2545,7 @@ msgstr ""
 #: includes/Admin/Admin_Installer.php:252 includes/Admin/Admin_Tools.php:479
 #: includes/Admin/Admin_Tools.php:1102 includes/Admin/Admin_Tools.php:1130
 #: includes/Integrations/Elementor/Account_Widget.php:770
-#: wpuf-functions.php:6561
+#: wpuf-functions.php:6587
 msgid "Logout"
 msgstr ""
 
@@ -2658,13 +2658,13 @@ msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:537
 #: includes/Admin/Admin_Subscription.php:1229 includes/Free/Form_Element.php:63
-#: includes/Free/Free_Loader.php:1894
+#: includes/Free/Free_Loader.php:1861
 msgid "Enable Post Expiration"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:549
 #: includes/Admin/Admin_Subscription.php:844 includes/Free/Form_Element.php:78
-#: includes/Free/Free_Loader.php:1901
+#: includes/Free/Free_Loader.php:1868
 msgid "Post Expiration Time"
 msgstr ""
 
@@ -2698,21 +2698,21 @@ msgstr ""
 #: includes/Admin/Admin_Subscription.php:677
 #: includes/Admin/Admin_Subscription.php:1267
 #: includes/Admin/Admin_Subscription.php:1383
-#: includes/Free/Free_Loader.php:1909
+#: includes/Free/Free_Loader.php:1876
 msgid "Day(s)"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:678
 #: includes/Admin/Admin_Subscription.php:1268
 #: includes/Admin/Admin_Subscription.php:1384
-#: includes/Free/Free_Loader.php:1910
+#: includes/Free/Free_Loader.php:1877
 msgid "Week(s)"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:679
 #: includes/Admin/Admin_Subscription.php:1269
 #: includes/Admin/Admin_Subscription.php:1385
-#: includes/Free/Free_Loader.php:1911
+#: includes/Free/Free_Loader.php:1878
 msgid "Month(s)"
 msgstr ""
 
@@ -3114,7 +3114,7 @@ msgstr ""
 #: includes/Admin/Admin_Tools.php:56 includes/Admin/Admin_Tools.php:119
 #: includes/Admin/List_Table_Subscribers.php:170
 #: includes/Admin/List_Table_Transactions.php:97 wpuf-functions.php:4270
-#: wpuf-functions.php:6243
+#: wpuf-functions.php:6269
 msgid "All"
 msgstr ""
 
@@ -3348,7 +3348,7 @@ msgstr ""
 msgid "Example"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:576 includes/Free/Free_Loader.php:1979
+#: includes/Admin/Admin_Tools.php:576 includes/Free/Free_Loader.php:1946
 msgid "Pro"
 msgstr ""
 
@@ -3840,7 +3840,7 @@ msgid "&mdash; No Template &mdash;"
 msgstr ""
 
 #: includes/Admin/Forms/Post/Templates/Form_Template.php:231
-#: includes/Free/Free_Loader.php:1850 wpuf-functions.php:5833
+#: wpuf-functions.php:5833
 msgid ""
 "If selected a form template, it will try to execute that integration "
 "options when new post created and updated."
@@ -3848,10 +3848,7 @@ msgstr ""
 
 #: includes/Admin/Forms/Post/Templates/Post_Form_Template_Post.php:16
 #: includes/Admin/Menu.php:116 includes/Admin/template-parts/modal-v4.2.php:66
-#: includes/Admin/views/shortcode-builder.php:8
-#: includes/Free/Free_Loader.php:1856 includes/Free/Free_Loader.php:1860
-#: includes/Free/Free_Loader.php:1864 includes/Free/Free_Loader.php:1868
-#: includes/Free/Free_Loader.php:1872 wpuf-functions.php:5714
+#: includes/Admin/views/shortcode-builder.php:8 wpuf-functions.php:5714
 msgid "Post Form"
 msgstr ""
 
@@ -4462,7 +4459,7 @@ msgid ""
 msgstr ""
 
 #: includes/Admin/views/premium.php:93 includes/Free/Free_Loader.php:156
-#: includes/Free/Free_Loader.php:1150 includes/Free/Free_Loader.php:1941
+#: includes/Free/Free_Loader.php:1150 includes/Free/Free_Loader.php:1908
 msgid "Modules"
 msgstr ""
 
@@ -5463,7 +5460,7 @@ msgstr ""
 msgid "Using %s as shortcode is restricted"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:172 wpuf-functions.php:6690
+#: includes/Ajax/Frontend_Form_Ajax.php:172 wpuf-functions.php:6716
 msgid "You must be logged in to edit posts."
 msgstr ""
 
@@ -5492,7 +5489,7 @@ msgid "You already have an account in our site. Please login to continue."
 msgstr ""
 
 #: includes/Ajax/Frontend_Form_Ajax.php:789
-#: includes/Frontend_Render_Form.php:264
+#: includes/Frontend_Render_Form.php:262
 #: includes/class-frontend-render-form.php:323
 msgid "You do not have sufficient permissions to access this form."
 msgstr ""
@@ -6280,7 +6277,7 @@ msgstr ""
 
 #: includes/Free/Form_Element.php:255 includes/Free/Form_Element.php:292
 #: includes/Free/Free_Loader.php:1780 wpuf-functions.php:6059
-#: wpuf-functions.php:6166
+#: wpuf-functions.php:6192
 msgid "To"
 msgstr ""
 
@@ -6992,27 +6989,23 @@ msgstr ""
 msgid "Conditional Logic on Submit"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1848 wpuf-functions.php:6110
-msgid "Choose Form Style"
-msgstr ""
-
-#: includes/Free/Free_Loader.php:1906
+#: includes/Free/Free_Loader.php:1873
 msgid "Duration Type"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1917
+#: includes/Free/Free_Loader.php:1884
 msgid "Send post expiration email to author"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1919
+#: includes/Free/Free_Loader.php:1886
 msgid "Verification of email addresses will be mandatory"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1965
+#: includes/Free/Free_Loader.php:1932
 msgid "Available in Pro Version"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1975
+#: includes/Free/Free_Loader.php:1942
 msgid "Bulk Add"
 msgstr ""
 
@@ -7478,7 +7471,7 @@ msgstr ""
 msgid "Invalid post"
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:74 wpuf-functions.php:6730
+#: includes/Frontend/Frontend_Form.php:74 wpuf-functions.php:6756
 msgid "Your edit access for this post has been locked by an administrator."
 msgstr ""
 
@@ -7486,7 +7479,7 @@ msgstr ""
 msgid "Your allocated time for editing this post has been expired."
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:86 wpuf-functions.php:6718
+#: includes/Frontend/Frontend_Form.php:86 wpuf-functions.php:6744
 msgid "Your post edit access has been locked by an administrator."
 msgstr ""
 
@@ -7502,11 +7495,11 @@ msgstr ""
 msgid "I don't know how to edit this post, I don't have the form ID"
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:125 wpuf-functions.php:6755
+#: includes/Frontend/Frontend_Form.php:125 wpuf-functions.php:6781
 msgid "You can't edit a post while in pending mode."
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:129 wpuf-functions.php:6762
+#: includes/Frontend/Frontend_Form.php:129 wpuf-functions.php:6788
 msgid "You're not allowed to edit this post."
 msgstr ""
 
@@ -7814,13 +7807,13 @@ msgstr ""
 msgid "Form Preview"
 msgstr ""
 
-#: includes/Frontend_Render_Form.php:364
+#: includes/Frontend_Render_Form.php:362
 #: includes/class-frontend-render-form.php:928
 #: templates/dashboard/posts.php:150
 msgid "Featured"
 msgstr ""
 
-#: includes/Frontend_Render_Form.php:371
+#: includes/Frontend_Render_Form.php:369
 #: includes/class-frontend-render-form.php:936
 #. translators: %1$s is Post type and %2$d is item
 #. translators: %1$s is Post type and %2$s is total feature item
@@ -12110,123 +12103,147 @@ msgid ""
 "updates"
 msgstr ""
 
+#: wpuf-functions.php:6110 wpuf-functions.php:6117
+msgid "Choose Form Style"
+msgstr ""
+
 #: wpuf-functions.php:6111
 msgid ""
 "Customize the appearance and layout of your form. Select a form template "
 "that best suits your website's design for a cohesive look and feel"
 msgstr ""
 
-#: wpuf-functions.php:6119
+#: wpuf-functions.php:6121
+msgid "Template 1"
+msgstr ""
+
+#: wpuf-functions.php:6125
+msgid "Template 2"
+msgstr ""
+
+#: wpuf-functions.php:6129
+msgid "Template 3"
+msgstr ""
+
+#: wpuf-functions.php:6133
+msgid "Template 4"
+msgstr ""
+
+#: wpuf-functions.php:6137
+msgid "Template 5"
+msgstr ""
+
+#: wpuf-functions.php:6145
 msgid "Apply your site's theme CSS for consistent styling and appearance"
 msgstr ""
 
-#: wpuf-functions.php:6132
+#: wpuf-functions.php:6158
 msgid ""
 "Customize the position of form labels for improved user navigation and "
 "clarity"
 msgstr ""
 
-#: wpuf-functions.php:6144
+#: wpuf-functions.php:6170
 msgid "Enable User Comment"
 msgstr ""
 
-#: wpuf-functions.php:6146
+#: wpuf-functions.php:6172
 msgid "Allow users to comment on posts submitted via this form"
 msgstr ""
 
-#: wpuf-functions.php:6153
+#: wpuf-functions.php:6179
 msgid "Enable Form Scheduling"
 msgstr ""
 
-#: wpuf-functions.php:6155
+#: wpuf-functions.php:6181
 msgid "Set specific dates and times for when the form will be accessible to users"
 msgstr ""
 
-#: wpuf-functions.php:6180
+#: wpuf-functions.php:6206
 msgid "Limit Form Entries"
 msgstr ""
 
-#: wpuf-functions.php:6182
+#: wpuf-functions.php:6208
 msgid "Limit the number of submissions allowed for the form"
 msgstr ""
 
-#: wpuf-functions.php:6244
+#: wpuf-functions.php:6270
 msgid "Saved"
 msgstr ""
 
-#: wpuf-functions.php:6245
+#: wpuf-functions.php:6271
 msgid "Trash"
 msgstr ""
 
-#: wpuf-functions.php:6288
+#: wpuf-functions.php:6314
 msgid "JPG"
 msgstr ""
 
-#: wpuf-functions.php:6289
+#: wpuf-functions.php:6315
 msgid "JPEG"
 msgstr ""
 
-#: wpuf-functions.php:6290
+#: wpuf-functions.php:6316
 msgid "PNG"
 msgstr ""
 
-#: wpuf-functions.php:6291
+#: wpuf-functions.php:6317
 msgid "GIF"
 msgstr ""
 
-#: wpuf-functions.php:6436
+#: wpuf-functions.php:6462
 msgid "Layout 1 - Classic"
 msgstr ""
 
-#: wpuf-functions.php:6437
+#: wpuf-functions.php:6463
 msgid "Layout 2 - Modern Dark"
 msgstr ""
 
-#: wpuf-functions.php:6438
+#: wpuf-functions.php:6464
 msgid "Layout 3 - Minimal"
 msgstr ""
 
-#: wpuf-functions.php:6439
+#: wpuf-functions.php:6465
 msgid "Layout 4 - Bordered"
 msgstr ""
 
-#: wpuf-functions.php:6440
+#: wpuf-functions.php:6466
 msgid "Layout 5 - Rounded"
 msgstr ""
 
-#: wpuf-functions.php:6441
+#: wpuf-functions.php:6467
 msgid "Layout 6 - Clean"
 msgstr ""
 
-#: wpuf-functions.php:6442
+#: wpuf-functions.php:6468
 msgid "Layout 7 - Premium"
 msgstr ""
 
-#: wpuf-functions.php:6668
+#: wpuf-functions.php:6694
 msgid "Invalid post ID."
 msgstr ""
 
-#: wpuf-functions.php:6678
+#: wpuf-functions.php:6704
 msgid "Post not found."
 msgstr ""
 
-#: wpuf-functions.php:6697
+#: wpuf-functions.php:6723
 msgid "You are not authorized to edit this post."
 msgstr ""
 
-#: wpuf-functions.php:6708
+#: wpuf-functions.php:6734
 msgid "Post editing is disabled."
 msgstr ""
 
-#: wpuf-functions.php:6743
+#: wpuf-functions.php:6769
 msgid "Your allocated time for editing this post has expired."
 msgstr ""
 
-#: wpuf-functions.php:6777
+#: wpuf-functions.php:6803
 msgid "Your subscription has expired. Please renew to edit posts."
 msgstr ""
 
-#: wpuf-functions.php:6788
+#: wpuf-functions.php:6814
 msgid "You cannot edit this post until payment is completed."
 msgstr ""
 

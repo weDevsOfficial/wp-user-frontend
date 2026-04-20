@@ -6113,7 +6113,33 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'wp-user-frontend'
                     ),
                     'fields' => [
-                        'use_theme_css'           => [
+                        'form_layout'    => [
+                            'label'   => __( 'Choose Form Style', 'wp-user-frontend' ),
+                            'type'    => 'pic-radio',
+                            'options' => [
+                                'layout1' => [
+                                    'label' => __( 'Template 1', 'wp-user-frontend' ),
+                                    'image' => WPUF_ASSET_URI . '/images/forms/layout1.png',
+                                ],
+                                'layout2' => [
+                                    'label' => __( 'Template 2', 'wp-user-frontend' ),
+                                    'image' => WPUF_ASSET_URI . '/images/forms/layout2.png',
+                                ],
+                                'layout3' => [
+                                    'label' => __( 'Template 3', 'wp-user-frontend' ),
+                                    'image' => WPUF_ASSET_URI . '/images/forms/layout3.png',
+                                ],
+                                'layout4' => [
+                                    'label' => __( 'Template 4', 'wp-user-frontend' ),
+                                    'image' => WPUF_ASSET_URI . '/images/forms/layout4.png',
+                                ],
+                                'layout5' => [
+                                    'label' => __( 'Template 5', 'wp-user-frontend' ),
+                                    'image' => WPUF_ASSET_URI . '/images/forms/layout5.png',
+                                ],
+                            ],
+                        ],
+                        'use_theme_css'  => [
                             'label'     => __( 'Use Theme CSS', 'wp-user-frontend' ),
                             'type'      => 'toggle',
                             'help_text' => __(

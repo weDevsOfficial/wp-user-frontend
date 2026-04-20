@@ -21,33 +21,72 @@ class Admin_Installer {
      */
     public function admin_notice() {
         $page_created = get_option( '_wpuf_page_created' );
-        if ( $page_created != '1' && 'off' == wpuf_get_option( 'install_wpuf_pages', 'wpuf_general', 'on' ) ) {
+        if ( '1' !== $page_created && 'off' === wpuf_get_option( 'install_wpuf_pages', 'wpuf_general', 'on' ) ) {
             ?>
             <div class="updated error">
                 <p>
-                    <?php esc_html_e( 'If you have not created <strong>WP User Frontend</strong> pages yet, you can do this by one click.',
-                                      'wp-user-frontend' ); ?>
+                    <?php
+                    esc_html_e(
+                        'If you have not created <strong>WP User Frontend</strong> pages yet, you can do this by one click.',
+                        'wp-user-frontend'
+                    );
+					?>
                 </p>
                 <p class="submit">
                     <a class="button button-primary"
-                       href="<?php echo esc_url( add_query_arg( [ 'install_wpuf_pages' => true ],
-                                                                admin_url( 'admin.php?page=wpuf-settings' ) ) ); ?>"><?php esc_html_e( 'Install WPUF Pages',
-                                                                                                                                       'wp-user-frontend' ); ?></a>
+                        href="
+                        <?php
+						echo esc_url(
+                            wp_nonce_url(
+                                add_query_arg(
+                                    [ 'install_wpuf_pages' => '1' ],
+                                    admin_url( 'admin.php?page=wpuf-settings' )
+                                ),
+                                'wpuf_install_pages'
+                            )
+                        );
+						?>
+                                                                ">
+                                                                <?php
+																esc_html_e(
+                                                                    'Install WPUF Pages',
+                                                                    'wp-user-frontend'
+																);
+																?>
+                                                                                                                                        </a>
                     <?php esc_html_e( 'or', 'wp-user-frontend' ); ?>
                     <a class="button"
-                       href="<?php echo esc_url( add_query_arg( [ 'wpuf_hide_page_nag' => true ] ) ); ?>"><?php esc_html_e( 'Skip Setup',
-                                                                                                                            'wp-user-frontend' ); ?></a>
+                        href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'wpuf_hide_page_nag' => '1' ] ), 'wpuf_install_pages' ) ); ?>">
+                                        <?php
+											esc_html_e(
+                                                'Skip Setup',
+                                                'wp-user-frontend'
+                                            );
+										?>
+                                                                                                                            </a>
                 </p>
             </div>
             <?php
         }
-        if ( isset( $_GET['wpuf_page_installed'] ) && $_GET['wpuf_page_installed'] == '1' ) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if ( isset( $_GET['wpuf_page_installed'] ) && '1' === $_GET['wpuf_page_installed'] ) {
             ?>
             <div class="updated">
                 <p>
-                    <strong><?php esc_html_e( 'Congratulations!',
-                                              'wp-user-frontend' ); ?></strong> <?php echo wp_kses_post( 'Pages for <strong>WP User Frontend</strong> has been successfully installed and saved!',
-                                                                                                         'wp-user-frontend' ); ?>
+                    <strong>
+                        <?php
+                        esc_html_e(
+                            'Congratulations!',
+                            'wp-user-frontend'
+                        );
+                        ?>
+                    </strong>
+                    <?php
+                        echo wp_kses_post(
+                            'Pages for <strong>WP User Frontend</strong> has been successfully installed and saved!',
+                            'wp-user-frontend'
+                        );
+                    ?>
                 </p>
             </div>
             <?php
@@ -60,16 +99,24 @@ class Admin_Installer {
      * @return void
      */
     public function handle_request() {
-        $nonce = isset( $_REQUEST['wpuf_steup'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf_steup'] ) ) : '';
-        if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( 'wpuf_steup' ) ) {
+        if ( ! isset( $_GET['install_wpuf_pages'] ) && ! isset( $_GET['wpuf_hide_page_nag'] ) ) {
+            return;
         }
-        if ( isset( $_GET['install_wpuf_pages'] ) && $_GET['install_wpuf_pages'] == '1' ) {
+
+        if ( ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
+
+        $nonce = isset( $_GET['_wpnonce'] ) ? sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+        if ( ! wp_verify_nonce( $nonce, 'wpuf_install_pages' ) ) {
+            return;
+        }
+
+        if ( isset( $_GET['install_wpuf_pages'] ) && '1' === $_GET['install_wpuf_pages'] ) {
             $this->init_pages();
         }
-        // if ( isset( $_POST['install_wpuf_pages'] ) && $_POST['install_wpuf_pages'] == '1' ) {
-        //     $this->init_pages();
-        // }
-        if ( isset( $_GET['wpuf_hide_page_nag'] ) && $_GET['wpuf_hide_page_nag'] == '1' ) {
+
+        if ( isset( $_GET['wpuf_hide_page_nag'] ) && '1' === $_GET['wpuf_hide_page_nag'] ) {
             update_option( '_wpuf_page_created', '1' );
         }
     }
@@ -88,26 +135,40 @@ class Admin_Installer {
         $edit_page      = $this->create_page( __( 'Edit', 'wp-user-frontend' ), '[wpuf_edit]' );
         // login page
         $login_page = $this->create_page( __( 'Login', 'wp-user-frontend' ), '[wpuf-login]' );
-        $post_form = $this->create_form();
-        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+        $post_form  = $this->create_form();
+        if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
             // payment page
-            $subscr_page  = $this->create_page( __( 'Subscription', 'wp-user-frontend' ),
-                                                __( '[wpuf_sub_pack]', 'wp-user-frontend' ) );
-            $payment_page = $this->create_page( __( 'Payment', 'wp-user-frontend' ),
-                                                __( 'Please select a gateway for payment', 'wp-user-frontend' ) );
-            $thank_page   = $this->create_page( __( 'Thank You', 'wp-user-frontend' ),
-                                                __( '<h1>Payment is complete</h1><p>Congratulations, your payment has been completed!</p>',
-                                                    'wp-user-frontend' ) );
-            $bank_page    = $this->create_page( __( 'Order Received', 'wp-user-frontend' ),
-                                                __( 'Hi, we have received your order. We will validate the order and will take necessary steps to move forward.',
-                                                    'wp-user-frontend' ) );
+            $subscr_page  = $this->create_page(
+                __( 'Subscription', 'wp-user-frontend' ),
+                __( '[wpuf_sub_pack]', 'wp-user-frontend' )
+            );
+            $payment_page = $this->create_page(
+                __( 'Payment', 'wp-user-frontend' ),
+                __( 'Please select a gateway for payment', 'wp-user-frontend' )
+            );
+            $thank_page   = $this->create_page(
+                __( 'Thank You', 'wp-user-frontend' ),
+                __(
+                    '<h1>Payment is complete</h1><p>Congratulations, your payment has been completed!</p>',
+                    'wp-user-frontend'
+                )
+            );
+            $bank_page    = $this->create_page(
+                __( 'Order Received', 'wp-user-frontend' ),
+                __(
+                    'Hi, we have received your order. We will validate the order and will take necessary steps to move forward.',
+                    'wp-user-frontend'
+                )
+            );
         }
         // save the settings
         if ( $edit_page ) {
-            update_option( 'wpuf_frontend_posting', [
-                'edit_page_id'      => $edit_page,
-                'default_post_form' => $post_form,
-            ] );
+            update_option(
+                'wpuf_frontend_posting', [
+					'edit_page_id'      => $edit_page,
+					'default_post_form' => $post_form,
+				]
+            );
         }
         // profile pages
         $profile_options = [];
@@ -128,14 +189,16 @@ class Admin_Installer {
             $profile_options['register_link_override'] = 'on';
         }
         update_option( 'wpuf_profile', $profile_options );
-        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+        if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
             // payment pages
-            update_option( 'wpuf_payment', [
-                'subscription_page' => $subscr_page,
-                'payment_page'      => $payment_page,
-                'payment_success'   => $thank_page,
-                'bank_success'      => $bank_page,
-            ] );
+            update_option(
+                'wpuf_payment', [
+					'subscription_page' => $subscr_page,
+					'payment_page'      => $payment_page,
+					'payment_success'   => $thank_page,
+					'bank_success'      => $bank_page,
+				]
+            );
         }
         update_option( '_wpuf_page_created', '1' );
 
@@ -150,9 +213,12 @@ class Admin_Installer {
         // Auto-add logout link to the primary menu
         $this->auto_add_logout_to_menu();
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
-        if ( $page != 'wpuf-setup' ) {
-            wp_redirect( admin_url( 'admin.php?page=wpuf-settings&wpuf_page_installed=1' ) );
+
+        if ( 'wpuf-setup' !== $page ) {
+            wp_safe_redirect( admin_url( 'admin.php?page=wpuf-settings&wpuf_page_installed=1' ) );
+
             exit;
         }
     }
@@ -246,11 +312,13 @@ class Admin_Installer {
      */
     private function add_logout_to_fse_navigation() {
         // Get all wp_navigation posts
-        $navigations = get_posts( [
-            'post_type'      => 'wp_navigation',
-            'posts_per_page' => -1,
-            'post_status'    => 'publish',
-        ] );
+        $navigations = get_posts(
+            [
+				'post_type'      => 'wp_navigation',
+				'posts_per_page' => -1,
+				'post_status'    => 'publish',
+			]
+        );
 
         if ( empty( $navigations ) ) {
             return false;
@@ -275,10 +343,12 @@ class Admin_Installer {
             // Append logout link to the navigation content
             $new_content = $navigation->post_content . "\n" . $logout_block;
 
-            wp_update_post( [
-                'ID'           => $navigation->ID,
-                'post_content' => $new_content,
-            ] );
+            wp_update_post(
+                [
+					'ID'           => $navigation->ID,
+					'post_content' => $new_content,
+				]
+            );
 
             $updated = true;
         }
@@ -342,7 +412,7 @@ class Admin_Installer {
 <!-- /wp:wpuf-ud/directory-item --></div>
 <!-- /wp:wpuf-ud/directory -->
 
-<!-- wp:wpuf-ud/profile {"block_instance_id":"b59d61da-fb6c-4cec-8e65-64e7c236a593","userId":1,"userObject":{"id":1,"user_login":"admin101","display_name":"John Doe","user_email":"mail@mail.com","user_url":"https://wpuf.test","bio":"Curabitur euismod neque vel accumsan aliquet. Donec quis massa ac sem congue ullamcorper. Morbi at sodales ligula. Sed laoreet in odio a cursus. Integer quis nisi sit amet tortor aliquam ornare luctus non orci. Pellentesque porttitor nunc sed augue luctus auctor. Phasellus feugiat quis dui sit amet lacinia. Nullam et venenatis ligula, id iaculis ligula. Maecenas cursus ex vitae neque elementum, convallis condimentum ex aliquet. Maecenas eu orci ac nunc interdum tristique. Nunc id odio massa. Praesent et diam nec ipsum congue lobortis. Aliquam erat volutpat.","avatar":"https://secure.gravatar.com/avatar/74a43f5a2491b706609180d3059d0b4269b25d859801497ec0d248fe75f37ac4?s=96\u0026d=mm\u0026r=g","first_name":"John","last_name":"Doe","nickname":"user nickname","user_registered":"2025-08-19 09:33:34","roles":["administrator"],"class_list":"","username":"admin101","name":"John Doe"},"canEdit":"1","hasSelectedPattern":true} -->
+<!-- wp:wpuf-ud/profile {"hasSelectedPattern":true} -->
 <div class="wp-block-wpuf-ud-profile wpuf-user-profile"><!-- wp:columns {"className":"wpuf-flex wpuf-flex-row wpuf-gap-8 wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-p-8"} -->
 <div class="wp-block-columns wpuf-flex wpuf-flex-row wpuf-gap-8 wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-p-8"><!-- wp:column {"width":"35%","className":"wpuf-profile-sidebar","style":{"border":{"style":"none","width":"0px"},"spacing":{"padding":{"right":"var:preset|spacing|40","top":"0","bottom":"0","left":"0"}}},"layout":{"type":"constrained","justifyContent":"left","contentSize":"75%"}} -->
 <div class="wp-block-column wpuf-profile-sidebar" style="border-style:none;border-width:0px;padding-top:0;padding-right:var(--wp--preset--spacing--40);padding-bottom:0;padding-left:0;flex-basis:35%"><!-- wp:wpuf-ud/avatar {"avatarSize":"custom","fallbackType":"gravatar","customSize":100,"style":{"spacing":{"margin":{"bottom":"10px"}}}} /-->
@@ -389,13 +459,15 @@ HTML;
      * @return false|int
      */
     public function create_page( $page_title, $post_content = '', $post_type = 'page' ) {
-        $page_id = wp_insert_post( [
-                                       'post_title'     => $page_title,
-                                       'post_type'      => $post_type,
-                                       'post_status'    => 'publish',
-                                       'comment_status' => 'closed',
-                                       'post_content'   => $post_content,
-                                   ] );
+        $page_id = wp_insert_post(
+            [
+				'post_title'     => $page_title,
+				'post_type'      => $post_type,
+				'post_status'    => 'publish',
+				'comment_status' => 'closed',
+				'post_content'   => $post_content,
+			]
+        );
         if ( $page_id && ! is_wp_error( $page_id ) ) {
             return $page_id;
         }

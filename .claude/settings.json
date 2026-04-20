@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(composer phpcs)",
+      "Bash(composer phpcs:*)",
+      "Bash(composer phpcbf)",
+      "Bash(composer phpcbf:*)",
+      "Bash(composer install)",
+      "Bash(composer update)",
+      "Bash(composer dump-autoload)",
+      "Bash(npm run build)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm install)",
+      "Bash(npm ci)",
+      "Bash(npx playwright:*)",
+      "Bash(grunt release)",
+      "Bash(grunt:*)",
+      "Bash(git status)",
+      "Bash(git status:*)",
+      "Bash(git diff)",
+      "Bash(git diff:*)",
+      "Bash(git log)",
+      "Bash(git log:*)",
+      "Bash(git branch)",
+      "Bash(git branch:*)",
+      "Bash(git show)",
+      "Bash(git show:*)",
+      "Bash(git fetch:*)",
+      "Bash(git stash list)",
+      "Bash(git stash show:*)",
+      "Bash(git remote -v)",
+      "Bash(git ls-files:*)",
+      "Bash(git blame:*)",
+      "Bash(gh pr:*)",
+      "Bash(gh issue:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "Bash(gh api:*)",
+      "Bash(ls:*)",
+      "Bash(tree:*)",
+      "Bash(wc -l:*)",
+      "Bash(php -l:*)",
+      "Bash(php -v)",
+      "Bash(node -v)",
+      "Bash(npm -v)"
+    ],
+    "deny": [
+      "Read(./vendor/**)",
+      "Read(./node_modules/**)",
+      "Read(./modules/user-directory/node_modules/**)",
+      "Read(./tests/e2e/node_modules/**)",
+      "Read(./assets/js/*.min.js)",
+      "Read(./assets/css/*.min.css)",
+      "Read(./assets/vendor/**)",
+      "Read(./languages/*.mo)",
+      "Read(./build/**)",
+      "Read(./tests/e2e/test-results/**)",
+      "Read(./tests/e2e/playwright-report/**)",
+      "Read(./tests/e2e/parallel-*/**)",
+      "Read(./.idea/**)",
+      "Read(./.vscode/**)",
+      "Read(./secret.json)",
+      "Read(./log.txt)",
+      "Read(./phpcs-report.txt)",
+      "Bash(rm -rf:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(composer require:*)",
+      "Bash(npm publish:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | { read -r f; case \"$f\" in *.php) [ -f \"$f\" ] && \"$CLAUDE_PROJECT_DIR/vendor/bin/phpcs\" -s --report=emacs \"$f\" 2>&1 | head -40 || true ;; esac; }"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command // empty' | grep -E '(rm[[:space:]]+-rf[[:space:]]+/|git[[:space:]]+push[[:space:]]+(-f|--force)|git[[:space:]]+reset[[:space:]]+--hard|--no-verify)' >/dev/null && { echo 'Blocked: destructive or verification-bypassing command. Ask the user before running this.' >&2; exit 2; } || exit 0"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf '%s\\n' 'WPUF non-negotiables (reminder):' '- Preserve existing hooks, filters, REST routes, template paths, and public method signatures — they are contracts.' '- Free/Pro split: never assume Pro exists. Guard with class_exists(\"WP_User_Frontend_Pro\").' '- Legacy code (jQuery form builder, LESS, Grunt, class/) coexists intentionally. Do not rewrite without explicit permission.' '- Run composer phpcs on changed PHP before claiming done.' '- Invoke the matching .claude/skills/ skill before writing code.'"
+          }
+        ]
+      }
+    ]
+  }
+}

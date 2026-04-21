@@ -43,15 +43,6 @@ class TEC_V6_Compatibility {
             $all_data['tags'] = sanitize_text_field( $_POST['tags'] );
         }
 
-        // Debug logging
-        if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
-            error_log( 'WPUF TEC Debug - form_data keys: ' . print_r( array_keys( $form_data ), true ) );
-            error_log( 'WPUF TEC Debug - all_data tags: ' . print_r( isset($all_data['tags']) ? $all_data['tags'] : 'not set', true ) );
-            error_log( 'WPUF TEC Debug - all_data tags_input: ' . print_r( isset($all_data['tags_input']) ? $all_data['tags_input'] : 'not set', true ) );
-            error_log( 'WPUF TEC Debug - $_POST tags: ' . print_r( isset($_POST['tags']) ? $_POST['tags'] : 'not set', true ) );
-        }
-
-
         /**
          * Opportunity to modify form data before converting to TEC ORM format
          *

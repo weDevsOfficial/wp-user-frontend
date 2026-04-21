@@ -7,7 +7,9 @@
   "private": true,
   "scripts": {
     "release": "grunt release",
-    "build": "npm run build:forms-list && npm run build:subscriptions && npm run build:frontend-subscriptions && npm run build:ai-form-builder && npm run build:account && npm run build:user-directory && npm run build:css",
+    "build": "npm run build:forms-list && npm run build:subscriptions && npm run build:frontend-subscriptions && npm run build:ai-form-builder && npm run build:account && npm run build:user-directory && npm run build:blocks && npm run build:css",
+    "build:blocks": "wp-scripts build --config webpack.config.js",
+    "watch:blocks": "wp-scripts start --config webpack.config.js",
     "build:forms-list": "ENTRY=forms-list vite build",
     "build:subscriptions": "ENTRY=subscriptions vite build",
     "build:frontend-subscriptions": "ENTRY=frontend-subscriptions vite build",
@@ -21,6 +23,7 @@
     "@tailwindcss/forms": "0.5.7",
     "@types/node": "^18.11.18",
     "@vitejs/plugin-vue": "^5.0.4",
+    "@wordpress/scripts": "^31.8.0",
     "autoprefixer": "^10.4.16",
     "daisyui": "^4.12.2",
     "grunt": "^1.5.3",

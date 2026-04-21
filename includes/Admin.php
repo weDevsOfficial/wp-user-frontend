@@ -25,7 +25,6 @@ class Admin {
         $this->container['admin_installer']       = new Admin\Admin_Installer();
         $this->container['settings']              = new Admin\Admin_Settings();
         $this->container['forms']                 = new Admin\Forms\Form_Manager();
-        $this->container['gutenberg_block']       = new Frontend\Form_Gutenberg_Block();
         $this->container['plugin_upgrade_notice'] = new Admin\Plugin_Upgrade_Notice();
         $this->container['posting']               = new Admin\Posting();
         $this->container['shortcodes_button']     = new Admin\Shortcodes_Button();

@@ -261,10 +261,6 @@ class PostForm {
      * @return string
      */
     public function render( $attributes ) {
-        if ( ! empty( $attributes['formId'] ) ) {
-            $form_settings_dbg = get_post_meta( (int) $attributes['formId'], 'wpuf_form_settings', true );
-        }
-
         $defaults = [
             'blockId'                     => '',
             'formId'                      => 0,

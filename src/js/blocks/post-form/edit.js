@@ -217,6 +217,20 @@ export default function Edit({ attributes, setAttributes }) {
         uploadButtonFontSize,
         uploadButtonPaddingV,
         uploadButtonPaddingH,
+        msButtonBackgroundColor,
+        msButtonTextColor,
+        msButtonFontFamily,
+        msButtonFontStyle,
+        msButtonFontWeight,
+        msButtonBorderColor,
+        msButtonBorderWidth,
+        msButtonBorderRadius,
+        msButtonFontSize,
+        msButtonPaddingV,
+        msButtonPaddingH,
+        msActiveBgColor,
+        msActiveTextColor,
+        msInactiveBgColor,
     } = attributes;
 
     const blockProps = useBlockProps();
@@ -228,6 +242,7 @@ export default function Edit({ attributes, setAttributes }) {
     const helpTextFontFaces     = getFontFamilyFaces( helpTextFontFamily, mergedFontFamilies );
     const buttonFontFaces       = getFontFamilyFaces( buttonFontFamily, mergedFontFamilies );
     const uploadButtonFontFaces = getFontFamilyFaces( uploadButtonFontFamily, mergedFontFamilies );
+    const msButtonFontFaces     = getFontFamilyFaces( msButtonFontFamily, mergedFontFamilies );
 
     // Assign blockId once on first insert
     useEffect(() => {
@@ -298,13 +313,6 @@ export default function Edit({ attributes, setAttributes }) {
     const editorData = window.wpufPostForm || {};
     const forms = editorData.forms || [];
 
-    // eslint-disable-next-line no-console
-    console.log( '[WPUF PostForm] editor data', {
-        formId,
-        forms,
-        selectedForm: forms.find( ( f ) => f.id === formId ),
-    } );
-
     // Build SelectControl options: "Select a form" placeholder + all post forms
     const formOptions = [
         { value: '0', label: __('— Select a post form —', 'wp-user-frontend') },
@@ -313,6 +321,9 @@ export default function Edit({ attributes, setAttributes }) {
             label: f.title,
         })),
     ];
+
+    const selectedForm = forms.find( ( f ) => f.id === formId );
+    const isMultistep  = selectedForm?.is_multistep || false;
 
     const handleFormChange = (val) => {
         setAttributes({
@@ -672,6 +683,105 @@ export default function Edit({ attributes, setAttributes }) {
                         },
                     ]}
                 />
+
+                {isMultistep && (
+                    <PanelBody
+                        title={__('Prev / Next Button Styles', 'wp-user-frontend')}
+                        initialOpen={false}
+                    >
+                        <FontFamilyControl
+                            __next40pxDefaultSize
+                            fontFamilies={mergedFontFamilies}
+                            value={msButtonFontFamily}
+                            onChange={(val) => setAttributes({ msButtonFontFamily: val })}
+                        />
+
+                        <FontAppearanceControl
+                            __next40pxDefaultSize
+                            value={{ fontStyle: msButtonFontStyle, fontWeight: msButtonFontWeight }}
+                            onChange={({ fontStyle, fontWeight }) =>
+                                setAttributes({ msButtonFontStyle: fontStyle, msButtonFontWeight: fontWeight })
+                            }
+                            fontFamilyFaces={msButtonFontFaces}
+                            hasFontStyles={true}
+                            hasFontWeights={true}
+                        />
+
+                        <UnitControl
+                            label={__('Font Size', 'wp-user-frontend')}
+                            value={msButtonFontSize}
+                            onChange={(val) => setAttributes({ msButtonFontSize: val })}
+                            units={FONT_SIZE_UNITS}
+                        />
+
+                        <UnitControl
+                            label={__('Border Width', 'wp-user-frontend')}
+                            value={msButtonBorderWidth}
+                            onChange={(val) => setAttributes({ msButtonBorderWidth: val })}
+                            units={BORDER_WIDTH_UNITS}
+                        />
+
+                        <UnitControl
+                            label={__('Border Radius', 'wp-user-frontend')}
+                            value={msButtonBorderRadius}
+                            onChange={(val) => setAttributes({ msButtonBorderRadius: val })}
+                            units={BORDER_RADIUS_UNITS}
+                        />
+
+                        <UnitControl
+                            label={__('Padding Vertical', 'wp-user-frontend')}
+                            value={msButtonPaddingV}
+                            onChange={(val) => setAttributes({ msButtonPaddingV: val })}
+                            units={SPACING_UNITS}
+                        />
+
+                        <UnitControl
+                            label={__('Padding Horizontal', 'wp-user-frontend')}
+                            value={msButtonPaddingH}
+                            onChange={(val) => setAttributes({ msButtonPaddingH: val })}
+                            units={SPACING_UNITS}
+                        />
+                    </PanelBody>
+                )}
+
+                {isMultistep && (
+                    <PanelColorSettings
+                        title={__('Multistep Colors', 'wp-user-frontend')}
+                        initialOpen={false}
+                        colorSettings={[
+                            {
+                                value: msActiveBgColor,
+                                onChange: (val) => setAttributes({ msActiveBgColor: val || '' }),
+                                label: __('Active Step Background', 'wp-user-frontend'),
+                            },
+                            {
+                                value: msActiveTextColor,
+                                onChange: (val) => setAttributes({ msActiveTextColor: val || '' }),
+                                label: __('Active Step Text', 'wp-user-frontend'),
+                            },
+                            {
+                                value: msInactiveBgColor,
+                                onChange: (val) => setAttributes({ msInactiveBgColor: val || '' }),
+                                label: __('Inactive Step Background', 'wp-user-frontend'),
+                            },
+                            {
+                                value: msButtonBackgroundColor,
+                                onChange: (val) => setAttributes({ msButtonBackgroundColor: val || '' }),
+                                label: __('Prev / Next Button Background', 'wp-user-frontend'),
+                            },
+                            {
+                                value: msButtonTextColor,
+                                onChange: (val) => setAttributes({ msButtonTextColor: val || '' }),
+                                label: __('Prev / Next Button Text', 'wp-user-frontend'),
+                            },
+                            {
+                                value: msButtonBorderColor,
+                                onChange: (val) => setAttributes({ msButtonBorderColor: val || '' }),
+                                label: __('Prev / Next Button Border', 'wp-user-frontend'),
+                            },
+                        ]}
+                    />
+                )}
             </InspectorControls>
 
             <div style={{ position: 'relative' }}>

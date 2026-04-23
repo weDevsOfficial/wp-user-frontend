@@ -364,7 +364,7 @@ class Admin_Tools {
 
                 <div class="inside">
                     <p><?php esc_html_e( 'Clicking this button will create required pages for the plugin. Note: It\'ll not delete/replace existing pages.', 'wp-user-frontend' ); ?></p>
-                    <a class="button button-primary" href="<?php echo esc_attr( add_query_arg( [ 'install_wpuf_pages' => true ] ) ); ?>"><?php esc_html_e( 'Install WPUF Pages', 'wp-user-frontend' ); ?></a>
+                    <a class="button button-primary" href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'install_wpuf_pages' => '1' ] ), 'wpuf_install_pages' ) ); ?>"><?php esc_html_e( 'Install WPUF Pages', 'wp-user-frontend' ); ?></a>
                 </div>
             </div>
 

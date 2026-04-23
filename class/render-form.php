@@ -228,10 +228,11 @@ class WPUF_Render_Form {
         foreach ( $meta_vars as $key => $value ) {
             $value_name = isset( $_POST[$value['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$value['name']] ) ) : '';
             if ( isset( $_POST['wpuf_files'][$value['name']] ) ) {
-                $wpuf_files = isset( $_POST['wpuf_files'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_files'][$value['name']] ) ) : [];
-            } else {
-                $wpuf_files = [];
-            }
+            $raw_files = wp_unslash( $_POST['wpuf_files'][$value['name']] );
+            $wpuf_files = absint( $raw_files );
+        } else {
+            $wpuf_files = [];
+        }
             switch ( $value['input_type'] ) {
 
                 // put files in a separate array, we'll process it later

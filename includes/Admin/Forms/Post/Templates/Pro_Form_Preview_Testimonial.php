@@ -5,7 +5,7 @@ namespace WeDevs\Wpuf\Admin\Forms\Post\Templates;
 /**
  * Testimonial submission form template preview
  *
- * @since WPUF_SINCE
+ * @since 4.3.2
  */
 class Pro_Form_Preview_Testimonial {
 
@@ -37,7 +37,7 @@ class Pro_Form_Preview_Testimonial {
     /**
      * Get the template title
      *
-     * @since WPUF_SINCE
+     * @since 4.3.2
      *
      * @return string
      */
@@ -48,7 +48,7 @@ class Pro_Form_Preview_Testimonial {
     /**
      * Get the template image
      *
-     * @since WPUF_SINCE
+     * @since 4.3.2
      *
      * @return string
      */
@@ -59,7 +59,7 @@ class Pro_Form_Preview_Testimonial {
     /**
      * Get the pro icon
      *
-     * @since WPUF_SINCE
+     * @since 4.3.2
      *
      * @return string
      */

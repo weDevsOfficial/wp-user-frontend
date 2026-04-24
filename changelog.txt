@@ -1,3 +1,11 @@
+= v4.3.2 (24 April, 2026) =
+New – Add guest and paid guest post templates and assets
+New – Add user directory page creation to installer and tools
+Enhance – Add 'General' category for registration forms
+Fix – Sanitize file IDs with absint and remove debug logs
+Fix – Resolve unauthorized subscription pack assignment
+Fix – Enable fallback pay-per-post when force_pack is set
+
 = v4.3.1 (8 April, 2026) =
 * New – Add Elementor Account page widget
 * New – Add Elementor Subscription widget

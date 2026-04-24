@@ -7,7 +7,7 @@ use WeDevs\Wpuf\Admin\Forms\Form_Template;
 /**
  * Paid guest post submission form template
  *
- * @since WPUF_SINCE
+ * @since 4.3.2
  */
 class Post_Form_Template_Paid_Guest_Post extends Form_Template {
 

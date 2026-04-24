@@ -7,7 +7,7 @@ use WeDevs\Wpuf\Admin\Forms\Form_Template;
 /**
  * Guest post submission form with mandatory recurring subscription
  *
- * @since WPUF_SINCE
+ * @since 4.3.2
  */
 class Post_Form_Template_Guest_Post_Recurring extends Form_Template {
 

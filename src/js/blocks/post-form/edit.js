@@ -785,46 +785,54 @@ export default function Edit({ attributes, setAttributes }) {
             </InspectorControls>
 
             <div style={{ position: 'relative' }}>
-                {isUpdating && (
-                    <div className="wpuf-ssr-loading-overlay">
-                        <div className="wpuf-ssr-loading" />
-                        <p style={{ marginTop: '12px', fontSize: '13px' }}>
-                            {__('Updating preview…', 'wp-user-frontend')}
-                        </p>
-                    </div>
-                )}
-                <ServerSideRender
-                    block="wpuf/post-form"
-                    attributes={attributes}
-                    LoadingResponsePlaceholder={() => {
-                        // eslint-disable-next-line react-hooks/rules-of-hooks
-                        useEffect(() => {
-                            return () => {
-                                setIsUpdating(false);
-                            };
-                        }, []);
-                        return null;
-                    }}
-                    EmptyResponsePlaceholder={() => {
-                        // eslint-disable-next-line no-console
-                        console.warn( '[WPUF PostForm] SSR returned empty response', { formId } );
-                        return (
-                            <p style={{ padding: '12px', background: '#fff3cd', border: '1px solid #ffeeba' }}>
-                                { __( 'SSR returned an empty response. Check the PHP error log.', 'wp-user-frontend' ) }
-                            </p>
-                        );
-                    }}
-                    ErrorResponsePlaceholder={({ response }) => {
-                        // eslint-disable-next-line no-console
-                        console.error( '[WPUF PostForm] SSR error response', response );
-                        return (
-                            <p style={{ padding: '12px', background: '#f8d7da', border: '1px solid #f5c6cb' }}>
-                                { __( 'SSR error: ', 'wp-user-frontend' ) }
-                                { response?.errorMsg || JSON.stringify( response ) }
-                            </p>
-                        );
-                    }}
-                />
+                { ! formId ? (
+                    <p style={{ padding: '12px', textAlign: 'center', color: '#757575' }}>
+                        { __( 'Please select a post form to display.', 'wp-user-frontend' ) }
+                    </p>
+                ) : (
+                    <>
+                        { isUpdating && (
+                            <div className="wpuf-ssr-loading-overlay">
+                                <div className="wpuf-ssr-loading" />
+                                <p style={{ marginTop: '12px', fontSize: '13px' }}>
+                                    { __( 'Updating preview…', 'wp-user-frontend' ) }
+                                </p>
+                            </div>
+                        ) }
+                        <ServerSideRender
+                            block="wpuf/post-form"
+                            attributes={attributes}
+                            LoadingResponsePlaceholder={() => {
+                                // eslint-disable-next-line react-hooks/rules-of-hooks
+                                useEffect(() => {
+                                    return () => {
+                                        setIsUpdating(false);
+                                    };
+                                }, []);
+                                return null;
+                            }}
+                            EmptyResponsePlaceholder={() => {
+                                // eslint-disable-next-line no-console
+                                console.warn( '[WPUF PostForm] SSR returned empty response', { formId } );
+                                return (
+                                    <p style={{ padding: '12px', background: '#fff3cd', border: '1px solid #ffeeba' }}>
+                                        { __( 'SSR returned an empty response. Check the PHP error log.', 'wp-user-frontend' ) }
+                                    </p>
+                                );
+                            }}
+                            ErrorResponsePlaceholder={({ response }) => {
+                                // eslint-disable-next-line no-console
+                                console.error( '[WPUF PostForm] SSR error response', response );
+                                return (
+                                    <p style={{ padding: '12px', background: '#f8d7da', border: '1px solid #f5c6cb' }}>
+                                        { __( 'SSR error: ', 'wp-user-frontend' ) }
+                                        { response?.errorMsg || JSON.stringify( response ) }
+                                    </p>
+                                );
+                            }}
+                        />
+                    </>
+                ) }
             </div>
         </div>
     );

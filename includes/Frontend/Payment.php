@@ -26,12 +26,12 @@ class Payment {
     public static function get_payment_gateways() {
         /**
          * Filter payment gateways
-         * 
+         *
          * This filter now works with the new Gateway Manager architecture.
          * Gateways registered via Gateway_Manager will be automatically included.
-         * 
+         *
          * For backward compatibility, you can still add gateways using this filter:
-         * 
+         *
          * add_filter( 'wpuf_payment_gateways', function( $gateways ) {
          *     $gateways['custom_gateway'] = [
          *         'admin_label'    => 'Custom Gateway',
@@ -40,10 +40,10 @@ class Payment {
          *     ];
          *     return $gateways;
          * });
-         * 
+         *
          * @since 0.8
          * @since WPUF_PRO_SINCE Updated to work with Gateway Manager
-         * 
+         *
          * @param array $gateways Array of gateway configurations
          */
         $gateways = apply_filters( 'wpuf_payment_gateways', [] );
@@ -105,13 +105,13 @@ class Payment {
         if ( $post->ID === $pay_page && 'wpuf_pay' === $action ) {
             $post_id = isset( $_REQUEST['post_id'] ) ? intval( wp_unslash( $_REQUEST['post_id'] ) ) : 0;
             $pack_id = isset( $_REQUEST['pack_id'] ) ? intval( wp_unslash( $_REQUEST['pack_id'] ) ) : 0;
-            
+
             // Validate that both post_id and pack_id are not set simultaneously
             // Payment should be for either a pack OR a post, not both
             if ( $post_id > 0 && $pack_id > 0 ) {
                 return $content;
             }
-            
+
             $is_free = false;
             if ( $pack_id ) {
                 $pack_detail = wpuf()->subscription->get_subscription( $pack_id );
@@ -133,13 +133,17 @@ class Payment {
             } else {
                 $selected_gateway = 'paypal';
             }
-            ob_start();
-            if ( is_user_logged_in() ) {
-                $current_user = wp_get_current_user();
-            } else {
-                $user_id      = isset( $_GET['user_id'] ) ? intval( wp_unslash( $_GET['user_id'] ) ) : 0;
-                $current_user = get_userdata( $user_id );
+            if ( ! is_user_logged_in() ) {
+                return $content;
             }
+
+            $current_user  = wp_get_current_user();
+            $user_id_param = isset( $_GET['user_id'] ) ? intval( wp_unslash( $_GET['user_id'] ) ) : 0;
+            if ( $user_id_param > 0 && $user_id_param !== get_current_user_id() ) {
+                return $content;
+            }
+
+            ob_start();
             if ( $pack_id && $is_free ) {
                 $wpuf_subscription = wpuf()->subscription;
                 $wpuf_user         = new WPUF_User( $current_user->ID );
@@ -492,24 +496,24 @@ class Payment {
      */
     public static function insert_payment( $data, $transaction_id = 0, $recurring = false ) {
         global $wpdb;
-        
+
         $user_id = get_current_user_id();
         //check if it's already there
         $result = $wpdb->get_row( $wpdb->prepare( 'SELECT transaction_id
             FROM ' . $wpdb->prefix . 'wpuf_transaction
             WHERE transaction_id = %s LIMIT 1', $transaction_id ) );
-        
+
         // Store profile_id separately if it exists (needed for wpuf_payment_received action)
         // but don't insert it into database as the column doesn't exist
         $profile_id = isset( $data['profile_id'] ) ? $data['profile_id'] : null;
-        
+
         if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) && ! empty( $data['user_id'] ) ) {
             $data['payer_address'] = wpuf_get_user_address( $data['user_id'] );
         }
         if ( ! empty( $data['payer_address'] ) ) {
             $data['payer_address'] = maybe_serialize( $data['payer_address'] );
         }
-        
+
         // Create a copy of data for database insert (without profile_id)
         $db_data = $data;
         if ( isset( $db_data['profile_id'] ) ) {

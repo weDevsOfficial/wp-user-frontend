@@ -166,7 +166,8 @@ class Form_Field_Featured_Image extends Field_Contract {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $wpuf_files = isset( $_POST['wpuf_files'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wpuf_files'] ) ) : [];
+        $raw_files = isset( $_POST['wpuf_files'] ) ? wp_unslash( $_POST['wpuf_files'] ) : [];
+        $wpuf_files = array_map( 'absint', $raw_files );
 
         return isset( $wpuf_files[$field['name']] ) ? $wpuf_files[$field['name']] : [];
     }

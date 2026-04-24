@@ -67,7 +67,7 @@ class Paypal_Gateway extends Payment_Gateway {
         $this->id                    = 'paypal';
         $this->admin_label           = __( 'PayPal', 'wp-user-frontend' );
         $this->checkout_label        = __( 'PayPal', 'wp-user-frontend' );
-        $this->icon                  = apply_filters( 'wpuf_paypal_checkout_icon', WPUF_ASSET_URI . '/images/paypal.png' );
+        $this->icon                  = apply_filters( 'wpuf_paypal_checkout_icon', WPUF_ASSET_URI . '/images/paypal-mark.svg' );
         $this->supports_subscription = true;
 
         // Initialize PayPal-specific properties

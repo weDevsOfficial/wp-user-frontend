@@ -88,7 +88,6 @@ class Admin {
             return;
         }
 
-        wp_enqueue_style( 'wpuf-whats-new' );
         wp_enqueue_style( 'wpuf-admin' );
         wp_enqueue_style( 'wpuf-sweetalert2' );
         wp_enqueue_script( 'wpuf-sweetalert2' );
@@ -268,10 +267,7 @@ class Admin {
             $localize_data
         );
 
-        // Debug: Output form type as HTML comment for verification
-        add_action( 'admin_footer', function() use ( $form_type ) {
-            echo "\n<!-- WPUF AI Form Builder Debug: formType = " . esc_html( $form_type ) . " -->\n";
-        } );
+
     }
 
     /**

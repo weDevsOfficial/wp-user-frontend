@@ -563,7 +563,7 @@ class WPUF_Admin_Settings {
      * Allow json file to upload with async uploader
      *
      * @since 3.2.0
-     * @since WPUF_SINCE Added security validation to prevent arbitrary file uploads
+     * @since 4.2.9 Added security validation to prevent arbitrary file uploads
      *
      * @param array  $info            File data array with 'ext', 'type', and 'proper_filename' keys
      * @param string $file            Full path to the file
@@ -634,7 +634,7 @@ class WPUF_Admin_Settings {
      * Enable json file upload via ajax in tools page
      *
      * @since 3.2.0
-     * @since WPUF_SINCE Added admin capability check for security
+     * @since 4.2.9 Added admin capability check for security
      *
      * @todo Move this method to WPUF_Admin_Tools class
      *

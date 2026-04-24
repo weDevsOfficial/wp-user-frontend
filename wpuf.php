@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 4.2.8
+Version: 4.3.2
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -23,7 +23,7 @@ if ( file_exists( $autoload ) ) {
     require_once $autoload;
 }
 
-define( 'WPUF_VERSION', '4.2.8' );
+define( 'WPUF_VERSION', '4.3.2' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -196,6 +196,21 @@ final class WP_User_Frontend {
             $this->container['setup_wizard'] = new WeDevs\Wpuf\Setup_Wizard();
             $this->container['pro_upgrades'] = new WeDevs\Wpuf\Pro_Upgrades();
             $this->container['privacy']      = new WeDevs\Wpuf\WPUF_Privacy();
+
+            // Load Frontend when in Elementor editor or Elementor AJAX so shortcodes
+            // like wpuf_form and wpuf_account are registered and do_shortcode() works.
+            // Without this, is_admin() is true and Frontend is skipped, so do_shortcode()
+            // returns the raw shortcode. Covers: (1) editor page ?action=elementor,
+            // (2) render_widget AJAX when changing "Select Form" (action=elementor_ajax).
+            $get_action   = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
+            $request_act  = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
+            $is_elementor = ( $get_action === 'elementor' )
+                || ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) && $request_act === 'elementor_ajax' );
+
+
+            if ( $is_elementor ) {
+                $this->container['frontend'] = new WeDevs\Wpuf\Frontend();
+            }
         } else {
             $this->container['frontend'] = new WeDevs\Wpuf\Frontend();
         }
@@ -280,8 +295,13 @@ final class WP_User_Frontend {
             <h2><?php esc_html_e( 'Your WP User Frontend Pro is almost ready!', 'wp-user-frontend' ); ?></h2>
             <p>
                 <?php
-                /* translators: 1: opening anchor tag, 2: closing anchor tag. */
-                echo sprintf( wp_kses_post( __( 'We\'ve pushed a major update on both <b>WP User Frontend Free</b> and <b>WP User Frontend Pro</b> that requires you to use latest version of both. Please update the WPUF pro to the latest version. <br><strong>Please make sure to take a complete backup of your site before updating.</strong>', 'wp-user-frontend' ), '<a target="_blank" href="https://wordpress.org/plugins/wp-user-frontend/">', '</a>' ) );
+                    echo wp_kses_post( 
+                        sprintf( 
+                            __( 'We\'ve pushed a major update on both <b>WP User Frontend Free</b> and <b>%1$sWP User Frontend Pro%2$s</b> that requires you to use latest version of both. Please update the WPUF pro to the latest version. <br><strong>Please make sure to take a complete backup of your site before updating.</strong>', 'wp-user-frontend' ),
+                            '<a target="_blank" href="https://wordpress.org/plugins/wp-user-frontend/">',
+                            '</a>'
+                        )
+                    );
                 ?>
             </p>
         </div>

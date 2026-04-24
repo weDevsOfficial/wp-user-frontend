@@ -38,6 +38,10 @@ $categories = [];
 if ( strpos( strtolower( $form_type ), 'registration' ) !== false || strpos( strtolower( $form_type ), 'profile' ) !== false ) {
     // Profile/Registration form categories
     $categories = [
+        'general'      => [
+            'label'    => __( 'General', 'wp-user-frontend' ),
+            'keywords' => [ 'simple', 'signup', 'blog author' ],
+        ],
         'ecommerce'    => [
             'label'    => __( 'E-commerce', 'wp-user-frontend' ),
             'keywords' => [ 'vendor', 'marketplace', 'product' ],
@@ -46,10 +50,10 @@ if ( strpos( strtolower( $form_type ), 'registration' ) !== false || strpos( str
             'label'    => __( 'Membership', 'wp-user-frontend' ),
             'keywords' => [ 'membership' ],
         ],
-        // 'community'    => [
-        //     'label'    => __( 'Community', 'wp-user-frontend' ),
-        //     'keywords' => [],
-        // ],
+        'community'    => [
+            'label'    => __( 'Community', 'wp-user-frontend' ),
+            'keywords' => [ 'community member' ],
+        ],
         // 'associations' => [
         //     'label'    => __( 'Associations', 'wp-user-frontend' ),
         //     'keywords' => [],
@@ -86,7 +90,7 @@ if ( ! function_exists( 'wpuf_get_template_category' ) ) {
 
         // Default category based on form type
         if ( strpos( strtolower( $form_type ), 'registration' ) !== false || strpos( strtolower( $form_type ), 'profile' ) !== false ) {
-            return 'registration';
+            return 'general';
         } else {
             return 'post';
         }
@@ -189,7 +193,7 @@ if ( ! empty( $registry ) ) {
                     <div class="wpuf-flex wpuf-flex-wrap wpuf-gap-4" id="templates-grid">
                         <!-- Blank Form -->
                         <?php 
-                        $blank_form_category = strpos( strtolower( $form_type ), 'registration' ) !== false || strpos( strtolower( $form_type ), 'profile' ) !== false ? 'registration' : 'post';
+                        $blank_form_category = strpos( strtolower( $form_type ), 'registration' ) !== false || strpos( strtolower( $form_type ), 'profile' ) !== false ? 'general' : 'post';
                         ?>
                         <div class="template-box wpuf-template-item" data-category="<?php echo esc_attr($blank_form_category); ?>" data-title="blank form" style="width: calc(25% - 12px);">
                             <div class="wpuf-relative wpuf-group wpuf-shadow-base">
@@ -205,7 +209,7 @@ if ( ! empty( $registry ) ) {
                         <!-- AI Forms Template - Show for both Post Forms and Registration/Profile Forms -->
                         <?php
                         // Determine the appropriate category for AI Forms based on form type
-                        $ai_form_category = $is_post_form ? 'post' : 'registration';
+                        $ai_form_category = $is_post_form ? 'post' : 'general';
                         $ai_configured = wpuf_check_ai_configuration();
                         $ai_form_url = $ai_configured ? add_query_arg( [
                             'action'   => $action_name,
@@ -454,8 +458,6 @@ if ( ! empty( $registry ) ) {
                     $( '.wpuf-ai-forms-template a' ).on( 'click', $.proxy( this.handleAIFormsClick, this ) );
                     $( '#ai-config-cancel' ).on( 'click', $.proxy( this.closeAIConfigModal, this ) );
                     $( '#ai-config-settings' ).on( 'click', $.proxy( this.goToSettings, this ) );
-                } else {
-                    console.log('NOT attaching AI click handler - AI is configured or template not found');
                 }
             },
 

@@ -59,6 +59,9 @@
             close.style.display = 'none';
         })
 
+        // Gateway Selector Card Grid
+        wpufInitGatewaySelector();
+
         function wpuf_search_reset() {
             content.forEach(function (row, index) {
                 var content_id = row.closest('div').getAttribute('id');
@@ -369,4 +372,232 @@
         }
 
     });
+
+    /**
+     * Gateway Selector Card Grid
+     *
+     * Handles card click to toggle checkbox (multi-select) and
+     * shows only the clicked gateway's settings rows below.
+     */
+    function wpufInitGatewaySelector() {
+        var container = document.querySelector('.wpuf-gateway-cards');
+
+        if ( ! container ) {
+            return;
+        }
+
+        // Map gateway IDs to their settings field name prefixes.
+        // PayPal fields: paypal_*, gate_instruct_paypal
+        // Bank fields: bank_*, gate_instruct_bank
+        // Generic pattern: field name contains the gateway ID
+        var gatewayCards = container.querySelectorAll('.wpuf-gateway-card');
+
+        // Find the <tr> that contains the gateway selector itself
+        var selectorRow = container.closest('tr');
+
+        if ( ! selectorRow ) {
+            return;
+        }
+
+        // Collect all <tr> siblings after the selector row in the same table
+        var formTable  = selectorRow.closest('table');
+        var allRows    = formTable ? formTable.querySelectorAll('tr') : [];
+        var afterRows  = [];
+        var pastSelector = false;
+
+        allRows.forEach(function(row) {
+            if ( row === selectorRow ) {
+                pastSelector = true;
+                return;
+            }
+
+            if ( pastSelector ) {
+                afterRows.push(row);
+            }
+        });
+
+        // Fields whose names don't contain a gateway ID but belong to one
+        var fieldGatewayMap = {
+            'failed_retry': 'paypal',
+        };
+
+        /**
+         * Determine which gateway a settings row belongs to by
+         * checking the name attribute of inputs/selects/textareas inside it.
+         */
+        function getRowGatewayId(row) {
+            var inputs = row.querySelectorAll('input, select, textarea');
+            var gatewayIds = [];
+
+            gatewayCards.forEach(function(card) {
+                gatewayIds.push(card.getAttribute('data-gateway'));
+            });
+
+            for ( var i = 0; i < inputs.length; i++ ) {
+                var name = inputs[i].getAttribute('name') || '';
+                // Extract field name from wpuf_payment[field_name]
+                var match = name.match(/\[([^\]]+)\]$/);
+
+                if ( match ) {
+                    var fieldName = match[1];
+
+                    // Check explicit field-to-gateway mapping first
+                    if ( fieldGatewayMap[fieldName] ) {
+                        return fieldGatewayMap[fieldName];
+                    }
+
+                    for ( var j = 0; j < gatewayIds.length; j++ ) {
+                        var gid = gatewayIds[j];
+
+                        // Match: gate_instruct_paypal, paypal_email, bank_success, etc.
+                        if ( fieldName.indexOf(gid) !== -1 || fieldName.indexOf('gate_instruct_' + gid) !== -1 ) {
+                            return gid;
+                        }
+                    }
+                }
+            }
+
+            // Check the <th> label text for a gateway ID match
+            var thLabel = row.querySelector('th');
+            if ( thLabel ) {
+                var labelText = thLabel.getAttribute('scope') === 'row' ? (thLabel.textContent || '') : '';
+
+                for ( var k = 0; k < gatewayIds.length; k++ ) {
+                    if ( labelText.toLowerCase().indexOf(gatewayIds[k]) !== -1 ) {
+                        return gatewayIds[k];
+                    }
+                }
+
+                // Check the label[for] attribute (e.g. "wpuf_payment[paypal_webhook_events_info]")
+                var labelEl = thLabel.querySelector('label[for]');
+                if ( labelEl ) {
+                    var forAttr = labelEl.getAttribute('for') || '';
+                    var forMatch = forAttr.match(/\[([^\]]+)\]$/);
+                    if ( forMatch ) {
+                        var forFieldName = forMatch[1];
+
+                        if ( fieldGatewayMap[forFieldName] ) {
+                            return fieldGatewayMap[forFieldName];
+                        }
+
+                        for ( var m = 0; m < gatewayIds.length; m++ ) {
+                            if ( forFieldName.indexOf(gatewayIds[m]) !== -1 ) {
+                                return gatewayIds[m];
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        // Tag each row with its gateway ID
+        afterRows.forEach(function(row) {
+            var gid = getRowGatewayId(row);
+
+            if ( gid ) {
+                row.classList.add('wpuf-gateway-setting-row');
+                row.setAttribute('data-gateway-id', gid);
+            }
+        });
+
+        /**
+         * Update the focused (green border) state on gateway cards
+         */
+        function setFocusedCard(gatewayId) {
+            gatewayCards.forEach(function(card) {
+                if ( card.getAttribute('data-gateway') === gatewayId ) {
+                    card.classList.add('wpuf-gateway-card--focused');
+                } else {
+                    card.classList.remove('wpuf-gateway-card--focused');
+                }
+            });
+        }
+
+        /**
+         * Show settings rows for a specific gateway, hide others
+         */
+        function showGatewaySettings(gatewayId) {
+            afterRows.forEach(function(row) {
+                if ( ! row.classList.contains('wpuf-gateway-setting-row') ) {
+                    return;
+                }
+
+                if ( row.getAttribute('data-gateway-id') === gatewayId ) {
+                    row.classList.remove('wpuf-gateway-setting-hidden');
+                } else {
+                    row.classList.add('wpuf-gateway-setting-hidden');
+                }
+            });
+
+            setFocusedCard(gatewayId);
+        }
+
+        /**
+         * Hide all gateway-specific settings rows
+         */
+        function hideAllGatewaySettings() {
+            afterRows.forEach(function(row) {
+                if ( row.classList.contains('wpuf-gateway-setting-row') ) {
+                    row.classList.add('wpuf-gateway-setting-hidden');
+                }
+            });
+
+            setFocusedCard(null);
+        }
+
+        // Checkbox change handler (triggered by the <label> toggle in the top-right corner)
+        gatewayCards.forEach(function(card) {
+            var checkbox = card.querySelector('.wpuf-gateway-card__checkbox');
+
+            checkbox.addEventListener('change', function() {
+                var gatewayId = card.getAttribute('data-gateway');
+
+                if ( checkbox.checked ) {
+                    card.classList.add('wpuf-gateway-card--active');
+                } else {
+                    card.classList.remove('wpuf-gateway-card--active');
+                }
+
+                // Show settings of the toggled gateway if checked,
+                // fall back to first remaining active, or hide all
+                var anyActive = container.querySelector('.wpuf-gateway-card--active');
+
+                if ( checkbox.checked ) {
+                    showGatewaySettings(gatewayId);
+                } else if ( anyActive ) {
+                    showGatewaySettings(anyActive.getAttribute('data-gateway'));
+                } else {
+                    hideAllGatewaySettings();
+                }
+            });
+        });
+
+        // Card body click handler — only shows settings, does not toggle selection
+        gatewayCards.forEach(function(card) {
+            card.addEventListener('click', function(e) {
+                // Ignore clicks on the toggle label or checkbox (those handle selection)
+                if ( e.target.closest('.wpuf-gateway-card__toggle') ) {
+                    return;
+                }
+
+                if ( card.classList.contains('wpuf-gateway-card--pro-locked') ) {
+                    return;
+                }
+
+                var gatewayId = card.getAttribute('data-gateway');
+                showGatewaySettings(gatewayId);
+            });
+        });
+
+        // On page load, show settings for the first active gateway, or hide all
+        var firstActive = container.querySelector('.wpuf-gateway-card--active');
+
+        if ( firstActive ) {
+            showGatewaySettings(firstActive.getAttribute('data-gateway'));
+        } else {
+            hideAllGatewaySettings();
+        }
+    }
 })();

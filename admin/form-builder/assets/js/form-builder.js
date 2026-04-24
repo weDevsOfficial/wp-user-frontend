@@ -1226,7 +1226,7 @@
                     ]
                 },
                 fallback_ppp_cost: {
-                    type: 'checkbox',
+                    type: 'number',
                     dependsOn: [
                         {
                             field: 'payment_options',

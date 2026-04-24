@@ -764,13 +764,40 @@ abstract class Field_Contract {
     }
 
     /**
+     * Check if we should render admin-style markup
+     *
+     * Returns true for admin dashboard, but false for Elementor editor
+     * since Elementor editor needs frontend-style markup for proper preview.
+     *
+     * @since 4.3.1
+     *
+     * @return bool
+     */
+    protected function use_admin_markup() {
+        if ( ! is_admin() ) {
+            return false;
+        }
+
+        // Check if we're in Elementor editor mode
+        // Elementor editor needs frontend markup for proper preview
+        if ( class_exists( '\Elementor\Plugin' ) ) {
+            $elementor = \Elementor\Plugin::$instance;
+            if ( $elementor && $elementor->editor && $elementor->editor->is_edit_mode() ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Prints form input label for admin
      *
      * @param array $attr
      * @param int   $form_id
      */
     public function field_print_label( $field, $form_id = 0 ) {
-        if ( is_admin() ) { ?>
+        if ( $this->use_admin_markup() ) { ?>
             <tr <?php $this->print_list_attributes( $field ); ?>> <th><strong> <?php echo wp_kses_post( $field['label'] . $this->required_mark( $field ) ); ?> </strong></th> <td>
         <?php } else { ?>
 
@@ -782,7 +809,7 @@ abstract class Field_Contract {
     }
 
     public function after_field_print_label() {
-        if ( is_admin() ) {
+        if ( $this->use_admin_markup() ) {
             ?>
                 </td></tr>
             <?php
@@ -821,17 +848,29 @@ abstract class Field_Contract {
         ?>
         <div class="wpuf-label">
             <label for="<?php echo isset( $field['name'] ) ? esc_attr( $field['name'] ) . '_' . esc_attr( $form_id ) : 'cls'; ?>">
-                <?php 
+                <?php
                 // Render icon before label if position is left
                 if ( ! empty( $field['show_icon'] ) && $field['show_icon'] === 'yes' && ! empty( $field['field_icon'] ) && ! empty( $field['icon_position'] ) && $field['icon_position'] === 'left_label' ) {
-                    echo '<i class="' . esc_attr( $field['field_icon'] ) . ' wpuf-field-icon wpuf-field-icon-left"></i> ';
+                    $icon_val = $field['field_icon'];
+
+                    if ( filter_var( $icon_val, FILTER_VALIDATE_URL ) || strpos( $icon_val, '/' ) === 0 ) {
+                        echo '<img src="' . esc_url( $icon_val ) . '" alt="" class="wpuf-field-icon wpuf-field-icon-img wpuf-field-icon-left" style="width: 1em; height: 1em; object-fit: contain; vertical-align: middle; display: inline-block;" /> ';
+                    } else {
+                        echo '<i class="' . esc_attr( $icon_val ) . ' wpuf-field-icon wpuf-field-icon-left"></i> ';
+                    }
                 }
-                
+
                 echo wp_kses_post( $field['label'] . $this->required_mark( $field ) );
-                
+
                 // Render icon after label if position is right
                 if ( ! empty( $field['show_icon'] ) && $field['show_icon'] === 'yes' && ! empty( $field['field_icon'] ) && ! empty( $field['icon_position'] ) && $field['icon_position'] === 'right_label' ) {
-                    echo ' <i class="' . esc_attr( $field['field_icon'] ) . ' wpuf-field-icon wpuf-field-icon-right"></i>';
+                    $icon_val = $field['field_icon'];
+
+                    if ( filter_var( $icon_val, FILTER_VALIDATE_URL ) || strpos( $icon_val, '/' ) === 0 ) {
+                        echo ' <img src="' . esc_url( $icon_val ) . '" alt="" class="wpuf-field-icon wpuf-field-icon-img wpuf-field-icon-right" style="width: 1em; height: 1em; object-fit: contain; vertical-align: middle; display: inline-block;" />';
+                    } else {
+                        echo ' <i class="' . esc_attr( $icon_val ) . ' wpuf-field-icon wpuf-field-icon-right"></i>';
+                    }
                 }
                 ?>
             </label>

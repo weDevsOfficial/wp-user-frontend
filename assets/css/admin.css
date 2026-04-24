@@ -1434,107 +1434,6 @@ body.wpuf-modal-open {
 .wpuf-help-page .wpuf-help-questions li .dashicons-arrow-right-alt2 {
   float: right;
 }
-.notice.wpuf-whats-new-notice {
-  display: flex;
-  position: relative;
-  padding: 0;
-  height: 65px;
-}
-.notice.wpuf-whats-new-notice .wpuf-whats-new-icon {
-  width: 75px;
-  height: 65px;
-  overflow: hidden;
-}
-.notice.wpuf-whats-new-notice .wpuf-whats-new-icon img {
-  max-width: 65px;
-}
-.notice.wpuf-whats-new-notice .wpuf-whats-new-text {
-  width: calc(100% - 240px);
-}
-.notice.wpuf-whats-new-notice .wpuf-whats-new-actions {
-  width: 165px;
-}
-.notice.wpuf-whats-new-notice .wpuf-whats-new-actions a {
-  display: inline-block;
-  margin-top: 20px;
-}
-.wpuf-whats-new .error,
-.wpuf-whats-new .udpated,
-.wpuf-whats-new .info,
-.wpuf-whats-new .notice {
-  display: none;
-}
-.wpuf-whats-new h1 {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 30px;
-}
-.wpuf-whats-new .wedevs-changelog {
-  display: flex;
-  max-width: 920px;
-  border: 1px solid #e5e5e5;
-  padding: 12px 20px 20px 20px;
-  margin: 20px auto;
-  background: #fff;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-}
-.wpuf-whats-new .wedevs-changelog .wedevs-changelog-version {
-  width: 360px;
-}
-.wpuf-whats-new .wedevs-changelog .wedevs-changelog-version .released {
-  font-style: italic;
-}
-.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history {
-  width: 100%;
-  font-size: 14px;
-}
-.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history li {
-  margin-bottom: 20px;
-}
-.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history h4 {
-  margin: 0 0 10px 0;
-  font-size: 1.3em;
-  line-height: 26px;
-}
-.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history p {
-  font-size: 14px;
-  line-height: 1.5;
-}
-.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history img {
-  margin-top: 30px;
-  max-width: 100%;
-}
-.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label {
-  margin-left: 10px;
-  position: relative;
-  color: #fff;
-  border-radius: 20px;
-  padding: 0 8px;
-  font-size: 12px;
-  height: 20px;
-  line-height: 19px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  font-weight: normal;
-}
-.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.new {
-  background: #3778ff;
-  border: 1px solid #3778ff;
-}
-.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.improvement,
-.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.enhancement {
-  background: #3aaa55;
-  border: 1px solid #3aaa a;
-}
-.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.fix {
-  background: #ff4772;
-  border: 1px solid #ff4772;
-}
-.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.tweak {
-  background: #f9a825;
-  border: 1px solid #ffa000;
-}
 #wpuf_subs_metabox .inside {
   margin: 0;
   padding: 0;
@@ -1592,4 +1491,112 @@ body.wpuf-modal-open {
 }
 .wpuf-subscription-pack-settings .subscription-nav-content section .form-table td {
   padding: 15px 0;
+}
+.wpuf-login-tab-link:hover {
+  color: #2271b1 !important;
+}
+.wpuf-login-tab-link.active {
+  color: #2271b1 !important;
+  border-bottom-color: #2271b1 !important;
+}
+.wpuf-login-settings-row.hidden {
+  display: none !important;
+}
+.wpuf-gateway-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.wpuf-gateway-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  padding: 20px 16px 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.wpuf-gateway-card:hover {
+  border-color: #c3c4c7;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+.wpuf-gateway-card--active:hover {
+  border-color: #10b981;
+}
+.wpuf-gateway-card--focused {
+  border-color: #10b981;
+  box-shadow: 0 0 0 1px #10b981;
+}
+.wpuf-gateway-card--focused:hover {
+  border-color: #10b981;
+}
+.wpuf-gateway-card--pro-locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.wpuf-gateway-card__checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.wpuf-gateway-card__toggle {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+  z-index: 2;
+}
+.wpuf-gateway-card__toggle:hover {
+  opacity: 0.8;
+}
+.wpuf-gateway-card__check-on {
+  display: none;
+}
+.wpuf-gateway-card__check-off {
+  display: block;
+}
+.wpuf-gateway-card--active .wpuf-gateway-card__check-on {
+  display: block;
+}
+.wpuf-gateway-card--active .wpuf-gateway-card__check-off {
+  display: none;
+}
+.wpuf-gateway-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 48px;
+  margin-bottom: 8px;
+}
+.wpuf-gateway-card__icon img {
+  max-width: 100px;
+  max-height: 48px;
+  object-fit: contain;
+}
+.wpuf-gateway-card__icon svg {
+  max-width: 48px;
+  max-height: 48px;
+}
+.wpuf-gateway-card__name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1d2327;
+  text-align: center;
+  line-height: 1.3;
+}
+tr.wpuf-gateway-setting-row {
+  transition: opacity 0.15s ease;
+}
+tr.wpuf-gateway-setting-row.wpuf-gateway-setting-hidden {
+  display: none;
 }

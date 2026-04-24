@@ -106,13 +106,13 @@ class Form {
     /**
      * Get pay per cost amount
      *
-     * @return int
+     * @return float
      */
     public function get_pay_per_post_cost() {
         $settings = $this->get_settings();
 
         if ( isset( $settings['pay_per_post_cost'] ) && $settings['pay_per_post_cost'] > 0 ) {
-            return $settings['pay_per_post_cost'];
+            return (float) $settings['pay_per_post_cost'];
         }
 
         return 0;
@@ -136,13 +136,13 @@ class Form {
     /**
      * Get the fallback cost amount
      *
-     * @return int
+     * @return float
      */
     public function get_subs_fallback_cost() {
         $settings = $this->get_settings();
 
         if ( isset( $settings['fallback_ppp_cost'] ) && $settings['fallback_ppp_cost'] > 0 ) {
-            return $settings['fallback_ppp_cost'];
+            return (float) $settings['fallback_ppp_cost'];
         }
 
         return 0;
@@ -172,11 +172,21 @@ class Form {
             return [ $user_can_post, $info ];
         }
 
+        // Admin users bypass all subscription and payment restrictions
+        if ( current_user_can( wpuf_admin_role() ) ) {
+            return [ 'yes', '' ];
+        }
+
         $post_type = ! empty( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
 
         $has_post_count = $current_user->subscription()->has_post_count( $post_type );
 
-        if ( $current_user->subscription()->current_pack_id() && ! $has_post_count ) {
+        // skip the early return so the payment logic below can handle it
+        $skip_limit_block = $this->is_charging_enabled()
+            && $this->is_enabled_force_pack()
+            && $this->is_enabled_fallback_cost();
+
+        if ( $current_user->subscription()->current_pack_id() && ! $has_post_count && ! $skip_limit_block ) {
             $user_can_post = 'no';
             $info          = __( 'Post Limit Exceeded for your purchased subscription pack.', 'wp-user-frontend' );
 

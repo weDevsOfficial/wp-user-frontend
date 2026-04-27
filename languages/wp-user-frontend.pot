@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.3.2\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2026-04-24 02:59:01+00:00\n"
+"POT-Creation-Date: 2026-04-27 05:10:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,7 +22,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
-"X-Generator: grunt-wp-i18n 1.0.3\n"
+"X-Generator: grunt-wp-i18n 1.0.4\n"
 
 #: includes/Integrations/Elementor/Subscription_Plans_Widget.php:143
 msgid "1"
@@ -62,7 +62,7 @@ msgstr ""
 msgid "New bank order received at %1$s, please check it out: %2$s"
 msgstr ""
 
-#: Lib/Gateway/Bank.php:140 includes/Frontend/Payment.php:544
+#: Lib/Gateway/Bank.php:140 includes/Frontend/Payment.php:581
 #. translators: %s is site name
 #. translators: %s is site title name
 msgid "[%s] Payment Received"
@@ -493,7 +493,7 @@ msgstr ""
 #: includes/Admin/List_Table_Subscribers.php:172
 #: includes/Admin/Subscription.php:944
 #: includes/Admin/template-parts/modal-v4.2.php:405
-#: includes/Frontend/Payment.php:263 modules/user-directory/Admin_Menu.php:612
+#: modules/user-directory/Admin_Menu.php:612
 #: templates/dashboard/edit-profile.php:158
 #: templates/dashboard/subscription.php:97
 msgid "Cancel"
@@ -1137,7 +1137,7 @@ msgid "Form Pending Message"
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:158
-#: includes/Free/Free_Loader.php:1924 wpuf-functions.php:6180
+#: includes/Free/Free_Loader.php:1925 wpuf-functions.php:6180
 msgid "Form Expired Message"
 msgstr ""
 
@@ -1226,7 +1226,7 @@ msgid "[wpuf_sub_pack]"
 msgstr ""
 
 #: admin/installer.php:96 includes/Admin/Admin_Installer.php:146
-#: includes/Frontend/Payment.php:859 templates/dashboard/list.php:16
+#: includes/Frontend/Payment.php:896 templates/dashboard/list.php:16
 #: templates/dashboard/posts.php:136
 msgid "Payment"
 msgstr ""
@@ -1985,6 +1985,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: class/subscription.php:980 includes/Admin/Subscription.php:1017
+#: includes/Frontend/Payment.php:374
 #: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1305
 msgid "One time payment"
 msgstr ""
@@ -2672,13 +2673,13 @@ msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:537
 #: includes/Admin/Admin_Subscription.php:1229 includes/Free/Form_Element.php:63
-#: includes/Free/Free_Loader.php:1896
+#: includes/Free/Free_Loader.php:1897
 msgid "Enable Post Expiration"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:549
 #: includes/Admin/Admin_Subscription.php:844 includes/Free/Form_Element.php:78
-#: includes/Free/Free_Loader.php:1903
+#: includes/Free/Free_Loader.php:1904
 msgid "Post Expiration Time"
 msgstr ""
 
@@ -2712,21 +2713,21 @@ msgstr ""
 #: includes/Admin/Admin_Subscription.php:677
 #: includes/Admin/Admin_Subscription.php:1267
 #: includes/Admin/Admin_Subscription.php:1383
-#: includes/Free/Free_Loader.php:1911
+#: includes/Free/Free_Loader.php:1912
 msgid "Day(s)"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:678
 #: includes/Admin/Admin_Subscription.php:1268
 #: includes/Admin/Admin_Subscription.php:1384
-#: includes/Free/Free_Loader.php:1912
+#: includes/Free/Free_Loader.php:1913
 msgid "Week(s)"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:679
 #: includes/Admin/Admin_Subscription.php:1269
 #: includes/Admin/Admin_Subscription.php:1385
-#: includes/Free/Free_Loader.php:1913
+#: includes/Free/Free_Loader.php:1914
 msgid "Month(s)"
 msgstr ""
 
@@ -3362,7 +3363,7 @@ msgstr ""
 msgid "Example"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:576 includes/Free/Free_Loader.php:1981
+#: includes/Admin/Admin_Tools.php:576 includes/Free/Free_Loader.php:1982
 msgid "Pro"
 msgstr ""
 
@@ -3536,7 +3537,7 @@ msgstr ""
 msgid "Customize WPUF Settings"
 msgstr ""
 
-#: includes/Admin/Customizer_Options.php:75 includes/Frontend/Payment.php:178
+#: includes/Admin/Customizer_Options.php:75 includes/Frontend/Payment.php:232
 #: wpuf-functions.php:2302
 msgid "Billing Address"
 msgstr ""
@@ -3848,7 +3849,7 @@ msgid "&mdash; No Template &mdash;"
 msgstr ""
 
 #: includes/Admin/Forms/Post/Templates/Form_Template.php:231
-#: includes/Free/Free_Loader.php:1852 wpuf-functions.php:5837
+#: includes/Free/Free_Loader.php:1853 wpuf-functions.php:5837
 msgid ""
 "If selected a form template, it will try to execute that integration "
 "options when new post created and updated."
@@ -4020,9 +4021,9 @@ msgstr ""
 #: includes/Admin/Forms/Post/Templates/Post_Form_Template_Post.php:16
 #: includes/Admin/Menu.php:116 includes/Admin/template-parts/modal-v4.2.php:70
 #: includes/Admin/views/shortcode-builder.php:8
-#: includes/Free/Free_Loader.php:1858 includes/Free/Free_Loader.php:1862
-#: includes/Free/Free_Loader.php:1866 includes/Free/Free_Loader.php:1870
-#: includes/Free/Free_Loader.php:1874 wpuf-functions.php:5716
+#: includes/Free/Free_Loader.php:1859 includes/Free/Free_Loader.php:1863
+#: includes/Free/Free_Loader.php:1867 includes/Free/Free_Loader.php:1871
+#: includes/Free/Free_Loader.php:1875 wpuf-functions.php:5716
 msgid "Post Form"
 msgstr ""
 
@@ -4247,7 +4248,7 @@ msgid "User"
 msgstr ""
 
 #: includes/Admin/List_Table_Transactions.php:49
-#: includes/Frontend/Payment.php:796 includes/WPUF_Privacy.php:343
+#: includes/Frontend/Payment.php:833 includes/WPUF_Privacy.php:343
 msgid "Subtotal"
 msgstr ""
 
@@ -4609,7 +4610,7 @@ msgid ""
 msgstr ""
 
 #: includes/Admin/views/premium.php:93 includes/Free/Free_Loader.php:157
-#: includes/Free/Free_Loader.php:1152 includes/Free/Free_Loader.php:1943
+#: includes/Free/Free_Loader.php:1152 includes/Free/Free_Loader.php:1944
 msgid "Modules"
 msgstr ""
 
@@ -6221,7 +6222,7 @@ msgstr ""
 msgid "Cart Total"
 msgstr ""
 
-#: includes/Free/Edit_Profile.php:36 includes/Frontend/Payment.php:95
+#: includes/Free/Edit_Profile.php:36 includes/Frontend/Payment.php:100
 #: includes/functions/user/edit-user.php:42 templates/unauthorized.php:6
 #. translators: %s is the link
 #. translators: %s: login url
@@ -6383,11 +6384,11 @@ msgstr ""
 msgid " Learn more about Multistep"
 msgstr ""
 
-#: includes/Free/Form_Element.php:188 includes/Free/Free_Loader.php:1734
+#: includes/Free/Form_Element.php:188 includes/Free/Free_Loader.php:1735
 msgid "Multistep Progressbar Type"
 msgstr ""
 
-#: includes/Free/Form_Element.php:198 includes/Free/Free_Loader.php:1736
+#: includes/Free/Form_Element.php:198 includes/Free/Free_Loader.php:1737
 msgid "Choose how you want the progressbar"
 msgstr ""
 
@@ -6395,7 +6396,7 @@ msgstr ""
 msgid "New post created"
 msgstr ""
 
-#: includes/Free/Form_Element.php:232 includes/Free/Free_Loader.php:1789
+#: includes/Free/Form_Element.php:232 includes/Free/Free_Loader.php:1790
 msgid "A post has been edited"
 msgstr ""
 
@@ -6417,13 +6418,13 @@ msgid "Learn more about Email Notification"
 msgstr ""
 
 #: includes/Free/Form_Element.php:255 includes/Free/Form_Element.php:292
-#: includes/Free/Free_Loader.php:1782 wpuf-functions.php:6063
+#: includes/Free/Free_Loader.php:1783 wpuf-functions.php:6063
 #: wpuf-functions.php:6170
 msgid "To"
 msgstr ""
 
 #: includes/Free/Form_Element.php:262 includes/Free/Form_Element.php:297
-#: includes/Free/Free_Loader.php:1787 wpuf-functions.php:6069
+#: includes/Free/Free_Loader.php:1788 wpuf-functions.php:6069
 msgid "Subject"
 msgstr ""
 
@@ -6486,7 +6487,7 @@ msgid "Update Button text"
 msgstr ""
 
 #: includes/Free/Free_Loader.php:201 includes/Free/Free_Loader.php:202
-#: includes/Free/Free_Loader.php:1641 templates/dashboard/subscription.php:388
+#: includes/Free/Free_Loader.php:1642 templates/dashboard/subscription.php:388
 msgid "Coupons"
 msgstr ""
 
@@ -7027,71 +7028,71 @@ msgstr ""
 msgid "Credit Card"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1513
+#: includes/Free/Free_Loader.php:1514
 msgid "Taxonomy Restriction "
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1531
+#: includes/Free/Free_Loader.php:1532
 msgid "Choose the taxonomy terms you want to enable for this pack:"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1645
+#: includes/Free/Free_Loader.php:1646
 msgid "Use Coupon codes for subscription for discounts."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1649
+#: includes/Free/Free_Loader.php:1650
 msgid "This feature is only available in the Pro Version."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1653
+#: includes/Free/Free_Loader.php:1654
 msgid "Upgrade to Pro Version"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1654
+#: includes/Free/Free_Loader.php:1655
 msgid "Learn more about Coupons"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1673
+#: includes/Free/Free_Loader.php:1674
 msgid "Taxonomy Access"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1674
+#: includes/Free/Free_Loader.php:1675
 msgid "(Control user access to specific taxonomies)"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1723
+#: includes/Free/Free_Loader.php:1724
 msgid "Enable Multi-Step"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1726
+#: includes/Free/Free_Loader.php:1727
 msgid "If checked, form will be displayed in frontend in multiple steps."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1738
+#: includes/Free/Free_Loader.php:1739
 msgid "Progressbar"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1739
+#: includes/Free/Free_Loader.php:1740
 msgid "Step by Step"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1743
+#: includes/Free/Free_Loader.php:1744
 msgid "Active Text Color"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1745
+#: includes/Free/Free_Loader.php:1746
 msgid "Text color for active step."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1749
+#: includes/Free/Free_Loader.php:1750
 msgid "Active Background Color"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1751
+#: includes/Free/Free_Loader.php:1752
 msgid "Background color for progressbar or active step."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1755
+#: includes/Free/Free_Loader.php:1756
 #: includes/Integrations/Elementor/Account_Widget.php:467
 #: includes/Integrations/Elementor/Account_Widget.php:555
 #: includes/Integrations/Elementor/Account_Widget.php:621
@@ -7114,43 +7115,43 @@ msgstr ""
 msgid "Background Color"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1757
+#: includes/Free/Free_Loader.php:1758
 msgid "Background color for normal steps."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1777
+#: includes/Free/Free_Loader.php:1778
 msgid "Enable Update Post Notification"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1792 wpuf-functions.php:6075
+#: includes/Free/Free_Loader.php:1793 wpuf-functions.php:6075
 msgid "Email Body"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1829
+#: includes/Free/Free_Loader.php:1830
 msgid "Conditional Logic on Submit"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1850 wpuf-functions.php:6114
+#: includes/Free/Free_Loader.php:1851 wpuf-functions.php:6114
 msgid "Choose Form Style"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1908
+#: includes/Free/Free_Loader.php:1909
 msgid "Duration Type"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1919
+#: includes/Free/Free_Loader.php:1920
 msgid "Send post expiration email to author"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1921
+#: includes/Free/Free_Loader.php:1922
 msgid "Verification of email addresses will be mandatory"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1967
+#: includes/Free/Free_Loader.php:1968
 msgid "Available in Pro Version"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1977
+#: includes/Free/Free_Loader.php:1978
 msgid "Bulk Add"
 msgstr ""
 
@@ -7486,7 +7487,7 @@ msgstr ""
 msgid "Invalid form ID."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:43
+#: includes/Frontend/Frontend_Account.php:43 includes/Frontend/Payment.php:214
 #: includes/functions/settings-options.php:384
 msgid "Post Submission"
 msgstr ""
@@ -7672,90 +7673,61 @@ msgstr ""
 msgid "Email successfully verified. Please Login."
 msgstr ""
 
-#: includes/Frontend/Payment.php:101
+#: includes/Frontend/Payment.php:106
 msgid "Please select your payment page from admin panel"
 msgstr ""
 
-#: includes/Frontend/Payment.php:120
+#: includes/Frontend/Payment.php:125
 msgid "No subscription pack found."
 msgstr ""
 
-#: includes/Frontend/Payment.php:154
+#: includes/Frontend/Payment.php:159
 msgid "Your Free package has been activated. Enjoy!"
 msgstr ""
 
-#: includes/Frontend/Payment.php:158
+#: includes/Frontend/Payment.php:163
 msgid "You already have activated a Free package previously."
 msgstr ""
 
-#: includes/Frontend/Payment.php:210
-msgid "Pricing & Plans"
+#: includes/Frontend/Payment.php:336
+msgid "Continue to Payment"
 msgstr ""
 
-#: includes/Frontend/Payment.php:213
-msgid "Change Pack"
-msgstr ""
-
-#: includes/Frontend/Payment.php:229
-msgid "Selected Pack"
-msgstr ""
-
-#: includes/Frontend/Payment.php:233
-msgid "Pack Price"
-msgstr ""
-
-#: includes/Frontend/Payment.php:240 includes/Frontend/Payment.php:307
-#: includes/WPUF_Privacy.php:351
-msgid "Total"
-msgstr ""
-
-#: includes/Frontend/Payment.php:260
-msgid "Apply Coupon"
-msgstr ""
-
-#: includes/Frontend/Payment.php:268
-msgid "Have a discount code?"
-msgstr ""
-
-#: includes/Frontend/Payment.php:301
-msgid "Post cost"
-msgstr ""
-
-#: includes/Frontend/Payment.php:318
-msgid "Choose Your Payment Method"
-msgstr ""
-
-#: includes/Frontend/Payment.php:365
-msgid "Proceed"
-msgstr ""
-
-#: includes/Frontend/Payment.php:373
+#: includes/Frontend/Payment.php:344
 msgid "No Payment gateway found"
 msgstr ""
 
-#: includes/Frontend/Payment.php:546
+#: includes/Frontend/Payment.php:374
+msgid "Recurring payment"
+msgstr ""
+
+#: includes/Frontend/Payment.php:392 includes/WPUF_Privacy.php:351
+msgid "Total"
+msgstr ""
+
+#: includes/Frontend/Payment.php:583
 #. translators: %s is site title name
 msgid "New payment received at %s"
 msgstr ""
 
-#: includes/Frontend/Payment.php:652
+#: includes/Frontend/Payment.php:689
 #. translators: %s is the site name
 msgid "[%s] Your Trial Subscription is Active"
 msgstr ""
 
-#: includes/Frontend/Payment.php:655
+#: includes/Frontend/Payment.php:692
 #. translators: %1$s is the user display name, %2$s is the site name
 msgid ""
 "Hello %1$s,<br><br>Your trial subscription has been activated successfully "
 "at %2$s.<br><br>Thank you!"
 msgstr ""
 
-#: includes/Frontend/Payment.php:663
+#: includes/Frontend/Payment.php:700
 #. translators: %s is the site name
 msgid "[%s] Payment Confirmation - Subscription"
 msgstr ""
 
-#: includes/Frontend/Payment.php:666
+#: includes/Frontend/Payment.php:703
 #. translators: %1$s is the user display name, %2$s is the payment amount, %3$s
 #. is the site name
 msgid ""
@@ -7763,12 +7735,12 @@ msgid ""
 "at %3$s.<br><br>Your subscription is now active.<br><br>Thank you!"
 msgstr ""
 
-#: includes/Frontend/Payment.php:675
+#: includes/Frontend/Payment.php:712
 #. translators: %s is the site name
 msgid "[%s] Payment Confirmation - Post Submission"
 msgstr ""
 
-#: includes/Frontend/Payment.php:678
+#: includes/Frontend/Payment.php:715
 #. translators: %1$s is the user display name, %2$s is the payment amount, %3$s
 #. is the site name
 msgid ""
@@ -7776,12 +7748,12 @@ msgid ""
 "at %3$s.<br><br>Your post has been submitted successfully.<br><br>Thank you!"
 msgstr ""
 
-#: includes/Frontend/Payment.php:687
+#: includes/Frontend/Payment.php:724
 #. translators: %s is the site name
 msgid "[%s] Payment Confirmation"
 msgstr ""
 
-#: includes/Frontend/Payment.php:690
+#: includes/Frontend/Payment.php:727
 #. translators: %1$s is the user display name, %2$s is the payment amount, %3$s
 #. is the site name
 msgid ""
@@ -7789,29 +7761,29 @@ msgid ""
 "you!"
 msgstr ""
 
-#: includes/Frontend/Payment.php:790
+#: includes/Frontend/Payment.php:827
 msgid "Invoice"
 msgstr ""
 
-#: includes/Frontend/Payment.php:797 includes/WPUF_Privacy.php:375
+#: includes/Frontend/Payment.php:834 includes/WPUF_Privacy.php:375
 msgid "Payment Type"
 msgstr ""
 
-#: includes/Frontend/Payment.php:798
+#: includes/Frontend/Payment.php:835
 msgid "Total due"
 msgstr ""
 
-#: includes/Frontend/Payment.php:847
+#: includes/Frontend/Payment.php:884
 #. translators: %s is the post title
 msgid "Payment for post submission (%s)"
 msgstr ""
 
-#: includes/Frontend/Payment.php:855
+#: includes/Frontend/Payment.php:892
 #. translators: %s is the subscription pack title
 msgid "Subscription: %s"
 msgstr ""
 
-#: includes/Frontend/Payment.php:882
+#: includes/Frontend/Payment.php:919
 #. translators: %s is the site name
 msgid "[%s] Your Payment Invoice"
 msgstr ""

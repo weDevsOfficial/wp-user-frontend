@@ -361,10 +361,10 @@
                    .text( originalLabel );
             }
 
-            // Stripe intercepts and processes everything itself — our loading state
-            // would get stuck because Stripe never does a real form POST.
+            // Stripe intercepts and processes everything itself (no real form POST).
+            // Keep the button disabled so the user can't double-submit while Stripe's
+            // modal/redirect runs; Pro Stripe handler is responsible for its own error UI.
             if ( selectedGateway === 'stripe' ) {
-                resetBtn();
                 return;
             }
 

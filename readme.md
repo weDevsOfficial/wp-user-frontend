@@ -3,8 +3,8 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** frontend post, user directory, membership, user profile, user registration, content restriction, guest post, submit post, subscriptions, directory, login form, registration form, user profile, profile builder, forms  
 **Requires at least:** 5.0  
-**Tested up to:** 6.9.3  
-**Stable tag:** 4.3.0  
+**Tested up to:** 6.9.4  
+**Stable tag:** 4.3.2  
 **Requires PHP:** 5.6  
 **License:** GPLv2  
 **License URL:** https://www.gnu.org/licenses/gpl-2.0.html  
@@ -359,6 +359,24 @@ Please report security bugs found in the source code of the User Frontend plugin
 15. Create AI Powered Post Form
 
 ## Changelog ##
+### v4.3.2 (24 April, 2026) ###
+New – Add guest and paid guest post templates and assets
+New – Add user directory page creation to installer and tools
+Enhance – Add 'General' category for registration forms
+Fix – Sanitize file IDs with absint and remove debug logs
+Fix – Resolve unauthorized subscription pack assignment
+Fix – Enable fallback pay-per-post when force_pack is set
+
+### v4.3.1 (8 April, 2026) ###
+* New – Add Elementor Account page widget
+* New – Add Elementor Subscription widget
+* New – Add Elementor Post Form Builder widget
+* New – Introduce card grid UI for payment gateway selection
+* Enhance – Bind cancel nonce to user and enforce ownership
+* Enhance – Clean up What's New page assets and remove unused code
+* Fix – Improve wording of plugin update notice
+* Fix – Resolve CSS/JS warning in setup wizard
+
 ### v4.3.0 (11 March, 2026) ###
 * New – Add User Directory Module
 

@@ -760,9 +760,9 @@ function wpuf_settings_fields() {
             [
                 'name'    => 'active_gateways',
                 'label'   => __( 'Payment Gateways', 'wp-user-frontend' ),
-                'desc'    => __( 'Active payment gateways', 'wp-user-frontend' ),
-                'type'    => 'multicheck',
-                'options' => wpuf_get_gateways(),
+                'desc'    => __( 'Select the payment methods available at checkout', 'wp-user-frontend' ),
+                'type'    => 'gateway_selector',
+                'options' => wpuf_get_gateways( 'gateway_selector' ),
             ],
             [
                 'name'              => 'failed_retry',

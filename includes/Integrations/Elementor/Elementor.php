@@ -45,7 +45,7 @@ class Elementor {
     /**
      * Enqueue Elementor Specific Styles for both frontend and editor
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -58,12 +58,12 @@ class Elementor {
         wp_dequeue_style( 'wpuf-layout4' );
         wp_dequeue_style( 'wpuf-layout5' );
 
-        $style_handles = [ 'wpuf-elementor-frontend-forms' ];
+        $style_handles = [ 'wpuf-elementor-frontend-forms', 'wpuf-account' ];
 
         /**
-         * Filters the list of style handles to enqueue in Elementor context
+         * Filters the list of style handles to enqueue in Elementor context.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.1
          *
          * @param string[] $style_handles Array of style handles to enqueue.
          */
@@ -98,9 +98,9 @@ class Elementor {
         }
 
         /**
-         * Fires after WPUF has enqueued its styles in Elementor context
+         * Fires after WPUF has enqueued its styles in Elementor context.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.1
          */
         do_action( 'wpuf_elementor_after_enqueue_styles' );
     }
@@ -108,7 +108,10 @@ class Elementor {
     /**
      * Enqueue Elementor Specific Scripts for both frontend and editor
      *
-     * @since WPUF_SINCE
+     * Ensures TinyMCE editor scripts are loaded when WPUF forms with rich text
+     * fields are rendered in Elementor preview.
+     *
+     * @since 4.3.1
      *
      * @return void
      */
@@ -166,9 +169,9 @@ class Elementor {
         }
 
         /**
-         * Fires after WPUF has enqueued its scripts in Elementor context
+         * Fires after WPUF has enqueued its scripts in Elementor context.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.1
          */
         do_action( 'wpuf_elementor_after_enqueue_scripts' );
     }
@@ -176,12 +179,15 @@ class Elementor {
     /**
      * Enqueue all required WPUF form assets for Elementor
      *
-     * @since WPUF_SINCE
+     * Ensures all necessary styles and scripts are loaded for WPUF forms
+     * to render properly in Elementor preview and frontend.
+     *
+     * @since 4.3.1
      *
      * @return void
      */
     private function enqueue_wpuf_form_assets() {
-        // Core styles
+        // Core styles (already handled by enqueue_styles, but ensure they're available)
         wp_enqueue_style( 'wpuf-sweetalert2' );
         wp_enqueue_style( 'wpuf-jquery-ui' );
 
@@ -192,6 +198,7 @@ class Elementor {
         wp_enqueue_script( 'wpuf-frontend-form' );
         wp_enqueue_script( 'wpuf-sweetalert2' );
         wp_enqueue_script( 'wpuf-subscriptions' );
+        wp_enqueue_script( 'wpuf-account' );
 
         // Localize wpuf-upload script
         wp_localize_script(
@@ -213,7 +220,7 @@ class Elementor {
                         ],
                     ],
                     'multipart'        => true,
-                    'urlstream_upload'  => true,
+                    'urlstream_upload' => true,
                     'warning'          => __( 'Maximum number of files reached!', 'wp-user-frontend' ),
                     'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wp-user-frontend' ),
                     'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wp-user-frontend' ),
@@ -296,7 +303,7 @@ class Elementor {
     /**
      * Register Elementor Widget Category
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @param \Elementor\Elements_Manager $elements_manager Elementor elements manager.
      *
@@ -315,22 +322,28 @@ class Elementor {
     /**
      * Register Elementor Widgets
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @param \Elementor\Widgets_Manager $widgets_manager Elementor widgets manager.
      *
      * @return void
      */
     public function register_widgets( $widgets_manager ) {
+        require_once __DIR__ . '/Widget.php';
+        require_once __DIR__ . '/Subscription_Plans_Widget.php';
+        require_once __DIR__ . '/Account_Widget.php';
         require_once __DIR__ . '/User_Directory_Widget.php';
 
+        $widgets_manager->register( new Widget() );
+        $widgets_manager->register( new Subscription_Plans_Widget() );
+        $widgets_manager->register( new Account_Widget() );
         $widgets_manager->register( new User_Directory_Widget() );
     }
 
     /**
      * Flush rewrite rules when Elementor saves a page containing the User Directory widget
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @param int   $post_id The post ID.
      * @param array $data    The Elementor data.
@@ -365,7 +378,7 @@ class Elementor {
      * whether the free or Pro module is handling PrettyUrls. Pages are found via a post
      * meta flag (_wpuf_has_ud_elementor_widget) set in maybe_flush_rules_on_elementor_save().
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @return void
      */
@@ -426,7 +439,7 @@ class Elementor {
      * using the User Directory widget via Elementor won't be detected by the
      * default shortcode-based check in PrettyUrls::get_directory_pages().
      *
-     * @since WPUF_SINCE
+     * @since 4.3.1
      *
      * @param array $directory_pages Pages already detected via shortcode.
      * @param array $all_pages       All published pages.

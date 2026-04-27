@@ -46,9 +46,23 @@ class Integrations {
             }
         }
 
-        add_action( 'elementor/init', function () {
+        add_action( 'elementor/init', [ $this, 'init_elementor' ] );
+    }
+
+    /**
+     * Initialize Elementor integration
+     *
+     * @since 4.3.1
+     *
+     * @return void
+     */
+    public function init_elementor() {
+        try {
+            require_once __DIR__ . '/Integrations/Elementor/Elementor.php';
             $this->container['elementor'] = new Integrations\Elementor\Elementor();
-        } );
+        } catch ( \Exception $e ) {
+            \WP_User_Frontend::log( 'integration', 'Elementor integration failed: ' . $e->getMessage() );
+        }
     }
 
     /**

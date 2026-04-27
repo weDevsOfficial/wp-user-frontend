@@ -267,10 +267,7 @@ class Admin {
             $localize_data
         );
 
-        // Debug: Output form type as HTML comment for verification
-        add_action( 'admin_footer', function() use ( $form_type ) {
-            echo "\n<!-- WPUF AI Form Builder Debug: formType = " . esc_html( $form_type ) . " -->\n";
-        } );
+
     }
 
     /**

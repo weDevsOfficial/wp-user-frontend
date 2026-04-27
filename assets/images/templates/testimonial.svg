@@ -1,0 +1,87 @@
+<svg width="246" height="249" viewBox="0 0 246 249" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_dd_testimonial)">
+<path d="M3 10C3 5.58172 6.58172 2 11 2H235C239.418 2 243 5.58172 243 10V237C243 241.418 239.418 245 235 245H11C6.58173 245 3 241.418 3 237V10Z" fill="white"/>
+<path d="M3.5 10C3.5 5.85786 6.85786 2.5 11 2.5H235C239.142 2.5 242.5 5.85786 242.5 10V237C242.5 241.142 239.142 244.5 235 244.5H11C6.85787 244.5 3.5 241.142 3.5 237V10Z" stroke="#E2E8F0"/>
+</g>
+<!-- Illustration Background -->
+<rect x="47" y="28" width="152" height="86" rx="6" fill="#EEF2FF"/>
+<!-- Speech Bubble Card -->
+<rect x="57" y="34" width="108" height="58" rx="5" fill="white" stroke="#C7D2FE" stroke-width="1"/>
+<!-- Bubble tail -->
+<polygon points="78,92 88,92 83,99" fill="white"/>
+<polygon points="77,93 89,93 83,100" fill="#C7D2FE"/>
+<polygon points="79,92 87,92 83,98" fill="white"/>
+<!-- Large decorative quote mark -->
+<text x="63" y="72" font-family="Georgia, 'Times New Roman', serif" font-size="38" fill="#6366F1" opacity="0.2">"</text>
+<!-- Text lines inside speech bubble (testimonial content) -->
+<rect x="85" y="43" width="73" height="3" rx="1.5" fill="#C7D2FE"/>
+<rect x="85" y="50" width="68" height="3" rx="1.5" fill="#C7D2FE"/>
+<rect x="85" y="57" width="58" height="3" rx="1.5" fill="#DDE3F8"/>
+<rect x="85" y="64" width="65" height="3" rx="1.5" fill="#DDE3F8"/>
+<rect x="85" y="71" width="48" height="3" rx="1.5" fill="#E8ECFB"/>
+<rect x="85" y="78" width="55" height="3" rx="1.5" fill="#E8ECFB"/>
+<!-- Client Avatar -->
+<circle cx="190" cy="57" r="19" fill="#DDE3F8" stroke="#6366F1" stroke-width="1.5"/>
+<circle cx="190" cy="52" r="7" fill="#6366F1"/>
+<path d="M176 73 Q190 65 204 73" stroke="#A5B4FC" stroke-width="4" fill="none" stroke-linecap="round"/>
+<!-- 5 Gold Star Rating below bubble -->
+<text x="58" y="107" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#F59E0B">★★★★★</text>
+<text x="128" y="106" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#6B7280">Overall Rating</text>
+<!-- FORM FIELDS -->
+<!-- Testimonial Title -->
+<rect x="47.25" y="122" width="152.5" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="125" width="65" height="3" rx="1" fill="#94A3B8"/>
+<text x="120" y="128.5" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#64748B">Testimonial Title</text>
+<!-- Client Name -->
+<rect x="47.25" y="138" width="152.5" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="141" width="50" height="3" rx="1" fill="#CBD5E1"/>
+<text x="105" y="144.5" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#64748B">Client Name</text>
+<!-- Testimonial About (checkboxes) -->
+<rect x="47.25" y="154" width="152.5" height="12" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="158" width="4" height="4" rx="0.5" fill="#6366F1"/>
+<text x="58" y="162" font-family="system-ui, -apple-system, sans-serif" font-size="6.5" fill="#374151">Product</text>
+<rect x="88" y="158" width="4" height="4" rx="0.5" stroke="#D4DBE3" stroke-width="0.5" fill="none"/>
+<text x="94" y="162" font-family="system-ui, -apple-system, sans-serif" font-size="6.5" fill="#374151">Service</text>
+<rect x="124" y="158" width="4" height="4" rx="0.5" stroke="#D4DBE3" stroke-width="0.5" fill="none"/>
+<text x="130" y="162" font-family="system-ui, -apple-system, sans-serif" font-size="6.5" fill="#374151">Support</text>
+<rect x="160" y="158" width="4" height="4" rx="0.5" stroke="#D4DBE3" stroke-width="0.5" fill="none"/>
+<text x="166" y="162" font-family="system-ui, -apple-system, sans-serif" font-size="6.5" fill="#374151">Overall</text>
+<!-- Your Testimonial (textarea) -->
+<rect x="47.25" y="172" width="152.5" height="24" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="177" width="142" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="182" width="130" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="187" width="110" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="192" width="120" height="2" rx="1" fill="#E2E8F0"/>
+<!-- Rating Field (stars row) -->
+<rect x="47.25" y="202" width="152.5" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<text x="52" y="209" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#F59E0B">★★★★★</text>
+<text x="105" y="209" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#9CA3AF">Rate your experience</text>
+<!-- Client Photo (half) + Client Email (half) -->
+<rect x="47.25" y="218" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<circle cx="57" cy="223" r="3" fill="#F1F5F9" stroke="#94A3B8" stroke-width="0.8"/>
+<rect x="63" y="221" width="30" height="2" rx="1" fill="#CBD5E1"/>
+<rect x="127.25" y="218" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="132" y="220" width="8" height="5" rx="1" stroke="#94A3B8" stroke-width="0.7" fill="none"/>
+<path d="M132 220L136 223L140 220" stroke="#94A3B8" stroke-width="0.7" fill="none"/>
+<rect x="143" y="221" width="28" height="2" rx="1" fill="#CBD5E1"/>
+<!-- Terms & Conditions -->
+<rect x="47.25" y="234" width="152.5" height="10" rx="3.25" fill="#FEF3C7" stroke="#F59E0B" stroke-width="0.5"/>
+<rect x="52" y="238" width="4" height="4" rx="0.5" stroke="#F59E0B" stroke-width="0.5" fill="none"/>
+<text x="59" y="242" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#92400E">I agree to the Terms &amp; Conditions</text>
+<defs>
+<filter id="filter0_dd_testimonial" x="0" y="0" width="246" height="249" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1.5"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="effect1_dropShadow" result="effect2_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow" result="shape"/>
+</filter>
+</defs>
+</svg>

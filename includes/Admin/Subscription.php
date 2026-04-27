@@ -672,6 +672,11 @@ class Subscription {
      * @return string
      */
     public function post_redirect( $response, $post_id, $form_id, $form_settings ) {
+        // Admin users bypass payment redirect
+        if ( current_user_can( wpuf_admin_role() ) ) {
+            return $response;
+        }
+
         $form             = new Form( $form_id );
         $payment_options  = $form->is_charging_enabled();
         $force_pack       = $form->is_enabled_force_pack();
@@ -1092,7 +1097,10 @@ class Subscription {
 
         // $price_with_tax = $this->wpuf_prices_include_tax();
 
-        if ( self::has_user_error( $form_settings ) || ( $payment_enabled && $pay_per_post && ! $force_pack ) ) {
+        if (
+            ( self::has_user_error( $form_settings ) && ! ( $force_pack && $form->is_enabled_fallback_cost() ) )
+            || ( $payment_enabled && $pay_per_post && ! $force_pack )
+        ) {
             ?>
             <div class="wpuf-info">
                 <?php
@@ -1108,12 +1116,11 @@ class Subscription {
                 ?>
             </div>
             <?php
-        } elseif ( self::has_user_error( $form_settings ) || ( $payment_enabled && $force_pack && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) ) {
+        } elseif ( $payment_enabled && $force_pack && $form->is_enabled_fallback_cost() && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
             ?>
             <div class="wpuf-info">
                 <?php
-                $form          = new Form( $form_id );
-                $fallback_cost = (int) $form->get_subs_fallback_cost();
+                $fallback_cost = (float) $form->get_subs_fallback_cost();
 
                 $fallback_cost = apply_filters( 'wpuf_payment_amount', $fallback_cost );
 
@@ -1178,9 +1185,20 @@ class Subscription {
     }
 
     public function force_pack_notice( $text, $id, $form_settings ) {
+        // Admin users don't need subscription notices
+        if ( current_user_can( wpuf_admin_role() ) ) {
+            return $text;
+        }
+
         $form = new Form( $id );
 
-        $force_pack = $form->is_enabled_force_pack();
+        $force_pack       = $form->is_enabled_force_pack();
+        $fallback_enabled = $form->is_enabled_fallback_cost();
+
+        // When fallback pay-per-post is enabled, don't show "purchase a pack" notice
+        if ( $force_pack && $fallback_enabled ) {
+            return $text;
+        }
 
         if ( $force_pack && self::has_user_error( $form_settings ) ) {
             $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
@@ -1206,7 +1224,11 @@ class Subscription {
             return 'yes';
         }
 
-        if ( $current_user->subscription()->current_pack_id() && ! $has_post_count ) {
+        // When force_pack + fallback pay-per-post is enabled, skip this early return
+        // so the downstream fallback logic can allow the user to post with per-post payment.
+        $skip_limit_block = $force_pack && $fallback_enabled;
+
+        if ( $current_user->subscription()->current_pack_id() && ! $has_post_count && ! $skip_limit_block ) {
             return 'no';
         }
 
@@ -1223,14 +1245,14 @@ class Subscription {
                         if ( ! is_wp_error( $current_pack ) ) {
                             // current pack has no error
                             if ( ! $fallback_enabled ) {
-                                //fallback cost enabled
+                                // fallback cost disabled
                                 if ( ! $current_user->subscription()->current_pack_id() ) {
                                     return 'no';
                                 } elseif ( $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
                                     return 'yes';
                                 }
                             } elseif ( $fallback_enabled ) {
-                                //fallback cost disabled
+                                // fallback cost enabled
                                 if ( ! $current_user->subscription()->current_pack_id() ) {
                                     return 'no';
                                 } elseif ( $has_post_count ) {
@@ -1281,7 +1303,7 @@ class Subscription {
 
         // _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user()->subscription()->has_error( $form_settings = null );' );
 
-        wpuf_get_user()->subscription()->has_error( $form_settings );
+        return wpuf_get_user()->subscription()->has_error( $form_settings );
     }
 
     /**

@@ -368,6 +368,15 @@ class Menu {
         wp_enqueue_script( 'wpuf-subscriptions' );
         wp_enqueue_script( 'wpuf-settings' );
         wp_enqueue_style( 'wpuf-settings' );
+
+        wp_localize_script(
+            'wpuf-settings',
+            'wpufSettingsI18n',
+            [
+                /* translators: %s: gateway name (e.g. PayPal) */
+                'enableGateway' => __( 'Enable %s', 'wp-user-frontend' ),
+            ]
+        );
     }
 
     /**

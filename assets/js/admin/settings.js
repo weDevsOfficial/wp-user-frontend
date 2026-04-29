@@ -76,209 +76,24 @@
 
         }
 
-        // --- Accordion for Payment Gateways ---
-        var paymentTab = document.getElementById('wpuf_payment');
-        if (paymentTab) {
-            var table = paymentTab.querySelector('table.form-table');
-            if (table) {
-                var trs = Array.from(table.querySelectorAll('tbody > tr'));
-                var groups = {
-                    paypal: {
-                        title: 'PayPal',
-                        iconClass: 'wpuf-gateway-icon wpuf-gateway-icon--paypal',
-                        rows: [],
-                        existingCheckbox: null
-                    },
-                    bank: {
-                        title: 'Bank Transfer',
-                        iconClass: 'wpuf-gateway-icon wpuf-gateway-icon--bank',
-                        rows: [],
-                        existingCheckbox: null
-                    },
-                    stripe: {
-                        title: 'Credit Card',
-                        iconClass: 'wpuf-gateway-icon wpuf-gateway-icon--stripe',
-                        rows: [],
-                        existingCheckbox: null
-                    }
-                };
-
-                var allowGatewaysTr = null;
-
-                trs.forEach(function (tr) {
-                    var html = tr.innerHTML;
-                    if (html.includes('wpuf_payment[active_gateways]')) {
-                        allowGatewaysTr = tr;
-                    }
-                });
-
-                // Card grid in allowGatewaysTr handles enable/disable.
-                // Do NOT hide it and do NOT move checkboxes — accordion only groups per-gateway settings rows below.
-
-                // Use the data-gateway-id tag set by wpufInitGatewaySelector (runs before this block).
-                // This includes mapped fields like failed_retry → paypal.
-                trs.forEach(function (tr) {
-                    if (tr === allowGatewaysTr) return;
-                    var gid = tr.getAttribute('data-gateway-id');
-                    if (gid && groups[gid]) {
-                        groups[gid].rows.push(tr);
-                    }
-                });
-
-                var theTbody = table.querySelector('tbody');
-
-                // Resolve the existing PRO badge img URL — search ALL tabs including hidden ones
-                var proIconSrcUrl = '';
-                var proIconImg = document.querySelector('.pro-icon img');
-                if (!proIconImg) {
-                    proIconImg = document.querySelector('span.pro-icon img');
-                }
-                if (proIconImg) {
-                    proIconSrcUrl = proIconImg.getAttribute('src');
-                } else {
-                    var anyImg = document.querySelector('img[src*="wp-user-frontend"][src*="assets"]');
-                    if (anyImg) {
-                        proIconSrcUrl = anyImg.getAttribute('src').split('/assets/')[0] + '/assets/images/pro-badge.svg';
-                    }
-                }
-
-                function createProIconNode() {
-                    if (proIconSrcUrl) {
-                        var img = document.createElement('img');
-                        img.src = proIconSrcUrl;
-                        img.alt = 'PRO';
-                        img.style.verticalAlign = 'middle';
-                        return img;
-                    }
-                    var fallback = document.createElement('span');
-                    fallback.className = 'wpuf-pro-badge-fallback';
-                    fallback.setAttribute('role', 'img');
-                    fallback.setAttribute('aria-label', 'PRO');
-                    return fallback;
-                }
-
-                Object.keys(groups).forEach(function (key) {
-                    var group = groups[key];
-                    
-                    // Stripe is disabled only when no stripe settings rows are registered in PHP
-                    // (PRO off / stripe module off). If PRO active + stripe module on, rows > 0.
-                    var isProFeatureDisabled = (key === 'stripe' && group.rows.length === 0);
-
-                    if (isProFeatureDisabled) {
-                        var dummyTr = document.createElement('tr');
-                        var dummyTh = document.createElement('th');
-                        dummyTh.scope = 'row';
-
-                        // "Enable Gateway" label + PRO icon badge — same pattern used throughout the plugin:
-                        // <label>Enable Gateway <span class="pro-icon"><img src="...pro-badge.svg"></span></label>
-                        var enableLabel = document.createElement('label');
-                        enableLabel.appendChild(document.createTextNode('Enable Gateway '));
-                        var proIconSpan = document.createElement('span');
-                        proIconSpan.className = 'pro-icon';
-                        proIconSpan.appendChild(createProIconNode());
-                        enableLabel.appendChild(proIconSpan);
-                        dummyTh.appendChild(enableLabel);
-
-                        var dummyTd = document.createElement('td');
-                        var upsellP = document.createElement('p');
-                        upsellP.className = 'wpuf-gateway-pro-upsell';
-                        upsellP.appendChild(document.createTextNode('Available with '));
-                        var upsellLink = document.createElement('a');
-                        upsellLink.href = 'https://wedevs.com/wp-user-frontend-pro/';
-                        upsellLink.target = '_blank';
-                        upsellLink.textContent = 'WPUF Pro';
-                        upsellP.appendChild(upsellLink);
-                        upsellP.appendChild(document.createTextNode('.'));
-                        dummyTd.appendChild(upsellP);
-
-                        dummyTr.appendChild(dummyTh);
-                        dummyTr.appendChild(dummyTd);
-                        group.rows.push(dummyTr);
-                    }
-
-                    if (group.rows.length === 0) return;
-
-                    var triggerRow = document.createElement('tr');
-                    var triggerCell = document.createElement('td');
-                    triggerCell.colSpan = 2;
-                    triggerCell.style.padding = '0';
-
-                    var triggerBtn = document.createElement('button');
-                    triggerBtn.type = 'button';
-                    triggerBtn.className = 'wpuf-accordion-trigger';
-                    triggerBtn.setAttribute('data-target-group', key);
-
-                    var titleSpan = document.createElement('span');
-                    titleSpan.style.display = 'flex';
-                    titleSpan.style.alignItems = 'center';
-                    var iconSpan = document.createElement('span');
-                    iconSpan.className = group.iconClass;
-                    titleSpan.appendChild(iconSpan);
-                    titleSpan.appendChild(document.createTextNode(group.title));
-
-                    if (isProFeatureDisabled) {
-                        triggerBtn.classList.add('is-disabled');
-                        var badgeWrapper = document.createElement('div');
-                        badgeWrapper.className = 'wpuf-gateway-pro-badge';
-                        var badgeSpan = document.createElement('span');
-                        badgeSpan.className = 'pro-icon';
-                        badgeSpan.title = 'Pro Feature';
-                        badgeSpan.appendChild(createProIconNode());
-                        badgeWrapper.appendChild(badgeSpan);
-                        titleSpan.appendChild(badgeWrapper);
-                    }
-
-                    triggerBtn.appendChild(titleSpan);
-                    triggerCell.appendChild(triggerBtn);
-                    triggerRow.appendChild(triggerCell);
-
-                    theTbody.appendChild(triggerRow);
-
-                    // We add a specific class to the gateway setting rows to hide them by default
-                    group.rows.forEach(function (r) {
-                        r.classList.add('wpuf-accordion-row');
-                        r.setAttribute('data-group', key);
-                        theTbody.appendChild(r);
-                    });
-
-                    // Event listener for toggle 
-                    triggerBtn.addEventListener('click', function (e) {
-                        e.preventDefault();
-
-                        if (isProFeatureDisabled) {
-                            return;
-                        }
-
-                        var isActive = this.classList.contains('active');
-
-                        // Close all accordions
-                        document.querySelectorAll('.wpuf-accordion-trigger').forEach(function (btn) {
-                            btn.classList.remove('active');
-                            var g = btn.getAttribute('data-target-group');
-                            document.querySelectorAll('tr[data-group="' + g + '"]').forEach(function (tr) {
-                                tr.classList.remove('active');
-                            });
-                        });
-
-                        // Toggle current
-                        if (!isActive) {
-                            this.classList.add('active');
-                            document.querySelectorAll('tr[data-group="' + key + '"]').forEach(function (tr) {
-                                tr.classList.add('active');
-                            });
-                        }
-                    });
-                });
-            }
-        }
 
     });
+
+    var wpufI18n = window.wpufSettingsI18n || {};
+    function wpufSprintf(template, value) {
+        return String(template).replace('%s', value);
+    }
+    function wpufEscapeRegex(str) {
+        return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
 
     /**
      * Gateway Selector Card Grid
      *
-     * Handles card click to toggle checkbox (multi-select) and
-     * shows only the clicked gateway's settings rows below.
+     * Card click opens that gateway's settings panel; settings rows for
+     * non-focused gateways stay hidden. Within the focused gateway,
+     * non-enable rows stay hidden until the "Enable Gateway" toggle is on.
+     * The hidden card checkbox is driven by that toggle.
      */
     function wpufInitGatewaySelector() {
         var container = document.querySelector('.wpuf-gateway-cards');
@@ -287,20 +102,14 @@
             return;
         }
 
-        // Map gateway IDs to their settings field name prefixes.
-        // PayPal fields: paypal_*, gate_instruct_paypal
-        // Bank fields: bank_*, gate_instruct_bank
-        // Generic pattern: field name contains the gateway ID
         var gatewayCards = container.querySelectorAll('.wpuf-gateway-card');
-
-        // Find the <tr> that contains the gateway selector itself
-        var selectorRow = container.closest('tr');
+        var selectorRow  = container.closest('tr');
 
         if ( ! selectorRow ) {
             return;
         }
 
-        // Collect all <tr> siblings after the selector row in the same table
+        // Collect all <tr> siblings after the selector row in the same table.
         var formTable  = selectorRow.closest('table');
         var allRows    = formTable ? formTable.querySelectorAll('tr') : [];
         var afterRows  = [];
@@ -311,16 +120,25 @@
                 pastSelector = true;
                 return;
             }
-
             if ( pastSelector ) {
                 afterRows.push(row);
             }
         });
 
-        // Fields whose names don't contain a gateway ID but belong to one
+        // Fields whose names don't contain a gateway ID but belong to one.
         var fieldGatewayMap = {
             'failed_retry': 'paypal',
         };
+
+        // Build gateway id list + boundary regex map once.
+        var gatewayIds = [];
+        var gatewayRegexMap = {};
+        gatewayCards.forEach(function(card) {
+            var id = card.getAttribute('data-gateway');
+            if ( ! id ) return;
+            gatewayIds.push(id);
+            gatewayRegexMap[id] = new RegExp('(^|_)' + wpufEscapeRegex(id) + '(_|$)');
+        });
 
         /**
          * Determine which gateway a settings row belongs to by
@@ -328,11 +146,6 @@
          */
         function getRowGatewayId(row) {
             var inputs = row.querySelectorAll('input, select, textarea');
-            var gatewayIds = [];
-
-            gatewayCards.forEach(function(card) {
-                gatewayIds.push(card.getAttribute('data-gateway'));
-            });
 
             for ( var i = 0; i < inputs.length; i++ ) {
                 var name = inputs[i].getAttribute('name') || '';
@@ -349,9 +162,7 @@
 
                     for ( var j = 0; j < gatewayIds.length; j++ ) {
                         var gid = gatewayIds[j];
-
-                        // Match: gate_instruct_paypal, paypal_email, bank_success, etc.
-                        if ( fieldName.indexOf(gid) !== -1 || fieldName.indexOf('gate_instruct_' + gid) !== -1 ) {
+                        if ( gatewayRegexMap[gid].test(fieldName) ) {
                             return gid;
                         }
                     }
@@ -382,7 +193,7 @@
                         }
 
                         for ( var m = 0; m < gatewayIds.length; m++ ) {
-                            if ( forFieldName.indexOf(gatewayIds[m]) !== -1 ) {
+                            if ( gatewayRegexMap[gatewayIds[m]].test(forFieldName) ) {
                                 return gatewayIds[m];
                             }
                         }
@@ -403,10 +214,30 @@
             }
         });
 
-        /**
-         * Update the focused (green border) state on gateway cards
-         */
-        function setFocusedCard(gatewayId) {
+        var formTbody = formTable ? formTable.querySelector('tbody') : null;
+
+        // Hide all gateway settings rows by default; card click reveals one gateway's rows.
+        // Within the focused gateway, non-enable rows stay hidden until that gateway is enabled.
+        function showGateway(gatewayId) {
+            var focusedCard = container.querySelector('.wpuf-gateway-card[data-gateway="' + gatewayId + '"]');
+            var focusedCheckbox = focusedCard ? focusedCard.querySelector('.wpuf-gateway-card__checkbox') : null;
+            var enabled = focusedCheckbox ? focusedCheckbox.checked : false;
+
+            afterRows.forEach(function(row) {
+                if ( ! row.classList.contains('wpuf-gateway-setting-row') ) return;
+
+                if ( row.getAttribute('data-gateway-id') !== gatewayId ) {
+                    row.classList.add('wpuf-gateway-setting-hidden');
+                    return;
+                }
+
+                if ( row.classList.contains('wpuf-gateway-enable-row') || enabled ) {
+                    row.classList.remove('wpuf-gateway-setting-hidden');
+                } else {
+                    row.classList.add('wpuf-gateway-setting-hidden');
+                }
+            });
+
             gatewayCards.forEach(function(card) {
                 if ( card.getAttribute('data-gateway') === gatewayId ) {
                     card.classList.add('wpuf-gateway-card--focused');
@@ -416,89 +247,90 @@
             });
         }
 
-        /**
-         * Show settings rows for a specific gateway, hide others
-         */
-        function showGatewaySettings(gatewayId) {
-            afterRows.forEach(function(row) {
-                if ( ! row.classList.contains('wpuf-gateway-setting-row') ) {
-                    return;
-                }
-
-                if ( row.getAttribute('data-gateway-id') === gatewayId ) {
-                    row.classList.remove('wpuf-gateway-setting-hidden');
-                } else {
-                    row.classList.add('wpuf-gateway-setting-hidden');
-                }
-            });
-
-            setFocusedCard(gatewayId);
+        // Card click / Enter / Space → show that gateway's settings panel.
+        function activateCard(card) {
+            var gid = card.getAttribute('data-gateway');
+            if ( gid ) {
+                showGateway(gid);
+            }
         }
-
-        /**
-         * Hide all gateway-specific settings rows
-         */
-        function hideAllGatewaySettings() {
-            afterRows.forEach(function(row) {
-                if ( row.classList.contains('wpuf-gateway-setting-row') ) {
-                    row.classList.add('wpuf-gateway-setting-hidden');
-                }
-            });
-
-            setFocusedCard(null);
-        }
-
-        // Checkbox change handler (triggered by the <label> toggle in the top-right corner)
         gatewayCards.forEach(function(card) {
+            card.addEventListener('click', function() {
+                activateCard(card);
+            });
+            card.addEventListener('keydown', function(e) {
+                if ( e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar' ) {
+                    e.preventDefault();
+                    activateCard(card);
+                }
+            });
+        });
+
+        // Inject an "Enable Gateway" toggle row at the top of each gateway's
+        // settings panel. Toggle drives the hidden card checkbox that the form submits.
+        gatewayCards.forEach(function(card) {
+            var gid = card.getAttribute('data-gateway');
+            if ( ! gid ) return;
+
             var checkbox = card.querySelector('.wpuf-gateway-card__checkbox');
+            if ( ! checkbox ) return;
 
-            checkbox.addEventListener('change', function() {
-                var gatewayId = card.getAttribute('data-gateway');
+            var firstSettingRow = formTable.querySelector('tr[data-gateway-id="' + gid + '"]');
 
-                if ( checkbox.checked ) {
+            var toggleTr = document.createElement('tr');
+            toggleTr.classList.add('wpuf-gateway-setting-row', 'wpuf-gateway-enable-row', 'wpuf-gateway-setting-hidden');
+            toggleTr.setAttribute('data-gateway-id', gid);
+
+            var nameEl = card.querySelector('.wpuf-gateway-card__label') || card.querySelector('.wpuf-gateway-card__name');
+            var gatewayName = nameEl ? nameEl.textContent.trim() : gid;
+            var toggleLabelText = wpufSprintf(wpufI18n.enableGateway || 'Enable %s', gatewayName);
+
+            var toggleTh = document.createElement('th');
+            toggleTh.scope = 'row';
+            var toggleLabel = document.createElement('label');
+            toggleLabel.textContent = toggleLabelText;
+            toggleTh.appendChild(toggleLabel);
+
+            var toggleTd = document.createElement('td');
+            var switchLabel = document.createElement('label');
+            switchLabel.className = 'wpuf-gateway-toggle';
+            var switchInput = document.createElement('input');
+            switchInput.type = 'checkbox';
+            switchInput.className = 'wpuf-gateway-toggle__input';
+            switchInput.setAttribute('data-gateway', gid);
+            switchInput.setAttribute('aria-label', toggleLabelText);
+            switchInput.checked = checkbox.checked;
+            var switchSlider = document.createElement('span');
+            switchSlider.className = 'wpuf-gateway-toggle__slider';
+            switchLabel.appendChild(switchInput);
+            switchLabel.appendChild(switchSlider);
+            toggleTd.appendChild(switchLabel);
+
+            toggleTr.appendChild(toggleTh);
+            toggleTr.appendChild(toggleTd);
+
+            if ( firstSettingRow && firstSettingRow.parentNode ) {
+                firstSettingRow.parentNode.insertBefore(toggleTr, firstSettingRow);
+            } else if ( formTbody ) {
+                formTbody.appendChild(toggleTr);
+            }
+            afterRows.unshift(toggleTr);
+
+            switchInput.addEventListener('change', function() {
+                checkbox.checked = switchInput.checked;
+                if ( switchInput.checked ) {
                     card.classList.add('wpuf-gateway-card--active');
                 } else {
                     card.classList.remove('wpuf-gateway-card--active');
                 }
-
-                // Show settings of the toggled gateway if checked,
-                // fall back to first remaining active, or hide all
-                var anyActive = container.querySelector('.wpuf-gateway-card--active');
-
-                if ( checkbox.checked ) {
-                    showGatewaySettings(gatewayId);
-                } else if ( anyActive ) {
-                    showGatewaySettings(anyActive.getAttribute('data-gateway'));
-                } else {
-                    hideAllGatewaySettings();
-                }
+                showGateway(gid);
             });
         });
 
-        // Card body click handler — only shows settings, does not toggle selection
-        gatewayCards.forEach(function(card) {
-            card.addEventListener('click', function(e) {
-                // Ignore clicks on the toggle label or checkbox (those handle selection)
-                if ( e.target.closest('.wpuf-gateway-card__toggle') ) {
-                    return;
-                }
-
-                if ( card.classList.contains('wpuf-gateway-card--pro-locked') ) {
-                    return;
-                }
-
-                var gatewayId = card.getAttribute('data-gateway');
-                showGatewaySettings(gatewayId);
-            });
-        });
-
-        // On page load, show settings for the first active gateway, or hide all
-        var firstActive = container.querySelector('.wpuf-gateway-card--active');
-
-        if ( firstActive ) {
-            showGatewaySettings(firstActive.getAttribute('data-gateway'));
-        } else {
-            hideAllGatewaySettings();
+        // Default panel: Bank Payment if available, else first card.
+        var defaultCard = container.querySelector('.wpuf-gateway-card[data-gateway="bank"]') || gatewayCards[0];
+        if ( defaultCard ) {
+            showGateway(defaultCard.getAttribute('data-gateway'));
         }
     }
 })();

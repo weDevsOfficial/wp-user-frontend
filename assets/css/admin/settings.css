@@ -57,13 +57,13 @@
     transition: transform 0.2s ease;
 }
 .wpuf-gateway-toggle__input:checked + .wpuf-gateway-toggle__slider {
-    background-color: #949494;
+    background-color: #0073aa;
 }
 .wpuf-gateway-toggle__input:checked + .wpuf-gateway-toggle__slider::before {
     transform: translateX(20px);
 }
 .wpuf-gateway-toggle__input:focus-visible + .wpuf-gateway-toggle__slider {
-    box-shadow: 0 0 0 2px rgba(148, 148, 148, 0.35);
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.35);
 }
 .wpuf-gateway-card[data-gateway="paypal"] .wpuf-gateway-card__icon > *,
 .wpuf-gateway-card[data-gateway="bank"] .wpuf-gateway-card__icon > *,

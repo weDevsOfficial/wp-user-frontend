@@ -422,6 +422,11 @@ class Assets {
                 'src'       => WPUF_ASSET_URI . '/js/elementor-subscription-plans.js',
                 'in_footer' => true,
             ],
+            '2fa-account'                  => [
+                'src'       => WPUF_ASSET_URI . '/js/wpuf-2fa-account.js',
+                'deps'      => [ 'jquery' ],
+                'in_footer' => true,
+            ],
         ];
 
         if ( ! empty( $api_key ) ) {

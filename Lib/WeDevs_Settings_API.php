@@ -358,8 +358,58 @@ class WeDevs_Settings_API {
      * @return void
      */
     function callback_gateway_selector( $args ) {
+        $this->render_card_selector(
+            $args,
+            [
+                'block'          => 'wpuf-gateway-card',
+                'data_attribute' => 'data-gateway',
+            ]
+        );
+    }
+
+    /**
+     * Displays a card grid for selecting from a generic list of methods
+     *
+     * Reuses the same card UI as `gateway_selector` but emits its own
+     * BEM namespace so the two selector types can evolve independently.
+     * Used for things like 2FA methods, social login providers, etc.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $args settings field args
+     *
+     * @return void
+     */
+    function callback_method_selector( $args ) {
+        $this->render_card_selector(
+            $args,
+            [
+                'block'          => 'wpuf-method-card',
+                'data_attribute' => 'data-method',
+            ]
+        );
+    }
+
+    /**
+     * Shared renderer for card-grid selector field types
+     *
+     * Used by `gateway_selector` and `method_selector`. The BEM block name
+     * and per-card data attribute come from $config so each caller emits
+     * its own CSS namespace and JS hook target.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $args   settings field args
+     * @param array $config renderer configuration: block, data_attribute
+     *
+     * @return void
+     */
+    private function render_card_selector( $args, $config ) {
         $value = $this->get_option( $args['id'], $args['section'], $args['std'] );
         $value = $value ? $value : [];
+
+        $block          = $config['block'];
+        $data_attribute = $config['data_attribute'];
 
         // Inline SVG fallback icons (no image files exist for these)
         $bank_svg    = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#787c82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M3 10h18"/><path d="M12 3l9 7H3l9-7z"/><path d="M5 10v8"/><path d="M9 10v8"/><path d="M15 10v8"/><path d="M19 10v8"/></svg>';
@@ -368,40 +418,40 @@ class WeDevs_Settings_API {
         <fieldset>
             <input type="hidden" name="<?php echo esc_attr( $args['section'] ); ?>[<?php echo esc_attr( $args['id'] ); ?>]" value="" />
 
-            <div class="wpuf-gateway-cards">
-                <?php foreach ( $args['options'] as $key => $gateway ) :
+            <div class="<?php echo esc_attr( $block . 's' ); ?>">
+                <?php foreach ( $args['options'] as $key => $option ) :
                     $is_checked    = in_array( $key, $value, true );
-                    $is_pro        = ! empty( $gateway['is_pro_preview'] ) && $gateway['is_pro_preview'];
+                    $is_pro        = ! empty( $option['is_pro_preview'] ) && $option['is_pro_preview'];
                     $disabled      = $is_pro ? 'disabled' : '';
-                    $active_class  = $is_checked ? ' wpuf-gateway-card--active' : '';
-                    $pro_class     = $is_pro ? ' wpuf-gateway-card--pro-locked' : '';
-                    $icon          = ! empty( $gateway['icon'] ) ? $gateway['icon'] : '';
-                    $admin_label   = $gateway['admin_label'];
+                    $active_class  = $is_checked ? ' ' . $block . '--active' : '';
+                    $pro_class     = $is_pro ? ' ' . $block . '--pro-locked' : '';
+                    $icon          = ! empty( $option['icon'] ) ? $option['icon'] : '';
+                    $admin_label   = $option['admin_label'];
                     ?>
-                    <div class="wpuf-gateway-card<?php echo esc_attr( $active_class . $pro_class ); ?>"
-                         data-gateway="<?php echo esc_attr( $key ); ?>">
+                    <div class="<?php echo esc_attr( $block . $active_class . $pro_class ); ?>"
+                         <?php echo esc_attr( $data_attribute ); ?>="<?php echo esc_attr( $key ); ?>">
 
                         <input type="checkbox"
-                               class="wpuf-gateway-card__checkbox"
+                               class="<?php echo esc_attr( $block . '__checkbox' ); ?>"
                                id="wpuf-<?php echo esc_attr( $args['section'] ); ?>[<?php echo esc_attr( $args['id'] ); ?>][<?php echo esc_attr( $key ); ?>]"
                                name="<?php echo esc_attr( $args['section'] ); ?>[<?php echo esc_attr( $args['id'] ); ?>][<?php echo esc_attr( $key ); ?>]"
                                value="<?php echo esc_attr( $key ); ?>"
                                <?php checked( $is_checked, true ); ?>
                                <?php echo esc_attr( $disabled ); ?> />
 
-                        <label class="wpuf-gateway-card__toggle"
+                        <label class="<?php echo esc_attr( $block . '__toggle' ); ?>"
                                for="wpuf-<?php echo esc_attr( $args['section'] ); ?>[<?php echo esc_attr( $args['id'] ); ?>][<?php echo esc_attr( $key ); ?>]"
                                title="<?php echo esc_attr( sprintf( __( 'Enable %s', 'wp-user-frontend' ), $admin_label ) ); ?>">
-                            <svg class="wpuf-gateway-card__check-on" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22">
+                            <svg class="<?php echo esc_attr( $block . '__check-on' ); ?>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22">
                                 <circle cx="12" cy="12" r="12" fill="#00a32a"/>
                                 <path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <svg class="wpuf-gateway-card__check-off" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22">
+                            <svg class="<?php echo esc_attr( $block . '__check-off' ); ?>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22">
                                 <circle cx="12" cy="12" r="11" fill="none" stroke="#c3c4c7" stroke-width="2"/>
                             </svg>
                         </label>
 
-                        <div class="wpuf-gateway-card__icon">
+                        <div class="<?php echo esc_attr( $block . '__icon' ); ?>">
                             <?php if ( $icon ) : ?>
                                 <img src="<?php echo esc_url( $icon ); ?>" alt="<?php echo esc_attr( $admin_label ); ?>" />
                             <?php elseif ( 'bank' === $key ) : ?>
@@ -411,7 +461,7 @@ class WeDevs_Settings_API {
                             <?php endif; ?>
                         </div>
 
-                        <div class="wpuf-gateway-card__name">
+                        <div class="<?php echo esc_attr( $block . '__name' ); ?>">
                             <?php echo esc_html( $admin_label ); ?>
                         </div>
                     </div>
@@ -998,22 +1048,22 @@ class WeDevs_Settings_API {
                     for (var field_name in dependencies) {
                         var expected_value = dependencies[field_name];
                         var $depends_on = $("input[id*='"+ field_name +"'], select[id*='"+ field_name +"']");
-                        
+
                         // If no field found with the simple selector, try more specific selectors
                         if ($depends_on.length === 0) {
                             $depends_on = $("input[name*='["+ field_name +"]'], select[name*='["+ field_name +"]']");
                         }
-                        
+
                         // If still no field found, try looking for the field name in the ID attribute
                         if ($depends_on.length === 0) {
                             $depends_on = $("input[id*='["+ field_name +"]'], select[id*='["+ field_name +"]']");
                         }
-                        
+
                         // If still no field found, try looking for the field name anywhere in the ID
                         if ($depends_on.length === 0) {
                             $depends_on = $("input[id*='"+ field_name +"'], select[id*='"+ field_name +"']");
                         }
-                        
+
                         if ($depends_on.length === 0) {
                             all_dependencies_met = false;
                             break;
@@ -1023,7 +1073,7 @@ class WeDevs_Settings_API {
                         var current_value = $depends_on.val();
                         var is_checkbox = $depends_on.attr('type') === 'checkbox';
                         var is_checked = is_checkbox ? $depends_on.is(':checked') : null;
-                        
+
                         // For checkboxes, handle empty string as "checked" expectation
                         var value_matches = false;
                         if (is_checkbox) {
@@ -1037,7 +1087,7 @@ class WeDevs_Settings_API {
                         } else {
                             value_matches = current_value === expected_value;
                         }
-                        
+
                         if (!value_matches) {
                             all_dependencies_met = false;
                         }
@@ -1073,26 +1123,26 @@ class WeDevs_Settings_API {
                         for (var field_name in dependencies) {
                             var expected_value = dependencies[field_name];
                             var $depends_on = $("input[id*='"+ field_name +"'], select[id*='"+ field_name +"']");
-                            
+
                             // If no field found with the simple selector, try more specific selectors
                             if ($depends_on.length === 0) {
                                 $depends_on = $("input[name*='["+ field_name +"]'], select[name*='["+ field_name +"]']");
                             }
-                            
+
                             // If still no field found, try looking for the field name in the ID attribute
                             if ($depends_on.length === 0) {
                                 $depends_on = $("input[id*='["+ field_name +"]'], select[id*='["+ field_name +"]']");
                             }
-                            
+
                             // If still no field found, try looking for the field name anywhere in the ID
                             if ($depends_on.length === 0) {
                                 $depends_on = $("input[id*='"+ field_name +"'], select[id*='"+ field_name +"']");
                             }
-                            
+
                             var current_value = $depends_on.length > 0 ? $depends_on.val() : 'NOT_FOUND';
                             var is_checkbox = $depends_on.length > 0 && $depends_on.attr('type') === 'checkbox';
                             var is_checked = is_checkbox ? $depends_on.is(':checked') : null;
-                            
+
                             // For checkboxes, handle empty string as "checked" expectation
                             var value_matches = false;
                             if ($depends_on.length === 0) {
@@ -1108,13 +1158,13 @@ class WeDevs_Settings_API {
                             } else {
                                 value_matches = current_value === expected_value;
                             }
-                            
+
                             if (!value_matches) {
                                 all_met = false;
                                 break;
                             }
                         }
-                        
+
                         if (all_met) {
                             $this.closest('tr').show();
                         } else {

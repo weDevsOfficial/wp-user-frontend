@@ -5,7 +5,7 @@ Tags: frontend post, user directory, membership, user profile, user registration
 Requires at least: 5.0
 Tested up to: 6.9.4
 Stable tag: 4.3.2
-Requires PHP: 5.6
+Requires PHP: 7.4
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
 

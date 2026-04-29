@@ -504,6 +504,17 @@ class Simple_Login {
             return;
         }
 
+        // 2FA challenge submission. Stage 2 carries only the verification
+        // code + token — credentials are empty (already verified in stage 1)
+        // and Turnstile is not re-rendered on the challenge view. Skip so
+        // we don't stack "Username is required" / "Password is required" /
+        // "Cloudflare Turnstile verification failed" alongside the actual
+        // 2FA error. The 2FA controller owns this request from `init`@9.
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        if ( ! empty( $_POST['wpuf_2fa_token'] ) ) {
+            return;
+        }
+
         // unset the specific cookie to fix WooCommerce Stripe Gateway plugin conflict
         add_action( 'set_logged_in_cookie', [ $this, 'unset_logged_in_cookie' ], 11 );
 

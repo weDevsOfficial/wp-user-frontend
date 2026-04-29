@@ -950,6 +950,29 @@ function wpuf_get_gateways( $context = 'admin' ) {
 }
 
 /**
+ * Get all the registered 2FA methods
+ *
+ * Each method is shaped like a gateway-selector card so the shared card
+ * renderer can render them. Email OTP and SMS OTP ship as pro previews
+ * for now — only TOTP is functional in the free MVP.
+ *
+ * @since WPUF_SINCE
+ *
+ * @return array
+ */
+function wpuf_get_2fa_methods() {
+    $methods = [
+        'totp'      => [
+            'admin_label'    => __( 'Authenticator App', 'wp-user-frontend' ),
+            'icon'           => '',
+            'is_pro_preview' => false,
+        ],
+    ];
+
+    return apply_filters( 'wpuf_2fa_methods', $methods );
+}
+
+/**
  * Show custom fields in post content area
  *
  * @since 3.3.0 Introducing `render_field_data` to render field value

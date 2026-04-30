@@ -1,0 +1,62 @@
+<svg width="246" height="249" viewBox="0 0 246 249" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_dd_guest_recurring)">
+<path d="M3 10C3 5.58172 6.58172 2 11 2H235C239.418 2 243 5.58172 243 10V237C243 241.418 239.418 245 235 245H11C6.58173 245 3 241.418 3 237V10Z" fill="white"/>
+<path d="M3.5 10C3.5 5.85786 6.85786 2.5 11 2.5H235C239.142 2.5 242.5 5.85786 242.5 10V237C242.5 241.142 239.142 244.5 235 244.5H11C6.85787 244.5 3.5 241.142 3.5 237V10Z" stroke="#E2E8F0"/>
+</g>
+<!-- Post Title Field -->
+<rect x="47.25" y="22" width="152.5" height="12.5" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="26" width="85" height="4" rx="1" fill="#CBD5E1"/>
+<!-- Post Content Textarea -->
+<rect x="47.25" y="40" width="152.5" height="38" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="45" width="142" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="50" width="142" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="55" width="120" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="60" width="135" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="65" width="100" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="70" width="115" height="2" rx="1" fill="#E2E8F0"/>
+<!-- Excerpt Textarea -->
+<rect x="47.25" y="84" width="152.5" height="26" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="89" width="142" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="94" width="130" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="99" width="90" height="2" rx="1" fill="#E2E8F0"/>
+<!-- Featured Image Upload -->
+<rect x="47.25" y="116" width="152.5" height="32" rx="3.25" fill="#F8FAFC" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="100" y="124" width="46" height="16" rx="2" fill="#E2E8F0"/>
+<circle cx="113" cy="132" r="3" fill="#94A3B8"/>
+<path d="M119 128L123 136H115L119 128Z" fill="#94A3B8"/>
+<rect x="130" y="128" width="12" height="2" rx="1" fill="#CBD5E1"/>
+<rect x="130" y="133" width="10" height="2" rx="1" fill="#CBD5E1"/>
+<!-- Category Dropdown (half width) -->
+<rect x="47.25" y="154" width="72" height="12.5" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="158" width="45" height="4" rx="1" fill="#CBD5E1"/>
+<path d="M110 158L112 160L114 158" stroke="#979AA9" stroke-width="0.878788"/>
+<!-- Tags Field (half width) -->
+<rect x="127.25" y="154" width="72" height="12.5" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="132" y="158" width="28" height="4" rx="1" fill="#E2E8F0"/>
+<rect x="163" y="158" width="20" height="4" rx="1" fill="#E2E8F0"/>
+<!-- Divider -->
+<rect x="47" y="173" width="152" height="1" rx="0.5" fill="#E2E8F0"/>
+<!-- Submit Button -->
+<rect x="47" y="180" width="90" height="14" rx="3" fill="#D1D9E2"/>
+<!-- Recurring Subscription Badge (blue with circular arrow icon) -->
+<circle cx="196" cy="188" r="14" fill="#1D4ED8"/>
+<!-- Circular arrow icon (recurring symbol) -->
+<path d="M196 179 A9 9 0 1 1 187 188" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M187 183L187 188L192 188" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<defs>
+<filter id="filter0_dd_guest_recurring" x="0" y="0" width="246" height="249" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_guest_recurring"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1.5"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="effect1_dropShadow_guest_recurring" result="effect2_dropShadow_guest_recurring"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_guest_recurring" result="shape"/>
+</filter>
+</defs>
+</svg>

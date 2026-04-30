@@ -8,6 +8,7 @@ use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_EDD;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_Portfolio;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_Press_Release;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_Professional_Video;
+use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_Testimonial;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_Volunteer;
 use WeDevs\Wpuf\Pro\Admin\Coupon_Elements;
 use WeDevs\Wpuf\Hooks\Form_Settings_Cleanup;
@@ -227,49 +228,49 @@ class Free_Loader extends Pro_Prompt {
         $new_sections    = [
             [
                 'id'             => 'wpuf_sms',
-                'title'          => __( 'SMS', 'wp-user-frontend' ) . '<span class="pro-icon-title"> ' . '<img src="' . WPUF_ASSET_URI . '/images/pro-badge.svg" alt="PRO">' . '</span>',
+                'title'          => __( 'SMS', 'wp-user-frontend' ) . '<span class="pro-icon-title"> <img src="' . WPUF_ASSET_URI . '/images/pro-badge.svg" alt="PRO"></span>',
                 'icon'           => 'dashicons-format-status',
                 'class'          => 'pro-preview-html',
                 'is_pro_preview' => true,
             ],
             [
                 'id'             => 'wpuf_social_api',
-                'title'          => __( 'Social Login', 'wp-user-frontend' ) . '<span class="pro-icon-title"> ' . '<img src="' . WPUF_ASSET_URI . '/images/pro-badge.svg" alt="PRO">' . '</span>',
+                'title'          => __( 'Social Login', 'wp-user-frontend' ) . '<span class="pro-icon-title"> <img src="' . WPUF_ASSET_URI . '/images/pro-badge.svg" alt="PRO"></span>',
                 'icon'           => 'dashicons-share',
                 'class'          => 'pro-preview-html',
                 'is_pro_preview' => true,
             ],
             [
                 'id'             => 'user_directory',
-                'title'          => __( 'User Directory', 'wp-user-frontend' ) . '<span class="pro-icon-title"> ' . '<img src="' . WPUF_ASSET_URI . '/images/pro-badge.svg" alt="PRO">' . '</span>',
+                'title'          => __( 'User Directory', 'wp-user-frontend' ) . '<span class="pro-icon-title"> <img src="' . WPUF_ASSET_URI . '/images/pro-badge.svg" alt="PRO"></span>',
                 'icon'           => 'dashicons-list-view',
                 'class'          => 'pro-preview-html',
                 'is_pro_preview' => true,
             ],
             [
                 'id'             => 'wpuf_payment_invoices',
-                'title'          => __( 'Invoices', 'wp-user-frontend' ) . '<span class="pro-icon-title"> ' . '<img src="' . WPUF_ASSET_URI . '/images/pro-badge.svg" alt="PRO">' . '</span>',
+                'title'          => __( 'Invoices', 'wp-user-frontend' ) . '<span class="pro-icon-title"> <img src="' . WPUF_ASSET_URI . '/images/pro-badge.svg" alt="PRO"></span>',
                 'icon'           => 'dashicons-media-spreadsheet',
                 'class'          => 'pro-preview-html',
                 'is_pro_preview' => true,
             ],
             [
                 'id'             => 'wpuf_payment_tax',
-                'title'          => __( 'Tax', 'wp-user-frontend' ) . '<span class="pro-icon-title"> ' . '<img src="' . WPUF_ASSET_URI . '/images/pro-badge.svg" alt="PRO">' . '</span>',
+                'title'          => __( 'Tax', 'wp-user-frontend' ) . '<span class="pro-icon-title"> <img src="' . WPUF_ASSET_URI . '/images/pro-badge.svg" alt="PRO"></span>',
                 'icon'           => 'dashicons-media-text',
                 'class'          => 'pro-preview-html',
                 'is_pro_preview' => true,
             ],
             [
                 'id'             => 'wpuf_content_restriction',
-                'title'          => __( 'Content Filtering', 'wp-user-frontend' ) . '<span class="pro-icon-title"> ' . '<img src="' . WPUF_ASSET_URI . '/images/pro-badge.svg" alt="PRO">' . '</span>',
+                'title'          => __( 'Content Filtering', 'wp-user-frontend' ) . '<span class="pro-icon-title"> <img src="' . WPUF_ASSET_URI . '/images/pro-badge.svg" alt="PRO"></span>',
                 'icon'           => 'dashicons-admin-network',
                 'class'          => 'pro-preview-html',
                 'is_pro_preview' => true,
             ],
             [
                 'id'             => 'wpuf_seo_settings',
-                'title'          => __( 'SEO Settings', 'wp-user-frontend' ) . '<span class="pro-icon-title"> ' . '<img src="' . WPUF_ASSET_URI . '/images/pro-badge.svg" alt="PRO">' . '</span>',
+                'title'          => __( 'SEO Settings', 'wp-user-frontend' ) . '<span class="pro-icon-title"> <img src="' . WPUF_ASSET_URI . '/images/pro-badge.svg" alt="PRO"></span>',
                 'icon'           => 'dashicons-search',
                 'class'          => 'pro-preview-html',
                 'is_pro_preview' => true,
@@ -588,9 +589,9 @@ class Free_Loader extends Pro_Prompt {
                 'name'           => 'google_app_label',
                 'label'          => __( 'Google App Settings', 'wp-user-frontend' ),
                 'type'           => 'html',
-                'desc'           => '<a target="_blank" href="https://console.developers.google.com/project">' . __( 'Create an App',
-                                                                                                                     'wp-user-frontend' ) . '</a>' . __( ' if you don\'t have one and fill Client ID and Client Secret below.',
-                                                                                                                                                         'wp-user-frontend' ),
+                'desc'           => '<a target="_blank" href="https://console.developers.google.com/project">'
+                    . __( 'Create an App', 'wp-user-frontend' ) . '</a>'
+                    . __( ' if you don\'t have one and fill Client ID and Client Secret below.', 'wp-user-frontend' ),
                 'is_pro_preview' => true,
             ],
             'google_app_url'       => [
@@ -616,9 +617,9 @@ class Free_Loader extends Pro_Prompt {
                 'name'           => 'linkedin_app_label',
                 'label'          => __( 'Linkedin App Settings', 'wp-user-frontend' ),
                 'type'           => 'html',
-                'desc'           => '<a target="_blank" href="https://www.linkedin.com/developer/apps">' . __( 'Create an App',
-                                                                                                               'wp-user-frontend' ) . '</a>' . __( ' if you don\'t have one and fill Client ID and Client Secret below.',
-                                                                                                                                                   'wp-user-frontend' ),
+                'desc'           => '<a target="_blank" href="https://www.linkedin.com/developer/apps">'
+                    . __( 'Create an App', 'wp-user-frontend' ) . '</a>'
+                    . __( ' if you don\'t have one and fill Client ID and Client Secret below.', 'wp-user-frontend' ),
                 'is_pro_preview' => true,
             ],
             'linkedin_app_url'     => [
@@ -1005,7 +1006,7 @@ class Free_Loader extends Pro_Prompt {
      * @return array
      */
     public function post_form_templates( $integrations ) {
-        $integrations['post_form_template_woocommerce']     = new Post_Form_Template_WooCommerce();
+        $integrations['post_form_template_woocommerce'] = new Post_Form_Template_WooCommerce();
 
         // Enable Events Calendar template with new integration
         if ( class_exists( 'Tribe__Events__Main' ) ) {
@@ -1025,12 +1026,13 @@ class Free_Loader extends Pro_Prompt {
      * @return array
      */
     public function pro_form_previews( $integrations ) {
-        $integrations['WPUF_Pro_Form_Preview_EDD'] = new Pro_Form_Preview_EDD();
-        $integrations['WPUF_Pro_Form_Preview_Press_Release'] = new Pro_Form_Preview_Press_Release();
+        $integrations['WPUF_Pro_Form_Preview_EDD']                = new Pro_Form_Preview_EDD();
+        $integrations['WPUF_Pro_Form_Preview_Press_Release']      = new Pro_Form_Preview_Press_Release();
         $integrations['WPUF_Pro_Form_Preview_Professional_Video'] = new Pro_Form_Preview_Professional_Video();
-        $integrations['WPUF_Pro_Form_Preview_Artwork'] = new Pro_Form_Preview_Artwork();
-        $integrations['WPUF_Pro_Form_Preview_Portfolio'] = new Pro_Form_Preview_Portfolio();
-        $integrations['WPUF_Pro_Form_Preview_Volunteer'] = new Pro_Form_Preview_Volunteer();
+        $integrations['WPUF_Pro_Form_Preview_Artwork']            = new Pro_Form_Preview_Artwork();
+        $integrations['WPUF_Pro_Form_Preview_Testimonial']        = new Pro_Form_Preview_Testimonial();
+        $integrations['WPUF_Pro_Form_Preview_Portfolio']          = new Pro_Form_Preview_Portfolio();
+        $integrations['WPUF_Pro_Form_Preview_Volunteer']          = new Pro_Form_Preview_Volunteer();
 
         return $integrations;
     }

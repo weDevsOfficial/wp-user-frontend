@@ -426,7 +426,7 @@ class WeDevs_Settings_API {
                     $active_class  = $is_checked ? ' ' . $block . '--active' : '';
                     $pro_class     = $is_pro ? ' ' . $block . '--pro-locked' : '';
                     $icon          = ! empty( $option['icon'] ) ? $option['icon'] : '';
-                    $admin_label   = $option['admin_label'];
+                    $admin_label   = isset( $option['admin_label'] ) ? $option['admin_label'] : (string) $key;
                     ?>
                     <div class="<?php echo esc_attr( $block . $active_class . $pro_class ); ?>"
                          <?php echo esc_attr( $data_attribute ); ?>="<?php echo esc_attr( $key ); ?>">

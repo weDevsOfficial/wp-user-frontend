@@ -157,6 +157,12 @@ class Login_Controller {
         $remember = ! empty( $challenge['remember'] );
         wp_set_auth_cookie( $user_id, $remember );
 
+        $user = get_userdata( $user_id );
+        if ( $user instanceof \WP_User ) {
+            /** This action is documented in wp-includes/user.php */
+            do_action( 'wp_login', $user->user_login, $user );
+        }
+
         $redirect = ! empty( $challenge['final_redirect'] )
             ? $challenge['final_redirect']
             : home_url( '/' );

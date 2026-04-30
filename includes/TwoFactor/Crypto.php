@@ -35,6 +35,10 @@ class Crypto {
             $tag
         );
 
+        if ( false === $ciphertext ) {
+            return '';
+        }
+
         // base64 here is binary-to-text encoding for storage, not obfuscation.
         // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
         return self::STORAGE_VERSION

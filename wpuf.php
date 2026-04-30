@@ -95,7 +95,7 @@ final class WP_User_Frontend {
     public function is_supported_php( $min_php = null ) {
         $min_php = $min_php ? $min_php : $this->min_php;
 
-        if ( version_compare( PHP_VERSION, $min_php, '<=' ) ) {
+        if ( version_compare( PHP_VERSION, $min_php, '<' ) ) {
             return false;
         }
 

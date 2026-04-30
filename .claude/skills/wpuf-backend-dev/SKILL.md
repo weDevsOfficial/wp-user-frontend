@@ -279,6 +279,268 @@ __( 'Welcome, ', 'wp-user-frontend' ) . $name
 -   **File naming:** not enforced (disabled in PHPCS)
 -   **Direct DB queries:** allowed (severity 0)
 
+## Code Review Prevention Checklist
+
+**MANDATORY: Apply every rule below before submitting code. These are the top causes of review rejections.**
+
+### 1. Strict Comparisons (CRITICAL — #1 review issue)
+
+**NEVER use `==` or `!=`.** Always use `===` and `!==`.
+
+```php
+// ❌ WRONG — will be rejected
+if ( $value == 'yes' ) {}
+if ( $status != false ) {}
+if ( 0 == $count ) {}
+
+// ✅ CORRECT
+if ( $value === 'yes' ) {}
+if ( $status !== false ) {}
+if ( 0 === $count ) {}
+```
+
+### 2. in_array() Must Use Strict Mode (CRITICAL — #2 review issue)
+
+**ALWAYS pass `true` as the third argument.** This is enforced as an error by PHPCS.
+
+```php
+// ❌ WRONG — PHPCS error, review rejection
+if ( in_array( $value, $allowed ) ) {}
+in_array( $type, $list )
+
+// ✅ CORRECT
+if ( in_array( $value, $allowed, true ) ) {}
+in_array( $type, $list, true )
+```
+
+Also applies to: `array_search()` — always pass strict `true`.
+
+### 3. Superglobal Sanitization (CRITICAL — security rejection)
+
+**Every `$_POST`, `$_GET`, `$_REQUEST`, `$_SERVER` access MUST be sanitized with `wp_unslash()` first.**
+
+```php
+// ❌ WRONG — missing wp_unslash
+$title = sanitize_text_field( $_POST['title'] );
+$id = intval( $_GET['id'] );
+
+// ✅ CORRECT
+$title = sanitize_text_field( wp_unslash( $_POST['title'] ?? '' ) );
+$id    = intval( wp_unslash( $_GET['id'] ?? 0 ) );
+$email = sanitize_email( wp_unslash( $_POST['email'] ?? '' ) );
+$url   = esc_url_raw( wp_unslash( $_POST['redirect'] ?? '' ) );
+```
+
+**Type-specific sanitization:**
+
+| Data type | Function |
+|-----------|----------|
+| Text | `sanitize_text_field( wp_unslash( ... ) )` |
+| Email | `sanitize_email( wp_unslash( ... ) )` |
+| URL | `esc_url_raw( wp_unslash( ... ) )` |
+| Integer | `intval( wp_unslash( ... ) )` or `absint()` |
+| HTML content | `wp_kses_post( wp_unslash( ... ) )` |
+| Textarea | `sanitize_textarea_field( wp_unslash( ... ) )` |
+| Key/slug | `sanitize_key( wp_unslash( ... ) )` |
+
+### 4. Output Escaping (CRITICAL — security rejection)
+
+**ALL output MUST be escaped. No exceptions.**
+
+```php
+// ❌ WRONG — raw output
+echo $title;
+echo $url;
+<input value="<?php echo $value; ?>">
+
+// ✅ CORRECT
+echo esc_html( $title );
+echo esc_url( $url );
+<input value="<?php echo esc_attr( $value ); ?>">
+```
+
+**Escaping function reference:**
+
+| Context | Function |
+|---------|----------|
+| HTML text | `esc_html()` |
+| HTML attribute | `esc_attr()` |
+| URL (href, src) | `esc_url()` |
+| JavaScript string | `esc_js()` |
+| Rich HTML | `wp_kses_post()` |
+| Translated text output | `esc_html__()`, `esc_html_e()`, `esc_attr__()` |
+
+### 5. SQL Queries Must Use prepare() (CRITICAL — security rejection)
+
+**NEVER concatenate variables into SQL. Always use `$wpdb->prepare()`.**
+
+```php
+// ❌ WRONG — SQL injection risk
+$wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = $user_id" );
+$wpdb->get_results( "SELECT * FROM $table ORDER BY $orderby $order LIMIT $offset, $limit" );
+
+// ✅ CORRECT
+$wpdb->get_results(
+    $wpdb->prepare(
+        "SELECT * FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = %d",
+        $user_id
+    )
+);
+```
+
+**Even for ORDER BY / LIMIT — use prepare or allowlist:**
+
+```php
+$allowed_orderby = [ 'created_at', 'amount', 'status' ];
+$orderby = in_array( $args['orderby'], $allowed_orderby, true ) ? $args['orderby'] : 'created_at';
+$order   = 'DESC' === strtoupper( $args['order'] ) ? 'DESC' : 'ASC';
+
+$wpdb->get_results(
+    $wpdb->prepare(
+        "SELECT * FROM {$wpdb->prefix}wpuf_transaction ORDER BY {$orderby} {$order} LIMIT %d, %d",
+        $args['offset'],
+        $args['number']
+    )
+);
+```
+
+### 6. Nonce Verification (CRITICAL — security rejection)
+
+**Every form submission and AJAX handler MUST verify a nonce.**
+
+```php
+// Form submissions
+if (
+    ! isset( $_POST['wpuf_nonce'] )
+    || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['wpuf_nonce'] ) ), 'wpuf_action' )
+) {
+    wp_die( esc_html__( 'Security check failed', 'wp-user-frontend' ) );
+}
+
+// AJAX handlers
+check_ajax_referer( 'wpuf_nonce', 'nonce' );
+```
+
+### 7. Permission Checks (CRITICAL — security rejection)
+
+**Every sensitive operation MUST verify user capabilities.**
+
+```php
+// Admin operations
+if ( ! current_user_can( wpuf_admin_role() ) ) {
+    wp_die( esc_html__( 'Permission denied', 'wp-user-frontend' ) );
+}
+
+// REST endpoints — NEVER use __return_true for sensitive data
+'permission_callback' => function() {
+    return current_user_can( wpuf_admin_role() );
+}
+```
+
+### 8. Method Naming — snake_case Only (ERROR — standards violation)
+
+**NEVER use camelCase for PHP methods or functions.**
+
+```php
+// ❌ WRONG — review rejection
+public function getStates() {}
+public function verifyResponse() {}
+public function catbuildTree() {}
+
+// ✅ CORRECT
+public function get_states() {}
+public function verify_response() {}
+public function build_category_tree() {}
+```
+
+### 9. DocBlocks & @since Tags (ERROR — documentation violation)
+
+**Every public/protected method MUST have a PHPDoc with `@since`.**
+
+```php
+// ❌ WRONG — missing docblock
+public function process_form( $form_id ) {}
+
+// ✅ CORRECT
+/**
+ * Process form submission.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param int $form_id Form ID.
+ *
+ * @return bool
+ */
+public function process_form( $form_id ) {}
+```
+
+**Use `WPUF_SINCE` placeholder** — never hardcode a version number.
+
+### 10. Translation & Translator Comments (WARNING)
+
+**All user-facing strings MUST use translation functions. All `sprintf()` with placeholders MUST have translator comments.**
+
+```php
+// ❌ WRONG — missing translator comment
+sprintf( __( 'Hello %s, you have %d posts', 'wp-user-frontend' ), $name, $count );
+
+// ✅ CORRECT
+/* translators: %1$s: user name, %2$d: post count */
+sprintf( __( 'Hello %1$s, you have %2$d posts', 'wp-user-frontend' ), $name, $count );
+```
+
+**Text domain rules:**
+-   Free version: `'wp-user-frontend'` — NEVER use `'wpuf'`
+-   Pro version: `'wpuf-pro'`
+-   Never concatenate translated strings — use `sprintf()` with a single `__()` call
+
+### 11. Spacing & Formatting (WARNING — style violation)
+
+```php
+// ❌ WRONG — missing spaces
+if($condition){
+if (!empty($items))
+in_array($val,$list,true)
+
+// ✅ CORRECT — spaces inside parentheses, after !
+if ( $condition ) {
+if ( ! empty( $items ) )
+in_array( $val, $list, true )
+```
+
+### 12. Hook Naming (ERROR — naming violation)
+
+**All hooks MUST be prefixed with `wpuf_` and use snake_case.**
+
+```php
+// ❌ WRONG
+do_action( 'form_before_render', $form_id );
+apply_filters( 'formFields', $fields );
+
+// ✅ CORRECT
+do_action( 'wpuf_form_before_render', $form_id );
+apply_filters( 'wpuf_form_fields', $fields, $form_id );
+```
+
+### Quick Self-Review Before Submitting
+
+Run this mental checklist on every line you write:
+
+1. ☐ Every `==` replaced with `===`? Every `!=` with `!==`?
+2. ☐ Every `in_array()` and `array_search()` has `true` as third arg?
+3. ☐ Every `$_POST`/`$_GET`/`$_REQUEST`/`$_SERVER` wrapped in `wp_unslash()` + sanitize?
+4. ☐ Every `echo`/output uses `esc_html()`, `esc_attr()`, `esc_url()`, or `wp_kses_post()`?
+5. ☐ Every SQL query uses `$wpdb->prepare()` for dynamic values?
+6. ☐ Every form/AJAX handler verifies a nonce?
+7. ☐ Every sensitive operation checks `current_user_can()`?
+8. ☐ All methods are `snake_case`? No camelCase?
+9. ☐ All new methods have `@since WPUF_SINCE` docblock?
+10. ☐ All `sprintf()` with `__()` have `/* translators: */` comment?
+11. ☐ Text domain is `'wp-user-frontend'` (not `'wpuf'`)?
+12. ☐ All hooks prefixed with `wpuf_`?
+13. ☐ Spaces inside parentheses: `( $var )` not `($var)`?
+14. ☐ Space after negation: `! $var` not `!$var`?
+
 ## Key Reference Files
 
 -   `wpuf.php` — Main plugin file, singleton bootstrap

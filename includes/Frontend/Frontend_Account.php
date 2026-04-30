@@ -22,6 +22,7 @@ class Frontend_Account {
         }
         add_action( 'wpuf_account_content_subscription', [ $this, 'subscription_section' ], 10, 2 );
         add_action( 'wpuf_account_content_edit-profile', [ $this, 'edit_profile_section' ], 10, 2 );
+        add_action( 'wpuf_account_content_change-password', [ $this, 'change_password_section' ], 10, 2 );
         add_action( 'wpuf_account_content_billing-address', [ $this, 'billing_address_section' ], 10, 2 );
 
         // add_filter( 'wpuf_options_wpuf_my_account', [ $this, 'add_settings_options' ] );
@@ -280,6 +281,87 @@ class Frontend_Account {
             'sections'        => $sections,
             'current_section' => $current_section,
         ] );
+    }
+
+    /**
+     * Display the change password section.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array  $sections        Account sections.
+     * @param string $current_section Active section slug.
+     *
+     * @return void
+     */
+    public function change_password_section( $sections, $current_section ) {
+        wpuf_load_template( 'dashboard/change-password.php', [
+            'sections'        => $sections,
+            'current_section' => $current_section,
+        ] );
+    }
+
+    /**
+     * Handle change password AJAX request.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void Sends JSON response.
+     */
+    public function change_password() {
+        $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+
+        if ( ! wp_verify_nonce( $nonce, 'wpuf-account-change-password' ) ) {
+            wp_send_json_error( __( 'Security check failed.', 'wp-user-frontend' ) );
+            wp_die();
+        }
+
+        if ( ! is_user_logged_in() ) {
+            wp_send_json_error( __( 'You must be logged in.', 'wp-user-frontend' ) );
+            wp_die();
+        }
+
+        global $current_user;
+
+        $current_password = ! empty( $_POST['current_password'] ) ? wp_unslash( $_POST['current_password'] ) : '';
+        $pass1            = ! empty( $_POST['pass1'] ) ? wp_unslash( $_POST['pass1'] ) : '';
+        $pass2            = ! empty( $_POST['pass2'] ) ? wp_unslash( $_POST['pass2'] ) : '';
+
+        if ( empty( $current_password ) ) {
+            wp_send_json_error( __( 'Please enter your current password.', 'wp-user-frontend' ) );
+            return;
+        }
+
+        if ( empty( $pass1 ) ) {
+            wp_send_json_error( __( 'Please enter a new password.', 'wp-user-frontend' ) );
+            return;
+        }
+
+        if ( empty( $pass2 ) ) {
+            wp_send_json_error( __( 'Please confirm your new password.', 'wp-user-frontend' ) );
+            return;
+        }
+
+        if ( $pass1 !== $pass2 ) {
+            wp_send_json_error( __( 'New passwords do not match.', 'wp-user-frontend' ) );
+            return;
+        }
+
+        if ( ! wp_check_password( $current_password, $current_user->user_pass, $current_user->ID ) ) {
+            wp_send_json_error( __( 'Your current password is incorrect.', 'wp-user-frontend' ) );
+            return;
+        }
+
+        $result = wp_update_user( [
+            'ID'        => $current_user->ID,
+            'user_pass' => $pass1,
+        ] );
+
+        if ( is_wp_error( $result ) ) {
+            wp_send_json_error( __( 'Could not update password. Please try again.', 'wp-user-frontend' ) );
+            return;
+        }
+
+        wp_send_json_success( __( 'Password updated successfully!', 'wp-user-frontend' ) );
     }
 
     /**

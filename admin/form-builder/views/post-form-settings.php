@@ -634,9 +634,16 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                 $value = ! empty( $inner_field['default'] ) ? $inner_field['default'] : '';
                 $value = ! empty( $inner_field['value'] ) ? $inner_field['value'] : $value;                 // default value
 
+                $inner_field_name = ! empty( $inner_field['name'] ) ? $inner_field['name'] : 'wpuf_settings[' . $inner_field_key . ']';
+
                 // if the field is a pro fields preview, no need to load fields from db
                 if ( empty( $inner_field['pro_preview'] ) ) {
-                    $value = isset( $form_settings[ $inner_field_key ] ) ? $form_settings[ $inner_field_key ] : $value;   // checking with isset because saved value can be empty string
+                    // When an explicit nested name like wpuf_settings[group][key] is provided, read from the nested path.
+                    if ( ! empty( $inner_field['name'] ) && preg_match( '/wpuf_settings\[(.*?)\]\[(.*?)\]/', $inner_field['name'], $matches ) ) {
+                        $value = isset( $form_settings[ $matches[1] ][ $matches[2] ] ) ? $form_settings[ $matches[1] ][ $matches[2] ] : $value;
+                    } else {
+                        $value = isset( $form_settings[ $inner_field_key ] ) ? $form_settings[ $inner_field_key ] : $value;   // checking with isset because saved value can be empty string
+                    }
                 }
 
                 ++$index_counter;
@@ -655,7 +662,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                             :class="setting_class_names('text')"
                             class="!wpuf-mt-2"
                             type="<?php echo esc_attr( $inner_field['type'] ); ?>"
-                            name="wpuf_settings[<?php echo esc_attr( $inner_field_key ); ?>]"
+                            name="<?php echo esc_attr( $inner_field_name ); ?>"
                             <?php echo ! empty( $inner_field['placeholder'] ) ? 'placeholder="' . esc_attr( $inner_field['placeholder'] ) . '"' : ''; ?>
                             id="<?php echo esc_attr( $inner_field_key ); ?>"
                             value="<?php echo esc_attr( $value ); ?>"/>
@@ -668,7 +675,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                             :class="setting_class_names('text')"
                             class="datepicker !wpuf-mt-2"
                             type="text"
-                            name="wpuf_settings[<?php echo esc_attr( $inner_field_key ); ?>]"
+                            name="<?php echo esc_attr( $inner_field_name ); ?>"
                             id="<?php echo esc_attr( $inner_field_key ); ?>"
                             value="<?php echo esc_attr( $value ); ?>"/>
                         <?php
@@ -679,7 +686,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                         ?>
                         <select
                             id="<?php echo esc_attr( $inner_field_key ); ?>"
-                            name="wpuf_settings[<?php echo esc_attr( $inner_field_key ); ?>]"
+                            name="<?php echo esc_attr( $inner_field_name ); ?>"
                             data-value="<?php echo esc_attr( $value_str ); ?>"
                             class="!wpuf-mt-2"
                             :class="setting_class_names('dropdown')">

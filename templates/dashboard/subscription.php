@@ -91,7 +91,7 @@ function display_subscription_details( $subscription_data ) {
 
         <p><i><?php esc_html_e( 'To cancel the pack, press the following cancel button.', 'wp-user-frontend' ); ?></i></p>
         <form action="" method="post" style="text-align: center;">
-		<?php wp_nonce_field( 'wpuf-sub-cancel' ); ?>
+		<?php wp_nonce_field( 'wpuf-sub-cancel-' . get_current_user_id() ); ?>
             <input type="hidden" name="gateway" value="<?php echo esc_attr( $subscription_data['payment_gateway'] ); ?>">
             <input type="hidden" name="user_id" value="<?php echo esc_attr( get_current_user_id() ); ?>">
             <input type="submit" name="wpuf_cancel_subscription" class="btn btn-sm btn-danger" value="<?php esc_html_e( 'Cancel', 'wp-user-frontend' ); ?>">
@@ -469,7 +469,7 @@ function get_next_billing_html( $subscription_data ) {
         <div class="wpuf-cancel-subscription-section">
             <p class="wpuf-cancel-text"><?php esc_html_e( 'To cancel the pack, press the following cancel button.', 'wp-user-frontend' ); ?></p>
             <form action="" method="post" class="wpuf-cancel-form">
-                <?php wp_nonce_field( 'wpuf-sub-cancel' ); ?>
+                <?php wp_nonce_field( 'wpuf-sub-cancel-' . get_current_user_id() ); ?>
                 <input type="hidden" name="gateway" value="<?php echo esc_attr( $subscription_data['payment_gateway'] ); ?>">
                 <input type="hidden" name="user_id" value="<?php echo esc_attr( get_current_user_id() ); ?>">
                 <button type="submit" name="wpuf_cancel_subscription" class="wpuf-cancel-btn">

@@ -343,6 +343,7 @@
             var form            = $( '#wpuf-payment-gateway' );
             var selectedGateway = form.find( "input[name='wpuf_payment_method']:checked" ).val();
             var btn             = form.find( '.wpuf-checkout-btn' );
+            var wrap            = form.find( '.wpuf-checkout-wrap' );
             var originalLabel   = btn.data( 'original-label' ) || btn.text().trim();
 
             // Show loading immediately so the user gets instant feedback.
@@ -354,11 +355,15 @@
                    '<span class="wpuf-btn-text">Processing&hellip;</span>'
                );
 
+            // Blur the rest of the checkout so focus stays on the spinner.
+            wrap.addClass( 'wpuf-checkout-wrap--loading' ).attr( 'aria-busy', 'true' );
+
             // Helper to roll back the button if validation fails.
             function resetBtn() {
                 btn.prop( 'disabled', false )
                    .removeClass( 'wpuf-checkout-btn--loading' )
                    .text( originalLabel );
+                wrap.removeClass( 'wpuf-checkout-wrap--loading' ).removeAttr( 'aria-busy' );
             }
 
             // Stripe intercepts and processes everything itself (no real form POST).

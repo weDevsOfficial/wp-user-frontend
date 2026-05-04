@@ -637,7 +637,7 @@ class Paypal {
 
         $body = json_decode( wp_remote_retrieve_body( $response ), true );
 
-        return $body['access_token'];
+        return ! empty( $body['access_token'] ) ? $body['access_token'] : '';
     }
 
     /**

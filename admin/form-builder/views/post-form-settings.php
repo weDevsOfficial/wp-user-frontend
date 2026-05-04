@@ -341,23 +341,20 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
 
     $is_pro_preview = ! empty( $field['pro_preview'] ) || ( ! wpuf_is_pro_active() && in_array( $field_key, [ 'notification_edit', 'notification_edit_to', 'notification_edit_subject', 'notification_edit_body' ] ) );
 
-    // replace default value if already saved in DB
-    if ( ! empty( $field['name'] ) ) {
-        preg_match('/wpuf_settings\[(.*?)\]\[(.*?)\]/', $field['name'], $matches);
-
-        if (isset($matches[1]) && isset($matches[2])) {
-            $dynamic_key = $matches[1];
-            $temp_key    = $matches[2];
-            $value       = isset( $form_settings[ $dynamic_key ][ $temp_key ] ) ? $form_settings[ $dynamic_key ][ $temp_key ] : $value;
-        }
-    } else {
-        $value = isset( $form_settings[ $field_key ] ) ? $form_settings[ $field_key ] : $value;   // checking with isset because saved value can be empty string
+    // Replace default value with the saved value from DB.
+    // When an explicit nested name like wpuf_settings[group][key] is provided, read from the nested path.
+    $resolved_from_nested_name = false;
+    if ( ! empty( $field['name'] ) && preg_match( '/wpuf_settings\[(.*?)\]\[(.*?)\]/', $field['name'], $matches ) ) {
+        $dynamic_key               = $matches[1];
+        $temp_key                  = $matches[2];
+        $value                     = isset( $form_settings[ $dynamic_key ][ $temp_key ] ) ? $form_settings[ $dynamic_key ][ $temp_key ] : $value;
+        $resolved_from_nested_name = true;
     }
 
     // if the field is a pro fields preview, no need to load fields from db
     if ( $is_pro_preview ) {
         $value = ! empty( $field['value'] ) ? $field['value'] : $value;
-    } else {
+    } elseif ( ! $resolved_from_nested_name ) {
         $value = isset( $form_settings[ $field_key ] ) ? $form_settings[ $field_key ] : $value;   // checking with isset because saved value can be empty string
     }
 
@@ -418,10 +415,21 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     <label
                         for="<?php echo esc_attr( $field_key ); ?>"
                         class="wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-cursor-pointer wpuf-ml-2">
+                        <?php
+                        // Companion hidden input ensures the toggle always submits a value, even when unchecked.
+                        // Without this, an unchecked checkbox is omitted from form serialization, making "saved off"
+                        // indistinguishable from "never saved" on the next render. Mirrors the schedule_form pattern.
+                        if ( ! $is_pro_preview ) {
+                            ?>
+                            <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="off">
+                            <?php
+                        }
+                        ?>
                         <input
                             type="checkbox"
                             id="<?php echo esc_attr( $field_key ); ?>"
                             name="<?php echo $is_pro_preview ? '' : esc_attr( $name ); ?>"
+                            value="on"
                             <?php echo esc_attr( checked( $toggle_value, 'on', false ) ); ?>
                             <?php echo $is_pro_preview ? 'disabled' : ''; ?>
                             class="wpuf-sr-only wpuf-peer">

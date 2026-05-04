@@ -1176,15 +1176,43 @@ table.wpuf-table {
         display: block;
     }
 
-    button.wpuf-multistep-next-btn.btn.btn-primary {
+    button.wpuf-multistep-next-btn,
+    button.wpuf-multistep-prev-btn {
         position: absolute;
         bottom: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 24px;
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 400;
+        border-radius: 0.375rem;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        border: none;
+        background-color: #99A7B2;
+        color: rgb(255, 255, 255);
+        text-shadow: unset;
+
+        &:hover {
+            background-color: #7F8C96;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgb(255, 255, 255), 0 0 0 4px #99A7B2;
+        }
+    }
+
+    button.wpuf-multistep-next-btn {
         right: 0;
     }
 
-    button.wpuf-multistep-prev-btn.btn.btn-primary {
-        position: absolute;
-        bottom: 0;
+    button.wpuf-multistep-prev-btn {
         left: 0;
     }
 
@@ -1213,87 +1241,103 @@ table.wpuf-table {
 .wpuf-form .wpuf-multistep-progressbar {
 
     @stepBackground: #00a0d2;
+    @stepInactive: #E4E4E4;
 
-    ul.wpuf-step-wizard {
+    .wpuf-step-wizard {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
         margin: 20px 0 40px 0;
         padding: 0;
-        list-style: none;
 
         * {
             box-sizing: border-box;
         }
+    }
 
-        li {
-            background-color: #E4E4E4;
-            border-radius: 5px;
-            display: inline-block;
-            padding: 10px 30px 10px 40px;
-            margin-right: -7px;
-            width: auto;
-            margin: 0;
-            position: relative;
-            text-align: center;
+    .wpuf-step-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-shrink: 0;
+    }
 
-            &::before,
-            &::after {
-                border: solid transparent;
-                content: " ";
-                height: 0;
-                width: 0;
-                position: absolute;
-                border-color: transparent;
-                border-left-color: #fff;
-                border-radius: 10px;
-            }
+    .wpuf-step-circle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 2px solid @stepInactive;
+        background-color: #fff;
+        color: @stepInactive;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
 
-            &::before {
-                border-width: 26px;
-                margin-top: -14px;
-                right: -52px;
-                z-index: 98;
-            }
+    .wpuf-step-label {
+        margin-top: 8px;
+        font-size: 13px;
+        color: @stepInactive;
+        font-weight: 400;
+        white-space: nowrap;
+        transition: color 0.3s ease;
+    }
 
-            &::after {
-                border-left-color: #E4E4E4;
-                border-width: 25px;
-                margin-top: -37px;
-                right: -44px;
-                z-index: 99;
-            }
+    .wpuf-step-line {
+        flex: 1;
+        height: 2px;
+        background-color: @stepInactive;
+        margin-top: 18px;
+        min-width: 40px;
+        transition: background-color 0.3s ease;
+    }
 
-            &.active-step {
-                background-color: @stepBackground;
-                color: #fff;
+    .wpuf-step-line-active {
+        background-color: @stepBackground;
+    }
 
-                &::after {
-                    border-left-color: @stepBackground;
-                }
-            }
+    .wpuf-step-item.active-step,
+    .wpuf-step-item.completed-step {
+        .wpuf-step-circle {
+            background-color: @stepBackground;
+            border-color: @stepBackground;
+            color: #fff;
+        }
 
-            &:last-child::after {
-                border-left-color: transparent;
-            }
+        .wpuf-step-label {
+            color: #333;
+            font-weight: 600;
         }
     }
 
-    .ui-widget-header {
-        background: @stepBackground;
+    .wpuf-progressbar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
     }
 
-    &.ui-progressbar {
+    .wpuf-progressbar-track {
+        width: 100%;
+        height: 10px;
+        background-color: @stepInactive;
+        border-radius: 5px;
+        overflow: hidden;
         margin-bottom: 30px;
-        height: 25px;
-        border: 1px solid @borderColor;
-        position: relative;
+    }
 
-        .wpuf-progress-percentage {
-            position: absolute;
-            left: 50%;
-            font-size: 12px;
-            font-weight: bold;
-            text-shadow: 1px 1px 0 #fff;
-            top: 20%;
-        }
+    .wpuf-progressbar-fill {
+        height: 100%;
+        background-color: @stepBackground;
+        border-radius: 5px;
+        width: 0;
+        transition: width 0.3s ease;
     }
 }
 input.wpuf-btn {

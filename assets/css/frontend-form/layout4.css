@@ -274,31 +274,8 @@ body.mceContentBody {
     text-shadow: none;
 }
 
-.wpuf-form-add.wpuf-form-layout4 ul.wpuf-step-wizard {
+.wpuf-form-add.wpuf-form-layout4 .wpuf-step-wizard {
     overflow: visible;
-}
-
-.wpuf-form-add.wpuf-form-layout4 ul.wpuf-step-wizard li {
-    padding: 10px 30px 10px 40px;
-}
-
-.wpuf-form-add.wpuf-form-layout4 ul.wpuf-step-wizard li:before {
-    margin-top: -14px;
-}
-
-.wpuf-form-add.wpuf-form-layout4 ul.wpuf-step-wizard li:after {
-    border-width: 22px;
-    margin-top: -34px;
-    right: -40px;
-    border-radius: 0;
-}
-
-.wpuf-form-add.wpuf-form-layout4 ul.wpuf-step-wizard li.active-step {
-    background-color: #D5AED9;
-}
-
-.wpuf-form-add.wpuf-form-layout4 ul.wpuf-step-wizard li.active-step:after {
-    border-left-color: #D5AED9;
 }
 
 ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {

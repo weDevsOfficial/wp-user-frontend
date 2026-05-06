@@ -21,6 +21,11 @@ jQuery(function($){
     };
 
     $( '#wpuf-payment-gateway' ).submit(function (e) {
+        // Stripe intercepts and processes the payment itself via AJAX — skip this handler entirely.
+        if ( $( this ).find( "input[name='wpuf_payment_method']:checked" ).val() === 'stripe' ) {
+            return;
+        }
+
         let form_data = WP_User_Frontend.validateForm($(this));
 
         if (!form_data) {

@@ -427,7 +427,9 @@ body ul.wpuf-form li .wpuf-fields .wpuf-checkbox-inline {
 }
 body ul.wpuf-form li .wpuf-fields .wpuf-radio-block,
 body ul.wpuf-form li .wpuf-fields .wpuf-checkbox-block {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   margin-bottom: 6px;
 }
 body ul.wpuf-form li .wpuf-fields .google-map img {

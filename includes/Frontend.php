@@ -54,7 +54,8 @@ class Frontend {
             || ( isset( $post->ID ) && ( $pay_page == $post->ID ) )
             || isset( $_GET['wpuf_preview'] )
             || class_exists( '\Elementor\Plugin' )
-            || $this->dokan_is_seller_dashboard() ) {
+            || $this->dokan_is_seller_dashboard()
+            || ( isset( $post->post_content ) && has_block( 'wpuf/post-form', $post ) ) ) {
             wp_enqueue_style( 'wpuf-layout1' );
             wp_enqueue_style( 'wpuf-frontend-forms' );
             wp_enqueue_style( 'wpuf-sweetalert2' );

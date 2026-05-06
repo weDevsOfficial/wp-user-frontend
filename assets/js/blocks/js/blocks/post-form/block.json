@@ -1,0 +1,289 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpuf/post-form",
+  "version": "1.0.0",
+  "title": "Post Form",
+  "category": "wpuf",
+  "description": "Embed a WPUF post form with customisable styling.",
+  "textdomain": "wp-user-frontend",
+  "icon": "feedback",
+  "keywords": [
+    "post",
+    "submission",
+    "form",
+    "wpuf"
+  ],
+  "attributes": {
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "formId": {
+      "type": "number",
+      "default": 0
+    },
+    "activeTemplate": {
+      "type": "string",
+      "default": "default"
+    },
+    "labelPosition": {
+      "type": "string",
+      "default": "above"
+    },
+    "labelFontSize": {
+      "type": "string",
+      "default": "14px"
+    },
+    "labelColor": {
+      "type": "string",
+      "default": ""
+    },
+    "labelFontWeight": {
+      "type": "string",
+      "default": "normal"
+    },
+    "labelFontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "labelFontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "helpTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "helpTextFontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "helpTextFontSize": {
+      "type": "string",
+      "default": "12px"
+    },
+    "helpTextFontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "helpTextFontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "fieldBorder": {
+      "type": "object",
+      "default": {
+        "color": "#dddddd",
+        "style": "solid",
+        "width": "1px"
+      }
+    },
+    "fieldBorderRadius": {
+      "type": "string",
+      "default": "4px"
+    },
+    "fieldPaddingV": {
+      "type": "string",
+      "default": "8px"
+    },
+    "fieldPaddingH": {
+      "type": "string",
+      "default": "12px"
+    },
+    "fieldBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "fieldTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "fieldPlaceholderColor": {
+      "type": "string",
+      "default": ""
+    },
+    "fieldFontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "fieldFontSize": {
+      "type": "string",
+      "default": "14px"
+    },
+    "fieldFontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "fieldFontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "fieldMarginBottom": {
+      "type": "string",
+      "default": "16px"
+    },
+    "fieldFocusBorderColor": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonFontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonFontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonFontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonBorderWidth": {
+      "type": "string",
+      "default": "0px"
+    },
+    "buttonBorderRadius": {
+      "type": "string",
+      "default": "4px"
+    },
+    "buttonFontSize": {
+      "type": "string",
+      "default": "14px"
+    },
+    "buttonPaddingV": {
+      "type": "string",
+      "default": "10px"
+    },
+    "buttonPaddingH": {
+      "type": "string",
+      "default": "20px"
+    },
+    "uploadButtonBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "uploadButtonTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "uploadButtonFontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "uploadButtonFontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "uploadButtonFontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "uploadButtonBorderColor": {
+      "type": "string",
+      "default": "#dddddd"
+    },
+    "uploadButtonBorderWidth": {
+      "type": "string",
+      "default": "1px"
+    },
+    "uploadButtonBorderRadius": {
+      "type": "string",
+      "default": "4px"
+    },
+    "uploadButtonFontSize": {
+      "type": "string",
+      "default": "13px"
+    },
+    "uploadButtonPaddingV": {
+      "type": "string",
+      "default": "8px"
+    },
+    "uploadButtonPaddingH": {
+      "type": "string",
+      "default": "16px"
+    },
+    "msButtonBackgroundColor": {
+      "type": "string",
+      "default": "#1e1e1e"
+    },
+    "msButtonTextColor": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    "msButtonFontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "msButtonFontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "msButtonFontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "msButtonBorderColor": {
+      "type": "string",
+      "default": ""
+    },
+    "msButtonBorderWidth": {
+      "type": "string",
+      "default": "0px"
+    },
+    "msButtonBorderRadius": {
+      "type": "string",
+      "default": "4px"
+    },
+    "msButtonFontSize": {
+      "type": "string",
+      "default": "14px"
+    },
+    "msButtonPaddingV": {
+      "type": "string",
+      "default": "10px"
+    },
+    "msButtonPaddingH": {
+      "type": "string",
+      "default": "20px"
+    },
+    "msActiveBgColor": {
+      "type": "string",
+      "default": ""
+    },
+    "msActiveTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "msInactiveBgColor": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "color": {
+      "background": true,
+      "text": false,
+      "gradients": false
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false
+  },
+  "editorScript": "wpuf-post-form-editor",
+  "editorStyle": "wpuf-post-form-editor-style"
+}

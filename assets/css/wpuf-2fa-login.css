@@ -1,0 +1,75 @@
+/*
+ * WPUF — 2FA login challenge styles
+ *
+ * Loaded conditionally by Login_Controller::render_2fa_field() only when
+ * a 2FA challenge or method-picker stage is being rendered inside the
+ * [wpuf-login] form.
+ *
+ * Two concerns:
+ *   1. Hide the credentials row + remember-me + submit button while a
+ *      challenge / picker is in flight. The form still posts to itself;
+ *      stage 2 reads the hidden token, the credentials are no longer
+ *      needed.
+ *   2. Self-contained method-picker styles. Themes vary wildly in how
+ *      they style #loginform inputs/labels, so visibility and layout
+ *      are locked with !important to keep radios + labels legible on
+ *      any theme.
+ */
+
+/* ---- 1. Hide credential row during challenge / picker ---- */
+
+#loginform .wpuf-login-form > p:has(#wpuf-user_login),
+#loginform .wpuf-login-form > p:has(#wpuf-user_pass),
+#loginform > p:has(#wpuf-user_login),
+#loginform > p:has(#wpuf-user_pass),
+#loginform p.submit,
+.wpuf-login-form .forgetmenot {
+    display: none !important;
+}
+
+/* ---- 2. Method-picker layout ---- */
+
+.wpuf-2fa-method-picker {
+    display: block !important;
+    margin: 1em 0 !important;
+}
+
+.wpuf-2fa-method-picker__option {
+    display: block !important;
+    margin-bottom: .75em !important;
+}
+
+.wpuf-2fa-method-picker__option label {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: .5em !important;
+    color: inherit !important;
+    cursor: pointer !important;
+}
+
+.wpuf-2fa-method-picker__radio {
+    display: inline-block !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    opacity: 1 !important;
+    position: static !important;
+    visibility: visible !important;
+}
+
+.wpuf-2fa-method-picker__label {
+    display: inline !important;
+    color: inherit !important;
+    font-weight: 600 !important;
+}
+
+.wpuf-2fa-method-picker__hint {
+    display: block !important;
+    color: #666 !important;
+    font-size: .9em !important;
+    margin: .15em 0 0 1.85em !important;
+}
+
+.wpuf-2fa-method-picker__actions {
+    margin-top: 1em !important;
+}

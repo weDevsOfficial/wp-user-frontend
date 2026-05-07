@@ -4,30 +4,74 @@
   WPUF will always look in your theme's directory first, before using this default template.
  */
 ?>
-<div class="login" id="wpuf-login-form">
+<?php
+$layout_class = isset( $layout_class ) ? trim( (string) $layout_class ) : '';
+
+// Server-rendered, customizable text. Defaults match the historical English
+// strings so non-Pro / unfiltered installs render identically. All values are
+// supplied via the `wpuf_login_form_template_args` filter — see Simple_Login.
+$form_title           = isset( $form_title ) ? (string) $form_title : '';
+$form_subtitle        = isset( $form_subtitle ) ? (string) $form_subtitle : '';
+$username_label       = isset( $username_label ) ? (string) $username_label : __( 'Username or Email', 'wp-user-frontend' );
+$username_placeholder = isset( $username_placeholder ) ? (string) $username_placeholder : '';
+$password_label       = isset( $password_label ) ? (string) $password_label : __( 'Password', 'wp-user-frontend' );
+$password_placeholder = isset( $password_placeholder ) ? (string) $password_placeholder : '';
+$remember_me_text     = isset( $remember_me_text ) ? (string) $remember_me_text : __( 'Remember Me', 'wp-user-frontend' );
+$lost_password_text   = isset( $lost_password_text ) ? (string) $lost_password_text : __( 'Lost Password', 'wp-user-frontend' );
+$button_text          = isset( $button_text ) ? (string) $button_text : __( 'Log In', 'wp-user-frontend' );
+?>
+<div class="login<?php echo $layout_class ? ' ' . esc_attr( $layout_class ) : ''; ?>" id="wpuf-login-form">
+
+    <?php if ( $form_title !== '' || $form_subtitle !== '' ) : ?>
+        <div class="wpuf-login-header">
+            <?php if ( $form_title !== '' ) : ?>
+                <h2 class="wpuf-login-title"><?php echo esc_html( $form_title ); ?></h2>
+            <?php endif; ?>
+            <?php if ( $form_subtitle !== '' ) : ?>
+                <p class="wpuf-login-subtitle"><?php echo esc_html( $form_subtitle ); ?></p>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
 
     <?php
-
     $message = apply_filters( 'login_message', '' );
 
-    if ( !empty( $message ) ) {
+    if ( ! empty( $message ) ) {
         echo wp_kses_post( $message ) . "\n";
     }
     ?>
 
     <?php
-        wpuf()->frontend->simple_login->show_errors();
-        wpuf()->frontend->simple_login->show_messages();
+        /**
+         * Render login form errors.
+         *
+         * Default handler: `Simple_Login::show_errors()`. Detach with
+         * `remove_action( 'wpuf_login_show_errors', ... )` and supply your
+         * own renderer to swap the error UI without overriding this template.
+         *
+         * @since WPUF_SINCE
+         */
+        do_action( 'wpuf_login_show_errors' );
+
+        /**
+         * Render login form messages.
+         *
+         * Default handler: `Simple_Login::show_messages()`. See
+         * `wpuf_login_show_errors` for replacement pattern.
+         *
+         * @since WPUF_SINCE
+         */
+        do_action( 'wpuf_login_show_messages' );
     ?>
 
     <form name="loginform" class="wpuf-login-form" id="loginform" action="<?php echo esc_attr( $action_url ); ?>" method="post">
         <p>
-            <label for="wpuf-user_login"><?php esc_html_e( 'Username or Email', 'wp-user-frontend' ); ?></label>
-            <input type="text" name="log" id="wpuf-user_login" class="input" value="" size="20" />
+            <label for="wpuf-user_login"><?php echo esc_html( $username_label ); ?></label>
+            <input type="text" name="log" id="wpuf-user_login" class="input" value="" size="20" placeholder="<?php echo esc_attr( $username_placeholder ); ?>" />
         </p>
         <p>
-            <label for="wpuf-user_pass"><?php esc_html_e( 'Password', 'wp-user-frontend' ); ?></label>
-            <input type="password" name="pwd" id="wpuf-user_pass" class="input" value="" size="20" />
+            <label for="wpuf-user_pass"><?php echo esc_html( $password_label ); ?></label>
+            <input type="password" name="pwd" id="wpuf-user_pass" class="input" value="" size="20" placeholder="<?php echo esc_attr( $password_placeholder ); ?>" />
         </p>
 
         <?php
@@ -92,15 +136,15 @@
         <p class="forgetmenot wpuf-remember-forgot-wrapper">
             <span class="wpuf-remember-me">
                 <input name="rememberme" type="checkbox" id="wpuf-rememberme" value="forever" />
-                <label for="wpuf-rememberme"><?php esc_html_e( 'Remember Me', 'wp-user-frontend' ); ?></label>
+                <label for="wpuf-rememberme"><?php echo esc_html( $remember_me_text ); ?></label>
             </span>
             <span class="wpuf-lost-password">
-                <a href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php esc_html_e( 'Lost Password', 'wp-user-frontend' ); ?></a>
+                <a href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php echo esc_html( $lost_password_text ); ?></a>
             </span>
         </p>
 
         <p class="submit">
-            <input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_html_e( 'Log In', 'wp-user-frontend' ); ?>" />
+            <input type="submit" name="wp-submit" id="wp-submit" value="<?php echo esc_attr( $button_text ); ?>" />
             <input type="hidden" name="redirect_to" value="<?php echo esc_attr( $redirect_to ); ?>" />
             <input type="hidden" name="wpuf_login" value="true" />
             <input type="hidden" name="action" value="login" />

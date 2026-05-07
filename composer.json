@@ -10,10 +10,13 @@
     }
   ],
   "minimum-stability": "dev",
+  "prefer-stable": true,
   "require": {
-    "php": ">=5.5",
+    "php": ">=7.4",
     "composer/installers": ">=1.4",
-    "wedevs/wp-utils": "dev-main"
+    "wedevs/wp-utils": "dev-main",
+    "pragmarx/google2fa": "^8.0.3",
+    "bacon/bacon-qr-code": "^2.0"
   },
   "require-dev": {
     "wp-coding-standards/wpcs": "dev-develop",

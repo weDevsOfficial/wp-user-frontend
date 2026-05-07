@@ -49,6 +49,18 @@ class Simple_Login {
         add_filter( 'login_form_login', [ $this, 'default_wp_login_override' ] );
 
         add_filter( 'authenticate', [ $this, 'successfully_authenticate' ], 30, 3 );
+
+        // Default Turnstile verifier — extensions can replace by hooking
+        // `wpuf_login_turnstile_verify` at a higher priority and returning
+        // their own result, or remove this filter entirely.
+        add_filter( 'wpuf_login_turnstile_verify', [ $this, 'default_turnstile_verify' ], 10, 2 );
+
+        // Default error / message renderers for the login template. Extensions
+        // can `remove_action()` these and replace with their own renderer
+        // (e.g. notice-style banners, theme-styled alerts) without having to
+        // override the template file.
+        add_action( 'wpuf_login_show_errors', [ $this, 'show_errors' ] );
+        add_action( 'wpuf_login_show_messages', [ $this, 'show_messages' ] );
     }
 
     /**
@@ -368,6 +380,18 @@ class Simple_Login {
             $args = [
                 'action_url'  => $login_page,
                 'redirect_to' => isset( $getdata['redirect_to'] ) ? $getdata['redirect_to'] : '',
+                /**
+                 * Filter the CSS class applied to the login form wrapper.
+                 *
+                 * Allows Pro / extensions to apply their layout class server-side,
+                 * eliminating the flash-of-unstyled-content caused by JS-based
+                 * class application.
+                 *
+                 * @since WPUF_SINCE
+                 *
+                 * @param string $layout_class CSS class for the wrapper. Default empty.
+                 */
+                'layout_class' => apply_filters( 'wpuf_login_form_layout_class', '' ),
             ];
 
             switch ( $action ) {
@@ -407,9 +431,9 @@ class Simple_Login {
 
                 default:
                     $loggedout = isset( $getdata['loggedout'] ) ? sanitize_text_field( $getdata['loggedout'] ) : '';
-                    $enable_turnstile = wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' );
+                    $login_form_turnstile = wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' );
 
-                    if ( 'on' === $enable_turnstile ) {
+                    if ( 'on' === $login_form_turnstile ) {
                         wp_enqueue_script( 'wpuf-turnstile' );
                     }
 
@@ -418,6 +442,34 @@ class Simple_Login {
                     }
 
                     $args['redirect_to'] = $this->get_login_redirect_link( $args['redirect_to'] );
+
+                    /**
+                     * Filter the args passed to the login-form template.
+                     *
+                     * Lets Pro / extensions inject custom labels, placeholders,
+                     * help text, button text, and the form heading server-side
+                     * — so screen readers, crawlers, and page caches see the
+                     * customized text instead of the English template defaults.
+                     *
+                     * Recognized keys consumed by `templates/login-form.php`:
+                     *   - `form_title`            (string) heading rendered above the form
+                     *   - `form_subtitle`         (string) subtitle rendered below the heading
+                     *   - `username_label`        (string) label for the username/email input
+                     *   - `username_placeholder`  (string) placeholder for the username input
+                     *   - `password_label`        (string) label for the password input
+                     *   - `password_placeholder`  (string) placeholder for the password input
+                     *   - `remember_me_text`      (string) label for the remember-me checkbox
+                     *   - `lost_password_text`    (string) anchor text for the lost-password link
+                     *   - `button_text`           (string) value for the submit button
+                     *
+                     * Unknown keys are exposed to overridden templates via
+                     * `extract()` and are otherwise ignored.
+                     *
+                     * @since WPUF_SINCE
+                     *
+                     * @param array $args Template args (passed to `wpuf_load_template`).
+                     */
+                    $args = apply_filters( 'wpuf_login_form_template_args', $args );
 
                     wpuf_load_template( 'login-form.php', $args );
 
@@ -431,16 +483,55 @@ class Simple_Login {
     /**
      * Verify if cloudflare turnstile request is successful
      *
+     * Delegates to the `wpuf_login_turnstile_verify` filter so Pro / extensions
+     * can swap or augment the verification (e.g. alternative captcha provider,
+     * stubbing in tests, additional risk checks). The default callback
+     * `default_turnstile_verify()` retains the original Cloudflare flow.
+     *
      * @since 4.0.13
      *
      * @return bool
      */
     private function verify_cloudflare_turnstile_on_login() {
+        /**
+         * Filter the result of the login-form Turnstile verification.
+         *
+         * Return `true` to allow the login, `false` to block. Implementations
+         * that want to surface their own error message should append to
+         * `$this->cf_messages` (via this class) or hook `wpuf_login_errors`.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param bool        $is_valid Whether verification passed. Default true.
+         * @param Simple_Login $context  This Simple_Login instance, for access to `cf_messages`.
+         */
+        return (bool) apply_filters( 'wpuf_login_turnstile_verify', true, $this );
+    }
+
+    /**
+     * Default Turnstile verification — original Cloudflare HTTP flow.
+     *
+     * Registered as the default `wpuf_login_turnstile_verify` callback in
+     * `__construct()`. Reads `login_form_turnstile` from `wpuf_profile` to
+     * decide whether verification is required, then POSTs the user's token
+     * to Cloudflare's siteverify endpoint.
+     *
+     * Public so the filter can dispatch to it; not part of the documented
+     * extension surface — extensions should hook the filter, not call this
+     * directly.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param bool         $is_valid Pre-filter value (ignored; this is the default).
+     * @param Simple_Login $context  Owning Simple_Login instance for error-message storage.
+     * @return bool
+     */
+    public function default_turnstile_verify( $is_valid, $context ) {
         $nonce = isset( $_POST['wpuf-login-nonce'] ) ? sanitize_key( wp_unslash( $_POST['wpuf-login-nonce'] ) ) : '';
 
-        $enable_turnstile = wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' );
+        $login_form_turnstile = wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' );
 
-        if ( 'on' !== $enable_turnstile ) {
+        if ( 'on' !== $login_form_turnstile ) {
             return true;
         }
 
@@ -474,7 +565,7 @@ class Simple_Login {
         if ( ! empty( $body['success'] ) ) {
             return true;
         } else {
-            $this->cf_messages[] = ! empty( $body['error-codes'] ) ? $body['error-codes'] : '';
+            $context->cf_messages[] = ! empty( $body['error-codes'] ) ? $body['error-codes'] : '';
 
             return false;
         }
@@ -501,6 +592,17 @@ class Simple_Login {
      */
     public function process_login() {
         if ( empty( $_POST['wpuf_login'] ) || empty( $_POST['wpuf-login-nonce'] ) ) {
+            return;
+        }
+
+        // 2FA challenge submission. Stage 2 carries only the verification
+        // code + token — credentials are empty (already verified in stage 1)
+        // and Turnstile is not re-rendered on the challenge view. Skip so
+        // we don't stack "Username is required" / "Password is required" /
+        // "Cloudflare Turnstile verification failed" alongside the actual
+        // 2FA error. The 2FA controller owns this request from `init`@9.
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        if ( ! empty( $_POST['wpuf_2fa_token'] ) ) {
             return;
         }
 
@@ -533,7 +635,6 @@ class Simple_Login {
                     '</strong>',
                     $errors
                 );
-            '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Cloudflare Turnstile verification failed. Reasons: [', 'wp-user-frontend' );
         }
 
         $validation_error = new WP_Error();

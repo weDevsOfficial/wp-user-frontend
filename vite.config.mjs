@@ -1,5 +1,8 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 const entries = {
     'subscriptions': './assets/js/subscriptions.js',

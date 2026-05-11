@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 4.3.2\n"
+"Project-Id-Version: WP User Frontend 4.3.3\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2026-04-24 02:59:01+00:00\n"
+"POT-Creation-Date: 2026-05-11 05:06:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,7 +22,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
-"X-Generator: grunt-wp-i18n 1.0.3\n"
+"X-Generator: grunt-wp-i18n 1.0.4\n"
 
 #: includes/Integrations/Elementor/Subscription_Plans_Widget.php:143
 msgid "1"
@@ -486,12 +486,12 @@ msgstr ""
 #: admin/form-builder/assets/js/components/field-option-data/template.php:211
 #: admin/form-builder/views/post-form-settings.php:310
 #: assets/js-templates/form-components.php:612
-#: assets/js-templates/form-components.php:657 class/subscription.php:905
+#: assets/js-templates/form-components.php:657 class/subscription.php:920
 #: includes/Admin/Admin_Subscription.php:941
 #: includes/Admin/Forms/Admin_Form_Builder.php:345
 #: includes/Admin/Forms/Admin_Form_Builder.php:347
 #: includes/Admin/List_Table_Subscribers.php:172
-#: includes/Admin/Subscription.php:944
+#: includes/Admin/Subscription.php:959
 #: includes/Admin/template-parts/modal-v4.2.php:405
 #: includes/Frontend/Payment.php:263 modules/user-directory/Admin_Menu.php:612
 #: templates/dashboard/edit-profile.php:158
@@ -661,7 +661,7 @@ msgstr ""
 msgid "Go To Module Page"
 msgstr ""
 
-#: admin/form-builder/views/post-form-settings.php:392
+#: admin/form-builder/views/post-form-settings.php:389
 msgid "Learn More"
 msgstr ""
 
@@ -1195,11 +1195,11 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-#: admin/installer.php:86 class/subscription.php:483
+#: admin/installer.php:86 class/subscription.php:498
 #: includes/Admin/Admin_Installer.php:135
 #: includes/Admin/Forms/Admin_Form.php:79
 #: includes/Admin/Forms/Admin_Form.php:118
-#: includes/Admin/Shortcodes_Button.php:93 includes/Admin/Subscription.php:506
+#: includes/Admin/Shortcodes_Button.php:93 includes/Admin/Subscription.php:521
 #: includes/functions/user/edit-user.php:108 templates/dashboard/posts.php:231
 #. translators: %s is the display name
 msgid "Edit"
@@ -1211,12 +1211,12 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: admin/installer.php:95 class/subscription.php:458 class/subscription.php:478
-#: class/subscription.php:479 class/subscription.php:480
+#: admin/installer.php:95 class/subscription.php:473 class/subscription.php:493
+#: class/subscription.php:494 class/subscription.php:495
 #: includes/Admin/Admin_Installer.php:142
-#: includes/Admin/Shortcodes_Button.php:105 includes/Admin/Subscription.php:482
-#: includes/Admin/Subscription.php:501 includes/Admin/Subscription.php:502
-#: includes/Admin/Subscription.php:503 templates/dashboard/subscription.php:169
+#: includes/Admin/Shortcodes_Button.php:105 includes/Admin/Subscription.php:497
+#: includes/Admin/Subscription.php:516 includes/Admin/Subscription.php:517
+#: includes/Admin/Subscription.php:518 templates/dashboard/subscription.php:169
 #: wpuf-functions.php:2301
 msgid "Subscription"
 msgstr ""
@@ -1891,135 +1891,135 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: class/subscription.php:355 includes/Admin/Admin_Subscription.php:298
-#: includes/Admin/Subscription.php:379
+#: class/subscription.php:370 includes/Admin/Admin_Subscription.php:298
+#: includes/Admin/Subscription.php:394
 msgid "Pack Name"
 msgstr ""
 
-#: class/subscription.php:481 includes/Admin/Subscription.php:504
+#: class/subscription.php:496 includes/Admin/Subscription.php:519
 #: includes/Admin/template-parts/subscription-no-item.php:19
 msgid "Add Subscription"
 msgstr ""
 
-#: class/subscription.php:482 includes/Admin/Subscription.php:505
+#: class/subscription.php:497 includes/Admin/Subscription.php:520
 msgid "Add New Subscription"
 msgstr ""
 
-#: class/subscription.php:484 includes/Admin/Subscription.php:507
+#: class/subscription.php:499 includes/Admin/Subscription.php:522
 msgid "Edit Subscription"
 msgstr ""
 
-#: class/subscription.php:485 includes/Admin/Subscription.php:508
+#: class/subscription.php:500 includes/Admin/Subscription.php:523
 msgid "New Subscription"
 msgstr ""
 
-#: class/subscription.php:486 class/subscription.php:487
-#: includes/Admin/Subscription.php:509 includes/Admin/Subscription.php:510
+#: class/subscription.php:501 class/subscription.php:502
+#: includes/Admin/Subscription.php:524 includes/Admin/Subscription.php:525
 msgid "View Subscription"
 msgstr ""
 
-#: class/subscription.php:488 includes/Admin/Subscription.php:511
+#: class/subscription.php:503 includes/Admin/Subscription.php:526
 msgid "Search Subscription"
 msgstr ""
 
-#: class/subscription.php:489 includes/Admin/Subscription.php:512
+#: class/subscription.php:504 includes/Admin/Subscription.php:527
 msgid "No Subscription Found"
 msgstr ""
 
-#: class/subscription.php:490 includes/Admin/Subscription.php:513
+#: class/subscription.php:505 includes/Admin/Subscription.php:528
 msgid "No Subscription Found in Trash"
 msgstr ""
 
-#: class/subscription.php:491 includes/Admin/Subscription.php:514
+#: class/subscription.php:506 includes/Admin/Subscription.php:529
 msgid "Parent Subscription"
 msgstr ""
 
-#: class/subscription.php:864 includes/Admin/Subscription.php:904
+#: class/subscription.php:879 includes/Admin/Subscription.php:919
 msgid "Payment is complete"
 msgstr ""
 
-#: class/subscription.php:864 includes/Admin/Subscription.php:904
+#: class/subscription.php:879 includes/Admin/Subscription.php:919
 msgid "Congratulations, your payment has been completed!"
 msgstr ""
 
-#: class/subscription.php:868 class/subscription.php:872
-#: includes/Admin/Subscription.php:908 includes/Admin/Subscription.php:912
+#: class/subscription.php:883 class/subscription.php:887
+#: includes/Admin/Subscription.php:923 includes/Admin/Subscription.php:927
 msgid "Please buy a subscription pack to post"
 msgstr ""
 
-#: class/subscription.php:892 includes/Admin/Subscription.php:931
+#: class/subscription.php:907 includes/Admin/Subscription.php:946
 msgid "You have a subscription pack activated."
 msgstr ""
 
-#: class/subscription.php:895 includes/Admin/Subscription.php:934
+#: class/subscription.php:910 includes/Admin/Subscription.php:949
 #. translators: %s: pack title
 msgid "Pack name: %s"
 msgstr ""
 
-#: class/subscription.php:898 includes/Admin/Subscription.php:937
+#: class/subscription.php:913 includes/Admin/Subscription.php:952
 msgid "To cancel the pack, press the following cancel button"
 msgstr ""
 
-#: class/subscription.php:945 includes/Admin/Subscription.php:984
+#: class/subscription.php:960 includes/Admin/Subscription.php:999
 msgid "Day"
 msgid_plural "Days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:946 includes/Admin/Subscription.php:985
+#: class/subscription.php:961 includes/Admin/Subscription.php:1000
 msgid "Week"
 msgid_plural "Weeks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:947 includes/Admin/Subscription.php:986
+#: class/subscription.php:962 includes/Admin/Subscription.php:1001
 msgid "Month"
 msgid_plural "Months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:948 includes/Admin/Subscription.php:987
+#: class/subscription.php:963 includes/Admin/Subscription.php:1002
 msgid "Year"
 msgid_plural "Years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:980 includes/Admin/Subscription.php:1017
+#: class/subscription.php:995 includes/Admin/Subscription.php:1032
 #: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1305
 msgid "One time payment"
 msgstr ""
 
-#: class/subscription.php:987 includes/Admin/Subscription.php:1024
+#: class/subscription.php:1002 includes/Admin/Subscription.php:1039
 msgid "Every"
 msgstr ""
 
-#: class/subscription.php:988 includes/Admin/Subscription.php:1027
+#: class/subscription.php:1003 includes/Admin/Subscription.php:1042
 msgid "for"
 msgstr ""
 
-#: class/subscription.php:988 includes/Admin/Subscription.php:1027
+#: class/subscription.php:1003 includes/Admin/Subscription.php:1042
 msgid "installments"
 msgstr ""
 
-#: class/subscription.php:996 includes/Admin/Subscription.php:1037
+#: class/subscription.php:1011 includes/Admin/Subscription.php:1052
 #: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1316
 #. translators: %s: trial days
 msgid "Trial available for first %1$s %2$s"
 msgstr ""
 
-#: class/subscription.php:1000 includes/Admin/Subscription.php:1041
+#: class/subscription.php:1015 includes/Admin/Subscription.php:1056
 #: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1354
 msgid "Buy Now"
 msgstr ""
 
-#: class/subscription.php:1004 includes/Admin/Subscription.php:1045
+#: class/subscription.php:1019 includes/Admin/Subscription.php:1060
 #: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1348
 msgid "Sign Up"
 msgstr ""
 
-#: class/subscription.php:1007 includes/Admin/Admin_Subscription.php:321
+#: class/subscription.php:1022 includes/Admin/Admin_Subscription.php:321
 #: includes/Admin/Admin_Subscription.php:732
-#: includes/Admin/Subscription.php:1048
+#: includes/Admin/Subscription.php:1063
 #: includes/Free/templates/page-registration-form.php:120
 #: includes/Frontend/Frontend_Account.php:238
 #: includes/Integrations/Elementor/Subscription_Plans_Widget.php:1309
@@ -2029,19 +2029,19 @@ msgstr ""
 msgid "Free"
 msgstr ""
 
-#: class/subscription.php:1075 includes/Admin/Subscription.php:1113
+#: class/subscription.php:1090 includes/Admin/Subscription.php:1128
 #. translators: %s: amount
 msgid "There is a <strong>%s</strong> charge to add a new post."
 msgstr ""
 
-#: class/subscription.php:1091 includes/Admin/Subscription.php:1128
+#: class/subscription.php:1106 includes/Admin/Subscription.php:1143
 #. translators: %s: amount
 msgid ""
 "Your Subscription pack is exhausted. There is a <strong>%s</strong> charge "
 "to add a new post."
 msgstr ""
 
-#: class/subscription.php:1148 includes/Admin/Subscription.php:1206
+#: class/subscription.php:1163 includes/Admin/Subscription.php:1221
 #. translators: %s: subscription link
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""

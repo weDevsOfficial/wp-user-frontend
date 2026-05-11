@@ -228,6 +228,7 @@ module.exports = function( grunt) {
                     '!**/vite.config.mjs',
                     '!**/CLAUDE.md',
                     '!.claude/**',
+                    '!**/.DS_Store',
                 ],
                 dest: 'build/'
             }

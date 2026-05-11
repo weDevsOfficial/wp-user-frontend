@@ -8,6 +8,7 @@ docs.md
 CLAUDE.md
 includes/Fields/CLAUDE.md
 .claude
+.DS_Store
 changelog.txt
 plugin-deploy.sh
 npm-debug.log

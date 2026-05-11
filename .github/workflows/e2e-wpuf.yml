@@ -59,7 +59,7 @@ jobs:
         working-directory: plugins/wpuf-pro
         run: |
           composer i --no-dev -o --no-security-blocking
-          composer update --no-dev -o --no-audit
+          composer update --no-dev -o --no-security-blocking
           npm i --legacy-peer-deps
           grunt --force
 
@@ -67,7 +67,7 @@ jobs:
       - name: Build wpuf-lite
         run: |
           composer i --no-dev -o --no-security-blocking
-          composer update --no-dev -o --no-audit
+          composer update --no-dev -o --no-security-blocking
           npm i
           npm run build
           grunt release --force

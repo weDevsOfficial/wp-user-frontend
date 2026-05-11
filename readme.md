@@ -1,10 +1,10 @@
 # User Frontend: AI Powered Frontend Posting, User Directory, Profile, Membership & User Registration #
-**Contributors:** [wedevs](https://profiles.wordpress.org/wedevs), [tareq1988](https://profiles.wordpress.org/tareq1988), [nizamuddinbabu](https://profiles.wordpress.org/nizamuddinbabu)  
+**Contributors:** [wedevs](https://profiles.wordpress.org/wedevs/), [tareq1988](https://profiles.wordpress.org/tareq1988/), [nizamuddinbabu](https://profiles.wordpress.org/nizamuddinbabu/)  
 **Donate link:** https://tareq.co/donate/  
 **Tags:** frontend post, user directory, membership, user profile, user registration, content restriction, guest post, submit post, subscriptions, directory, login form, registration form, user profile, profile builder, forms  
 **Requires at least:** 5.0  
 **Tested up to:** 6.9.4  
-**Stable tag:** 4.3.2  
+**Stable tag:** 4.3.3  
 **Requires PHP:** 5.6  
 **License:** GPLv2  
 **License URL:** https://www.gnu.org/licenses/gpl-2.0.html  
@@ -359,6 +359,10 @@ Please report security bugs found in the source code of the User Frontend plugin
 15. Create AI Powered Post Form
 
 ## Changelog ##
+### v4.3.3 (30 April, 2026) ###
+Enhance – Bind cancel nonce to user and enforce ownership
+Fix – Resolve post expiration not working
+
 ### v4.3.2 (24 April, 2026) ###
 New – Add guest and paid guest post templates and assets
 New – Add user directory page creation to installer and tools

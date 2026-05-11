@@ -818,7 +818,7 @@ class Frontend_Form_Ajax {
          * Fires after WPUF free has evaluated the subscription-pack branch of
          * post-expiration, so Pro can write form-driven expiration metadata.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.3
          *
          * @param array        $form_settings               Form settings array.
          * @param int          $post_id                     Newly created/updated post ID.

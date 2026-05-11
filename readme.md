@@ -4,7 +4,7 @@
 **Tags:** frontend post, user directory, membership, user profile, user registration, content restriction, guest post, submit post, subscriptions, directory, login form, registration form, user profile, profile builder, forms  
 **Requires at least:** 5.0  
 **Tested up to:** 6.9.4  
-**Stable tag:** 4.3.4  
+**Stable tag:** 4.3.5  
 **Requires PHP:** 5.6  
 **License:** GPLv2  
 **License URL:** https://www.gnu.org/licenses/gpl-2.0.html  
@@ -359,6 +359,9 @@ Please report security bugs found in the source code of the User Frontend plugin
 15. Create AI Powered Post Form
 
 ## Changelog ##
+### v4.3.5 (11 May, 2026) ###
+* Chore – Exclude .DS_Store files from builds and SVN deploy
+
 ### v4.3.4 (11 May, 2026) ###
 Chore – Exclude CLAUDE.md and .claude directory from wp.org SVN deploy
 

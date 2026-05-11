@@ -1,3 +1,6 @@
+= v4.3.5 (11 May, 2026) =
+* Chore – Exclude .DS_Store files from builds and SVN deploy
+
 = v4.3.4 (11 May, 2026) =
 Chore – Exclude CLAUDE.md and .claude directory from wp.org SVN deploy
 

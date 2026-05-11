@@ -5,6 +5,9 @@ Gruntfile.js
 package.json
 package-lock.json
 docs.md
+CLAUDE.md
+includes/Fields/CLAUDE.md
+.claude
 changelog.txt
 plugin-deploy.sh
 npm-debug.log

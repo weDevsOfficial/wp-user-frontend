@@ -226,6 +226,8 @@ module.exports = function( grunt) {
                     '!**/postcss.config.js',
                     '!**/tailwind.config.js',
                     '!**/vite.config.mjs',
+                    '!**/CLAUDE.md',
+                    '!.claude/**',
                 ],
                 dest: 'build/'
             }

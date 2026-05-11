@@ -58,16 +58,16 @@ jobs:
       - name: Build WPUF-pro
         working-directory: plugins/wpuf-pro
         run: |
-          composer i --no-dev -o
-          composer update --no-dev -o
+          composer i --no-dev -o --no-audit
+          composer update --no-dev -o --no-audit
           npm i --legacy-peer-deps
           grunt --force
-       
+
        # Build wp-user-frontend
       - name: Build wpuf-lite
         run: |
-          composer i --no-dev -o
-          composer update --no-dev -o
+          composer i --no-dev -o --no-audit
+          composer update --no-dev -o --no-audit
           npm i
           npm run build
           grunt release --force

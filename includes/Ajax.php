@@ -44,7 +44,9 @@ class Ajax {
         $this->register_ajax( 'wpuf_draft_post', [ new Frontend\Frontend_Form(), 'draft_post' ] );
         $this->register_ajax( 'wpuf_delete_user_package', [ new Admin\Admin_Subscription(), 'delete_user_package' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_address_ajax_action', [ new Ajax\Address_Form_Ajax(), 'ajax_form_action' ] );
-        $this->register_ajax( 'wpuf_account_update_profile', [ new Frontend\Frontend_Account(), 'update_profile' ], $this->logged_in_only );
+        $frontend_account = new Frontend\Frontend_Account();
+        $this->register_ajax( 'wpuf_account_update_profile',  [ $frontend_account, 'update_profile' ],   $this->logged_in_only );
+        $this->register_ajax( 'wpuf_account_change_password', [ $frontend_account, 'change_password' ],  $this->logged_in_only );
         $this->register_ajax( 'wpuf_import_forms', [ new Admin\Admin_Tools(), 'import_forms' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_get_child_cat', 'wpuf_get_child_cats' );
         $this->register_ajax( 'wpuf_ajax_address', 'wpuf_ajax_get_states_field' );

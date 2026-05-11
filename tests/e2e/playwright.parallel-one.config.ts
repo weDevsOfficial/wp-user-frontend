@@ -13,7 +13,7 @@ export default defineConfig({
     fullyParallel: false,
     forbidOnly: false,
     retries: process.env.CI ? 0 : 0,
-    workers: process.env.CI ? 3 : 3,
+    workers: process.env.CI ? 4 : 4,
     reporter: process.env.CI
         ? [
             ['list', { printSteps: true }],
@@ -44,6 +44,7 @@ export default defineConfig({
                 'tests/postFormTest.spec.ts',
                 'tests/regFormTestPro.spec.ts',
                 'tests/fieldOptionSettingsTest.spec.ts',
+                'tests/subscriptionTest.spec.ts',
             ],
             use: { ...devices['Desktop Chrome'] },
         },

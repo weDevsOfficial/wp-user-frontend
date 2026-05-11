@@ -549,6 +549,146 @@ const FieldOptionsTestData: {
     },
 };
 
+/**------------------------------------------*/
+/**-------DATA_SET: Subscription Packs-------*/
+/**----------------------------------------*/
+
+const SubscriptionPacks: {
+    
+    packCounts: {
+        allPackCount: number;
+        publishedPackCount: number;
+        draftPackCount: number;
+        trashPackCount: number;
+        subscribersCount: number;
+    };
+    buttonColor: string;
+    // Free Basic Pack
+    freeBasicPack: {
+        name: string;
+        description: string;
+        slug: string;
+        sortOrder: string;
+        billingAmount: number;
+        expirationNumber: number;
+        expirationPeriod: string;
+        expirationTime: number;
+        expirationUnit: string;
+        expiredPostStatus: string;
+        sendExpirationMail: boolean;
+        expirationMessage: string;
+        maxPosts: number;
+        maxPages: number;
+        maxUserRequests: number;
+        maxFeaturedItems: number;
+    };
+    // Paid Pack
+    paidPack: {
+        name: string;
+        description: string;
+        slug: string;
+        sortOrder: string;
+        billingAmount: number;
+        expirationNumber: number;
+        expirationPeriod: string;
+        expirationTime: number;
+        expirationUnit: string;
+        expiredPostStatus: string;
+        sendExpirationMail: boolean;
+        expirationMessage: string;
+        maxPosts: number;
+        maxPages: number;
+        maxUserRequests: number;
+        maxFeaturedItems: number;
+    };
+    // Premium Unlimited Pack
+    recurringPaidPack: {
+        name: string;
+        description: string;
+        slug: string;
+        sortOrder: string;
+        billingAmount: number;
+        expirationNumber: number;
+        expirationPeriod: string;
+        expirationTime: number;
+        expirationUnit: string;
+        expiredPostStatus: string;
+        sendExpirationMail: boolean;
+        expirationMessage: string;
+        maxPosts: number;
+        maxPages: number;
+        maxUserRequests: number;
+        maxFeaturedItems: number;
+    };
+} = {
+
+    packCounts: {
+        allPackCount: 0,
+        publishedPackCount: 0,
+        draftPackCount: 0,
+        trashPackCount: 0,
+        subscribersCount: 0,
+    },
+    buttonColor: '#f02424',
+    // Free Basic Pack - for basic free subscription testing
+    freeBasicPack: {
+        name: 'Free Basic Pack',
+        description: 'A free subscription pack for basic users with limited posting capabilities.',
+        slug: 'free-basic-pack',
+        sortOrder: '3',
+        billingAmount: 0,
+        expirationNumber: 30,
+        expirationPeriod: 'day',
+        expirationTime: 1,
+        expirationUnit: 'day',
+        expiredPostStatus: 'draft',
+        sendExpirationMail: true,
+        expirationMessage: 'Hi {post_author}, your post "{post_title}" on {blogname} has expired and is now in {post_status} status. View it at: {post_url}',
+        maxPosts: 3,
+        maxPages: 1,
+        maxUserRequests: -1,
+        maxFeaturedItems: 1,
+    },
+    // Paid Professional Pack - for paid subscription testing
+    paidPack: {
+        name: 'Paid Pack',
+        description: 'Paid subscription for serious writers with extended posting capabilities.',
+        slug: 'paid-pack',
+        sortOrder: '2',
+        billingAmount: 10,
+        expirationNumber: 1,
+        expirationPeriod: 'day',
+        expirationTime: 1,
+        expirationUnit: 'day',
+        expiredPostStatus: 'draft',
+        sendExpirationMail: true,
+        expirationMessage: 'Hi {post_author}, your post "{post_title}" on {blogname} has expired and is now in {post_status} status. View it at: {post_url}',
+        maxPosts: 1,
+        maxPages: 1,
+        maxUserRequests: 1,
+        maxFeaturedItems: 1,
+    },
+    // Premium Unlimited Pack - for unlimited subscription testing
+    recurringPaidPack: {
+        name: 'Recurring Paid Pack Without Trial',
+        description: 'Recurring paid subscription Paid Pack Without Trial for unlimited posting.',
+        slug: 'recurring-paid-pack-without-trial',
+        sortOrder: '1',
+        billingAmount: 21,
+        expirationNumber: 3,
+        expirationPeriod: 'week',
+        expirationTime: 1,
+        expirationUnit: 'week',
+        expiredPostStatus: 'draft',
+        sendExpirationMail: true,
+        expirationMessage: 'Hi {post_author}, your post "{post_title}" on {blogname} has expired and is now in {post_status} status. View it at: {post_url}',
+        maxPosts: -1,
+        maxPages: -1,
+        maxUserRequests: -1,
+        maxFeaturedItems: -1,
+    },
+};
+
 /**------------------------------*/
 /**-------Export DATA_SET-------*/
 /**----------------------------*/
@@ -561,4 +701,5 @@ export {
     RegistrationForm,
     VendorRegistrationForm,
     FieldOptionsTestData,
+    SubscriptionPacks,
 };

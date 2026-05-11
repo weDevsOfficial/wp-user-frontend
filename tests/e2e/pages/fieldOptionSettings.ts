@@ -910,6 +910,8 @@ export class FieldOptionSettingsPage extends Base {
     async configureHiddenCountry(countries: Array<string>) {
         await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.hideThese);
         await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectHiddenCountry);
+        await this.page.waitForTimeout(1000);
+        await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectHiddenCountry);
         for (const country of countries) {
             await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectCountry(country));
         }
@@ -917,6 +919,8 @@ export class FieldOptionSettingsPage extends Base {
 
     async configureOnlyShowCountry(countries: Array<string>) {
         await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.showThese);
+        await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectOnlyShowCountry);
+        await this.page.waitForTimeout(1000);
         await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectOnlyShowCountry);
         for (const country of countries) {
             await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectCountry(country));

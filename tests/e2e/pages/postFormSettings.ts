@@ -969,6 +969,8 @@ export class PostFormSettingsPage extends Base {
         if (flag == false) {
             await this.navigateToURL(this.wpufPostPage);
 
+            await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
+
             await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
             await expect(this.page.locator(Selectors.postFormSettings.submitPostButtonText(buttonText))).toBeVisible();
@@ -978,6 +980,8 @@ export class PostFormSettingsPage extends Base {
     async validatePostUpdateStatusInForm(postTitle: string, postContent: string, postExcerpt: string, value: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
+
+        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -1043,6 +1047,8 @@ export class PostFormSettingsPage extends Base {
     async validatePostUpdateMessageInForm(postTitle: string, postContent: string, postExcerpt: string, expectedMessage: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
+
+        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -1215,6 +1221,8 @@ export class PostFormSettingsPage extends Base {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
 
+        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
+
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
 
@@ -1239,6 +1247,8 @@ export class PostFormSettingsPage extends Base {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
 
+        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
+
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
         // Fill post title
@@ -1261,6 +1271,8 @@ export class PostFormSettingsPage extends Base {
     async validateUpdatePostRedirectionToPage(postTitle: string, postContent: string, postExcerpt: string, pageTitle: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
+
+        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -1285,6 +1297,8 @@ export class PostFormSettingsPage extends Base {
     async validateUpdatePostRedirectionToUrl(postTitle: string, postContent: string, postExcerpt: string, expectedUrl: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
+
+        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -1397,8 +1411,6 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-
-        //await this.page.waitForTimeout(2000);
 
         await this.checkElementText(Selectors.postFormSettings.validatePayPerPostCost, `$${cost}`);
 
@@ -2062,6 +2074,8 @@ export class PostFormSettingsPage extends Base {
     async submitPostAndValidateUpdatedNotificationFE(previousPostTitle: string, postTitle: string, postContent: string, postExcerpt: string, emailSubject: string, multipleEmails: string) {
         // Go to frontend post submission page
         await this.navigateToURL(this.wpufPostPage);
+
+        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 

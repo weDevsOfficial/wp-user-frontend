@@ -25,4 +25,15 @@ export class BasicLogoutPage extends Base {
 
 
     }
+
+    async logoutFE() {
+        await this.navigateToURL(this.wpAdminPage );
+
+        await this.validateAndClick(Selectors.logout.basicLogout.logoutButtonFE);
+        await this.validateAndClick(Selectors.logout.basicLogout.confirmLogoutFE);
+
+        //Validate LOGOUT
+        await this.assertionValidate(Selectors.logout.basicLogout.logoutSuccess);
+        console.log('LogOut Done');
+    }
 }

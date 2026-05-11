@@ -429,7 +429,7 @@ test.describe('Reg Form Settings Tests', () => {
         const regFormSettings = new RegFormSettingsPage(page);
         userEmail = faker.internet.email();
         userPassword = userEmail;
-        const expectedSubject = 'New User Registration Alert';
+        const expectedSubject = 'New user registered on your site';
         await regFormSettings.registerUserAndValidateAdminNotification(userEmail, userPassword, expectedSubject);
     });
 

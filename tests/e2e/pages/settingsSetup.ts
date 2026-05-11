@@ -24,7 +24,6 @@ export class SettingsSetupPage extends Base {
 
         const wpufSetup = await this.page.isVisible(Selectors.settingsSetup.wpufSetup.validateWPUFSetupPage);
         if (wpufSetup == true) {
-            //await this.validateAndClick(SelectorsPage.settingsSetup.clickWPUFSetupSkip);
             await this.validateAndClick(Selectors.settingsSetup.wpufSetup.clickWPUFSetupLetsGo);
             await this.validateAndClick(Selectors.settingsSetup.wpufSetup.clickWPUFSetupContinue);
             await this.validateAndClick(Selectors.settingsSetup.wpufSetup.clickWPUFSetupEnd);
@@ -219,11 +218,11 @@ export class SettingsSetupPage extends Base {
             console.log('Failed to click Skip Setup:', error);
         }
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSwitchCart);
-        } catch (error) {
-            console.log('Failed to click Switch Cart:', error);
-        }
+        // try {
+        //     await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSwitchCart);
+        // } catch (error) {
+        //     console.log('Failed to click Switch Cart:', error);
+        // }
 
         // try {
         //     await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDismiss);
@@ -586,6 +585,10 @@ export class SettingsSetupPage extends Base {
         //Create User
         await this.validateAndClick(Selectors.settingsSetup.createNewUser.newUserSubmit);
         await this.page.waitForTimeout(200);
+        //Validate User Creation
+        await this.assertionValidate(Selectors.settingsSetup.createNewUser.validateCreationMsg);
+        await this.assertionValidate(Selectors.settingsSetup.createNewUser.validateUserInList);
+
     }
 
     async createPostCategories() {
@@ -672,7 +675,101 @@ export class SettingsSetupPage extends Base {
         await this.page.reload();
         await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentTab);
         await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentGatewayBank);
+        await this.validateAndClick(Selectors.settingsSetup.payment.enablePaymentGatewayBank);
         await this.validateAndClick(Selectors.settingsSetup.payment.settingsTabPaymentSave);
+    }
+
+    async enablePaymentGatewayStripe() {
+        //Go to Settings - General page
+        await this.navigateToURL(this.wpufSettingsPage);
+        await this.page.reload();
+        await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentTab);
+        await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentGatewayStripe);
+        await this.validateAndClick(Selectors.settingsSetup.payment.enablePaymentGatewayStripe);
+        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillStripePublishableKey, process.env.STRIPE_PUBLISHABLE_KEY || '');
+        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillStripeSecretKey, process.env.STRIPE_SECRET_KEY || '');
+        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillStripeSigningKey, process.env.STRIPE_SIGNING_KEY || '');
+        await this.validateAndClick(Selectors.settingsSetup.payment.settingsTabPaymentSave);
+    }
+
+    async enablePaymentGatewayPaypal() {
+        //Go to Settings - General page
+        await this.navigateToURL(this.wpufSettingsPage);
+        await this.page.reload();
+        await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentTab);
+        await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentGatewayPaypal);
+        await this.validateAndClick(Selectors.settingsSetup.payment.enablePaymentGatewayPaypal);
+        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillPaypalEmail, process.env.PAYPAL_EMAIL || '');
+        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillPaypalClientId, process.env.PAYPAL_CLIENT_ID || '');
+        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillPaypalClientSecret, process.env.PAYPAL_CLIENT_SECRET || '');
+        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillPaypalWebhookId, process.env.PAYPAL_WEBHOOK_ID || '');
+        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillPaypalApiUsername, process.env.PAYPAL_API_USERNAME || '');
+        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillPaypalApiPassword, process.env.PAYPAL_API_PASSWORD || '');
+        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillPaypalApiSignature, process.env.PAYPAL_API_SIGNATURE || '');
+        await this.validateAndClick(Selectors.settingsSetup.payment.selectPaypalTest);
+        await this.validateAndClick(Selectors.settingsSetup.payment.settingsTabPaymentSave);
+    }
+
+    async enableModules(moduleName: string[]) {
+        //Go to Settings - General page
+        await this.navigateToURL(this.wpufModulesPage);
+        await this.validateAndClick(Selectors.settingsSetup.modules.clickActivateAll);
+        await this.page.waitForTimeout(2000);
+        for (let i = 0; i < moduleName.length; i++) {
+            if (moduleName[i] != '') {
+                await expect(this.page.locator(Selectors.settingsSetup.modules.checkModule(moduleName[i]))).toBeChecked();
+            }
+        }
+    }
+
+    async disableModules(moduleName: string[]) {
+        //Go to Settings - General page
+        await this.navigateToURL(this.wpufModulesPage);
+        await this.validateAndClick(Selectors.settingsSetup.modules.clickDeactivateAll);
+        await this.page.waitForTimeout(2000);
+        for (let i = 0; i < moduleName.length; i++) {
+            if (moduleName[i] != '') {
+                await expect(this.page.locator(Selectors.settingsSetup.modules.checkModule(moduleName[i]))).not.toBeChecked();
+            }
+        }
+    }
+
+    async enableStripeModule(moduleName: string) {
+        //Go to Settings - General page
+        await this.navigateToURL(this.wpufModulesPage);
+        await this.validateAndClick(Selectors.settingsSetup.modules.checkModule(moduleName));
+        await this.page.waitForTimeout(2000);
+        await expect(this.page.locator(Selectors.settingsSetup.modules.checkModule(moduleName))).toBeChecked();
+    }
+
+    async enableGoogleAI() {
+        //Go to Settings - AI page
+        await this.navigateToURL(this.wpufSettingsPage);
+        await this.page.reload();
+        await this.validateAndClick(Selectors.settingsSetup.AI.clickAITab);
+        await this.validateAndClick(Selectors.settingsSetup.AI.googleButton);
+        await this.validateAndFillStrings(Selectors.settingsSetup.AI.inputAPIKey, process.env.GEMINI_AI_API_KEY || '');
+        await this.validateAndClick(Selectors.settingsSetup.AI.settingsTabAISave);
+    }
+
+    async enableOpenAI() {
+        //Go to Settings - AI page
+        await this.navigateToURL(this.wpufSettingsPage);
+        await this.page.reload();
+        await this.validateAndClick(Selectors.settingsSetup.AI.clickAITab);
+        await this.validateAndClick(Selectors.settingsSetup.AI.openAIButton);
+        await this.validateAndFillStrings(Selectors.settingsSetup.AI.inputAPIKey, process.env.OPEN_AI_API_KEY || '');
+        await this.validateAndClick(Selectors.settingsSetup.AI.settingsTabAISave);
+    }
+
+    async enableAnthropicAI() {
+        //Go to Settings - AI page
+        await this.navigateToURL(this.wpufSettingsPage);
+        await this.page.reload();
+        await this.validateAndClick(Selectors.settingsSetup.AI.clickAITab);
+        await this.validateAndClick(Selectors.settingsSetup.AI.anthropicButton);
+        await this.validateAndFillStrings(Selectors.settingsSetup.AI.inputAPIKey, process.env.ANTHROPIC_API_KEY || '');
+        await this.validateAndClick(Selectors.settingsSetup.AI.settingsTabAISave);
     }
 
     /***********************************************/
@@ -688,7 +785,7 @@ export class SettingsSetupPage extends Base {
         await this.validateAndFillStrings(Selectors.resetWordpreseSite.wpResetInputBox, 'reset');
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetSubmitButton);
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset);
-        await this.page.waitForTimeout(30000);
+        await this.page.waitForTimeout(20000);
         await this.navigateToURL(this.pluginsPage);
         await this.page.reload();
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWCvendors);

@@ -64,7 +64,7 @@ test.describe('Post-Forms', () => {
     let downloadsShortCode: string;
 
     test('PF0001 : Admin is creating a Blank Post Form with all Fields', { tag: ['@Lite'] }, async () => {
-        await page.waitForTimeout(15000);
+        await page.waitForTimeout(10000);
         await new BasicLoginPage(page).basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
         const PostFormClass = new PostFormPage(page);
         const FieldAdd = new FieldAddPage(page);

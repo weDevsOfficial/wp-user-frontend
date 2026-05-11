@@ -3,7 +3,6 @@ import { BasicLoginPage } from '../pages/basicLogin';
 import { BasicLogoutPage } from '../pages/basicLogout';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Users } from '../utils/testData';
-import { PostFormPage } from '../pages/postForm';
 import { configureSpecFailFast } from '../utils/specFailFast';
 
 let browser: Browser;
@@ -48,11 +47,14 @@ test.describe('Login and Setup', () => {
      * @Test_LS0018 : Admin is adding credentils for Google Map
      * @Test_LS0019 : Admin is adding credentils for ReCaptcha
      * @Test_LS0020 : Admin is adding credentils for Cloudflare Turnstile
-     * @Test_LS0021 : Admin is enabling payment gateway bank
-     * @Test_LS0022 : Admin is activating dokan lite
-     * @Test_LS0023 : Admin is making user directory page
-     * @Test_LS0024 : Admin is logging out succesfully
-     *  
+     * @Test_LS0021 : Admin is turning on modules
+     * @test_LS0022 : Admin is turning off modules
+     * @test_LS0023 : Admin is enabling stripe module
+     * @test_LS0024 : Admin is enabling payment gateway bank
+     * @test_LS0025 : Admin is enabling payment gateway stripe
+     * @test_LS0026 : Admin is enabling payment gateway paypal
+     * @test_LS0027 : Admin is activating dokan lite
+     * @test_LS0028 : Admin is logging out successfully
      */
     if (process.env.CI !== 'true') {
         test('RS0001 : Admin is resetting Site', { tag: ['@Basic'] }, async () => {
@@ -178,23 +180,103 @@ test.describe('Login and Setup', () => {
         await SettingsSetup.addCloudflareTurnstileKeys(cloudflareTurnstileSiteKey?.toString() || '', cloudflareTurnstileSecretKey?.toString() || '');
     });
 
-    test('LS0021 : Admin is enabling payment gateway bank', { tag: ['@Basic'] }, async () => {
+    test('LS0021 : Admin is turning on modules', { tag: ['@Basic'] }, async () => {
+        const moduleName: string[] = [
+            'campaign-monitor/campaign-monitor.php',
+            'social-login/wpuf-social-login.php',
+            'social-login/wpuf-social-login.php',
+            'comments/comments.php',
+            'mailpoet/wpuf-mailpoet.php',
+            'pmpro/wpuf-pmpro.php',
+            'sms-notification/wpuf-sms.php',
+            'email-templates/email-templates.php',
+            'getresponse/getresponse.php',
+            'zapier/zapier.php',
+            'convertkit/convertkit.php',
+            'private-message/private-message.php',
+            'user-analytics/wpuf-user-analytics.php',
+            'mailchimp/wpuf-mailchimp.php',
+            'mailchimp/wpuf-mailchimp.php',
+            'report/wpuf-report.php',
+            'report/wpuf-report.php', 
+            'seo/wpuf-seo.php',
+            'user-directory/userlisting.php',
+            'stripe/wpuf-stripe.php',
+        ];
+        const SettingsSetup = new SettingsSetupPage(page);
+
+        await SettingsSetup.enableModules(moduleName);
+    });
+
+    test('LS0022 : Admin is turning off modules', { tag: ['@Basic'] }, async () => {
+        const moduleName: string[] = [
+            'campaign-monitor/campaign-monitor.php',
+            'social-login/wpuf-social-login.php',
+            'social-login/wpuf-social-login.php',
+            'comments/comments.php',
+            'mailpoet/wpuf-mailpoet.php',
+            'pmpro/wpuf-pmpro.php',
+            'sms-notification/wpuf-sms.php',
+            'email-templates/email-templates.php',
+            'getresponse/getresponse.php',
+            'zapier/zapier.php',
+            'convertkit/convertkit.php',
+            'private-message/private-message.php',
+            'user-analytics/wpuf-user-analytics.php',
+            'mailchimp/wpuf-mailchimp.php',
+            'mailchimp/wpuf-mailchimp.php',
+            'report/wpuf-report.php',
+            'report/wpuf-report.php', 
+            'seo/wpuf-seo.php',
+            'user-directory/userlisting.php',
+            'stripe/wpuf-stripe.php',
+        ];
+        const SettingsSetup = new SettingsSetupPage(page);
+
+        await SettingsSetup.disableModules(moduleName);
+    });
+
+    test('LS0023 : Admin is enabling stripe module', { tag: ['@Basic'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.enableStripeModule('stripe/wpuf-stripe.php');
+    });
+
+    test('LS0024 : Admin is enabling payment gateway bank', { tag: ['@Basic'] }, async () => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.enablePaymentGatewayBank();
     });
 
-    test('LS0022 : Admin is activating dokan lite', { tag: ['@Basic'] }, async () => {
+    test('LS0025 : Admin is enabling payment gateway stripe', { tag: ['@Basic'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.enablePaymentGatewayStripe();
+    });
+
+    test('LS0026 : Admin is enabling payment gateway paypal', { tag: ['@Basic'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.enablePaymentGatewayPaypal();
+    });
+
+    test('LS0027 : Admin is enabling Google AI', { tag: ['@Basic'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.enableGoogleAI();
+    });
+
+    test('LS0028 : Admin is enabling OpenAI', { tag: ['@Basic'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.enableOpenAI();
+    });
+
+    test.skip('LS0029 : Admin is enabling Anthropic AI', { tag: ['@Basic'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.enableAnthropicAI();
+    });
+
+    test('LS0030 : Admin is activating dokan lite', { tag: ['@Basic'] }, async () => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.dokanLiteStatusCheck();
     });
 
-    test('LS0023 : Admin is making user directory page', { tag: ['@Basic'] }, async () => {
-        const PostForm = new PostFormPage(page);
-
-        await PostForm.createPageWithShortcode('[wpuf_user_listing]', 'Users');
-    });
-
-    test('LS0024 : Admin is logging out successfully', { tag: ['@Basic'] }, async () => {
+    test('LS0031 : Admin is logging out successfully', { tag: ['@Basic'] }, async () => {
         const BasicLogout = new BasicLogoutPage(page);
         await BasicLogout.logOut();
     });

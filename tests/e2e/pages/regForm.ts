@@ -304,7 +304,7 @@ export class RegFormPage extends Base {
         try {
             // Enter Profile Photo
             await this.page.setInputFiles(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfProfilePhoto, RegistrationForm.rfProfilePhoto);
-            await this.page.waitForTimeout(2000)
+            await this.page.waitForTimeout(4000)
         } catch (error) {
             console.log("Profile Photo field is not present");
         }
@@ -429,6 +429,8 @@ export class RegFormPage extends Base {
         await this.page.waitForLoadState('domcontentloaded', { timeout: 10000 });
         await this.page.setInputFiles(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.storeBannerField, VendorRegistrationForm.dokanVendorStoreBanner);
         await this.page.waitForLoadState('domcontentloaded', { timeout: 10000 });
+        await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postPhoneFieldFormsFE.countryContainer);
+        await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postPhoneFieldFormsFE.countrySelect);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.phoneField, VendorRegistrationForm.dokanVendorPhone = `016${faker.string.numeric(8)}`);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.addressLine1Field, VendorRegistrationForm.dokanVendorStreet1Address);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.addressLine2Field, VendorRegistrationForm.dokanVendorStreet2Address);
@@ -461,6 +463,8 @@ export class RegFormPage extends Base {
     async validateDokanVendorRegistrationDokan() {
         await this.navigateToURL(this.dokanVendorStorePage);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.dokanVendor.dokanValidation.searchVendorField, VendorRegistrationForm.dokanShopName);
+        await this.validateAndClick(Selectors.vendorRegistrationForms.dokanVendor.dokanValidation.vendorEnable(VendorRegistrationForm.dokanShopName));
+        await this.page.waitForTimeout(500);
         await this.validateAndClick(Selectors.vendorRegistrationForms.dokanVendor.dokanValidation.vendorName(VendorRegistrationForm.dokanShopName));
         await this.page.waitForTimeout(500);
         await this.assertionValidate(Selectors.vendorRegistrationForms.dokanVendor.dokanValidation.vendorValidation(VendorRegistrationForm.dokanShopName));
@@ -470,7 +474,6 @@ export class RegFormPage extends Base {
         await this.assertionValidate(Selectors.vendorRegistrationForms.dokanVendor.dokanValidation.validateAddress(VendorRegistrationForm.dokanVendorCity));
         await this.assertionValidate(Selectors.vendorRegistrationForms.dokanVendor.dokanValidation.validateStateZip);
         await this.assertionValidate(Selectors.vendorRegistrationForms.dokanVendor.dokanValidation.validateVendorEnabled);
-
     }
 
     // WC Vendors Registration Form Methods

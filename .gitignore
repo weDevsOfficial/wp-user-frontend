@@ -55,4 +55,3 @@ tests/chrome_recordings
 *.min.css.*
 tests/e2e/plugins-page-wpuf-lite-check.png
 tests/e2e/screenshots
-config.bat

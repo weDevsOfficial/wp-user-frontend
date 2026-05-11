@@ -13,6 +13,10 @@
     "Gruntfile.js",
     "vite.config.mjs",
     "tailwind.config.js",
-    "postcss.config.js"
+    "postcss.config.js",
+    "CLAUDE.md",
+    "includes/Fields/CLAUDE.md",
+    ".claude",
+    ".DS_Store"
   ]
 }

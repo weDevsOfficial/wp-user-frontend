@@ -347,12 +347,12 @@ class Frontend_Form_Ajax {
 
         // Handle Events Calendar integration or standard post creation
         $post_id = null;
-        
+
         // Check if this is an Events Calendar event
         if ( isset( $postarr['post_type'] ) && $this->is_events_calendar_post_type( $postarr['post_type'] ) ) {
             $post_id = $this->handle_tribe_events_submission( $postarr, $meta_vars, $form_id );
         }
-        
+
         // Use standard post creation if no post_id was created or not an event
         if ( ! $post_id ) {
             $post_id = wp_insert_post( $postarr );
@@ -596,35 +596,35 @@ class Frontend_Form_Ajax {
      */
     private function handle_tribe_events_submission( $postarr, $meta_vars, $form_id ) {
         $post_id = null;
-        
+
         // Try Pro integration handler first if available
         if ( wpuf_is_pro_active() && wpuf_pro() && wpuf_pro()->integrations ) {
             $integration = wpuf_pro()->integrations->tribe__events__main ?? null;
-            
+
             if ( $integration && isset( $integration->event_handler ) ) {
                 $event_handler = $integration->event_handler;
-                
+
                 // Validate that handle_event_submission method exists and is callable
                 if ( is_callable( [ $event_handler, 'handle_event_submission' ] ) ) {
                     $post_id = $event_handler->handle_event_submission( $postarr, $meta_vars, $form_id, $this->form_settings );
                 }
             }
         }
-        
+
         // Fallback to free integration handler if Pro handler failed or unavailable
         if ( ! $post_id && wpuf() && wpuf()->integrations ) {
             $integration = wpuf()->integrations->tribe__events__main ?? null;
-            
+
             if ( $integration && isset( $integration->event_handler ) ) {
                 $event_handler = $integration->event_handler;
-                
+
                 // Validate that handle_event_submission method exists and is callable
                 if ( is_callable( [ $event_handler, 'handle_event_submission' ] ) ) {
                     $post_id = $event_handler->handle_event_submission( $postarr, $meta_vars, $form_id, $this->form_settings );
                 }
             }
         }
-        
+
         return $post_id;
     }
 
@@ -638,7 +638,7 @@ class Frontend_Form_Ajax {
         if ( class_exists( '\WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Constants' ) ) {
             return in_array( $post_type, \WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Constants::TEC_POST_TYPES, true );
         }
-        
+
         // Fallback for backward compatibility
         return 'tribe_events' === $post_type;
     }
@@ -812,34 +812,19 @@ class Frontend_Form_Ajax {
                 $post_expiration_message = $user_subscription->get_subscription_exp_msg( $user_wpuf_subscription_pack['pack_id'] );
                 update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
             }
-        } elseif ( ! empty( $user_wpuf_subscription_pack ) && isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) <= time() ) {
-            if ( isset( $form_settings['expiration_settings']['enable_post_expiration'] ) ) {
-                $expire_date = gmdate( 'Y-m-d', strtotime( '+' . $form_settings['expiration_settings']['expiration_time_value'] . ' ' . $form_settings['expiration_settings']['expiration_time_type'] . '' ) );
-
-                update_post_meta( $post_id, $this->post_expiration_date, $expire_date );
-                // save post status after expiration
-                $expired_post_status = $form_settings['expiration_settings']['expired_post_status'];
-                update_post_meta( $post_id, $this->expired_post_status, $expired_post_status );
-                // if mail active
-                if ( isset( $form_settings['expiration_settings']['enable_mail_after_expired'] ) && $form_settings['expiration_settings']['enable_mail_after_expired'] === 'on' ) {
-                    $post_expiration_message = $form_settings['expiration_settings']['post_expiration_message'];
-                    update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
-                }
-            }
-        } elseif ( empty( $user_wpuf_subscription_pack ) || $user_wpuf_subscription_pack === 'Cancel' || $user_wpuf_subscription_pack === 'cancel' ) {
-            if ( isset( $form_settings['expiration_settings']['enable_post_expiration'] ) ) {
-                $expire_date = gmdate( 'Y-m-d', strtotime( '+' . $form_settings['expiration_settings']['expiration_time_value'] . ' ' . $form_settings['expiration_settings']['expiration_time_type'] . '' ) );
-                update_post_meta( $post_id, $this->post_expiration_date, $expire_date );
-                // save post status after expiration
-                $expired_post_status = $form_settings['expiration_settings']['expired_post_status'];
-                update_post_meta( $post_id, $this->expired_post_status, $expired_post_status );
-                // if mail active
-                if ( isset( $form_settings['expiration_settings']['enable_mail_after_expired'] ) && $form_settings['expiration_settings']['enable_mail_after_expired'] === 'on' ) {
-                    $post_expiration_message = $form_settings['expiration_settings']['post_expiration_message'];
-                    update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
-                }
-            }
         }
+
+        /**
+         * Fires after WPUF free has evaluated the subscription-pack branch of
+         * post-expiration, so Pro can write form-driven expiration metadata.
+         *
+         * @since 4.3.3
+         *
+         * @param array        $form_settings               Form settings array.
+         * @param int          $post_id                     Newly created/updated post ID.
+         * @param array|string $user_wpuf_subscription_pack Current user's subscription pack meta, or empty/'Cancel'.
+         */
+        do_action( 'wpuf_after_post_submit_expiration_settings', $form_settings, $post_id, $user_wpuf_subscription_pack );
 
         //Handle featured item when edit
         $sub_meta = $user_subscription->handle_featured_item( $post_id, $user_wpuf_subscription_pack );

@@ -1,3 +1,7 @@
+= v4.3.3 (30 April, 2026) =
+Enhance – Bind cancel nonce to user and enforce ownership
+Fix – Resolve post expiration not working
+
 = v4.3.2 (24 April, 2026) =
 New – Add guest and paid guest post templates and assets
 New – Add user directory page creation to installer and tools

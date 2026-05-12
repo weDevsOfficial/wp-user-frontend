@@ -1,592 +1,338 @@
 ---
 name: wpuf-release
-description: Release a new version of WP User Frontend plugin to weDevsOfficial GitHub + wp.org via Appsero. Handles version bumps, asset builds, gitflow merges, tag, GitHub release, and wp.org auto-deploy. Trigger when user says "release wpuf", "ship version X", "publish wpuf X.Y.Z", "create wpuf release", or invokes /wpuf-release.
+description: Release a new version of WP User Frontend (free) to weDevsOfficial GitHub + wp.org via Appsero. One-command pipeline via `wpuf-release-free` alias. Trigger when user says "release wpuf", "ship wpuf X.Y.Z", "publish wpuf", "/wpuf-release", "wpuf-release-free".
 ---
 
-# WP User Frontend Release Skill
+# WP User Frontend (Free) Release Skill
 
-Battle-tested release playbook. Encodes lessons from v4.3.3 disaster (Appsero deploy broke because master was stale). Follow EVERY step in order. Skipping = broken release.
+Battle-tested one-command release. Verified: v4.3.5 deployed to wp.org cleanly via `wpuf-release-free`.
+
+## TL;DR
+
+```bash
+wpuf-release-free 4.3.6
+# → prompts for changelog
+# → does everything
+# → ships to wp.org
+# → prints Slack message template
+```
+
+That's it. **All steps automated.**
 
 ## When to Use
 
-User wants to ship a new WPUF version to wp.org. Examples:
-- "release wpuf 4.3.4"
-- "publish next wpuf version"
-- "ship 4.4.0 with these notes: ..."
+User wants to ship WPUF (free) version. Match phrases:
+- `release wpuf 4.3.6`
+- `ship wpuf next version`
+- `publish wpuf X.Y.Z`
+- `wpuf-release-free`
+- `/wpuf-release`
 
-**Do NOT use for:** code review, dev work, hotfixes that don't bump version.
+**Do NOT use for:** Pro plugin, code review, hotfixes that don't bump version.
 
-## Required inputs (ASK USER if missing)
+## What `wpuf-release-free` does
 
-1. **New version** — semver `X.Y.Z` (e.g. `4.3.4`)
-2. **Release notes** — list of changes (Enhance/Fix/New entries)
-3. **Release date** — defaults to today, formatted `D Month, YYYY` (e.g. `30 April, 2026`)
-4. **Tested up to WP version** — defaults to fetching from `https://api.wordpress.org/core/version-check/1.7/`
-5. **Confirmation user has master push perm OR Appsero source = develop** — see "Critical Permissions Check" below
+Single command. Orchestrates entire pipeline:
 
-## Critical permissions check (DO FIRST)
+1. **Verifies env** (git-flow-avh + GNU getopt + gh + composer + node + npm + grunt + curl)
+2. **Verifies master push perm** via gh API
+3. **Fresh-clones** `weDevsOfficial/wp-user-frontend` → `~/Sites/wpuf-release/wp-user-frontend`
+4. **Copies patched scripts** from `~/.wpuf-release/` → `bin/`
+5. **Runs `bin/release-zip.sh`** (interactive: WP version, changelog, confirm)
+6. **Verifies zip excludes** (CLAUDE.md / .DS_Store / .claude must NOT be in zip)
+7. **Runs `bin/release-git.sh`** (commits + git flow finish + push develop+master+tag)
+8. **Creates GitHub release** with auto-extracted changelog from `changelog.txt`
+9. **Waits 60s + verifies SVN** deploy
+10. **Prints Slack message template** for copy-paste to `#release` channel
 
-Before any git work, verify the user can ship cleanly. **This was the v4.3.3 blocker.**
+Total time: ~5 min interactive + ~60s SVN wait.
 
-### Check 1: Master push permission
+## File locations
+
+| Path | Purpose |
+|------|---------|
+| `~/wpuf-release-free.sh` | Orchestrator (one-command entry point) |
+| `~/.wpuf-release/release-zip.sh` | release-zip.sh (patched) |
+| `~/.wpuf-release/release-git.sh` | release-git.sh (patched) |
+| `~/Sites/wpuf-release/wp-user-frontend/` | Fresh clone workspace (created/destroyed each run) |
+| `~/.zshrc` | `alias wpuf-release-free='~/wpuf-release-free.sh'` |
+
+## Critical pre-reqs (one-time per machine)
+
+### Required tools
 
 ```bash
-gh api repos/weDevsOfficial/wp-user-frontend/collaborators/$(gh api user --jq .login)/permission --jq '.role_name'
+which git git-flow getopt composer node npm grunt curl gh
+git flow version | head -1     # Must show "AVH Edition"
+getopt --version | head -1     # Must show "util-linux"
+gh auth status                 # Must show logged in
 ```
 
-Result handling:
-- `admin` or `maintain` → can push master ✅
-- `write` → likely BLOCKED by branch protection. Verify with dry-run later.
-- Anything else → STOP, ask user to get access
-
-### Check 2: Appsero source branch (cannot detect via CLI — ask user)
-
-Ask: "Is Appsero configured to deploy from `master` or `develop` branch? Login to https://app.appsero.com → WP User Frontend → Settings to verify."
-
-- If `master` → master MUST be at new version BEFORE publishing GitHub release
-- If `develop` → master sync is cosmetic; can publish without master push
-
-If user doesn't know: assume `master` (safer assumption — historically true for this repo).
-
-### Decision matrix
-
-| User can push master | Appsero source | Action |
-|----------------------|----------------|--------|
-| Yes | master | Standard flow — push master before release |
-| Yes | develop | Standard flow — master push optional |
-| No | master | **STOP** — get admin merge OR change Appsero source first |
-| No | develop | Skip master push, proceed with develop+tag+release |
-
-## Step 1 — Workspace setup
-
-Always use a fresh clone. Dev folder has multiple remotes (origin=fork). Release scripts pushing to `origin` would push to fork by accident.
+### If `git flow` is wrong (brew nvie 0.4.1 has tag bug)
 
 ```bash
-RELEASE_DIR="$HOME/Sites/wpuf-release"
-mkdir -p "$RELEASE_DIR"
-cd "$RELEASE_DIR"
+brew uninstall git-flow 2>/dev/null
+cd /tmp && rm -rf gitflow-avh
+git clone --recursive https://github.com/petervanderdoes/gitflow-avh.git
+cd gitflow-avh
+make install prefix=~/.local
+```
+
+### If `getopt` is BSD (fails on `-m` with spaces)
+
+```bash
+brew install gnu-getopt
+echo 'export PATH="/opt/homebrew/opt/gnu-getopt/bin:$PATH"' >> ~/.zshrc
+```
+
+Open new terminal to pick up.
+
+### Master push perm
+
+```bash
+gh api repos/weDevsOfficial/wp-user-frontend/collaborators/$(gh api user --jq .login)/permission --jq .role_name
+```
+
+If `write` only: master push may be blocked. Get bypass from `tareq1988` or `nizamuddin`.
+
+## Slack release announcement
+
+Orchestrator prints a copy-paste template at the end. Format matches team convention:
+
+```
+WPUF Free `v4.3.6` has been released
+CC: @Anik bhai, @Sharif Rakib bhai, @Tanvir - WRITER bhai, @Md. Anower Hossain bhai, @Habibur Rahman bhai, @Rubaiyat-QA bhai
+
+```
+= v4.3.6 (DD Month, YYYY) =
+* Changelog entries here
+```
+```
+
+Paste into `#release` Slack channel. **No auto-post** (would need webhook/bot setup; user opted out).
+
+To bundle multiple versions in one announcement (e.g. "v4.3.3, v4.3.4, v4.3.5"): edit the printed template manually before pasting.
+
+## Example prompts → expected outputs
+
+### Example 1: standard chore release
+
+**User says:** `release wpuf 4.3.6 with this change: bump Tested up to 6.9.5`
+
+**Agent does:**
+1. Verifies pre-reqs (env tools)
+2. Asks: "Are config-file changes needed (e.g. .svnignore tweaks)?"
+3. If no: runs `wpuf-release-free 4.3.6`
+4. Tells user changelog input format:
+   ```
+   * Chore – Bump Tested up to WordPress 6.9.5
+   ```
+5. Hands off URL + Slack template after success
+
+**Expected output (~5 min later):**
+
+```
+✔ Version:        4.3.6
+✔ Tag:            v4.3.6
+✔ GitHub release: https://github.com/weDevsOfficial/wp-user-frontend/releases/tag/v4.3.6
+✔ Zip asset:      build/wp-user-frontend-v4.3.6.zip
++ Slack template printed for copy-paste
+```
+
+### Example 2: code change ships with release
+
+**User says:** `release wpuf 4.4.0 — new AI form templates from PR #1870`
+
+**Agent does:**
+1. Verifies PR #1870 is merged to upstream develop:
+   ```bash
+   gh pr view 1870 --repo weDevsOfficial/wp-user-frontend --json state,baseRefName
+   ```
+2. If merged (state=MERGED, baseRefName=develop): runs `wpuf-release-free 4.4.0`
+3. Tells user changelog:
+   ```
+   * New – AI form templates feature
+   ```
+4. If NOT merged: aborts, tells user to merge PR first
+
+### Example 3: minor change needs PR first
+
+**User says:** `release wpuf 4.3.7 with .svnignore tweak (add foo)`
+
+**Agent does:**
+1. Detects: .svnignore change is config, NOT in upstream develop yet
+2. Tells user: "flow needs config changes merged via PR first. Open PR?"
+3. User confirms → agent creates branch in dev folder, commits, pushes to fork, opens PR, merges
+4. Then runs `wpuf-release-free 4.3.7`
+
+### Example 4: dry-run version validation
+
+**User says:** `is wpuf 4.3.6 ready to release?`
+
+**Agent does:**
+```bash
+gh api repos/weDevsOfficial/wp-user-frontend/branches/develop --jq '.commit.commit.message + " (" + .commit.sha[0:8] + ")"'
+gh api repos/weDevsOfficial/wp-user-frontend/tags --jq '.[0].name'
+gh pr list --repo weDevsOfficial/wp-user-frontend --state merged --base develop --search "merged:>=2026-05-11" --limit 10 --json number,title
+gh api repos/weDevsOfficial/wp-user-frontend/collaborators/$(gh api user --jq .login)/permission --jq .role_name
+```
+
+Returns summary. Does NOT run release.
+
+### Example 5: post-release recovery
+
+**User says:** `release shipped but wp.org still shows old version`
+
+**Agent does:**
+```bash
+# 1. SVN actual state (source of truth)
+curl -sI "https://plugins.svn.wordpress.org/wp-user-frontend/tags/X.Y.Z/" | head -1
+curl -s "https://plugins.svn.wordpress.org/wp-user-frontend/trunk/readme.txt" | grep "Stable tag"
+
+# 2. wp.org API (cached)
+curl -s "https://api.wordpress.org/plugins/info/1.0/wp-user-frontend.json" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('version'),d.get('last_updated'))"
+
+# 3. SVN log
+svn log -l 5 "https://plugins.svn.wordpress.org/wp-user-frontend/trunk/readme.txt"
+```
+
+If SVN correct but API stale: wait 15-60 min. If >2 hours: email plugins@wordpress.org.
+
+## Step-by-step (manual fallback if alias broken)
+
+### If alias not loaded
+```bash
+~/wpuf-release-free.sh 4.3.6
+```
+
+### If orchestrator broken, raw scripts
+```bash
+export PATH="/opt/homebrew/opt/gnu-getopt/bin:$HOME/.local/bin:$PATH"
+mkdir -p ~/Sites/wpuf-release && cd ~/Sites/wpuf-release
 rm -rf wp-user-frontend
 git clone git@github.com:weDevsOfficial/wp-user-frontend.git
 cd wp-user-frontend
-git remote -v
-# MUST show only: origin git@github.com:weDevsOfficial/wp-user-frontend.git
+mkdir bin
+cp ~/.wpuf-release/release-*.sh bin/
+chmod +x bin/*.sh
+bash bin/release-zip.sh   # answer prompts
+bash bin/release-git.sh   # confirm with y
+gh release create v4.3.6 --repo weDevsOfficial/wp-user-frontend \
+  --title "v4.3.6" --notes "..." \
+  ./build/wp-user-frontend-v4.3.6.zip
 ```
 
-## Step 2 — Sync develop + master
+## Critical Appsero gotcha
 
-```bash
-git checkout develop && git pull origin develop
-git checkout master && git pull origin master
-git checkout develop
-git log --oneline -10
-```
+Appsero deploys from **master branch** on this repo. Master MUST be at new version BEFORE GitHub release publishes. Else: "tag X already exists" error → wp.org pipeline frozen.
 
-Verify all PRs being released are in the log. If not, abort.
+`wpuf-release-free` handles this:
+- Pushes master BEFORE creating GitHub release
+- Verifies master state via gh API
+- Only proceeds if push succeeded
 
-## Step 3 — Init git-flow
+If master push blocked: orchestrator warns + offers fallback.
 
-### 3a. Install if missing
+## ⚠️ DO NOT release more than once per 24 hours
 
-```bash
-which git-flow || brew install git-flow
-```
+wp.org indexer rate-limits rapid releases. v4.3.3+v4.3.4+v4.3.5 in 4 hours triggered freeze that took manual reviewer intervention to clear.
 
-> **Known limitation:** brew `git-flow` v0.4.1 has a getopt bug — `-m "string with spaces"` fails. Workaround in Step 11.
->
-> Better alternative if user wants: `brew install git-flow-avh` (handles spaces correctly). Both work.
+If shipping multiple changes: bundle into ONE release. Only re-release within 24h for **emergency security fix**.
 
-### 3b. Init with `v` tag prefix (CRITICAL)
+## Troubleshooting
 
-```bash
-git flow init -d
-git config gitflow.prefix.versiontag "v"
-git config --get gitflow.prefix.versiontag    # Must echo: v
-```
+### `flags:FATAL the available getopt does not support spaces`
+- BSD getopt active. Run env setup again.
 
-WPUF tags are `v4.3.3` not `4.3.3`. Without this, Appsero won't trigger.
+### Tag message has literal quotes
+- brew git-flow installed. Uninstall + install AVH from source.
 
-## Step 4 — Start release branch
+### `Stable tag` mismatch error from Appsero
+- master not at new version. Verify with `gh api .../contents/wpuf.php?ref=master`.
 
-```bash
-git flow release start <NEW_VERSION>
-# e.g. git flow release start 4.3.4
-```
+### Zip contains CLAUDE.md or .DS_Store
+- `Gruntfile.js` `copy.main.src` excludes wrong. Add `'!**/CLAUDE.md', '!.claude/**', '!**/.DS_Store'`. PR fix to develop first, then re-release.
 
-Now on branch `release/<NEW_VERSION>`.
+### Orchestrator aborts "Working tree is not clean"
+- Code/config changes uncommitted in fresh clone. Should be impossible. If happens: delete `~/Sites/wpuf-release/wp-user-frontend` and re-run.
 
-## Step 5 — Bump versions in 4 files
+### release-zip.sh aborts at WPUF_SINCE
+- Unpatched script. Check line 180 has `|| true`. Re-copy from `~/.wpuf-release/`.
 
-> **macOS BSD sed quirk:** `0,/PATTERN/s//REPLACE/` range syntax is unreliable for JSON. Use line-number sed for package*.json.
+### release-zip.sh aborts at `grunt release`
+- Patched version auto-runs `npm install`. If still fails: run `npm install` manually in `~/Sites/wpuf-release/wp-user-frontend`, then re-run from same `release/X.Y.Z` branch.
 
-### 5a. wpuf.php (2 lines)
+### `git push origin master` rejected (GH006)
+- No bypass perm. Get from tareq1988/nizamuddin. OR open PR fork:master → upstream:master, admin merges.
 
-```bash
-OLD="<CURRENT_VERSION>"  # e.g. 4.3.3
-NEW="<NEW_VERSION>"      # e.g. 4.3.4
+### wp.org API stuck > 2 hours after publish
+- Pipeline rate-limit OR review hold. Email plugins@wordpress.org with: slug, SVN verification, request reindex.
 
-sed -i '' "s/^Version: ${OLD}$/Version: ${NEW}/" wpuf.php
-sed -i '' "s/define( 'WPUF_VERSION', '${OLD}' );/define( 'WPUF_VERSION', '${NEW}' );/" wpuf.php
-```
-
-### 5b. readme.txt (Stable tag + Tested up to)
-
-```bash
-sed -i '' "s/^Stable tag: ${OLD}$/Stable tag: ${NEW}/" readme.txt
-
-# Tested up to (if user wants to bump)
-TESTED_UP_TO=$(curl -s https://api.wordpress.org/core/version-check/1.7/ | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');try{const j=JSON.parse(d);console.log(j.offers[0].version)}catch(e){}" 2>/dev/null)
-sed -i '' "s/^Tested up to: .*/Tested up to: ${TESTED_UP_TO}/" readme.txt
-```
-
-### 5c. package.json
-
-```bash
-# Use node for precision (BSD sed unreliable on JSON)
-node -e "
-const fs = require('fs');
-const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-pkg.version = '${NEW}';
-fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
-"
-```
-
-### 5d. package-lock.json
-
-```bash
-node -e "
-const fs = require('fs');
-const lock = JSON.parse(fs.readFileSync('package-lock.json', 'utf8'));
-lock.version = '${NEW}';
-if (lock.packages && lock.packages['']) {
-    lock.packages[''].version = '${NEW}';
-}
-fs.writeFileSync('package-lock.json', JSON.stringify(lock, null, 2) + '\n');
-"
-```
-
-### 5e. Verify all bumps
-
-```bash
-grep -E "Version: |WPUF_VERSION" wpuf.php
-grep -E "Stable tag|Tested up to" readme.txt
-grep '"version"' package.json | head -1
-grep '"version"' package-lock.json | head -2
-```
-
-All must show `${NEW}`.
-
-## Step 6 — Replace WPUF_SINCE placeholders
-
-```bash
-grep -rn "WPUF_SINCE" --include="*.php" .
-```
-
-Replace:
-
-```bash
-COUNT=$(grep -rl 'WPUF_SINCE' --include='*.php' . 2>/dev/null | wc -l | tr -d ' ')
-if [ "$COUNT" -gt 0 ]; then
-  grep -rl "WPUF_SINCE" --include="*.php" . | xargs sed -i '' "s/WPUF_SINCE/${NEW}/g"
-  echo "Replaced WPUF_SINCE in $COUNT file(s)"
-else
-  echo "No WPUF_SINCE found, skipping"
-fi
-```
-
-Verify clean:
-
-```bash
-grep -rn "WPUF_SINCE" --include="*.php" . || echo "Clean"
-```
-
-## Step 7 — Add changelog to readme.txt
-
-Use node for reliable multi-line insert:
-
-```bash
-TODAY=$(date '+%-d %B, %Y')
-CHANGELOG_BLOCK="= v${NEW} (${TODAY}) =
-Enhance – <description>
-Fix – <description>
-"
-
-CHANGELOG_FILE=$(mktemp)
-printf '%s' "$CHANGELOG_BLOCK" > "$CHANGELOG_FILE"
-
-node -e "
-const fs = require('fs');
-const changelog = fs.readFileSync('${CHANGELOG_FILE}', 'utf8').trimEnd();
-const content = fs.readFileSync('readme.txt', 'utf8');
-const updated = content.replace('== Changelog ==', '== Changelog ==\n' + changelog + '\n');
-fs.writeFileSync('readme.txt', updated);
-"
-rm -f "$CHANGELOG_FILE"
-```
-
-> Match format of MOST RECENT existing entry. Some entries have `*` prefix, some don't. Look at the entry above to match style.
-
-## Step 8 — Add changelog to changelog.txt (top of file)
-
-```bash
-TEMP=$(mktemp)
-printf '%s\n\n' "$CHANGELOG_BLOCK" > "$TEMP"
-cat changelog.txt >> "$TEMP"
-mv "$TEMP" changelog.txt
-```
-
-## Step 9 — Build assets (MANDATORY — DO NOT SKIP)
-
-Bump commit MUST include built CSS/JS/.pot/readme.md or release is broken.
-
-### 9a. Composer
-
-```bash
-composer install --no-dev
-composer dump-autoload -o
-```
-
-PSR-4 warnings about `WPUF_*` classes are pre-existing, ignore.
-
-### 9b. Node + Grunt
-
-```bash
-npm install
-grunt release
-```
-
-Task chain: less → concat → uglify → i18n → readme → tailwind → tailwind-minify
-
-### 9c. Build distribution zip
-
-```bash
-grunt zip
-```
-
-Output: `./build/wp-user-frontend-v${NEW}.zip`
-
-### 9d. Verify build output
-
-```bash
-git status --short | wc -l
-# Expect 20+ files. If only 4-5: build did NOT run, abort.
-
-ls -la build/*.zip
-```
-
-## Step 10 — Commit version bump
-
-```bash
-git status     # Confirm no vendor/, node_modules/, build/ in staging
-
-git add --all
-git commit -m "chore: bump version to ${NEW}"
-```
-
-## Step 11 — Finish git-flow release
-
-> **Critical workaround for brew git-flow getopt bug.** If user installed `git-flow-avh`, can use `-m "release version ${NEW}"` directly. If brew git-flow, must use dummy `-m"x"` then re-annotate.
-
-### Detect git-flow variant
-
-```bash
-git flow version 2>&1 | head -1
-# git-flow-avh shows: "AVH Edition" 
-# brew git-flow shows: "0.4.1" (no AVH)
-```
-
-### 11a. Run finish
-
-For **git-flow-avh** (handles spaces):
-
-```bash
-GIT_MERGE_AUTOEDIT=no git flow release finish -m "release version ${NEW}" "${NEW}"
-```
-
-For **brew git-flow** (getopt bug):
-
-```bash
-GIT_MERGE_AUTOEDIT=no git flow release finish -m"x" "${NEW}"
-
-# Re-annotate tag manually:
-TAG_SHA=$(git rev-list -n 1 v${NEW})
-git tag -d v${NEW}
-git tag -a v${NEW} -m "release version ${NEW}" $TAG_SHA
-```
-
-> Note: gitflow auto-appends `<tagname>` to message. So `-m "release version 4.3.4"` becomes `release version 4.3.4 v4.3.4` in the actual annotated tag. Matches sapayth's pattern.
-
-### 11b. Verify
-
-```bash
-git show v${NEW} --no-patch | head -8
-# Should show: tag v${NEW}, message "release version ${NEW} v${NEW}"
-
-git log --oneline master -3
-# Top: Merge branch 'release/${NEW}'
-# Next: chore: bump version to ${NEW}
-
-git log --oneline develop -3
-# Top: Merge branch 'release/${NEW}' into develop
-```
-
-## Step 12 — Push to upstream
-
-### 12a. Push develop (always works with WRITE)
-
-```bash
-git push origin develop
-```
-
-### 12b. Push master
-
-```bash
-git push origin master
-```
-
-If `GH006: Protected branch update failed`:
-- Either user got admin/maintain perm now (re-test with `gh api .../collaborators/$(gh api user --jq .login)/permission`)
-- OR fall through to fork+PR fallback below
-
-#### Fork + PR fallback (if master push blocked)
-
-```bash
-git remote add fork "git@github.com:$(gh api user --jq .login)/wp-user-frontend.git" 2>/dev/null
-git push fork master
-gh pr create --repo weDevsOfficial/wp-user-frontend \
-  --base master --head "$(gh api user --jq .login):master" \
-  --title "Release v${NEW}" \
-  --body "Standard gitflow release merge into master. Cannot push directly due to branch protection.
-
-Tag v${NEW} already on upstream (or being pushed in next step).
-
-**Admin merge instructions:** to preserve sapayth's commit pattern, use fast-forward:
-\`\`\`bash
-git fetch git@github.com:USER/wp-user-frontend.git master:tmp-rel-${NEW}
-git checkout master
-git merge --ff-only tmp-rel-${NEW}
-git push origin master
-git branch -d tmp-rel-${NEW}
-\`\`\`"
-```
-
-### 12c. Push tag (works even if master blocked — tags NOT protected)
-
-```bash
-git push origin v${NEW}
-```
-
-Verify:
-
-```bash
-gh api "repos/weDevsOfficial/wp-user-frontend/git/ref/tags/v${NEW}" -q '.object.sha'
-git rev-parse v${NEW}
-# Two should match
-```
-
-### 12d. 🔥 CRITICAL VERIFICATION before Step 13
-
-If Appsero source = master AND user does NOT have admin push perm: **STOP HERE, do NOT proceed to release publish.**
-
-Wait for admin to merge PR. Verify master updated:
-
-```bash
-gh api "repos/weDevsOfficial/wp-user-frontend/contents/wpuf.php?ref=master" --jq '.content' | base64 -d | grep WPUF_VERSION
-gh api "repos/weDevsOfficial/wp-user-frontend/contents/readme.txt?ref=master" --jq '.content' | base64 -d | grep "Stable tag"
-```
-
-Both must show new version. If still showing old: WAIT. Publishing now = broken Appsero deploy + wp.org pipeline frozen + retry errors.
-
-If Appsero source = develop: skip the wait, proceed.
-
-## Step 13 — GitHub Release (DRAFT first)
-
-### 13a. Create draft
-
-```bash
-gh release create v${NEW} \
-  --repo weDevsOfficial/wp-user-frontend \
-  --draft \
-  --title "v${NEW}" \
-  --notes "## v${NEW} (${RELEASE_DATE})
-
-- **Enhance** – <description>
-- **Fix** – <description>" \
-  ./build/wp-user-frontend-v${NEW}.zip
-```
-
-### 13b. Verify draft
-
-```bash
-gh release view v${NEW} --repo weDevsOfficial/wp-user-frontend
-# Look for: draft: true, asset attached, tag: v${NEW}
-```
-
-Visual review:
-
-```bash
-gh release view v${NEW} --repo weDevsOfficial/wp-user-frontend --web
-```
-
-### 13c. Publish (TRIGGERS APPSERO — irreversible)
-
-Confirm user wants to publish. Last chance to abort.
-
-```bash
-gh release edit v${NEW} --repo weDevsOfficial/wp-user-frontend --draft=false
-```
-
-## Step 14 — Verify Appsero auto-deploy
-
-Appsero builds zip from configured source branch (master OR develop), pushes to wp.org SVN.
-
-### 14a. Wait 5-15 min, check SVN
-
-```bash
-curl -sI "https://plugins.svn.wordpress.org/wp-user-frontend/tags/${NEW}/" | head -1
-# Expect: HTTP/2 200
-
-curl -s "https://plugins.svn.wordpress.org/wp-user-frontend/trunk/readme.txt" | grep "Stable tag"
-# Expect: Stable tag: ${NEW}
-```
-
-### 14b. Wait 15-60 min, check wp.org API
-
-```bash
-curl -s "https://api.wordpress.org/plugins/info/1.0/wp-user-frontend.json" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('version'), d.get('last_updated'))"
-```
-
-### 14c. Verify download zip exists
-
-```bash
-curl -sI "https://downloads.wordpress.org/plugin/wp-user-frontend.${NEW}.zip" | head -1
-# Expect: HTTP/2 200
-```
-
-### 14d. If anything fails
-
-| Symptom | Likely cause | Fix |
-|---------|--------------|-----|
-| SVN tag dir missing after 30 min | Appsero deploy failed | Check https://app.appsero.com dashboard for error |
-| Error: "tag X already exists" | Appsero source branch is stale (not bumped) | Get master merged, retry from Appsero dashboard |
-| Stable tag mismatch | readme.txt on source branch shows old version | Push fix to source branch, retry |
-| wp.org download URL 404 | wp.org build pipeline frozen by Appsero error | Resolve Appsero error first, then wp.org pipeline runs |
-| API stuck on old version | wp.org cache | Wait 1-2 hours. SVN is source of truth. |
-
-## Step 15 — Sync user's local dev folder
-
-```bash
-DEV_FOLDER="$HOME/Sites/wps-site/wp-content/plugins/wp-user-frontend"
-cd "$DEV_FOLDER"
-git fetch upstream
-git checkout develop
-git merge upstream/develop
-git push origin develop
-```
-
-## Step 16 — Cleanup
-
-After Appsero deploy confirmed (SVN tag exists + wp.org download URL returns 200):
-
-```bash
-rm -rf "$RELEASE_DIR"
-# Close any release-related PR if admin merged it
-# gh pr close <PR-NUMBER> --repo weDevsOfficial/wp-user-frontend --comment "Merged via fast-forward"
-```
-
-## Pre-flight checklist (run BEFORE Step 1)
-
-- [ ] User has new version number
-- [ ] User has release notes (Enhance/Fix/New entries)
-- [ ] User confirmed master push perm OR Appsero source branch
-- [ ] All PRs being released are merged in upstream/develop
-- [ ] `gh auth status` shows logged in
-- [ ] `composer --version` works
-- [ ] `node --version` works (v18+ recommended)
-- [ ] `grunt --version` works
-- [ ] Disk has 1GB+ free for clone + build
-
-## Self-review checklist (run BEFORE Step 12 push)
-
-- [ ] `wpuf.php` Plugin Header `Version:` = new version
-- [ ] `wpuf.php` `WPUF_VERSION` constant = new version
-- [ ] `readme.txt` `Stable tag:` = new version
-- [ ] `readme.md` `Stable tag:` = new version (regenerated by grunt)
-- [ ] `package.json` version = new version
-- [ ] `package-lock.json` first 2 `version` entries = new version
-- [ ] Zero `WPUF_SINCE` left in PHP files
-- [ ] `readme.txt` changelog has new entry at top of `== Changelog ==`
-- [ ] `changelog.txt` has new entry at top
-- [ ] `git status` clean after commit
-- [ ] `git tag -l v${NEW}` shows tag
-- [ ] `git show v${NEW}` shows message `release version X.Y.Z vX.Y.Z`
-- [ ] Bump commit modified ~20+ files (NOT just 4 — that means build didn't run)
-- [ ] Built zip exists at `build/wp-user-frontend-v${NEW}.zip`
-
-## Reference: sapayth's v4.3.2 release pattern
-
-Mirror this exactly:
-
-```
-3252a39  Merge tag 'v4.3.2' into develop      ← back-merge (brew git-flow says "Merge branch 'release/X.Y.Z' into develop" — content same)
-9a3d694  Merge branch 'release/4.3.2'         ← master merge
-b19cb4b  chore: bump version to 4.3.2         ← release branch commit (~22 files)
-
-Tag: v4.3.2 (annotated)
-Tag message: "release version 4.3.2 v4.3.2"
-```
-
-## Rollback procedures
-
-| Problem | Fix |
-|---------|-----|
-| Wrong version in a file before commit | edit, re-stage, re-commit |
-| Bad commit on release/X (not yet finished) | `git reset --soft HEAD~1`, redo |
-| `git flow release finish` fails mid-way | resolve conflict, re-run — gitflow resumes |
-| Tag pushed with bug, NOT yet released | `git push origin :refs/tags/vX` then `git tag -d vX`, fix, re-tag, re-push |
-| Tag pushed AND release published | Cannot retract. Ship next version |
-| Pushed broken master | `git revert <merge-sha> -m 1`, push revert. Do NOT force-push public master |
-| Appsero deployed broken zip | `gh release delete vX` (deletes release, not tag). Then bump + retag + new release |
-| wp.org API stuck after SVN updated | Wait 1-2 hours. Don't panic |
-
-## Known issues + workarounds (verified 2026-05-11 from v4.3.3 disaster)
-
-1. **brew `git-flow` not installed by default** → `brew install git-flow`
-2. **macOS BSD sed `0,/PATTERN/` fails on JSON** → use `node` for JSON edits
-3. **brew git-flow `-m "msg with spaces"` getopt error** → use `-m"x"` + re-annotate, OR install `git-flow-avh`
-4. **`master` is protected on weDevsOfficial** → write-only collaborators must use fork+PR
-5. **Banner "develop ahead of master"** → normal gitflow back-merge always +1, do NOT chase zero
-6. **🔥 Appsero deploys from MASTER branch on this repo** → master MUST be at new version BEFORE publishing release. Else: "tag X already exists" error, wp.org pipeline blocked. Fix: get master push perm, OR change Appsero source to develop in dashboard.
-
-## Repo facts (cached for skill)
+## Repo facts (cached)
 
 - Repo: `weDevsOfficial/wp-user-frontend`
 - Default branch: `develop`
-- Protected branches: `master`
-- Repo admins: `tareq1988`, `nizamuddin`
-- Maintainers (push perm): `shams-sadek1981`, `anik-fahmid`, `jamil-mahmud`, `sharifcraft`
+- Protected: `master`
+- Admins: `tareq1988`, `nizamuddin`
+- Maintainers: `shams-sadek1981`, `anik-fahmid`, `jamil-mahmud`, `sharifcraft`
 - Tag format: `vX.Y.Z`
-- Tag message format: `release version X.Y.Z vX.Y.Z` (gitflow auto-appends tagname)
+- Tag message: `release version X.Y.Z vX.Y.Z` (AVH auto-appends tagname)
 - Build output: `./build/wp-user-frontend-vX.Y.Z.zip`
-- Appsero config file: `appsero.json` (root, defines wp.org excludes)
-- SVN ignore: `.svnignore` (extra wp.org excludes)
-- Auto-deploy: Appsero on tag push + GitHub release publish
+- Excludes config: `appsero.json` (wp.org), `.svnignore` (SVN manual), `Gruntfile.js` `copy.main.src` (grunt zip)
+- Appsero source: **master** branch
+- Auto-deploy: Appsero on tag + GitHub release publish
+- Wp.org URL: https://wordpress.org/plugins/wp-user-frontend/
+- SVN URL: https://plugins.svn.wordpress.org/wp-user-frontend/
 
-## Skill execution flow (for the agent running this)
+## Patches in `~/.wpuf-release/release-zip.sh` vs original
 
-1. **Greet + ask for inputs** (version, notes, date, perm status)
-2. **Run Critical Permissions Check** — abort if user doesn't have a clear path
-3. **Verify pre-flight** (`gh auth`, tools installed)
-4. **Execute Steps 1-10** with user confirmation between major sections
-5. **STOP at Step 12d** if appsero=master and user=write-only — wait for admin merge
-6. **Resume Steps 13-16** once master verified
-7. **Show Appsero verification commands** (Step 14) and tell user to check dashboard
-8. **Hand off** with summary of SHAs, tag, release URL, next steps
+1. **WPUF_SINCE pipefail fix** (line ~180): `|| true` + default 0
+2. **Auto npm install** if `node_modules` missing
+3. **Auto composer install** if `vendor/` missing
+4. **Auto gitflow init** if not initialized + sets versiontag prefix to `v`
+5. **AVH + GNU getopt detection** with install instructions
+6. **Cleanup-on-error trap** with recovery commands
+7. **Better next-steps output**
+
+## Patches in `~/.wpuf-release/release-git.sh` vs original
+
+1. **AVH + GNU getopt detection** with warnings
+2. **Cleanup-on-error trap** with recovery commands
+3. **Better next-steps output** including SVN verification commands
+
+## Skill execution flow (for the agent)
+
+1. **Detect intent** ("release wpuf X.Y.Z" or similar)
+2. **Ask if any code/config changes need PR first**
+   - If yes: handle PR flow first (separate from release)
+   - If no: proceed
+3. **Verify env one-liner:**
+   ```bash
+   git flow version | head -1   # Must say AVH
+   getopt --version | head -1   # Must say util-linux
+   ```
+4. **Run:** `wpuf-release-free X.Y.Z`
+5. **Walk user through interactive prompts** in `release-zip.sh`:
+   - "Tested up to: accept default or override"
+   - "Changelog: type each `* Type – Description` line, empty line to finish"
+6. **After success: tell user to copy printed Slack template into #release**
+7. **Hand off final URLs**
 
 ## DO NOT
 
-- DO NOT run release in the user's dev folder (`wp-content/plugins/wp-user-frontend`) — has multiple remotes, will push to fork
-- DO NOT skip `grunt release` — built assets are committed, NOT generated by Appsero
-- DO NOT publish GitHub release if Appsero source = master AND master not at new version
-- DO NOT force-push master under any circumstance
-- DO NOT delete a published tag unless certain (Appsero may have already deployed)
-- DO NOT chase zero "ahead/behind" banner — gitflow always leaves develop +1 from master after release
+- DO NOT run release in user's dev folder — multiple remotes, will push to fork
+- DO NOT bundle config/code changes in release commit — script aborts on dirty tree
+- DO NOT release more than once per 24h (wp.org rate-limits)
+- DO NOT skip env verification — silent failures otherwise
+- DO NOT publish GitHub release if master not at new version (Appsero will fail)
+- DO NOT force-push master
+- DO NOT delete published tags
+- DO NOT chase zero "develop ahead of master" banner — normal gitflow
+- DO NOT push develop → master after release to "fix" banner — triggers Appsero retry, breaks wp.org
+- DO NOT manually svn commit unless emergency — adds churn
+
+## Verified releases via this flow
+
+| Version | Date | Status |
+|---------|------|--------|
+| 4.3.5 | 2026-05-11 | ✅ Full script flow worked, deployed to wp.org cleanly after rate-limit cleared |

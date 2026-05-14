@@ -544,8 +544,6 @@ test.describe('Post Form Settings Tests', () => {
         postExcerpt = postContent;
         const postFormSettings = new PostFormSettingsPage(page);
         await postFormSettings.createPostWithPayment(postTitle, postContent, postExcerpt, '2.00', 'Order Received');
-        const BasicLogout = new BasicLogoutPage(page);
-        await BasicLogout.logoutFE();
         await new BasicLoginPage(page).basicLogin(Users.adminUsername, Users.adminPassword);
 
     });

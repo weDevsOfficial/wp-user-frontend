@@ -1420,6 +1420,8 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.proceedPaymentButton);
 
         await this.assertionValidate(Selectors.postFormSettings.afterPaymentPageTitle(successPage));
+        await this.navigateToURL(this.accountPage);
+        await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
 
     }
 

@@ -11,11 +11,11 @@
     "generate-summary": "node utils/generate-summary.js",
     
     "test:setup": "CI=false npx playwright test --config=playwright.setup.config.ts",
-    "test:parallel": "CI=false npx playwright test --config=playwright.parallel-one.config.ts; CI=false npx playwright test --config=playwright.parallel-two.config.ts",
+    "test:parallel": "CI=false npx playwright test --config=playwright.parallel-one.config.ts; CI=false npx playwright test --config=playwright.parallel-two.config.ts; CI=false npx playwright test --config=playwright.parallel-three.config.ts",
     "test:sharded": "npm run test:setup; npm run test:parallel",
 
     "test:setup:ci": "npx playwright test --config=playwright.setup.config.ts",
-    "test:parallel:ci": "npx playwright test --config=playwright.parallel-one.config.ts; npx playwright test --config=playwright.parallel-two.config.ts",
+    "test:parallel:ci": "npx playwright test --config=playwright.parallel-one.config.ts; npx playwright test --config=playwright.parallel-two.config.ts; npx playwright test --config=playwright.parallel-three.config.ts",
     "test:sharded:ci": "npm run test:setup:ci; npm run test:parallel:ci",
 
     "sharded-summary": "node utils/sharded-summary.js"

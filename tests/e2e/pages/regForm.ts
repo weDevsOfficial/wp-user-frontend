@@ -442,8 +442,11 @@ export class RegFormPage extends Base {
         await this.page.keyboard.press('Enter');
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.passwordField, VendorRegistrationForm.dokanVendorPassword = VendorRegistrationForm.dokanVendorEmail);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.confirmPasswordField, VendorRegistrationForm.dokanVendorPassword = VendorRegistrationForm.dokanVendorEmail);
+        // await this.page.pause();
+        await this.page.waitForTimeout(5000);
 
         // Submit Registration
+        await this.validateAndClick(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.registerButton);
         await this.validateAndClick(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.registerButton);
         await this.page.waitForTimeout(2000);
         // await this.page.pause();
@@ -515,6 +518,7 @@ export class RegFormPage extends Base {
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcVendor.frontendForm.passwordField, VendorRegistrationForm.wcVendorPassword = VendorRegistrationForm.wcVendorEmail);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcVendor.frontendForm.confirmPasswordField, VendorRegistrationForm.wcVendorConfirmPassword = VendorRegistrationForm.wcVendorEmail);
 
+        await this.validateAndClick(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.registerButton);
         await this.validateAndClick(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.registerButton);
         await this.page.waitForTimeout(2000);
         const successMessage = await this.page.innerText(Selectors.regFormSettings.successMessage);

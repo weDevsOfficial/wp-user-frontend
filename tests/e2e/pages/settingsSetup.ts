@@ -565,7 +565,7 @@ export class SettingsSetupPage extends Base {
         //New User creation flow
         //Enter Username
         await this.validateAndFillStrings(Selectors.settingsSetup.createNewUser.newUserName, userName);
-        await this.page.waitForTimeout(200);
+        await this.page.waitForTimeout(1000);
         //Enter Email
         await this.validateAndFillStrings(Selectors.settingsSetup.createNewUser.newUserEmail, email);
         await this.page.waitForTimeout(200);

@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 dotenv.config({ quiet: true });
 
 /**
- * Playwright configuration for PARALLEL LITE ONE phase
+ * Playwright configuration for PARALLEL LITE THREE phase
  */
 export default defineConfig({
     testDir: './tests',
@@ -13,16 +13,16 @@ export default defineConfig({
     fullyParallel: false,
     forbidOnly: false,
     retries: process.env.CI ? 0 : 0,
-    workers: process.env.CI ? 3 : 3,
+    workers: process.env.CI ? 1 : 1,
     reporter: process.env.CI
         ? [
             ['list', { printSteps: true }],
-            ['json', { outputFile: './parallel-one/parallel-one-results.json' }],
-            ['html', { outputFolder: './playwright-report/parallel-one-report', open: 'never' }]
+            ['json', { outputFile: './parallel-three/parallel-three-results.json' }],
+            ['html', { outputFolder: './playwright-report/parallel-three-report', open: 'never' }]
         ]
         : [
-            ['json', { outputFile: './parallel-one/parallel-one-results.json' }],
-            ['html', { outputFolder: './playwright-report/parallel-one-report', open: 'never' }],
+            ['json', { outputFile: './parallel-three/parallel-three-results.json' }],
+            ['html', { outputFolder: './playwright-report/parallel-three-report', open: 'never' }],
         ],
     use: {
         actionTimeout: 0,
@@ -39,11 +39,9 @@ export default defineConfig({
     },
     projects: [
         {
-            name: 'parallel-one',
+            name: 'parallel-three',
             testMatch: [
-                'tests/postFormTest.spec.ts',
-                'tests/regFormTestPro.spec.ts',
-                'tests/fieldOptionSettingsTest.spec.ts',
+                'tests/subscriptionTest.spec.ts',
             ],
             use: { ...devices['Desktop Chrome'] },
         },

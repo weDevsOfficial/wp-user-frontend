@@ -53,15 +53,21 @@ features:
   - id: LS0026
     name: Admin is enabling payment gateway paypal
   - id: LS0027
-    name: Admin is activating dokan lite
+    name: Admin is enabling Google AI
   - id: LS0028
+    name: Admin is enabling OpenAI
+  - id: LS0029
+    name: Admin is enabling Anthropic AI
+  - id: LS0030
+    name: Admin is activating dokan lite
+  - id: LS0031
     name: Admin is logging out successfully
 
   # Post Forms
   - id: PF0001
     name: Admin is creating a Blank Post Form with all Fields
   - id: PF0002
-    name: Admin is Updating Settings with default Post Form
+    name: Admin is creating page with shortcode for Post Form
   - id: PF0003
     name: User is Creating Post from Frontend
   - id: PF0004
@@ -83,7 +89,7 @@ features:
   - id: PF0012
     name: Admin is creating a product Post Form
   - id: PF0013
-    name: Admin is creating product page page with shortcode
+    name: Admin is creating product page with shortcode
   - id: PF0014
     name: Admin is creating product from FE
   - id: PF0015
@@ -91,13 +97,13 @@ features:
   - id: PF0016
     name: Admin is validating entered product data
   - id: PF0017
-    name: Admin is validating entered product data BE
+    name: Admin is validating entered product data from BE
   - id: PF0018
     name: Admin is setting necessary setup for downloads form
   - id: PF0019
     name: Admin is creating a downloads Post Form
   - id: PF0020
-    name: Admin is creating downloads page with shortcode
+    name: Admin is creating add downloads page with shortcode
   - id: PF0021
     name: Admin is creating downloads from FE
   - id: PF0022
@@ -115,7 +121,7 @@ features:
   - id: RF0003
     name: Admin is validating fields to Registration Forms
   - id: RF0004
-    name: Admin is creating Registration Forms - using shortcode
+    name: Admin is creating Registration Forms Page - using shortcode
   - id: RF0005
     name: User is registering using - Registration Form
   - id: RF0006
@@ -265,9 +271,9 @@ features:
   - id: PFS0054
     name: Admin is setting update post button text
   - id: PFS0055
-    name: Admin is enabling form title showing
+    name: Admin is enabling and validating form title showing
   - id: PFS0056
-    name: Admin is showing form description
+    name: Admin is setting and validating form description showing
   - id: PFS0057
     name: Admin is enabling pay per post
   - id: PFS0058
@@ -299,19 +305,19 @@ features:
   - id: PFS0071
     name: Admin is enabling updated post notification
   - id: PFS0072
-    name: Admin is validating updated post notification settings enabled
+    name: Admin is validating Updated post notification settings enabled
   - id: PFS0073
-    name: Admin is modifying updated post notification email
+    name: Admin is modifying Updated post notification email
   - id: PFS0074
-    name: Admin is modifying updated post notification subject
+    name: Admin is modifying Updated post notification subject
   - id: PFS0075
-    name: Admin is modifying updated post notification body with template tags
+    name: Admin is modifying Updated post notification body with template tags
   - id: PFS0076
-    name: Admin is clicking and validating template tags for updated post notification
+    name: Admin is clicking and validating template tags for Updated post notification
   - id: PFS0077
-    name: Admin is setting multiple updated post notification emails
+    name: Admin is setting multiple Updated post notification emails
   - id: PFS0078
-    name: Admin is submitting post and validating updated post notification from FE
+    name: Admin is submitting post and validating Updated post notification from FE
   - id: PFS0079
     name: Admin is disabling updated post notification
   - id: PFS0080
@@ -445,7 +451,7 @@ features:
   - id: RFS0049
     name: Admin is enabling admin notification
   - id: RFS0050
-    name: Admin is setting admin email subject
+    name: Admin is setting admin notification subject
   - id: RFS0051
     name: Admin is setting admin notification message
   - id: RFS0052
@@ -455,7 +461,7 @@ features:
   - id: RFS0054
     name: Admin is disabling admin notification
   - id: RFS0055
-    name: Admin is enabling multi-step form
+    name: Admin is enabling multi-step form progressbar
   - id: RFS0056
     name: Admin is validating multi-step progressbar
   - id: RFS0057
@@ -469,53 +475,53 @@ features:
   - id: FOS0001
     name: Admin is creating a test form for field options testing
   - id: FOS0002
-    name: Admin is configuring Field Label option (using Text field)
+    name: Admin is configuring Field Label option
   - id: FOS0003
     name: Admin is validating Field Label option in frontend
   - id: FOS0004
-    name: Admin is configuring Meta Key option (using Text field)
+    name: Admin is configuring Meta Key option
   - id: FOS0005
     name: Admin is validating Meta Key option in backend
   - id: FOS0006
-    name: Admin is configuring Help Text option (using Text field)
+    name: Admin is configuring Help Text option
   - id: FOS0007
     name: Admin is validating Help Text option in frontend
   - id: FOS0008
-    name: Admin is configuring Placeholder Text option (using Text field)
+    name: Admin is configuring Placeholder Text option
   - id: FOS0009
     name: Admin is validating Placeholder Text option in frontend
   - id: FOS0010
-    name: Admin is configuring Default Value option (using Text field)
+    name: Admin is configuring Default Value option
   - id: FOS0011
     name: Admin is validating Default Value option in frontend
   - id: FOS0012
-    name: Admin is configuring Required field option (using Text field)
+    name: Admin is configuring Required field option
   - id: FOS0013
     name: Admin is validating Required field option in frontend
   - id: FOS0014
-    name: Admin is configuring CSS Class Name option (using Text field)
+    name: Admin is configuring CSS Class Name option
   - id: FOS0015
     name: Admin is validating CSS Class Name option in frontend
   - id: FOS0016
-    name: Admin is configuring Field Size option (using Text field)
+    name: Admin is configuring Field Size option
   - id: FOS0017
     name: Admin is validating Field Size option in frontend
   - id: FOS0018
-    name: Admin is configuring Read Only option (using Text field)
+    name: Admin is configuring Read Only option
   - id: FOS0019
     name: Admin is validating Read Only option in frontend
   - id: FOS0020
-    name: Admin is configuring Show Data in Post option (using Text field)
+    name: Admin is configuring Show Data in Post option
   - id: FOS0021
     name: Admin is validating Show Data in Post option in backend
   - id: FOS0022
-    name: Admin is configuring Hide Field Label option (using Text field)
+    name: Admin is configuring Hide Field Label option
   - id: FOS0023
-    name: Admin is validating Hide Field Label option in frontend
+    name: Admin is validating Hide Field Label option in backend
   - id: FOS0024
-    name: Admin is configuring Visibility option (using Text field)
+    name: Admin is configuring Visibility option
   - id: FOS0025
-    name: Admin is validating Visibility option in frontend
+    name: Admin is validating Visibility option in backend
   - id: FOS0026
     name: Admin is configuring Content Restriction option for min character length
   - id: FOS0027
@@ -575,7 +581,7 @@ features:
   - id: FOS0054
     name: Admin is configuring Time Format option and interval
   - id: FOS0055
-    name: Admin is validating Time Format option and interval in frontend
+    name: Admin is validating Time Format and interval in frontend
   - id: FOS0056
     name: Admin is configuring Max Files number
   - id: FOS0057
@@ -595,7 +601,7 @@ features:
   - id: FOS0064
     name: Admin is configuring Hide Countries option
   - id: FOS0065
-    name: Admin is validating Hide Countries option in frontend
+    name: Admin is validating Default Country option in frontend
   - id: FOS0066
     name: Admin is configuring Only Show Countries option
   - id: FOS0067
@@ -603,15 +609,15 @@ features:
   - id: FOS0068
     name: Admin is configuring Show Address Line 2 required option
   - id: FOS0069
-    name: Admin is validating Show Address Line 2 required option in frontend
+    name: Admin is validating Show Address Line 2 option in frontend
   - id: FOS0070
     name: Admin is configuring Show Address Line 2 default option
   - id: FOS0071
     name: Admin is validating Show Address Line 2 default option in frontend
   - id: FOS0072
-    name: Admin is configuring Show Address Line 2 placeholder option
+    name: Admin is configuring Show Address Line 2 place holder option
   - id: FOS0073
-    name: Admin is validating Show Address Line 2 placeholder option in frontend
+    name: Admin is validating Show Address Line 2 place holder option in frontend
   - id: FOS0074
     name: Admin is configuring Show Icons option
   - id: FOS0075
@@ -766,3 +772,7 @@ features:
     name: Admin validates subscription canceled
   - id: SB0044
     name: Admin creates a Recurring Paid Subscription Pack
+  - id: SB0045
+    name: Admin validates Recurring Paid Subscription Pack
+  - id: SB0046
+    name: Admin validates Recurring Paid Subscription Pack FE

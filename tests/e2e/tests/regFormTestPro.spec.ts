@@ -56,7 +56,7 @@ test.describe('Registration-Forms', () => {
 
     let activationLink: string = '';
     test('RF0001 : Admin is checking Registration Forms - Pro Feature Page', { tag: ['@Pro'] }, async () => {
-        await page.waitForTimeout(20000);
+        await page.waitForTimeout(30000);
         const BasicLogin = new BasicLoginPage(page);
         const RegForm = new RegFormPage(page);
         //Basic login

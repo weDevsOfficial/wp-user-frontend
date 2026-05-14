@@ -36,4 +36,10 @@ export class BasicLogoutPage extends Base {
         await this.assertionValidate(Selectors.logout.basicLogout.logoutSuccess);
         console.log('LogOut Done');
     }
+
+    async signOutFE(){
+        await this.navigateToURL(this.accountPage);
+
+        await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
+    }
 }

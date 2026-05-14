@@ -83,7 +83,6 @@ test.describe('Subscription-Module', () => {
     /*************************************************/
 
     test('SB0001 : Admin creates a Free Subscription Pack', { tag: ['@Pro', '@Subscription'] }, async () => {
-        await page.waitForTimeout(60000);
         const BasicLogin = new BasicLoginPage(page);
         await test.step("Login as an admin for accessing dashboard", async () => {
             await new BasicLoginPage(page).basicLogin(Users.adminUsername, Users.adminPassword);

@@ -15,6 +15,7 @@ function getAllAvailableResultFiles() {
   const allPossibleFiles = [
     path.join(__dirname, '../parallel-one/parallel-one-results.json'),
     path.join(__dirname, '../parallel-two/parallel-two-results.json'),
+    path.join(__dirname, '../parallel-three/parallel-three-results.json'),
   ];
   
   // Return only files that actually exist
@@ -34,6 +35,7 @@ async function cleanupResultFiles() {
     path.join(__dirname, '../setup'),
     path.join(__dirname, '../parallel-one'),
     path.join(__dirname, '../parallel-two'),
+    path.join(__dirname, '../parallel-three'),
   ];
   
   // Remove JSON files
@@ -144,6 +146,7 @@ async function mergeParallelResults() {
     // Store individual shard durations for sharded execution calculation
     parallelOneDuration: 0,
     parallelTwoDuration: 0,
+    parallelThreeDuration: 0,
   };
 
   let totalDuration = 0;
@@ -162,6 +165,8 @@ async function mergeParallelResults() {
       allResults.parallelOneDuration = results.stats.duration;
     } else if (fileName.includes('parallel-two') && results.stats?.duration) {
       allResults.parallelTwoDuration = results.stats.duration;
+    } else if (fileName.includes('parallel-three') && results.stats?.duration) {
+      allResults.parallelThreeDuration = results.stats.duration;
     }
 
     // Merge suites
@@ -311,6 +316,7 @@ function getFeatureCategory(testId, featuresMap) {
     case 'PFS': return { category: 'Post Form Settings', feature: 'Post Form Settings' };
     case 'RFS': return { category: 'Registration Form Settings', feature: 'Registration Form Settings' };
     case 'FOS': return { category: 'Field Option Settings', feature: 'Field Option Settings' };
+    case 'SB': return { category: 'Subscription', feature: 'Subscription' };
     default: return { category: 'Other', feature: 'Other' };
   }
 }
@@ -467,9 +473,10 @@ async function generateShardedSummary() {
   const setupDuration = setupResults?.stats?.duration || 0;
   const parallelOneDuration = mergedParallelResults.parallelOneDuration || 0;
   const parallelTwoDuration = mergedParallelResults.parallelTwoDuration || 0;
+  const parallelThreeDuration = mergedParallelResults.parallelThreeDuration || 0;
   
-  // Total sharded duration is setup + parallelOne + parallelTwo
-  const totalWallClockDuration = setupDuration + parallelOneDuration + parallelTwoDuration;
+  // Total sharded duration is setup + parallelOne + parallelTwo + parallelThree
+  const totalWallClockDuration = setupDuration + parallelOneDuration + parallelTwoDuration + parallelThreeDuration;
   
   // Calculate average based on sum of all individual test durations
   const totalTestDuration = allTests.reduce((sum, test) => sum + test.duration, 0);

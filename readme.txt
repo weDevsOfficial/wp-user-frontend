@@ -123,6 +123,28 @@ This WordPress Registration Form Plugin also allows you to build user registrati
 
 Custom field data are viewable to visitors on frontend on single post pages. Admins can also disable this if they don’t want to display custom fields to everyone.
 
+<strong>Elementor Compatibility</strong>
+
+WP User Frontend is now fully compatible with <strong>Elementor</strong>, the popular WordPress page builder. You can build and design <strong>frontend forms, user dashboards, and subscription pages</strong> in Elementor without using shortcodes.
+
+This integration combines the power of <strong>WP User Frontend (frontend content management)</strong> with <strong>Elementor (visual page builder)</strong> for a faster and smoother workflow.
+
+<strong>Available Elementor Widgets</strong>
+
+* <strong>Account Widget</strong> – Customize the user account dashboard layout and appearance
+* <strong>Subscription Widget</strong> – Display and organize user subscription plans clearly
+* <strong>Post Form Widget</strong> – Design frontend submission forms visually using Elementor
+
+These widgets help you turn your site into a <strong>frontend content management system</strong> without backend access.
+
+<strong>How Elementor Integration Works</strong>
+
+* Drag and drop User Frontend widgets into Elementor
+* Customize layout, spacing, and design visually
+* Publish pages and display them on the frontend
+
+WP User Frontend handles <strong>form logic, user roles, and permissions</strong>, while Elementor controls <strong>design and layout</strong>.
+
 = How to download and install WPUF FREE =
 
 [youtube https://www.youtube.com/watch?v=rzxdIN8ZMYc]

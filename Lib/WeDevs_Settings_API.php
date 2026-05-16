@@ -345,11 +345,15 @@ class WeDevs_Settings_API {
     }
 
     /**
-     * Displays a Texty-style card grid for selecting payment gateways
+     * Displays a card grid for selecting payment gateways.
      *
-     * Renders each gateway as a clickable card with icon and name.
-     * Multiple cards can be checked (multi-select). Clicking a card
-     * also reveals that gateway's settings panel below the grid.
+     * Each gateway renders as a focusable card. Clicking (or pressing
+     * Enter/Space on) a card opens its settings panel; settings rows for
+     * non-focused gateways stay hidden. The hidden card checkbox is driven
+     * by an "Enable Gateway" toggle injected at the top of each panel by
+     * the settings JS — that is the only control that enables/disables
+     * the gateway. Pro-preview gateways are filtered out before reaching
+     * this callback (see wpuf_get_gateways() with 'gateway_selector' context).
      *
      * @since 4.3.1
      *
@@ -361,8 +365,8 @@ class WeDevs_Settings_API {
         $value = $this->get_option( $args['id'], $args['section'], $args['std'] );
         $value = $value ? $value : [];
 
-        // Inline SVG fallback icons (no image files exist for these)
-        $bank_svg    = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#787c82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M3 10h18"/><path d="M12 3l9 7H3l9-7z"/><path d="M5 10v8"/><path d="M9 10v8"/><path d="M15 10v8"/><path d="M19 10v8"/></svg>';
+        // Generic fallback icon for unknown gateways without a registered icon URL.
+        // Known gateways (paypal/bank/stripe) get branded icons via assets/css/admin/settings.css.
         $generic_svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#787c82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>';
         ?>
         <fieldset>
@@ -370,49 +374,36 @@ class WeDevs_Settings_API {
 
             <div class="wpuf-gateway-cards">
                 <?php foreach ( $args['options'] as $key => $gateway ) :
-                    $is_checked    = in_array( $key, $value, true );
-                    $is_pro        = ! empty( $gateway['is_pro_preview'] ) && $gateway['is_pro_preview'];
-                    $disabled      = $is_pro ? 'disabled' : '';
-                    $active_class  = $is_checked ? ' wpuf-gateway-card--active' : '';
-                    $pro_class     = $is_pro ? ' wpuf-gateway-card--pro-locked' : '';
-                    $icon          = ! empty( $gateway['icon'] ) ? $gateway['icon'] : '';
-                    $admin_label   = $gateway['admin_label'];
+                    $is_checked   = in_array( $key, $value, true );
+                    $active_class = $is_checked ? ' wpuf-gateway-card--active' : '';
+                    $icon         = ! empty( $gateway['icon'] ) ? $gateway['icon'] : '';
+                    // Strip any HTML embedded in the registered admin_label so it cannot
+                    // leak markup into the card name or downstream JS read of textContent.
+                    $admin_label  = wp_strip_all_tags( $gateway['admin_label'] );
                     ?>
-                    <div class="wpuf-gateway-card<?php echo esc_attr( $active_class . $pro_class ); ?>"
-                         data-gateway="<?php echo esc_attr( $key ); ?>">
+                    <div class="wpuf-gateway-card<?php echo esc_attr( $active_class ); ?>"
+                         data-gateway="<?php echo esc_attr( $key ); ?>"
+                         role="button"
+                         tabindex="0"
+                         aria-label="<?php echo esc_attr( $admin_label ); ?>">
 
                         <input type="checkbox"
                                class="wpuf-gateway-card__checkbox"
                                id="wpuf-<?php echo esc_attr( $args['section'] ); ?>[<?php echo esc_attr( $args['id'] ); ?>][<?php echo esc_attr( $key ); ?>]"
                                name="<?php echo esc_attr( $args['section'] ); ?>[<?php echo esc_attr( $args['id'] ); ?>][<?php echo esc_attr( $key ); ?>]"
                                value="<?php echo esc_attr( $key ); ?>"
-                               <?php checked( $is_checked, true ); ?>
-                               <?php echo esc_attr( $disabled ); ?> />
-
-                        <label class="wpuf-gateway-card__toggle"
-                               for="wpuf-<?php echo esc_attr( $args['section'] ); ?>[<?php echo esc_attr( $args['id'] ); ?>][<?php echo esc_attr( $key ); ?>]"
-                               title="<?php echo esc_attr( sprintf( __( 'Enable %s', 'wp-user-frontend' ), $admin_label ) ); ?>">
-                            <svg class="wpuf-gateway-card__check-on" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22">
-                                <circle cx="12" cy="12" r="12" fill="#00a32a"/>
-                                <path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <svg class="wpuf-gateway-card__check-off" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22">
-                                <circle cx="12" cy="12" r="11" fill="none" stroke="#c3c4c7" stroke-width="2"/>
-                            </svg>
-                        </label>
+                               <?php checked( $is_checked, true ); ?> />
 
                         <div class="wpuf-gateway-card__icon">
                             <?php if ( $icon ) : ?>
                                 <img src="<?php echo esc_url( $icon ); ?>" alt="<?php echo esc_attr( $admin_label ); ?>" />
-                            <?php elseif ( 'bank' === $key ) : ?>
-                                <?php echo $bank_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Hardcoded SVG ?>
                             <?php else : ?>
                                 <?php echo $generic_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Hardcoded SVG ?>
                             <?php endif; ?>
                         </div>
 
                         <div class="wpuf-gateway-card__name">
-                            <?php echo esc_html( $admin_label ); ?>
+                            <span class="wpuf-gateway-card__label"><?php echo esc_html( $admin_label ); ?></span>
                         </div>
                     </div>
                 <?php endforeach; ?>

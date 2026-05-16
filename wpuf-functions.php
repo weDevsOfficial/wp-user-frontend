@@ -928,22 +928,58 @@ function wpuf_get_gateways( $context = 'admin' ) {
     $return   = [];
 
     foreach ( $gateways as $id => $gate ) {
+        $is_pro_preview = ! empty( $gate['is_pro_preview'] )
+            || ( ! empty( $gate['label_class'] ) && 'pro-preview' === $gate['label_class'] );
+
         if ( 'admin' === $context ) {
             $return[ $id ] = $gate['admin_label'];
-        } elseif ( 'gateway_selector' === $context ) {
+            continue;
+        }
+
+        if ( $is_pro_preview ) {
+            continue;
+        }
+
+        if ( 'gateway_selector' === $context ) {
             $return[ $id ] = [
-                'admin_label'           => $gate['admin_label'],
-                'icon'                  => isset( $gate['icon'] ) ? $gate['icon'] : '',
-                'supports_subscription' => ! empty( $gate['supports_subscription'] ),
-                'is_pro_preview'        => ! empty( $gate['is_pro_preview'] ) ? $gate['is_pro_preview'] : false,
+                'admin_label' => $gate['admin_label'],
+                'icon'        => isset( $gate['icon'] ) ? $gate['icon'] : '',
             ];
         } else {
             $return[ $id ] = [
-                'label'          => $gate['checkout_label'],
-                'icon'           => isset( $gate['icon'] ) ? $gate['icon'] : '',
-                'is_pro_preview' => ! empty( $gate['is_pro_preview'] ) ? esc_attr( $gate['is_pro_preview'] ) : false,
+                'label' => $gate['checkout_label'],
+                'icon'  => isset( $gate['icon'] ) ? $gate['icon'] : '',
             ];
         }
+    }
+
+    if ( 'gateway_selector' === $context ) {
+        /**
+         * Filters the preferred display order of gateways in the settings card grid.
+         *
+         * Gateways listed here render first in the order given. Any gateways not
+         * listed are appended afterwards in their registration order.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $preferred_order Array of gateway IDs in display order.
+         */
+        $preferred_order = apply_filters( 'wpuf_gateway_selector_order', [ 'bank', 'stripe', 'paypal' ] );
+        $ordered         = [];
+
+        foreach ( $preferred_order as $gateway_id ) {
+            if ( isset( $return[ $gateway_id ] ) ) {
+                $ordered[ $gateway_id ] = $return[ $gateway_id ];
+            }
+        }
+
+        foreach ( $return as $gateway_id => $gateway_data ) {
+            if ( ! isset( $ordered[ $gateway_id ] ) ) {
+                $ordered[ $gateway_id ] = $gateway_data;
+            }
+        }
+
+        $return = $ordered;
     }
 
     return $return;

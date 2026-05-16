@@ -1,0 +1,81 @@
+/* Gateway selector cards — settings-page sizing + brand SVG icons */
+.wpuf-gateway-card {
+    width: 140px !important;
+    padding: 18px 14px 14px !important;
+    border-width: 1px !important;
+}
+.wpuf-gateway-card:focus-visible {
+    outline: 2px solid #059669;
+    outline-offset: 2px;
+}
+.wpuf-gateway-card__icon {
+    height: 44px !important;
+    margin-bottom: 8px !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 56px auto !important;
+    overflow: visible;
+}
+.wpuf-gateway-card__name {
+    font-size: 13px !important;
+}
+
+/* Enable Gateway toggle switch (in per-gateway settings panel) */
+.wpuf-gateway-toggle {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    vertical-align: middle;
+}
+.wpuf-gateway-toggle__input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+.wpuf-gateway-toggle__slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: background-color 0.2s ease;
+    border-radius: 24px;
+}
+.wpuf-gateway-toggle__slider::before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+.wpuf-gateway-toggle__input:checked + .wpuf-gateway-toggle__slider {
+    background-color: #0073aa;
+}
+.wpuf-gateway-toggle__input:checked + .wpuf-gateway-toggle__slider::before {
+    transform: translateX(20px);
+}
+.wpuf-gateway-toggle__input:focus-visible + .wpuf-gateway-toggle__slider {
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.35);
+}
+.wpuf-gateway-card[data-gateway="paypal"] .wpuf-gateway-card__icon > *,
+.wpuf-gateway-card[data-gateway="bank"] .wpuf-gateway-card__icon > *,
+.wpuf-gateway-card[data-gateway="stripe"] .wpuf-gateway-card__icon > * {
+    display: none !important;
+}
+.wpuf-gateway-card[data-gateway="paypal"] .wpuf-gateway-card__icon {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='15%25' fill='%23ffffff'/><path fill='%23002c8a' d='M377 184.8L180.7 399h-72c-5 0-9-5-8-10l48-304c1-7 7-12 14-12h122c84 3 107 46 92 112z'/><path fill='%23009be1' d='M380.2 165c30 16 37 46 27 86-13 59-52 84-109 85l-16 1c-6 0-10 4-11 10l-13 79c-1 7-7 12-14 12h-60c-5 0-9-5-8-10l22-143c1-5 182-120 182-120z'/><path fill='%23001f6b' d='M197 292l20-127a14 14 0 0 1 13-11h96c23 0 40 4 54 11-5 44-26 115-128 117h-44c-5 0-10 4-11 10z'/></svg>");
+}
+.wpuf-gateway-card[data-gateway="bank"] .wpuf-gateway-card__icon {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-5.76 -5.76 35.52 35.52' fill='none'><rect x='-5.76' y='-5.76' width='35.52' height='35.52' rx='17.76' fill='%23ffffff'/><path d='M22 19V22H2V19C2 18.45 2.45 18 3 18H21C21.55 18 22 18.45 22 19Z' fill='%23059669' stroke='%23059669' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><path opacity='0.6' d='M8 11H4V18H8V11Z' fill='%23059669'/><path opacity='0.4' d='M12 11H8V18H12V11Z' fill='%23059669'/><path opacity='0.6' d='M16 11H12V18H16V11Z' fill='%23059669'/><path opacity='0.4' d='M20 11H16V18H20V11Z' fill='%23059669'/><path d='M23 22.75H1C0.59 22.75 0.25 22.41 0.25 22C0.25 21.59 0.59 21.25 1 21.25H23C23.41 21.25 23.75 21.59 23.75 22C23.75 22.41 23.41 22.75 23 22.75Z' fill='%23059669'/><path d='M21.37 5.74982L12.37 2.14984C12.17 2.06984 11.83 2.06984 11.63 2.14984L2.63 5.74982C2.28 5.88982 2 6.29981 2 6.67981V9.99982C2 10.5498 2.45 10.9998 3 10.9998H21C21.55 10.9998 22 10.5498 22 9.99982V6.67981C22 6.29981 21.72 5.88982 21.37 5.74982ZM12 8.49982C11.17 8.49982 10.5 7.82982 10.5 6.99982C10.5 6.16982 11.17 5.49982 12 5.49982C12.83 5.49982 13.5 6.16982 13.5 6.99982C13.5 7.82982 12.83 8.49982 12 8.49982Z' fill='%23059669'/></svg>");
+}
+.wpuf-gateway-card[data-gateway="stripe"] .wpuf-gateway-card__icon {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23949494'><path d='M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2.5 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-2zm0 3a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z'/></svg>");
+}

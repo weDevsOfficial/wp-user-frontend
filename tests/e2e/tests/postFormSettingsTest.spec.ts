@@ -86,9 +86,9 @@ test.describe('Post Form Settings Tests', () => {
      * @Test_PFS0055 : Admin is enabling form title showing
      * @Test_PFS0056 : Admin is showing form description
      * @Test_PFS0057 : Admin is enabling pay per post
-     * @Test_PFS0058 : Admin is creating post with payment
+     * @Test_PFS0058 : User is creating post with payment
      * @Test_PFS0059 : Admin is accepting payment for post
-     * @Test_PFS0060 : Admin is validating paid post is live
+     * @Test_PFS0060 : User is validating paid post is live
      * @Test_PFS0061 : Admin is disabling pay per post
      * @Test_PFS0062 : Admin is enabling new post notification
      * @Test_PFS0063 : Admin is validating new post notification settings enabled
@@ -531,24 +531,41 @@ test.describe('Post Form Settings Tests', () => {
     test('PFS0057 : Admin is enabling pay per post', { tag: ['@Lite'] }, async () => {
         const postFormSettings = new PostFormSettingsPage(page);
         await postFormSettings.enablePayPerPost(formName, '2.00', 'Order Received');
+        const BasicLogout = new BasicLogoutPage(page);
+        await BasicLogout.logOut();
     });
 
-    test('PFS0058 : Admin is creating post with payment', { tag: ['@Lite'] }, async () => {
+    test('PFS0058 : User is creating post with payment', { tag: ['@Lite'] }, async () => {
+        const BasicLogin = new BasicLoginPage(page);
+        await BasicLogin.basicLogin(Users.userEmail, Users.userPassword);
+
         postTitle = faker.word.words(3);
         postContent = faker.lorem.paragraph();
         postExcerpt = postContent;
         const postFormSettings = new PostFormSettingsPage(page);
         await postFormSettings.createPostWithPayment(postTitle, postContent, postExcerpt, '2.00', 'Order Received');
+        const BasicLogout = new BasicLogoutPage(page);
+        await BasicLogout.signOutFE();
+        await new BasicLoginPage(page).basicLogin(Users.adminUsername, Users.adminPassword);
+
     });
 
     test('PFS0059 : Admin is accepting payment for post', { tag: ['@Lite'] }, async () => {
+        
         const postFormSettings = new PostFormSettingsPage(page);
         await postFormSettings.acceptPayment();
+        const BasicLogout = new BasicLogoutPage(page);
+        await BasicLogout.logOut();
     });
 
-    test('PFS0060 : Admin is validating paid post is live', { tag: ['@Lite'] }, async () => {
+    test('PFS0060 : User is validating paid post is live', { tag: ['@Lite'] }, async () => {
+        const BasicLogin = new BasicLoginPage(page);
+        await BasicLogin.basicLogin(Users.userEmail, Users.userPassword);
         const postFormSettings = new PostFormSettingsPage(page);
         await postFormSettings.validatePayPerPost(postTitle);
+        const BasicLogout = new BasicLogoutPage(page);
+        await BasicLogout.signOutFE();
+        await new BasicLoginPage(page).basicLogin(Users.adminUsername, Users.adminPassword);
     });
 
     test('PFS0061 : Admin is disabling pay per post', { tag: ['@Lite'] }, async () => {

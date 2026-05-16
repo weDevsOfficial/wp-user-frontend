@@ -273,14 +273,15 @@ export class PostFormPage extends Base {
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.state, 'BD-13');
         //Enter Google Maps
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postGoogleMapsFormsFE, PostForm.googleMaps = 'Dhaka, Bangladesh');
-        await this.page.keyboard.press('Enter');
+        //await this.page.keyboard.press('Enter');
         //Enter Embed
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postEmbedFormsFE, PostForm.embed = faker.internet.url());
         console.log(PostForm.embed);
         //Enter Terms and Conditions
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postTermsAndConditionsFormsFE);
         //Enter Ratings
-        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postRatingsFormsFE, PostForm.ratings = '5');
+        //await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postRatingsFormsFE, PostForm.ratings = '5');
+        await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postRatingStarsFormsFE);
         console.log(PostForm.ratings);
         // Math Captcha
         const operand1 = await this.page.textContent(Selectors.postForms.postFormsFrontendCreate.postMathCaptchaFormsFE.operand1);

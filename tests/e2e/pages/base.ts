@@ -34,6 +34,11 @@ export class Base {
     readonly postHerePage: string = Urls.baseUrl + '/post-here/';
     readonly siteHomePage: string = Urls.baseUrl;
     readonly wpufTransactionPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf_transaction';
+    readonly wpufSubscriptionPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf_subscription';
+    readonly subscriptionFrontendPage: string = Urls.baseUrl + '/subscription/';
+    readonly accountSubscriptionPage: string = Urls.baseUrl + '/account/?section=subscription';
+    readonly wpufModulesPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-modules';
+    readonly paymentPage: string = Urls.baseUrl + '/payment/';
     readonly wpufRegistrationFormPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
     readonly wpufRegistrationPage: string = Urls.baseUrl + '/registration-page/';
     readonly newRegFormPage: string = Urls.baseUrl + '/reg-here/';

@@ -1,4 +1,9 @@
 <?php
+/**
+ * DESCRIPTION: Elementor integration orchestrator. Registers widgets, categories, and handles asset enqueuing.
+ *
+ * @package WPUF\Elementor
+ */
 
 namespace WeDevs\Wpuf\Integrations\Elementor;
 
@@ -9,6 +14,11 @@ namespace WeDevs\Wpuf\Integrations\Elementor;
  */
 class Elementor {
 
+    /**
+     * Constructor
+     *
+     * @since 4.0.0
+     */
     public function __construct() {
         add_action( 'elementor/elements/categories_registered', [ $this, 'register_category' ] );
         add_action( 'elementor/widgets/register', [ $this, 'register_widgets' ] );
@@ -19,6 +29,17 @@ class Elementor {
         // Ensure editor scripts are enqueued for TinyMCE in Elementor preview
         add_action( 'elementor/frontend/after_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
         add_action( 'elementor/editor/after_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+
+        // Include Elementor pages with the User Directory widget in pretty URL rewrite rules
+        // (used by the free module's PrettyUrls class when Pro is not active)
+        add_filter( 'wpuf_ud_directory_pages', [ $this, 'add_elementor_directory_pages' ], 10, 2 );
+
+        // Register pretty URL rewrite rules directly for Elementor pages — this runs regardless
+        // of which module is active, ensuring the rules are always registered.
+        add_action( 'init', [ $this, 'register_elementor_page_rewrite_rules' ], 5 );
+
+        // Flush rewrite rules when Elementor saves a page with our widget
+        add_action( 'elementor/editor/after_save', [ $this, 'maybe_flush_rules_on_elementor_save' ], 10, 2 );
     }
 
     /**
@@ -30,12 +51,12 @@ class Elementor {
      */
     public function enqueue_styles() {
         // Dequeue all WPUF hardcoded styles so Elementor styles can work properly
-        wp_dequeue_style('wpuf-frontend-forms');
-        wp_dequeue_style('wpuf-layout1');
-        wp_dequeue_style('wpuf-layout2');
-        wp_dequeue_style('wpuf-layout3');
-        wp_dequeue_style('wpuf-layout4');
-        wp_dequeue_style('wpuf-layout5');
+        wp_dequeue_style( 'wpuf-frontend-forms' );
+        wp_dequeue_style( 'wpuf-layout1' );
+        wp_dequeue_style( 'wpuf-layout2' );
+        wp_dequeue_style( 'wpuf-layout3' );
+        wp_dequeue_style( 'wpuf-layout4' );
+        wp_dequeue_style( 'wpuf-layout5' );
 
         $style_handles = [ 'wpuf-elementor-frontend-forms', 'wpuf-account' ];
 
@@ -52,9 +73,28 @@ class Elementor {
             wp_enqueue_style( $handle );
         }
 
+        // User Directory assets — register if the free module hasn't done it
+        // (e.g. when Pro is active, Free_Loader is skipped so Shortcode::register_assets() never runs)
+        if ( ! wp_style_is( 'wpuf-user-directory-frontend', 'registered' ) ) {
+            wp_register_style(
+                'wpuf-user-directory-frontend',
+                WPUF_ASSET_URI . '/css/wpuf-user-directory-free.css',
+                [],
+                WPUF_VERSION
+            );
+        }
+        wp_enqueue_style( 'wpuf-user-directory-frontend' );
+        wp_enqueue_style( 'wpuf-elementor-user-directory' );
+
         if ( wpuf_is_pro_active() ) {
             wp_enqueue_script( 'wpuf-conditional-logic' );
             wp_enqueue_script( 'wpuf-frontend-form' );
+
+            // Pro's Assets::enqueue_shortcode_assets() bails on Elementor pages because
+            // it checks has_shortcode($post->post_content) which is always false for Elementor
+            // (widget data lives in _elementor_data meta). Enqueue Pro's UD styles here instead.
+            wp_enqueue_style( 'wpuf-ud-styles' );
+            wp_enqueue_style( 'wpuf-ud-shortcode-styles' );
         }
 
         /**
@@ -79,10 +119,42 @@ class Elementor {
         // Enqueue all required WPUF form assets
         $this->enqueue_wpuf_form_assets();
 
+        // User Directory scripts — register if the free module hasn't done it
+        if ( ! wp_script_is( 'wpuf-user-directory-frontend', 'registered' ) ) {
+            wp_register_script(
+                'wpuf-user-directory-frontend',
+                WPUF_ASSET_URI . '/js/wpuf-user-directory-frontend.js',
+                [ 'jquery' ],
+                WPUF_VERSION,
+                true
+            );
+        }
+        if ( ! wp_script_is( 'wpuf-ud-search-shortcode', 'registered' ) ) {
+            wp_register_script(
+                'wpuf-ud-search-shortcode',
+                WPUF_ASSET_URI . '/js/ud-search-shortcode.js',
+                [],
+                WPUF_VERSION,
+                true
+            );
+        }
+        wp_enqueue_script( 'wpuf-user-directory-frontend' );
+        wp_enqueue_script( 'wpuf-ud-search-shortcode' );
+
+        // Localize search script
+        wp_localize_script(
+            'wpuf-ud-search-shortcode',
+            'wpufUserDirectorySearch',
+            [
+                'restUrl' => rest_url( 'wpuf/v1/user_directory/search' ),
+                'nonce'   => wp_create_nonce( 'wp_rest' ),
+            ]
+        );
+
         // Ensure editor scripts are loaded for TinyMCE in Elementor preview
         if ( function_exists( 'wp_enqueue_editor' ) ) {
             wp_enqueue_editor();
-            
+
             // Also explicitly enqueue TinyMCE scripts if available
             if ( function_exists( 'wp_enqueue_script' ) ) {
                 // Check if these scripts exist and enqueue them
@@ -231,7 +303,9 @@ class Elementor {
     /**
      * Register Elementor Widget Category
      *
-     * @param \Elementor\Elements_Manager $elements_manager
+     * @since 4.3.1
+     *
+     * @param \Elementor\Elements_Manager $elements_manager Elementor elements manager.
      *
      * @return void
      */
@@ -248,7 +322,9 @@ class Elementor {
     /**
      * Register Elementor Widgets
      *
-     * @param \Elementor\Widgets_Manager $widgets_manager
+     * @since 4.3.1
+     *
+     * @param \Elementor\Widgets_Manager $widgets_manager Elementor widgets manager.
      *
      * @return void
      */
@@ -256,9 +332,136 @@ class Elementor {
         require_once __DIR__ . '/Widget.php';
         require_once __DIR__ . '/Subscription_Plans_Widget.php';
         require_once __DIR__ . '/Account_Widget.php';
+        require_once __DIR__ . '/User_Directory_Widget.php';
 
         $widgets_manager->register( new Widget() );
         $widgets_manager->register( new Subscription_Plans_Widget() );
         $widgets_manager->register( new Account_Widget() );
+        $widgets_manager->register( new User_Directory_Widget() );
+    }
+
+    /**
+     * Flush rewrite rules when Elementor saves a page containing the User Directory widget
+     *
+     * @since 4.3.1
+     *
+     * @param int   $post_id The post ID.
+     * @param array $data    The Elementor data.
+     *
+     * @return void
+     */
+    public function maybe_flush_rules_on_elementor_save( $post_id, $data ) {
+        $post = get_post( $post_id );
+
+        if ( ! $post || 'page' !== $post->post_type ) {
+            return;
+        }
+
+        $elementor_data = get_post_meta( $post_id, '_elementor_data', true );
+
+        $has_widget = ! empty( $elementor_data ) && is_string( $elementor_data ) && strpos( $elementor_data, '"widgetType":"wpuf-user-directory"' ) !== false;
+
+        // Keep a queryable meta flag so register_elementor_page_rewrite_rules() can find
+        // these pages efficiently without scanning all _elementor_data values on every init.
+        if ( $has_widget ) {
+            update_post_meta( $post_id, '_wpuf_has_ud_elementor_widget', '1' );
+            flush_rewrite_rules();
+        } else {
+            delete_post_meta( $post_id, '_wpuf_has_ud_elementor_widget' );
+        }
+    }
+
+    /**
+     * Register pretty URL rewrite rules for pages using the User Directory Elementor widget
+     *
+     * This runs directly on init (priority 5) so the rules are registered regardless of
+     * whether the free or Pro module is handling PrettyUrls. Pages are found via a post
+     * meta flag (_wpuf_has_ud_elementor_widget) set in maybe_flush_rules_on_elementor_save().
+     *
+     * @since 4.3.1
+     *
+     * @return void
+     */
+    public function register_elementor_page_rewrite_rules() {
+        // Fast path: query only pages that have been flagged via the meta key.
+        // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+        $pages = get_posts( [
+            'post_type'      => 'page',
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
+            'meta_query'     => [
+                [
+                    'key'     => '_wpuf_has_ud_elementor_widget',
+                    'value'   => '1',
+                    'compare' => '=',
+                ],
+            ],
+        ] );
+
+        // Fallback: if no flagged pages exist (e.g. first deploy, meta not yet written),
+        // scan _elementor_data for existing pages and back-fill the meta flag so future
+        // requests use the fast path. This only runs once until a page is found.
+        if ( empty( $pages ) ) {
+            $all_pages = get_posts( [
+                'post_type'      => 'page',
+                'post_status'    => 'publish',
+                'posts_per_page' => -1,
+            ] );
+
+            foreach ( $all_pages as $page ) {
+                $elementor_data = get_post_meta( $page->ID, '_elementor_data', true );
+                if ( ! empty( $elementor_data ) && is_string( $elementor_data ) && strpos( $elementor_data, '"widgetType":"wpuf-user-directory"' ) !== false ) {
+                    update_post_meta( $page->ID, '_wpuf_has_ud_elementor_widget', '1' );
+                    $pages[] = $page;
+                }
+            }
+
+            // If we found pages via the fallback scan, flush so the new rules take effect.
+            if ( ! empty( $pages ) ) {
+                flush_rewrite_rules();
+            }
+        }
+
+        foreach ( $pages as $page ) {
+            $page_slug = $page->post_name;
+            add_rewrite_rule(
+                '^' . $page_slug . '/([^/]+)/?$',
+                'index.php?pagename=' . $page_slug . '&wpuf_user_profile=$matches[1]',
+                'top'
+            );
+        }
+    }
+
+    /**
+     * Add Elementor pages that use the User Directory widget to the pretty URL rewrite rules
+     *
+     * Elementor stores widget data in post meta, not in post_content, so pages
+     * using the User Directory widget via Elementor won't be detected by the
+     * default shortcode-based check in PrettyUrls::get_directory_pages().
+     *
+     * @since 4.3.1
+     *
+     * @param array $directory_pages Pages already detected via shortcode.
+     * @param array $all_pages       All published pages.
+     *
+     * @return array
+     */
+    public function add_elementor_directory_pages( $directory_pages, $all_pages ) {
+        $existing_ids = wp_list_pluck( $directory_pages, 'ID' );
+
+        foreach ( $all_pages as $page ) {
+            // Skip pages already detected via shortcode
+            if ( in_array( $page->ID, $existing_ids, true ) ) {
+                continue;
+            }
+
+            $elementor_data = get_post_meta( $page->ID, '_elementor_data', true );
+
+            if ( ! empty( $elementor_data ) && is_string( $elementor_data ) && strpos( $elementor_data, '"widgetType":"wpuf-user-directory"' ) !== false ) {
+                $directory_pages[] = $page;
+            }
+        }
+
+        return $directory_pages;
     }
 }

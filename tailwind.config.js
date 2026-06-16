@@ -8,6 +8,12 @@ import {
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     prefix: 'wpuf-',
+    safelist: [
+        'lg:wpuf-grid-cols-1',
+        'lg:wpuf-grid-cols-2',
+        'lg:wpuf-grid-cols-3',
+        'lg:wpuf-grid-cols-4',
+    ],
     content: [
         // Original paths (critical for form builder - keeps @tailwindcss/forms styles)
         './assets/**/*.{js,jsx,ts,tsx,vue,html}',

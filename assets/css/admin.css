@@ -676,7 +676,7 @@ tr.pro-preview .pro-field-overlay,
   top: 0;
   left: 0;
   display: none;
-  border: 1px dashed #10b981;
+  border: 1px dashed #059669;
 }
 tr.pro-preview-html th {
   width: 50%;
@@ -723,7 +723,7 @@ tr.pro-preview td .wp-picker-container input {
   background: rgba(236, 253, 245, 0.5);
   border-radius: 5px;
   display: none;
-  border: 1px dashed #10b981;
+  border: 1px dashed #059669;
   z-index: 10;
   pointer-events: auto;
 }
@@ -759,7 +759,7 @@ a.wpuf-button.button-upgrade-to-pro {
 }
 .wpuf-subscription-pack-settings nav .tab-current a.wpuf-button.button-upgrade-to-pro:hover,
 a.wpuf-button.button-upgrade-to-pro:hover {
-  background: #10b981;
+  background: #059669;
 }
 span.pro-icon {
   display: inline-flex;
@@ -782,12 +782,6 @@ span.pro-icon img {
   position: relative;
   top: -1px;
 }
-/* span.pro-icon.icon-white svg path {
-    fill: #fff;
-} */
-/* label span.pro-icon svg path {
-    fill: #10b981;
-} */
 img.profile-header,
 img.user-listing {
   display: block;
@@ -1526,18 +1520,14 @@ body.wpuf-modal-open {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 .wpuf-gateway-card--active:hover {
-  border-color: #10b981;
+  border-color: #059669;
 }
 .wpuf-gateway-card--focused {
-  border-color: #10b981;
-  box-shadow: 0 0 0 1px #10b981;
+  border-color: #059669;
+  box-shadow: 0 0 0 1px #059669;
 }
 .wpuf-gateway-card--focused:hover {
-  border-color: #10b981;
-}
-.wpuf-gateway-card--pro-locked {
-  opacity: 0.6;
-  cursor: not-allowed;
+  border-color: #059669;
 }
 .wpuf-gateway-card__checkbox {
   position: absolute;
@@ -1545,30 +1535,6 @@ body.wpuf-modal-open {
   width: 0;
   height: 0;
   pointer-events: none;
-}
-.wpuf-gateway-card__toggle {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  cursor: pointer;
-  line-height: 1;
-  padding: 4px;
-  z-index: 2;
-}
-.wpuf-gateway-card__toggle:hover {
-  opacity: 0.8;
-}
-.wpuf-gateway-card__check-on {
-  display: none;
-}
-.wpuf-gateway-card__check-off {
-  display: block;
-}
-.wpuf-gateway-card--active .wpuf-gateway-card__check-on {
-  display: block;
-}
-.wpuf-gateway-card--active .wpuf-gateway-card__check-off {
-  display: none;
 }
 .wpuf-gateway-card__icon {
   display: flex;

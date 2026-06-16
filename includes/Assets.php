@@ -171,6 +171,9 @@ class Assets {
             'admin'               => [
                 'src' => WPUF_ASSET_URI . '/css/admin.css',
             ],
+            'settings'            => [
+                'src' => WPUF_ASSET_URI . '/css/admin/settings.css',
+            ],
             'admin-subscriptions' => [
                 'src' => WPUF_ASSET_URI . '/css/admin/subscriptions.min.css',
             ],

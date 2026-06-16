@@ -876,7 +876,7 @@ tr.pro-preview .pro-field-overlay,
     top: 0;
     left: 0;
     display: none;
-    border: 1px dashed #10b981;
+    border: 1px dashed #059669;
 }
 
 tr.pro-preview-html th {
@@ -933,7 +933,7 @@ tr.pro-preview td .wp-picker-container input {
     background: rgba(236, 253, 245, 0.5);
     border-radius: 5px;
     display: none;
-    border: 1px dashed #10b981;
+    border: 1px dashed #059669;
     z-index: 10;
     pointer-events: auto;
 }
@@ -973,7 +973,7 @@ a.wpuf-button.button-upgrade-to-pro {
 
 .wpuf-subscription-pack-settings nav .tab-current a.wpuf-button.button-upgrade-to-pro:hover,
 a.wpuf-button.button-upgrade-to-pro:hover {
-    background: #10b981;
+    background: #059669;
 }
 
 span.pro-icon {
@@ -1005,7 +1005,7 @@ span.pro-icon img {
 } */
 
 /* label span.pro-icon svg path {
-    fill: #10b981;
+    fill: #059669;
 } */
 
 img.profile-header, img.user-listing {
@@ -1565,21 +1565,16 @@ body.wpuf-modal-open {
     }
 
     &--active:hover {
-        border-color: #10b981;
+        border-color: #059669;
     }
 
     &--focused {
-        border-color: #10b981;
-        box-shadow: 0 0 0 1px #10b981;
+        border-color: #059669;
+        box-shadow: 0 0 0 1px #059669;
 
         &:hover {
-            border-color: #10b981;
+            border-color: #059669;
         }
-    }
-
-    &--pro-locked {
-        opacity: 0.6;
-        cursor: not-allowed;
     }
 
     &__checkbox {
@@ -1588,36 +1583,6 @@ body.wpuf-modal-open {
         width: 0;
         height: 0;
         pointer-events: none;
-    }
-
-    &__toggle {
-        position: absolute;
-        top: 4px;
-        right: 4px;
-        cursor: pointer;
-        line-height: 1;
-        padding: 4px;
-        z-index: 2;
-
-        &:hover {
-            opacity: 0.8;
-        }
-    }
-
-    &__check-on {
-        display: none;
-    }
-
-    &__check-off {
-        display: block;
-    }
-
-    &--active &__check-on {
-        display: block;
-    }
-
-    &--active &__check-off {
-        display: none;
     }
 
     &__icon {

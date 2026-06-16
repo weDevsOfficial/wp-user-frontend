@@ -35,6 +35,11 @@ function wpuf_settings_sections() {
             'icon'  => 'dashicons-admin-users',
         ],
         [
+            'id'    => 'wpuf_2fa',
+            'title' => __( '2FA', 'wp-user-frontend' ),
+            'icon'  => 'dashicons-id',
+        ],
+        [
             'id'    => 'wpuf_payment',
             'title' => __( 'Payments', 'wp-user-frontend' ),
             'icon'  => 'dashicons-money',
@@ -661,6 +666,31 @@ function wpuf_settings_fields() {
                 'type'           => 'textarea',
                 'default'        => '<strong>' . __( 'ERROR:', 'wp-user-frontend' ) . '</strong> ' . __( 'Your account has been denied by an administrator, please contact admin to approve your account.', 'wp-user-frontend' ),
                 'is_pro_preview' => ! wpuf_is_pro_active(),
+            ],
+        ] ),
+        'wpuf_2fa'              => apply_filters( 'wpuf_options_2fa', [
+            [
+                'name'    => 'enable_2fa',
+                'label'   => __( 'Enable Two-Factor Authentication', 'wp-user-frontend' ),
+                'desc'    => __( 'When enabled, users can secure their accounts with a second verification step.', 'wp-user-frontend' ),
+                'type'    => 'toggle',
+                'default' => 'off',
+            ],
+            [
+                'name'       => 'active_2fa_methods',
+                'label'      => __( '2FA Methods', 'wp-user-frontend' ),
+                'desc'       => __( 'Select which methods users can use to verify their identity.', 'wp-user-frontend' ),
+                'type'       => 'method_selector',
+                'options'    => wpuf_get_2fa_methods(),
+                'depends_on' => 'enable_2fa',
+            ],
+            [
+                'name'       => 'totp_issuer_label',
+                'label'      => __( 'App Display Name', 'wp-user-frontend' ),
+                'desc'       => __( "Name shown inside the user's authenticator app (e.g., Google Authenticator).", 'wp-user-frontend' ),
+                'type'       => 'text',
+                'default'    => get_bloginfo( 'name' ),
+                'depends_on' => 'enable_2fa',
             ],
         ] ),
         'wpuf_payment'          => apply_filters( 'wpuf_options_payment', [

@@ -1502,12 +1502,14 @@ body.wpuf-modal-open {
 .wpuf-login-settings-row.hidden {
   display: none !important;
 }
-.wpuf-gateway-cards {
+.wpuf-gateway-cards,
+.wpuf-method-cards {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
 }
-.wpuf-gateway-card {
+.wpuf-gateway-card,
+.wpuf-method-card {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -1521,32 +1523,39 @@ body.wpuf-modal-open {
   cursor: pointer;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
-.wpuf-gateway-card:hover {
+.wpuf-gateway-card:hover,
+.wpuf-method-card:hover {
   border-color: #c3c4c7;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
-.wpuf-gateway-card--active:hover {
+.wpuf-gateway-card--active:hover,
+.wpuf-method-card--active:hover {
   border-color: #10b981;
 }
-.wpuf-gateway-card--focused {
+.wpuf-gateway-card--focused,
+.wpuf-method-card--focused {
   border-color: #10b981;
   box-shadow: 0 0 0 1px #10b981;
 }
-.wpuf-gateway-card--focused:hover {
+.wpuf-gateway-card--focused:hover,
+.wpuf-method-card--focused:hover {
   border-color: #10b981;
 }
-.wpuf-gateway-card--pro-locked {
+.wpuf-gateway-card--pro-locked,
+.wpuf-method-card--pro-locked {
   opacity: 0.6;
   cursor: not-allowed;
 }
-.wpuf-gateway-card__checkbox {
+.wpuf-gateway-card__checkbox,
+.wpuf-method-card__checkbox {
   position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
   pointer-events: none;
 }
-.wpuf-gateway-card__toggle {
+.wpuf-gateway-card__toggle,
+.wpuf-method-card__toggle {
   position: absolute;
   top: 4px;
   right: 4px;
@@ -1555,22 +1564,28 @@ body.wpuf-modal-open {
   padding: 4px;
   z-index: 2;
 }
-.wpuf-gateway-card__toggle:hover {
+.wpuf-gateway-card__toggle:hover,
+.wpuf-method-card__toggle:hover {
   opacity: 0.8;
 }
-.wpuf-gateway-card__check-on {
+.wpuf-gateway-card__check-on,
+.wpuf-method-card__check-on {
   display: none;
 }
-.wpuf-gateway-card__check-off {
+.wpuf-gateway-card__check-off,
+.wpuf-method-card__check-off {
   display: block;
 }
-.wpuf-gateway-card--active .wpuf-gateway-card__check-on {
+.wpuf-gateway-card--active .wpuf-gateway-card__check-on,
+.wpuf-method-card--active .wpuf-method-card__check-on {
   display: block;
 }
-.wpuf-gateway-card--active .wpuf-gateway-card__check-off {
+.wpuf-gateway-card--active .wpuf-gateway-card__check-off,
+.wpuf-method-card--active .wpuf-method-card__check-off {
   display: none;
 }
-.wpuf-gateway-card__icon {
+.wpuf-gateway-card__icon,
+.wpuf-method-card__icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1578,16 +1593,19 @@ body.wpuf-modal-open {
   height: 48px;
   margin-bottom: 8px;
 }
-.wpuf-gateway-card__icon img {
+.wpuf-gateway-card__icon img,
+.wpuf-method-card__icon img {
   max-width: 100px;
   max-height: 48px;
   object-fit: contain;
 }
-.wpuf-gateway-card__icon svg {
+.wpuf-gateway-card__icon svg,
+.wpuf-method-card__icon svg {
   max-width: 48px;
   max-height: 48px;
 }
-.wpuf-gateway-card__name {
+.wpuf-gateway-card__name,
+.wpuf-method-card__name {
   font-size: 13px;
   font-weight: 500;
   color: #1d2327;

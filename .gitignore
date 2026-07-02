@@ -78,3 +78,7 @@ assets/css/frontend-forms.css
 assets/css/registration-forms.css
 assets/css/wpuf-form-builder.css
 languages/wp-user-frontend.pot
+
+# wp-env local test plugins scaffold (mounted by tests/e2e/.wp-env.json)
+/plugins/
+/assets/*

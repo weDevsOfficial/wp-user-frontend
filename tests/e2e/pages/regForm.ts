@@ -81,14 +81,37 @@ export class RegFormPage extends Base {
             ignoreHTTPSErrors: true,
         });
 
-        // Create page using REST API with auth session cookie and nonce
-        const res = await apiContext.post('/wp-json/wp/v2/pages', {
-            data: {
-                title: registrationFormPageTitle,
-                content: storeShortcode,
-                status: 'publish',
-            },
-        });
+        // Upsert the page so its URL/slug stays stable across repeated runs.
+        // Creating a new page every run makes WordPress append "-2", "-3"… to the
+        // slug, while the tests read a fixed URL (this.newRegFormPage = /reg-here/).
+        // On repeat runs that fixed URL then points at a stale page holding a
+        // deleted form id, so the registration form never renders. Reuse the page
+        // with the derived slug (update its shortcode) instead of creating dupes.
+        const desiredSlug = registrationFormPageTitle.toString().toLowerCase().trim().replace(/\s+/g, '-');
+
+        const existingRes = await apiContext.get(`/wp-json/wp/v2/pages?slug=${desiredSlug}&status=publish`);
+        const existingPages = existingRes.ok() ? await existingRes.json() : [];
+
+        let res;
+        if (Array.isArray(existingPages) && existingPages.length > 0) {
+            // Update the existing page's content with the current shortcode.
+            res = await apiContext.post(`/wp-json/wp/v2/pages/${existingPages[0].id}`, {
+                data: {
+                    content: storeShortcode,
+                    status: 'publish',
+                },
+            });
+        } else {
+            // Create with an explicit slug so the URL is deterministic.
+            res = await apiContext.post('/wp-json/wp/v2/pages', {
+                data: {
+                    title: registrationFormPageTitle,
+                    slug: desiredSlug,
+                    content: storeShortcode,
+                    status: 'publish',
+                },
+            });
+        }
 
         // Debug: Log response details
         console.log('API Response Status:', res.status());
@@ -101,7 +124,7 @@ export class RegFormPage extends Base {
         }
 
         const pageData = await res.json();
-        console.log('Page created:', pageData.link);
+        console.log('Page upserted:', pageData.link);
 
     }
 

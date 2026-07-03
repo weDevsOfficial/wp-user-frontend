@@ -1,0 +1,122 @@
+import { expect, type Page } from '@playwright/test';
+import { Base } from './base';
+import { Selectors } from './selectors';
+import { BasicLogoutPage } from './basicLogout';
+import { isMailPoetSubscriberInList } from '../utils/wpEnvCli';
+
+/**
+ * Drives the WPUF Pro "Mailpoet 3" email-marketing module: enabling the module,
+ * turning on subscribe-on-registration for a registration form, and asserting a
+ * newly registered visitor lands in the chosen MailPoet list.
+ *
+ * Requires the MailPoet plugin active and the wpuf-pro `mailpoet3` module present.
+ */
+export class MailPoetPage extends Base {
+    constructor(page: Page) {
+        super(page);
+    }
+
+    /**
+     * Enable the "Mailpoet 3" module from WPUF > Modules. Idempotent — if it is
+     * already active this is a no-op.
+     */
+    async enableMailPoetModule() {
+        await this.navigateToURL(this.wpufModulesPage);
+        await this.waitForLoading();
+
+        const checkbox = this.page.locator(Selectors.regFormSettings.mailPoet.moduleCheckbox);
+        // The toggle's checkbox is display:none (only the slider is visible), so
+        // wait for it to be attached rather than visible.
+        await checkbox.waitFor({ state: 'attached' });
+
+        if (!(await checkbox.isChecked())) {
+            await this.validateAndClick(Selectors.regFormSettings.mailPoet.moduleToggle);
+            // The toggle activates the module over AJAX — wait for it to stick.
+            await expect(checkbox).toBeChecked({ timeout: 15000 });
+        }
+        console.log('\x1b[32m%s\x1b[0m', '✅ Mailpoet 3 module enabled');
+    }
+
+    /**
+     * On the given registration form, enable MailPoet subscription and select the
+     * list new sign-ups are added to.
+     *
+     * @param formName registration form title (as shown in the form list)
+     * @param listName MailPoet list/segment name to subscribe registrants to
+     */
+    async enableMailPoetOnRegForm(formName: string, listName: string) {
+        let flag = true;
+
+        while (flag == true) {
+            // Open the form in the builder.
+            await this.navigateToURL(this.wpufRegFormPage);
+            try {
+                await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+            } catch (error) {
+                await this.navigateToURL(this.wpufRegFormPage);
+                await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+            }
+
+            // Settings tab > Modules > Mailpoet 3.
+            await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+            await this.validateAndClick(Selectors.regFormSettings.mailPoet.settingsMenuItem);
+
+            // Turn the toggle on (only if it is currently off).
+            const enable = this.page.locator(Selectors.regFormSettings.mailPoet.enableCheckbox);
+            // sr-only checkbox behind the visible toggle — wait for attached, not visible.
+            await enable.waitFor({ state: 'attached' });
+            if (!(await enable.isChecked())) {
+                await this.validateAndClick(Selectors.regFormSettings.mailPoet.enableToggle);
+            }
+
+            // Select the list. The native <select> is selectize-enhanced (hidden),
+            // so set its value directly and fire change so the form model updates.
+            await this.page.evaluate(
+                ({ sel, label }) => {
+                    const el = document.querySelector(sel) as HTMLSelectElement | null;
+                    if (!el) return;
+                    const opt = Array.from(el.options).find(o => o.text.trim() === label);
+                    if (opt) {
+                        el.value = opt.value;
+                        el.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                },
+                { sel: Selectors.regFormSettings.mailPoet.listSelect, label: listName }
+            );
+
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            flag = await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
+        }
+        console.log('\x1b[32m%s\x1b[0m', `✅ MailPoet subscription enabled on "${formName}" (list: ${listName})`);
+    }
+
+    /**
+     * Register a new visitor on the registration page and assert the account was
+     * created. Logs out first because WPUF hides the registration form from
+     * already-authenticated users ("You are already logged in!").
+     */
+    async registerVisitorAndValidate(email: string, password: string) {
+        await new BasicLogoutPage(this.page).logOut();
+
+        await this.navigateToURL(this.newRegFormPage);
+        await this.page.fill(Selectors.regFormSettings.inputEmail, email);
+        await this.page.fill(Selectors.regFormSettings.inputPassword, password);
+        await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, password);
+        await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
+        await this.assertionValidate(Selectors.regFormSettings.successMessage);
+        console.log('\x1b[32m%s\x1b[0m', `✅ Visitor registered: ${email}`);
+    }
+
+    /**
+     * Assert (via the MailPoet DB — its admin UI is gated by onboarding) that the
+     * email is a subscriber inside the named MailPoet list.
+     */
+    async validateUserSubscribedToList(email: string, listName: string) {
+        const subscribed = isMailPoetSubscriberInList(email, listName);
+        expect(
+            subscribed,
+            `Expected ${email} to be a MailPoet subscriber in list "${listName}"`
+        ).toBe(true);
+        console.log('\x1b[32m%s\x1b[0m', `✅ ${email} subscribed to "${listName}"`);
+    }
+}

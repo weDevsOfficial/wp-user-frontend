@@ -62,6 +62,16 @@ features:
     name: Admin is activating dokan lite
   - id: LS0031
     name: Admin is logging out successfully
+  - id: LS0032
+    name: Admin validates permalink setting persisted
+  - id: LS0033
+    name: Admin validates anyone-can-register setting persisted
+  - id: LS0034
+    name: Admin validates payment gateways persisted
+  - id: LS0035
+    name: Admin validates AI provider selection persisted
+  - id: LS0036
+    name: Admin validates WPUF general settings persist (round-trip)
 
   # Post Forms
   - id: PF0001
@@ -112,6 +122,12 @@ features:
     name: Admin is validating entered downloads data
   - id: PF0024
     name: Admin is validating entered downloads data BE
+  - id: PF0025
+    name: User edits their post from the frontend dashboard
+  - id: PF0026
+    name: User validates the edited post
+  - id: PF0027
+    name: User deletes their post from the frontend dashboard
 
   # Registration Forms
   - id: RF0001
@@ -776,3 +792,29 @@ features:
     name: Admin validates Recurring Paid Subscription Pack
   - id: SB0046
     name: Admin validates Recurring Paid Subscription Pack FE
+
+  # Email Marketing — MailPoet subscribe on registration
+  - id: EM0001
+    name: Admin enables the Mailpoet 3 module
+  - id: EM0002
+    name: Admin creates a registration form for MailPoet subscription
+  - id: EM0003
+    name: Admin enables MailPoet subscription on the registration form
+  - id: EM0004
+    name: Visitor registers and the account is created
+  - id: EM0005
+    name: Registered user is added to the MailPoet mailing list
+
+  # REST API (wpuf/v1)
+  - id: AP0001
+    name: Unauthenticated requests are blocked on all wpuf/v1 admin routes
+  - id: AP0002
+    name: GET /wpuf_form returns the form list with expected schema
+  - id: AP0003
+    name: GET /wpuf_subscription/count returns counts
+  - id: AP0004
+    name: GET /subscription-settings returns settings
+  - id: AP0005
+    name: Subscription CRUD round-trip via API (create - read - delete)
+  - id: AP0006
+    name: POST /wpuf_subscription with a bad payload is rejected

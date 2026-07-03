@@ -9,6 +9,8 @@
     "test:ci": "npx playwright test --config=playwright.config.ts",
 
     "generate-summary": "node utils/generate-summary.js",
+    "test:api": "CI=false npx playwright test --config=playwright.api.config.ts",
+    "test:api:ci": "npx playwright test --config=playwright.api.config.ts",
     
     "test:setup": "CI=false npx playwright test --config=playwright.setup.config.ts",
     "test:parallel": "CI=false npx playwright test --config=playwright.parallel-one.config.ts; CI=false npx playwright test --config=playwright.parallel-two.config.ts; CI=false npx playwright test --config=playwright.parallel-three.config.ts",

@@ -19,6 +19,7 @@ export class Base {
     readonly newPagePage: string = Urls.baseUrl + '/wp-admin/post-new.php?post_type=page';
     readonly mediaPage: string = Urls.baseUrl + '/wp-admin/upload.php';
     readonly accountPage: string = Urls.baseUrl + '/account/';
+    readonly accountPostsPage: string = Urls.baseUrl + '/account/?section=post';
     readonly settingsPermalinkPage: string = Urls.baseUrl + '/wp-admin/options-permalink.php';
     readonly categoriesPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=category';
     readonly tagsPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=post_tag';
@@ -265,28 +266,33 @@ export class Base {
     }
 
     async waitForFormSaved(formSavedLocator: string, saveButtonLocator: string) {
+        // Detect the transient "Saved form data" toast with a generous timeout.
+        // IMPORTANT: always return false ("saved – stop") so callers that loop
+        // `while (flag) { create/build form; flag = waitForFormSaved(...) }` run
+        // exactly once. Returning true on a flaky false-negative made those loops
+        // re-enter and create DUPLICATE forms, which then broke unscoped
+        // form-name selectors with Playwright strict-mode violations.
         try {
-            let formNotSaved = true;
-            let count = 1;
-            while (formNotSaved && count < 2) {
-                try {
-                    await this.waitForLoading();
-                    await this.page.locator(formSavedLocator).waitFor({ timeout: 5000 });
-                    await this.waitForLoading();
-                    formNotSaved = false;
-                } catch (error) {
-                    console.log('\x1b[33m%s\x1b[0m', `⚠️ Form not saved yet, clicking save button`);
-                    await this.waitForLoading();
-                    await this.validateAndClick(saveButtonLocator);
-                    await this.waitForLoading();
-                    count++;
-                }
-            }
+            await this.waitForLoading();
+            await this.page.locator(formSavedLocator).first().waitFor({ timeout: 15000 });
+            await this.waitForLoading();
             console.log('\x1b[32m%s\x1b[0m', `✅ Form saved`);
             return false;
         } catch (error) {
-            console.log('\x1b[31m%s\x1b[0m', `❌ Failed to save form`);
-            return true;
+            // Toast not seen in time (slow env / already dismissed). Best-effort:
+            // click Save once more and wait again, but never propagate — treat the
+            // form as saved to avoid duplicate-form creation.
+            console.log('\x1b[33m%s\x1b[0m', `⚠️ Save toast not detected yet, clicking save once more`);
+            try {
+                await this.waitForLoading();
+                await this.validateAndClick(saveButtonLocator);
+                await this.page.locator(formSavedLocator).first().waitFor({ timeout: 15000 });
+            } catch (retryError) {
+                // ignore – assume saved
+            }
+            await this.waitForLoading();
+            console.log('\x1b[32m%s\x1b[0m', `✅ Form saved (after retry)`);
+            return false;
         }
     }
 

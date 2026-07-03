@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config({ quiet: true });
-import { expect, request, type Page } from '@playwright/test';
+import { expect, request, type Page, type Dialog } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Base } from './base';
 import { faker } from '@faker-js/faker';
@@ -743,5 +743,67 @@ export class PostFormPage extends Base {
         //Validate Product Tags
         //await this.validateAndClick(Selectors.postForms.downloadsFormData.clickTag);
         //await this.assertionValidate(Selectors.postForms.downloadsFormData.tagBE(DownloadsForm.tags));
+    }
+
+    /*****************************************************************/
+    /********** @Frontend post management (dashboard) ****************/
+    /*** Edit + delete a post from the account "Posts" tab. Closes  ***/
+    /*** the section-2 gap: post edit round-trip and delete had no  ***/
+    /*** coverage (PFS edits post *status*, not field data).        ***/
+    /*** Locators detected via Playwright MCP.                       ***/
+    /*****************************************************************/
+
+    // Navigate to the account "Posts" tab, tolerating a transient ERR_ABORTED that
+    // occurs when a just-submitted post-update redirect is still settling (the
+    // pending navigation aborts the fresh goto). Retry once after it lands.
+    async openPostsDashboard() {
+        try {
+            await this.navigateToURL(this.accountPostsPage);
+        } catch (error) {
+            await this.page.waitForTimeout(1000);
+            await this.navigateToURL(this.accountPostsPage);
+        }
+        await this.page.reload();
+    }
+
+    // Edit the user's first dashboard post: capture its current title, open the
+    // Edit form, change the title, and submit the update. Returns the old title.
+    async editFirstPostFromDashboard(newTitle: string): Promise<string> {
+        await this.openPostsDashboard();
+        const oldTitle = ((await this.page.locator(Selectors.postForms.dashboardManage.allPostTitles).first().textContent()) || '').trim();
+        // Open the row's "⋮" options menu, then click Edit.
+        await this.validateAndClick(Selectors.postForms.dashboardManage.optionsMenuTrigger(oldTitle));
+        await this.validateAndClick(Selectors.postForms.dashboardManage.editLinkForPost(oldTitle));
+        // Same post form in edit mode — overwrite the title and save the update.
+        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE).fill(newTitle);
+        await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.submitPostFormsFE);
+        // Let the update + any post-update redirect settle before returning.
+        await this.page.waitForLoadState('load').catch(() => {});
+        console.log('\x1b[32m%s\x1b[0m', `✅ Edited post "${oldTitle}" -> "${newTitle}"`);
+        return oldTitle;
+    }
+
+    // Assert the edit persisted: the new title is listed and the old one is gone.
+    async validatePostEdited(newTitle: string, oldTitle: string) {
+        await this.openPostsDashboard();
+        await this.assertionValidate(Selectors.postForms.dashboardManage.postTitleCell(newTitle));
+        await expect(this.page.locator(Selectors.postForms.dashboardManage.postTitleCell(oldTitle))).toHaveCount(0);
+        console.log('\x1b[32m%s\x1b[0m', `✅ Post edit persisted: "${newTitle}" present, "${oldTitle}" gone`);
+    }
+
+    // Delete a post from the dashboard, auto-accepting the "Are you sure to
+    // delete?" confirm dialog, and assert it is removed from the list.
+    async deletePostFromDashboard(title: string) {
+        await this.openPostsDashboard();
+        const dialogHandler = async (dialog: Dialog) => { await dialog.accept(); };
+        this.page.on('dialog', dialogHandler);
+        // Open the row's "⋮" options menu, then click Delete (fires the confirm).
+        await this.validateAndClick(Selectors.postForms.dashboardManage.optionsMenuTrigger(title));
+        await this.validateAndClick(Selectors.postForms.dashboardManage.deleteLinkForPost(title));
+        this.page.off('dialog', dialogHandler);
+        await this.page.waitForLoadState('domcontentloaded');
+        await this.page.reload();
+        await expect(this.page.locator(Selectors.postForms.dashboardManage.postTitleCell(title))).toHaveCount(0);
+        console.log('\x1b[32m%s\x1b[0m', `✅ Post deleted: "${title}" no longer in dashboard`);
     }
 }

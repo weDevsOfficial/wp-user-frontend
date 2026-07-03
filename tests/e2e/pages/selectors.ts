@@ -280,8 +280,25 @@ export const Selectors = {
             googleButton: '//span[normalize-space()="Google"]',
             inputAPIKey: '//input[@id="wpuf_ai_api_key_field"]',
             settingsTabAISave: '//div[@id="wpuf_ai"]//form[@method="post"]//div//input[@id="submit"]',
-        }
+        },
 
+        // Settings-persistence assertion locators (detected via Playwright MCP
+        // snapshot/evaluate). Target the real <input> by its bracketed id — WPUF
+        // renders a hidden input + a visible checkbox that share the same name,
+        // so a name-based selector would be ambiguous; the id (prefixed "wpuf-"
+        // for checkboxes/radios) is unique.
+        persistence: {
+            // General tab — Turnstile enable checkbox
+            turnstileEnableCheckbox: '//input[@id="wpuf-wpuf_general[enable_turnstile]"]',
+            // Payments tab — master enable + gateway toggles + PayPal sandbox mode
+            enablePaymentCheckbox: '//input[@id="wpuf-wpuf_payment[enable_payment]"]',
+            gatewayBankCheckbox: '//input[@id="wpuf-wpuf_payment[active_gateways][bank]"]',
+            gatewayStripeCheckbox: '//input[@id="wpuf-wpuf_payment[active_gateways][stripe]"]',
+            gatewayPaypalCheckbox: '//input[@id="wpuf-wpuf_payment[active_gateways][paypal]"]',
+            paypalSandboxCheckbox: '//input[@id="wpuf-wpuf_payment[sandbox_mode]"]',
+            // AI tab — active provider radio, keyed by provider slug (openai|google|anthropic)
+            aiProviderRadio: (provider: string) => `//input[@id="wpuf-wpuf_ai[ai_provider][${provider}]"]`,
+        },
     },
 
     /*********************************/
@@ -676,6 +693,20 @@ export const Selectors = {
             submitPostFormsFE: '//input[@name="submit"]',
             // Validate Post Submitted
             validatePostSubmitted: (postFormTitle: string) => `//h1[normalize-space(text())='${postFormTitle}']`,
+        },
+
+        // Frontend dashboard post management — account "Posts" tab
+        // (/account/?section=post). Locators detected via Playwright MCP. Rows
+        // are scoped by post title so a user owning multiple posts doesn't trip
+        // Playwright strict mode; the Options cell holds the Edit + Delete links.
+        dashboardManage: {
+            allPostTitles: '//td[@data-label="Title: "]//a',
+            postTitleCell: (title: string) => `//td[@data-label="Title: "]//a[normalize-space()="${title}"]`,
+            // The Options cell is a "⋮" dropdown — its trigger must be clicked
+            // to reveal the Edit/Delete menu items (they are display:none until then).
+            optionsMenuTrigger: (title: string) => `//tr[.//td[@data-label="Title: "]//a[normalize-space()="${title}"]]//button[contains(@class,"wpuf-posts-menu-button")]`,
+            editLinkForPost: (title: string) => `//tr[.//td[@data-label="Title: "]//a[normalize-space()="${title}"]]//td[@data-label="Options: "]//a[normalize-space()="Edit"]`,
+            deleteLinkForPost: (title: string) => `//tr[.//td[@data-label="Title: "]//a[normalize-space()="${title}"]]//td[@data-label="Options: "]//a[normalize-space()="Delete"]`,
         },
 
         productFrontendCreate: {
@@ -1446,6 +1477,19 @@ export const Selectors = {
             customFieldsStepStart: '//p[normalize-space(text())="Step Start"]',
             customFieldsText: '//p[normalize-space(text())="Text"]',
             customFieldsUrl: '//p[normalize-space(text())="Website URL"]',
+        },
+
+        // MailPoet email-marketing module + per-form subscription settings
+        mailPoet: {
+            // WPUF > Modules : the "Mailpoet 3" module card + its enable toggle
+            moduleCard: '.plugin-card:has(a[href*="modules/mailpoet3/"])',
+            moduleToggle: '.plugin-card:has(a[href*="modules/mailpoet3/"]) label.wpuf-toggle-switch',
+            moduleCheckbox: '.plugin-card:has(a[href*="modules/mailpoet3/"]) input.wpuf-toggle-module',
+            // Registration form builder > Settings > Modules > Mailpoet 3
+            settingsMenuItem: '//li[normalize-space()="Mailpoet 3"]',
+            enableToggle: 'label[for="enable_mailpoet_3"].wpuf-cursor-pointer',
+            enableCheckbox: '#enable_mailpoet_3',
+            listSelect: '#mailpoet_3_list',
         },
     },
 

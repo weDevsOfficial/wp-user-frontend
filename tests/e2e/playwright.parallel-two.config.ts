@@ -45,6 +45,7 @@ export default defineConfig({
             testMatch: [
                 'tests/postFormSettingsTest.spec.ts',
                 'tests/regFormSettingsTestPro.spec.ts',
+                'tests/mailpoetRegistrationTestPro.spec.ts',
             ],
             use: { ...devices['Desktop Chrome'] },
         },

@@ -330,7 +330,14 @@ class Simple_Login {
         }
 
         if ( $args['register'] && get_option( 'users_can_register' ) ) {
-            $links[] = sprintf( '%sDon\'t have an account? %s<a href="%s">%s</a>', '<span class="wpuf-register-text">', '</span>', $this->get_action_url( 'register' ), __( 'Register', 'wp-user-frontend' ) );
+            $links[] = sprintf(
+                /* translators: %1$s: opening span tag, %2$s: closing span tag, %3$s: register URL, %4$s: register text */
+                __( '%1$sDon\'t have an account?%2$s <a href="%3$s">%4$s</a>', 'wp-user-frontend' ),
+                '<span class="wpuf-register-text">',
+                '</span>',
+                esc_url( $this->get_action_url( 'register' ) ),
+                esc_html( __( 'Register', 'wp-user-frontend' ) )
+            );
         }
 
         if ( $args['lostpassword'] ) {

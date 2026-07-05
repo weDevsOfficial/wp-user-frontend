@@ -140,6 +140,13 @@ jobs:
             restore-keys: |
                 ${{ runner.os }}-playwright-
 
+      # setup-php adds the ondrej/php PPA; its InRelease Label later changed, so
+      # apt-get update fails (exit 100) and 'playwright install --with-deps' dies.
+      # Acknowledge the label change before installing browser OS dependencies.
+      - name: Refresh apt sources (ondrej PPA label changed)
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: sudo apt-get update --allow-releaseinfo-change
+
       # Install browser binaries & OS dependencies if cache missed
       - name: Install Playwright browser binaries & OS dependencies
         id: pw-install

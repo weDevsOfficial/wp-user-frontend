@@ -903,9 +903,13 @@ trait FieldableTrait {
                         }
                         $meta_key_value[ $value['name'] ] = $rows;
                     } else {
-                        // Fallback to old logic for single-field repeaters or legacy structure
+                        // Fallback to old logic for single-field repeaters or legacy structure.
+                        // Sanitize each element at the storage layer (no output escaping so
+                        // structured/multi-value data still round-trips).
                         $meta_key_value[ $value['name'] ] = is_array( $repeater_value ) ? implode(
-                            self::$separator, $repeater_value
+                            self::$separator, array_map( function( $item ) {
+                                return strip_shortcodes( sanitize_text_field( $item ) );
+                            }, $repeater_value )
                         ) : '';
                     }
                     break;

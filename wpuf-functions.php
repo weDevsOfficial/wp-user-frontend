@@ -1245,7 +1245,7 @@ function wpuf_show_custom_fields( $content ) {
                                 $address_html .= '<li>';
 
                                 if ( 'no' === $hide_label ) {
-                                    $address_html .= '<label>' . $attr['address'][ $field_key ]['label'] . ': </label> ';
+                                    $address_html .= '<label>' . esc_html( $attr['address'][ $field_key ]['label'] ) . ': </label> ';
                                 }
 
                                 $address_html .= ' ' . $value . '</li>';
@@ -1275,7 +1275,7 @@ function wpuf_show_custom_fields( $content ) {
                     $repeat_html = '<li>';
 
                     if ( 'no' === $hide_label ) {
-                        $repeat_html .= '<label>' . $attr['label'] . ':</label>';
+                        $repeat_html .= '<label>' . esc_html( $attr['label'] ) . ':</label>';
                     }
 
                     $repeat_html .= '<ul class="wpuf-repeat-field-data">';
@@ -1294,7 +1294,7 @@ function wpuf_show_custom_fields( $content ) {
                                     $repeat_html .= '<li>';
 
                                     if ( 'no' === $inner_field['hide_field_label'] ) {
-                                        $repeat_html .= '<label>' . $inner_field['label'] . ':</label> ';
+                                        $repeat_html .= '<label>' . esc_html( $inner_field['label'] ) . ':</label> ';
                                     }
 
                                     // Handle different field types
@@ -1338,12 +1338,12 @@ function wpuf_show_custom_fields( $content ) {
 
                         $preview_width  = isset( $attr['preview_width'] ) ? $attr['preview_width'] : '123';
                         $preview_height = isset( $attr['preview_height'] ) ? $attr['preview_height'] : '456';
-                        $shortcode      = '[embed width="' . $preview_width . '" height="' . $preview_height . '"]' . $value . '[/embed]';
+                        $shortcode      = '[embed width="' . $preview_width . '" height="' . $preview_height . '"]' . esc_url_raw( $value ) . '[/embed]';
 
                         $preview = '<li>';
 
                         if ( 'no' === $hide_label ) {
-                            $preview .= sprintf( '<label>%s: </label>', $attr['label'] );
+                            $preview .= sprintf( '<label>%s: </label>', esc_html( $attr['label'] ) );
                         }
 
                         $preview .= "<div class='wpuf-embed-preview'>";
@@ -1360,10 +1360,10 @@ function wpuf_show_custom_fields( $content ) {
                     $link = '<li>';
 
                     if ( 'no' === $hide_label ) {
-                        $link .= '<label>' . $attr['label'] . ':</label>';
+                        $link .= '<label>' . esc_html( $attr['label'] ) . ':</label>';
                     }
 
-                    $link .= sprintf( " <a href='%s' target = '%s'>%s</a></li>", $value, $open_in, $value );
+                    $link .= sprintf( " <a href='%s' target = '%s'>%s</a></li>", esc_url( $value ), esc_attr( $open_in ), esc_html( $value ) );
 
                     $html .= $link;
                     break;
@@ -1374,7 +1374,7 @@ function wpuf_show_custom_fields( $content ) {
                     $html .= '<li>';
 
                     if ( 'no' === $hide_label ) {
-                        $html .= '<label>' . $attr['label'] . ':</label>';
+                        $html .= '<label>' . esc_html( $attr['label'] ) . ':</label>';
                     }
 
                     $html .= sprintf( ' %s</li>', make_clickable( strip_shortcodes( $value ) ) );
@@ -1392,7 +1392,7 @@ function wpuf_show_custom_fields( $content ) {
                     $html .= '<li>';
 
                     if ( 'no' === $hide_label ) {
-                        $html .= '<label>' . $attr['label'] . ':</label>';
+                        $html .= '<label>' . esc_html( $attr['label'] ) . ':</label>';
                     }
 
                     $html .= sprintf( ' %s</li>', make_clickable( strip_shortcodes( $value ) ) );
@@ -1413,7 +1413,7 @@ function wpuf_show_custom_fields( $content ) {
                             $html .= '<li>';
 
                             if ( 'no' === $hide_label ) {
-                                $html .= '<label>' . $attr['label'] . ':</label>';
+                                $html .= '<label>' . esc_html( $attr['label'] ) . ':</label>';
                             }
 
                             $html .= sprintf( ' %s</li>', make_clickable( strip_shortcodes( $modified_value ) ) );
@@ -1426,7 +1426,7 @@ function wpuf_show_custom_fields( $content ) {
                                 $html .= '<li>';
 
                                 if ( 'no' === $hide_label ) {
-                                    $html .= '<label>' . $attr['label'] . ':</label>';
+                                    $html .= '<label>' . esc_html( $attr['label'] ) . ':</label>';
                                 }
 
                                 $html .= sprintf( ' %s</li>', make_clickable( strip_shortcodes( $modified_value ) ) );
@@ -1439,7 +1439,7 @@ function wpuf_show_custom_fields( $content ) {
                             $html .= '<li>';
 
                             if ( 'no' === $hide_label ) {
-                                $html .= '<label>' . $attr['label'] . ':</label>';
+                                $html .= '<label>' . esc_html( $attr['label'] ) . ':</label>';
                             }
 
                             $html .= sprintf( ' %s</li>', make_clickable( strip_shortcodes( $new ) ) );
@@ -2367,11 +2367,11 @@ function wpuf_get_completed_transactions( $args = [] ) {
 
     $args = wp_parse_args( $args, $defaults );
 
-    if ( ! in_array( $args['orderby'], $orderby ) ) {
+    if ( ! in_array( $args['orderby'], $orderby, true ) ) {
         $args['orderby'] = 'id';
     }
 
-    if ( ! in_array( $args['order'], $order ) ) {
+    if ( ! in_array( $args['order'], $order, true ) ) {
         $args['order'] = 'DESC';
     }
 
@@ -2379,7 +2379,10 @@ function wpuf_get_completed_transactions( $args = [] ) {
         return $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wpuf_transaction" );
     }
 
-    $result = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_transaction ORDER BY `{$args['orderby']}` {$args['order']} LIMIT {$args['offset']}, {$args['number']}", OBJECT );
+    $offset = absint( $args['offset'] );
+    $number = absint( $args['number'] );
+
+    $result = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_transaction ORDER BY `{$args['orderby']}` {$args['order']} LIMIT {$offset}, {$number}", OBJECT );
 
     return $result;
 }
@@ -2407,11 +2410,11 @@ function wpuf_get_pending_transactions( $args = [] ) {
 
     $args = wp_parse_args( $args, $defaults );
 
-    if ( ! in_array( $args['orderby'], $orderby ) ) {
+    if ( ! in_array( $args['orderby'], $orderby, true ) ) {
         $args['orderby'] = 'id';
     }
 
-    if ( ! in_array( $args['order'], $order ) ) {
+    if ( ! in_array( $args['order'], $order, true ) ) {
         $args['order'] = 'DESC';
     }
 
@@ -2504,8 +2507,8 @@ function wpuf_get_all_transactions( $args = [] ) {
         );
     }
 
-    $orderby       = in_array( $args['orderby'], $orderby_keys ) ? $args['orderby'] : 'id';
-    $sorting_order = in_array( $args['order'], $order_keys ) ? $args['order'] : 'DESC';
+    $orderby       = in_array( $args['orderby'], $orderby_keys, true ) ? $args['orderby'] : 'id';
+    $sorting_order = in_array( $args['order'], $order_keys, true ) ? $args['order'] : 'DESC';
     $offset        = ( int ) sanitize_key( $args['offset'] );
     $number        = ( int ) sanitize_key( $args['number'] );
 
@@ -5415,7 +5418,14 @@ function wpuf_guess_username( $email ) {
 function wpuf_clear_schedule_lock() {
     check_ajax_referer( 'wpuf_nonce', 'nonce' );
 
-    $post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : '';
+    // Clearing an edit-lock (potentially set by an admin) requires the ability
+    // to edit others' posts. This prevents any logged-in subscriber from wiping
+    // lock meta on arbitrary posts.
+    if ( ! current_user_can( 'edit_others_posts' ) ) {
+        wp_send_json_error( esc_html__( 'You are not allowed to clear this lock.', 'wp-user-frontend' ), 403 );
+    }
+
+    $post_id = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
 
     if ( ! empty( $post_id ) ) {
         update_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', '' );

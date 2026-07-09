@@ -6,8 +6,9 @@ const require = createRequire(import.meta.url);
 
 const entries = {
     'subscriptions': './assets/js/subscriptions.js',
-    'frontend-subscriptions': './assets/js/frontend-subscriptions.js', 
-    'forms-list': './assets/js/forms-list.js',
+    'frontend-subscriptions': './assets/js/frontend-subscriptions.js',
+    // Vue cleanup: forms-list removed (React replaces Vue forms list)
+    // 'forms-list': './assets/js/forms-list.js',
     'account': './assets/js/account.js',
     'ai-form-builder': './assets/js/ai-form-builder.js',
 };
@@ -41,4 +42,3 @@ export default defineConfig(() => {
         },
     }
 });
-

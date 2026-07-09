@@ -124,7 +124,9 @@ class Menu {
             default:
                 wp_enqueue_style( 'wpuf-admin' );
                 wp_enqueue_style( 'wpuf-forms-list' );
-                wp_enqueue_script( 'wpuf-forms-list' );
+                wp_enqueue_script( 'wpuf-forms-list-react' );
+                wp_set_script_translations( 'wpuf-forms-list-react', 'wp-user-frontend' );
+
                 // Check AI configuration status
                 $ai_settings = get_option( 'wpuf_ai', [] );
                 $ai_provider = isset( $ai_settings['ai_provider'] ) ? $ai_settings['ai_provider'] : '';
@@ -133,7 +135,7 @@ class Menu {
                 $ai_api_key = isset( $ai_settings[$provider_key_field] ) ? $ai_settings[$provider_key_field] : '';
                 $ai_configured = !empty( $ai_provider ) && !empty( $ai_api_key ) && !empty( $ai_model );
 
-                wp_localize_script('wpuf-forms-list', 'wpuf_forms_list',
+                wp_localize_script('wpuf-forms-list-react', 'wpuf_forms_list',
                     [
                         'post_counts'            => wpuf_get_forms_counts_with_status(),
                         'rest_nonce'             => wp_create_nonce( 'wp_rest' ),

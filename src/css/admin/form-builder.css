@@ -11,16 +11,99 @@
         @apply wpuf-rounded-md wpuf-bg-emerald-50 wpuf-text-emerald-700 wpuf-px-4 wpuf-py-3 wpuf-text-sm wpuf-font-medium hover:wpuf-bg-emerald-100 wpuf-border wpuf-border-emerald-300;
     }
 
+    /* Tooltip base: renders data-tip content via ::before pseudo-element */
+    .wpuf-tooltip {
+        display: inline-block;
+        position: relative;
+        text-align: center;
+    }
+
+    .wpuf-tooltip:before {
+        content: attr(data-tip);
+        pointer-events: none;
+        position: absolute;
+        z-index: 1;
+        bottom: calc(100% + 6px);
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #374151;
+        color: #fafafa;
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        max-width: 20rem;
+        padding: 0.25rem 0.5rem;
+        white-space: normal;
+        width: max-content;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .wpuf-tooltip:hover:before,
+    .wpuf-tooltip:has(:focus-visible):before {
+        opacity: 1;
+    }
+
+    .wpuf-tooltip:not([data-tip]):hover:before {
+        opacity: 0;
+        visibility: hidden;
+    }
+
     .wpuf-tooltip-top {
         @apply before:wpuf-bg-gray-700 before:wpuf-text-zinc-50 after:wpuf-border-t-gray-700 after:wpuf-border-x-transparent wpuf-cursor-pointer wpuf-ml-2 wpuf-z-10;
+    }
+
+    /* Radio: styled radio input (replaces DaisyUI radio component) */
+    .wpuf-radio,
+    .wpuf-radio[readonly] {
+        flex-shrink: 0;
+        border-radius: 9999px;
+        border: 1px solid #d1d5db;
+        height: 1rem;
+        width: 1rem;
+        appearance: none;
+        -webkit-appearance: none;
+        background-color: #fff;
+        cursor: pointer;
+    }
+
+    .wpuf-radio:checked {
+        border-color: #059669;
+        background-color: #059669;
+        background-image: none;
+        box-shadow: 0 0 0 3px #fff inset;
+    }
+
+    .wpuf-radio:focus {
+        box-shadow: none;
+    }
+
+    .wpuf-radio:disabled {
+        cursor: not-allowed;
+        opacity: 0.4;
     }
 
     .wpuf-input-checkbox {
         @apply wpuf-bg-transparent wpuf-text-white checked:wpuf-bg-transparent checked:wpuf-shadow-sm checked:hover:wpuf-shadow-none checked:hover:wpuf-bg-transparent checked:focus:wpuf-bg-transparent
     }
 
+    /* Checkbox: override WP admin input[readonly] grey background */
+    #wpuf-form-builder input[type="checkbox"][readonly] {
+        background-color: #fff;
+    }
+
+    #wpuf-form-builder input[type="checkbox"]:checked,
+    #wpuf-form-builder input[type="checkbox"][readonly]:checked {
+        background-color: #059669;
+        border-color: #059669;
+        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+        background-size: 100% 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
     .wpuf-pill-green {
-        @apply wpuf-text-emerald-800 wpuf-bg-emerald-50 wpuf-border wpuf-border-solid wpuf-border-emerald-200 wpuf-rounded-[5px] wpuf-py-1 wpuf-px-3 wpuf-text-sm wpuf-mr-1;
+        @apply wpuf-text-emerald-800 wpuf-bg-emerald-50 wpuf-border wpuf-border-solid wpuf-border-emerald-200 wpuf-rounded-md wpuf-py-1 wpuf-px-3 wpuf-text-sm wpuf-mr-1;
     }
 
     .panel-field-opt {
@@ -86,11 +169,14 @@ body ul.wpuf-form li.field-size-small .wpuf-fields {
     width: 30% !important;
 }
 #wpuf-form-builder-settings ul.wpuf-sidebar-menu li a svg.custom-stroke,
+#wpuf-form-builder-app ul.wpuf-sidebar-menu li a svg.custom-stroke,
 h2#modules-menu svg.custom-stroke {
     stroke: #4b5563;
 }
 #wpuf-form-builder-settings ul.wpuf-sidebar-menu li:hover a svg.custom-stroke,
 #wpuf-form-builder-settings ul.wpuf-sidebar-menu li.active_settings_tab a svg.custom-stroke,
+#wpuf-form-builder-app ul.wpuf-sidebar-menu li:hover a svg.custom-stroke,
+#wpuf-form-builder-app ul.wpuf-sidebar-menu li.active_settings_tab a svg.custom-stroke,
 h2#modules-menu:hover svg.custom-stroke,
 h2#modules-menu.active_settings_tab svg.custom-stroke {
     stroke: #ffffff;

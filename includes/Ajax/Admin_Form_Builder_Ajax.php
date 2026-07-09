@@ -45,13 +45,13 @@ class Admin_Form_Builder_Ajax {
         $integrations  = [];
 
         if ( isset( $post_data['settings'] ) ) {
-            $settings = (array) json_decode( $post_data['settings'] );
+            $settings = json_decode( $post_data['settings'], true );
         } else {
             $settings = isset( $form_data['wpuf_settings'] ) ? $form_data['wpuf_settings'] : [];
         }
 
         if ( isset( $post_data['integrations'] ) ) {
-            $integrations = (array) json_decode( $post_data['integrations'] );
+            $integrations = json_decode( $post_data['integrations'], true );
         }
 
         $form_fields   = json_decode( $form_fields, true );

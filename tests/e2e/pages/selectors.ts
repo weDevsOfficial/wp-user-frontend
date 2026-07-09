@@ -2112,4 +2112,28 @@ export const Selectors = {
             cancelButton: '//a[contains(text(),"Cancel") or contains(@class,"cancel")]',
         },
     },
+
+    // React settings screen (WPUF > Settings). Selectors are text/role/structure
+    // based since the React app uses Tailwind classes (no test ids). The POM
+    // (pages/settingsReact.ts) builds dynamic tab/sub-tab/field locators on top.
+    settingsReact: {
+        root: '#wpuf-settings-root',
+        loadingSkeleton: '#wpuf-settings-root .wpuf-animate-pulse',
+        nav: '#wpuf-settings-root nav.wpuf-space-y-1',
+        // Panel/tab title is the gray-900 h2. The other h2 is the app header
+        // ("WP User Frontend [Pro]"), which has no gray-900 class.
+        panelTitle: '#wpuf-settings-root h2.wpuf-text-gray-900',
+        searchInput: '#wpuf-settings-root input[placeholder^="Search"]',
+        searchClearButton: '#wpuf-settings-root button[aria-label="Clear search"]',
+        noResults: 'text=No settings found',
+        savedIndicator: 'text=Saved',
+        // Modal h1 by id — `text=Unsaved Changes` is ambiguous (also matches the
+        // footer "Unsaved changes" badge + the modal body copy).
+        unsavedModalTitle: '#wpuf-unsaved-modal-title',
+        unsavedDiscardButton: 'button:has-text("Discard Changes")',
+        unsavedContinueButton: 'button:has-text("Continue Editing")',
+        classicViewLink: 'a:has-text("Classic view")',
+        switchToNewLink: 'a:has-text("Switch to new settings")',
+        legacyScreenWrap: '.wpuf-settings-wrap',
+    },
 };

@@ -78,3 +78,13 @@ assets/css/frontend-forms.css
 assets/css/registration-forms.css
 assets/css/wpuf-form-builder.css
 languages/wp-user-frontend.pot
+
+# React settings screen — generated build outputs (built via
+# `npm run build:settings-react`; produced fresh in the release workflow).
+assets/js/settings-react.min.js
+assets/js/settings-react.min.js.map
+assets/js/settings-react.min.asset.php
+assets/css/settings-react.css
+
+# OpenSpec change docs — not shipped
+openspec/

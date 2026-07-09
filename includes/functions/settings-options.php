@@ -481,6 +481,14 @@ function wpuf_settings_fields() {
                 'label'    => '',
                 'type'     => 'html',
                 'callback' => 'wpuf_render_login_settings_section_header',
+                // Clean heading for the React screen (the callback emits legacy
+                // table markup that only works in the classic screen). Legacy
+                // ignores `desc` for callback fields, so this is React-only.
+                'desc'     => '<h3 class="wpuf-settings-section-title" style="margin:24px 0 4px;font-size:1.125rem;font-weight:600;color:#111827;">'
+                    . esc_html__( 'Login Form Customization', 'wp-user-frontend' )
+                    . '</h3><p style="margin:0 0 8px;color:#6b7280;">'
+                    . esc_html__( 'Customize the appearance and text of your login forms.', 'wp-user-frontend' )
+                    . '</p>',
             ],
             [
                 'name'           => 'wpuf_login_form_layout',

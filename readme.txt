@@ -1,4 +1,4 @@
-=== User Frontend: AI Powered Frontend Posting, User Directory, Profile Builder, Membership & User Registration ===
+=== User Frontend: AI Powered Frontend Post Submission, User Directory, User Profile, Membership & User Registration ===
 Contributors: wedevs, tareq1988, nizamuddinbabu
 Donate link: https://tareq.co/donate/
 Tags: frontend post, user directory, membership, user profile, user registration
@@ -8,7 +8,7 @@ Stable tag: 4.3.8
 Requires PHP: 7.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Create frontend post submission forms, user registration forms, user profiles, memberships, user directories, and content restriction for WordPress.
+Create a frontend post submission form, user registration form, user profile page, membership site, user directory, and content restriction.
 == Description ==
 <strong>#1 Plugin to Build Complete Frontend Experiences for WordPress</strong>
 User Frontend is an all-in-one frontend post submission, user registration, profile builder, membership, and user directory plugin for WordPress.
@@ -88,7 +88,7 @@ Send every post submission straight to n8n in real time. Use the captured data i
 Offer simple one-off payment options so users can pay once for posting or upgrades, remove recurring fees, and complete purchases with more confidence.
 
 
-<strong>Post Form Templates</strong>
+<strong> Frontend Post Form Templates</strong>
 
 
 Pick from ready-made form templates for jobs, products, events, listings and more, letting you launch fully designed post forms in minutes.
@@ -200,23 +200,21 @@ Connect form fields with ACF fields to view user submissions in ACF format from 
 
 
 Create and subscribe users to membership packs, allow pay per post, force subscription package purchase, and set fallback pay per post charges with this WordPress Membership Plugin.
+<strong>Membership Features</strong>
+Turn your site into a membership platform without leaving WordPress. Create membership tiers, control access by subscription level, and manage the entire member lifecycle from the frontend.
+* **Membership Tiers** – Build multiple membership levels with different pricing, posting limits, and access rules for each plan.
+* **Paid Memberships Pro Integration** – Connect User Frontend with PMPro to sync membership levels and unlock advanced membership site workflows. (PRO)
+* **Content Restriction by Membership Level** – Restrict pages, posts, or custom content so only members on the right plan can view it.
+* **Membership Management Dashboard** – Approve, pause, or cancel membership requests and view transaction history from a single screen.
 
 
 <strong>Manage Transactions and Membership</strong>
-
-
 Approve or keep membership requests pending – you’re in complete control. View all details from a single screen.
 <strong>Restrict Frontend Posting by Membership</strong>
 Control who can submit content based on their membership plan. Create exclusive posting experiences for premium members with ease.
-<strong>Build Frontend Post Forms</strong>
-
-
+<strong>Build Frontend Post Submission Forms</strong>
 Create and manage frontend post submission forms with ease. Let users submit, edit, and update content without accessing the WordPress dashboard.
-
-
 <strong>Create a User Directory</strong>
-
-
 Build a basic searchable user directory for free. Help visitors find members quickly with built-in search. Showcase your WordPress member directory with modern layouts.
 
 
@@ -429,6 +427,10 @@ After having installed the plugin:
 == Frequently Asked Questions ==
 
 
+= Can I create a user directory for free? = 
+Yes. The free version includes a basic searchable User Directory so visitors can browse and search registered members right out of the box. Upgrade to Professional for advanced layouts, filters, unlimited directories, and SEO controls for profile pages.
+
+
 = What is the AI Form Builder and who gets it? =
 
 
@@ -562,13 +564,13 @@ Please report security bugs found in the source code of the User Frontend plugin
 
 
 = v4.3.8 (19 June, 2026) =
-* Fix – Security: hardened file upload handling to prevent unauthorized deletion of media attachments and modification of posts via crafted form submissions.
+* Fix – Security: hardened file upload handling to prevent unauthorized deletion of media attachments and modification of a frontend post via crafted form submissions.
 * Fix – Credit Card payment gateway now displays correctly on the Payment settings page when the Pro add-on is inactive.
 
 
 = v4.3.7 (4 June, 2026) =
-* Fix – Tags suggestions not loading in form builder
-* Fix – Checkbox styling in form builder
+* Fix – Tag suggestions not loading in frontend post form builder
+* Fix – Checkbox styling in frontend post form builder
 
 
 = v4.3.6 (22 May, 2026) =
@@ -580,7 +582,7 @@ Please report security bugs found in the source code of the User Frontend plugin
 
 
 = v4.3.4 (11 May, 2026) =
-Chore – Exclude CLAUDE.md and .claude directory from wp.org SVN deploy
+Chore – Clean up internal Claude build files from the release package.
 
 
 = v4.3.3 (30 April, 2026) =

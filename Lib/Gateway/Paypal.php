@@ -401,19 +401,21 @@ class Paypal {
 
             // Create payment record
             $data = [
-                'user_id' => $custom_data['user_id'],
-                'status' => 'completed',
-                'subtotal' => $subtotal,
-                'tax' => $tax,
-                'cost' => $cost,
-                'post_id' => ( 'post' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
-                'pack_id' => ( 'pack' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
+                'user_id'          => $custom_data['user_id'],
+                'status'           => 'completed',
+                'subtotal'         => $subtotal,
+                'discount'         => ! empty( $custom_data['discount'] ) ? floatval( $custom_data['discount'] ) : 0,
+                'coupon_id'        => ! empty( $custom_data['coupon_id'] ) ? absint( $custom_data['coupon_id'] ) : null,
+                'tax'              => $tax,
+                'cost'             => $cost,
+                'post_id'          => ( 'post' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
+                'pack_id'          => ( 'pack' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
                 'payer_first_name' => $user->first_name,
-                'payer_last_name' => $user->last_name,
-                'payer_email' => $user->user_email,
-                'payment_type' => 'paypal',
-                'transaction_id' => $payment['id'],
-                'created' => gmdate( 'Y-m-d H:i:s' ),
+                'payer_last_name'  => $user->last_name,
+                'payer_email'      => $user->user_email,
+                'payment_type'     => 'paypal',
+                'transaction_id'   => $payment['id'],
+                'created'          => gmdate( 'Y-m-d H:i:s' ),
             ];
 
             // Insert payment record
@@ -1437,12 +1439,17 @@ class Paypal {
                 }
             }
 
-            // Handle coupon if present
-            if ( isset( $_POST['coupon_id'] ) && ! empty( $_POST['coupon_id'] ) &&
+            // Handle coupon if present. Coupons are a Pro feature, so only run when Pro is
+            // available to avoid a fatal on wpuf_pro() in free-only installs.
+            $coupon_discount = 0;
+            if ( function_exists( 'wpuf_pro' ) && wpuf_pro() &&
+                isset( $_POST['coupon_id'] ) && ! empty( $_POST['coupon_id'] ) &&
                 isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_payment_coupon' ) &&
                 is_numeric( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) ) ) {
-                $coupon_id = absint( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) );
-                $billing_amount = wpuf_pro()->coupon->discount( $billing_amount, $coupon_id, $data['item_number'] );
+                $coupon_id       = absint( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) );
+                $original_amount = floatval( $billing_amount );
+                $billing_amount  = wpuf_pro()->coupon->discount( $billing_amount, $coupon_id, $data['item_number'] );
+                $coupon_discount = $original_amount - floatval( $billing_amount );
             } else {
                 $coupon_id = '';
             }
@@ -1580,10 +1587,11 @@ class Paypal {
                     ],
                     'custom_id' => wp_json_encode(
                         [
-							'type' => $data['type'],
-							'user_id' => $user_id,
+							'type'        => $data['type'],
+							'user_id'     => $user_id,
 							'item_number' => $data['item_number'],
-							'coupon_id' => $coupon_id,
+							'coupon_id'   => $coupon_id,
+							'discount'    => $coupon_discount,
 						]
                     ),
                 ];
@@ -1694,12 +1702,13 @@ class Paypal {
 							'description' => isset( $data['custom']['post_title'] ) ? $data['custom']['post_title'] : $data['item_name'],
 							'custom_id' => wp_json_encode(
                                 [
-									'type' => $payment_data['type'],
-									'user_id' => $payment_data['user_id'],
-									'coupon_id' => $payment_data['coupon_id'],
+									'type'        => $payment_data['type'],
+									'user_id'     => $payment_data['user_id'],
+									'coupon_id'   => $payment_data['coupon_id'],
 									'item_number' => $payment_data['item_number'],
-									'subtotal' => isset( $payment_data['breakdown']['item_total'] ) ? $payment_data['breakdown']['item_total'] : $payment_data['amount'],
-									'tax' => isset( $payment_data['breakdown']['tax_total'] ) ? $payment_data['breakdown']['tax_total'] : 0,
+									'subtotal'    => ( isset( $payment_data['breakdown']['item_total'] ) ? floatval( $payment_data['breakdown']['item_total'] ) : floatval( $payment_data['amount'] ) ) + $coupon_discount,
+									'tax'         => isset( $payment_data['breakdown']['tax_total'] ) ? $payment_data['breakdown']['tax_total'] : 0,
+									'discount'    => $coupon_discount,
 								]
                             ),
 						],

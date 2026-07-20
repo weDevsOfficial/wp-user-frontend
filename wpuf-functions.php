@@ -2442,14 +2442,16 @@ function wpuf_get_pending_transactions( $args = [] ) {
         }
 
         $tax      = ! empty( $info['tax'] ) ? $info['tax'] : 0;
-        $subtotal = ! empty( $info['cost'] ) ? $info['cost'] : $info['price'];
+        $subtotal = ! empty( $info['subtotal'] ) ? $info['subtotal'] : ( ! empty( $info['cost'] ) ? $info['cost'] : $info['price'] );
 
         $items[] = (object) [
             'id'               => $transaction->ID,
             'user_id'          => $info['user_info']['id'],
             'status'           => 'pending',
             'subtotal'         => $subtotal,
-            'cost'             => $subtotal - $tax,
+            'discount'         => ! empty( $info['discount'] ) ? $info['discount'] : 0,
+            'coupon_id'        => ! empty( $info['post_data']['coupon_id'] ) ? absint( $info['post_data']['coupon_id'] ) : 0,
+            'cost'             => ! empty( $info['cost'] ) ? floatval( $info['cost'] ) : ( ! empty( $info['price'] ) ? floatval( $info['price'] ) + floatval( $tax ) : $subtotal ),
             'tax'              => $tax,
             'post_id'          => ( $info['type'] === 'post' ) ? $info['item_number'] : 0,
             'pack_id'          => ( $info['type'] === 'pack' ) ? $info['item_number'] : 0,
@@ -2504,8 +2506,8 @@ function wpuf_get_all_transactions( $args = [] ) {
         );
     }
 
-    $orderby       = in_array( $args['orderby'], $orderby_keys ) ? $args['orderby'] : 'id';
-    $sorting_order = in_array( $args['order'], $order_keys ) ? $args['order'] : 'DESC';
+    $orderby       = in_array( $args['orderby'], $orderby_keys, true ) ? $args['orderby'] : 'id';
+    $sorting_order = in_array( $args['order'], $order_keys, true ) ? $args['order'] : 'DESC';
     $offset        = ( int ) sanitize_key( $args['offset'] );
     $number        = ( int ) sanitize_key( $args['number'] );
 
@@ -2513,10 +2515,11 @@ function wpuf_get_all_transactions( $args = [] ) {
     // and pending transaction from post table
     $transactions = $wpdb->get_results(
         $wpdb->prepare(
-            "(SELECT id, user_id, status, tax, cost, post_id, pack_id, payer_first_name, payer_last_name, payer_email, payment_type, transaction_id, created FROM {$transaction_table})
+            "(SELECT id, user_id, status, subtotal, discount, coupon_id, tax, cost, post_id, pack_id, payer_first_name, payer_last_name, payer_email, payment_type, transaction_id, created FROM {$transaction_table})
             UNION ALL
-            (SELECT ID AS id, post_author AS user_id, null AS status, null AS tax, null AS cost, ID as post_id, null AS pack_id, null AS payer_first_name, null AS payer_last_name, null AS payer_email, null AS payment_type, 0 AS transaction_id, post_date AS created FROM {$wpdb->posts}
-            WHERE post_type = %s)
+            (SELECT ID AS id, post_author AS user_id, null AS status, null AS subtotal, null AS discount, null AS coupon_id, null AS tax, null AS cost, ID as post_id, null AS pack_id, null AS payer_first_name, null AS payer_last_name, null AS payer_email, null AS payment_type, 0 AS transaction_id, post_date AS created FROM {$wpdb->posts}
+            WHERE post_type = %s
+            AND post_status IN ('pending', 'publish'))
             ORDER BY {$orderby} {$sorting_order}
             LIMIT %d, %d",
             'wpuf_order', $offset, $number
@@ -2542,8 +2545,13 @@ function wpuf_get_all_transactions( $args = [] ) {
         // attach data to pending transactions
         $transaction->user_id          = isset( $info['user_info']['id'] ) ? $info['user_info']['id'] : 0;
         $transaction->status           = 'pending';
-        $transaction->cost             = isset( $info['price'] ) ? $info['price'] : 0;
-        $transaction->tax              = isset( $info['tax'] ) ? $info['tax'] : 0;
+        $tax                           = isset( $info['tax'] ) ? $info['tax'] : 0;
+        $subtotal                      = ! empty( $info['subtotal'] ) ? $info['subtotal'] : ( ! empty( $info['cost'] ) ? $info['cost'] : ( $info['price'] ?? 0 ) );
+        $transaction->subtotal         = $subtotal;
+        $transaction->discount         = ! empty( $info['discount'] ) ? $info['discount'] : 0;
+        $transaction->coupon_id        = ! empty( $info['post_data']['coupon_id'] ) ? absint( $info['post_data']['coupon_id'] ) : 0;
+        $transaction->cost             = ! empty( $info['cost'] ) ? floatval( $info['cost'] ) : ( ! empty( $info['price'] ) ? floatval( $info['price'] ) + floatval( $tax ) : $subtotal );
+        $transaction->tax              = $tax;
         $transaction->post_id          = ( 'post' === $type ) ? $item_number : 0;
         $transaction->pack_id          = ( 'pack' === $type ) ? $item_number : 0;
         $transaction->payer_first_name = isset( $info['user_info']['first_name'] ) ? $info['user_info']['first_name'] : '';

@@ -48,6 +48,7 @@ class List_Table_Transactions extends WP_List_Table {
             'user'           => __( 'User', 'wp-user-frontend' ),
             'subtotal'       => __( 'Subtotal', 'wp-user-frontend' ),
             'cost'           => __( 'Cost', 'wp-user-frontend' ),
+            'discount'       => __( 'Coupon', 'wp-user-frontend' ),
             'tax'            => __( 'Tax', 'wp-user-frontend' ),
             'post_id'        => __( 'Post ID', 'wp-user-frontend' ),
             'pack_id'        => __( 'Pack ID', 'wp-user-frontend' ),
@@ -170,6 +171,21 @@ class List_Table_Transactions extends WP_List_Table {
 
             case 'cost':
                 return wpuf_format_price( $item->cost );
+
+            case 'discount':
+                if ( empty( $item->discount ) && empty( $item->coupon_id ) ) {
+                    return '-';
+                }
+                $output = '';
+                if ( ! empty( $item->coupon_id ) ) {
+                    $coupon_code = get_the_title( absint( $item->coupon_id ) );
+                    $coupon_url  = admin_url( 'post.php?post=' . absint( $item->coupon_id ) . '&action=edit' );
+                    $output     .= sprintf( '<a href="%s">%s</a>', esc_url( $coupon_url ), esc_html( $coupon_code ) );
+                }
+                if ( ! empty( $item->discount ) ) {
+                    $output .= ( $output ? '<br>' : '' ) . esc_html( wpuf_format_price( $item->discount ) );
+                }
+                return $output;
 
             case 'tax':
                 return wpuf_format_price( $item->tax );
@@ -365,6 +381,8 @@ class List_Table_Transactions extends WP_List_Table {
                     'user_id'          => $info['user_info']['id'],
                     'status'           => 'completed',
                     'subtotal'         => $info['subtotal'],
+                    'discount'         => ! empty( $info['discount'] ) ? $info['discount'] : 0,
+                    'coupon_id'        => ! empty( $info['post_data']['coupon_id'] ) ? absint( $info['post_data']['coupon_id'] ) : 0,
                     'tax'              => $info['tax'],
                     'cost'             => $info['price'],
                     'post_id'          => $post_id,
@@ -420,6 +438,8 @@ class List_Table_Transactions extends WP_List_Table {
                         'user_id'          => $info['user_info']['id'],
                         'status'           => 'completed',
                         'subtotal'         => $info['subtotal'],
+                        'discount'         => ! empty( $info['discount'] ) ? $info['discount'] : 0,
+                        'coupon_id'        => ! empty( $info['post_data']['coupon_id'] ) ? absint( $info['post_data']['coupon_id'] ) : 0,
                         'tax'              => $info['tax'],
                         'cost'             => $info['price'],
                         'post_id'          => $post_id,

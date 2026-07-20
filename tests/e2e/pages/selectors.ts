@@ -806,7 +806,7 @@ export const Selectors = {
             purchaseButton: '//span[@class="edd-add-to-cart-label"]',
             downloadsImage: '//figure[@class="wp-block-post-featured-image"]',
             titleBE: (title: string) => `//a[normalize-space()='${title}']`,
-            price: (price: string) => `(//input[@id="edd_price" and @value="${price}.00" ])[1]`,
+            price: (price: string) => `(//input[@id="edd_price" and @value="${price}.00" ])[2]`,
             clickDownload: '//div[@class="interface-complementary-area editor-sidebar"]//div//button//span[normalize-space()="Download"]',
             clickCategory: '//button[normalize-space()="Categories"]',
             categoryBE: (category: string) => `//label[normalize-space()='${category}']`,

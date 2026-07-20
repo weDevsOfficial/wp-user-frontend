@@ -4,13 +4,18 @@
 const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
 const path = require( 'path' );
 
+// The entry key carries the js/blocks/ prefix and the output root is `assets`, so
+// the bundle still lands at assets/js/blocks/post-form.js while block.json — which
+// wp-scripts copies using its path relative to the source root — lands alongside it
+// at assets/js/blocks/post-form/block.json. Setting output.path to assets/js/blocks
+// instead duplicated that prefix (assets/js/blocks/js/blocks/post-form/block.json).
 module.exports = {
     ...defaultConfig,
     entry: {
-        'post-form': './src/js/blocks/post-form/index.js',
+        'js/blocks/post-form': './src/js/blocks/post-form/index.js',
     },
     output: {
-        path: path.resolve( __dirname, 'assets/js/blocks' ),
+        path: path.resolve( __dirname, 'assets' ),
         filename: '[name].js',
     },
 };

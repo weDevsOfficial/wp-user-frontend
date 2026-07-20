@@ -88,7 +88,11 @@ class PostForm {
             );
         }
 
-        $block_json_path = WPUF_ROOT . '/src/js/blocks/post-form';
+        // Read the metadata from the built output, not from `src` — .distignore
+        // strips `src` from the release package, so registering against it made
+        // register_block_type() treat the path itself as the block name and emit a
+        // "Block type names must not contain uppercase characters" notice.
+        $block_json_path = WPUF_ROOT . '/assets/js/blocks/post-form';
 
         register_block_type( $block_json_path, [
             'render_callback' => [ $this, 'render' ],

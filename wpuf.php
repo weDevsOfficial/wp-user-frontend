@@ -190,6 +190,7 @@ final class WP_User_Frontend {
         $this->container['api']          = new WeDevs\Wpuf\API();
         $this->container['integrations'] = new WeDevs\Wpuf\Integrations();
         $this->container['ai_manager']   = new WeDevs\Wpuf\AI_Manager();
+        $this->container['post_form_block'] = new WeDevs\Wpuf\Blocks\PostForm();
 
         if ( is_admin() ) {
             $this->container['admin']        = new WeDevs\Wpuf\Admin();

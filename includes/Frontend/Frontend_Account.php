@@ -320,11 +320,15 @@ class Frontend_Account {
             wp_die();
         }
 
-        global $current_user;
+        $current_user = wp_get_current_user();
 
+        // Passwords are intentionally not sanitized, only unslashed, so the
+        // characters the user typed are compared and stored verbatim.
+        // phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
         $current_password = ! empty( $_POST['current_password'] ) ? wp_unslash( $_POST['current_password'] ) : '';
         $pass1            = ! empty( $_POST['pass1'] ) ? wp_unslash( $_POST['pass1'] ) : '';
         $pass2            = ! empty( $_POST['pass2'] ) ? wp_unslash( $_POST['pass2'] ) : '';
+        // phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
         if ( empty( $current_password ) ) {
             wp_send_json_error( __( 'Please enter your current password.', 'wp-user-frontend' ) );

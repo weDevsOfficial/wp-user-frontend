@@ -100,6 +100,11 @@
                                 case 'edit-profile':
                                     $icon = '<svg class="wpuf-w-5 wpuf-h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>';
                                     break;
+                                case 'change-password':
+                                    $icon = '<svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M6.75 10.7857L9 13.0357L12.75 7.78574M9.75 0.75C7.5995 2.78662 4.69563 4.03575 1.5 4.03575C1.44922 4.03575 1.39852 4.03543 1.34789 4.03481C0.959898 5.21491 0.75 6.47584 0.75 7.7858C0.75 13.3773 4.57432 18.0756 9.75 19.4077C14.9257 18.0756 18.75 13.3773 18.75 7.7858C18.75 6.47584 18.5401 5.21491 18.1521 4.03481C18.1015 4.03543 18.0508 4.03575 18 4.03575C14.8044 4.03575 11.9005 2.78662 9.75 0.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>';
+                                    break;
                                 case 'billing-address':
                                     $icon = '<svg class="wpuf-w-5 wpuf-h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>';
                                     break;

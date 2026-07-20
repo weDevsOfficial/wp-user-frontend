@@ -1086,7 +1086,7 @@ export const Selectors = {
         paymentPageTitle: '//h1[normalize-space(text())="Payment"]',
         validatePayPerPostCost: '//span[@id="wpuf_pay_page_cost"]',
         checkBankButton: '//li[@class="wpuf-gateway-bank"]//input[1]',
-        proceedPaymentButton: '//input[@value="Proceed"]',
+        proceedPaymentButton: '//button[@name="wpuf_payment_submit"]',
         afterPaymentPageTitle: (successPage: string) => `//h1[normalize-space(text())="${successPage}"]`,
         transactionTableRow: '//tbody//tr[1]',
         acceptPayment: '//a[normalize-space()="Accept"]',

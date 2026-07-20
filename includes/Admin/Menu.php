@@ -76,6 +76,8 @@ class Menu {
             $premium_hook = add_submenu_page( $this->parent_slug, __( 'Premium', 'wp-user-frontend' ), __( 'Premium', 'wp-user-frontend' ), $capability, 'wpuf_premium', [ $this, 'premium_page' ] );
 
             $this->all_submenu_hooks['premium'] = $premium_hook;
+
+            add_action( 'load-' . $premium_hook, [ $this, 'enqueue_premium_script' ] );
         }
 
         $help_hook = add_submenu_page( $this->parent_slug, __( 'Help', 'wp-user-frontend' ), sprintf( '<span style="color:#f18500">%s</span>', __( 'Help', 'wp-user-frontend' ) ), $capability, 'wpuf-support', [ $this, 'support_page' ] );
@@ -401,6 +403,31 @@ class Menu {
             </div>
         </div>
         <?php
+    }
+
+    /**
+     * Load styles for the User Frontend > Premium page
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function enqueue_premium_script() {
+        // Inter is self-hosted via @font-face inside premium.css; no CDN needed.
+        wp_enqueue_style(
+            'wpuf-premium',
+            WPUF_ASSET_URI . '/css/admin/premium.css',
+            [],
+            WPUF_VERSION
+        );
+
+        wp_enqueue_script(
+            'wpuf-premium',
+            WPUF_ASSET_URI . '/js/admin/premium.js',
+            [],
+            WPUF_VERSION,
+            true
+        );
     }
 
     /**

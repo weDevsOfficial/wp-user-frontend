@@ -2298,6 +2298,7 @@ function wpuf_get_countries( $type = 'array' ) {
 function wpuf_get_account_sections() {
     $sections = [
         'edit-profile'    => __( 'Edit Profile', 'wp-user-frontend' ),
+        'change-password' => __( 'Change Password', 'wp-user-frontend' ),
         'subscription'    => __( 'Subscription', 'wp-user-frontend' ),
         'billing-address' => __( 'Billing Address', 'wp-user-frontend' ),
     ];

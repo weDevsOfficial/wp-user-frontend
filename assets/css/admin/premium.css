@@ -1,0 +1,1063 @@
+/**
+ * WPUF Premium (Upgrade to Pro) page styles
+ *
+ * Mirrors the "WPUF Upgrade to Pro" Figma redesign.
+ *
+ * @package WP_User_Frontend
+ * @since 4.3.9
+ */
+
+/* Self-hosted Inter (variable) so the type scale always renders as designed,
+   independent of any Google Fonts CDN / CSP / offline state. */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url( '../../fonts/inter/Inter-latin.woff2' ) format( 'woff2' );
+}
+
+/* Caveat (variable) for the handwritten "Up to 30% Off" toggle note. */
+@font-face {
+    font-family: 'Caveat';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url( '../../fonts/caveat/Caveat-latin.woff2' ) format( 'woff2' );
+}
+
+/* This stylesheet is enqueued ONLY on the Premium page, so it is safe to reset
+   the WP admin wrappers here. Zeroing #wpcontent's left padding and the .wrap
+   margins lets the banded sections run truly edge-to-edge (menu edge → window).
+   The `body` prefix raises specificity above common.css `#wpcontent` (which has
+   the same id specificity and may load after this file). */
+body #wpcontent {
+    padding-left: 0;
+}
+
+body #wpbody-content {
+    padding-bottom: 0;
+}
+
+.wpuf-premium-page.wrap {
+    margin: 0;
+}
+
+.wpuf-premium-page {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #1f2937;
+    -webkit-font-smoothing: antialiased;
+}
+
+.wpuf-premium-page * {
+    box-sizing: border-box;
+}
+
+/* Defensive reset so WP admin core styles (common.css / forms.css — headings,
+   p, a, button, inputs, lists) cannot leak into the page. Component rules below
+   set the real Figma values; this only neutralizes the admin defaults. */
+.wpuf-premium-page h1,
+.wpuf-premium-page h2,
+.wpuf-premium-page h3,
+.wpuf-premium-page h4 {
+    margin: 0;
+    padding: 0;
+    font-family: inherit;
+    font-weight: 700;
+    color: inherit;
+}
+
+/* WP common.css `.wrap h1 { font-weight:400 }` ties the rule above on
+   specificity and can win by load order, thinning the bold headings. The
+   `body` prefix raises specificity so all headings stay Bold (700). */
+body .wpuf-premium-page h1,
+body .wpuf-premium-page h2,
+body .wpuf-premium-page h3,
+body .wpuf-premium-page h4 {
+    font-family: inherit;
+    font-weight: 700;
+}
+
+.wpuf-premium-page p {
+    margin: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.wpuf-premium-page span {
+    font-family: inherit;
+}
+
+.wpuf-premium-page ul,
+.wpuf-premium-page ol,
+.wpuf-premium-page li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: inherit;
+}
+
+/* Links: only strip underline + WP's focus ring. Do NOT set color/box-shadow
+   here — every link on the page is a styled button that sets its own colour,
+   and an element-level `a` rule would out-specify those single-class buttons
+   (turning the green buttons' text dark). */
+.wpuf-premium-page a {
+    text-decoration: none;
+}
+
+.wpuf-premium-page a:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+/* Form controls: strip WP forms.css borders/shadows/sizing. */
+.wpuf-premium-page button,
+.wpuf-premium-page input,
+.wpuf-premium-page select,
+.wpuf-premium-page textarea {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+}
+
+.wpuf-premium-page button {
+    padding: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.wpuf-premium-page button:hover,
+.wpuf-premium-page button:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+/* Preserve accessible keyboard focus visibility. */
+.wpuf-premium-page a:focus-visible,
+.wpuf-premium-page button:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+/* Centered content column; the full-width bands wrap their own copy of this. */
+.wpuf-premium-page__inner {
+    max-width: 1256px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Shared building blocks ------------------------------------------------- */
+.wpuf-pp-section {
+    padding: 72px 0;
+}
+
+.wpuf-pp-section--beige {
+    background: #ecebe3;
+    border: 1px solid #e5e7eb;
+}
+
+.wpuf-pp-section--gray {
+    background: #f5f5f5;
+}
+
+.wpuf-pp-section__head {
+    max-width: 912px;
+    margin: 0 auto 40px;
+    text-align: center;
+}
+
+.wpuf-pp-section__head h2 {
+    margin: 0 0 16px;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #1f2937;
+}
+
+.wpuf-pp-section__head p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #6b7280;
+}
+
+.wpuf-pp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 15px 9px 17px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background .15s ease, box-shadow .15s ease;
+}
+
+.wpuf-pp-btn svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.wpuf-premium-page .wpuf-pp-btn--primary {
+    background: #059669;
+    color: #fff;
+}
+
+.wpuf-pp-btn--primary:hover {
+    background: #047857;
+    color: #fff;
+}
+
+.wpuf-premium-page .wpuf-pp-btn--outline {
+    background: #fff;
+    color: #374151;
+    border-color: #e5e7eb;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.wpuf-pp-btn--outline:hover {
+    background: #f9fafb;
+    color: #374151;
+}
+
+/* 0. Top bar ------------------------------------------------------------- */
+.wpuf-pp-topbar {
+    background: #fff;
+    border-bottom: 2px solid #f3f4f6;
+}
+
+.wpuf-pp-topbar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    /* Header content spans full width; only the page body keeps the max-width. */
+    max-width: none;
+}
+
+.wpuf-pp-topbar__left,
+.wpuf-pp-topbar__right {
+    display: flex;
+    align-items: center;
+}
+
+.wpuf-pp-topbar__logo {
+    width: 44px;
+    height: 44px;
+    margin-right: 16px;
+    display: block;
+}
+
+.wpuf-premium-page .wpuf-pp-topbar__title {
+    margin: 0;
+    padding: 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #1f2937;
+}
+
+.wpuf-pp-topbar__version {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 8px;
+    padding: 4px 8px;
+    border-radius: 9999px;
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    box-shadow: inset 0 0 0 1px rgba( 22, 163, 74, .2 );
+}
+
+.wpuf-premium-page .wpuf-pp-topbar__upgrade {
+    margin-left: 16px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: #059669;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+}
+
+.wpuf-pp-topbar__upgrade:hover {
+    background: #047857;
+    color: #fff;
+}
+
+.wpuf-premium-page .wpuf-pp-topbar__ideas {
+    margin-right: 16px;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: #fff;
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    box-shadow: 0 1px 2px rgba( 0, 0, 0, .05 );
+}
+
+.wpuf-pp-topbar__ideas:hover {
+    background: #f8fafc;
+    color: #1f2937;
+}
+
+.wpuf-premium-page .wpuf-pp-topbar__support {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: #059669;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    box-shadow: 0 1px 2px rgba( 0, 0, 0, .05 );
+}
+
+.wpuf-pp-topbar__support:hover {
+    background: #047857;
+    color: #fff;
+}
+
+.wpuf-pp-topbar__support svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+/* 1. Hero ---------------------------------------------------------------- */
+.wpuf-pp-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #00231a;
+    padding: 54px 40px;
+    margin-top: 24px;
+}
+
+.wpuf-pp-hero__glow {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    width: 375px;
+    height: 375px;
+    transform: translateY( -50% );
+    background: url( '../../images/premium/hero-glow.png' ) center / contain no-repeat;
+    pointer-events: none;
+}
+
+.wpuf-pp-hero__content {
+    position: relative;
+    z-index: 2;
+    max-width: 580px;
+}
+
+.wpuf-premium-page .wpuf-pp-hero__content h1 {
+    margin: 0 0 16px;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #fff;
+    padding: 0;
+}
+
+.wpuf-pp-hero__content p {
+    margin: 0 0 36px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #fff;
+}
+
+.wpuf-pp-hero__crown {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    right: 95px;
+    width: 184px;
+    height: 184px;
+    transform: translateY( -50% );
+    text-align: center;
+}
+
+/* The exported sphere sits on a baked dark square with a thin dark margin.
+   Clip to a circle and scale the raster up slightly so the sphere fills the
+   circle and the dark square is cropped away. */
+.wpuf-pp-hero__crown-img {
+    display: block;
+    width: 184px;
+    height: 184px;
+    border-radius: 50%;
+    overflow: hidden;
+    filter: drop-shadow( 0 8px 24px rgba( 0, 0, 0, .45 ) );
+}
+
+.wpuf-pp-hero__crown-img img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    transform: scale( 1.16 );
+}
+
+.wpuf-pp-hero__badge {
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    transform: translateX( -50% );
+    z-index: 3;
+    padding: 8px 26px;
+    border-radius: 100px;
+    background: #00231a;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* 2. Comparison ---------------------------------------------------------- */
+.wpuf-pp-compare {
+    display: flex;
+    gap: 44px;
+    align-items: flex-start;
+    padding: 72px 0;
+}
+
+.wpuf-pp-compare__intro {
+    width: 385px;
+    flex-shrink: 0;
+}
+
+.wpuf-pp-compare__intro h2 {
+    margin: 0 0 16px;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #1f2937;
+}
+
+.wpuf-pp-compare__intro p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #6b7280;
+}
+
+.wpuf-pp-table {
+    flex: 1;
+    min-width: 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+}
+
+.wpuf-pp-table__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 40px;
+    background: #ecfdf5;
+    border-bottom: 1px solid #e5e7eb;
+    border-radius: 20px 20px 0 0;
+}
+
+.wpuf-pp-table__head-label,
+.wpuf-pp-table__col {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4b5563;
+    line-height: 1.3;
+}
+
+.wpuf-pp-table__cols {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 184px;
+}
+
+.wpuf-pp-table__col--pro {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.wpuf-pp-table__col--pro svg {
+    width: 20px;
+    height: 20px;
+    color: #f59e0b;
+}
+
+.wpuf-pp-table__body {
+    padding: 8px 0 20px;
+}
+
+.wpuf-pp-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    min-height: 40px;
+}
+
+.wpuf-pp-row__label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4b5563;
+    line-height: 1.3;
+}
+
+.wpuf-pp-row__marks {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 105px;
+    padding-right: 7px;
+}
+
+.wpuf-pp-divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 8px 0;
+}
+
+.wpuf-pp-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 40px;
+}
+
+.wpuf-pp-mark svg {
+    width: 20px;
+    height: 20px;
+}
+
+.wpuf-pp-mark--yes {
+    background: #ecfdf5;
+}
+
+.wpuf-pp-mark--yes svg {
+    color: #10b981;
+}
+
+.wpuf-pp-mark--no {
+    background: #f3f4f6;
+}
+
+.wpuf-pp-mark--no svg {
+    color: #9ca3af;
+}
+
+.wpuf-pp-mark--limited {
+    font-size: 14px;
+    color: #374151;
+    padding: 10px;
+}
+
+/* 3. What Changes grid --------------------------------------------------- */
+.wpuf-pp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.wpuf-pp-grid__card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: -0.5px;
+}
+
+.wpuf-pp-grid__icon {
+    height: 36px;
+    display: flex;
+    align-items: center;
+}
+
+.wpuf-pp-grid__icon img {
+    height: 36px;
+    width: auto;
+    display: block;
+}
+
+.wpuf-pp-grid__card h3 {
+    margin: 0 0 12px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #111827;
+}
+
+.wpuf-pp-grid__card p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #1f2937;
+}
+
+/* 4. Modules ------------------------------------------------------------- */
+.wpuf-pp-modules {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 72px 0;
+}
+
+.wpuf-pp-modules__head {
+    max-width: 633px;
+    margin-bottom: 56px;
+}
+
+.wpuf-pp-modules__head h2 {
+    margin: 0 0 16px;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #1f2937;
+}
+
+.wpuf-pp-modules__head p {
+    margin: 0 0 40px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #6b7280;
+    max-width: 556px;
+}
+
+.wpuf-pp-modules__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+}
+
+.wpuf-pp-module {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.wpuf-pp-module img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 20px;
+    display: block;
+}
+
+.wpuf-pp-module span {
+    font-size: 16px;
+    line-height: 1.4;
+    color: #1f2937;
+    text-align: center;
+}
+
+/* 5. Pricing ------------------------------------------------------------- */
+.wpuf-pp-pricing__head {
+    max-width: 633px;
+    margin: 0 auto 40px;
+    text-align: center;
+}
+
+.wpuf-pp-pricing__head h2 {
+    margin: 0 0 16px;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #1f2937;
+}
+
+.wpuf-pp-pricing__head p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #6b7280;
+}
+
+.wpuf-pp-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    margin: 40px auto 0;
+    padding: 8px;
+    background: #fff;
+    border-radius: 58px;
+}
+
+.wpuf-pp-pricing__toggle-wrap {
+    text-align: center;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Handwritten "Up to 30% Off" note + arrow doodle, sitting to the right of the
+   toggle and pointing back at it. */
+.wpuf-pp-toggle-note {
+    position: absolute;
+    left: 100%;
+    bottom: 20px;
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    margin-left: 8px;
+    pointer-events: none;
+}
+
+.wpuf-pp-toggle-note__arrow {
+    width: 54px;
+    height: 39px;
+    flex-shrink: 0;
+}
+
+.wpuf-pp-toggle-note__text {
+    font-family: 'Caveat', 'Comic Sans MS', cursive;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #00a81c;
+    white-space: nowrap;
+}
+
+.wpuf-pp-toggle button {
+    border: none;
+    background: transparent;
+    padding: 10px 30px;
+    border-radius: 58px;
+    font-size: 16px;
+    line-height: 28px;
+    color: #5e6479;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.wpuf-pp-toggle button.is-active {
+    background: #064e3b;
+    color: #fff;
+}
+
+.wpuf-pp-plans {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    max-width: 1000px;
+    margin: 56px auto 0;
+}
+
+.wpuf-pp-plan {
+    flex: 1;
+    min-width: 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.wpuf-pp-plan:first-child {
+    border-radius: 16px 0 0 16px;
+}
+
+.wpuf-pp-plan:last-child {
+    border-radius: 0 16px 16px 0;
+}
+
+.wpuf-pp-plan--featured {
+    border: 1px solid #e5e7eb;
+    border-top: 2px solid #059669;
+    padding-top: 26px;
+}
+
+.wpuf-pp-plan__name {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #1f2937;
+}
+
+.wpuf-pp-plan__desc {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #6b7280;
+}
+
+/* Lifetime discount row: struck-through original price + "% OFF" chip. */
+.wpuf-pp-plan__discount {
+    align-items: center;
+    gap: 8px;
+}
+
+.wpuf-pp-plan__orig {
+    font-size: 18px;
+    line-height: 36px;
+    color: #758598;
+    text-decoration: line-through;
+    white-space: nowrap;
+}
+
+.wpuf-pp-plan__chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #d6f1a2;
+    color: #0e0e0f;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+.wpuf-pp-plan__price {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.wpuf-pp-plan__price strong {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #111827;
+}
+
+.wpuf-pp-plan__price span {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.wpuf-pp-plan__everything {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #1f2937;
+}
+
+.wpuf-pp-plan__features {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wpuf-pp-plan__features li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #374151;
+    margin: 0;
+}
+
+.wpuf-pp-plan__features svg {
+    width: 20px;
+    height: 20px;
+    color: #10b981;
+    flex-shrink: 0;
+}
+
+.wpuf-pp-plan__top {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Refund policy ---------------------------------------------------------- */
+.wpuf-pp-refund {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 1000px;
+    margin: 40px auto 0;
+    padding: 41px;
+    border: 1px solid #e4e4e4;
+    border-radius: 20px;
+    background: linear-gradient(90deg, #ffffff 0%, #f6f8ff 100%);
+}
+
+.wpuf-pp-refund__text {
+    max-width: 751px;
+}
+
+.wpuf-pp-refund__text h3 {
+    margin: 0 0 20px;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 36px;
+    color: #111827;
+}
+
+.wpuf-pp-refund__text > p {
+    margin: 0 0 32px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #1f2937;
+}
+
+.wpuf-pp-refund__pay {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.wpuf-pp-refund__pay span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1f2937;
+    white-space: nowrap;
+}
+
+.wpuf-pp-refund__pay img {
+    height: 39px;
+    display: block;
+}
+
+.wpuf-pp-refund__badge img {
+    width: 158px;
+    height: 158px;
+    display: block;
+}
+
+/* 6. CTA banner ---------------------------------------------------------- */
+.wpuf-pp-cta {
+    position: relative;
+    overflow: hidden;
+    max-width: 1000px;
+    margin: 0 auto;
+    border-radius: 20px;
+    background: #00231a;
+    padding: 40px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 36px;
+}
+
+.wpuf-pp-cta__bg {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 230px;
+    opacity: .3;
+    pointer-events: none;
+    /* Anchored to the corner, then nudged out with positive offsets; the
+       banner's overflow:hidden clips the overshoot (same look as right/bottom
+       negative values). */
+    transform: translate( 73px, 99px );
+}
+
+.wpuf-pp-cta__text {
+    position: relative;
+    z-index: 2;
+    max-width: 458px;
+}
+
+.wpuf-premium-page .wpuf-pp-cta__text h2 {
+    margin: 0 0 16px;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32px;
+    color: #fff;
+}
+
+.wpuf-pp-cta__text p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 20px;
+    color: #fff;
+}
+
+.wpuf-pp-cta .wpuf-pp-btn {
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+}
+
+/* Bottom spacing so WP footer doesn't crowd the banner. */
+.wpuf-pp-section:last-of-type {
+    padding-bottom: 96px;
+}
+
+/* Responsive ------------------------------------------------------------- */
+@media screen and (max-width: 1100px) {
+    .wpuf-pp-compare {
+        flex-direction: column;
+    }
+    .wpuf-pp-compare__intro {
+        width: 100%;
+    }
+    .wpuf-pp-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .wpuf-pp-modules__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 782px) {
+    .wpuf-premium-page {
+        margin-right: 10px;
+    }
+    .wpuf-pp-hero__crown {
+        display: none;
+    }
+    .wpuf-pp-grid,
+    .wpuf-pp-modules__grid {
+        grid-template-columns: 1fr;
+    }
+    .wpuf-pp-plans {
+        flex-direction: column;
+    }
+    .wpuf-pp-plan,
+    .wpuf-pp-plan:first-child,
+    .wpuf-pp-plan:last-child {
+        border-radius: 16px;
+        margin-bottom: 16px;
+    }
+    .wpuf-pp-refund,
+    .wpuf-pp-cta {
+        flex-direction: column;
+        text-align: center;
+    }
+    .wpuf-pp-refund__badge {
+        margin-top: 20px;
+    }
+}

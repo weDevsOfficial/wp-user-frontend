@@ -1,6 +1,6 @@
 ---
 name: wpuf-release
-description: Release WP User Frontend (free) to wp.org via the 10up GitHub Actions pipeline (NOT Appsero). Bump version + changelog, then push tag vX.Y.Z to weDevsOfficial/wp-user-frontend where `.github/workflows/deploy-org.yml` builds + deploys to wp.org SVN (10up) and publishes a GitHub Release. Trigger on "release wpuf", "ship wpuf X.Y.Z", "publish wpuf", "/wpuf-release". Free only — for Pro use wpuf-pro-release.
+description: Release WP User Frontend (free) to wp.org via the 10up GitHub Actions pipeline (NOT Appsero). Bump version + changelog, then push tag vX.Y.Z to weDevsOfficial/wp-user-frontend where `.github/workflows/deploy-org.yml` builds + deploys to wp.org SVN (10up) and publishes a GitHub Release. Trigger on "release wpuf", "ship wpuf X.Y.Z", "publish wpuf", "/wpuf-release". Free only — for Pro use wpuf-pro-release. Also covers changelog keyword phrasing for wp.org ranking (frontend post, user directory, membership, user profile, user registration).
 ---
 
 # WP User Frontend (Free) Release — 10up pipeline
@@ -33,9 +33,12 @@ replaced: `deploy-org.yml` (10up) is now the only publisher. Key model facts:
 
 ```bash
 # 1. draft changelog to a file (one entry per line, no header, USER-FACING only):
+#    Phrase entries with the wp.org tag keywords where truthful — see
+#    "Keyword phrasing (wp.org ranking)" below. Do this NOW; changelog only
+#    ships with a release.
 cat > /tmp/wpuf-cl.md <<'EOF'
-Fix – User-facing description of a bug fix.
-New – User-facing description of a new feature.
+Fix – Tag suggestions not loading in the frontend post form builder.
+New – Search and filtering in the user directory.
 EOF
 
 # 2. prepare in a tmp clone (bump + changelog + tag, NO push):
@@ -89,6 +92,49 @@ curl -sI "https://plugins.svn.wordpress.org/wp-user-frontend/tags/$V/wpuf.php" |
 ```
 The workflow extracts the first block into the GitHub Release body. **User-facing
 only — never put dev/chore/refactor commits in the changelog.**
+
+### 🔍 Keyword phrasing (wp.org ranking)
+
+The changelog ships with every release and feeds wp.org search relevance. Active
+installs are trending down, so entries must carry the plugin's **5 wp.org tags**
+verbatim wherever they honestly apply:
+
+```
+frontend post · user directory · membership · user profile · user registration
+```
+
+(Those 5 are the `Tags:` header in `readme.txt` — only the first 5 count. Keep the
+changelog wording aligned with them.)
+
+Rules:
+
+- **Name the feature area in full, not the shorthand.** Prefer the tag phrase over
+  the internal term — that's where the ranking value sits.
+- Applies to **small fixes/chores/enhancements too** — a minor fix is still a
+  chance to place a keyword, as long as it stays accurate.
+- **Never fabricate.** The keyword must describe what the change truly touched. A
+  checkbox-styling fix in the form builder is a *frontend post form* fix; it is
+  NOT a membership fix. False entries burn user trust and wp.org can flag
+  keyword-stuffed readmes.
+- Don't cram all 5 into one line. One natural keyword per entry.
+- Chore/dev commits still stay OUT entirely — rephrasing doesn't make them
+  user-facing. Only reword entries that already earned a place.
+
+Rewrite examples (same fix, better placement):
+
+| Instead of | Write |
+|---|---|
+| `Fix – Tags suggestions not loading in form builder` | `Fix – Tag suggestions not loading in the frontend post form builder` |
+| `Fix – Checkbox styling in form builder` | `Fix – Checkbox styling in the frontend post form builder` |
+| `Fix – Restore edit button for CPT published posts` | `Fix – Restore edit button for custom post type frontend posts in the user dashboard` |
+| `Enhance – Directory search` | `Enhance – Search and filtering in the user directory` |
+| `Fix – Profile fields not saving` | `Fix – User profile fields not saving from the frontend profile form` |
+| `Enhance – Pack assignment` | `Enhance – Membership subscription pack assignment` |
+| `Fix – Registration email verification` | `Fix – Email verification during user registration` |
+
+Description/FAQ copy is edited straight on wp.org via the
+`wpuf-wporg-readme-svn` skill (no release needed). The **changelog** can only ship
+with a release — so land the keywords here, at draft time (golden path step 1).
 
 ## Workflow facts (`.github/workflows/deploy-org.yml`)
 - Trigger: any tag push. Order: build → `grunt release` (POT + legacy assets +

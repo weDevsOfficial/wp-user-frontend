@@ -744,7 +744,7 @@ class Subscription {
             $this->handle_post_publish( $order_id );
         } elseif ( $info['pack_id'] ) {
             if ( $recurring ) {
-                $profile_id = $info['profile_id'];
+                $profile_id = $info['profile_id'] ?? null;
             } else {
                 $profile_id = isset( $info['user_id'] ) ? $info['user_id'] : null;
             }

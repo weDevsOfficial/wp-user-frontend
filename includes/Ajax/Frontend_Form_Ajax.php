@@ -884,7 +884,8 @@ class Frontend_Form_Ajax {
 
         if ( $replace ) {
             foreach ( $replace as $index => $meta_key ) {
-                $value = get_post_meta( $post_id, $meta_key, false );
+                $value      = get_post_meta( $post_id, $meta_key, false );
+                $input_type = $this->get_field_input_type( $meta_key );
 
                 if ( isset( $value[0] ) && is_array( $value[0] ) ) {
                     $new_value = implode( '; ', $value[0] );
@@ -899,26 +900,16 @@ class Frontend_Form_Ajax {
                     $is_first = true;
 
                     foreach ( $value as $val ) {
+                        $resolved = $this->maybe_attachment_url( $val, $input_type );
+
                         if ( $is_first ) {
-                            if ( get_post_mime_type( (int) $val ) ) {
-                                $meta_val = wp_get_attachment_url( $val );
-                            } else {
-                                $meta_val = $val;
-                            }
+                            $meta_val = $resolved;
                             $is_first = false;
                         } else {
-                            if ( get_post_mime_type( (int) $val ) ) {
-                                $meta_val = $meta_val . ', ' . wp_get_attachment_url( $val );
-                            } else {
-                                $meta_val = $meta_val . ', ' . $val;
-                            }
+                            $meta_val = $meta_val . ', ' . $resolved;
                         }
 
-                        if ( get_post_mime_type( (int) $val ) ) {
-                            $meta_val = $meta_val . ',' . wp_get_attachment_url( $val );
-                        } else {
-                            $meta_val = $meta_val . ',' . $val;
-                        }
+                        $meta_val = $meta_val . ',' . $resolved;
                     }
                     $original_value = $original_value . $meta_val;
                 } else {
@@ -927,11 +918,7 @@ class Frontend_Form_Ajax {
                         $new_value = implode( ', ', $value );
                     }
 
-                    if ( get_post_mime_type( (int) $new_value ) ) {
-                        $original_value = wp_get_attachment_url( $new_value );
-                    } else {
-                        $original_value = $new_value;
-                    }
+                    $original_value = $this->maybe_attachment_url( $new_value, $input_type );
                 }
 
                 $content = str_replace( $search[ $index ], $original_value, $content );
@@ -939,6 +926,64 @@ class Frontend_Form_Ajax {
         }
 
         return $content;
+    }
+
+    /**
+     * Get a form field's input type from its meta key
+     *
+     * The meta key of a custom field is the field `name` set in the form builder.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $meta_key Custom field meta key.
+     *
+     * @return string Input type, or an empty string when the field is unknown.
+     */
+    private function get_field_input_type( $meta_key ) {
+        if ( empty( $this->form_fields ) || ! is_array( $this->form_fields ) ) {
+            return '';
+        }
+
+        foreach ( $this->form_fields as $field ) {
+            if (
+                isset( $field['name'], $field['input_type'] )
+                && $field['name'] === $meta_key
+            ) {
+                return $field['input_type'];
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * Resolve a meta value to an attachment URL when the field is an upload field
+     *
+     * Numeric values of non-upload fields are left untouched — previously any
+     * value that happened to match an attachment ID was replaced by its URL.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param mixed  $value      Stored meta value.
+     * @param string $input_type Field input type, empty when unknown.
+     *
+     * @return mixed Attachment URL for upload fields, otherwise the value itself.
+     */
+    private function maybe_attachment_url( $value, $input_type ) {
+        $is_upload = in_array( $input_type, [ 'image_upload', 'file_upload' ], true );
+
+        // Field type unknown, fall back to the legacy attachment lookup.
+        if ( ! $is_upload && '' === $input_type && get_post_mime_type( (int) $value ) ) {
+            $is_upload = true;
+        }
+
+        if ( ! $is_upload ) {
+            return $value;
+        }
+
+        $url = wp_get_attachment_url( $value );
+
+        return $url ? $url : $value;
     }
 
 }

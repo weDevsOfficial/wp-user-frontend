@@ -5,7 +5,7 @@
  * Adds the `discount` column to `wpuf_transaction` table so coupon
  * discount amounts are persisted per transaction.
  *
- * @since WPUF_SINCE
+ * @since 4.3.9
  */
 
 global $wpdb;

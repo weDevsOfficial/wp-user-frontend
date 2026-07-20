@@ -378,7 +378,7 @@ class Payment {
     /**
      * Render the order item row
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param array $billing_data Billing data array with keys: title, subtotal, billing_amount, type, id
      *
@@ -401,7 +401,7 @@ class Payment {
     /**
      * Render the order total row
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param array $billing_data Billing data array with keys: title, subtotal, billing_amount, type, id
      *
@@ -424,7 +424,7 @@ class Payment {
      * Coupons::after_apply_coupon(). The redesigned summary renders it here so
      * the tax line keeps showing on first paint, before any coupon is applied.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @return void
      */
@@ -460,7 +460,7 @@ class Payment {
      * - wpuf_before_pack_payment_total — existing hook, kept for back-compat
      * - wpuf_order_summary_after_total — after the total row
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param array $billing_data Billing data array with keys: title, subtotal, billing_amount, type, id
      *

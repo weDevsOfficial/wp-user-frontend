@@ -286,7 +286,7 @@ class Frontend_Account {
     /**
      * Display the change password section.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param array  $sections        Account sections.
      * @param string $current_section Active section slug.
@@ -303,7 +303,7 @@ class Frontend_Account {
     /**
      * Handle change password AJAX request.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @return void Sends JSON response.
      */

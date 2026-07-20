@@ -5,7 +5,7 @@
  * Static marketing view mirroring the "WPUF Upgrade to Pro" Figma redesign.
  *
  * @package WP_User_Frontend
- * @since   WPUF_SINCE
+ * @since   4.3.9
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

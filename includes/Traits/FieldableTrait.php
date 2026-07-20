@@ -588,7 +588,7 @@ trait FieldableTrait {
      * that already belong to the given post, or that are unattached AND owned
      * by the current requester, are allowed.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param int $attachment_id
      * @param int $post_id
@@ -629,7 +629,7 @@ trait FieldableTrait {
     /**
      * Check whether the current request owns an unattached attachment
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param \WP_Post $attachment Attachment post object.
      *
@@ -662,7 +662,7 @@ trait FieldableTrait {
     /**
      * Get sanitized, validated file meta (title/desc/caption) for an attachment
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param int $attachment_id
      *

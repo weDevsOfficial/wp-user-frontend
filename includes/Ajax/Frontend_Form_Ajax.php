@@ -933,7 +933,7 @@ class Frontend_Form_Ajax {
      *
      * The meta key of a custom field is the field `name` set in the form builder.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param string $meta_key Custom field meta key.
      *
@@ -962,7 +962,7 @@ class Frontend_Form_Ajax {
      * Numeric values of non-upload fields are left untouched — previously any
      * value that happened to match an attachment ID was replaced by its URL.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param mixed  $value      Stored meta value.
      * @param string $input_type Field input type, empty when unknown.

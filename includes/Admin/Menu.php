@@ -408,7 +408,7 @@ class Menu {
     /**
      * Load styles for the User Frontend > Premium page
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @return void
      */

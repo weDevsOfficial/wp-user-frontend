@@ -5,7 +5,7 @@
  * plan's amount + period suffix from data attributes.
  *
  * @package WP_User_Frontend
- * @since WPUF_SINCE
+ * @since 4.3.9
  */
 ( function () {
     'use strict';

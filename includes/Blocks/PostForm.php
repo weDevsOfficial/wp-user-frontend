@@ -7,14 +7,14 @@ namespace WeDevs\Wpuf\Blocks;
 /**
  * Post Form Gutenberg block
  *
- * @since WPUF_SINCE
+ * @since 4.3.9
  */
 class PostForm {
 
     /**
      * Initialize the block
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @return void
      */
@@ -26,7 +26,7 @@ class PostForm {
     /**
      * Register the block category for WPUF blocks (no-op if already registered)
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param array $categories Existing block categories
      *
@@ -50,7 +50,7 @@ class PostForm {
     /**
      * Register the Gutenberg block and localise editor data
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @return void
      */
@@ -98,7 +98,7 @@ class PostForm {
     /**
      * Get data to pass to the block editor via wp_localize_script
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @return array
      */
@@ -135,7 +135,7 @@ class PostForm {
      * Handles both flat (linked) and per-side (split) formats.
      * Returns a normalized array with top/right/bottom/left keys.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param array|mixed $border Raw border attribute value
      *
@@ -185,7 +185,7 @@ class PostForm {
     /**
      * Sanitize a CSS length value (e.g. '2px', '0.5em')
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param string $value CSS length value
      *
@@ -207,7 +207,7 @@ class PostForm {
      * Strips characters that are not valid in CSS font-family declarations
      * to prevent CSS injection while allowing any valid font-family value.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param string $value Raw font-family value
      *
@@ -227,7 +227,7 @@ class PostForm {
     /**
      * Sanitize a CSS font-style value
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param string $value Raw font-style value
      *
@@ -242,7 +242,7 @@ class PostForm {
     /**
      * Sanitize a CSS font-weight value
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param string $value Raw font-weight value
      *
@@ -258,7 +258,7 @@ class PostForm {
     /**
      * Server-side render callback for the block
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param array $attributes Block attributes
      *
@@ -411,7 +411,7 @@ class PostForm {
         /**
          * Filter the block configuration before rendering
          *
-         * @since WPUF_SINCE
+         * @since 4.3.9
          *
          * @param array $block_config Block configuration array
          * @param array $attributes   Raw block attributes

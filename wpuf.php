@@ -6,6 +6,8 @@ Description: Create, edit, delete, manages your post, pages or custom post types
 Author: weDevs
 Version: 4.3.9
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
+Requires at least: 5.0
+Requires PHP: 7.4
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: wp-user-frontend

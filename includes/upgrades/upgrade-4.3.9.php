@@ -1,6 +1,6 @@
 <?php
 /**
- * Upgrade routine for 4.3.8
+ * Upgrade routine for 4.3.9
  *
  * Adds the `discount` column to `wpuf_transaction` table so coupon
  * discount amounts are persisted per transaction.

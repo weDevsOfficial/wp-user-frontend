@@ -479,7 +479,7 @@ class Paypal {
         // Add query var filter
         add_filter(
             'query_vars', function ( $vars ) {
-				$vars[] = 'action';
+				$vars[] = 'wpuf_paypal_action';
 				return $vars;
 			}
         );
@@ -1444,7 +1444,7 @@ class Paypal {
             $coupon_discount = 0;
             if ( function_exists( 'wpuf_pro' ) && wpuf_pro() &&
                 isset( $_POST['coupon_id'] ) && ! empty( $_POST['coupon_id'] ) &&
-                isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_payment_coupon' ) &&
+                isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_payment_gateway' ) &&
                 is_numeric( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) ) ) {
                 $coupon_id       = absint( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) );
                 $original_amount = floatval( $billing_amount );
@@ -2518,7 +2518,7 @@ add_action(
 // Add query var
 add_filter(
     'query_vars', function ( $vars ) {
-		$vars[] = 'action';
+		$vars[] = 'wpuf_paypal_action';
 		return $vars;
 	}
 );

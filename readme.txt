@@ -571,6 +571,11 @@ Please report security bugs found in the source code of the User Frontend plugin
 * Enhance – Coupon discount and coupon ID are now stored per transaction and shown in the admin transaction list.
 * Enhance – Show the active Pro plan as a badge in the admin header.
 * Fix – Custom field placeholders in notification emails no longer replace a numeric field value with an attachment URL; only image and file upload fields resolve to URLs.
+* Fix – Coupon discounts now apply to PayPal payments; the discounted amount was previously ignored at checkout.
+* Fix – Resolve a fatal error on PHP 8 when a frontend post form still contains a field from a deactivated module.
+* Fix – Renamed the PayPal webhook query variable so it no longer conflicts with FacetWP and other plugins.
+* Fix – The user registration login form's "Don't have an account?" text is now translatable.
+* Fix – Corrected the Custom HTML field tooltip; WordPress shortcodes require the Shortcode field.
 
 
 = v4.3.8 (19 June, 2026) =

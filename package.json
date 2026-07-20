@@ -7,7 +7,8 @@
   "private": true,
   "scripts": {
     "release": "grunt release",
-    "build": "npm run build:forms-list && npm run build:subscriptions && npm run build:frontend-subscriptions && npm run build:ai-form-builder && npm run build:account && npm run build:user-directory && npm run build:css",
+    "build": "npm run build:forms-list && npm run build:subscriptions && npm run build:frontend-subscriptions && npm run build:ai-form-builder && npm run build:account && npm run build:user-directory && npm run build:legacy && npm run build:css",
+    "build:legacy": "grunt less && grunt concat && grunt uglify",
     "build:forms-list": "ENTRY=forms-list vite build",
     "build:subscriptions": "ENTRY=subscriptions vite build",
     "build:frontend-subscriptions": "ENTRY=frontend-subscriptions vite build",

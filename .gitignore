@@ -78,3 +78,6 @@ assets/css/frontend-forms.css
 assets/css/registration-forms.css
 assets/css/wpuf-form-builder.css
 languages/wp-user-frontend.pot
+
+# OpenSpec change proposals (local spec artifacts)
+openspec/

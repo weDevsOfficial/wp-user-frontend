@@ -114,6 +114,7 @@ class Admin {
                 'version'                      => WPUF_VERSION,
                 'pro_version'                  => defined( 'WPUF_PRO_VERSION' ) ? WPUF_PRO_VERSION : '',
                 'isProActive'                  => class_exists( 'WP_User_Frontend_Pro' ),
+                'plan'                         => function_exists( 'wpuf_pro_current_plan' ) ? wpuf_pro_current_plan() : '',
                 'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
                 'protected_shortcodes_message' => sprintf(
                     // translators: %1$s is the opening div tag, %2$s is the shortcode [wpuf-registration], %3$s is the opening strong tag, %4$s is the closing strong tag, %5$s is the closing div tag

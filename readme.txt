@@ -4,7 +4,7 @@ Donate link: https://tareq.co/donate/
 Tags: frontend post, user directory, membership, user profile, user registration
 Requires at least: 5.0
 Tested up to: 7.0
-Stable tag: 4.3.8
+Stable tag: 4.3.9
 Requires PHP: 7.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html

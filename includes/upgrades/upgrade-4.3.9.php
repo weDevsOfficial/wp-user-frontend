@@ -24,7 +24,12 @@ if ( $wpdb->has_cap( 'collation' ) ) {
 
 $table_name = $wpdb->prefix . 'wpuf_transaction';
 
-$sql = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
+// No IF NOT EXISTS here: dbDelta parses the table name with
+// `|CREATE TABLE ([^ ]*)|`, so it would read the name as "IF", find no such
+// table, and run the raw statement as a no-op instead of emitting the
+// ALTER TABLE ... ADD COLUMN for `discount` and `coupon_id`. dbDelta is
+// already idempotent against an existing table.
+$sql = "CREATE TABLE `{$table_name}` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `user_id` bigint(20) DEFAULT NULL,
     `status` varchar(60) NOT NULL DEFAULT 'pending_payment',

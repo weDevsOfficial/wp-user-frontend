@@ -731,13 +731,13 @@ export class PostFormPage extends Base {
             await this.page.waitForTimeout(200);
             await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
         }
-        //Validate Product Price
-        await this.assertionValidate(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice));
         //Validate Product Excerpt
         await this.assertionValidate(Selectors.postForms.downloadsFormData.excerpt(DownloadsForm.excerpt));
-        //Validate Product Category
+        //Open the Download sidebar panel — EDD 3.x renders the price field inside it
         await this.validateAndClick(Selectors.postForms.downloadsFormData.clickDownload);
         await this.page.waitForTimeout(300);
+        //Validate Product Price
+        await this.assertionValidate(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice));
         await this.validateAndClick(Selectors.postForms.downloadsFormData.clickCategory);
         await this.assertionValidate(Selectors.postForms.downloadsFormData.categoryBE(DownloadsForm.category));
         //Validate Product Tags

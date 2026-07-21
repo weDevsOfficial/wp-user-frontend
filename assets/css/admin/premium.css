@@ -442,6 +442,8 @@ body .wpuf-premium-page h4 {
     display: flex;
     gap: 44px;
     align-items: flex-start;
+    max-width: 1000px;
+    margin: 0 auto;
     padding: 72px 0;
 }
 
@@ -470,17 +472,17 @@ body .wpuf-premium-page h4 {
     min-width: 0;
     background: #fff;
     border: 1px solid #e5e7eb;
-    border-radius: 20px;
+    border-radius: 16px;
 }
 
 .wpuf-pp-table__head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 40px;
+    padding: 20px 40px;
     background: #ecfdf5;
     border-bottom: 1px solid #e5e7eb;
-    border-radius: 20px 20px 0 0;
+    border-radius: 16px 16px 0 0;
 }
 
 .wpuf-pp-table__head-label,
@@ -494,32 +496,48 @@ body .wpuf-premium-page h4 {
 .wpuf-pp-table__cols {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    width: 184px;
+    gap: 40px;
+}
+
+.wpuf-pp-table__col {
+    width: 40px;
+    text-align: center;
 }
 
 .wpuf-pp-table__col--pro {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    justify-content: flex-end;
+    gap: 6px;
+    width: 64px;
+    text-align: right;
 }
 
-.wpuf-pp-table__col--pro svg {
-    width: 20px;
-    height: 20px;
-    color: #f59e0b;
+.wpuf-pp-crown {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient( to bottom right, #ffb900, #fe9a00 );
+}
+
+.wpuf-pp-crown svg {
+    width: 16px;
+    height: 16px;
+    color: #fff;
 }
 
 .wpuf-pp-table__body {
-    padding: 8px 0 20px;
+    padding: 0;
 }
 
 .wpuf-pp-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 40px;
-    min-height: 40px;
+    padding: 11px 40px;
 }
 
 .wpuf-pp-row__label {
@@ -533,21 +551,22 @@ body .wpuf-premium-page h4 {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 105px;
-    padding-right: 7px;
+    gap: 40px;
+    padding-right: 8px;
 }
 
 .wpuf-pp-divider {
     height: 1px;
     background: #e5e7eb;
-    margin: 8px 0;
+    margin: 0;
 }
 
 .wpuf-pp-mark {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
+    width: 40px;
+    height: 40px;
     border-radius: 40px;
 }
 
@@ -572,10 +591,13 @@ body .wpuf-premium-page h4 {
     color: #9ca3af;
 }
 
+/* Keeps the 40px column slot so the Lite marks stay aligned row to row; the
+   label is centred and allowed to spill evenly on both sides. */
 .wpuf-pp-mark--limited {
-    font-size: 14px;
+    font-size: 13px;
     color: #374151;
-    padding: 10px;
+    white-space: nowrap;
+    overflow: visible;
 }
 
 /* 3. What Changes grid --------------------------------------------------- */

@@ -154,6 +154,19 @@ body .wpuf-premium-page h4 {
     padding: 0 20px;
 }
 
+/* Admin notices park after the topbar, at the wp-header-end marker in the
+   view. #wpcontent's left padding is zeroed above so the bands can run
+   edge-to-edge; without this the notices would sit flush against the menu
+   instead of following the page's own rhythm. */
+.wpuf-premium-page > .notice,
+.wpuf-premium-page > .updated,
+.wpuf-premium-page > .error,
+.wpuf-premium-page > #wpuf-review-notice {
+    max-width: 1256px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 /* Shared building blocks ------------------------------------------------- */
 .wpuf-pp-section {
     padding: 72px 0;

@@ -231,6 +231,16 @@ $wpuf_plans = [
         </div>
     </div>
 
+    <?php
+    /*
+     * Parks admin notices here. Without this marker core's common.js relocates
+     * every .notice to just after the first h1/h2 inside .wrap — which on this
+     * page is the topbar title, nested in a flex row. Notices then become flex
+     * items and collapse into unreadable narrow columns.
+     */
+    ?>
+    <hr class="wp-header-end">
+
     <div class="wpuf-premium-page__inner">
 
         <?php // 1. Hero. ?>

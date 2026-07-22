@@ -25,13 +25,8 @@ playwright-report
 tests/e2e/node_modules/
 tests/e2e/test-results/
 tests/e2e/setup
-tests/e2e/parallel-one
-tests/e2e/parallel-two
-tests/e2e/parallel-three
-tests/e2e/parallel-four
-tests/e2e/parallel-five
-tests/e2e/parallel-six
-tests/e2e/parallel-seven
+tests/e2e/blob-report
+tests/e2e/all-blob-reports
 tests/e2e/parallel-eight
 tests/e2e/parallel-nine
 tests/e2e/parallel-ten

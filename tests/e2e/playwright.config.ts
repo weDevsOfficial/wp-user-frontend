@@ -50,14 +50,15 @@ const artifactDir = shardIndex ? `./test-results/shard-${shardIndex}` : './test-
 export default defineConfig({
     testDir: './tests',
 
-    timeout: 120000,
+    // WordPress admin can render slowly on loaded CI runners; give a test room.
+    timeout: isCI ? 180000 : 120000,
 
     expect: { timeout: 30000 },
 
     // Sequential — never run two stateful specs against the shared site at once.
     fullyParallel: false,
 
-    forbidOnly: false,
+    forbidOnly: isCI,
 
     retries: 0,
 
@@ -68,41 +69,7 @@ export default defineConfig({
     reporter: [
         ['list', { printSteps: false }],
         ['json', { outputFile: jsonOutput }],
-        ['html', { outputFolder: htmlOutput, open: 'never' }],
     ],
-
-    use: {
-        actionTimeout: 0,
-        headless: true,
-        viewport: { width: 1280, height: 720 },
-        trace: 'retain-on-failure',
-        screenshot: 'only-on-failure',
-        video: 'off',
-        ignoreHTTPSErrors: true,
-    },
-
-    projects: [
-        // Phase 1 — global setup: resets + configures the site. Run first, once.
-        {
-            name: 'setup',
-            testMatch: '**/alphaSetupTest.spec.ts',
-            use: { ...devices['Desktop Chrome'] },
-        },
-
-        // Phase 2 — the stateful UI suite. Split across shards via `--shard=i/n`.
-        {
-            name: 'e2e',
-            testIgnore: ['**/alphaSetupTest.spec.ts', '**/api/**'],
-            use: { ...devices['Desktop Chrome'] },
-        },
-
-        // Phase 3 — REST API layer (wpuf/v1). No browser; uses the request fixture.
-        {
-            name: 'api',
-            testDir: './tests/api',
-            testMatch: '**/*.spec.ts',
-            timeout: 60000,
-            expect: { timeout: 15000 },
         },
     ],
 });

@@ -294,7 +294,7 @@ class Upload_Ajax {
      * uploads, guests may only remove uploads bound to their own session token,
      * and users with the editor capability keep full control.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @param \WP_Post $attachment Attachment post object.
      *
@@ -339,7 +339,7 @@ class Upload_Ajax {
      * meta on upload so the public delete handler can verify ownership without
      * relying on the author id, which is always 0 for guests.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.9
      *
      * @return string
      */

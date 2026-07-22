@@ -13,6 +13,7 @@ class Menu {
         add_filter( 'parent_file', [ $this, 'fix_parent_menu' ] );
         add_filter( 'submenu_file', [ $this, 'fix_submenu_file' ] );
         add_filter( 'script_loader_tag', [ $this , 'add_async_attribute' ], 10, 3 );
+        add_action( 'admin_head', [ $this, 'premium_menu_styles' ] );
     }
 
     public function admin_menu() {
@@ -73,9 +74,11 @@ class Menu {
         do_action( 'wpuf_admin_menu_bottom' );
 
         if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
-            $premium_hook = add_submenu_page( $this->parent_slug, __( 'Premium', 'wp-user-frontend' ), __( 'Premium', 'wp-user-frontend' ), $capability, 'wpuf_premium', [ $this, 'premium_page' ] );
+            $premium_hook = add_submenu_page( $this->parent_slug, __( 'Premium', 'wp-user-frontend' ), $this->get_premium_menu_title(), $capability, 'wpuf_premium', [ $this, 'premium_page' ] );
 
             $this->all_submenu_hooks['premium'] = $premium_hook;
+
+            add_action( 'load-' . $premium_hook, [ $this, 'enqueue_premium_script' ] );
         }
 
         $help_hook = add_submenu_page( $this->parent_slug, __( 'Help', 'wp-user-frontend' ), sprintf( '<span style="color:#f18500">%s</span>', __( 'Help', 'wp-user-frontend' ) ), $capability, 'wpuf-support', [ $this, 'support_page' ] );
@@ -94,6 +97,83 @@ class Menu {
         $this->all_submenu_hooks['settings_hook'] = $settings_page_hook;
 
         add_action( 'load-' . $settings_page_hook, [ $this, 'enqueue_settings_page_scripts' ] );
+    }
+
+    /**
+     * Build the Premium submenu title with its crown icon.
+     *
+     * WordPress prints submenu titles unescaped, so markup is allowed here. The
+     * crown is inlined rather than enqueued so it costs no extra request, and the
+     * glow itself is handled in CSS — see premium_menu_styles().
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string
+     */
+    public function get_premium_menu_title() {
+        $crown = '<svg class="wpuf-premium-menu__crown" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 16L3 6l5.5 4L12 4l3.5 6L21 6l-2 10H5zm14 3a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1h14v1z"/></svg>';
+
+        return '<span class="wpuf-premium-menu">' . esc_html__( 'Premium', 'wp-user-frontend' ) . $crown . '</span>';
+    }
+
+    /**
+     * Print the glow styles for the Premium submenu item.
+     *
+     * Lives in admin_head because the admin menu renders on every screen, while
+     * the plugin stylesheet is only enqueued on WPUF pages.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function premium_menu_styles() {
+        if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
+            return;
+        }
+        ?>
+        <style id="wpuf-premium-menu-style">
+            #adminmenu .wpuf-premium-menu {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-weight: 600;
+                color: #ffb900;
+            }
+
+            #adminmenu .wpuf-premium-menu__crown {
+                width: 14px;
+                height: 14px;
+                flex-shrink: 0;
+                fill: currentColor;
+                animation: wpuf-premium-glow 2.4s ease-in-out infinite;
+            }
+
+            #adminmenu a:hover .wpuf-premium-menu,
+            #adminmenu a:focus .wpuf-premium-menu,
+            #adminmenu .current .wpuf-premium-menu {
+                color: #ffc83d;
+            }
+
+            @keyframes wpuf-premium-glow {
+                0%, 100% {
+                    filter: drop-shadow( 0 0 0 rgba( 255, 185, 0, 0 ) );
+                    transform: scale( 1 );
+                }
+
+                50% {
+                    filter: drop-shadow( 0 0 5px rgba( 255, 185, 0, .9 ) );
+                    transform: scale( 1.12 );
+                }
+            }
+
+            @media ( prefers-reduced-motion: reduce ) {
+                #adminmenu .wpuf-premium-menu__crown {
+                    animation: none;
+                    filter: drop-shadow( 0 0 3px rgba( 255, 185, 0, .7 ) );
+                }
+            }
+        </style>
+        <?php
     }
 
     /**
@@ -401,6 +481,31 @@ class Menu {
             </div>
         </div>
         <?php
+    }
+
+    /**
+     * Load styles for the User Frontend > Premium page
+     *
+     * @since 4.3.9
+     *
+     * @return void
+     */
+    public function enqueue_premium_script() {
+        // Inter is self-hosted via @font-face inside premium.css; no CDN needed.
+        wp_enqueue_style(
+            'wpuf-premium',
+            WPUF_ASSET_URI . '/css/admin/premium.css',
+            [],
+            WPUF_VERSION
+        );
+
+        wp_enqueue_script(
+            'wpuf-premium',
+            WPUF_ASSET_URI . '/js/admin/premium.js',
+            [],
+            WPUF_VERSION,
+            true
+        );
     }
 
     /**

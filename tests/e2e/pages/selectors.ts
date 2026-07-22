@@ -74,8 +74,8 @@ export const Selectors = {
             // PostFormPage
             clickPostFormMenuOption: '//h3[normalize-space(text())="Post Forms"]',
             clickRegFormMenuOption: '//h3[normalize-space()="Registration Forms"]',
-            wpufPostFormCheckAddButton: ' //button[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
-            wpufRegFormCheckAddButton: ' //a[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
+            wpufPostFormCheckAddButton: '(//button[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
+            wpufRegFormCheckAddButton: '(//a[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
             noFormMsg: '//h2[normalize-space()="No Post Forms Created Yet"]',
             formTitleCheck: (formName: string) => `//span[normalize-space(text())='${formName}']`,
             clickRegFormListPage: '//a[normalize-space()="Registration Forms"]'
@@ -328,7 +328,7 @@ export const Selectors = {
         /* Locators creating Navigating Post Forms Page */
         navigatePage_PF: {
             // WPUF > Pages > Navigation
-            checkAddButton_PF: '//button[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
+            checkAddButton_PF: '(//button[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
             postFormsPageFormsTitleCheck_PF: (formName: string) => `//span[normalize-space()="${formName}"]`,
             postFormShortCode: (formName: string) => `//span[normalize-space()="${formName}"]//..//..//code`,
         },
@@ -339,7 +339,7 @@ export const Selectors = {
             clickpostFormsMenuOption: '//a[contains(text(), "Post Forms")]',
 
             // Add Form
-            clickPostAddForm: '//button[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
+            clickPostAddForm: '(//button[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
 
             // Start > Blank Form
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
@@ -840,7 +840,9 @@ export const Selectors = {
             purchaseButton: '//span[@class="edd-add-to-cart-label"]',
             downloadsImage: '//figure[@class="wp-block-post-featured-image"]',
             titleBE: (title: string) => `//a[normalize-space()='${title}']`,
-            price: (price: string) => `(//input[@id="edd_price" and @value="${price}.00" ])[2]`,
+            // Scope to EDD's native price field container: the page also carries a hidden
+            // WPUF-rendered #edd_price twin, so a bare positional index can land on it.
+            price: (price: string) => `//div[@id="edd_regular_price_field"]//input[@id="edd_price" and @value="${price}.00"]`,
             clickDownload: '//div[@class="interface-complementary-area editor-sidebar"]//div//button//span[normalize-space()="Download"]',
             clickCategory: '//button[normalize-space()="Categories"]',
             categoryBE: (category: string) => `//label[normalize-space()='${category}']`,
@@ -900,7 +902,7 @@ export const Selectors = {
         // Navigate Registration Forms Page
         navigatePage_RF: {
             // WPUF > Pages > Navigation
-            checkAddButton_RF: '(//a[contains(@class,"new-wpuf-form wpuf-rounded-md")])',
+            checkAddButton_RF: '(//a[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
             postFormsPageFormTitleCheck_RF: '(//a[@class="row-title"])[1]',
 
             // New_Created_NAME_Checker
@@ -916,7 +918,7 @@ export const Selectors = {
             validateRegistrationFormPageName: '//h2[contains(text(), "Profile Forms")]',
 
             // Start
-            clickRegistraionAddForm: '//a[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
+            clickRegistraionAddForm: '(//a[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
             //hoverBlankForm: '(//a[contains(@class,"new-wpuf-form wpuf-rounded-md")])',
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
 
@@ -1085,7 +1087,7 @@ export const Selectors = {
     postFormSettings: {
         // Navigation and Basic Elements
         formNameInput: '//input[@name="post_title"]',
-        addNewButton: '//button[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
+        addNewButton: '(//button[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
         saveButton: '//button[normalize-space(text())="Save"]',
         postTypeColumn: (formName: string, postType: string) => `//span[normalize-space()="${formName}"]//..//..//td[normalize-space()="${postType}"]`,
         postSubmissionStatusColumn: (formName: string, status: string) => `//span[normalize-space()="${formName}"]//..//..//td[normalize-space()="${status}"]`,
@@ -1120,7 +1122,7 @@ export const Selectors = {
         paymentPageTitle: '//h1[normalize-space(text())="Payment"]',
         validatePayPerPostCost: '//span[@id="wpuf_pay_page_cost"]',
         checkBankButton: '//li[@class="wpuf-gateway-bank"]//input[1]',
-        proceedPaymentButton: '//input[@value="Proceed"]',
+        proceedPaymentButton: '//button[@name="wpuf_payment_submit"]',
         afterPaymentPageTitle: (successPage: string) => `//h1[normalize-space(text())="${successPage}"]`,
         transactionTableRow: '//tbody//tr[1]',
         acceptPayment: '//a[normalize-space()="Accept"]',

@@ -74,7 +74,7 @@ export const Selectors = {
             // PostFormPage
             clickPostFormMenuOption: '//h3[normalize-space(text())="Post Forms"]',
             clickRegFormMenuOption: '//h3[normalize-space()="Registration Forms"]',
-            wpufPostFormCheckAddButton: ' //button[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
+            wpufPostFormCheckAddButton: '(//button[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
             wpufRegFormCheckAddButton: ' //a[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
             noFormMsg: '//h2[normalize-space()="No Post Forms Created Yet"]',
             formTitleCheck: (formName: string) => `//span[normalize-space(text())='${formName}']`,
@@ -311,7 +311,7 @@ export const Selectors = {
         /* Locators creating Navigating Post Forms Page */
         navigatePage_PF: {
             // WPUF > Pages > Navigation
-            checkAddButton_PF: '//button[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
+            checkAddButton_PF: '(//button[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
             postFormsPageFormsTitleCheck_PF: (formName: string) => `//span[normalize-space()="${formName}"]`,
             postFormShortCode: (formName: string) => `//span[normalize-space()="${formName}"]//..//..//code`,
         },
@@ -322,7 +322,7 @@ export const Selectors = {
             clickpostFormsMenuOption: '//a[contains(text(), "Post Forms")]',
 
             // Add Form
-            clickPostAddForm: '//button[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
+            clickPostAddForm: '(//button[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
 
             // Start > Blank Form
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
@@ -1051,7 +1051,7 @@ export const Selectors = {
     postFormSettings: {
         // Navigation and Basic Elements
         formNameInput: '//input[@name="post_title"]',
-        addNewButton: '//button[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
+        addNewButton: '(//button[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
         saveButton: '//button[normalize-space(text())="Save"]',
         postTypeColumn: (formName: string, postType: string) => `//span[normalize-space()="${formName}"]//..//..//td[normalize-space()="${postType}"]`,
         postSubmissionStatusColumn: (formName: string, status: string) => `//span[normalize-space()="${formName}"]//..//..//td[normalize-space()="${status}"]`,

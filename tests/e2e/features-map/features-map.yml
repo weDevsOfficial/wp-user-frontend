@@ -127,6 +127,8 @@ features:
   - id: PF0026
     name: User validates the edited post
   - id: PF0027
+    name: Math Captcha is enforced on the post edit form
+  - id: PF0028
     name: User deletes their post from the frontend dashboard
 
   # Registration Forms
@@ -818,3 +820,21 @@ features:
     name: Subscription CRUD round-trip via API (create - read - delete)
   - id: AP0006
     name: POST /wpuf_subscription with a bad payload is rejected
+  - id: AP0007
+    name: Authenticated non-admin is forbidden (403) on admin routes
+  - id: AP0008
+    name: POST /wpuf_subscription with "#" in the name is rejected
+  - id: AP0009
+    name: Subscription update round-trip via POST /wpuf_subscription/{id}
+  - id: AP0010
+    name: POST /subscription-settings with a bad hex color is rejected (400)
+  - id: AP0011
+    name: DELETE /wpuf_subscription/{invalid-id} is rejected
+  - id: AP0012
+    name: GET /wpuf_subscription/count/{status} returns a count
+  - id: AP0013
+    name: XSS payload in a pack title is sanitized on store
+  - id: AP0014
+    name: GET /wpuf_form pagination contract (per_page/page echoed, capped)
+  - id: AP0015
+    name: GET /wpuf_form search with no match returns an empty result

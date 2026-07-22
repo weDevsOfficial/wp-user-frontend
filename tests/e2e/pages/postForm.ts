@@ -832,6 +832,47 @@ export class PostFormPage extends Base {
         console.log('\x1b[32m%s\x1b[0m', `✅ Post edit persisted: "${newTitle}" present, "${oldTitle}" gone`);
     }
 
+    // Prove the Math Captcha is actually ENFORCED on submission (gap #18). WPUF's
+    // frontend submit handler calls preventDefault() and, when the visible captcha
+    // input is unanswered, returns without submitting — so an unanswered edit must
+    // NOT persist, and answering the equation must let the same edit through.
+    // Operates on the user's first dashboard post and leaves its title unchanged,
+    // so a later delete step still matches it.
+    async validateMathCaptchaEnforced() {
+        const S = Selectors.postForms;
+        await this.openPostsDashboard();
+        const title = ((await this.page.locator(S.dashboardManage.allPostTitles).first().textContent()) || '').trim();
+
+        // Open the edit form for that post.
+        await this.validateAndClick(S.dashboardManage.optionsMenuTrigger(title));
+        await this.validateAndClick(S.dashboardManage.editLinkForPost(title));
+
+        // --- Negative: type a decoy title, leave the captcha blank, submit. ---
+        const decoyTitle = `${title} SHOULD-NOT-SAVE`;
+        await this.page.locator(S.postFormsFrontendCreate.postTitleFormsFE).fill(decoyTitle);
+        await this.page.locator(S.postFormsFrontendCreate.postMathCaptchaFormsFE.mathCaptcha).fill('');
+        await this.validateAndClick(S.postFormsFrontendCreate.submitPostFormsFE);
+        // Enforcement is web-first: the handler surfaces the captcha error and does
+        // NOT redirect to the success URL.
+        await expect(this.page.locator(S.postFormsFrontendCreate.postMathCaptchaFormsFE.error)).toBeVisible();
+        expect(this.page.url()).not.toContain('msg=post_updated');
+
+        // Confirm server-side the decoy title did NOT persist (original still shown).
+        await this.openPostsDashboard();
+        await expect(this.page.locator(S.dashboardManage.postTitleCell(decoyTitle))).toHaveCount(0);
+        await expect(this.page.locator(S.dashboardManage.postTitleCell(title))).toBeVisible();
+        console.log('\x1b[32m%s\x1b[0m', `✅ Math Captcha enforced: unanswered submit blocked ("${decoyTitle}" not saved)`);
+
+        // --- Positive: reopen, answer the captcha, resubmit the SAME title → success. ---
+        await this.validateAndClick(S.dashboardManage.optionsMenuTrigger(title));
+        await this.validateAndClick(S.dashboardManage.editLinkForPost(title));
+        await this.page.locator(S.postFormsFrontendCreate.postTitleFormsFE).fill(title);
+        await this.solveMathCaptchaIfPresent();
+        await this.validateAndClick(S.postFormsFrontendCreate.submitPostFormsFE);
+        await expect(this.page).toHaveURL(/msg=post_updated/, { timeout: 30000 });
+        console.log('\x1b[32m%s\x1b[0m', `✅ Math Captcha solved: update succeeded`);
+    }
+
     // Delete a post from the dashboard, auto-accepting the "Are you sure to
     // delete?" confirm dialog, and assert it is removed from the list.
     async deletePostFromDashboard(title: string) {

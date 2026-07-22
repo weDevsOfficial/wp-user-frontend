@@ -552,6 +552,23 @@ export class RegFormPage extends Base {
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcVendor.frontendForm.passwordField, VendorRegistrationForm.wcVendorPassword = VendorRegistrationForm.wcVendorEmail);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcVendor.frontendForm.confirmPasswordField, VendorRegistrationForm.wcVendorConfirmPassword = VendorRegistrationForm.wcVendorEmail);
 
+        // WPUF enables the Register button from a `change`-event listener once every
+        // required field validates. Under full-suite load a fast fill's change event
+        // can be missed, leaving Register `disabled` forever (the click then hangs for
+        // the whole test timeout). Actively re-fire change/blur on the last field and
+        // wait for it to enable; retry the nudge a few times before giving up.
+        const registerEnabled = this.page.locator('input[value="Register"]:not([disabled])');
+        const confirmPassword = this.page.locator(Selectors.vendorRegistrationForms.wcVendor.frontendForm.confirmPasswordField);
+        for (let attempt = 0; attempt < 3; attempt++) {
+            await confirmPassword.dispatchEvent('change').catch(() => {});
+            await confirmPassword.blur().catch(() => {});
+            try {
+                await registerEnabled.waitFor({ state: 'visible', timeout: 15000 });
+                break;
+            } catch {
+                // Still disabled — nudge again.
+            }
+        }
         await this.validateAndClick(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.registerButton);
         await this.validateAndClick(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.registerButton);
         await this.page.waitForTimeout(2000);

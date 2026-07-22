@@ -29,6 +29,15 @@ export function createAdminAppPassword(user = 'admin', label = 'wpuf-e2e-api'): 
 }
 
 /**
+ * Mint an Application Password for an arbitrary (typically non-admin) user login,
+ * used to exercise capability/authorization checks — e.g. a subscriber hitting an
+ * admin-guarded `wpuf/v1` route must get 403, not 200.
+ */
+export function createUserAppPassword(userLogin: string, label = 'wpuf-e2e-api-role'): string {
+    return createAdminAppPassword(userLogin, label);
+}
+
+/**
  * Return true if the given email is a MailPoet subscriber inside the named list
  * (segment). Used to assert WPUF's "subscribe on registration" behavior.
  */

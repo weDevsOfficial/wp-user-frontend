@@ -326,11 +326,24 @@ test.describe('Post-Forms', () => {
         await PostForm.validatePostEdited(dashNewTitle, dashOldTitle);
     });
 
-    test('PF0027 : User deletes their post from the frontend dashboard', { tag: ['@Lite', '@Test_PF0027'] }, async () => {
+    test('PF0027 : Math Captcha is enforced on the post edit form', { tag: ['@Lite', '@Test_PF0027'] }, async () => {
+        // Anti-spam promise: the form's Math Captcha must actually block a submit.
+        // Unanswered edit → rejected (error shown, nothing saved); answered → saved.
+        // Leaves the post title unchanged so the delete step below still matches.
+        const PostForm = new PostFormPage(page);
+        await PostForm.validateMathCaptchaEnforced();
+    });
+
+    test('PF0028 : User deletes their post from the frontend dashboard', { tag: ['@Lite', '@Test_PF0028'] }, async () => {
         const PostForm = new PostFormPage(page);
         await PostForm.deletePostFromDashboard(dashNewTitle);
 
-        await new BasicLogoutPage(page).logOut();
+        // This user is the post author (a low-privilege front-end user), not an
+        // admin. logOut() hovers the wp-admin "Howdy" admin-bar flyout, which does
+        // not exist for users who can't reach wp-admin — visiting /wp-admin/
+        // redirects them to the front-end, so the hover hangs. Log out from the
+        // WPUF account page's "Sign out" link instead.
+        await new BasicLogoutPage(page).signOutFE();
     });
 
 });

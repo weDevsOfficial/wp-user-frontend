@@ -14,6 +14,7 @@
 > Last audited: 2026-07-03 · Suite: 8 specs (`alphaSetupTest`, `postFormTest`,
 > `postFormSettingsTest`, `regFormTestPro`, `regFormSettingsTestPro`, `fieldOptionSettingsTest`,
 > `subscriptionTest`, `mailpoetRegistrationTestPro`).
+> Stabilization pass: 2026-07-22 (see "Suite stabilization" below).
 
 ---
 
@@ -38,7 +39,7 @@
 | 15 | AI form builder & AI Review | 🔴 enable-only | P2 |
 | 16 | Pro modules (directory, PM, SMS, reports, analytics, QR, BuddyPress, PMPro, comments, SEO, Zapier) | 🔴 | P2 |
 | 17 | Integrations (Elementor, Events Calendar, ACF, n8n) | 🔴 | P2 |
-| 18 | reCaptcha / Turnstile / Math captcha (functional) | 🔴 enable-only | P1 |
+| 18 | reCaptcha / Turnstile / Math captcha (functional) | 🟡 Math enforced (`PF0027`); reCaptcha/Turnstile 🔴 | P1 |
 | 19 | Widgets & shortcodes | 🔴 | P2 |
 | 20 | **REST API (`wpuf/v1`)** | 🟡 core layer built | P1 (wrong-role, update, AI routes) |
 | 21 | **Negative / security / authorization** | 🔴 | **P0** |
@@ -47,6 +48,78 @@
 **Top of the backlog (build first):** #8 Payments (Stripe/PayPal txns), #9 Coupons & Tax math,
 #20 REST API layer, #21 negative/security cases, #12 content restriction, #7 recurring/renewal
 subscription lifecycle.
+
+---
+
+## Suite stabilization (2026-07-22)
+
+A full-suite green pass (`npm run test:setup` then `test:e2e`) surfaced 3 real failures + 2
+flaky ones — all in the newly-added edit/delete/vendor journeys — plus a whole class of misleading
+symptoms. Findings and fixes (all in the e2e harness, no plugin code changed):
+
+**Config nuance that shapes every failure:** `playwright.config.ts` sets `actionTimeout: 0`, so a
+single stuck action does **not** fail fast — it waits until the 120s **test** timeout, which tears
+down the page. Every "element never appeared" bug therefore surfaces as `Target page, context or
+browser has been closed` after exactly `2.0m`, never as a clean "locator timed out". Read that
+message as "the thing it was waiting for never happened", then look at the `waiting for locator(...)`
+line for the real cause.
+
+**Serial fail-fast amplifies one failure into many.** Each stateful spec calls
+`configureSpecFailFast()` → `test.describe.configure({ mode: 'serial' })`, so the first failure in a
+file marks **every later test in that file `skipped`** ("did not run"). The mass-skips users see are
+a *symptom* of one upstream failure, not N independent breakages. Fixing the first failure in a file
+routinely unblocks a dozen "did not run" tests — and can **expose** the next real failure behind it
+(that is how `PF0027`/`RF0014` first became visible once `PF0026`/`RF0012` were fixed).
+
+**Real bugs fixed (test-side):**
+- **`PF0026` (edit not persisting).** The Lite post form carries a **Math Captcha** field. Its
+  submit handler calls `e.preventDefault()` and **silently returns until the equation is answered**
+  — no error, no AJAX, no save. Creation already solved the captcha; the new dashboard **edit** path
+  did not, so the update never persisted and the dashboard kept showing the old title. Fix:
+  `postForm.ts::solveMathCaptchaIfPresent()` (reused solver, no-op when absent), called before the
+  edit submit. *Verified live via the Playwright MCP: with the captcha answered the form redirects to
+  `?msg=post_updated` and the title persists server-side.* **This is real WPUF behavior worth its own
+  coverage — see #18: a captcha field genuinely blocks submission.**
+- **`PF0027` (author logout hang).** `BasicLogoutPage.logOut()` hovers the wp-admin **"Howdy,"**
+  admin-bar flyout. The post author is a **low-privilege front-end user**; visiting `/wp-admin/`
+  redirects them to the front-end where that flyout does not exist, so the hover hangs 2 min. Every
+  other `logOut()` call runs as **admin**, which is why this was the only place it broke. Fix: use
+  the existing `signOutFE()` (WPUF account-page **"Sign out"** link) for front-end users.
+- **`RF0012` (WC Vendors form, logged-out).** `RF0008` logs out for the FE vendor registration, and
+  the admin **re-login lived in `RF0010`** — which `test.skip`s when the Dokan/Google-Maps flow
+  (`RF0009`) is unavailable in this env. So `RF0012`+ ran **logged-out**, wp-admin bounced to the
+  login form, and nothing was found. Fix: re-login admin at the start of `RF0012` (session-aware, so
+  a no-op when already authenticated). This decouples the WC-Vendors block from the Maps env gap.
+
+**Flaky (SPA/validation races) hardened:**
+- **`SB0044` (recurring pack).** The subscription builder is a Vue SPA; the "Create New" click can
+  land before the app mounts and no-op, so the "Subscription Details" tab never appears and the next
+  step hangs. Fix: `subscription.ts::createSubscriptionPack` confirms the builder opened and re-clicks
+  (bounded retries).
+- **`RF0014` (WC Vendor register).** WPUF keeps the **Register** button `disabled` until every
+  required field validates; a fast fill can race the still-disabled button. In isolation the form
+  enables fine — confirmed by a direct Playwright probe. Fix: wait for
+  `input[value="Register"]:not([disabled])` before clicking.
+
+**Environmental, not code (do not "fix" in code):**
+- Repeated **killed runs left ~16 zombie `chromium`/`headless_shell` processes** (load avg ~6),
+  which starved the shared wp-env and produced *random* 2-min timeouts across unrelated tests
+  (including `setup`'s `LS0036`) plus `ENOENT .playwright-artifacts` trace errors. Cure = kill strays
+  + `rm -rf test-results/.playwright-artifacts-*`, then re-run. **A single stray-process pass before a
+  full run is now part of the runbook.**
+- Re-running a stateful spec **without a `test:setup` reset** re-creates fixtures and yields
+  **strict-mode violations** (e.g. two `iPhone 16 Pro Max` products → `resolved to 2 elements`). These
+  serial specs are only safe to re-run after a reset. Not a bug — an isolation property.
+
+**Terminal readability:** page-object step logs (`✅ Clicked on //…`) are now **suppressed by
+default** (`pages/base.ts` no-ops `console.log` unless `E2E_VERBOSE=1`) and the `list` reporter runs
+with `printSteps: false`, so the terminal shows only test titles + Playwright's `✓/✘/-` status
+markers and the end-of-run failure blocks. Set `E2E_VERBOSE=1` to restore per-action locator logs
+when debugging one test.
+
+**Net result:** all five target tests green; full suite moved from **337 → 343 passed** with the
+remaining reds being the pre-existing env-gated skips (Google Maps `RF0009`–`RF0011`, MailPoet/SMTP
+`EM0004`), not code defects.
 
 ---
 
@@ -81,7 +154,7 @@ to `selectors.ts` (`settingsSetup.persistence`), assertions live in `settingsSet
 
 ## 2. Post forms & field types — ✅ (Lite + FE round-trip + edit/delete)
 
-**Covered:** `postFormTest.spec.ts` — `PF0001`–`PF0027`.
+**Covered:** `postFormTest.spec.ts` — `PF0001`–`PF0028`.
 Blank form with **all Lite fields**, page shortcode, **FE post creation + data round-trip**
 (create → validate list → validate entered data BE/FE), **preset** form, **guest posting**
 (`PF0007`–`PF0010`), **WooCommerce product** form (`PF0011`–`PF0017`), **EDD downloads** form
@@ -93,10 +166,12 @@ and File Upload fields via `setInputFiles` (fixtures in `uploadeditems/`), and r
 fields incl. several Pro ones (Date/Time, Country, Phone, multi-line Address, Embed, Ratings,
 Math Captcha solved programmatically). So "upload not exercised" was **wrong** and is removed.
 
-**Frontend post management added (`PF0025`–`PF0027`, 2026-07-03):** a real user journey with no
-prior coverage — the user **edits** (title round-trip via the `⋮` → Edit dropdown) then **deletes**
-(accepting the "Are you sure?" confirm) their own post from the account **Posts** tab. Self-cleaning
-(removes the post created in `PF0003`). Locators detected via **Playwright MCP**
+**Frontend post management added (`PF0025`–`PF0028`, 2026-07-03 / captcha 2026-07-22):** a real user
+journey with no prior coverage — the user **edits** (title round-trip via the `⋮` → Edit dropdown,
+`PF0025`–`PF0026`), then `PF0027` proves the **Math Captcha is enforced** on that edit form
+(unanswered → blocked, answered → saved), then **deletes** (accepting the "Are you sure?" confirm)
+their own post from the account **Posts** tab (`PF0028`). Self-cleaning (removes the post created in
+`PF0003`). Locators detected via **Playwright MCP**
 (`Selectors.postForms.dashboardManage`), POM methods in `postForm.ts`. Notes surfaced while
 building: the Edit/Delete links live inside a hidden `⋮` dropdown that must be opened first, and
 the post-update redirect races the next navigation (`ERR_ABORTED`) — both handled in the POM.
@@ -277,9 +352,11 @@ provider **API stub/sandbox** or provider API assertion; avoid hitting live prov
 
 **Covered:**
 - `LS0012` checks the account-page **tabs exist** from FE.
-- **Posts tab edit + delete** (`PF0025`–`PF0027`, see #2) — the user edits (title round-trip via the
-  `⋮` → Edit dropdown) and deletes (accepting the confirm) their own post from `/account/?section=post`.
-  POM `postForm.ts` `editFirstPostFromDashboard` / `validatePostEdited` / `deletePostFromDashboard`.
+- **Posts tab edit + captcha-enforced update + delete** (`PF0025`–`PF0028`, see #2) — the user edits
+  (title round-trip via the `⋮` → Edit dropdown), the Math Captcha is proven enforced on that form,
+  and the post is deleted (accepting the confirm) from `/account/?section=post`. POM `postForm.ts`
+  `editFirstPostFromDashboard` / `validatePostEdited` / `validateMathCaptchaEnforced` /
+  `deletePostFromDashboard`.
 
 **Gaps:**
 - 🔴 Posts tab: **pagination** and **status filter** (only edit/delete of the first post is covered).
@@ -349,9 +426,18 @@ have **zero** coverage.
 **Covered:** credentials entered in setup (`LS0019`/`LS0020`); captcha **field never enforced** on a
 real submission.
 
+**Math Captcha enforcement — ✅ (`PF0027`, 2026-07-22).** Dedicated negative+positive test on the
+Lite post edit form (`postForm.ts::validateMathCaptchaEnforced`): an **unanswered** submit surfaces
+the `.wpuf-captcha-error` and the decoy title **does not persist** server-side; **answering** the
+equation lets the same edit through (`?msg=post_updated`). This is the first test that proves a
+captcha field genuinely **blocks** submission, not just that its credentials are stored.
+
 **Gaps:**
-- 🔴 Form with reCaptcha/Turnstile/Math/Really-Simple captcha → submit without solving → **blocked**;
-  solve (test keys) → **passes**. *(P1 — anti-spam is a core promise.)*
+- 🔴 **reCaptcha / Turnstile / Really-Simple** captcha still only *enable-only* — same
+  submit-without-solving → **blocked**, solve → **passes** shape as `PF0027`, but for the JS/service
+  captchas (test keys). *(P1 — anti-spam is a core promise.)*
+- 🔴 Math-captcha enforcement is covered on the **post form** only; not yet on the **registration**
+  form. *(P2)*
 
 ---
 

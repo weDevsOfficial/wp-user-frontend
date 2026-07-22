@@ -806,7 +806,9 @@ export const Selectors = {
             purchaseButton: '//span[@class="edd-add-to-cart-label"]',
             downloadsImage: '//figure[@class="wp-block-post-featured-image"]',
             titleBE: (title: string) => `//a[normalize-space()='${title}']`,
-            price: (price: string) => `(//input[@id="edd_price" and @value="${price}.00" ])[2]`,
+            // Scope to EDD's native price field container: the page also carries a hidden
+            // WPUF-rendered #edd_price twin, so a bare positional index can land on it.
+            price: (price: string) => `//div[@id="edd_regular_price_field"]//input[@id="edd_price" and @value="${price}.00"]`,
             clickDownload: '//div[@class="interface-complementary-area editor-sidebar"]//div//button//span[normalize-space()="Download"]',
             clickCategory: '//button[normalize-space()="Categories"]',
             categoryBE: (category: string) => `//label[normalize-space()='${category}']`,

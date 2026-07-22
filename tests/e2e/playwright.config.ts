@@ -30,6 +30,9 @@ const shardIndex = process.env.SHARD_INDEX && process.env.SHARD_INDEX !== ''
     : '';
 const phase = process.env.E2E_PHASE || '';
 
+// CI toggles longer timeouts and forbids `test.only`.
+const isCI = process.env.CI === 'true';
+
 // JSON report path — consumed by utils/sharded-summary.js for setup + each shard.
 const jsonOutput =
     phase === 'setup' ? './setup/setup-results.json'
@@ -69,5 +72,40 @@ export default defineConfig({
     reporter: [
         ['list', { printSteps: false }],
         ['json', { outputFile: jsonOutput }],
+    ],
+
+    // Shared defaults. CLI `--headed` overrides `headless` per-invocation.
+    use: {
+        actionTimeout: 0,
+        headless: true,
+        viewport: { width: 1280, height: 720 },
+        trace: 'retain-on-failure',
+        screenshot: 'only-on-failure',
+        video: 'off',
+        ignoreHTTPSErrors: true,
+    },
+
+    projects: [
+        // Site reset + config. Run first, once (never as a shard dependency).
+        {
+            name: 'setup',
+            testMatch: 'tests/alphaSetupTest.spec.ts',
+            use: { ...devices['Desktop Chrome'] },
+        },
+        // Stateful UI suite. Split via native `--shard=i/n`. Everything under
+        // tests/ except the setup spec and the browserless API layer.
+        {
+            name: 'e2e',
+            testDir: './tests',
+            testMatch: '**/*.spec.ts',
+            testIgnore: ['**/alphaSetupTest.spec.ts', '**/api/**'],
+            use: { ...devices['Desktop Chrome'] },
+        },
+        // REST layer (wpuf/v1) — no browser launched.
+        {
+            name: 'api',
+            testDir: './tests/api',
+            testMatch: '**/*.spec.ts',
+        },
     ],
 });

@@ -62,6 +62,13 @@ jobs:
           npm i --legacy-peer-deps
           grunt --force
 
+      # The default grunt build ships no appsero_key.php, so wpuf-pro falls back
+      # to the dev product hash (958afc63) and the AppSumo license key — issued
+      # against the AppSumo product hash — fails to activate (LS0005). Pin the
+      # AppSumo hash so the licensed setup step can activate WPUF_PRO_LICENSE_KEY.
+      - name: Pin WPUF-pro Appsero product hash for licensed e2e
+        run: echo '<?php return "4561d782-e4c2-42f8-9eb4-d1eec7c2effb";' > plugins/wpuf-pro/includes/appsero_key.php
+
        # Build wp-user-frontend
       - name: Build wpuf-lite
         run: |

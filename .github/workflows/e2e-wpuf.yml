@@ -20,18 +20,26 @@ on:
     branches: ['develop']
 
 jobs:
-  # Each shard is an independent job: its own wp-env, its own full build + setup, and
-  # a slice of the spec files via `--shard=i/N`. No shared server state between shards,
-  # workers:1 within a shard — so concurrent admin sessions can never collide.
+  # Feature-grouped shards: each job runs a set of RELATED spec files (its own
+  # wp-env + the setup project runs first within the shard). Grouping keeps a
+  # feature's files together on one runner (post-* together, reg-* together) so
+  # any intra-feature ordering/state stays intact — no cross-shard dependency.
+  # workers:1 keeps files serial within a shard, so admin sessions never collide.
   e2e:
+    name: e2e (${{ matrix.group }})
     if: github.repository != 'weDevsOfficial/wp-user-frontend' && github.repository != 'weDevsOfficial/wpuf-pro'
     timeout-minutes: 120
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
-        shardIndex: [1, 2, 3]
-        shardTotal: [3]
+        include:
+          - group: post
+            files: tests/postFormTest.spec.ts tests/postFormSettingsTest.spec.ts
+          - group: registration
+            files: tests/regFormTestPro.spec.ts tests/regFormSettingsTestPro.spec.ts
+          - group: fields-subscription
+            files: tests/fieldOptionSettingsTest.spec.ts tests/subscriptionTest.spec.ts
 
     steps:
       # Setup PHP
@@ -171,7 +179,7 @@ jobs:
             npx playwright install chromium --with-deps
 
       # Run Playwright tests/e2e for this shard
-      - name: 🧪 Run e2e tests (shard ${{ matrix.shardIndex }}/${{ matrix.shardTotal }})
+      - name: 🧪 Run e2e tests (${{ matrix.group }})
         env:
           CI: true
           # Test environment variables
@@ -189,14 +197,14 @@ jobs:
         working-directory: tests/e2e
         run: |
           mkdir -p test-results
-          npm run test:ci -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+          npm run test:ci -- ${{ matrix.files }}
 
       # Upload this shard's blob report so the merge job can combine all shards
       - name: Upload blob report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: blob-report-${{ matrix.shardIndex }}
+          name: blob-report-${{ matrix.group }}
           path: tests/e2e/blob-report
           retention-days: 1
 

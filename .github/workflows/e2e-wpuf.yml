@@ -76,6 +76,7 @@ jobs:
         run: |
           composer i --no-dev -o
           npm i --legacy-peer-deps
+          npm run build
           grunt --force
 
       # The default grunt build ships no appsero_key.php, so wpuf-pro falls back

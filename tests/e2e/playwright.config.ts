@@ -70,6 +70,4 @@ export default defineConfig({
         ['list', { printSteps: false }],
         ['json', { outputFile: jsonOutput }],
     ],
-        },
-    ],
 });

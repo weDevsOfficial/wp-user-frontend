@@ -9,6 +9,9 @@
     "test:e2e": "CI=false npx playwright test --config=playwright.config.ts --project=e2e",
     "test:ci": "E2E_PHASE=setup npx playwright test --config=playwright.config.ts --project=setup && npx playwright test --config=playwright.config.ts --project=e2e",
 
+    "env:setup": "npx wp-env start",
+    "reset:env": "npx wp-env clean all && npx wp-env start",
+
     "generate-summary": "node utils/generate-summary.js",
     "test:api": "CI=false E2E_PHASE=api npx playwright test --config=playwright.config.ts --project=api",
     "test:api:ci": "E2E_PHASE=api npx playwright test --config=playwright.config.ts --project=api",

@@ -1091,6 +1091,18 @@ class RestController extends WP_REST_Controller {
                     continue; // Skip invalid fields
                 }
 
+                // Reject a field whose input_type does not match its template
+                // (the AI form-builder object-injection primitive).
+                if ( ! $this->is_valid_field_definition( $field ) ) {
+                    wp_delete_post( $form_id, true );
+
+                    return new WP_Error(
+                        'invalid_field_definition',
+                        __( 'A submitted field has a template and input type that do not match.', 'wp-user-frontend' ),
+                        [ 'status' => 400 ]
+                    );
+                }
+
                 // Sanitize field data
                 $field['name'] = sanitize_key($field['name']);
                 $field['label'] = sanitize_text_field($field['label'] ?? '');
@@ -1641,7 +1653,74 @@ class RestController extends WP_REST_Controller {
      * @param int $form_id Form ID
      * @param array $fields Updated fields
      */
+    /**
+     * Build the allowed "template => input_type" map from the field registry.
+     *
+     * Derived from the canonical registry (free + pro via the `wpuf_form_fields`
+     * filter) so a submitted field cannot pair a template with a mismatched
+     * input_type — the primitive behind the AI form-builder object injection.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array<string, string> Template slug => canonical input type.
+     */
+    private function get_allowed_field_type_map() {
+        static $map = null;
+
+        if ( null !== $map ) {
+            return $map;
+        }
+
+        $map           = [];
+        $field_manager = new \WeDevs\Wpuf\Admin\Forms\Field_Manager();
+
+        foreach ( $field_manager->get_fields() as $template => $field_object ) {
+            if ( is_object( $field_object ) && method_exists( $field_object, 'get_field_props' ) ) {
+                $props = $field_object->get_field_props();
+
+                if ( isset( $props['input_type'] ) ) {
+                    $map[ $template ] = $props['input_type'];
+                }
+            }
+        }
+
+        return $map;
+    }
+
+    /**
+     * Whether a submitted field's input_type is consistent with its template.
+     *
+     * Rejects mismatched definitions (e.g. input_type "text" on a "section_break"
+     * template) so an attacker cannot route a field through the wrong renderer.
+     * Unknown templates pass through — the render layer no longer instantiates
+     * objects, and unregistered templates are handled by their own renderers.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $field Field definition.
+     *
+     * @return bool
+     */
+    private function is_valid_field_definition( $field ) {
+        if ( empty( $field['template'] ) || empty( $field['input_type'] ) ) {
+            return true;
+        }
+
+        $allowed  = $this->get_allowed_field_type_map();
+        $template = sanitize_key( $field['template'] );
+
+        if ( ! isset( $allowed[ $template ] ) ) {
+            return true;
+        }
+
+        return $allowed[ $template ] === $field['input_type'];
+    }
+
     private function update_form_field_posts($form_id, $fields) {
+        // Drop any field whose template/input_type pairing is invalid before saving,
+        // so a mismatched (object-injection) definition can never be persisted.
+        $fields = array_values( array_filter( $fields, [ $this, 'is_valid_field_definition' ] ) );
+
         // Get existing field posts ordered by menu_order
         $existing_posts = get_posts([
             'post_type' => 'wpuf_input',

@@ -76,6 +76,16 @@ jobs:
         run: |
           composer i --no-dev -o
           npm i --legacy-peer-deps
+          # The reg-forms admin app bundle (assets/js/forms-list.min.js) is emitted by
+          # vite — NOT grunt — and is gitignored (built in CI, never committed). Vite
+          # imports lite's Header.vue via ../../../../wp-user-frontend and needs lite's
+          # node_modules, exactly like the pro release workflow. Put lite where that
+          # import expects it (sibling at plugins/wp-user-frontend) + install its deps,
+          # then run the vite build. Without forms-list.min.js the reg-forms Vue app
+          # never mounts and the page stays stuck on "Loading…" (RFS0001/RF0002).
+          ln -sfn "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/plugins/wp-user-frontend"
+          ( cd "$GITHUB_WORKSPACE" && npm i --legacy-peer-deps )
+          npm run build
           grunt --force
 
       # The default grunt build ships no appsero_key.php, so wpuf-pro falls back

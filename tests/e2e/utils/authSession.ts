@@ -32,9 +32,33 @@ function slugify(identifier: string): string {
     return slug || 'user';
 }
 
+/**
+ * Parallel-worker suffix. The parallel configs run `workers: 3`, so every worker
+ * would otherwise read/write the SAME `.auth/<role>.json` concurrently — a torn
+ * write could corrupt it. Playwright sets `TEST_PARALLEL_INDEX` (0..workers-1)
+ * per worker; two workers running at the same time always have distinct indices,
+ * so keying the file by it gives each worker its own contention-free cache while
+ * still reusing the session across every spec that worker runs. Absent (single
+ * worker / setup suite) → no suffix, so behaviour is unchanged.
+ */
+function workerSuffix(): string {
+    const idx = process.env.TEST_PARALLEL_INDEX;
+    return idx !== undefined && idx !== '' ? `-p${idx}` : '';
+}
+
 /** Absolute path to the saved-session file for a role. */
 export function authFileFor(identifier: string): string {
-    return path.join(AUTH_DIR, `${slugify(identifier)}.json`);
+    return path.join(AUTH_DIR, `${slugify(identifier)}${workerSuffix()}.json`);
+}
+
+/**
+ * Master switch. Set `WPUF_DISABLE_SESSION_REUSE=1` to turn the whole feature
+ * off — logins then behave exactly as before (UI login every time, nothing
+ * cached). Handy for A/B debugging or if a stale cache is ever suspected.
+ */
+export function sessionReuseEnabled(): boolean {
+    const flag = process.env.WPUF_DISABLE_SESSION_REUSE;
+    return !(flag === '1' || flag === 'true');
 }
 
 /** Create the `.auth/` directory if it does not exist yet. */

@@ -167,7 +167,7 @@ jobs:
         working-directory: tests/e2e
         run: |
           mkdir -p test-results
-          npm run test:sharded:ci
+          npm run test:all:ci
         # continue-on-error: true
 
       # Generate and post advanced test summary

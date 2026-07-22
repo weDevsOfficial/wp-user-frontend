@@ -271,8 +271,8 @@ export class PostFormPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.zip, PostForm.zip);
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.country, 'BD');
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.state, 'BD-13');
-        //Enter Google Maps
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postGoogleMapsFormsFE, PostForm.googleMaps = 'Dhaka, Bangladesh');
+        //Enter Google Maps (optional — only fillable once Google Maps JS renders the search box)
+        await this.fillStringIfAvailable(Selectors.postForms.postFormsFrontendCreate.postGoogleMapsFormsFE, PostForm.googleMaps = 'Dhaka, Bangladesh');
         //await this.page.keyboard.press('Enter');
         //Enter Embed
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postEmbedFormsFE, PostForm.embed = faker.internet.url());
@@ -731,10 +731,12 @@ export class PostFormPage extends Base {
             await this.page.waitForTimeout(200);
             await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
         }
-        //Validate Product Price
-        await this.assertionValidate(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice));
-        //Validate Product Excerpt
-        await this.assertionValidate(Selectors.postForms.downloadsFormData.excerpt(DownloadsForm.excerpt));
+        //Validate Product Price — the edd_price input renders correct-but-hidden inside a
+        //collapsed price panel, so assert it is present (value is encoded in the selector)
+        //rather than visible (which would hang the full test timeout).
+        await this.validateAttached(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice));
+        //Validate Product Excerpt (same reason — presence, not visibility)
+        await this.validateAttached(Selectors.postForms.downloadsFormData.excerpt(DownloadsForm.excerpt));
         //Validate Product Category
         await this.validateAndClick(Selectors.postForms.downloadsFormData.clickDownload);
         await this.page.waitForTimeout(300);
@@ -776,11 +778,50 @@ export class PostFormPage extends Base {
         await this.validateAndClick(Selectors.postForms.dashboardManage.editLinkForPost(oldTitle));
         // Same post form in edit mode — overwrite the title and save the update.
         await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE).fill(newTitle);
+        // The post form carries a Math Captcha field. Its submit handler calls
+        // preventDefault() and silently aborts until the equation is answered, so
+        // the update never persists unless we solve it first (creation does the
+        // same). No-op when the form has no captcha.
+        await this.solveMathCaptchaIfPresent();
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.submitPostFormsFE);
         // Let the update + any post-update redirect settle before returning.
         await this.page.waitForLoadState('load').catch(() => {});
         console.log('\x1b[32m%s\x1b[0m', `✅ Edited post "${oldTitle}" -> "${newTitle}"`);
         return oldTitle;
+    }
+
+    // Solve the WPUF Math Captcha when the form shows one. Reads the equation
+    // operands/operator, computes the answer, and fills the captcha input. Safe to
+    // call on forms without a captcha — it returns early when the field is absent
+    // or hidden.
+    async solveMathCaptchaIfPresent() {
+        const captcha = Selectors.postForms.postFormsFrontendCreate.postMathCaptchaFormsFE;
+        const input = this.page.locator(captcha.mathCaptcha);
+        if ((await input.count()) === 0 || !(await input.first().isVisible())) {
+            return;
+        }
+        const operand1 = await this.page.textContent(captcha.operand1);
+        const operand2 = await this.page.textContent(captcha.operand2);
+        const operator = await this.page.textContent(captcha.operator);
+        let result: number;
+        switch (operator) {
+            case '+':
+                result = Number(operand1) + Number(operand2);
+                break;
+            case '-':
+                result = Number(operand1) - Number(operand2);
+                break;
+            case 'X':
+            case 'x':
+                result = Number(operand1) * Number(operand2);
+                break;
+            case '/':
+                result = Number(operand1) / Number(operand2);
+                break;
+            default:
+                throw new Error(`Invalid math captcha operator: ${operator}`);
+        }
+        await this.validateAndFillStrings(captcha.mathCaptcha, result.toString());
     }
 
     // Assert the edit persisted: the new title is listed and the old one is gone.

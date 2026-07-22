@@ -367,7 +367,7 @@ real submission.
 
 **API layer added (`AP0001`–`AP0006`, 2026-07-03):** `tests/api/wpufRestApi.spec.ts` +
 `pages/api/WpufApi.ts` client (Playwright `request` context, no browser) +
-`playwright.api.config.ts` (`npm run test:api`). Auth = admin **Application Password** (Basic auth),
+the `api` project in `playwright.config.ts` (`npm run test:api`). Auth = admin **Application Password** (Basic auth),
 minted per-run via `createAdminAppPassword()` in `utils/wpEnvCli.ts` — CI-safe, no manual `.env`.
 Route map + payloads were reverse-engineered from `includes/Api/*` and verified live. Covered:
 - ✅ **`permission_callback` enforcement** — all 8 guarded routes return **401 `rest_forbidden`**

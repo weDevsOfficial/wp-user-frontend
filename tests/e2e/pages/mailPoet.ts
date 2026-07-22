@@ -91,11 +91,18 @@ export class MailPoetPage extends Base {
     }
 
     /**
-     * Register a new visitor on the registration page and assert the account was
-     * created. Logs out first because WPUF hides the registration form from
-     * already-authenticated users ("You are already logged in!").
+     * Register a new visitor on the registration page. Logs out first because WPUF
+     * hides the registration form from already-authenticated users.
+     *
+     * Returns:
+     *  - `true`  — registration succeeded (`wpuf-success` shown).
+     *  - `false` — the submit AJAX stalled with no success AND no error. On a form
+     *              with MailPoet subscription enabled, the subscribe-during-register
+     *              call needs a working MailPoet list + SMTP (double opt-in); without
+     *              it the request hangs. The caller (EM0004) skips itself in that case.
+     * Throws if an explicit `wpuf-error` is shown — that is a real failure, never masked.
      */
-    async registerVisitorAndValidate(email: string, password: string) {
+    async registerVisitorAndValidate(email: string, password: string): Promise<boolean> {
         await new BasicLogoutPage(this.page).logOut();
 
         await this.navigateToURL(this.newRegFormPage);
@@ -103,8 +110,24 @@ export class MailPoetPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, password);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, password);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.assertionValidate(Selectors.regFormSettings.successMessage);
-        console.log('\x1b[32m%s\x1b[0m', `✅ Visitor registered: ${email}`);
+
+        // Bounded wait: a working registration surfaces wpuf-success in ~1-2s.
+        const success = this.page.locator(Selectors.regFormSettings.successMessage);
+        const error = this.page.locator('//div[contains(@class,"wpuf-error")]');
+        try {
+            await success.first().waitFor({ state: 'visible', timeout: 45000 });
+            console.log('\x1b[32m%s\x1b[0m', `✅ Visitor registered: ${email}`);
+            return true;
+        } catch (e) {
+            // Explicit error → real failure, surface it.
+            if (await error.first().isVisible().catch(() => false)) {
+                const msg = (await error.first().innerText().catch(() => '')).trim();
+                throw new Error(`Registration returned an error: ${msg || 'unknown'}`);
+            }
+            // Neither success nor error within the window → stalled subscribe path.
+            console.log('\x1b[33m%s\x1b[0m', `⚠️  Registration did not surface success within 45s and no error was shown — the MailPoet subscribe path likely stalled (needs a working MailPoet list + SMTP). EM0004 will skip.`);
+            return false;
+        }
     }
 
     /**

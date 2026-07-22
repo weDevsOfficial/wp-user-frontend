@@ -9,6 +9,7 @@ import {
     ensureAuthDir,
     readSavedCookies,
     clearSavedSession,
+    sessionReuseEnabled,
 } from '../utils/authSession';
 
 export class BasicLoginPage extends Base {
@@ -75,6 +76,9 @@ export class BasicLoginPage extends Base {
      * caller performs a normal UI login.
      */
     async restoreSession(identifier: string): Promise<boolean> {
+        if (!sessionReuseEnabled()) {
+            return false;
+        }
         const cookies = readSavedCookies(identifier);
         if (!cookies) {
             // No saved session — preserve original behaviour untouched.
@@ -105,6 +109,9 @@ export class BasicLoginPage extends Base {
 
     /** Save the current context's authenticated state to `.auth/<role>.json`. */
     async saveSession(identifier: string): Promise<void> {
+        if (!sessionReuseEnabled()) {
+            return;
+        }
         try {
             ensureAuthDir();
             await this.page.context().storageState({ path: authFileFor(identifier) });

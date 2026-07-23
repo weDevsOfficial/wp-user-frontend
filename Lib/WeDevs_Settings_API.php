@@ -413,6 +413,11 @@ class WeDevs_Settings_API {
 
                         <div class="wpuf-gateway-card__name">
                             <?php echo esc_html( $admin_label ); ?>
+                            <?php if ( $is_pro ) : ?>
+                                <span class="wpuf-gateway-card__pro">
+                                    <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="<?php esc_attr_e( 'PRO', 'wp-user-frontend' ); ?>" />
+                                </span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; ?>

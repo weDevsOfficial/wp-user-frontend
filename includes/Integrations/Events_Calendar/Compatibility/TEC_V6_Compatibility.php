@@ -43,9 +43,6 @@ class TEC_V6_Compatibility {
             $all_data['tags'] = sanitize_text_field( $_POST['tags'] );
         }
 
-
-
-
         /**
          * Opportunity to modify form data before converting to TEC ORM format
          *

@@ -153,19 +153,6 @@ body.mceContentBody {
     box-shadow: none;
 }
 
-.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields a.file-selector:before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 40px;
-    height: 40px;
-    font-size: 36px;
-    content: "\f317";
-    font-family: dashicons;
-    line-height: 40px;
-    text-align: center;
-}
-
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-address-field.city_name,
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-address-field.zip {
     margin-right: 6%;

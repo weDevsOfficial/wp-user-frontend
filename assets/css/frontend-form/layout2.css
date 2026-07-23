@@ -26,7 +26,7 @@ body.mceContentBody{
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error {
   background: transparent;
 }
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wpuf-fields input,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wpuf-fields input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wpuf-fields textarea,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wpuf-fields select {
   border-color: #F20000;
@@ -34,10 +34,9 @@ body.mceContentBody{
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wpuf-fields .wpuf-error-msg {
   color: #F20000;
 }
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input,
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields textarea,
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields select {
-  width: 100%;
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields textarea {
+  width: 100% !important;
   background: #292C3F;
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
@@ -52,6 +51,15 @@ body.mceContentBody{
   color: #fff;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields select {
+  background: #292C3F;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border: 1px solid #33374D;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+  color: #fff;
   padding: 10px;
   height: inherit;
 }
@@ -156,7 +164,7 @@ body.mceContentBody{
   border-radius: 5px;
   background: transparent;
   color: #BFC4D1;
-  width: inherit;
+  width: auto;
   position: relative;
   text-transform: uppercase;
   box-shadow: none;
@@ -191,10 +199,10 @@ body.mceContentBody{
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-help {
   color: #6F4A70;
 }
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li input:active,
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li input:hover,
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li input:focus,
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li input:visited,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]):active,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]):hover,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]):focus,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]):visited,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li textarea:active,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li textarea:hover,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li textarea:focus,
@@ -203,10 +211,10 @@ body.mceContentBody{
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li select:hover,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li select:focus,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li select:visited,
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:active,
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:hover,
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:focus,
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:visited {
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:not(.file-selector):not(.wpuf-insert-image):active,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:not(.file-selector):not(.wpuf-insert-image):hover,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:not(.file-selector):not(.wpuf-insert-image):focus,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:not(.file-selector):not(.wpuf-insert-image):visited {
   outline: none;
   border-color: #00C14B;
 }

@@ -975,3 +975,15 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .intl-tel-input input[type="tel"] {
     padding-left: 52px !important;
 }
+
+/* Figma sync: Select/Feature Image bar — exact 48px bar, no underline */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields a.file-selector,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .file-selector {
+    padding: 12px 16px !important;
+    min-height: 48px !important;
+    height: 48px !important;
+    line-height: 24px !important;
+    text-decoration: none !important;
+    font-weight: 400 !important;
+    box-sizing: border-box !important;
+}

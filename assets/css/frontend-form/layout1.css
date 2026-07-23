@@ -718,3 +718,11 @@
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .intl-tel-input input[type="tel"] {
     padding-left: 52px !important;
 }
+
+/* Figma sync: upload selector zone — no underline, zone typography */
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a.file-selector,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .file-selector {
+    text-decoration: none !important;
+    line-height: 24px !important;
+    font-weight: 400 !important;
+}

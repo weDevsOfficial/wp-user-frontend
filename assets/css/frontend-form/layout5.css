@@ -683,3 +683,46 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     left: 5px;
     top: 6px;
 }
+
+/* ---- Theme reset (Use Theme CSS = off): neutralize theme bleed so the
+   template design owns the form. Only neutral props are forced — the
+   template's own colors/borders/spacing rules stay in charge. ---- */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li {
+    list-style: none !important;
+    background-image: none !important;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li::before,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li::marker {
+    content: none !important;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="file"]),
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields textarea,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields select {
+    max-width: 100% !important;
+    text-shadow: none !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+    background-image: none;
+    box-sizing: border-box !important;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-label,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-label label {
+    letter-spacing: normal !important;
+    text-transform: none !important;
+    text-shadow: none !important;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.wpuf-submit input[type="submit"] {
+    background-image: none !important;
+    text-shadow: none !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    text-decoration: none !important;
+    width: auto !important;
+    border-style: solid;
+    transition: background-color 0.2s ease;
+}

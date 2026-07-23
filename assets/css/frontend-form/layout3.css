@@ -967,3 +967,36 @@ body ul.wpuf-form li .wpuf-fields .wpuf-radio-block, body ul.wpuf-form li .wpuf-
 .wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .intl-tel-input input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]) {
     padding-left: 52px !important;
 }
+
+/* Layout3 image selector: underline row like every other layout3 field
+   (was a boxed lavender bar) */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields a.file-selector,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .file-selector {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid #BEB2C4 !important;
+    border-radius: 0 !important;
+    padding: 8px 0 !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    color: #1E002B !important;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields a.file-selector:hover,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields a.file-selector:focus,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .file-selector:hover,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .file-selector:focus {
+    border-bottom-color: #8726D3 !important;
+}
+
+/* .button variant carries extra specificity — restate the underline row */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields a.file-selector.button,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields a.button.file-selector {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid #BEB2C4 !important;
+    border-radius: 0 !important;
+    padding: 8px 0 !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    color: #1E002B !important;
+}

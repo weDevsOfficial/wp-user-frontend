@@ -732,7 +732,14 @@ export class PostFormPage extends Base {
             await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
         }
         //Validate Product Price
-        await this.assertionValidate(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice));
+        // EDD's native price field sits inside the block editor's collapsed
+        // Meta Boxes panel, so it is attached but not visible. Assert the field
+        // exists with the entered value instead of waiting for visibility of
+        // collapsed editor chrome.
+        await this.page
+            .locator(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice))
+            .waitFor({ state: 'attached' });
+        console.log('\x1b[34m%s\x1b[0m', `✅ Asserted BE price ${DownloadsForm.regularPrice}.00`);
         //Validate Product Excerpt
         await this.assertionValidate(Selectors.postForms.downloadsFormData.excerpt(DownloadsForm.excerpt));
         //Validate Product Category

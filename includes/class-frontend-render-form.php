@@ -751,7 +751,7 @@ class WPUF_Frontend_Render_Form {
             $wpuf_field = wpuf()->fields->get_field( $value['template'] );
             $posted_field_data = isset( $post_data[ $value['name'] ] ) ? $post_data[ $value['name'] ] : null;
 
-            if ( isset( $posted_field_data ) && method_exists( $wpuf_field, 'sanitize_field_data' ) ) {
+            if ( isset( $posted_field_data ) && $wpuf_field && method_exists( $wpuf_field, 'sanitize_field_data' ) ) {
                 $meta_key_value[ $value['name'] ] = $wpuf_field->sanitize_field_data( $posted_field_data, $value );
                 continue;
             } elseif ( isset( $post_data[ $value['name'] ] ) && is_array( $post_data[ $value['name'] ] ) ) {

@@ -18,6 +18,9 @@ const Header = ({ utm = 'wpuf-user-directory' }) => {
     const supportUrl = wpuf.support_url || 'https://wedevs.com/account/tickets/';
     const version = wpuf.version || '';
     const isProActive = wpuf.isProActive || false;
+    const plan = (isProActive && wpuf.plan)
+        ? wpuf.plan.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+        : '';
 
     // Initialize Headway widget on mount
     useEffect(() => {
@@ -35,6 +38,11 @@ const Header = ({ utm = 'wpuf-user-directory' }) => {
             <div className="wpuf-flex wpuf-justify-start wpuf-items-center">
                 <img src={logoUrl} alt="WPUF Icon" className="wpuf-w-12 wpuf-mr-4" />
                 <h2 className="wpuf-text-2xl wpuf-leading-7 wpuf-font-bold wpuf-m-0">{__('WP User Frontend', 'wp-user-frontend')}</h2>
+                {plan && (
+                    <span className="wpuf-ml-2 wpuf-inline-flex wpuf-items-center wpuf-rounded-full wpuf-bg-green-100 wpuf-px-2 wpuf-py-1 wpuf-text-xs wpuf-font-semibold wpuf-text-green-700 wpuf-ring-1 wpuf-ring-inset wpuf-ring-green-600/20">
+                        {plan}
+                    </span>
+                )}
                 {version && (
                     <span className="wpuf-ml-2 wpuf-inline-flex wpuf-items-center wpuf-rounded-full wpuf-bg-green-100 wpuf-px-2 wpuf-py-1 wpuf-text-xs wpuf-font-medium wpuf-text-green-700 wpuf-ring-1 wpuf-ring-inset wpuf-ring-green-600/20">
                         v{version}
@@ -60,10 +68,10 @@ const Header = ({ utm = 'wpuf-user-directory' }) => {
                 
                 {/* Submit Ideas Link */}
                 <a
-                    className="wpuf-border wpuf-border-gray-100 wpuf-mr-[16px] wpuf-canny-link wpuf-text-center wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-shadow-sm hover:wpuf-bg-slate-100 focus:wpuf-bg-slate-100 wpuf-no-underline wpuf-text-gray-700"
+                    className="wpuf-border wpuf-border-gray-100 wpuf-mr-[16px] wpuf-feedback-link wpuf-text-center wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-shadow-sm hover:wpuf-bg-slate-100 focus:wpuf-bg-slate-100 wpuf-no-underline wpuf-text-gray-700"
                     target="_blank"
                     rel="noopener noreferrer"
-                    href="https://wpuf.canny.io/ideas"
+                    href="https://feedback.wedevs.com/b/user-frontend"
                 >
                     💡 {__('Submit Ideas', 'wp-user-frontend')}
                 </a>

@@ -168,6 +168,17 @@ class Upload_Ajax {
             $attach_data = wp_generate_attachment_metadata( $attach_id, $file_loc );
             wp_update_attachment_metadata( $attach_id, $attach_data );
 
+            // Mark the attachment as a WPUF upload so it can be safely
+            // identified and removed later through the wpuf_file_del endpoint.
+            update_post_meta( $attach_id, '_wpuf_attachment', 1 );
+
+            // Guests have no author id, so bind the upload to a per-session
+            // token. This prevents one visitor from deleting another visitor's
+            // (or any author-less) attachment via the public delete handler.
+            if ( ! is_user_logged_in() ) {
+                update_post_meta( $attach_id, '_wpuf_guest_token', $this->get_guest_upload_token() );
+            }
+
             return [
                 'success'   => true,
                 'attach_id' => $attach_id,
@@ -253,28 +264,113 @@ class Upload_Ajax {
 
     public function delete_file() {
         check_ajax_referer( 'wpuf_nonce', 'nonce' );
-        $post_data = wp_unslash( $_POST );
-        $attachment_id = isset( $post_data['attach_id'] ) ? absint( $post_data['attach_id'] ) : 0;
+        $attachment_id = isset( $_POST['attach_id'] ) ? absint( wp_unslash( $_POST['attach_id'] ) ) : 0;
         if ( empty( $attachment_id ) ) {
             wp_send_json_error( [ 'message' => __( 'attach_id is required.', 'wp-user-frontend' ) ], 422 );
         }
         $attachment = get_post( $attachment_id );
 
-        if ( empty( $attachment ) ) {
+        if ( empty( $attachment ) || 'attachment' !== $attachment->post_type ) {
             wp_send_json_error( [ 'message' => __( 'attachment not found.', 'wp-user-frontend' ) ] );
         }
 
-        // post author or editor role
-        if ( get_current_user_id() == absint( $attachment->post_author ) || current_user_can(
-                'delete_private_pages'
-            ) ) {
-            $deleted = wp_delete_attachment( $attachment_id, true );
-            if ( $deleted ) {
-                wp_send_json_success( [ 'message' => __( 'Attachment deleted successfully.', 'wp-user-frontend' ) ] );
-            }
-            wp_send_json_error( [ 'message' => __( 'Could not deleted the attachment', 'wp-user-frontend' ) ], 422 );
+        if ( ! $this->can_delete_attachment( $attachment ) ) {
+            wp_send_json_error( [ 'message' => __( 'You are not allowed to delete this attachment.', 'wp-user-frontend' ) ], 403 );
         }
-        wp_send_json_error( [ 'message' => __( 'Something went wrong.', 'wp-user-frontend' ) ], 422 );
+
+        $deleted = wp_delete_attachment( $attachment_id, true );
+        if ( $deleted ) {
+            wp_send_json_success( [ 'message' => __( 'Attachment deleted successfully.', 'wp-user-frontend' ) ] );
+        }
+        wp_send_json_error( [ 'message' => __( 'Could not delete the attachment', 'wp-user-frontend' ) ], 422 );
+    }
+
+    /**
+     * Check whether the current request is allowed to delete an attachment
+     *
+     * Closes the unauthenticated arbitrary attachment deletion hole where any
+     * author-less attachment ( post_author = 0 ) could be removed because of a
+     * loose 0 == 0 comparison. Logged-in users may only remove their own
+     * uploads, guests may only remove uploads bound to their own session token,
+     * and users with the editor capability keep full control.
+     *
+     * @since 4.3.9
+     *
+     * @param \WP_Post $attachment Attachment post object.
+     *
+     * @return bool
+     */
+    protected function can_delete_attachment( $attachment ) {
+        // Users able to manage others' content (editors, admins) keep full control.
+        if ( current_user_can( 'delete_private_pages' ) ) {
+            return true;
+        }
+
+        $author_id = (int) $attachment->post_author;
+
+        // Logged-in users can only delete attachments they own. The author of a
+        // real user upload is never 0, so the previous 0 == 0 bypass is gone.
+        if ( is_user_logged_in() ) {
+            return $author_id > 0 && (int) get_current_user_id() === $author_id;
+        }
+
+        // Guests may only remove author-less WPUF uploads bound to their session.
+        if ( 0 !== $author_id ) {
+            return false;
+        }
+
+        // Only WPUF-created uploads carry the marker; arbitrary site media does not.
+        if ( ! get_post_meta( $attachment->ID, '_wpuf_attachment', true ) ) {
+            return false;
+        }
+
+        $stored_token = (string) get_post_meta( $attachment->ID, '_wpuf_guest_token', true );
+        $cookie_token = isset( $_COOKIE['wpuf_guest_upload'] )
+            ? sanitize_text_field( wp_unslash( $_COOKIE['wpuf_guest_upload'] ) )
+            : '';
+
+        return '' !== $stored_token && '' !== $cookie_token && hash_equals( $stored_token, $cookie_token );
+    }
+
+    /**
+     * Get ( or create ) the per-session token used to bind guest uploads
+     *
+     * The token is stored in an http-only cookie and mirrored into attachment
+     * meta on upload so the public delete handler can verify ownership without
+     * relying on the author id, which is always 0 for guests.
+     *
+     * @since 4.3.9
+     *
+     * @return string
+     */
+    protected function get_guest_upload_token() {
+        $token = isset( $_COOKIE['wpuf_guest_upload'] )
+            ? sanitize_text_field( wp_unslash( $_COOKIE['wpuf_guest_upload'] ) )
+            : '';
+
+        if ( empty( $token ) ) {
+            $token = wp_generate_password( 32, false );
+
+            // SameSite=Lax keeps the token from being sent on cross-site
+            // requests, adding defense in depth to the delete handler.
+            setcookie(
+                'wpuf_guest_upload',
+                $token,
+                [
+                    'expires'  => time() + DAY_IN_SECONDS,
+                    'path'     => COOKIEPATH ? COOKIEPATH : '/',
+                    'domain'   => COOKIE_DOMAIN,
+                    'secure'   => is_ssl(),
+                    'httponly' => true,
+                    'samesite' => 'Lax',
+                ]
+            );
+
+            // Make the token available within the current request as well.
+            $_COOKIE['wpuf_guest_upload'] = $token;
+        }
+
+        return $token;
     }
 
     public function associate_file( $attach_id, $post_id ) {

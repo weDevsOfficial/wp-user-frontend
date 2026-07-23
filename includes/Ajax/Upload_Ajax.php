@@ -231,6 +231,9 @@ class Upload_Ajax {
             '<div class="attachment-name"><img src="%s" alt="%s" class="%s" /></div>', $image,
             esc_attr( $attachment->post_title ), esc_attr( $attachment_class_names )
         );
+        $html .= sprintf(
+            '<span class="wpuf-attach-title">%s</span>', esc_html( $attachment->post_title )
+        );
         if ( wpuf_get_option( 'image_caption', 'wpuf_frontend_posting', 'off' ) == 'on' ) {
             $html .= '<div class="wpuf-file-input-wrap">';
             $html .= sprintf(

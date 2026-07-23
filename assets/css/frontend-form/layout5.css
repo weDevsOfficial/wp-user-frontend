@@ -29,7 +29,7 @@ body.mceContentBody {
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul .wpuf-info {
-    border-color: #D5AED9;
+    border-color: #D5AED9 !important;
     background-color: #F8F1FA;
 }
 
@@ -63,10 +63,10 @@ body.mceContentBody {
     background: #394141;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
-    box-shadow: none;
-    border: 0;
+    box-shadow: none !important;
+    border: 0 !important;
     font-size: 14px;
-    border-radius: 5px;
+    border-radius: 5px !important;
     padding: 10px 0 10px 10px !important;
     box-sizing: border-box;
     position: relative;
@@ -96,10 +96,10 @@ body.mceContentBody {
     top: -1px;
     width: 16px;
     height: 16px;
-    border: 1px solid #6F4A70;
+    border: 1px solid #6F4A70 !important;
     -moz-border-radius: 100%;
     -webkit-border-radius: 100%;
-    border-radius: 100%;
+    border-radius: 100% !important;
     background: #f2f2f2;
 }
 
@@ -113,7 +113,7 @@ body.mceContentBody {
     left: 1px;
     -moz-border-radius: 100%;
     -webkit-border-radius: 100%;
-    border-radius: 100%;
+    border-radius: 100% !important;
     -moz-transition: all 0.2s ease;
     -webkit-transition: all 0.2s ease;
     transition: all 0.2s ease;
@@ -147,7 +147,7 @@ body.mceContentBody {
     top: -1px;
     width: 16px;
     height: 16px;
-    border: 1px solid #394141;
+    border: 1px solid #394141 !important;
     background: #f2f2f2;
 }
 
@@ -183,16 +183,16 @@ body.mceContentBody {
     margin: 0 !important;
     height: inherit;
     line-height: inherit;
-    border: 1px solid #A5D6A7;
+    border: 1px solid #A5D6A7 !important;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
-    border-radius: 5px;
+    border-radius: 5px !important;
     background: transparent;
     color: #BFC4D1;
     width: inherit;
     position: relative;
     text-transform: uppercase;
-    box-shadow: none;
+    box-shadow: none !important;
     display: inline-block;
 }
 
@@ -215,10 +215,10 @@ body.mceContentBody {
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
-    border: 1px solid #A5D6A7;
+    border: 1px solid #A5D6A7 !important;
     background: #394141;
     color: #f2f2f2;
-    box-shadow: none;
+    box-shadow: none !important;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-address-field.city_name,
@@ -256,8 +256,8 @@ body.mceContentBody {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li a:hover,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li a:focus,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li a:visited {
-    outline: none;
-    border-color: #A5D6A7;
+    outline: none !important;
+    border-color: #A5D6A7 !important;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-label > label {
@@ -265,16 +265,16 @@ body.mceContentBody {
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wp-editor-wrap {
-    border: 0;
+    border: 0 !important;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wp-editor-wrap .wp-editor-container {
-    border-radius: 5px;
+    border-radius: 5px !important;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wp-editor-wrap .mce-toolbar-grp {
-    border: 0;
-    border-radius: 0 0 5px 5px;
+    border: 0 !important;
+    border-radius: 0 0 5px 5px !important;
     background: #394141;
     padding: 3px 0 !important;
 }
@@ -284,8 +284,8 @@ body.mceContentBody {
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wp-editor-wrap .mce-btn.mce-listbox {
-    border-radius: 5px;
-    border-color: #394141;
+    border-radius: 5px !important;
+    border-color: #394141 !important;
     background: #394141;
 }
 
@@ -293,7 +293,7 @@ body.mceContentBody {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.has-error .wp-editor-wrap .mce-statusbar,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.has-error .wp-editor-wrap .mce-toolbar-grp,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.has-error .wp-editor-wrap .wp-editor-container {
-    border-color: #F20000;
+    border-color: #F20000 !important;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.field-size-small .wpuf-fields {
@@ -304,7 +304,7 @@ body.mceContentBody {
     display: inline-block;
     background: #F8F1FA;
     line-height: 36px;
-    border-radius: 5px;
+    border-radius: 5px !important;
     height: 36px;
     padding: 0 15px !important;
 }
@@ -316,10 +316,10 @@ body.mceContentBody {
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.wpuf-submit input[type=submit] {
     background: #7BC087;
-    border-color: #7BC087;
+    border-color: #7BC087 !important;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
-    box-shadow: none;
+    box-shadow: none !important;
     text-shadow: none;
     padding: 10px 35px !important;
 }
@@ -338,10 +338,10 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 /* ---- Figma sync: outlined controls with green accent checked-states ---- */
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"]::before {
     background: transparent;
-    border-color: #AEBABA;
+    border-color: #AEBABA !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked::before {
-    border-color: #A5D6A7;
+    border-color: #A5D6A7 !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"]::after {
     background: #A5D6A7;
@@ -350,12 +350,12 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
     background: transparent;
-    border-color: #AEBABA;
-    border-radius: 3px;
+    border-color: #AEBABA !important;
+    border-radius: 3px !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:before {
     background: #A5D6A7;
-    border-color: #A5D6A7;
+    border-color: #A5D6A7 !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:after {
     width: 9px;
@@ -370,19 +370,19 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 
 /* ---- Figma sync: file upload zone palette ---- */
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-file-upload-zone {
-    border: 1px dashed #6B7A6E;
-    border-radius: 8px;
+    border: 1px dashed #6B7A6E !important;
+    border-radius: 8px !important;
     background: #394141;
 }
 
 /* ---- Figma sync: multiselect dropdown panel on dark palette ---- */
 .wpuf-form-add.wpuf-form-layout5 .custom-multiselect .multiselect-dropdown {
     background: #394141;
-    border: 1px solid #6B7A6E;
+    border: 1px solid #6B7A6E !important;
 }
 .wpuf-form-add.wpuf-form-layout5 .custom-multiselect .multiselect-option input[type="checkbox"]:checked + label::before {
     background: #A5D6A7;
-    border-color: #A5D6A7;
+    border-color: #A5D6A7 !important;
 }
 
 /* Native control must not render under the pseudo-element design
@@ -408,7 +408,7 @@ ul.wpuf-form li label.wpuf-form-sub-label {
    (#6B7A6E) — the frame's stray navy border token is NOT copied here. */
 .wpuf-form-add.wpuf-form-layout5 {
     padding: 40px !important;
-    border-radius: 20px;
+    border-radius: 20px !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li {
     margin-bottom: 40px !important;
@@ -432,8 +432,8 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields textarea,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields select {
-    border: 1px solid #6B7A6E;
-    border-radius: 10px;
+    border: 1px solid #6B7A6E !important;
+    border-radius: 10px !important;
     padding: 12px 16px !important;
     font-size: 16px;
     line-height: 24px;
@@ -450,24 +450,24 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     padding: 12px 16px !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wp-editor-wrap .wp-editor-container {
-    border-radius: 10px;
+    border-radius: 10px !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wp-editor-wrap .mce-toolbar-grp {
-    border-radius: 10px 10px 0 0;
+    border-radius: 10px 10px 0 0 !important;
 }
 /* Controls: 20px circles, #B5BEC3 rest border, #7BC087 accent */
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"],
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
     margin-right: 12px !important;
-    border: none;
+    border: none !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"]::before {
     width: 20px;
     height: 20px;
-    border-color: #B5BEC3;
+    border-color: #B5BEC3 !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked::before {
-    border-color: #7BC087;
+    border-color: #7BC087 !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"]::after {
     background: #7BC087;
@@ -479,12 +479,12 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
     width: 20px;
     height: 20px;
-    border-color: #B5BEC3;
-    border-radius: 50%;
+    border-color: #B5BEC3 !important;
+    border-radius: 50% !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:before {
     background: #7BC087;
-    border-color: #7BC087;
+    border-color: #7BC087 !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:after {
     left: 2px;
@@ -510,12 +510,12 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li select:active,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li select:hover,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li select:focus {
-    border-color: #7BC087;
+    border-color: #7BC087 !important;
 }
 /* Multiselect chips + panel */
 .wpuf-form-add.wpuf-form-layout5 .custom-multiselect .selected-item {
     background: #7BC087;
-    border-radius: 6px;
+    border-radius: 6px !important;
     padding: 4px 10px !important;
     color: #4B5563;
     font-size: 16px;
@@ -525,11 +525,11 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     color: #4B5563;
 }
 .wpuf-form-add.wpuf-form-layout5 .custom-multiselect .multiselect-dropdown {
-    border-radius: 10px;
+    border-radius: 10px !important;
 }
 .wpuf-form-add.wpuf-form-layout5 .custom-multiselect .multiselect-option input[type="checkbox"]:checked + label::before {
     background: #7BC087;
-    border-color: #7BC087;
+    border-color: #7BC087 !important;
 }
 /* File upload zone */
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-file-upload-zone {
@@ -547,29 +547,29 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     line-height: 20px;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields a.file-selector {
-    border: none;
-    border-radius: 10px;
+    border: none !important;
+    border-radius: 10px !important;
     background: #7BC087;
     color: #4B5563;
     text-transform: none;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
-    border: none;
+    border: none !important;
     background: #7BC087;
     color: #4B5563;
-    border-radius: 10px;
+    border-radius: 10px !important;
     padding: 12px 16px !important;
     font-size: 16px;
 }
 /* Submit: green fill, dark-green text, 6px radius per frame */
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.wpuf-submit input[type=submit] {
     color: #394141;
-    border-radius: 6px;
+    border-radius: 6px !important;
     padding: 10px 32px !important;
     font-size: 16px;
     font-weight: 500;
     line-height: 24px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-help {
     color: #FFFFFF;
@@ -626,8 +626,8 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 /* ---- Multiselect closed control: match the template field style ---- */
 .wpuf-form-add.wpuf-form-layout5 .custom-multiselect .multiselect-input {
     background: #394141;
-    border: 1px solid #6B7A6E;
-    border-radius: 10px;
+    border: 1px solid #6B7A6E !important;
+    border-radius: 10px !important;
     padding: 8px 16px !important;
     color: #fff;
     box-sizing: border-box;
@@ -660,8 +660,8 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     height: 20px;
     padding: 0 !important;
     background: transparent;
-    border: none;
-    border-radius: 0;
+    border: none !important;
+    border-radius: 0 !important;
     box-sizing: border-box;
     vertical-align: middle;
 }
@@ -723,7 +723,7 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     letter-spacing: normal !important;
     text-decoration: none !important;
     width: auto !important;
-    border-style: solid;
+    border-style: solid !important;
     transition: background-color 0.2s ease;
 }
 
@@ -741,8 +741,8 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-pricing-quantity {
     width: 80px !important;
     padding: 6px 10px !important;
-    border: 1px solid #6B7A6E;
-    border-radius: 10px;
+    border: 1px solid #6B7A6E !important;
+    border-radius: 10px !important;
     background: #394141;
     color: #FFFFFF;
     margin-left: 12px !important;
@@ -752,8 +752,8 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-display,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-multiselect-quantities {
     background: #394141;
-    border: 1px solid #6B7A6E;
-    border-radius: 10px;
+    border: 1px solid #6B7A6E !important;
+    border-radius: 10px !important;
     color: #FFFFFF;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-table {
@@ -762,16 +762,16 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
     background: transparent;
-    border-bottom: 1px solid #6B7A6E;
+    border-bottom: 1px solid #6B7A6E !important;
     color: #B5BEC3;
     font-weight: 500;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tbody td {
-    border-bottom: 1px solid #6B7A6E;
+    border-bottom: 1px solid #6B7A6E !important;
     color: #FFFFFF;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tfoot td {
-    border-top: 1px solid #6B7A6E;
+    border-top: 1px solid #6B7A6E !important;
     color: #FFFFFF;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-amount {
@@ -784,29 +784,29 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 /* ---- Strength indicator: palette states (default box was WP-core white) ---- */
 .wpuf-form-add.wpuf-form-layout5 .pass-strength-result {
     background: #394141;
-    border: 1px solid #6B7A6E;
+    border: 1px solid #6B7A6E !important;
     color: #B5BEC3;
-    border-radius: 6px;
+    border-radius: 6px !important;
     padding: 10px 32px !important;
 }
 .wpuf-form-add.wpuf-form-layout5 .pass-strength-result.short {
     background: #4A2323;
-    border-color: #4A2323;
+    border-color: #4A2323 !important;
     color: #FCA5A5;
 }
 .wpuf-form-add.wpuf-form-layout5 .pass-strength-result.bad {
     background: #4A3623;
-    border-color: #4A3623;
+    border-color: #4A3623 !important;
     color: #FDBA74;
 }
 .wpuf-form-add.wpuf-form-layout5 .pass-strength-result.good {
     background: #4A4423;
-    border-color: #4A4423;
+    border-color: #4A4423 !important;
     color: #FDE047;
 }
 .wpuf-form-add.wpuf-form-layout5 .pass-strength-result.strong {
     background: #274A21;
-    border-color: #274A21;
+    border-color: #274A21 !important;
     color: #B4F2A9;
 }
 
@@ -826,15 +826,137 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 .wpuf-multistep-nav-btn {
     background: #7BC087;
     color: #394141;
-    border: none;
-    border-radius: 6px;
+    border: none !important;
+    border-radius: 6px !important;
     padding: 10px 32px !important;
     font-size: 16px;
     font-weight: 500;
     line-height: 24px;
     cursor: pointer;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
     text-shadow: none;
     text-transform: none;
     letter-spacing: normal;
+}
+
+/* ---- Uploaded file rows (Figma): 48px bordered thumb, 24px delete/drag
+   icons, borderless row ---- */
+.wpuf-form-add.wpuf-form-layout5 .wpuf-attachment-list li.wpuf-image-wrap {
+    background: transparent;
+    border: none !important;
+    box-shadow: none !important;
+    float: none;
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    list-style: none;
+    padding: 8px 0 !important;
+    margin: 0 0 8px !important;
+}
+.wpuf-form-add.wpuf-form-layout5 .wpuf-attachment-list li.wpuf-image-wrap .attachment-name img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border: 1px solid #6B7A6E !important;
+    border-radius: 10px !important;
+}
+.wpuf-form-add.wpuf-form-layout5 .wpuf-attachment-list li.wpuf-image-wrap .caption {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 !important;
+}
+.wpuf-form-add.wpuf-form-layout5 .wpuf-attachment-list li.wpuf-image-wrap a.attachment-delete img,
+.wpuf-form-add.wpuf-form-layout5 .wpuf-attachment-list li.wpuf-image-wrap .wpuf-drag-file img {
+    width: 24px;
+    height: 24px;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+/* ---- Attachment rows per Figma: clean row, palette trash icon, no dark
+   overlay chip; whole row stays sortable so the drag sprite is hidden ---- */
+.wpuf-form-add.wpuf-form-layout5 .wpuf-attachment-list li.wpuf-image-wrap .caption {
+    background: transparent !important;
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    margin-left: auto !important;
+    padding: 0 !important;
+    width: auto !important;
+}
+.wpuf-form-add.wpuf-form-layout5 .wpuf-attachment-list li.wpuf-image-wrap .caption a.attachment-delete img {
+    display: none;
+}
+.wpuf-form-add.wpuf-form-layout5 .wpuf-attachment-list li.wpuf-image-wrap .caption a.attachment-delete {
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%23B5BEC3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0'/%3E%3C/svg%3E") center / 20px 20px no-repeat !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.wpuf-form-add.wpuf-form-layout5 .wpuf-attachment-list li.wpuf-image-wrap .caption .wpuf-drag-file {
+    display: none;
+}
+.wpuf-form-add.wpuf-form-layout5 .wpuf-attachment-list li.wpuf-image-wrap .wpuf-attach-title {
+    flex: 1;
+    font-size: 16px;
+    line-height: 24px;
+    color: #FFFFFF;
+    overflow-wrap: anywhere;
+}
+/* Legacy file-selector matches the field geometry of its template */
+.wpuf-form-add.wpuf-form-layout5 .wpuf-fields a.file-selector {
+    min-height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
+
+/* ---- Consistency pass: forced cart palette, captcha strip, legacy icon ---- */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields a.file-selector:before {
+    display: none !important;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-summary,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-display,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-multiselect-quantities {
+    background: #394141 !important;
+    color: #FFFFFF !important;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-table {
+    background: transparent !important;
+    color: #FFFFFF !important;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
+    background: transparent !important;
+    color: #B5BEC3 !important;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tbody td,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tfoot td {
+    color: #FFFFFF !important;
+    background: transparent !important;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha {
+    background: #394141 !important;
+    border-color: #6B7A6E !important;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha-number,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha-equal {
+    color: #FFFFFF !important;
+}
+
+/* Ratings widget: transparent on the dark surface */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .br-theme-css-stars .br-widget {
+    background: transparent !important;
+    border: 1px solid #6B7A6E !important;
+}
+
+/* Editor container: bordered like other fields */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wp-editor-wrap .wp-editor-container {
+    border: 1px solid #6B7A6E !important;
+    border-radius: 10px !important;
+    overflow: hidden;
 }

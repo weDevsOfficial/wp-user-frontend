@@ -40,7 +40,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   color: var(--wpuf-l2-muted);
 }
 .wpuf-form-add.wpuf-form-layout2 ul .wpuf-info {
-  border-color: var(--wpuf-l2-info-border);
+  border-color: var(--wpuf-l2-info-border) !important;
   background-color: var(--wpuf-l2-info-bg);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form .wpuf-errors {
@@ -56,7 +56,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wpuf-fields input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wpuf-fields textarea,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wpuf-fields select {
-  border-color: var(--wpuf-l2-danger);
+  border-color: var(--wpuf-l2-danger) !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wpuf-fields .wpuf-error-msg {
   color: var(--wpuf-l2-danger);
@@ -67,11 +67,11 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   background: var(--wpuf-l2-surface-bg);
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
-  box-shadow: none;
-  border: 0;
+  box-shadow: none !important;
+  border: 0 !important;
   font-size: 14px;
-  border: 1px solid var(--wpuf-l2-border);
-  border-radius: 5px;
+  border: 1px solid var(--wpuf-l2-border) !important;
+  border-radius: 5px !important;
   padding: 10px 0 10px 10px !important;
   box-sizing: border-box;
   position: relative;
@@ -81,9 +81,9 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   background: var(--wpuf-l2-surface-bg);
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
-  box-shadow: none;
-  border: 1px solid var(--wpuf-l2-border);
-  border-radius: 5px;
+  box-shadow: none !important;
+  border: 1px solid var(--wpuf-l2-border) !important;
+  border-radius: 5px !important;
   font-size: 14px;
   box-sizing: border-box;
   color: var(--wpuf-l2-text);
@@ -94,7 +94,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   padding: 8px 0 10px 10px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields textarea {
-  border: 1px solid var(--wpuf-l2-border);
+  border: 1px solid var(--wpuf-l2-border) !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"] {
   width: inherit;
@@ -110,10 +110,10 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   top: -1px;
   width: 16px;
   height: 16px;
-  border: 1px solid var(--wpuf-l2-help);
+  border: 1px solid var(--wpuf-l2-help) !important;
   -moz-border-radius: 100%;
   -webkit-border-radius: 100%;
-  border-radius: 100%;
+  border-radius: 100% !important;
   background: #fff;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::after {
@@ -126,7 +126,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   left: 1px;
   -moz-border-radius: 100%;
   -webkit-border-radius: 100%;
-  border-radius: 100%;
+  border-radius: 100% !important;
   -moz-transition: all 0.2s ease;
   -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
@@ -157,7 +157,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   top: -1px;
   width: 16px;
   height: 16px;
-  border: 1px solid var(--wpuf-l2-surface-bg);
+  border: 1px solid var(--wpuf-l2-surface-bg) !important;
   background: #fff;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:after {
@@ -189,16 +189,16 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   margin: 0 !important;
   height: inherit;
   line-height: inherit;
-  border: 1px solid var(--wpuf-l2-border);
+  border: 1px solid var(--wpuf-l2-border) !important;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
-  border-radius: 5px;
+  border-radius: 5px !important;
   background: transparent;
   color: var(--wpuf-l2-muted);
   width: auto;
   position: relative;
   text-transform: uppercase;
-  box-shadow: none;
+  box-shadow: none !important;
   display: inline-block;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields a.file-selector:before {
@@ -218,10 +218,10 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   color: var(--wpuf-l2-text);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
-  border: 1px solid var(--wpuf-l2-border);
+  border: 1px solid var(--wpuf-l2-border) !important;
   background: var(--wpuf-l2-surface-bg);
   color: var(--wpuf-l2-text);
-  box-shadow: none;
+  box-shadow: none !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-address-field.city_name,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-address-field.zip {
@@ -245,30 +245,30 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:not(.file-selector):not(.wpuf-insert-image):hover,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:not(.file-selector):not(.wpuf-insert-image):focus,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:not(.file-selector):not(.wpuf-insert-image):visited {
-  outline: none;
-  border-color: var(--wpuf-l2-accent);
+  outline: none !important;
+  border-color: var(--wpuf-l2-accent) !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li input:focus-visible,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li textarea:focus-visible,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li select:focus-visible,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:focus-visible {
-  outline: 2px solid var(--wpuf-l2-accent);
-  outline-offset: 1px;
+  outline: 2px solid var(--wpuf-l2-accent) !important;
+  outline-offset: 1px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-label {
     color: var(--wpuf-l2-label);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap {
-  border: 0;
+  border: 0 !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .wp-editor-container {
-  border: 1px solid var(--wpuf-l2-border);
-  border-radius: 5px;
+  border: 1px solid var(--wpuf-l2-border) !important;
+  border-radius: 5px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .mce-toolbar-grp {
-  border: 0;
-  border-bottom: 1px solid var(--wpuf-l2-border);
-  border-radius: 0 0 5px 5px;
+  border: 0 !important;
+  border-bottom: 1px solid var(--wpuf-l2-border) !important;
+  border-radius: 0 0 5px 5px !important;
   background: var(--wpuf-l2-surface-bg);
   padding: 3px 0 !important;
 }
@@ -276,8 +276,8 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   background: var(--wpuf-l2-surface-bg);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .mce-btn.mce-listbox {
-  border-radius: 5px;
-  border-color: var(--wpuf-l2-surface-bg);
+  border-radius: 5px !important;
+  border-color: var(--wpuf-l2-surface-bg) !important;
   background: var(--wpuf-l2-surface-bg);
 }
 
@@ -286,19 +286,19 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 }
 
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .mce-statusbar {
-  border-top: 1px solid var(--wpuf-l2-border);
+  border-top: 1px solid var(--wpuf-l2-border) !important;
 }
 
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap:hover .mce-statusbar,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap:hover .mce-toolbar-grp ,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap:hover .wp-editor-container{
-  border-color:  var(--wpuf-l2-accent);
+  border-color: var(--wpuf-l2-accent) !important;
 }
 
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wp-editor-wrap .mce-statusbar,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wp-editor-wrap .mce-toolbar-grp ,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wp-editor-wrap .wp-editor-container{
-  border-color:  var(--wpuf-l2-danger);
+  border-color: var(--wpuf-l2-danger) !important;
 }
 
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.field-size-small .wpuf-fields {
@@ -307,9 +307,9 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .br-theme-css-stars .br-widget {
   display: inline-block;
   background: var(--wpuf-l2-star-bg);
-  border: 1px solid var(--wpuf-l2-border);
+  border: 1px solid var(--wpuf-l2-border) !important;
   line-height: 36px;
-  border-radius: 5px;
+  border-radius: 5px !important;
   height: 36px;
   padding: 0 15px !important;
 }
@@ -322,10 +322,10 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.wpuf-submit input[type=submit] {
   background: var(--wpuf-l2-primary);
-  border-color: var(--wpuf-l2-primary);
+  border-color: var(--wpuf-l2-primary) !important;
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
-  box-shadow: none;
+  box-shadow: none !important;
   text-shadow: none;
   padding: 10px 35px !important;
 }
@@ -354,10 +354,10 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 /* ---- Figma sync: outlined controls with accent checked-states ---- */
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::before {
   background: transparent;
-  border-color: var(--wpuf-l2-muted);
+  border-color: var(--wpuf-l2-muted) !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked::before {
-  border-color: var(--wpuf-l2-primary);
+  border-color: var(--wpuf-l2-primary) !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::after {
   background: var(--wpuf-l2-primary);
@@ -366,12 +366,12 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
   background: transparent;
-  border-color: var(--wpuf-l2-muted);
-  border-radius: 3px;
+  border-color: var(--wpuf-l2-muted) !important;
+  border-radius: 3px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:before {
   background: var(--wpuf-l2-primary);
-  border-color: var(--wpuf-l2-primary);
+  border-color: var(--wpuf-l2-primary) !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:after {
   width: 9px;
@@ -386,8 +386,8 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 
 /* ---- Figma sync: file upload zone palette ---- */
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-file-upload-zone {
-  border: 1px dashed var(--wpuf-l2-border);
-  border-radius: 8px;
+  border: 1px dashed var(--wpuf-l2-border) !important;
+  border-radius: 8px !important;
   background: var(--wpuf-l2-surface-bg);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-upload-instructions {
@@ -397,11 +397,11 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 /* ---- Figma sync: multiselect dropdown panel on dark palette ---- */
 .wpuf-form-add.wpuf-form-layout2 .custom-multiselect .multiselect-dropdown {
   background: var(--wpuf-l2-surface-bg);
-  border: 1px solid var(--wpuf-l2-border);
+  border: 1px solid var(--wpuf-l2-border) !important;
 }
 .wpuf-form-add.wpuf-form-layout2 .custom-multiselect .multiselect-option input[type="checkbox"]:checked + label::before {
   background: var(--wpuf-l2-primary);
-  border-color: var(--wpuf-l2-primary);
+  border-color: var(--wpuf-l2-primary) !important;
 }
 
 /* Figma typography — Inter (falls back to system sans when not loaded). */
@@ -425,7 +425,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   --wpuf-l2-help: #4A5971;
   --wpuf-l2-accent: #3B82F6;
   padding: 40px !important;
-  border-radius: 20px;
+  border-radius: 20px !important;
 }
 body.mceContentBody {
   background: #222C3C;
@@ -446,7 +446,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields textarea {
   font-size: 16px;
   line-height: 24px;
-  border-radius: 10px;
+  border-radius: 10px !important;
   padding: 12px 16px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input::placeholder,
@@ -455,7 +455,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields select {
   font-size: 16px;
-  border-radius: 10px;
+  border-radius: 10px !important;
   padding: 12px 16px !important;
   height: 48px;
 }
@@ -463,10 +463,10 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   padding: 12px 16px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .wp-editor-container {
-  border-radius: 10px;
+  border-radius: 10px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .mce-toolbar-grp {
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px 10px 0 0 !important;
 }
 /* Controls: 20px circles, muted #4A5971 rest border, #3B82F6 accent */
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"],
@@ -476,7 +476,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::before {
   width: 20px;
   height: 20px;
-  border-color: var(--wpuf-l2-help);
+  border-color: var(--wpuf-l2-help) !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::after {
   width: 10px;
@@ -487,8 +487,8 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
   width: 20px;
   height: 20px;
-  border-color: var(--wpuf-l2-help);
-  border-radius: 50%;
+  border-color: var(--wpuf-l2-help) !important;
+  border-radius: 50% !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:after {
   left: 2px;
@@ -507,7 +507,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 /* Multiselect chips + panel */
 .wpuf-form-add.wpuf-form-layout2 .custom-multiselect .selected-item {
   background: var(--wpuf-l2-primary);
-  border-radius: 6px;
+  border-radius: 6px !important;
   padding: 4px 10px !important;
   color: #fff;
   font-size: 16px;
@@ -517,7 +517,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   color: #fff;
 }
 .wpuf-form-add.wpuf-form-layout2 .custom-multiselect .multiselect-dropdown {
-  border-radius: 10px;
+  border-radius: 10px !important;
 }
 /* File upload zone */
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-file-upload-zone {
@@ -535,28 +535,28 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   line-height: 20px;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields a.file-selector {
-  border: none;
-  border-radius: 10px;
+  border: none !important;
+  border-radius: 10px !important;
   background: var(--wpuf-l2-primary);
   color: #fff;
   text-transform: none;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
-  border: none;
+  border: none !important;
   background: var(--wpuf-l2-primary);
   color: #fff;
-  border-radius: 10px;
+  border-radius: 10px !important;
   padding: 12px 16px !important;
   font-size: 16px;
 }
 /* Submit pill */
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.wpuf-submit input[type=submit] {
-  border-radius: 85px;
+  border-radius: 85px !important;
   padding: 10px 32px !important;
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-help {
   font-style: italic;
@@ -608,8 +608,8 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 /* ---- Multiselect closed control: match the template field style ---- */
 .wpuf-form-add.wpuf-form-layout2 .custom-multiselect .multiselect-input {
     background: var(--wpuf-l2-surface-bg);
-    border: 1px solid var(--wpuf-l2-border);
-    border-radius: 10px;
+    border: 1px solid var(--wpuf-l2-border) !important;
+    border-radius: 10px !important;
     padding: 8px 16px !important;
     color: var(--wpuf-l2-text);
     box-sizing: border-box;
@@ -672,7 +672,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
     letter-spacing: normal !important;
     text-decoration: none !important;
     width: auto !important;
-    border-style: solid;
+    border-style: solid !important;
     transition: background-color 0.2s ease;
 }
 
@@ -690,8 +690,8 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-pricing-quantity {
     width: 80px !important;
     padding: 6px 10px !important;
-    border: 1px solid var(--wpuf-l2-border);
-    border-radius: 10px;
+    border: 1px solid var(--wpuf-l2-border) !important;
+    border-radius: 10px !important;
     background: var(--wpuf-l2-surface-bg);
     color: var(--wpuf-l2-text);
     margin-left: 12px !important;
@@ -701,8 +701,8 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-display,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-multiselect-quantities {
     background: var(--wpuf-l2-surface-bg);
-    border: 1px solid var(--wpuf-l2-border);
-    border-radius: 10px;
+    border: 1px solid var(--wpuf-l2-border) !important;
+    border-radius: 10px !important;
     color: var(--wpuf-l2-text);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table {
@@ -711,16 +711,16 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
     background: transparent;
-    border-bottom: 1px solid var(--wpuf-l2-border);
+    border-bottom: 1px solid var(--wpuf-l2-border) !important;
     color: var(--wpuf-l2-label);
     font-weight: 500;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tbody td {
-    border-bottom: 1px solid var(--wpuf-l2-border);
+    border-bottom: 1px solid var(--wpuf-l2-border) !important;
     color: var(--wpuf-l2-text);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tfoot td {
-    border-top: 1px solid var(--wpuf-l2-border);
+    border-top: 1px solid var(--wpuf-l2-border) !important;
     color: var(--wpuf-l2-text);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-amount {
@@ -733,29 +733,29 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 /* ---- Strength indicator: palette states (default box was WP-core white) ---- */
 .wpuf-form-add.wpuf-form-layout2 .pass-strength-result {
     background: #222C3C;
-    border: 1px solid #344156;
+    border: 1px solid #344156 !important;
     color: #9CABC3;
-    border-radius: 6px;
+    border-radius: 6px !important;
     padding: 10px 32px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 .pass-strength-result.short {
     background: #4A2323;
-    border-color: #4A2323;
+    border-color: #4A2323 !important;
     color: #FCA5A5;
 }
 .wpuf-form-add.wpuf-form-layout2 .pass-strength-result.bad {
     background: #4A3623;
-    border-color: #4A3623;
+    border-color: #4A3623 !important;
     color: #FDBA74;
 }
 .wpuf-form-add.wpuf-form-layout2 .pass-strength-result.good {
     background: #4A4423;
-    border-color: #4A4423;
+    border-color: #4A4423 !important;
     color: #FDE047;
 }
 .wpuf-form-add.wpuf-form-layout2 .pass-strength-result.strong {
     background: #274A21;
-    border-color: #274A21;
+    border-color: #274A21 !important;
     color: #B4F2A9;
 }
 
@@ -775,15 +775,130 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 .wpuf-multistep-nav-btn {
     background: #3B82F6;
     color: #FFFFFF;
-    border: none;
-    border-radius: 85px;
+    border: none !important;
+    border-radius: 85px !important;
     padding: 10px 32px !important;
     font-size: 16px;
     font-weight: 500;
     line-height: 24px;
     cursor: pointer;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
     text-shadow: none;
     text-transform: none;
     letter-spacing: normal;
+}
+
+/* ---- Uploaded file rows (Figma): 48px bordered thumb, 24px delete/drag
+   icons, borderless row ---- */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap {
+    background: transparent;
+    border: none !important;
+    box-shadow: none !important;
+    float: none;
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    list-style: none;
+    padding: 8px 0 !important;
+    margin: 0 0 8px !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .attachment-name img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border: 1px solid #344156 !important;
+    border-radius: 10px !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .caption {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap a.attachment-delete img,
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .wpuf-drag-file img {
+    width: 24px;
+    height: 24px;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+/* ---- Attachment rows per Figma: clean row, palette trash icon, no dark
+   overlay chip; whole row stays sortable so the drag sprite is hidden ---- */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .caption {
+    background: transparent !important;
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    margin-left: auto !important;
+    padding: 0 !important;
+    width: auto !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .caption a.attachment-delete img {
+    display: none;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .caption a.attachment-delete {
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%239CABC3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0'/%3E%3C/svg%3E") center / 20px 20px no-repeat !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .caption .wpuf-drag-file {
+    display: none;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .wpuf-attach-title {
+    flex: 1;
+    font-size: 16px;
+    line-height: 24px;
+    color: #FFFFFF;
+    overflow-wrap: anywhere;
+}
+/* Legacy file-selector matches the field geometry of its template */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-fields a.file-selector {
+    min-height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
+
+/* ---- Consistency pass: forced cart palette, captcha strip, legacy icon ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields a.file-selector:before {
+    display: none !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-summary,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-display,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-multiselect-quantities {
+    background: var(--wpuf-l2-surface-bg) !important;
+    color: var(--wpuf-l2-text) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table {
+    background: transparent !important;
+    color: var(--wpuf-l2-text) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
+    background: transparent !important;
+    color: var(--wpuf-l2-label) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tbody td,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tfoot td {
+    color: var(--wpuf-l2-text) !important;
+    background: transparent !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha {
+    background: var(--wpuf-l2-surface-bg) !important;
+    border-color: var(--wpuf-l2-border) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha-number,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha-equal {
+    color: var(--wpuf-l2-text) !important;
+}
+
+/* Ratings widget: transparent on the dark surface */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .br-theme-css-stars .br-widget {
+    background: transparent !important;
+    border: 1px solid var(--wpuf-l2-border) !important;
 }

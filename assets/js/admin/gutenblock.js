@@ -9,11 +9,17 @@
         TextControl = components.TextControl,// text input control
         InspectorControls = editor.InspectorControls; // sidebar controls
 
-    // register our block
+    // Legacy block, superseded by wpuf/post-form. Kept registered so posts
+    // saved with it keep editing cleanly instead of showing an invalid block
+    // notice, but hidden from the inserter so new content uses wpuf/post-form.
     blocks.registerBlockType( 'wpuf/form', {
-        title: 'WPUF Forms',
+        title: 'WPUF Forms (Legacy)',
         icon: 'feedback',
         category: 'common',
+
+        supports: {
+            inserter: false
+        },
 
         attributes: {
             formID: {

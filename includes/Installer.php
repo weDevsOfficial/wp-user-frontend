@@ -56,6 +56,8 @@ class Installer {
                 `user_id` bigint(20) DEFAULT NULL,
                 `status` varchar(60) NOT NULL DEFAULT 'pending_payment',
                 `subtotal` varchar(255) DEFAULT '',
+                `discount` varchar(255) DEFAULT '0',
+                `coupon_id` bigint(20) DEFAULT NULL,
                 `tax` varchar(255) DEFAULT '',
                 `cost` varchar(255) DEFAULT '',
                 `post_id` varchar(20) DEFAULT NULL,

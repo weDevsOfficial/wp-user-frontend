@@ -1,0 +1,72 @@
+# Files and directories that must NOT ship to wp.org (applied by the 10up
+# deploy action and by the release zip step). Built assets under assets/ ARE
+# shipped — generated outputs are untracked (gitignored) and rebuilt fresh in CI.
+#
+# IMPORTANT: generic dir names (src, bin, tests, build) are ANCHORED with a
+# leading slash so they only match the PLUGIN's own top-level dirs. Without the
+# anchor, rsync/10up match them at any depth and would strip required vendor
+# paths like vendor/wedevs/wp-utils/src (SingletonTrait) -> fatal on activation.
+
+# Plugin-local source / tooling dirs (root-anchored)
+/.git
+/.github
+/.claude
+/.wordpress-org
+/src
+/bin
+/tests
+/build
+/node_modules
+
+# Nested build inputs for the user-directory module (keep its built output)
+modules/user-directory/src
+modules/user-directory/node_modules
+
+# Dotfiles / dev config (root-anchored)
+/.babelrc
+/.editorconfig
+/.eslintrc
+/.eslintrc.js
+/.eslintrc.json
+/.jshintrc
+/.prettierrc
+/.gitignore
+/.gitattributes
+/.distignore
+/.svnignore
+/.nvmrc
+/.travis.yml
+/.php_cs.dist
+/phpcs.xml
+/phpcs.xml.dist
+/phpunit.xml
+/phpunit.xml.dist
+/state.json
+
+# Build / tooling config (root-anchored)
+/Gruntfile.js
+/gruntfile.js
+/vite.config.mjs
+/vite.config.js
+/tailwind.config.js
+/postcss.config.js
+/postcss.user-directory.config.js
+/package.json
+/package-lock.json
+/composer.json
+/composer.lock
+/appsero.json
+/plugin-deploy.sh
+
+# Docs (root-anchored)
+/readme.md
+/README.md
+/CHANGELOG.md
+/CLAUDE.md
+/docs.md
+/docs
+
+# Match anywhere (safe — these never appear inside required vendor paths)
+.DS_Store
+*.zip
+*.log

@@ -59,7 +59,7 @@ class Form_Field_HTML extends Field_Contract {
                 'type'      => 'textarea',
                 'section'   => 'basic',
                 'priority'  => 11,
-                'help_text' => __( 'Paste your HTML codes, WordPress shortcodes will also work here', 'wp-user-frontend' ),
+                'help_text' => __( 'Paste your HTML codes, WordPress shortcodes will NOT work here, use the Shortcode field instead', 'wp-user-frontend' ),
             ],
         ];
 

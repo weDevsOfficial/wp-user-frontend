@@ -709,3 +709,12 @@
     height: auto !important;
     min-height: 0 !important;
 }
+
+/* Phone field (intl-tel-input): keep the flag gutter — the forced
+   16px padding overlapped the dial-code/flag */
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti input,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti input[type="tel"],
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .intl-tel-input input,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .intl-tel-input input[type="tel"] {
+    padding-left: 52px !important;
+}

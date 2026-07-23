@@ -650,3 +650,36 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.wpuf-submit input[type="submit"] {
     margin-top: 40px;
 }
+
+/* ---- Controls: neutralize the generic input box (bg + padding painted a
+   dark slab behind the pseudo circle) and pin pseudo geometry to a clean
+   20px box ---- */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"],
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"]::before,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
+    left: 0;
+    top: 0;
+    background: transparent;
+    box-sizing: border-box;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:before {
+    background: #7BC087;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"]::after {
+    left: 5px;
+    top: 5px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:after {
+    left: 5px;
+    top: 6px;
+}

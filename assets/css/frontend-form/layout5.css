@@ -393,3 +393,12 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     -moz-appearance: none;
     appearance: none;
 }
+
+/* Figma typography — Inter (falls back to system sans when not loaded). */
+.wpuf-form-add.wpuf-form-layout5,
+.wpuf-form-add.wpuf-form-layout5 input,
+.wpuf-form-add.wpuf-form-layout5 textarea,
+.wpuf-form-add.wpuf-form-layout5 select,
+.wpuf-form-add.wpuf-form-layout5 button {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}

@@ -111,3 +111,12 @@
   color: #000;
   text-shadow: 0 -1px 1px #dddddd, 1px 0 1px #dddddd, 0 1px 1px #dddddd, -1px 0 1px #dddddd;
 }
+
+/* Figma typography — Inter (falls back to system sans when not loaded). */
+.wpuf-form-add.wpuf-form-layout1,
+.wpuf-form-add.wpuf-form-layout1 input,
+.wpuf-form-add.wpuf-form-layout1 textarea,
+.wpuf-form-add.wpuf-form-layout1 select,
+.wpuf-form-add.wpuf-form-layout1 button {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}

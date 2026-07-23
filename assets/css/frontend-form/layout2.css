@@ -341,3 +341,12 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
     margin-bottom: 24px;
   }
 }
+
+/* Readable default text for field content the palette doesn't style explicitly
+   (multiselect widget, file-upload hints, custom HTML) on the dark background. */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields {
+  color: var(--wpuf-l2-text);
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.section_break .wpuf-section-wrap {
+  color: var(--wpuf-l2-text);
+}

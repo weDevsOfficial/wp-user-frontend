@@ -9,17 +9,19 @@ body.mceContentBody {
     background: #454F4F;
     padding: 50px;
 }
-.wpuf-form-add .wpuf-price-label {
-  color: var(--wpuf-l2-muted);
+/* --wpuf-l2-* vars are defined on .wpuf-form-layout2 only — they never resolve
+   here. Scope to layout5 and use concrete palette colors instead. */
+.wpuf-form-add.wpuf-form-layout5 .wpuf-price-label {
+  color: #AEBABA;
 }
-.wpuf-form-add .wpuf-upload-instructions {
-  color: var(--wpuf-l2-muted);
+.wpuf-form-add.wpuf-form-layout5 .wpuf-upload-instructions {
+  color: #AEBABA;
 }
-.wpuf-form-add .wpuf-repeat-container p {
-  color: var(--wpuf-l2-muted);
+.wpuf-form-add.wpuf-form-layout5 .wpuf-repeat-container p {
+  color: #AEBABA;
 }
-body ul.wpuf-form li label.wpuf-form-sub-label {
-  color: var(--wpuf-l2-muted);
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li label.wpuf-form-sub-label {
+  color: #AEBABA;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul {
@@ -225,7 +227,17 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-help {
-    color: #6F4A70;
+    color: #A9B4B4;
+}
+
+/* Readable default text for field content the palette doesn't style explicitly
+   (multiselect widget, file-upload hints, custom HTML) on the dark background. */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields {
+    color: #f2f2f2;
+}
+
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.section_break .wpuf-section-wrap {
+    color: #f2f2f2;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li input:active,

@@ -729,3 +729,61 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-qty-row label {
     color: var(--wpuf-l2-text);
 }
+
+/* ---- Strength indicator: palette states (default box was WP-core white) ---- */
+.wpuf-form-add.wpuf-form-layout2 .pass-strength-result {
+    background: #222C3C;
+    border: 1px solid #344156;
+    color: #9CABC3;
+    border-radius: 6px;
+    padding: 10px 32px !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .pass-strength-result.short {
+    background: #4A2323;
+    border-color: #4A2323;
+    color: #FCA5A5;
+}
+.wpuf-form-add.wpuf-form-layout2 .pass-strength-result.bad {
+    background: #4A3623;
+    border-color: #4A3623;
+    color: #FDBA74;
+}
+.wpuf-form-add.wpuf-form-layout2 .pass-strength-result.good {
+    background: #4A4423;
+    border-color: #4A4423;
+    color: #FDE047;
+}
+.wpuf-form-add.wpuf-form-layout2 .pass-strength-result.strong {
+    background: #274A21;
+    border-color: #274A21;
+    color: #B4F2A9;
+}
+
+/* ---- Math captcha: palette colors ---- */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-math-captcha .captcha-number,
+.wpuf-form-add.wpuf-form-layout2 .wpuf-math-captcha .captcha-equal {
+    color: #FFFFFF;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-math-captcha #captchaRefresher {
+    fill: #FFFFFF;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-math-captcha .wpuf-captcha-error {
+    color: #F20000;
+}
+
+/* ---- Multistep Prev/Next: same treatment as the template submit ---- */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-multistep-nav-btn {
+    background: #3B82F6;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 85px;
+    padding: 10px 32px !important;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    text-shadow: none;
+    text-transform: none;
+    letter-spacing: normal;
+}

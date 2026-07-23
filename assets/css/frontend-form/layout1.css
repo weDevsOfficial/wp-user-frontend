@@ -508,3 +508,74 @@
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-qty-row label {
     color: #4B5563;
 }
+
+/* ---- Self-contained surface: the light palette carries its own white
+   card so labels/fields stay readable on dark themes too ---- */
+.wpuf-form-add.wpuf-form-layout1 {
+    background: #FFFFFF;
+    padding: 40px !important;
+    border-radius: 20px;
+}
+@media (max-width: 600px) {
+    .wpuf-form-add.wpuf-form-layout1 {
+        padding: 24px !important;
+    }
+}
+
+/* ---- Strength indicator: palette states (default box was WP-core white) ---- */
+.wpuf-form-add.wpuf-form-layout1 .pass-strength-result {
+    background: #FAFAFA;
+    border: 1px solid #DCDCDC;
+    color: #9CA3AF;
+    border-radius: 6px;
+    padding: 10px 32px !important;
+}
+.wpuf-form-add.wpuf-form-layout1 .pass-strength-result.short {
+    background: #FEE2E2;
+    border-color: #FEE2E2;
+    color: #B91C1C;
+}
+.wpuf-form-add.wpuf-form-layout1 .pass-strength-result.bad {
+    background: #FFEDD5;
+    border-color: #FFEDD5;
+    color: #C2410C;
+}
+.wpuf-form-add.wpuf-form-layout1 .pass-strength-result.good {
+    background: #FEF9C3;
+    border-color: #FEF9C3;
+    color: #A16207;
+}
+.wpuf-form-add.wpuf-form-layout1 .pass-strength-result.strong {
+    background: #E1FFEF;
+    border-color: #E1FFEF;
+    color: #00A14B;
+}
+
+/* ---- Math captcha: palette colors ---- */
+.wpuf-form-add.wpuf-form-layout1 .wpuf-math-captcha .captcha-number,
+.wpuf-form-add.wpuf-form-layout1 .wpuf-math-captcha .captcha-equal {
+    color: #4B5563;
+}
+.wpuf-form-add.wpuf-form-layout1 .wpuf-math-captcha #captchaRefresher {
+    fill: #4B5563;
+}
+.wpuf-form-add.wpuf-form-layout1 .wpuf-math-captcha .wpuf-captcha-error {
+    color: #F20000;
+}
+
+/* ---- Multistep Prev/Next: same treatment as the template submit ---- */
+.wpuf-form-add.wpuf-form-layout1 .wpuf-multistep-nav-btn {
+    background: #0088BB;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 85px;
+    padding: 10px 32px !important;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    text-shadow: none;
+    text-transform: none;
+    letter-spacing: normal;
+}

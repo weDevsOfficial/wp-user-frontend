@@ -399,3 +399,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   background: var(--wpuf-l2-surface-bg);
   border: 1px solid var(--wpuf-l2-border);
 }
+.wpuf-form-add.wpuf-form-layout2 .custom-multiselect .multiselect-option input[type="checkbox"]:checked + label::before {
+  background: var(--wpuf-l2-primary);
+  border-color: var(--wpuf-l2-primary);
+}

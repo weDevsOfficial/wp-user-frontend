@@ -380,3 +380,7 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     background: #394141;
     border: 1px solid #6B7A6E;
 }
+.wpuf-form-add.wpuf-form-layout5 .custom-multiselect .multiselect-option input[type="checkbox"]:checked + label::before {
+    background: #A5D6A7;
+    border-color: #A5D6A7;
+}

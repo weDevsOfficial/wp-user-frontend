@@ -318,3 +318,8 @@ body ul.wpuf-form li .wpuf-fields .wpuf-radio-block, body ul.wpuf-form li .wpuf-
     border-radius: 8px;
     background: #FCF9FD;
 }
+
+.wpuf-form-add.wpuf-form-layout3 .custom-multiselect .multiselect-option input[type="checkbox"]:checked + label::before {
+    background: #8726D3;
+    border-color: #8726D3;
+}

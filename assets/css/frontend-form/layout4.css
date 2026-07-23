@@ -322,3 +322,8 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     border-radius: 8px;
     background: #F7FDFE;
 }
+
+.wpuf-form-add.wpuf-form-layout4 .custom-multiselect .multiselect-option input[type="checkbox"]:checked + label::before {
+    background: #00A5BA;
+    border-color: #00A5BA;
+}

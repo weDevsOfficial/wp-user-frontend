@@ -242,18 +242,20 @@ class Frontend_Render_Form {
         if ( 'on' !== $use_theme_css && in_array( $layout, [ 'layout2', 'layout5' ], true ) ) {
             $editor_bg = 'layout2' === $layout ? '#222C3C' : '#394141';
 
-            add_filter(
-                'tiny_mce_before_init',
-                function ( $mce_init ) use ( $editor_bg ) {
-                    $style = sprintf( 'body.mceContentBody { background: %s; color: #ffffff; caret-color: #ffffff; }', $editor_bg );
+            $wpuf_dark_editor_style = function ( $mce_init ) use ( $editor_bg ) {
+                $style = sprintf( 'body.mceContentBody { background: %s; color: #ffffff; caret-color: #ffffff; }', $editor_bg );
 
-                    $mce_init['content_style'] = isset( $mce_init['content_style'] )
-                        ? $mce_init['content_style'] . ' ' . $style
-                        : $style;
+                $mce_init['content_style'] = isset( $mce_init['content_style'] )
+                    ? $mce_init['content_style'] . ' ' . $style
+                    : $style;
 
-                    return $mce_init;
-                }
-            );
+                return $mce_init;
+            };
+
+            // Post Content renders as a teeny editor by default, which runs
+            // teeny_mce_before_init instead of tiny_mce_before_init.
+            add_filter( 'tiny_mce_before_init', $wpuf_dark_editor_style );
+            add_filter( 'teeny_mce_before_init', $wpuf_dark_editor_style );
         }
 
         if ( ! is_user_logged_in() && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' !== $this->form_settings['post_permission'] ) ) {

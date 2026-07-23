@@ -384,3 +384,12 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     background: #A5D6A7;
     border-color: #A5D6A7;
 }
+
+/* Native control must not render under the pseudo-element design
+   (layout2/3 set this; layout5 was missing it → double indicators). */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"],
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}

@@ -25,6 +25,9 @@ class Admin {
         $this->container['admin_installer']       = new Admin\Admin_Installer();
         $this->container['settings']              = new Admin\Admin_Settings();
         $this->container['forms']                 = new Admin\Forms\Form_Manager();
+        // Legacy wpuf/form block. Superseded by the wpuf/post-form block but
+        // still registered so existing posts keep editing without an invalid
+        // block notice.
         $this->container['gutenberg_block']       = new Frontend\Form_Gutenberg_Block();
         $this->container['plugin_upgrade_notice'] = new Admin\Plugin_Upgrade_Notice();
         $this->container['posting']               = new Admin\Posting();
@@ -119,6 +122,7 @@ class Admin {
                 'version'                      => WPUF_VERSION,
                 'pro_version'                  => defined( 'WPUF_PRO_VERSION' ) ? WPUF_PRO_VERSION : '',
                 'isProActive'                  => class_exists( 'WP_User_Frontend_Pro' ),
+                'plan'                         => function_exists( 'wpuf_pro_current_plan' ) ? wpuf_pro_current_plan() : '',
                 'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
                 'protected_shortcodes_message' => sprintf(
                     // translators: %1$s is the opening div tag, %2$s is the shortcode [wpuf-registration], %3$s is the opening strong tag, %4$s is the closing strong tag, %5$s is the closing div tag

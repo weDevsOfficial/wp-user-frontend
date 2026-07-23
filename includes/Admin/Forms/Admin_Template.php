@@ -598,7 +598,7 @@ class Admin_Template {
                 <div class="wpuf-form-rows">
                     <label><?php esc_html_e( 'HTML Codes', 'wp-user-frontend' ); ?></label>
                     <textarea class="smallipopInput"
-                              title="Paste your HTML codes, WordPress shortcodes will also work here"
+                              title="Paste your HTML codes, WordPress shortcodes will NOT work here, use the Shortcode field instead"
                               name="<?php echo esc_attr( $html_name ); ?>" rows="10"><?php echo esc_html(
                             $html_value
                         ); ?></textarea>

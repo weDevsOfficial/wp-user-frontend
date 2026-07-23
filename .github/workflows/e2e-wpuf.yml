@@ -11,6 +11,16 @@ on:
         type: choice
         options:
           - 'E2E'
+      pro_repo:
+        description: 'wpuf-pro repository to test against'
+        required: false
+        default: 'weDevsOfficial/wpuf-pro'
+        type: string
+      pro_ref:
+        description: 'wpuf-pro ref (branch/tag/sha) to test against'
+        required: false
+        default: 'develop'
+        type: string
   schedule:
     # 1:00 AM Bangladesh Time
     - cron: '0 19 * * 0'
@@ -20,18 +30,34 @@ on:
     branches: ['develop']
 
 jobs:
-  test:
+  # Feature-grouped shards: each job runs a set of RELATED spec files (its own
+  # wp-env + the setup project runs first within the shard). Grouping keeps a
+  # feature's files together on one runner (post-* together, reg-* together) so
+  # any intra-feature ordering/state stays intact — no cross-shard dependency.
+  # workers:1 keeps files serial within a shard, so admin sessions never collide.
+  e2e:
+    name: e2e (${{ matrix.group }})
     if: github.repository != 'weDevsOfficial/wp-user-frontend' && github.repository != 'weDevsOfficial/wpuf-pro'
-    timeout-minutes: 240
+    timeout-minutes: 120
     runs-on: ubuntu-22.04
-   
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - group: post
+            files: tests/postFormTest.spec.ts tests/postFormSettingsTest.spec.ts
+          - group: registration
+            files: tests/regFormTestPro.spec.ts tests/regFormSettingsTestPro.spec.ts
+          - group: fields-subscription
+            files: tests/fieldOptionSettingsTest.spec.ts tests/subscriptionTest.spec.ts
+
     steps:
       # Setup PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
-      
+
       # Checkout WP-User-Frontend repo
       - name: Checkout testing repo
         id: clone-wp-user-frontend
@@ -41,18 +67,18 @@ jobs:
       - name: Use desired version of NodeJS
         uses: actions/setup-node@v4
         with:
-            node-version: 24
+            node-version: 22
             cache: npm
-       
+
       # Clone wpuf-pro
       - name: Clone wpuf-pro
         id: clone-wpuf-pro
         uses: actions/checkout@v4
         with:
-          repository: weDevsOfficial/wpuf-pro
+          repository: ${{ github.event.inputs.pro_repo || 'weDevsOfficial/wpuf-pro' }}
           token: ${{ secrets.ACCESS_TOKEN }}
           path: plugins/wpuf-pro
-          ref: develop
+          ref: ${{ github.event.inputs.pro_ref || 'develop' }}
 
       # Build wpuf-pro
       - name: Build WPUF-pro
@@ -60,7 +86,24 @@ jobs:
         run: |
           composer i --no-dev -o
           npm i --legacy-peer-deps
+          # The reg-forms admin app bundle (assets/js/forms-list.min.js) is emitted by
+          # vite — NOT grunt — and is gitignored (built in CI, never committed). Vite
+          # imports lite's Header.vue via ../../../../wp-user-frontend and needs lite's
+          # node_modules, exactly like the pro release workflow. Put lite where that
+          # import expects it (sibling at plugins/wp-user-frontend) + install its deps,
+          # then run the vite build. Without forms-list.min.js the reg-forms Vue app
+          # never mounts and the page stays stuck on "Loading…" (RFS0001/RF0002).
+          ln -sfn "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/plugins/wp-user-frontend"
+          ( cd "$GITHUB_WORKSPACE" && npm i --legacy-peer-deps )
+          npm run build
           grunt --force
+
+      # The default grunt build ships no appsero_key.php, so wpuf-pro falls back
+      # to the dev product hash (958afc63) and the AppSumo license key — issued
+      # against the AppSumo product hash — fails to activate (LS0005). Pin the
+      # AppSumo hash so the licensed setup step can activate WPUF_PRO_LICENSE_KEY.
+      - name: Pin WPUF-pro Appsero product hash for licensed e2e
+        run: echo '<?php return "4561d782-e4c2-42f8-9eb4-d1eec7c2effb";' > plugins/wpuf-pro/includes/appsero_key.php
 
        # Build wp-user-frontend
       - name: Build wpuf-lite
@@ -85,22 +128,22 @@ jobs:
               wget https://downloads.wordpress.org/plugin/wp-mail-log.latest-stable.zip
               unzip wp-mail-log.latest-stable.zip
               rm wp-mail-log.latest-stable.zip
-          
+
               # Download and extract WooCommerce
               wget https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip
               unzip woocommerce.latest-stable.zip
               rm woocommerce.latest-stable.zip
-          
+
               # Download and extract Easy Digital Downloads
               wget https://downloads.wordpress.org/plugin/easy-digital-downloads.latest-stable.zip
               unzip easy-digital-downloads.latest-stable.zip
               rm easy-digital-downloads.latest-stable.zip
-          
+
               # Download and extract WC Vendors
               wget https://downloads.wordpress.org/plugin/wc-vendors.latest-stable.zip
               unzip wc-vendors.latest-stable.zip
               rm wc-vendors.latest-stable.zip
-          
+
               # Download and extract WC Multivendor Membership
               wget https://downloads.wordpress.org/plugin/wc-multivendor-membership.latest-stable.zip
               unzip wc-multivendor-membership.latest-stable.zip
@@ -140,6 +183,13 @@ jobs:
             restore-keys: |
                 ${{ runner.os }}-playwright-
 
+      # setup-php adds the ondrej/php PPA; its InRelease Label later changed, so
+      # apt-get update fails (exit 100) and 'playwright install --with-deps' dies.
+      # Acknowledge the label change before installing browser OS dependencies.
+      - name: Refresh apt sources (ondrej PPA label changed)
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: sudo apt-get update --allow-releaseinfo-change
+
       # Install browser binaries & OS dependencies if cache missed
       - name: Install Playwright browser binaries & OS dependencies
         id: pw-install
@@ -148,8 +198,8 @@ jobs:
         run: |
             npx playwright install chromium --with-deps
 
-      # Run Playwright tests/e2e
-      - name: 🧪 Run e2e tests
+      # Run Playwright tests/e2e for this shard
+      - name: 🧪 Run e2e tests (${{ matrix.group }})
         env:
           CI: true
           # Test environment variables
@@ -167,25 +217,92 @@ jobs:
         working-directory: tests/e2e
         run: |
           mkdir -p test-results
-          npm run test:sharded:ci
-        # continue-on-error: true
+          npm run test:ci -- ${{ matrix.files }}
 
-      # Generate and post advanced test summary
-      - name: Generate and post advanced test summary
+      # Upload this shard's blob report so the merge job can combine all shards
+      - name: Upload blob report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: blob-report-${{ matrix.group }}
+          path: tests/e2e/blob-report
+          retention-days: 1
+
+  # Combine every shard's blob report into one HTML report and send the run status.
+  merge-reports:
+    if: always() && github.repository != 'weDevsOfficial/wp-user-frontend' && github.repository != 'weDevsOfficial/wpuf-pro'
+    needs: [e2e]
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout testing repo
+        uses: actions/checkout@v4
+
+      - name: Use desired version of NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install test dependencies
+        working-directory: tests/e2e
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      # Download every shard's blob report into one folder
+      - name: Download blob reports
+        uses: actions/download-artifact@v4
+        with:
+          path: tests/e2e/all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Merge into HTML report
+        working-directory: tests/e2e
+        run: npm run merge-reports
+
+      # Post a pass/fail table to the run's Summary tab (restores the visible
+      # sharded summary that used to be generated per-parallel-config).
+      - name: Write run summary
         if: always()
         working-directory: tests/e2e
-        run: npm run sharded-summary
+        run: |
+          npx playwright merge-reports --reporter json ./all-blob-reports > merged-results.json 2>/dev/null || true
+          node -e '
+            const fs = require("fs");
+            let d;
+            try { d = JSON.parse(fs.readFileSync("merged-results.json", "utf8")); } catch (e) { process.exit(0); }
+            const s = { passed: 0, failed: 0, flaky: 0, skipped: 0 };
+            const failed = [];
+            const walkSpecs = (specs = []) => specs.forEach((sp) => (sp.tests || []).forEach((t) => {
+              if (t.status === "expected") s.passed++;
+              else if (t.status === "unexpected") { s.failed++; failed.push(sp.title); }
+              else if (t.status === "flaky") s.flaky++;
+              else if (t.status === "skipped") s.skipped++;
+            }));
+            const walk = (suites = []) => suites.forEach((su) => { walkSpecs(su.specs); walk(su.suites); });
+            walk(d.suites);
+            const total = s.passed + s.failed + s.flaky + s.skipped;
+            let md = "## 🧪 E2E Test Summary\n\n";
+            md += "| Total | ✅ Passed | ❌ Failed | ⚠️ Flaky | ⏭️ Skipped |\n";
+            md += "|---|---|---|---|---|\n";
+            md += `| ${total} | ${s.passed} | ${s.failed} | ${s.flaky} | ${s.skipped} |\n`;
+            if (failed.length) { md += "\n### ❌ Failed tests\n" + failed.map((t) => "- " + t).join("\n") + "\n"; }
+            if (process.env.GITHUB_STEP_SUMMARY) { fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md); }
+          '
 
-      # ✅ Upload Playwright HTML report (always)
-      - name: Upload Playwright HTML Report
+      - name: Upload merged HTML report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: |
-            tests/e2e/playwright-report/
-            tests/e2e/test-results/
-          retention-days: 1
+          path: tests/e2e/playwright-report
+          retention-days: 3
+
+      # Fail the run if any shard failed, so the workflow status reflects the tests.
+      - name: Reflect shard results in run status
+        if: needs.e2e.result != 'success'
+        run: |
+          echo "One or more e2e shards did not pass (result: ${{ needs.e2e.result }})."
+          exit 1
 
       # Send Email Report if passed
       - name: Send Test Report on email (Passed)
@@ -199,9 +316,9 @@ jobs:
           subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
           body: |
             ${{ github.job }} job in workflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}.
-            
+
             Test was conducted on WPUF plugin.
-            
+
             To View full test run, click on the following link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           to: rubaiyat.mohammad@wedevs.com, anik@wedevs.com
           from: wedevs.testing1@gmail.com
@@ -218,9 +335,9 @@ jobs:
           subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
           body: |
             ${{ github.job }} job in workflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}.
-            
+
             Test was conducted on WPUF plugin.
-            
+
             To View full test run, click on the following link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           to: rubaiyat.mohammad@wedevs.com
           from: wedevs.testing1@gmail.com

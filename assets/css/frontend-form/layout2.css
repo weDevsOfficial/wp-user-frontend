@@ -393,3 +393,9 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-upload-instructions {
   color: var(--wpuf-l2-muted);
 }
+
+/* ---- Figma sync: multiselect dropdown panel on dark palette ---- */
+.wpuf-form-add.wpuf-form-layout2 .custom-multiselect .multiselect-dropdown {
+  background: var(--wpuf-l2-surface-bg);
+  border: 1px solid var(--wpuf-l2-border);
+}

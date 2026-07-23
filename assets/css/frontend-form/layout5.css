@@ -374,3 +374,9 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     border-radius: 8px;
     background: #394141;
 }
+
+/* ---- Figma sync: multiselect dropdown panel on dark palette ---- */
+.wpuf-form-add.wpuf-form-layout5 .custom-multiselect .multiselect-dropdown {
+    background: #394141;
+    border: 1px solid #6B7A6E;
+}

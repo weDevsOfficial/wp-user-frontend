@@ -185,6 +185,9 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
         // Check if we're in the frontend
         if ( ! is_admin() ) {
             wp_enqueue_script( 'wpuf-custom-multiselect' );
+            // Widget styles (registered by Pro alongside the script) — no-op
+            // when Pro is inactive and the handle isn't registered.
+            wp_enqueue_style( 'wpuf-custom-multiselect' );
         }
     }
 }

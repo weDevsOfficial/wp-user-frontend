@@ -279,26 +279,8 @@ body ul.wpuf-form li .wpuf-fields .wpuf-radio-block, body ul.wpuf-form li .wpuf-
   display: flex !important;
   align-items: center;
 }
-.wpuf-form-add.wpuf-form-layout3 ul.wpuf-step-wizard {
+.wpuf-form-add.wpuf-form-layout3 .wpuf-step-wizard {
   overflow: visible;
-}
-.wpuf-form-add.wpuf-form-layout3 ul.wpuf-step-wizard li {
-  padding: 10px 30px 10px 40px;
-}
-.wpuf-form-add.wpuf-form-layout3 ul.wpuf-step-wizard li:before {
-  margin-top: -14px;
-}
-.wpuf-form-add.wpuf-form-layout3 ul.wpuf-step-wizard li:after {
-  border-width: 22px;
-  margin-top: -34px;
-  right: -40px;
-  border-radius: 0;
-}
-.wpuf-form-add.wpuf-form-layout3 ul.wpuf-step-wizard li.active-step {
-  background-color: #D5AED9;
-}
-.wpuf-form-add.wpuf-form-layout3 ul.wpuf-step-wizard li.active-step:after {
-  border-left-color: #D5AED9;
 }
 
 .wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image,

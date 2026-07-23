@@ -3,7 +3,11 @@
     $.fn.listautowidth = function() {
         return this.each(function() {
             var w = $(this).width();
-            var liw = w / $(this).children('li').length;
+            var count = $(this).children('.wpuf-step-item').length;
+            if ( count === 0 ) {
+                count = $(this).children('li').length;
+            }
+            var liw = w / count;
             $(this).children('li').each(function(){
                 var s = $(this).outerWidth(true)-$(this).width();
                 $(this).width(liw-s);
@@ -179,39 +183,43 @@
 
             if ( progressbar_type == 'progressive' && $('.wpuf-form .wpuf-multistep-fieldset').length != 0 ) {
 
-                var firstLegend = $('fieldset.wpuf-multistep-fieldset legend').first();
-                $('.wpuf-multistep-progressbar').html('<div class="wpuf-progress-percentage"></div>' );
+                var totalSteps = $('fieldset.wpuf-multistep-fieldset').length;
+                var barHtml = '<div class="wpuf-progressbar-header">';
+                barHtml += '<span class="wpuf-progressbar-step-text">Step 1 of ' + totalSteps + '</span>';
+                barHtml += '<span class="wpuf-progressbar-percent">0%</span>';
+                barHtml += '</div>';
+                barHtml += '<div class="wpuf-progressbar-track">';
+                barHtml += '<div class="wpuf-progressbar-fill"></div>';
+                barHtml += '</div>';
 
-                var progressbar = $( ".wpuf-multistep-progressbar" ),
-                    progressLabel = $( ".wpuf-progress-percentage" );
-
-                $( ".wpuf-multistep-progressbar" ).progressbar({
-                    change: function() {
-                        progressLabel.text( progressbar.progressbar( "value" ) + "%" );
-                    }
-                });
-
+                $( '.wpuf-multistep-progressbar' ).html( barHtml );
                 $('.wpuf-multistep-fieldset legend').hide();
 
             } else {
                 $('.wpuf-form').each(function() {
                     var this_obj = $(this);
                     var progressbar = $('.wpuf-multistep-progressbar', this_obj);
-                    var nav = '';
+                    var stepCount = $('.wpuf-multistep-fieldset', this).length;
+                    var nav = '<div class="wpuf-step-wizard">';
 
-                    progressbar.addClass('wizard-steps');
-                    nav += '<ul class="wpuf-step-wizard">';
+                    $('.wpuf-multistep-fieldset', this).each(function( index ){
+                        var stepNum = index + 1;
+                        var isLast = ( stepNum === stepCount );
 
-                    $('.wpuf-multistep-fieldset', this).each(function(){
-                        nav += '<li>' + $.trim( $('legend', this).text() ) + '</li>';
+                        nav += '<div class="wpuf-step-item' + ( index === 0 ? ' active-step' : '' ) + '" data-step="' + index + '">';
+                        nav += '<div class="wpuf-step-circle">' + stepNum + '</div>';
+                        nav += '<div class="wpuf-step-label">Step ' + stepNum + '</div>';
+                        nav += '</div>';
+
+                        if ( ! isLast ) {
+                            nav += '<div class="wpuf-step-line" data-after-step="' + index + '"></div>';
+                        }
+
                         $('legend', this).hide();
                     });
 
-                    nav += '</ul>';
+                    nav += '</div>';
                     progressbar.append( nav );
-
-                    $('.wpuf-step-wizard li', progressbar).first().addClass('active-step');
-                    $('.wpuf-step-wizard', progressbar).listautowidth();
                 });
             }
 
@@ -248,26 +256,42 @@
 
             $('fieldset.wpuf-multistep-fieldset').removeClass('field-active').eq(step_number).addClass('field-active');
 
-            $('.wpuf-step-wizard li').each(function(){
-                if ( $(this).index() <= step_number ){
-                    progressbar_type == 'step_by_step'? $(this).addClass('passed-wpuf-ms-bar') : $('.wpuf-ps-bar',this).addClass('passed-wpuf-ms-bar');
-                } else {
-                    progressbar_type == 'step_by_step'? $(this).removeClass('passed-wpuf-ms-bar') : $('.wpuf-ps-bar',this).removeClass('passed-wpuf-ms-bar');
-                }
-            });
+            if ( progressbar_type == 'step_by_step' ) {
+                // Update step items: completed, active, or inactive
+                $('.wpuf-step-item').each(function(){
+                    var itemStep = parseInt( $(this).data('step'), 10 );
 
-            $('.wpuf-step-wizard li').removeClass('wpuf-ms-bar-active active-step completed-step');
-            $('.passed-wpuf-ms-bar').addClass('completed-step').last().addClass('wpuf-ms-bar-active');
-            $('.wpuf-ms-bar-active').addClass('active-step');
+                    $(this).removeClass('active-step completed-step');
+
+                    if ( itemStep < step_number ) {
+                        $(this).addClass('completed-step');
+                    } else if ( itemStep === step_number ) {
+                        $(this).addClass('active-step');
+                    }
+                });
+
+                // Update connecting lines
+                $('.wpuf-step-line').each(function(){
+                    var afterStep = parseInt( $(this).data('after-step'), 10 );
+
+                    $(this).removeClass('wpuf-step-line-active');
+
+                    if ( afterStep < step_number ) {
+                        $(this).addClass('wpuf-step-line-active');
+                    }
+                });
+            }
 
             var legend = $('fieldset.wpuf-multistep-fieldset').eq(step_number).find('legend').text();
             legend = $.trim( legend );
 
             if ( progressbar_type == 'progressive' && $('.wpuf-form .wpuf-multistep-fieldset').length != 0 ) {
-                var progress_percent = ( step_number + 1 ) * 100 / $('fieldset.wpuf-multistep-fieldset').length ;
-                var progress_percent = Number( progress_percent.toFixed(2) );
-                $( ".wpuf-multistep-progressbar" ).progressbar({value: progress_percent });
-                $( '.wpuf-progress-percentage' ).text( legend + ' (' + progress_percent + '%)');
+                var totalSteps = $('fieldset.wpuf-multistep-fieldset').length;
+                var progressPercent = Math.round( ( step_number + 1 ) * 100 / totalSteps );
+
+                $( '.wpuf-progressbar-step-text' ).text( 'Step ' + ( step_number + 1 ) + ' of ' + totalSteps );
+                $( '.wpuf-progressbar-percent' ).text( progressPercent + '%' );
+                $( '.wpuf-progressbar-fill' ).css( 'width', progressPercent + '%' );
             }
 
             // trigger a change event

@@ -350,3 +350,46 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.section_break .wpuf-section-wrap {
   color: var(--wpuf-l2-text);
 }
+
+/* ---- Figma sync: outlined controls with accent checked-states ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::before {
+  background: transparent;
+  border-color: var(--wpuf-l2-muted);
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked::before {
+  border-color: var(--wpuf-l2-primary);
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::after {
+  background: var(--wpuf-l2-primary);
+  left: 0;
+  top: 2px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
+  background: transparent;
+  border-color: var(--wpuf-l2-muted);
+  border-radius: 3px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:before {
+  background: var(--wpuf-l2-primary);
+  border-color: var(--wpuf-l2-primary);
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:after {
+  width: 9px;
+  height: 7px;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg width='9' height='7' viewBox='0 0 9 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.06186 0.278861C8.23568 0.45747 8.33333 0.699683 8.33333 0.952236C8.33333 1.20479 8.23568 1.447 8.06186 1.62561L3.42579 6.3878C3.25191 6.56636 3.01611 6.66667 2.77025 6.66667C2.52438 6.66667 2.28859 6.66636 2.11471 6.3878L0.26028 4.48293C0.0913804 4.3033 -0.00207753 4.06271 3.50511e-05 3.81298C0.00214763 3.56325 0.0996617 3.32437 0.271575 3.14778C0.443488 2.97119 0.676044 2.87102 0.919157 2.86885C1.16227 2.86668 1.39649 2.96268 1.57136 3.13618L2.77025 4.36768L6.75078 0.278861C6.92466 0.100307 7.16045 0 7.40632 0C7.65218 0 7.88798 0.100307 8.06186 0.278861Z' fill='white'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  left: 1px;
+  top: 4px;
+}
+
+/* ---- Figma sync: file upload zone palette ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-file-upload-zone {
+  border: 1px dashed var(--wpuf-l2-border);
+  border-radius: 8px;
+  background: var(--wpuf-l2-surface-bg);
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-upload-instructions {
+  color: var(--wpuf-l2-muted);
+}

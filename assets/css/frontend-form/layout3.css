@@ -311,3 +311,10 @@ body ul.wpuf-form li .wpuf-fields .wpuf-radio-block, body ul.wpuf-form li .wpuf-
   width: 16px;
   height: 16px;
 }
+
+/* ---- Figma sync: file upload zone palette ---- */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .wpuf-file-upload-zone {
+    border: 1px dashed #D5AED9;
+    border-radius: 8px;
+    background: #FCF9FD;
+}

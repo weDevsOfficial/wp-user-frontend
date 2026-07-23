@@ -272,3 +272,53 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
 }
+
+/* ---- Figma sync: sentence-case labels, filled inputs, teal pill submit ---- */
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-label,
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-label label {
+    text-transform: none;
+}
+
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input,
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields textarea,
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields select {
+    background: #F1F5F9;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    padding: 10px 16px;
+}
+
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input[type="radio"],
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input:focus,
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields textarea:focus,
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields select:focus {
+    border-color: #00A5BA;
+}
+
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li.wpuf-submit input[type=submit] {
+    background: #00A5BA;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 28px;
+    font-size: 15px;
+    color: #fff;
+    box-shadow: none;
+    text-shadow: none;
+    cursor: pointer;
+}
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li.wpuf-submit input[type=submit]:hover {
+    background: #0092A5;
+}
+
+/* ---- Figma sync: file upload zone palette ---- */
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-file-upload-zone {
+    border: 1px dashed #B6E3E9;
+    border-radius: 8px;
+    background: #F7FDFE;
+}

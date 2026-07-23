@@ -402,3 +402,223 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 button {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
+
+/* ==== Figma deep-sync (node 5527:36703) — exact green palette & geometry ====
+   Accent is the template's own #7BC087; borders stay in the green family
+   (#6B7A6E) — the frame's stray navy border token is NOT copied here. */
+.wpuf-form-add.wpuf-form-layout5 {
+    padding: 40px;
+    border-radius: 20px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li {
+    margin-bottom: 40px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-label {
+    margin-bottom: 10px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-label > label {
+    color: #FFFFFF;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+}
+/* Muted family per frame: #B5BEC3 */
+.wpuf-form-add.wpuf-form-layout5 .wpuf-price-label,
+.wpuf-form-add.wpuf-form-layout5 .wpuf-upload-instructions,
+.wpuf-form-add.wpuf-form-layout5 .wpuf-repeat-container p,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li label.wpuf-form-sub-label {
+    color: #B5BEC3;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields textarea,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields select {
+    border: 1px solid #6B7A6E;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 16px;
+    line-height: 24px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input::placeholder,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields textarea::placeholder {
+    color: #B5BEC3;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields select {
+    padding: 12px 16px;
+    height: 48px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .country_select select {
+    padding: 12px 16px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wp-editor-wrap .wp-editor-container {
+    border-radius: 10px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wp-editor-wrap .mce-toolbar-grp {
+    border-radius: 10px 10px 0 0;
+}
+/* Controls: 20px circles, #B5BEC3 rest border, #7BC087 accent */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"],
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+    margin-right: 12px;
+    border: none;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"]::before {
+    width: 20px;
+    height: 20px;
+    border-color: #B5BEC3;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked::before {
+    border-color: #7BC087;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"]::after {
+    background: #7BC087;
+    width: 10px;
+    height: 10px;
+    left: 2px;
+    top: 4px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
+    width: 20px;
+    height: 20px;
+    border-color: #B5BEC3;
+    border-radius: 50%;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:before {
+    background: #7BC087;
+    border-color: #7BC087;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:after {
+    left: 2px;
+    top: 5px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-radio-block,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-block {
+    color: #FFFFFF;
+    font-size: 16px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-radio-list li,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-list li,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-multi-select-list li {
+    margin-bottom: 12px;
+}
+/* Own-accent focus/hover (was mint #A5D6A7) */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li input:active,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li input:hover,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li input:focus,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li textarea:active,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li textarea:hover,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li textarea:focus,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li select:active,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li select:hover,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li select:focus {
+    border-color: #7BC087;
+}
+/* Multiselect chips + panel */
+.wpuf-form-add.wpuf-form-layout5 .custom-multiselect .selected-item {
+    background: #7BC087;
+    border-radius: 6px;
+    padding: 4px 10px;
+    color: #4B5563;
+    font-size: 16px;
+    align-items: center;
+}
+.wpuf-form-add.wpuf-form-layout5 .custom-multiselect .remove-item {
+    color: #4B5563;
+}
+.wpuf-form-add.wpuf-form-layout5 .custom-multiselect .multiselect-dropdown {
+    border-radius: 10px;
+}
+.wpuf-form-add.wpuf-form-layout5 .custom-multiselect .multiselect-option input[type="checkbox"]:checked + label::before {
+    background: #7BC087;
+    border-color: #7BC087;
+}
+/* File upload zone */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-file-upload-zone {
+    padding: 36px 20px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-upload-title,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-upload-title .wpuf-label label {
+    color: #fff;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-upload-instructions {
+    font-size: 12px;
+    line-height: 20px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields a.file-selector {
+    border: none;
+    border-radius: 10px;
+    background: #7BC087;
+    color: #4B5563;
+    text-transform: none;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
+    border: none;
+    background: #7BC087;
+    color: #4B5563;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 16px;
+}
+/* Submit: green fill, dark-green text, 6px radius per frame */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.wpuf-submit input[type=submit] {
+    color: #394141;
+    border-radius: 6px;
+    padding: 10px 32px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-help {
+    color: #FFFFFF;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 24px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.section_break .wpuf-section-wrap {
+    color: #FFFFFF;
+}
+
+
+/* ---- Address field: wrapper is the field column; inner rows stack full width,
+   sub-label sits under its input. Matches real markup:
+   li > .wpuf-fields-address > .wpuf-address-field > .wpuf-fields.wpuf-sub-fields ---- */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields-address {
+    float: left;
+    width: 70%;
+    box-sizing: border-box;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form.form-label-above li .wpuf-fields-address,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form.form-label-hidden li .wpuf-fields-address {
+    float: none;
+    width: 100%;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field {
+    display: block;
+    float: none;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 16px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.city_name,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.zip {
+    margin-right: 0;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field .wpuf-fields.wpuf-sub-fields {
+    float: none;
+    width: 100%;
+    display: block;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field input,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field select {
+    width: 100%;
+    box-sizing: border-box;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields-address label.wpuf-form-sub-label {
+    display: block;
+    float: none;
+    margin-top: 4px;
+}

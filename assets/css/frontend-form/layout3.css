@@ -332,3 +332,196 @@ body ul.wpuf-form li .wpuf-fields .wpuf-radio-block, body ul.wpuf-form li .wpuf-
 .wpuf-form-add.wpuf-form-layout3 button {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
+
+/* ==== Figma deep-sync (node 5527:37030) — purple underline template ====
+   Own palette only: #1E002B text, #BEB2C4 underline/placeholder/help,
+   #E5E7EB rest control border, #8726D3 accent. */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-label {
+  color: #1E002B;
+  margin-bottom: 8px;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields input,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields textarea,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields select {
+  font-size: 16px;
+  line-height: 24px;
+  border-bottom-color: #BEB2C4;
+  padding-bottom: 8px;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields textarea {
+  border-bottom-color: #BEB2C4;
+  padding-bottom: 8px;
+}
+/* Controls: 24px circles, #E5E7EB rest border, #8726D3 accent */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields input[type="radio"] {
+  width: 24px;
+  height: 24px;
+  border-color: #E5E7EB;
+  margin-right: 12px;
+  padding: 0;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked {
+  border-color: #8726D3;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked::after {
+  width: 12px;
+  height: 12px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+  border-color: #E5E7EB;
+  border-radius: 50%;
+  margin-right: 12px;
+  padding: 0;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked {
+  background: #8726D3;
+  border-color: #8726D3;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked::after {
+  width: 11px;
+  height: 9px;
+  background: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg width='9' height='7' viewBox='0 0 9 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.06186 0.278861C8.23568 0.45747 8.33333 0.699683 8.33333 0.952236C8.33333 1.20479 8.23568 1.447 8.06186 1.62561L3.42579 6.3878C3.25191 6.56636 3.01611 6.66667 2.77025 6.66667C2.52438 6.66667 2.28859 6.66636 2.11471 6.3878L0.26028 4.48293C0.0913804 4.3033 -0.00207753 4.06271 3.50511e-05 3.81298C0.00214763 3.56325 0.0996617 3.32437 0.271575 3.14778C0.443488 2.97119 0.676044 2.87102 0.919157 2.86885C1.16227 2.86668 1.39649 2.96268 1.57136 3.13618L2.77025 4.36768L6.75078 0.278861C6.92466 0.100307 7.16045 0 7.40632 0C7.65218 0 7.88798 0.100307 8.06186 0.278861Z' fill='white'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-inline,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields label.wpuf-radio-inline,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .wpuf-radio-block,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-block {
+  color: #1E002B;
+  font-size: 16px;
+  line-height: 24px;
+}
+/* Editor: #BEB2C4 borders, 10px corner treatment */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wp-editor-wrap .wp-editor-container {
+  border-color: #BEB2C4;
+  border-radius: 0 0 10px 10px;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wp-editor-wrap .mce-toolbar-grp {
+  border-bottom-color: #BEB2C4;
+  border-radius: 10px 10px 0 0;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wp-editor-wrap .mce-statusbar {
+  border-top-color: #BEB2C4;
+}
+/* File upload — 1px dashed, 8px radius, sentence case */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields a.file-selector {
+  border: 1px dashed #D7C3DD;
+  border-radius: 8px;
+  padding: 36px 20px;
+  text-transform: none;
+  color: #64748B;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields a.file-selector.button,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields a.button.file-selector {
+  border-radius: 8px;
+  padding: 36px 20px;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .wpuf-file-upload-zone {
+  border-color: #D7C3DD;
+  background: #F7F3FA;
+  padding: 36px 20px;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .wpuf-upload-title,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .wpuf-upload-title .wpuf-label label {
+  color: #1E293B;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .wpuf-upload-instructions {
+  color: #64748B;
+  font-size: 12px;
+  line-height: 20px;
+}
+/* Image button — borderless per frame: icon + text row */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields a.wpuf-button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: #1E002B;
+  font-size: 16px;
+  line-height: 24px;
+  gap: 12px;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .wpuf-media-icon {
+  width: 24px;
+  height: 24px;
+}
+/* Help + submit typography */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .wpuf-help {
+  color: #BEB2C4;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 24px;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li.wpuf-submit input[type=submit] {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+
+/* Rest-state control border: template input-border tone (visible on white) */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields input[type="radio"],
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+  border-color: #BEB2C4;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked {
+  border-color: #8726D3;
+}
+.wpuf-form-add.wpuf-form-layout3 .custom-multiselect .multiselect-option label::before {
+  border-color: #BEB2C4;
+}
+
+/* ---- Address field: wrapper is the field column; inner rows stack full width,
+   sub-label sits under its input. Matches real markup:
+   li > .wpuf-fields-address > .wpuf-address-field > .wpuf-fields.wpuf-sub-fields ---- */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields-address {
+    float: left;
+    width: 70%;
+    box-sizing: border-box;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form.form-label-above li .wpuf-fields-address,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form.form-label-hidden li .wpuf-fields-address {
+    float: none;
+    width: 100%;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field {
+    display: block;
+    float: none;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 16px;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.city_name,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.zip {
+    margin-right: 0;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field .wpuf-fields.wpuf-sub-fields {
+    float: none;
+    width: 100%;
+    display: block;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field input,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field select {
+    width: 100%;
+    box-sizing: border-box;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields-address label.wpuf-form-sub-label {
+    display: block;
+    float: none;
+    margin-top: 4px;
+}

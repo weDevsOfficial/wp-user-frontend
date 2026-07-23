@@ -412,3 +412,195 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 button {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
+
+/* ==== Figma deep-sync (node 5527:36594) — exact navy palette & geometry ====
+   Every value below is taken from the dark-navy template frame itself; no
+   tokens borrowed from other templates. */
+.wpuf-form-add.wpuf-form-layout2 {
+  --wpuf-l2-container-bg: #1B2431;
+  --wpuf-l2-surface-bg: #222C3C;
+  --wpuf-l2-border: #344156;
+  --wpuf-l2-label: #9CABC3;
+  --wpuf-l2-primary: #3B82F6;
+  --wpuf-l2-help: #4A5971;
+  --wpuf-l2-accent: #3B82F6;
+  padding: 40px;
+  border-radius: 20px;
+}
+body.mceContentBody {
+  background: #222C3C;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li {
+  margin-bottom: 40px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-label {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+body ul.wpuf-form li label.wpuf-form-sub-label {
+  color: #9CABC3;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields textarea {
+  font-size: 16px;
+  line-height: 24px;
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input::placeholder,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields textarea::placeholder {
+  color: #9CA3AF;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields select {
+  font-size: 16px;
+  border-radius: 10px;
+  padding: 12px 16px;
+  height: 48px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .country_select select {
+  padding: 12px 16px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .wp-editor-container {
+  border-radius: 10px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .mce-toolbar-grp {
+  border-radius: 10px 10px 0 0;
+}
+/* Controls: 20px circles, muted #4A5971 rest border, #3B82F6 accent */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"],
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+  margin-right: 12px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::before {
+  width: 20px;
+  height: 20px;
+  border-color: var(--wpuf-l2-help);
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::after {
+  width: 10px;
+  height: 10px;
+  left: 2px;
+  top: 4px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
+  width: 20px;
+  height: 20px;
+  border-color: var(--wpuf-l2-help);
+  border-radius: 50%;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:after {
+  left: 2px;
+  top: 5px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-radio-block,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-block {
+  color: var(--wpuf-l2-label);
+  font-size: 16px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-radio-list li,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-list li,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-multi-select-list li {
+  margin-bottom: 12px;
+}
+/* Multiselect chips + panel */
+.wpuf-form-add.wpuf-form-layout2 .custom-multiselect .selected-item {
+  background: var(--wpuf-l2-primary);
+  border-radius: 6px;
+  padding: 4px 10px;
+  color: #fff;
+  font-size: 16px;
+  align-items: center;
+}
+.wpuf-form-add.wpuf-form-layout2 .custom-multiselect .remove-item {
+  color: #fff;
+}
+.wpuf-form-add.wpuf-form-layout2 .custom-multiselect .multiselect-dropdown {
+  border-radius: 10px;
+}
+/* File upload zone */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-file-upload-zone {
+  padding: 36px 20px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-upload-title,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-upload-title .wpuf-label label {
+  color: #fff;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-upload-instructions {
+  font-size: 12px;
+  line-height: 20px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields a.file-selector {
+  border: none;
+  border-radius: 10px;
+  background: var(--wpuf-l2-primary);
+  color: #fff;
+  text-transform: none;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
+  border: none;
+  background: var(--wpuf-l2-primary);
+  color: #fff;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 16px;
+}
+/* Submit pill */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.wpuf-submit input[type=submit] {
+  border-radius: 85px;
+  padding: 10px 32px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-help {
+  font-style: italic;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+
+/* ---- Address field: wrapper is the field column; inner rows stack full width,
+   sub-label sits under its input. Matches real markup:
+   li > .wpuf-fields-address > .wpuf-address-field > .wpuf-fields.wpuf-sub-fields ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address {
+    float: left;
+    width: 70%;
+    box-sizing: border-box;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form.form-label-above li .wpuf-fields-address,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form.form-label-hidden li .wpuf-fields-address {
+    float: none;
+    width: 100%;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field {
+    display: block;
+    float: none;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 16px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.city_name,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.zip {
+    margin-right: 0;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field .wpuf-fields.wpuf-sub-fields {
+    float: none;
+    width: 100%;
+    display: block;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field input,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field select {
+    width: 100%;
+    box-sizing: border-box;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address label.wpuf-form-sub-label {
+    display: block;
+    float: none;
+    margin-top: 4px;
+}

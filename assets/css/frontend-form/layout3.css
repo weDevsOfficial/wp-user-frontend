@@ -525,3 +525,13 @@ body ul.wpuf-form li .wpuf-fields .wpuf-radio-block, body ul.wpuf-form li .wpuf-
     float: none;
     margin-top: 4px;
 }
+
+/* Control rest border: template accent (#BEB2C4 read as pink) —
+   original template value, unambiguous on white */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields input[type="radio"],
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+  border-color: #8726D3;
+}
+.wpuf-form-add.wpuf-form-layout3 .custom-multiselect .multiselect-option label::before {
+  border-color: #8726D3;
+}

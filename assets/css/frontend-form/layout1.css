@@ -371,3 +371,16 @@
     float: none;
     margin-top: 4px;
 }
+
+/* Control rest border: crisp neutral gray (#DCDCDC read as invisible) */
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="radio"],
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+  border-color: #9CA3AF;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked {
+  border-color: #0088BB;
+}
+.wpuf-form-add.wpuf-form-layout1 .custom-multiselect .multiselect-option label::before {
+  border-color: #9CA3AF;
+}

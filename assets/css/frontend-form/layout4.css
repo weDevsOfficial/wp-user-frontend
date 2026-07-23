@@ -609,3 +609,16 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     float: none;
     margin-top: 4px;
 }
+
+/* Control rest border: crisp neutral gray (#DCDCDC read as invisible) */
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input[type="radio"],
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+    border-color: #9CA3AF;
+}
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked,
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked {
+    border-color: #3CA6B4;
+}
+.wpuf-form-add.wpuf-form-layout4 .custom-multiselect .multiselect-option label::before {
+    border-color: #9CA3AF;
+}

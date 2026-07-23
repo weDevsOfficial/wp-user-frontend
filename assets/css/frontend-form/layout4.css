@@ -327,3 +327,9 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     background: #00A5BA;
     border-color: #00A5BA;
 }
+
+/* Layout4's generic input rule sets display:block — re-hide the native
+   checkboxes inside the custom multiselect widget. */
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .multiselect-option input[type="checkbox"] {
+    display: none;
+}

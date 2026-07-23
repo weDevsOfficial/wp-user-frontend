@@ -121,7 +121,20 @@ class Promotion {
                 </div>
             </div>
             <style type="text/css">
+                /*
+                 * These links only borrow .notice-dismiss to hook the dismiss
+                 * handler below; they are inline labels, not core's X button.
+                 * Core styles that class as a 24x24 absolutely positioned flex
+                 * box, so every one of those properties has to be undone or the
+                 * labels get clamped to 24px and wrap one word per line.
+                 */
                 #wpuf-review-notice .notice-dismiss{
+                    position: relative;
+                    top: auto;
+                    right: auto;
+                    display: inline-block;
+                    width: auto;
+                    height: auto;
                     padding: 0 0 0 26px;
                 }
 

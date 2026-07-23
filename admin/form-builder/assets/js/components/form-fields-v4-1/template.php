@@ -127,7 +127,7 @@
             <a
                 class="wpuf-btn-primary"
                target="_blank"
-                href="<?php echo esc_url( 'https://wpuf.canny.io/ideas' ); ?>">
+                href="<?php echo esc_url( 'https://feedback.wedevs.com/b/user-frontend' ); ?>">
                 <?php esc_html_e( 'Share Your Idea', 'wp-user-frontend' ); ?>
             </a>
         </div>

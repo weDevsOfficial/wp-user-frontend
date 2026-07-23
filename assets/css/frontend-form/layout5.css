@@ -7,7 +7,7 @@ body.mceContentBody {
 .wpuf-form-add.wpuf-form-layout5 {
     position: relative;
     background: #454F4F;
-    padding: 50px;
+    padding: 50px !important;
 }
 /* --wpuf-l2-* vars are defined on .wpuf-form-layout2 only — they never resolve
    here. Scope to layout5 and use concrete palette colors instead. */
@@ -38,8 +38,8 @@ body.mceContentBody {
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li {
-    padding: 0;
-    margin-bottom: 35px;
+    padding: 0 !important;
+    margin-bottom: 35px !important;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.has-error {
@@ -67,26 +67,26 @@ body.mceContentBody {
     border: 0;
     font-size: 14px;
     border-radius: 5px;
-    padding: 10px 0 10px 10px;
+    padding: 10px 0 10px 10px !important;
     box-sizing: border-box;
     position: relative;
     color: #fff;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields select {
-    padding: 10px;
+    padding: 10px !important;
     height: inherit;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .country_select select {
-    padding: 8px 0 10px 10px;
+    padding: 8px 0 10px 10px !important;
 }
 
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"] {
     width: inherit;
     position: relative;
-    margin-right: 10px;
+    margin-right: 10px !important;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"]::before {
@@ -137,7 +137,7 @@ body.mceContentBody {
     cursor: pointer;
     width: inherit;
     position: relative;
-    margin-right: 10px;
+    margin-right: 10px !important;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
@@ -179,8 +179,8 @@ body.mceContentBody {
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields a.file-selector {
-    padding: 14px 40px 14px 60px;
-    margin: 0;
+    padding: 14px 40px 14px 60px !important;
+    margin: 0 !important;
     height: inherit;
     line-height: inherit;
     border: 1px solid #A5D6A7;
@@ -223,7 +223,7 @@ body.mceContentBody {
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-address-field.city_name,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-address-field.zip {
-    margin-right: 6%;
+    margin-right: 6% !important;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-help {
@@ -276,7 +276,7 @@ body.mceContentBody {
     border: 0;
     border-radius: 0 0 5px 5px;
     background: #394141;
-    padding: 3px 0;
+    padding: 3px 0 !important;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wp-editor-wrap .mce-panel {
@@ -306,7 +306,7 @@ body.mceContentBody {
     line-height: 36px;
     border-radius: 5px;
     height: 36px;
-    padding: 0 15px;
+    padding: 0 15px !important;
 }
 
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .br-theme-css-stars .br-widget a.br-active:after,
@@ -321,7 +321,7 @@ body.mceContentBody {
     -webkit-box-shadow: none;
     box-shadow: none;
     text-shadow: none;
-    padding: 10px 35px;
+    padding: 10px 35px !important;
 }
 
 .wpuf-form-add.wpuf-form-layout5 .wpuf-step-wizard {
@@ -331,7 +331,7 @@ body.mceContentBody {
 ul.wpuf-form li label.wpuf-form-sub-label {
     font-size: 12px;
     display: inline-block;
-    padding-top: 5px;
+    padding-top: 5px !important;
     color: #fff;
 }
 
@@ -407,14 +407,14 @@ ul.wpuf-form li label.wpuf-form-sub-label {
    Accent is the template's own #7BC087; borders stay in the green family
    (#6B7A6E) — the frame's stray navy border token is NOT copied here. */
 .wpuf-form-add.wpuf-form-layout5 {
-    padding: 40px;
+    padding: 40px !important;
     border-radius: 20px;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li {
-    margin-bottom: 40px;
+    margin-bottom: 40px !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-label {
-    margin-bottom: 10px;
+    margin-bottom: 10px !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-label > label {
     color: #FFFFFF;
@@ -434,7 +434,7 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields select {
     border: 1px solid #6B7A6E;
     border-radius: 10px;
-    padding: 12px 16px;
+    padding: 12px 16px !important;
     font-size: 16px;
     line-height: 24px;
 }
@@ -443,11 +443,11 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     color: #B5BEC3;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields select {
-    padding: 12px 16px;
+    padding: 12px 16px !important;
     height: 48px;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .country_select select {
-    padding: 12px 16px;
+    padding: 12px 16px !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wp-editor-wrap .wp-editor-container {
     border-radius: 10px;
@@ -458,7 +458,7 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 /* Controls: 20px circles, #B5BEC3 rest border, #7BC087 accent */
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"],
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
-    margin-right: 12px;
+    margin-right: 12px !important;
     border: none;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="radio"]::before {
@@ -498,7 +498,7 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-radio-list li,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-list li,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-multi-select-list li {
-    margin-bottom: 12px;
+    margin-bottom: 12px !important;
 }
 /* Own-accent focus/hover (was mint #A5D6A7) */
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li input:active,
@@ -516,7 +516,7 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 .custom-multiselect .selected-item {
     background: #7BC087;
     border-radius: 6px;
-    padding: 4px 10px;
+    padding: 4px 10px !important;
     color: #4B5563;
     font-size: 16px;
     align-items: center;
@@ -533,7 +533,7 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 }
 /* File upload zone */
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-file-upload-zone {
-    padding: 36px 20px;
+    padding: 36px 20px !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-upload-title,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-upload-title .wpuf-label label {
@@ -558,14 +558,14 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     background: #7BC087;
     color: #4B5563;
     border-radius: 10px;
-    padding: 12px 16px;
+    padding: 12px 16px !important;
     font-size: 16px;
 }
 /* Submit: green fill, dark-green text, 6px radius per frame */
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.wpuf-submit input[type=submit] {
     color: #394141;
     border-radius: 6px;
-    padding: 10px 32px;
+    padding: 10px 32px !important;
     font-size: 16px;
     font-weight: 500;
     line-height: 24px;
@@ -601,11 +601,11 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     float: none;
     width: 100%;
     box-sizing: border-box;
-    margin: 0 0 16px;
+    margin: 0 0 16px !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.city_name,
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.zip {
-    margin-right: 0;
+    margin-right: 0 !important;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field .wpuf-fields.wpuf-sub-fields {
     float: none;
@@ -620,7 +620,7 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields-address label.wpuf-form-sub-label {
     display: block;
     float: none;
-    margin-top: 4px;
+    margin-top: 4px !important;
 }
 
 /* ---- Multiselect closed control: match the template field style ---- */
@@ -628,7 +628,7 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     background: #394141;
     border: 1px solid #6B7A6E;
     border-radius: 10px;
-    padding: 8px 16px;
+    padding: 8px 16px !important;
     color: #fff;
     box-sizing: border-box;
     min-height: 42px;
@@ -640,7 +640,7 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     line-height: 24px;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block:has(a) input[type="checkbox"] {
-    margin-right: 12px;
+    margin-right: 12px !important;
     vertical-align: middle;
 }
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields a:not(.file-selector):not(.wpuf-insert-image):not(.wpuf-button):not(.wpuf-upload-trigger) {
@@ -648,7 +648,7 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 }
 /* ---- Space above the submit button ---- */
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.wpuf-submit input[type="submit"] {
-    margin-top: 40px;
+    margin-top: 40px !important;
 }
 
 /* ---- Controls: neutralize the generic input box (bg + padding painted a
@@ -658,7 +658,7 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
     width: 20px;
     height: 20px;
-    padding: 0;
+    padding: 0 !important;
     background: transparent;
     border: none;
     border-radius: 0;
@@ -725,4 +725,58 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     width: auto !important;
     border-style: solid;
     transition: background-color 0.2s ease;
+}
+
+/* ---- Pricing fields: palette-matched (price label, quantity, cart) ---- */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-price-label,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-price-currency-label {
+    color: #B5BEC3;
+    font-weight: 500;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-pricing-radio-item,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-pricing-checkbox-item {
+    margin-bottom: 12px !important;
+    align-items: center;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-pricing-quantity {
+    width: 80px !important;
+    padding: 6px 10px !important;
+    border: 1px solid #6B7A6E;
+    border-radius: 10px;
+    background: #394141;
+    color: #FFFFFF;
+    margin-left: 12px !important;
+    box-sizing: border-box;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-summary,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-display,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-multiselect-quantities {
+    background: #394141;
+    border: 1px solid #6B7A6E;
+    border-radius: 10px;
+    color: #FFFFFF;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-table {
+    background: transparent;
+    color: #FFFFFF;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
+    background: transparent;
+    border-bottom: 1px solid #6B7A6E;
+    color: #B5BEC3;
+    font-weight: 500;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tbody td {
+    border-bottom: 1px solid #6B7A6E;
+    color: #FFFFFF;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tfoot td {
+    border-top: 1px solid #6B7A6E;
+    color: #FFFFFF;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-amount {
+    color: #7BC087;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-qty-row label {
+    color: #FFFFFF;
 }

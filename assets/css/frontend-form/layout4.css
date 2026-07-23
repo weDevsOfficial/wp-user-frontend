@@ -21,8 +21,8 @@ body.mceContentBody {
 }
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li {
-    padding: 0;
-    margin-bottom: 35px;
+    padding: 0 !important;
+    margin-bottom: 35px !important;
 }
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li.has-error {
@@ -51,19 +51,19 @@ body.mceContentBody {
     border-radius: 0;
     font-size: 14px;
     border-bottom: 1px solid #c8c8c8;
-    padding: 10px 0 10px 10px;
+    padding: 10px 0 10px 10px !important;
     box-sizing: border-box;
     position: relative;
     display: block;
 }
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields select {
-    padding: 0;
+    padding: 0 !important;
     height: inherit;
 }
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .country_select select {
-    padding: 8px 0 10px 10px;
+    padding: 8px 0 10px 10px !important;
 }
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields textarea {
@@ -73,7 +73,7 @@ body.mceContentBody {
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input[type="radio"] {
     width: inherit;
     position: relative;
-    margin-right: 10px;
+    margin-right: 10px !important;
 }
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input[type="radio"]::after {
@@ -108,7 +108,7 @@ body.mceContentBody {
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
     width: inherit;
     position: relative;
-    margin-right: 10px;
+    margin-right: 10px !important;
 }
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:after {
@@ -136,8 +136,8 @@ body.mceContentBody {
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields a.file-selector {
     display: block;
-    padding: 14px 0 14px 40px;
-    margin: 0;
+    padding: 14px 0 14px 40px !important;
+    margin: 0 !important;
     height: inherit;
     line-height: inherit;
     border: 0;
@@ -155,7 +155,7 @@ body.mceContentBody {
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-address-field.city_name,
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-address-field.zip {
-    margin-right: 6%;
+    margin-right: 6% !important;
 }
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-help {
@@ -217,7 +217,7 @@ body.mceContentBody {
     border-bottom: 1px solid #c8c8c8;
     border-radius: 0 0 5px 5px;
     background: #f7f3fa;
-    padding: 3px 0;
+    padding: 3px 0 !important;
 }
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wp-editor-wrap .mce-btn.mce-listbox {
@@ -240,7 +240,7 @@ body.mceContentBody {
     line-height: 36px;
     border-radius: 5px;
     height: 36px;
-    padding: 0 15px;
+    padding: 0 15px !important;
 }
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .br-theme-css-stars .br-widget a:after {
@@ -285,14 +285,14 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     background: #F1F5F9;
     border: 1px solid #E2E8F0;
     border-radius: 6px;
-    padding: 10px 16px;
+    padding: 10px 16px !important;
 }
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input[type="radio"],
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
     background: transparent;
     border: none;
-    padding: 0;
+    padding: 0 !important;
 }
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input:focus,
@@ -305,7 +305,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     background: #00A5BA;
     border: none;
     border-radius: 6px;
-    padding: 10px 28px;
+    padding: 10px 28px !important;
     font-size: 15px;
     color: #fff;
     box-shadow: none;
@@ -337,7 +337,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     -moz-appearance: none;
     appearance: none;
     position: relative;
-    margin-right: 10px;
+    margin-right: 10px !important;
     cursor: pointer;
     border: 1px solid #CBD5E1;
     background: #fff;
@@ -394,7 +394,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
    Own palette only: #3CA6B4 accent, #FAFAFA surface, #DCDCDC border,
    #4B5563 text, #9CA3AF placeholder/help, square (0 radius) fields. */
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li {
-    margin-bottom: 40px;
+    margin-bottom: 40px !important;
 }
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-label,
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-label label {
@@ -408,7 +408,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     background: #FAFAFA;
     border: 1px solid #DCDCDC;
     border-radius: 0;
-    padding: 8px 16px;
+    padding: 8px 16px !important;
     font-size: 16px;
     line-height: 24px;
     color: #4B5563;
@@ -417,7 +417,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     background: #FFFFFF;
     border: 1px solid #E3E5E8;
     border-radius: 10px;
-    padding: 12px 16px;
+    padding: 12px 16px !important;
     font-size: 16px;
     line-height: 24px;
     color: #4B5563;
@@ -449,8 +449,8 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     border: 1px solid #E5E7EB;
     border-radius: 50%;
     background: #FFFFFF;
-    margin-right: 12px;
-    padding: 0;
+    margin-right: 12px !important;
+    padding: 0 !important;
 }
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked {
     border-color: #3CA6B4;
@@ -474,12 +474,12 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-radio-list li,
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-list li,
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-multi-select-list li {
-    margin-bottom: 12px;
+    margin-bottom: 12px !important;
 }
 /* Multiselect chips + panel */
 .wpuf-form-add.wpuf-form-layout4 .custom-multiselect .selected-item {
     background: #F3F3F3;
-    padding: 2px 10px;
+    padding: 2px 10px !important;
     color: #4B5563;
     font-size: 16px;
     align-items: center;
@@ -498,7 +498,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     border: 1px dashed #CBD5E1;
     border-radius: 0;
     background: #FAFAFA;
-    padding: 36px 20px;
+    padding: 36px 20px !important;
 }
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-upload-title,
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-upload-title .wpuf-label label {
@@ -519,7 +519,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     border-bottom: 1px dashed #CBD5E1;
     background: #FAFAFA;
     color: #4B5563;
-    padding: 36px 20px;
+    padding: 36px 20px !important;
     width: 100%;
     box-sizing: border-box;
     text-align: center;
@@ -530,7 +530,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     background: #FAFAFA;
     border: 1px solid #DCDCDC;
     border-radius: 0;
-    padding: 8px 16px;
+    padding: 8px 16px !important;
     color: #4B5563;
     font-size: 16px;
     line-height: 24px;
@@ -540,7 +540,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li.wpuf-submit input[type=submit] {
     background: #3CA6B4;
     border-radius: 85px;
-    padding: 10px 32px;
+    padding: 10px 32px !important;
     font-size: 16px;
     font-weight: 500;
     line-height: 24px;
@@ -588,11 +588,11 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     float: none;
     width: 100%;
     box-sizing: border-box;
-    margin: 0 0 16px;
+    margin: 0 0 16px !important;
 }
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.city_name,
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.zip {
-    margin-right: 0;
+    margin-right: 0 !important;
 }
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field .wpuf-fields.wpuf-sub-fields {
     float: none;
@@ -607,7 +607,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields-address label.wpuf-form-sub-label {
     display: block;
     float: none;
-    margin-top: 4px;
+    margin-top: 4px !important;
 }
 
 /* Control rest border: crisp neutral gray (#DCDCDC read as invisible) */
@@ -628,7 +628,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     background: #FAFAFA;
     border: 1px solid #DCDCDC;
     border-radius: 0;
-    padding: 8px 16px;
+    padding: 8px 16px !important;
     box-sizing: border-box;
     min-height: 42px;
     align-items: center;
@@ -639,7 +639,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     line-height: 24px;
 }
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block:has(a) input[type="checkbox"] {
-    margin-right: 12px;
+    margin-right: 12px !important;
     vertical-align: middle;
 }
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields a:not(.file-selector):not(.wpuf-insert-image):not(.wpuf-button):not(.wpuf-upload-trigger) {
@@ -647,7 +647,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
 }
 /* ---- Space above the submit button ---- */
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li.wpuf-submit input[type="submit"] {
-    margin-top: 40px;
+    margin-top: 40px !important;
 }
 
 /* ---- Theme reset (Use Theme CSS = off): neutralize theme bleed so the
@@ -691,4 +691,58 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     width: auto !important;
     border-style: solid;
     transition: background-color 0.2s ease;
+}
+
+/* ---- Pricing fields: palette-matched (price label, quantity, cart) ---- */
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-price-label,
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-price-currency-label {
+    color: #9CA3AF;
+    font-weight: 500;
+}
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-pricing-radio-item,
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-pricing-checkbox-item {
+    margin-bottom: 12px !important;
+    align-items: center;
+}
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-pricing-quantity {
+    width: 80px !important;
+    padding: 6px 10px !important;
+    border: 1px solid #DCDCDC;
+    border-radius: 0;
+    background: #FAFAFA;
+    color: #4B5563;
+    margin-left: 12px !important;
+    box-sizing: border-box;
+}
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-cart-summary,
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-display,
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-multiselect-quantities {
+    background: #FAFAFA;
+    border: 1px solid #DCDCDC;
+    border-radius: 0;
+    color: #4B5563;
+}
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-cart-table {
+    background: transparent;
+    color: #4B5563;
+}
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
+    background: transparent;
+    border-bottom: 1px solid #DCDCDC;
+    color: #9CA3AF;
+    font-weight: 500;
+}
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tbody td {
+    border-bottom: 1px solid #DCDCDC;
+    color: #4B5563;
+}
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tfoot td {
+    border-top: 1px solid #DCDCDC;
+    color: #4B5563;
+}
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-amount {
+    color: #3CA6B4;
+}
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-qty-row label {
+    color: #4B5563;
 }

@@ -43,7 +43,7 @@
 
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea,
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea {
-  padding-left: 3px;
+  padding-left: 3px !important;
   width: 95%;
 }
 
@@ -57,13 +57,13 @@
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=url],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=number],
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=number] {
-  padding: 5px;
+  padding: 5px !important;
 }
 
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields select,
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields select {
   border: 1px solid #eee;
-  padding: 2px;
+  padding: 2px !important;
   height: 2em;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -86,7 +86,7 @@
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-submit input[type=submit],
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-submit input[type=submit] {
   font-size: 16px;
-  padding: 5px 15px;
+  padding: 5px 15px !important;
   line-height: inherit;
   height: inherit;
   border: 1px solid #ccc;
@@ -125,8 +125,8 @@
    Own palette only: #FAFAFA surface, #DCDCDC border, #4B5563 text,
    #9CA3AF placeholder, #0088BB accent/submit. */
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li {
-  margin-bottom: 40px;
-  padding: 0;
+  margin-bottom: 40px !important;
+  padding: 0 !important;
 }
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-label,
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-label label {
@@ -159,11 +159,11 @@
   color: #4B5563;
   font-size: 16px;
   line-height: 24px;
-  padding: 8px 16px;
+  padding: 8px 16px !important;
 }
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea,
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea {
-  padding: 12px 16px;
+  padding: 12px 16px !important;
 }
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input::placeholder,
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea::placeholder {
@@ -174,7 +174,7 @@
   background: #FAFAFA;
   border: 1px solid #DCDCDC;
   border-radius: 5px;
-  padding: 8px 16px;
+  padding: 8px 16px !important;
   height: auto;
   width: 100%;
   box-sizing: border-box;
@@ -194,10 +194,10 @@
   border-radius: 50%;
   background: #FFFFFF;
   position: relative;
-  margin-right: 12px;
+  margin-right: 12px !important;
   cursor: pointer;
   vertical-align: middle;
-  padding: 0;
+  padding: 0 !important;
 }
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked {
   border-color: #0088BB;
@@ -238,13 +238,13 @@
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-radio-list li,
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-list li,
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-multi-select-list li {
-  margin-bottom: 12px;
+  margin-bottom: 12px !important;
 }
 /* Multiselect chips + panel */
 .wpuf-form-add.wpuf-form-layout1 .custom-multiselect .selected-item {
   background: #F3F3F3;
   border-radius: 5px;
-  padding: 2px 10px;
+  padding: 2px 10px !important;
   color: #4B5563;
   font-size: 16px;
   align-items: center;
@@ -263,7 +263,7 @@
   background: #FAFAFA;
   border: 1px dashed #CBD5E1;
   border-radius: 5px;
-  padding: 36px 20px;
+  padding: 36px 20px !important;
 }
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-upload-title,
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-upload-title .wpuf-label label {
@@ -279,7 +279,7 @@
 }
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a.file-selector {
   display: block;
-  padding: 36px 20px;
+  padding: 36px 20px !important;
   border: 1px dashed #CBD5E1;
   border-radius: 5px;
   background: #FAFAFA;
@@ -296,7 +296,7 @@
   background: #FAFAFA;
   border: 1px solid #DCDCDC;
   border-radius: 5px;
-  padding: 8px 16px;
+  padding: 8px 16px !important;
   color: #4B5563;
   font-size: 16px;
   line-height: 24px;
@@ -309,7 +309,7 @@
   background: #0088BB;
   border: none;
   border-radius: 85px;
-  padding: 10px 32px;
+  padding: 10px 32px !important;
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
@@ -350,11 +350,11 @@
     float: none;
     width: 100%;
     box-sizing: border-box;
-    margin: 0 0 16px;
+    margin: 0 0 16px !important;
 }
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.city_name,
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.zip {
-    margin-right: 0;
+    margin-right: 0 !important;
 }
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field .wpuf-fields.wpuf-sub-fields {
     float: none;
@@ -369,7 +369,7 @@
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields-address label.wpuf-form-sub-label {
     display: block;
     float: none;
-    margin-top: 4px;
+    margin-top: 4px !important;
 }
 
 /* Control rest border: crisp neutral gray (#DCDCDC read as invisible) */
@@ -390,7 +390,7 @@
     background: #FAFAFA;
     border: 1px solid #DCDCDC;
     border-radius: 5px;
-    padding: 8px 16px;
+    padding: 8px 16px !important;
     box-sizing: border-box;
     min-height: 42px;
     align-items: center;
@@ -401,7 +401,7 @@
     line-height: 24px;
 }
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block:has(a) input[type="checkbox"] {
-    margin-right: 12px;
+    margin-right: 12px !important;
     vertical-align: middle;
 }
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a:not(.file-selector):not(.wpuf-insert-image):not(.wpuf-button):not(.wpuf-upload-trigger) {
@@ -409,7 +409,7 @@
 }
 /* ---- Space above the submit button ---- */
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li.wpuf-submit input[type="submit"] {
-    margin-top: 40px;
+    margin-top: 40px !important;
 }
 
 /* ---- Theme reset (Use Theme CSS = off): neutralize theme bleed so the
@@ -453,4 +453,58 @@
     width: auto !important;
     border-style: solid;
     transition: background-color 0.2s ease;
+}
+
+/* ---- Pricing fields: palette-matched (price label, quantity, cart) ---- */
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-price-label,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-price-currency-label {
+    color: #9CA3AF;
+    font-weight: 500;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-pricing-radio-item,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-pricing-checkbox-item {
+    margin-bottom: 12px !important;
+    align-items: center;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-pricing-quantity {
+    width: 80px !important;
+    padding: 6px 10px !important;
+    border: 1px solid #DCDCDC;
+    border-radius: 5px;
+    background: #FAFAFA;
+    color: #4B5563;
+    margin-left: 12px !important;
+    box-sizing: border-box;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-summary,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-display,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-multiselect-quantities {
+    background: #FAFAFA;
+    border: 1px solid #DCDCDC;
+    border-radius: 5px;
+    color: #4B5563;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-table {
+    background: transparent;
+    color: #4B5563;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
+    background: transparent;
+    border-bottom: 1px solid #DCDCDC;
+    color: #9CA3AF;
+    font-weight: 500;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tbody td {
+    border-bottom: 1px solid #DCDCDC;
+    color: #4B5563;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tfoot td {
+    border-top: 1px solid #DCDCDC;
+    color: #4B5563;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-amount {
+    color: #0088BB;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-qty-row label {
+    color: #4B5563;
 }

@@ -535,3 +535,31 @@ body ul.wpuf-form li .wpuf-fields .wpuf-radio-block, body ul.wpuf-form li .wpuf-
 .wpuf-form-add.wpuf-form-layout3 .custom-multiselect .multiselect-option label::before {
   border-color: #8726D3;
 }
+
+/* ---- Multiselect closed control: match the template field style ---- */
+.wpuf-form-add.wpuf-form-layout3 .custom-multiselect .multiselect-input {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #BEB2C4;
+    border-radius: 0;
+    padding: 0 0 8px;
+    box-sizing: border-box;
+    min-height: 42px;
+    align-items: center;
+}
+/* ---- TOC label: sentence flows naturally; links use template accent ---- */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block:has(a) {
+    display: block !important;
+    line-height: 24px;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block:has(a) input[type="checkbox"] {
+    margin-right: 12px;
+    vertical-align: middle;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields a:not(.file-selector):not(.wpuf-insert-image):not(.wpuf-button):not(.wpuf-upload-trigger) {
+    color: #8726D3;
+}
+/* ---- Space above the submit button ---- */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li.wpuf-submit input[type="submit"] {
+    margin-top: 40px;
+}

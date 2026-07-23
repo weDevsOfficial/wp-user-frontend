@@ -622,3 +622,31 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     float: none;
     margin-top: 4px;
 }
+
+/* ---- Multiselect closed control: match the template field style ---- */
+.wpuf-form-add.wpuf-form-layout5 .custom-multiselect .multiselect-input {
+    background: #394141;
+    border: 1px solid #6B7A6E;
+    border-radius: 10px;
+    padding: 8px 16px;
+    color: #fff;
+    box-sizing: border-box;
+    min-height: 42px;
+    align-items: center;
+}
+/* ---- TOC label: sentence flows naturally; links use template accent ---- */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block:has(a) {
+    display: block !important;
+    line-height: 24px;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block:has(a) input[type="checkbox"] {
+    margin-right: 12px;
+    vertical-align: middle;
+}
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields a:not(.file-selector):not(.wpuf-insert-image):not(.wpuf-button):not(.wpuf-upload-trigger) {
+    color: #7BC087;
+}
+/* ---- Space above the submit button ---- */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li.wpuf-submit input[type="submit"] {
+    margin-top: 40px;
+}

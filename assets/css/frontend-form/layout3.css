@@ -844,3 +844,9 @@ body ul.wpuf-form li .wpuf-fields .wpuf-radio-block, body ul.wpuf-form li .wpuf-
 .wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha-equal {
     color: #1E002B !important;
 }
+
+/* Legacy 150px thumbnail box: row layout needs natural height */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .wpuf-attachment-list li.wpuf-image-wrap {
+    height: auto !important;
+    min-height: 0 !important;
+}

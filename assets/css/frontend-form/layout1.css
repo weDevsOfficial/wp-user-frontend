@@ -703,3 +703,9 @@
     background: #FAFAFA !important;
     border-bottom: 1px solid #DCDCDC !important;
 }
+
+/* Legacy 150px thumbnail box: row layout needs natural height */
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-attachment-list li.wpuf-image-wrap {
+    height: auto !important;
+    min-height: 0 !important;
+}

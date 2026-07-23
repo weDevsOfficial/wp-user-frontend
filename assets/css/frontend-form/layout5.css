@@ -960,3 +960,9 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     border-radius: 10px !important;
     overflow: hidden;
 }
+
+/* Legacy 150px thumbnail box: row layout needs natural height */
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-attachment-list li.wpuf-image-wrap {
+    height: auto !important;
+    min-height: 0 !important;
+}

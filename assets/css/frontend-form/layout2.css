@@ -902,3 +902,37 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
     background: transparent !important;
     border: 1px solid var(--wpuf-l2-border) !important;
 }
+
+/* Legacy 150px thumbnail box: row layout needs natural height */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-attachment-list li.wpuf-image-wrap {
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+/* ---- Controls: explicit 20px box; pseudo geometry pinned (was anchored to
+   an auto-width inline input at -3,-1 → visible misalignment) ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"],
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  padding: 0 !important;
+  background: transparent;
+  border: none !important;
+  box-sizing: border-box;
+  vertical-align: middle;
+  flex: none;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::before,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::after {
+  left: 5px;
+  top: 5px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:after {
+  left: 5px;
+  top: 6px;
+}

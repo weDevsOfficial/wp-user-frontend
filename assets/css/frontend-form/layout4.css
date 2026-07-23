@@ -925,3 +925,9 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha-equal {
     color: #4B5563 !important;
 }
+
+/* Legacy 150px thumbnail box: row layout needs natural height */
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-attachment-list li.wpuf-image-wrap {
+    height: auto !important;
+    min-height: 0 !important;
+}

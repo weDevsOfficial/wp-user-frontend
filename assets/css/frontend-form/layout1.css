@@ -726,3 +726,90 @@
     line-height: 24px !important;
     font-weight: 400 !important;
 }
+
+/* ---- Image selectors (Figma "Select Image" bar): compact left-aligned
+   icon + text bar in the template tokens ---- */
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a.file-selector,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .file-selector {
+    background: #FAFAFA !important;
+    border: 1px solid #DCDCDC !important;
+    border-radius: 5px !important;
+    color: #4B5563 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    width: 100% !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    padding: 12px 16px !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+    font-weight: 400 !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    box-sizing: border-box !important;
+    box-shadow: none !important;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a.file-selector:before,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .file-selector:before {
+    content: '' !important;
+    display: inline-block !important;
+    position: static !important;
+    width: 20px !important;
+    height: 20px !important;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%234B5563'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+    font-family: inherit !important;
+    line-height: normal !important;
+    flex: none;
+}
+
+/* ---- Phone country dropdown (intl-tel-input): palette panel; our forced
+   li spacing must not leak into its rows ---- */
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__country-list {
+    background: #FFFFFF !important;
+    border: 1px solid #DCDCDC !important;
+    color: #4B5563 !important;
+    border-radius: 6px;
+    max-height: 220px;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__country-list li,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__country-list li.iti__country {
+    margin: 0 !important;
+    padding: 8px 12px !important;
+    list-style: none !important;
+    background-image: none !important;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__country-name {
+    color: #4B5563 !important;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__dial-code {
+    color: #9CA3AF !important;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__country-list li.iti__country:hover,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__country-list li.iti__country.iti__highlight {
+    background: rgba(128, 128, 128, 0.15) !important;
+}
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__divider {
+    border-bottom: 1px solid #DCDCDC !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Selector focus/hover: single accent border, no outline ring */
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a.file-selector:hover,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a.file-selector:focus,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a.file-selector:focus-visible,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .file-selector:hover,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .file-selector:focus,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .file-selector:focus-visible {
+    outline: none !important;
+    border-color: #0088BB !important;
+    box-shadow: none !important;
+}
+
+/* Phone gutter: outrank the :not()-chain input padding rules */
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .intl-tel-input input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]) {
+    padding-left: 52px !important;
+}

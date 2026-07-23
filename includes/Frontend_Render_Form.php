@@ -237,6 +237,25 @@ class Frontend_Render_Form {
             }
         }
 
+        // Dark templates: the TinyMCE iframe loads only its own stylesheets,
+        // so the editor content area stays white unless we inject the palette.
+        if ( 'on' !== $use_theme_css && in_array( $layout, [ 'layout2', 'layout5' ], true ) ) {
+            $editor_bg = 'layout2' === $layout ? '#222C3C' : '#394141';
+
+            add_filter(
+                'tiny_mce_before_init',
+                function ( $mce_init ) use ( $editor_bg ) {
+                    $style = sprintf( 'body.mceContentBody { background: %s; color: #ffffff; caret-color: #ffffff; }', $editor_bg );
+
+                    $mce_init['content_style'] = isset( $mce_init['content_style'] )
+                        ? $mce_init['content_style'] . ' ' . $style
+                        : $style;
+
+                    return $mce_init;
+                }
+            );
+        }
+
         if ( ! is_user_logged_in() && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' !== $this->form_settings['post_permission'] ) ) {
             $login        = wpuf()->frontend->simple_login->get_login_url();
             $register     = wpuf()->frontend->simple_login->get_registration_url();

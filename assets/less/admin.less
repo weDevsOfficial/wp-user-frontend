@@ -1255,7 +1255,7 @@ span.pro-icon:hover .wpuf-pro-field-tooltip {
             background: #ee62b4 !important;
         }
 
-        a.canny-link {
+        a.feedback-link {
             font-size: 1rem;
             text-decoration: none;
 
@@ -1582,12 +1582,23 @@ body.wpuf-modal-open {
         cursor: not-allowed;
     }
 
-    &__checkbox {
+    // Hide the native checkbox robustly. The extra container class beats WP
+    // core's input[type=checkbox] rule, which would otherwise re-size it and
+    // render a second checkmark next to the custom toggle.
+    .wpuf-gateway-cards &__checkbox {
         position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: 0;
+        padding: 0;
+        border: 0;
         opacity: 0;
-        width: 0;
-        height: 0;
         pointer-events: none;
+        -webkit-appearance: none;
+        appearance: none;
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        overflow: hidden;
     }
 
     &__toggle {
@@ -1646,6 +1657,20 @@ body.wpuf-modal-open {
         color: #1d2327;
         text-align: center;
         line-height: 1.3;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+
+    &__pro {
+        display: inline-flex;
+        align-items: center;
+        margin-left: 4px;
+        vertical-align: middle;
+
+        img {
+            height: 14px;
+            width: auto;
+        }
     }
 }
 

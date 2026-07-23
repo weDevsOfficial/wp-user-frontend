@@ -1475,21 +1475,14 @@ class Free_Loader extends Pro_Prompt {
      * @return void
      */
     public function wpuf_payment_gateways( $gateways ) {
-        $crown_icon = WPUF_ROOT . '/assets/images/pro-badge.svg';
-        $crown      = '';
-
-        if ( file_exists( $crown_icon ) ) {
-            $crown = sprintf( '<span class="pro-icon-title"> %s</span>', '<img src="' . WPUF_ASSET_URI . '/images/pro-badge.svg" alt="PRO">' );
-        }
-
+        // Keep the admin label as plain text. The PRO badge is rendered by the
+        // gateway card UI based on the is_pro_preview flag, so embedding badge
+        // markup here would only show up as escaped text in the card grid.
         $gateways['stripe'] = [
-            'admin_label'    => sprintf(
-                // translators: %s is the crown symbol
-                __( 'Credit Card %s', 'wp-user-frontend' ),
-                $crown
-            ),
+            'admin_label'    => __( 'Credit Card', 'wp-user-frontend' ),
             'checkout_label' => __( 'Credit Card', 'wp-user-frontend' ),
             'label_class'    => 'pro-preview',
+            'is_pro_preview' => true,
         ];
 
         return $gateways;

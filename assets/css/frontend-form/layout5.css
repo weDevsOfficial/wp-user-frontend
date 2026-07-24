@@ -1108,3 +1108,7 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     background-size: 14px 8px !important;
     padding-right: 40px !important;
 }
+
+/* Dark template: form title + description readable on the dark card */
+.wpuf-form-add.wpuf-form-layout5 .wpuf-form-title { color: #F3F4F6 !important; }
+.wpuf-form-add.wpuf-form-layout5 .wpuf-form-description { color: #AEBABA !important; }

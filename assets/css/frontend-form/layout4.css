@@ -1069,3 +1069,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     background-size: 14px 8px !important;
     padding-right: 40px !important;
 }
+
+/* Spacing: separate form title/description from the first field */
+.wpuf-form-add.wpuf-form-layout4 .wpuf-form-title { margin: 0 0 8px !important; }
+.wpuf-form-add.wpuf-form-layout4 .wpuf-form-description { margin: 0 0 32px !important; }

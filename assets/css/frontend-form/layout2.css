@@ -1082,3 +1082,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 /* Dark template: form title + description readable on the dark card */
 .wpuf-form-add.wpuf-form-layout2 .wpuf-form-title { color: #F3F4F6 !important; }
 .wpuf-form-add.wpuf-form-layout2 .wpuf-form-description { color: #9CABC3 !important; }
+
+/* Spacing: separate form title/description from the first field */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-form-title { margin: 0 0 8px !important; }
+.wpuf-form-add.wpuf-form-layout2 .wpuf-form-description { margin: 0 0 32px !important; }

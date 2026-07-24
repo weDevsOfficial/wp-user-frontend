@@ -1000,3 +1000,13 @@ body ul.wpuf-form li .wpuf-fields .wpuf-radio-block, body ul.wpuf-form li .wpuf-
     min-height: 44px !important;
     color: #1E002B !important;
 }
+
+/* ---- Field icons follow the template palette (inline SVGs) ---- */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .wpuf-upload-icon svg path,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .dropdown-arrow svg path {
+    stroke: #583D72 !important;
+}
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .refresh svg,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .refresh svg path {
+    fill: #583D72 !important;
+}

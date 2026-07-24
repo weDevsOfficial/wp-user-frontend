@@ -1035,3 +1035,13 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .intl-tel-input input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]) {
     padding-left: 52px !important;
 }
+
+/* ---- Field icons follow the template palette (inline SVGs) ---- */
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-upload-icon svg path,
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .dropdown-arrow svg path {
+    stroke: #4B5563 !important;
+}
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .refresh svg,
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .refresh svg path {
+    fill: #4B5563 !important;
+}

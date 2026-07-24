@@ -27,7 +27,8 @@
     "test:all": "rc=0; npm run test:setup || rc=1; npm run test:parallel || rc=1; npm run test:api || rc=1; exit $rc",
     "test:all:ci": "rc=0; npm run test:setup:ci || rc=1; npm run test:parallel:ci || rc=1; npm run test:api:ci || rc=1; exit $rc",
 
-    "sharded-summary": "node utils/sharded-summary.js"
+    "sharded-summary": "node utils/sharded-summary.js",
+    "merge-reports": "npx playwright merge-reports --reporter html ./all-blob-reports"
   },
   "keywords": [ "playwright", "e2e", "tests", "wordpress", "wpuser-frontend", "wpuf" ],
   "author": "Rubaiyat E Mohammad",

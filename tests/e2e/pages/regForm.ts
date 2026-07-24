@@ -478,13 +478,14 @@ export class RegFormPage extends Base {
         await this.page.keyboard.press('Enter');
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.passwordField, VendorRegistrationForm.dokanVendorPassword = VendorRegistrationForm.dokanVendorEmail);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.confirmPasswordField, VendorRegistrationForm.dokanVendorPassword = VendorRegistrationForm.dokanVendorEmail);
-        // await this.page.pause();
-        await this.page.waitForTimeout(5000);
-
-        // Submit Registration
-        await this.validateAndClick(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.registerButton);
-        await this.validateAndClick(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.registerButton);
-        await this.page.waitForTimeout(2000);
+        // Submit Registration. WPUF keeps Register `disabled` until every required
+        // field validates — wait for it to enable, then click ONCE. On success the
+        // page navigates away (Dokan seller-setup wizard), so a second click would
+        // hang on a button that no longer exists (the CI 3-min RF0009 timeout).
+        const registerEnabled = this.page.locator(`${Selectors.vendorRegistrationForms.dokanVendor.frontendForm.registerButton}[not(@disabled)]`);
+        await registerEnabled.waitFor({ timeout: 30000 });
+        await registerEnabled.click();
+        await this.page.waitForURL(/dokan-seller-setup|wpuf-registration-success|account/, { timeout: 60000 });
         return true;
     }
 

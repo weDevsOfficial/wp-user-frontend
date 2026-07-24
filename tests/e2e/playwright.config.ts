@@ -29,6 +29,9 @@ const shardIndex = process.env.SHARD_INDEX && process.env.SHARD_INDEX !== ''
     ? process.env.SHARD_INDEX
     : '';
 const phase = process.env.E2E_PHASE || '';
+// CI matrix group (post / registration / fields-subscription) — used only to keep
+// blob-report filenames unique across jobs so merge-reports can combine them.
+const group = process.env.E2E_GROUP || '';
 
 // CI toggles longer timeouts and forbids `test.only`.
 const isCI = process.env.CI === 'true';
@@ -65,13 +68,26 @@ export default defineConfig({
 
     retries: 0,
 
-    workers: 4,
+    // MUST stay 1: the suite is stateful against ONE shared wp-env site and the
+    // specs share cached auth sessions (.auth/). With >1 worker, spec files run
+    // concurrently — one spec's logout/settings changes kill another's session
+    // mid-test (the CI run with workers:4 failed EM0003/PFS0050/SB0015 exactly
+    // this way). Parallelism belongs at the CI-matrix level (one wp-env per job).
+    workers: 1,
 
     outputDir: artifactDir,
 
     reporter: [
         ['list', { printSteps: false }],
         ['json', { outputFile: jsonOutput }],
+        // Blob reports feed the CI merge-reports job. Filename must be unique per
+        // matrix group AND per phase, or the merged artifact download overwrites
+        // same-named zips and shards vanish from the combined report.
+        ...(isCI
+            ? [['blob', {
+                outputFile: `./blob-report/report-${[group, phase || (shardIndex ? `shard-${shardIndex}` : 'e2e')].filter(Boolean).join('-')}.zip`,
+              }] as const]
+            : []),
     ],
 
     // Shared defaults. CLI `--headed` overrides `headless` per-invocation.

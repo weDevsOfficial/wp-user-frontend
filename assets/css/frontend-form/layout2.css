@@ -1091,3 +1091,8 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 ul {
     overflow: initial !important;
 }
+
+/* Help text readable per palette */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-help {
+    color: #9CABC3 !important;
+}

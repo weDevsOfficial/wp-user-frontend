@@ -856,3 +856,8 @@
 .wpuf-form-add.wpuf-form-layout1 ul {
     overflow: initial !important;
 }
+
+/* Help text readable per palette */
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-help {
+    color: #6B7280 !important;
+}

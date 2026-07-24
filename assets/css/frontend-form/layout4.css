@@ -1078,3 +1078,8 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
 .wpuf-form-add.wpuf-form-layout4 ul {
     overflow: initial !important;
 }
+
+/* Help text readable per palette */
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-help {
+    color: #6B7280 !important;
+}

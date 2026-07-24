@@ -1086,3 +1086,8 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 /* Spacing: separate form title/description from the first field */
 .wpuf-form-add.wpuf-form-layout2 .wpuf-form-title { margin: 0 0 8px !important; }
 .wpuf-form-add.wpuf-form-layout2 .wpuf-form-description { margin: 0 0 32px !important; }
+
+/* Form list must not clip dropdowns / popups (multiselect panel, etc.) */
+.wpuf-form-add.wpuf-form-layout2 ul {
+    overflow: initial !important;
+}

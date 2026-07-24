@@ -1060,3 +1060,9 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-field-icon {
     color: #9CABC3 !important;
 }
+
+/* Field Size: native selects (dropdown, time, taxonomy, pricing dropdown)
+   default to content width — force them to fill the sized .wpuf-fields. */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields select {
+    width: 100% !important;
+}

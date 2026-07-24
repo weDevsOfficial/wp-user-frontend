@@ -1016,3 +1016,9 @@ body ul.wpuf-form li .wpuf-fields .wpuf-radio-block, body ul.wpuf-form li .wpuf-
 .wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-field-icon {
     color: #583D72 !important;
 }
+
+/* Field Size: native selects (dropdown, time, taxonomy, pricing dropdown)
+   default to content width — force them to fill the sized .wpuf-fields. */
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields select {
+    width: 100% !important;
+}

@@ -97,6 +97,12 @@ jobs:
           ( cd "$GITHUB_WORKSPACE" && npm i --legacy-peer-deps )
           npm run build
           grunt --force
+          # Drop the self-referencing symlink now that vite is done. Leaving it
+          # makes the workspace contain itself; lite's later `grunt` makepot
+          # recursively scans PHP files, follows the cycle, and exhausts the
+          # runner (~14 min hang, then SIGTERM/exit 143). wp-env maps lite from
+          # the repo root directly, so nothing after this needs the symlink.
+          rm -f "$GITHUB_WORKSPACE/plugins/wp-user-frontend"
 
       # The default grunt build ships no appsero_key.php, so wpuf-pro falls back
       # to the dev product hash (958afc63) and the AppSumo license key — issued

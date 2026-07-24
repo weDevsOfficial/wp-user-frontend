@@ -838,3 +838,16 @@ features:
     name: GET /wpuf_form pagination contract (per_page/page echoed, capped)
   - id: AP0015
     name: GET /wpuf_form search with no match returns an empty result
+  # Frontend login ([wpuf-login] shortcode) — frontendLoginTest.spec.ts
+  - id: FL0001
+    name: Login form renders with all controls on the shortcode page
+  - id: FL0002
+    name: Empty submit is rejected ("Username is required.")
+  - id: FL0003
+    name: Invalid credentials are rejected, visitor stays logged out
+  - id: FL0004
+    name: Lost password with an unknown email is rejected
+  - id: FL0005
+    name: Lost password for a known user reaches the mailer (env-gated skip without SMTP)
+  - id: FL0006
+    name: Valid credentials log the user in (logged-in view shown)

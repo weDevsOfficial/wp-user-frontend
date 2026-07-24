@@ -50,3 +50,83 @@ export function isMailPoetSubscriberInList(email: string, listName: string): boo
     const out = wpCli(`db query "${sql}"`);
     return out.includes(email);
 }
+
+/**
+ * Ensure a WordPress option (array-shaped) exists so `option patch` calls work.
+ */
+function ensureOptionSection(section: string): void {
+    try {
+        wpCli(`option get ${section}`);
+    } catch {
+        wpCli(`option add ${section} '{}' --format=json`);
+    }
+}
+
+/**
+ * Read one key from an array-shaped WPUF option (e.g. wpuf_profile.login_page).
+ * Returns null when the option or key does not exist.
+ */
+export function getWpufOptionKey(section: string, key: string): string | null {
+    try {
+        return wpCli(`option patch get ${section} ${key}`).trim();
+    } catch {
+        return null;
+    }
+}
+
+/**
+ * Write one key into an array-shaped WPUF option, creating the option/key as needed.
+ */
+export function setWpufOptionKey(section: string, key: string, value: string): void {
+    ensureOptionSection(section);
+    try {
+        wpCli(`option patch update ${section} ${key} '${value}'`);
+    } catch {
+        wpCli(`option patch insert ${section} ${key} '${value}'`);
+    }
+}
+
+/**
+ * Delete one key from an array-shaped WPUF option (no-op when absent).
+ */
+export function deleteWpufOptionKey(section: string, key: string): void {
+    try {
+        wpCli(`option patch delete ${section} ${key}`);
+    } catch {
+        // key was not set — nothing to remove
+    }
+}
+
+/**
+ * Seed a published page holding a shortcode and return its id + permalink.
+ *
+ * Self-cleaning: deletes any previous pages with the same title first, so
+ * re-runs without a site reset never accumulate duplicates (the MailPoet-spec
+ * strict-mode lesson). Faster and steadier than driving the block editor UI.
+ */
+export function seedPageWithShortcode(title: string, shortcode: string): { id: number; url: string } {
+    const existing = wpCli(`post list --post_type=page --title="${title}" --field=ID`).trim();
+    for (const id of existing.split(/\s+/).filter(Boolean)) {
+        wpCli(`post delete ${id} --force`);
+    }
+    const created = wpCli(
+        `post create --post_type=page --post_status=publish --post_title="${title}" --post_content="${shortcode}" --porcelain`
+    ).trim();
+    const id = Number(created.split(/\s+/).pop());
+    const url = wpCli(`post url ${id}`).trim().split(/\s+/).pop() as string;
+    return { id, url };
+}
+
+/**
+ * Ensure a subscriber-role user exists with a known password; returns the login.
+ * Idempotent: reuses the user when present (password reset to the given one).
+ */
+export function seedUser(login: string, email: string, password: string): string {
+    try {
+        wpCli(`user get ${login} --field=ID`);
+        wpCli(`user update ${login} --user_pass='${password}' --skip-email`);
+    } catch {
+        wpCli(`user create ${login} ${email} --role=subscriber --user_pass='${password}'`);
+    }
+    return login;
+}

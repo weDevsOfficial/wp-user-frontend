@@ -6,6 +6,7 @@ import { Users, Urls } from '../utils/testData';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { RegFormPage } from '../pages/regForm';
 import { configureSpecFailFast } from '../utils/specFailFast';
+import { waitForSiteReady } from '../utils/siteReady';
 
 let browser: Browser;
 let context: BrowserContext;
@@ -99,7 +100,7 @@ test.describe('Reg Form Settings Tests', () => {
     let activationLink: string = "";
 
     test('RFS0001 : Admin is setting newly registered user role to administrator', { tag: ['@Pro'] }, async () => {
-        await page.waitForTimeout(15000);
+        await waitForSiteReady(page, 15000);
         formName = 'RF Settings';
         await new BasicLoginPage(page).basicLogin(Users.adminUsername, Users.adminPassword);
         await new RegFormPage(page).createBlankForm_RF(formName, newRegFormPage);

@@ -8,6 +8,7 @@ import * as fs from 'fs'; //Clear Cookie
 import { BasicLogoutPage } from '../pages/basicLogout';
 import { faker } from '@faker-js/faker';
 import { configureSpecFailFast } from '../utils/specFailFast';
+import { waitForSiteReady } from '../utils/siteReady';
 
 let browser: Browser;
 let context: BrowserContext;
@@ -69,7 +70,7 @@ test.describe('Post-Forms', () => {
     let dashNewTitle: string;
 
     test('PF0001 : Admin is creating a Blank Post Form with all Fields', { tag: ['@Lite'] }, async () => {
-        await page.waitForTimeout(15000);
+        await waitForSiteReady(page, 15000);
         await new BasicLoginPage(page).basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
         const PostFormClass = new PostFormPage(page);
         const FieldAdd = new FieldAddPage(page);

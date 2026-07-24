@@ -31,6 +31,22 @@ export const Selectors = {
             clickDokanSidebar: '//div[normalize-space(text())="Dokan"]',
             licenseTab: '//li[@id="toplevel_page_wp-user-frontend"]//ul//li[normalize-space()="License"]',
         },
+        // WPUF frontend [wpuf-login] shortcode (templates/login-form.php,
+        // lost-pass-form.php, logged-in.php — Lite Simple_Login)
+        frontendLogin: {
+            loginForm: '#wpuf-login-form form#loginform',
+            usernameField: '#wpuf-login-form input#wpuf-user_login',
+            passwordField: '#wpuf-login-form input#wpuf-user_pass',
+            rememberMeCheckbox: '#wpuf-login-form input#wpuf-rememberme',
+            submitButton: '#wpuf-login-form input#wp-submit',
+            lostPasswordLink: '#wpuf-login-form .wpuf-lost-password a',
+            errorNotice: 'div.wpuf-error',
+            messageNotice: 'div.wpuf-message',
+            loggedInView: 'div.wpuf-user-loggedin',
+            lostPasswordForm: '#wpuf-login-form form#lostpasswordform',
+            lostPasswordUserField: '#wpuf-login-form form#lostpasswordform input#wpuf-user_login',
+            lostPasswordSubmit: '#wpuf-login-form form#lostpasswordform input#wp-submit',
+        },
     },
 
     /*******************************************/

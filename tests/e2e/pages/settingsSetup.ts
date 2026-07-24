@@ -4,6 +4,7 @@ import { expect, type Page, type Dialog } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';
 import { Base } from './base';
+import { waitForSiteReady } from '../utils/siteReady';
 export class SettingsSetupPage extends Base {
 
     constructor(page: Page) {
@@ -868,7 +869,10 @@ export class SettingsSetupPage extends Base {
         await this.validateAndFillStrings(Selectors.resetWordpreseSite.wpResetInputBox, 'reset');
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetSubmitButton);
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset);
-        await this.page.waitForTimeout(20000);
+        // WP Reset wipes the DB then reloads; poll until the site answers again
+        // instead of a fixed 20s sleep (same worst-case ceiling, faster when done).
+        await this.page.waitForTimeout(3000);
+        await waitForSiteReady(this.page, 60000);
         await this.navigateToURL(this.pluginsPage);
         await this.page.reload();
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWCvendors);

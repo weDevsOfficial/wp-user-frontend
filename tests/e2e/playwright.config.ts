@@ -65,7 +65,7 @@ export default defineConfig({
 
     retries: 0,
 
-    workers: 1,
+    workers: 4,
 
     outputDir: artifactDir,
 

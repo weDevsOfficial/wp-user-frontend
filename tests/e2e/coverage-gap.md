@@ -11,10 +11,12 @@
 > **Legend:** ✅ strong · 🟡 partial · 🔴 none
 > **Priority:** P0 revenue/security-critical · P1 core user journey · P2 module/nice-to-have
 >
-> Last audited: 2026-07-03 · Suite: 8 specs (`alphaSetupTest`, `postFormTest`,
+> Last audited: 2026-07-23 · Suite: 9 UI specs (`alphaSetupTest`, `postFormTest`,
 > `postFormSettingsTest`, `regFormTestPro`, `regFormSettingsTestPro`, `fieldOptionSettingsTest`,
-> `subscriptionTest`, `mailpoetRegistrationTestPro`).
+> `subscriptionTest`, `mailpoetRegistrationTestPro`, `frontendLoginTest`) + API spec
+> (`tests/api/wpufRestApi.spec.ts`, `AP0001`–`AP0015`).
 > Stabilization pass: 2026-07-22 (see "Suite stabilization" below).
+> Frontend-login spec added: 2026-07-23 (`FL0001`–`FL0006`, see #14).
 
 ---
 
@@ -35,13 +37,13 @@
 | 11 | Email marketing (Mailchimp/GetResponse/ConvertKit/Campaign Monitor) | 🔴 | P2 |
 | 12 | Content / menu / taxonomy restriction | 🟡 field-visibility only | **P0** |
 | 13 | User dashboard & account page | 🟡 posts edit/delete | P1 (profile/subscription/billing) |
-| 14 | Frontend login / lost-password / social login | 🔴 | **P1** |
+| 14 | Frontend login / lost-password / social login | 🟡 `[wpuf-login]` + lost-pass built (`FL0001`–`FL0006`) | P2 (reset-link completion, social) |
 | 15 | AI form builder & AI Review | 🔴 enable-only | P2 |
 | 16 | Pro modules (directory, PM, SMS, reports, analytics, QR, BuddyPress, PMPro, comments, SEO, Zapier) | 🔴 | P2 |
 | 17 | Integrations (Elementor, Events Calendar, ACF, n8n) | 🔴 | P2 |
 | 18 | reCaptcha / Turnstile / Math captcha (functional) | 🟡 Math enforced (`PF0027`); reCaptcha/Turnstile 🔴 | P1 |
 | 19 | Widgets & shortcodes | 🔴 | P2 |
-| 20 | **REST API (`wpuf/v1`)** | 🟡 core layer built | P1 (wrong-role, update, AI routes) |
+| 20 | **REST API (`wpuf/v1`)** | 🟡 core + wrong-role/update/XSS built (`AP0001`–`AP0015`) | P1 (AI routes, API-seeded UI setup) |
 | 21 | **Negative / security / authorization** | 🔴 | **P0** |
 | 22 | Cross-browser / mobile viewport | 🔴 Chromium-only | P1 |
 
@@ -366,15 +368,33 @@ provider **API stub/sandbox** or provider API assertion; avoid hitting live prov
 
 ---
 
-## 14. Frontend login / lost-password / social login — 🔴 — **P1**
+## 14. Frontend login / lost-password / social login — 🟡 (core flows built)
 
-**Covered:** none. (`LS0001` is wp-admin login, not the WPUF `[wpuf-login]` form.)
+**Covered (`FL0001`–`FL0006`, 2026-07-23):** `tests/frontendLoginTest.spec.ts` +
+`pages/frontendLogin.ts` + `Selectors.login.frontendLogin`. Fully **self-seeding via wp-cli**
+(`utils/wpEnvCli.ts::seedPageWithShortcode/seedUser/set-get-deleteWpufOptionKey`): creates the
+`[wpuf-login]` page (deleting same-title leftovers first — rerun-safe), registers it as
+`wpuf_profile.login_page`, seeds its own subscriber, snapshots + disables
+`wpuf_general.enable_turnstile` for the spec (the `.env` Turnstile keys are stubs and would
+block every login) and restores it after. No dependence on setup-phase fixtures.
+- `FL0001` form renders (username/password/remember-me/submit/lost-password link).
+- `FL0002` empty submit rejected ("Username is required.") *(negative)*.
+- `FL0003` invalid credentials rejected, visitor stays logged out *(negative)*.
+- `FL0004` lost-password with unknown email rejected *(negative)*.
+- `FL0005` lost-password for a known user — WPUF's lookup/reset-key path proven; when the env
+  has no mail transport WPUF `wp_die`s with "The e-mail could not be sent." and the test
+  **self-skips** (same env-gated class as `EM0004`).
+- `FL0006` valid credentials log in; revisiting shows the `logged-in.php` view.
 
-**Gaps:**
-- 🔴 **`[wpuf-login]`** — valid login, invalid credentials, redirect-after-login, logout link.
-- 🔴 **Lost password / reset** flow.
-- 🔴 **Custom login redirect** per role.
-- 🔴 **Social login** (`../wpuf-pro/modules/social-login`) — Google/Facebook/etc. (mock provider).
+**Build note:** the site under test uses **plain permalinks** (`?page_id=N`), so query args must
+append with `&` (`FrontendLoginPage::lostPasswordUrl`) — a raw `?action=lostpassword` suffix 404s
+the form.
+
+**Remaining gaps:**
+- 🔴 **Reset-link completion** — click emailed link → `action=rp` set new password → login with it
+  (needs a mail capture, e.g. WP Mail Log). *(P2)*
+- 🔴 **Redirect-after-login** per role / custom redirect option. *(P2)*
+- 🔴 **Social login** (`../wpuf-pro/modules/social-login`) — Google/Facebook/etc. (mock provider). *(P2)*
 
 ---
 
@@ -464,11 +484,12 @@ Route map + payloads were reverse-engineered from `includes/Api/*` and verified 
 - ✅ **CRUD round-trip** — create → read (find by title) → delete a subscription pack; self-cleaning.
 - ✅ **Input validation** — malformed create payload rejected (`success:false`).
 
+**Extension pass (`AP0007`–`AP0015`):** ✅ wrong-role **403** (subscriber App-Password client on
+admin routes), ✅ **update round-trip** (`POST /wpuf_subscription/{id}`), ✅ **XSS title sanitized
+on store**, ✅ invalid-color 400, ✅ invalid-id delete rejected, ✅ count-by-status, ✅ pagination
+contract, ✅ empty-search contract.
+
 **Remaining (P1):**
-- 🔴 **Wrong-role (403)** — a logged-in non-admin (subscriber) hitting admin routes; currently only
-  the unauthenticated (401) case is asserted.
-- 🔴 **Update path** — `PUT/PATCH /wpuf_subscription/{id}` (`edit_item`, incl. `edit_single_row`).
-- 🔴 **XSS/SQLi-ish payloads** sanitized on store + escaped on read.
 - 🔴 **AI controllers** — `wpuf/v1/ai-form-builder/*`, `ai-review/*` (12+ routes) untested.
 - 🔴 Use the client for **faster setup/teardown** of UI tests (seed a subscription via API, assert in UI).
 
@@ -502,9 +523,10 @@ Near-zero across the whole suite. Per feature add:
 
 1. **P0 revenue:** Stripe + PayPal transactions (#8), un-comment & finish card subscription (#7),
    Coupons + Tax math (#9) — do the math/validation parts as **API tests** where possible.
-2. **P0 security:** ~~REST API layer (#20)~~ ✅ core built (`AP0001`–`AP0006`) — extend with
-   wrong-role/update; negative/authorization pass (#21) + content restriction (#12).
-3. **P1 journeys:** frontend login/lost-password (#14), ~~user dashboard edit/delete (#13)~~ ✅ done
+2. **P0 security:** ~~REST API layer (#20)~~ ✅ built through `AP0015` (incl. wrong-role 403,
+   update, XSS store-sanitization); negative/authorization pass (#21) + content restriction (#12).
+3. **P1 journeys:** ~~frontend login/lost-password (#14)~~ ✅ core built (`FL0001`–`FL0006`),
+   ~~user dashboard edit/delete (#13)~~ ✅ done
    (`PF0025`–`PF0027`), captcha enforcement (#18), ~~file-upload round-trip (#2)~~ ✅ already covered
    (was a doc error), post expiration (#3).
 4. **P1 infra:** finish MailPoet WIP + fix idempotency bug (#10), add Firefox/WebKit + mobile (#22).

@@ -5,6 +5,7 @@ import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Urls, Users, VendorRegistrationForm } from '../utils/testData';
 import { BasicLogoutPage } from '../pages/basicLogout';
 import { configureSpecFailFast } from '../utils/specFailFast';
+import { waitForSiteReady } from '../utils/siteReady';
 
 let browser: Browser;
 let context: BrowserContext;
@@ -62,7 +63,7 @@ test.describe('Registration-Forms', () => {
 
     let activationLink: string = '';
     test('RF0001 : Admin is checking Registration Forms - Pro Feature Page', { tag: ['@Pro'] }, async () => {
-        await page.waitForTimeout(30000);
+        await waitForSiteReady(page, 30000);
         const BasicLogin = new BasicLoginPage(page);
         const RegForm = new RegFormPage(page);
         //Basic login

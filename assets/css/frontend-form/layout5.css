@@ -1126,3 +1126,17 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-help {
     color: #A9B4B4 !important;
 }
+
+/* Multistep nav buttons: pill with proper padding (match registration) */
+.wpuf-form-add.wpuf-form-layout5 .wpuf-multistep-nav-btn {
+    background: #7BC087 !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 85px !important;
+    padding: 10px 32px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    line-height: 24px !important;
+    box-shadow: none !important;
+    text-transform: none !important;
+}

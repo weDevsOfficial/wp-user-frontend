@@ -823,3 +823,9 @@
 .wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .refresh svg path {
     fill: #6B7280 !important;
 }
+
+/* Field icon (Font Awesome, Show Icon = Yes) follows the template palette */
+.wpuf-form-add.wpuf-form-layout1 .wpuf-label .wpuf-field-icon,
+.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-field-icon {
+    color: #6B7280 !important;
+}

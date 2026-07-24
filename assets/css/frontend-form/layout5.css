@@ -1084,3 +1084,9 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .refresh svg path {
     fill: #B5BEC3 !important;
 }
+
+/* Field icon (Font Awesome, Show Icon = Yes) follows the template palette */
+.wpuf-form-add.wpuf-form-layout5 .wpuf-label .wpuf-field-icon,
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form li .wpuf-field-icon {
+    color: #B5BEC3 !important;
+}

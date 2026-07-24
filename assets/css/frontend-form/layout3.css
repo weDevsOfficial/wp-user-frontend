@@ -1010,3 +1010,9 @@ body ul.wpuf-form li .wpuf-fields .wpuf-radio-block, body ul.wpuf-form li .wpuf-
 .wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .refresh svg path {
     fill: #583D72 !important;
 }
+
+/* Field icon (Font Awesome, Show Icon = Yes) follows the template palette */
+.wpuf-form-add.wpuf-form-layout3 .wpuf-label .wpuf-field-icon,
+.wpuf-form-add.wpuf-form-layout3 ul.wpuf-form li .wpuf-field-icon {
+    color: #583D72 !important;
+}

@@ -1045,3 +1045,9 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .refresh svg path {
     fill: #4B5563 !important;
 }
+
+/* Field icon (Font Awesome, Show Icon = Yes) follows the template palette */
+.wpuf-form-add.wpuf-form-layout4 .wpuf-label .wpuf-field-icon,
+.wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-field-icon {
+    color: #4B5563 !important;
+}

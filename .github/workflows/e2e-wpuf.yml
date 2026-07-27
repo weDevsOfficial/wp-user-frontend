@@ -34,11 +34,13 @@ on:
 permissions:
   contents: read
 
-# One run per ref. A new push cancels the in-flight run for that ref — the suite
-# is stateful against a single wp-env, so overlapping runs must never coexist.
+# Coalesce runs so overlapping suites never mutate a shared wp-env at once.
+# Only PR runs auto-cancel a superseded run (new push to the same PR); manual
+# dispatches and branch/schedule runs get a unique group (run_id) so they run to
+# completion instead of cancelling each other.
 concurrency:
-  group: e2e-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: e2e-${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   # Feature-grouped shards: each job runs a set of RELATED spec files (its own

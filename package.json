@@ -45,7 +45,7 @@
     "grunt-wp-i18n": "^1.0.3",
     "grunt-wp-readme-to-markdown": "^2.0.1",
     "jshint-stylish": "^2.2.1",
-    "postcss": "^8.4.31",
+    "postcss": "^8.5.18",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.3.5",

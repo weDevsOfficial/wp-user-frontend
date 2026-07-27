@@ -335,8 +335,12 @@ jobs:
           exit 1
 
       # Send Email Report if passed
+      # Notification only — never fail the pipeline if SMTP is unavailable
+      # (e.g. a fork without SMTP_EMAIL_* secrets). The run status already
+      # reflects the tests via "Reflect shard results in run status".
       - name: Send Test Report on email (Passed)
         if: success()
+        continue-on-error: true
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
@@ -354,8 +358,10 @@ jobs:
           from: wedevs.testing1@gmail.com
 
       # Send Email Report if failed
+      # Notification only — never fail the pipeline if SMTP is unavailable.
       - name: Send Test Report on email (Failed)
         if: failure()
+        continue-on-error: true
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com

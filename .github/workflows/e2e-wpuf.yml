@@ -29,6 +29,17 @@ on:
   pull_request:
     branches: ['develop']
 
+# Least-privilege token: the workflow only reads the repo (private wpuf-pro is
+# cloned with a dedicated ACCESS_TOKEN secret, not GITHUB_TOKEN).
+permissions:
+  contents: read
+
+# One run per ref. A new push cancels the in-flight run for that ref — the suite
+# is stateful against a single wp-env, so overlapping runs must never coexist.
+concurrency:
+  group: e2e-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # Feature-grouped shards: each job runs a set of RELATED spec files (its own
   # wp-env + the setup project runs first within the shard). Grouping keeps a
@@ -159,6 +170,11 @@ jobs:
               wget https://downloads.wordpress.org/plugin/dokan-lite.latest-stable.zip
               unzip dokan-lite.latest-stable.zip
               rm dokan-lite.latest-stable.zip
+
+              # Download and extract MailPoet (email-marketing subscribe-on-registration tests)
+              wget https://downloads.wordpress.org/plugin/mailpoet.latest-stable.zip
+              unzip mailpoet.latest-stable.zip
+              rm mailpoet.latest-stable.zip
 
               # # Download and extract The Events Calendar
               # wget https://downloads.wordpress.org/plugin/the-events-calendar.latest-stable.zip

@@ -46,8 +46,15 @@ export class MailPoetPage extends Base {
      */
     async enableMailPoetOnRegForm(formName: string, listName: string) {
         let flag = true;
+        // Bound the save-retry loop: a stuck save (e.g. MailPoet list unavailable) must
+        // not spin until the 180s test timeout. Cap attempts, then fail loudly instead.
+        let attempts = 0;
+        const maxAttempts = 5;
 
         while (flag == true) {
+            if (++attempts > maxAttempts) {
+                throw new Error(`Could not save MailPoet subscription on "${formName}" after ${maxAttempts} attempts — is the MailPoet plugin active with the "${listName}" list present?`);
+            }
             // Open the form in the builder.
             await this.navigateToURL(this.wpufRegFormPage);
             try {

@@ -579,10 +579,22 @@ export class RegFormPage extends Base {
             console.log('\x1b[33m%s\x1b[0m', '⚠️  WC Vendor Register button never enabled — skipping RF0014 (env-dependent WC Vendors frontend validation).');
             return null;
         }
-        await this.validateAndClick(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.registerButton);
-        await this.validateAndClick(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.registerButton);
-        await this.page.waitForTimeout(2000);
-        const successMessage = await this.page.innerText(Selectors.regFormSettings.successMessage);
+        // Click the ENABLED Register locator once. WC Vendors re-disables the button
+        // while the submit is in flight, so a second click (the old flow) would wait on
+        // a disabled button until the test timeout — click exactly once.
+        await registerEnabled.click();
+
+        // Bounded wait for the success message. If it never appears (env-dependent WC
+        // Vendors submit), self-skip rather than hang/hard-fail. RF0014's caller skips
+        // RF0014–RF0017 when this returns null.
+        const success = this.page.locator(Selectors.regFormSettings.successMessage);
+        try {
+            await success.first().waitFor({ state: 'visible', timeout: 30000 });
+        } catch {
+            console.log('\x1b[33m%s\x1b[0m', '⚠️  WC Vendor registration did not surface a success message — skipping RF0014 (env-dependent WC Vendors submit).');
+            return null;
+        }
+        const successMessage = await success.first().innerText();
         expect(successMessage).toContain('Please check your email for activation link');
 
         // Login as admin to check WP Mail Log

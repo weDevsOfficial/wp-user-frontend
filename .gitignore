@@ -40,6 +40,7 @@ tests/e2e/parallel-seventeen
 tests/e2e/parallel-eighteen
 tests/e2e/parallel-nineteen
 tests/e2e/parallel-twenty
+tests/e2e/parallel-results
 tests/e2e/json-results
 tests/e2e/playwright-report/
 tests/e2e/playwright/.cache/
@@ -76,3 +77,7 @@ languages/wp-user-frontend.pot
 
 # OpenSpec change proposals (local spec artifacts)
 openspec/
+
+# wp-env local test plugins scaffold (mounted by tests/e2e/.wp-env.json)
+/plugins/
+/assets/*

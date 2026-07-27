@@ -29,6 +29,19 @@ on:
   pull_request:
     branches: ['develop']
 
+# Least-privilege token: the workflow only reads the repo (private wpuf-pro is
+# cloned with a dedicated ACCESS_TOKEN secret, not GITHUB_TOKEN).
+permissions:
+  contents: read
+
+# Coalesce runs so overlapping suites never mutate a shared wp-env at once.
+# Only PR runs auto-cancel a superseded run (new push to the same PR); manual
+# dispatches and branch/schedule runs get a unique group (run_id) so they run to
+# completion instead of cancelling each other.
+concurrency:
+  group: e2e-${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   # Feature-grouped shards: each job runs a set of RELATED spec files (its own
   # wp-env + the setup project runs first within the shard). Grouping keeps a
@@ -47,7 +60,7 @@ jobs:
           - group: post
             files: tests/postFormTest.spec.ts tests/postFormSettingsTest.spec.ts
           - group: registration
-            files: tests/regFormTestPro.spec.ts tests/regFormSettingsTestPro.spec.ts
+            files: tests/regFormTestPro.spec.ts tests/regFormSettingsTestPro.spec.ts tests/frontendLoginTest.spec.ts tests/mailpoetRegistrationTestPro.spec.ts
           - group: fields-subscription
             files: tests/fieldOptionSettingsTest.spec.ts tests/subscriptionTest.spec.ts
 
@@ -97,6 +110,12 @@ jobs:
           ( cd "$GITHUB_WORKSPACE" && npm i --legacy-peer-deps )
           npm run build
           grunt --force
+          # Drop the self-referencing symlink now that vite is done. Leaving it
+          # makes the workspace contain itself; lite's later `grunt` makepot
+          # recursively scans PHP files, follows the cycle, and exhausts the
+          # runner (~14 min hang, then SIGTERM/exit 143). wp-env maps lite from
+          # the repo root directly, so nothing after this needs the symlink.
+          rm -f "$GITHUB_WORKSPACE/plugins/wp-user-frontend"
 
       # The default grunt build ships no appsero_key.php, so wpuf-pro falls back
       # to the dev product hash (958afc63) and the AppSumo license key — issued
@@ -154,6 +173,11 @@ jobs:
               unzip dokan-lite.latest-stable.zip
               rm dokan-lite.latest-stable.zip
 
+              # Download and extract MailPoet (email-marketing subscribe-on-registration tests)
+              wget https://downloads.wordpress.org/plugin/mailpoet.latest-stable.zip
+              unzip mailpoet.latest-stable.zip
+              rm mailpoet.latest-stable.zip
+
               # # Download and extract The Events Calendar
               # wget https://downloads.wordpress.org/plugin/the-events-calendar.latest-stable.zip
               # unzip the-events-calendar.latest-stable.zip
@@ -202,6 +226,7 @@ jobs:
       - name: 🧪 Run e2e tests (${{ matrix.group }})
         env:
           CI: true
+          E2E_GROUP: ${{ matrix.group }}
           # Test environment variables
           BASE_URL: ${{ secrets.QA_BASE_URL }}
           ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
@@ -217,7 +242,14 @@ jobs:
         working-directory: tests/e2e
         run: |
           mkdir -p test-results
-          npm run test:ci -- ${{ matrix.files }}
+          # Site reset/config first, then ONLY this group's spec files — that is
+          # the whole point of the matrix. `test:all:ci` here made every job run
+          # the full suite (3x the work, past the 120-min budget with workers:1).
+          npm run test:setup:ci
+          npx playwright test --config=playwright.config.ts --project=e2e ${{ matrix.files }}
+          # REST layer is browserless and quick; run it once, in the post group.
+          if [ "${{ matrix.group }}" = "post" ]; then npm run test:api:ci; fi
+        # continue-on-error: true
 
       # Upload this shard's blob report so the merge job can combine all shards
       - name: Upload blob report
@@ -305,8 +337,12 @@ jobs:
           exit 1
 
       # Send Email Report if passed
+      # Notification only — never fail the pipeline if SMTP is unavailable
+      # (e.g. a fork without SMTP_EMAIL_* secrets). The run status already
+      # reflects the tests via "Reflect shard results in run status".
       - name: Send Test Report on email (Passed)
         if: success()
+        continue-on-error: true
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
@@ -324,8 +360,10 @@ jobs:
           from: wedevs.testing1@gmail.com
 
       # Send Email Report if failed
+      # Notification only — never fail the pipeline if SMTP is unavailable.
       - name: Send Test Report on email (Failed)
         if: failure()
+        continue-on-error: true
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com

@@ -177,6 +177,24 @@ class Frontend_Form_Ajax {
             wpuf()->ajax->send_error( __( 'You must be logged in to submit posts.', 'wp-user-frontend' ) );
         }
 
+        // Enforce the form's submission gate (mandatory subscription, pack ownership,
+        // post-count limit) for new posts. The renderer checks this before showing the
+        // form, but the AJAX handler must re-check server-side — otherwise a scraped
+        // site-wide guest nonce can be replayed against a subscription-gated form to
+        // create a post with no order and no pending-payment status.
+        if ( ! isset( $_POST['post_id'] ) ) {
+            [ $user_can_post, $submission_info ] = $form->is_submission_open( $form, $this->form_settings );
+            $user_can_post                       = apply_filters( 'wpuf_can_post', $user_can_post, $form_id, $this->form_settings );
+
+            if ( 'yes' !== $user_can_post ) {
+                wpuf()->ajax->send_error(
+                    ! empty( $submission_info )
+                        ? $submission_info
+                        : __( 'You are not allowed to submit to this form.', 'wp-user-frontend' )
+                );
+            }
+        }
+
         [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
         if ( ! isset( $_POST['post_id'] ) ) {

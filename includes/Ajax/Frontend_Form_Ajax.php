@@ -182,9 +182,17 @@ class Frontend_Form_Ajax {
         // form, but the AJAX handler must re-check server-side — otherwise a scraped
         // site-wide guest nonce can be replayed against a subscription-gated form to
         // create a post with no order and no pending-payment status.
-        if ( ! isset( $_POST['post_id'] ) ) {
+        //
+        // A draft-backed submission still counts as new: it carries a post_id but sends
+        // wpuf_form_status "new" (same signal the update logic honours below), so key the
+        // gate on both so a replayed draft id cannot skip it.
+        $wpuf_form_status    = isset( $_POST['wpuf_form_status'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_form_status'] ) ) : '';
+        $is_new_submission   = ! isset( $_POST['post_id'] ) || 'new' === $wpuf_form_status;
+
+        if ( $is_new_submission ) {
             [ $user_can_post, $submission_info ] = $form->is_submission_open( $form, $this->form_settings );
             $user_can_post                       = apply_filters( 'wpuf_can_post', $user_can_post, $form_id, $this->form_settings );
+            $submission_info                     = apply_filters( 'wpuf_addpost_notice', $submission_info, $form_id, $this->form_settings );
 
             if ( 'yes' !== $user_can_post ) {
                 wpuf()->ajax->send_error(

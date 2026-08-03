@@ -5,11 +5,29 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "CI=false npx playwright test --headed",
-    "test:ci": "npx playwright test",
+    "test": "CI=false E2E_PHASE=setup npx playwright test --config=playwright.config.ts --project=setup --headed && CI=false npx playwright test --config=playwright.config.ts --project=e2e --headed",
+    "test:e2e": "CI=false npx playwright test --config=playwright.config.ts --project=e2e",
+    "test:ci": "E2E_PHASE=setup npx playwright test --config=playwright.config.ts --project=setup && npx playwright test --config=playwright.config.ts --project=e2e",
+
+    "env:setup": "npx wp-env start",
+    "reset:env": "npx wp-env clean all && npx wp-env start",
 
     "generate-summary": "node utils/generate-summary.js",
+    "test:api": "CI=false E2E_PHASE=api npx playwright test --config=playwright.config.ts --project=api",
+    "test:api:ci": "E2E_PHASE=api npx playwright test --config=playwright.config.ts --project=api",
 
+    "test:setup": "CI=false E2E_PHASE=setup npx playwright test --config=playwright.config.ts --project=setup",
+    "test:parallel": "rc=0; for i in 1 2 3; do SHARD_INDEX=$i CI=false npx playwright test --config=playwright.config.ts --project=e2e --shard=$i/3 || rc=1; done; exit $rc",
+    "test:sharded": "rc=0; npm run test:setup || rc=1; npm run test:parallel || rc=1; exit $rc",
+
+    "test:setup:ci": "E2E_PHASE=setup npx playwright test --config=playwright.config.ts --project=setup",
+    "test:parallel:ci": "rc=0; for i in 1 2 3; do SHARD_INDEX=$i npx playwright test --config=playwright.config.ts --project=e2e --shard=$i/3 || rc=1; done; exit $rc",
+    "test:sharded:ci": "rc=0; npm run test:setup:ci || rc=1; npm run test:parallel:ci || rc=1; exit $rc",
+
+    "test:all": "rc=0; npm run test:setup || rc=1; npm run test:parallel || rc=1; npm run test:api || rc=1; exit $rc",
+    "test:all:ci": "rc=0; npm run test:setup:ci || rc=1; npm run test:parallel:ci || rc=1; npm run test:api:ci || rc=1; exit $rc",
+
+    "sharded-summary": "node utils/sharded-summary.js",
     "merge-reports": "npx playwright merge-reports --reporter html ./all-blob-reports"
   },
   "keywords": [ "playwright", "e2e", "tests", "wordpress", "wpuser-frontend", "wpuf" ],

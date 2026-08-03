@@ -3,22 +3,56 @@ import * as dotenv from 'dotenv';
 
 dotenv.config({ quiet: true });
 
-const isCI = !!process.env.CI;
-
 /**
- * Unified Playwright config with Dokan-style logical sharding.
+ * Single Playwright config for the whole suite.
  *
- * CI splits the suite across independent machines with `--shard=i/N`. Each shard:
- *   - runs its own wp-env (isolated WordPress) — no shared server state between shards,
- *   - runs the `setup` project as a dependency (full plugin activation + license +
- *     WPUF setup), so every shard is self-contained,
- *   - runs serially (`workers: 1`) so concurrent admin sessions can't collide and
- *     intercept each other's clicks (the old forced-parallel race).
+ * Replaces the old per-phase configs (playwright.setup / .parallel / .api). The
+ * phases are now `projects`, selected from the CLI:
  *
- * `fullyParallel` stays off so sharding splits at the FILE level — each spec's serial
- * intra-file order (form created by test 1, consumed by test 2) is preserved on one shard.
- * Blob reports from every shard are merged with `playwright merge-reports`.
+ *   npx playwright test --project=setup                  # site reset + config (run first)
+ *   npx playwright test --project=e2e --shard=1/3        # sharded UI suite
+ *   npx playwright test --project=api                    # REST API layer (no browser)
+ *
+ * `npm run test:sharded` chains these: `--project=setup`, then the three
+ * `--project=e2e --shard=i/3` invocations sequentially. We deliberately do NOT
+ * use `dependencies: ['setup']` — under `--shard` a setup dependency reruns the
+ * heavy, destructive site reset once per shard. Keeping setup as its own script
+ * step preserves the "reset once, then shard" semantics from a single config.
+ *
+ * `SHARD_INDEX` (passed with `--shard=i/n`) and `E2E_PHASE` (`setup`|`api`) only
+ * pick per-phase report/output paths so sequential invocations don't clobber each
+ * other and `utils/sharded-summary.js` finds each phase's JSON. They do not affect
+ * which tests run — `--project` and `--shard` decide that.
  */
+
+const shardIndex = process.env.SHARD_INDEX && process.env.SHARD_INDEX !== ''
+    ? process.env.SHARD_INDEX
+    : '';
+const phase = process.env.E2E_PHASE || '';
+// CI matrix group (post / registration / fields-subscription) — used only to keep
+// blob-report filenames unique across jobs so merge-reports can combine them.
+const group = process.env.E2E_GROUP || '';
+
+// CI toggles longer timeouts and forbids `test.only`.
+const isCI = process.env.CI === 'true';
+
+// JSON report path — consumed by utils/sharded-summary.js for setup + each shard.
+const jsonOutput =
+    phase === 'setup' ? './setup/setup-results.json'
+    : phase === 'api' ? './api/api-results.json'
+    : shardIndex ? `./parallel-results/shard-${shardIndex}-results.json`
+    : './test-results/results.json';
+
+// HTML report folder, kept separate per phase/shard.
+const htmlOutput =
+    phase === 'setup' ? './playwright-report/setup-report'
+    : phase === 'api' ? './playwright-report/api-report'
+    : shardIndex ? `./playwright-report/parallel-${shardIndex}-report`
+    : './playwright-report';
+
+// Artifact (trace/screenshot) dir — per shard so sequential shards don't clobber.
+const artifactDir = shardIndex ? `./test-results/shard-${shardIndex}` : './test-results';
+
 export default defineConfig({
     testDir: './tests',
 
@@ -27,67 +61,67 @@ export default defineConfig({
 
     expect: { timeout: 30000 },
 
-    // Keep off: shard splits by file, preserving each spec's serial intra-file order.
+    // Sequential — never run two stateful specs against the shared site at once.
     fullyParallel: false,
 
     forbidOnly: isCI,
 
-    // Two retries on CI so a genuinely transient failure recovers on a fresh run.
-    retries: isCI ? 2 : 0,
+    retries: 0,
 
-    // One worker per shard: serial execution against a single wp-env, no cross-file
-    // admin-session race. Real parallelism comes from the CI shard matrix instead.
+    // MUST stay 1: the suite is stateful against ONE shared wp-env site and the
+    // specs share cached auth sessions (.auth/). With >1 worker, spec files run
+    // concurrently — one spec's logout/settings changes kill another's session
+    // mid-test (the CI run with workers:4 failed EM0003/PFS0050/SB0015 exactly
+    // this way). Parallelism belongs at the CI-matrix level (one wp-env per job).
     workers: 1,
 
-    // CI emits a blob per shard; a merge job combines them into one HTML report.
-    reporter: isCI
-        ? [
-            ['blob'],
-            ['list', { printSteps: true }],
-        ]
-        : [
-            ['html', { outputFolder: './playwright-report', open: 'never' }],
-            ['list', { printSteps: true }],
-        ],
+    outputDir: artifactDir,
 
+    reporter: [
+        ['list', { printSteps: false }],
+        ['json', { outputFile: jsonOutput }],
+        // Blob reports feed the CI merge-reports job. Filename must be unique per
+        // matrix group AND per phase, or the merged artifact download overwrites
+        // same-named zips and shards vanish from the combined report.
+        ...(isCI
+            ? [['blob', {
+                outputFile: `./blob-report/report-${[group, phase || (shardIndex ? `shard-${shardIndex}` : 'e2e')].filter(Boolean).join('-')}.zip`,
+              }] as const]
+            : []),
+    ],
+
+    // Shared defaults. CLI `--headed` overrides `headless` per-invocation.
     use: {
-        ...devices['Desktop Chrome'],
-
-        // Finite action timeout: a click blocked by a first-run modal/overlay fails
-        // fast (~30s) so a retry can recover, instead of hanging to the test timeout.
-        actionTimeout: 30000,
-
-        // Generous navigation: heavy wp-admin/product screens are slow on CI runners.
-        navigationTimeout: 120000,
-
+        actionTimeout: 0,
         headless: true,
-
         viewport: { width: 1280, height: 720 },
-
         trace: 'retain-on-failure',
-
         screenshot: 'only-on-failure',
-
         video: 'off',
-
         ignoreHTTPSErrors: true,
     },
 
     projects: [
-        // Global setup: login, activate lite + pro, activate license, WPUF setup,
-        // permalinks, base taxonomy. Runs in full on every shard as a dependency.
+        // Site reset + config. Run first, once (never as a shard dependency).
         {
             name: 'setup',
             testMatch: 'tests/alphaSetupTest.spec.ts',
+            use: { ...devices['Desktop Chrome'] },
         },
-
-        // Actual e2e suite. Sharded across machines; depends on `setup` so each shard
-        // stands up its own fully-configured site first.
+        // Stateful UI suite. Split via native `--shard=i/n`. Everything under
+        // tests/ except the setup spec and the browserless API layer.
         {
             name: 'e2e',
-            testMatch: /.*\.spec\.ts/,
-            testIgnore: 'tests/alphaSetupTest.spec.ts',
-            dependencies: ['setup'],
+            testDir: './tests',
+            testMatch: '**/*.spec.ts',
+            testIgnore: ['**/alphaSetupTest.spec.ts', '**/api/**'],
+            use: { ...devices['Desktop Chrome'] },
+        },
+        // REST layer (wpuf/v1) — no browser launched.
+        {
+            name: 'api',
+            testDir: './tests/api',
+            testMatch: '**/*.spec.ts',
         },
     ],
 });

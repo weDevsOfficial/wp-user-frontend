@@ -55,6 +55,11 @@ test.describe('Login and Setup', () => {
      * @test_LS0026 : Admin is enabling payment gateway paypal
      * @test_LS0027 : Admin is activating dokan lite
      * @test_LS0028 : Admin is logging out successfully
+     * @Test_LS0032 : Admin validates permalink setting persisted
+     * @Test_LS0033 : Admin validates anyone-can-register setting persisted
+     * @Test_LS0034 : Admin validates payment gateways persisted
+     * @Test_LS0035 : Admin validates AI provider selection persisted
+     * @Test_LS0036 : Admin validates WPUF general settings persist (round-trip)
      */
     if (process.env.CI !== 'true') {
         test('RS0001 : Admin is resetting Site', { tag: ['@Basic'] }, async () => {
@@ -274,6 +279,38 @@ test.describe('Login and Setup', () => {
     test('LS0030 : Admin is activating dokan lite', { tag: ['@Basic'] }, async () => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.dokanLiteStatusCheck();
+    });
+
+    /**----------- SETTINGS PERSISTENCE VERIFICATION -----------**
+     * Reload each surface configured above and assert the setting actually
+     * persisted server-side (setup steps only fill+save; these prove it stuck).
+     * Run before logout so the shared page is still authenticated.
+     */
+
+    test('LS0032 : Admin validates permalink setting persisted', { tag: ['@Basic', '@Test_LS0032'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.validatePermalinkPersistence();
+    });
+
+    test('LS0033 : Admin validates anyone-can-register setting persisted', { tag: ['@Basic', '@Test_LS0033'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.validateAllowRegistrationPersistence();
+    });
+
+    test('LS0034 : Admin validates payment gateways persisted', { tag: ['@Basic', '@Test_LS0034'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.validatePaymentGatewayPersistence();
+    });
+
+    test('LS0035 : Admin validates AI provider selection persisted', { tag: ['@Basic', '@Test_LS0035'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        // LS0028 enabled OpenAI last, so it is the persisted active provider.
+        await SettingsSetup.validateAIProviderPersistence('openai');
+    });
+
+    test('LS0036 : Admin validates WPUF general settings persist (round-trip)', { tag: ['@Basic', '@Test_LS0036'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.validateGeneralSettingsPersistenceRoundTrip();
     });
 
     test('LS0031 : Admin is logging out successfully', { tag: ['@Basic'] }, async () => {

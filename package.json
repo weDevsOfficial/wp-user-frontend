@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "release": "grunt release",
-    "build": "npm run build:forms-list && npm run build:subscriptions && npm run build:frontend-subscriptions && npm run build:ai-form-builder && npm run build:account && npm run build:user-directory && npm run build:blocks && npm run build:legacy && npm run build:css",
+    "build": "npm run build:css && npm run build:forms-list && npm run build:subscriptions && npm run build:frontend-subscriptions && npm run build:ai-form-builder && npm run build:account && npm run build:user-directory && npm run build:blocks && npm run build:legacy && npm run build:css",
     "build:blocks": "wp-scripts build --config webpack.config.js",
     "watch:blocks": "wp-scripts start --config webpack.config.js",
     "build:legacy": "grunt less && grunt concat && grunt uglify",

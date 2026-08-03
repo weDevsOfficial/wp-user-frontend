@@ -31,6 +31,22 @@ export const Selectors = {
             clickDokanSidebar: '//div[normalize-space(text())="Dokan"]',
             licenseTab: '//li[@id="toplevel_page_wp-user-frontend"]//ul//li[normalize-space()="License"]',
         },
+        // WPUF frontend [wpuf-login] shortcode (templates/login-form.php,
+        // lost-pass-form.php, logged-in.php — Lite Simple_Login)
+        frontendLogin: {
+            loginForm: '#wpuf-login-form form#loginform',
+            usernameField: '#wpuf-login-form input#wpuf-user_login',
+            passwordField: '#wpuf-login-form input#wpuf-user_pass',
+            rememberMeCheckbox: '#wpuf-login-form input#wpuf-rememberme',
+            submitButton: '#wpuf-login-form input#wp-submit',
+            lostPasswordLink: '#wpuf-login-form .wpuf-lost-password a',
+            errorNotice: 'div.wpuf-error',
+            messageNotice: 'div.wpuf-message',
+            loggedInView: 'div.wpuf-user-loggedin',
+            lostPasswordForm: '#wpuf-login-form form#lostpasswordform',
+            lostPasswordUserField: '#wpuf-login-form form#lostpasswordform input#wpuf-user_login',
+            lostPasswordSubmit: '#wpuf-login-form form#lostpasswordform input#wp-submit',
+        },
     },
 
     /*******************************************/
@@ -280,8 +296,25 @@ export const Selectors = {
             googleButton: '//span[normalize-space()="Google"]',
             inputAPIKey: '//input[@id="wpuf_ai_api_key_field"]',
             settingsTabAISave: '//div[@id="wpuf_ai"]//form[@method="post"]//div//input[@id="submit"]',
-        }
+        },
 
+        // Settings-persistence assertion locators (detected via Playwright MCP
+        // snapshot/evaluate). Target the real <input> by its bracketed id — WPUF
+        // renders a hidden input + a visible checkbox that share the same name,
+        // so a name-based selector would be ambiguous; the id (prefixed "wpuf-"
+        // for checkboxes/radios) is unique.
+        persistence: {
+            // General tab — Turnstile enable checkbox
+            turnstileEnableCheckbox: '//input[@id="wpuf-wpuf_general[enable_turnstile]"]',
+            // Payments tab — master enable + gateway toggles + PayPal sandbox mode
+            enablePaymentCheckbox: '//input[@id="wpuf-wpuf_payment[enable_payment]"]',
+            gatewayBankCheckbox: '//input[@id="wpuf-wpuf_payment[active_gateways][bank]"]',
+            gatewayStripeCheckbox: '//input[@id="wpuf-wpuf_payment[active_gateways][stripe]"]',
+            gatewayPaypalCheckbox: '//input[@id="wpuf-wpuf_payment[active_gateways][paypal]"]',
+            paypalSandboxCheckbox: '//input[@id="wpuf-wpuf_payment[sandbox_mode]"]',
+            // AI tab — active provider radio, keyed by provider slug (openai|google|anthropic)
+            aiProviderRadio: (provider: string) => `//input[@id="wpuf-wpuf_ai[ai_provider][${provider}]"]`,
+        },
     },
 
     /*********************************/
@@ -667,6 +700,9 @@ export const Selectors = {
                 operand2: '//span[@id="operand_two"]',
                 operator: '//span[@id="operator"]',
                 mathCaptcha: '(//label[contains(.,"Math Captcha *")]/following::input)[1]',
+                // Error container the WPUF submit handler fills when the captcha is
+                // unanswered/wrong (jQuery `.wpuf-captcha-error`). Used to prove enforcement.
+                error: '//*[contains(@class,"wpuf-captcha-error")]',
             },
             // Guest name
             guestName: '//input[@name="guest_name"]',
@@ -676,6 +712,20 @@ export const Selectors = {
             submitPostFormsFE: '//input[@name="submit"]',
             // Validate Post Submitted
             validatePostSubmitted: (postFormTitle: string) => `//h1[normalize-space(text())='${postFormTitle}']`,
+        },
+
+        // Frontend dashboard post management — account "Posts" tab
+        // (/account/?section=post). Locators detected via Playwright MCP. Rows
+        // are scoped by post title so a user owning multiple posts doesn't trip
+        // Playwright strict mode; the Options cell holds the Edit + Delete links.
+        dashboardManage: {
+            allPostTitles: '//td[@data-label="Title: "]//a',
+            postTitleCell: (title: string) => `//td[@data-label="Title: "]//a[normalize-space()="${title}"]`,
+            // The Options cell is a "⋮" dropdown — its trigger must be clicked
+            // to reveal the Edit/Delete menu items (they are display:none until then).
+            optionsMenuTrigger: (title: string) => `//tr[.//td[@data-label="Title: "]//a[normalize-space()="${title}"]]//button[contains(@class,"wpuf-posts-menu-button")]`,
+            editLinkForPost: (title: string) => `//tr[.//td[@data-label="Title: "]//a[normalize-space()="${title}"]]//td[@data-label="Options: "]//a[normalize-space()="Edit"]`,
+            deleteLinkForPost: (title: string) => `//tr[.//td[@data-label="Title: "]//a[normalize-space()="${title}"]]//td[@data-label="Options: "]//a[normalize-space()="Delete"]`,
         },
 
         productFrontendCreate: {
@@ -1448,6 +1498,19 @@ export const Selectors = {
             customFieldsStepStart: '//p[normalize-space(text())="Step Start"]',
             customFieldsText: '//p[normalize-space(text())="Text"]',
             customFieldsUrl: '//p[normalize-space(text())="Website URL"]',
+        },
+
+        // MailPoet email-marketing module + per-form subscription settings
+        mailPoet: {
+            // WPUF > Modules : the "Mailpoet 3" module card + its enable toggle
+            moduleCard: '.plugin-card:has(a[href*="modules/mailpoet3/"])',
+            moduleToggle: '.plugin-card:has(a[href*="modules/mailpoet3/"]) label.wpuf-toggle-switch',
+            moduleCheckbox: '.plugin-card:has(a[href*="modules/mailpoet3/"]) input.wpuf-toggle-module',
+            // Registration form builder > Settings > Modules > Mailpoet 3
+            settingsMenuItem: '//li[normalize-space()="Mailpoet 3"]',
+            enableToggle: 'label[for="enable_mailpoet_3"].wpuf-cursor-pointer',
+            enableCheckbox: '#enable_mailpoet_3',
+            listSelect: '#mailpoet_3_list',
         },
     },
 

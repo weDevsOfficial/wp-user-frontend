@@ -472,7 +472,7 @@ class Paypal {
         // Add rewrite rule for webhook endpoint
         add_rewrite_rule(
             '^webhook_triggered/?$',
-            'index.php?action=webhook_triggered=1',
+            'index.php?wpuf_paypal_action=webhook_triggered',
             'top'
         );
 
@@ -495,7 +495,18 @@ class Paypal {
      * Handle webhook request
      */
     public function handle_webhook_request() {
-        if ( 'action' === get_query_var( 'action' ) &&
+        // The saved webhook URL uses a plain `?action=webhook_triggered` query string, which
+        // WordPress never exposes as a query var, so read the superglobal as well as the
+        // rewritten `wpuf_paypal_action` var. The payload is authenticated below by
+        // verify_webhook_signature_from_input(), so no nonce applies to this endpoint.
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
+
+        if ( 'webhook_triggered' !== $action ) {
+            $action = get_query_var( 'wpuf_paypal_action' );
+        }
+
+        if ( 'webhook_triggered' === $action &&
             isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] &&
             isset( $_SERVER['HTTP_PAYPAL_TRANSMISSION_ID'] ) ) {
             $raw_input = file_get_contents( 'php://input' );
@@ -528,7 +539,11 @@ class Paypal {
 
                 $acknowledged = true;
             } catch ( \Exception $e ) {
-               throw new \Exception( 'Webhook processing failed: ' . esc_html( $e->getMessage() ) );
+                // Never re-throw here: an uncaught exception would return a 500 HTML page to
+                // PayPal instead of the acknowledgement below, and PayPal would keep retrying.
+                if ( defined( 'WPUF_DEBUG' ) && WPUF_DEBUG ) {
+                    error_log( 'WPUF Debug: PayPal webhook processing failed: ' . $e->getMessage() );
+                }
             }
 
             // Always acknowledge to PayPal
@@ -2504,33 +2519,6 @@ class Paypal {
     }
 }
 
-// Register webhook endpoint
-add_action(
-    'init', function () {
-		add_rewrite_rule(
-            '^webhook_triggered/?$',
-            'index.php?action=webhook_triggered=1',
-            'top'
-		);
-	}
-);
-
-// Add query var
-add_filter(
-    'query_vars', function ( $vars ) {
-		$vars[] = 'wpuf_paypal_action';
-		return $vars;
-	}
-);
-
-// Handle webhook request
-add_action(
-    'template_redirect', function () {
-		if ( get_query_var( 'action' ) === 'webhook_triggered' ) {
-			$paypal = new \WeDevs\Wpuf\Lib\Gateway\Paypal();
-			$raw_input = file_get_contents( 'php://input' );
-			$paypal->process_webhook( $raw_input );
-			exit;
-		}
-	}
-);
+// Webhook endpoint registration and handling live in Paypal::register_webhook_endpoint() and
+// Paypal::handle_webhook_request(), both hooked in the constructor. The duplicate registration
+// that used to sit here bypassed the signature check performed by handle_webhook_request().

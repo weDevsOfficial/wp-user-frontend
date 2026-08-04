@@ -77,7 +77,22 @@ export class Base {
     async navigateToURL(url: string) {
         try {
             await this.waitForLoading();
-            await this.page.goto(url);
+
+            try {
+                await this.page.goto(url);
+            } catch (error) {
+                // Chromium reports ERR_ABORTED when a still-settling page cancels
+                // the navigation (wp-admin redirects, a lingering unload handler).
+                // Nothing is wrong with the target — just ask for it again.
+                if (!String(error).includes('ERR_ABORTED')) {
+                    throw error;
+                }
+
+                console.log('\x1b[33m%s\x1b[0m', `↻ Navigation to ${url} aborted, retrying`);
+                await this.page.waitForTimeout(1000);
+                await this.page.goto(url);
+            }
+
             await this.waitForLoading();
             console.log('\x1b[34m%s\x1b[0m', `✅ Navigated to ${url}`);
             return true;
@@ -147,6 +162,24 @@ export class Base {
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to click on ${locator}: ${error}`);
             throw error;
+        }
+    }
+
+    /**
+     * Dismiss an open SweetAlert2 dialog, if any.
+     *
+     * The form builder pops "Oops... You already have this field in the form"
+     * when a field that is already on the form is clicked again. Its backdrop
+     * swallows every later click, so an undismissed dialog stalls the whole
+     * spec until the test times out. No-op when no dialog is showing.
+     */
+    async dismissBlockingModal() {
+        const confirm = this.page.locator('//div[contains(@class,"swal2-container")]//button[contains(@class,"swal2-confirm")]').first();
+
+        if (await confirm.isVisible().catch(() => false)) {
+            await confirm.click();
+            await this.page.locator('//div[contains(@class,"swal2-container")]').first()
+                .waitFor({ state: 'hidden' }).catch(() => {});
         }
     }
 

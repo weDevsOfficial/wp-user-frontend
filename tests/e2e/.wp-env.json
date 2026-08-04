@@ -1,8 +1,9 @@
 {
-  "phpVersion": "7.4",
+  "phpVersion": "8.2",
   "config": {
     "WP_MEMORY_LIMIT": "512M",
-    "WP_MAX_MEMORY_LIMIT": "512M"
+    "WP_MAX_MEMORY_LIMIT": "512M",
+    "DISABLE_WP_CRON": true
   },
   "plugins": [
     "../../",

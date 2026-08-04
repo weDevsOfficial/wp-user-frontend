@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config({ quiet: true });
 import { expect, type Page, type Dialog } from '@playwright/test';
 import { Selectors } from './selectors';
-import { Urls } from '../utils/testData';
+import { Urls, Users } from '../utils/testData';
 import { Base } from './base';
 import { waitForSiteReady } from '../utils/siteReady';
 export class SettingsSetupPage extends Base {
@@ -873,8 +873,20 @@ export class SettingsSetupPage extends Base {
         // instead of a fixed 20s sleep (same worst-case ceiling, faster when done).
         await this.page.waitForTimeout(3000);
         await waitForSiteReady(this.page, 60000);
+        // The reset rewrites the users table, so the admin cookie we came in with (and any
+        // cached `.auth/` session) is dead — every admin URL now bounces to wp-login.php.
+        // Log in again before touching the plugins screen. Imported lazily: basicLogin.ts
+        // imports this module, so a top-level import would be a cycle.
+        const { BasicLoginPage } = await import('./basicLogin');
+        await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
+        // The reset wipes the DB, so the next admin page load is the *first* one after
+        // (re)activation and plugins hijack it with a one-shot redirect — WPUF sends us to
+        // its setup wizard. A reload keeps us on the wizard URL; navigating again lands on
+        // plugins.php because the redirect transient is already consumed.
         await this.navigateToURL(this.pluginsPage);
-        await this.page.reload();
+        if (!this.page.url().includes('plugins.php')) {
+            await this.navigateToURL(this.pluginsPage);
+        }
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWCvendors);
 
 

@@ -817,7 +817,11 @@ export class FieldOptionSettingsPage extends Base {
         //Create Post
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.submitPostFormsFE);
         await this.page.waitForTimeout(2000);
-        await this.navigateToURL(this.postsPage);
+        // The publish-time post is backdated, and edit.php lists 20 rows sorted by
+        // date DESC — once the suite has created >20 posts the row falls onto page
+        // two and the assertion can never see it. Search for the exact title so the
+        // row is always on the page being asserted.
+        await this.navigateToURL(`${this.postsPage}?s=${encodeURIComponent(PostTitle)}`);
         await this.assertionValidate(Selectors.fieldOptionsSettings.fieldOptionsPanel.dateTimeOptions.validatePostPublishTime(PostTitle));
         console.log(`Publish time validated`);
     }

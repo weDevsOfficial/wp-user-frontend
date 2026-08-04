@@ -48,6 +48,16 @@ jobs:
   # feature's files together on one runner (post-* together, reg-* together) so
   # any intra-feature ordering/state stays intact — no cross-shard dependency.
   # workers:1 keeps files serial within a shard, so admin sessions never collide.
+  #
+  # Groups are balanced by TEST COUNT, not file count, so no single runner
+  # becomes the long pole (~65-105 tests each, 513 total excluding setup).
+  # Every group additionally pays the ~37-test setup project, so keep the count
+  # of groups sane — more groups means more repeated setup, not free speed.
+  #
+  # `extra_plugins` are mounted ON TOP of the base set (see the override step
+  # below). Only list a plugin for the group whose specs actually exercise it:
+  # every mapped plugin boots on every WP request, and MailPoet/EDD/WC-Vendors
+  # are pure overhead for a job that never touches them.
   e2e:
     name: e2e (${{ matrix.group }})
     if: github.repository != 'weDevsOfficial/wp-user-frontend' && github.repository != 'weDevsOfficial/wpuf-pro'
@@ -57,12 +67,31 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - group: post
-            files: tests/postFormTest.spec.ts tests/postFormSettingsTest.spec.ts
+          # 105 tests — the single biggest spec, runs alone.
+          - group: fields
+            files: tests/fieldOptionSettingsTest.spec.ts
+            extra_plugins: ''
+          # 94 tests — second biggest spec, also alone.
+          - group: post-settings
+            files: tests/postFormSettingsTest.spec.ts
+            extra_plugins: ''
+          # 93 tests. RF0009-RF0011 drive the WC Vendors / WCFM vendor forms and
+          # EM0001-EM0005 the MailPoet subscribe-on-registration path.
           - group: registration
             files: tests/regFormTestPro.spec.ts tests/regFormSettingsTestPro.spec.ts tests/frontendLoginTest.spec.ts tests/mailpoetRegistrationTestPro.spec.ts
-          - group: fields-subscription
-            files: tests/fieldOptionSettingsTest.spec.ts tests/subscriptionTest.spec.ts
+            extra_plugins: 'wc-vendors wc-multivendor-membership mailpoet'
+          # 82 tests. postFormTest submits to the EDD `download` post type.
+          - group: post-forms
+            files: tests/postFormTest.spec.ts tests/postFormDisplayAdvancedTest.spec.ts tests/postFormFieldBehaviourTest.spec.ts tests/postFormLifecycleTest.spec.ts tests/postFormGuestSetupTest.spec.ts tests/postFormSecurityTest.spec.ts
+            extra_plugins: 'easy-digital-downloads'
+          # 72 tests — form builder + every field type.
+          - group: form-editor
+            files: tests/formEditorTest.spec.ts tests/allFieldTypesTest.spec.ts
+            extra_plugins: ''
+          # 67 tests — subscriptions, pay-per-post, expiration, view control.
+          - group: monetization
+            files: tests/subscriptionTest.spec.ts tests/postFormPricingTestPro.spec.ts tests/postFormExpirationTestPro.spec.ts tests/postFormViewControlTestPro.spec.ts
+            extra_plugins: ''
 
     steps:
       # Setup PHP
@@ -183,6 +212,54 @@ jobs:
               # unzip the-events-calendar.latest-stable.zip
               # rm the-events-calendar.latest-stable.zip
 
+      # Per-group wp-env plugin set. Every mapped plugin boots on EVERY WordPress
+      # request, so a job that never touches MailPoet/EDD/WC-Vendors should not
+      # pay for loading them on all ~500 admin page loads.
+      #
+      # The base set is what the shared setup project (alphaSetupTest) needs and
+      # is therefore non-negotiable in every group:
+      #   - wp-user-frontend + wpuf-pro  : the plugins under test
+      #   - wp-mail-log                  : LS0069/PFS notification-email assertions
+      #   - dokan-lite                   : LS0030 activates it in setup
+      #   - woocommerce                  : dokan-lite hard-requires it
+      # `matrix.extra_plugins` adds the group-specific ones on top.
+      #
+      # wp-env's merge replaces the `plugins` array wholesale but Object.assign's
+      # the `config` object, so `.wp-env.json`'s phpVersion + WP_MEMORY_LIMIT +
+      # DISABLE_WP_CRON still apply. Local runs are untouched: this file is only
+      # written in CI and is gitignored.
+      - name: Write per-group wp-env plugin override
+        working-directory: tests/e2e
+        env:
+          EXTRA_PLUGINS: ${{ matrix.extra_plugins }}
+        run: |
+          node -e '
+            const fs = require( "fs" );
+            const base = [
+              "../../",
+              "../../plugins/wpuf-pro",
+              "../../plugins/wp-mail-log",
+              "../../plugins/woocommerce",
+              "../../plugins/dokan-lite",
+            ];
+            const extra = ( process.env.EXTRA_PLUGINS || "" )
+              .split( /\s+/ )
+              .filter( Boolean )
+              .map( ( name ) => "../../plugins/" + name );
+            const plugins = base.concat( extra );
+            for ( const p of plugins ) {
+              if ( ! fs.existsSync( p ) ) {
+                throw new Error( "wp-env plugin path missing: " + p );
+              }
+            }
+            fs.writeFileSync(
+              ".wp-env.override.json",
+              JSON.stringify( { plugins }, null, 2 ) + "\n"
+            );
+          '
+          echo "--- .wp-env.override.json (${{ matrix.group }}) ---"
+          cat .wp-env.override.json
+
       # Start wordpress environment
       - name: Start WordPress Env and Show URL
         id: wp-env
@@ -247,8 +324,10 @@ jobs:
           # the full suite (3x the work, past the 120-min budget with workers:1).
           npm run test:setup:ci
           npx playwright test --config=playwright.config.ts --project=e2e ${{ matrix.files }}
-          # REST layer is browserless and quick; run it once, in the post group.
-          if [ "${{ matrix.group }}" = "post" ]; then npm run test:api:ci; fi
+          # REST layer is browserless and quick; run it once, in the post-forms
+          # group. Must name a group that exists in the matrix above or the API
+          # suite silently never runs.
+          if [ "${{ matrix.group }}" = "post-forms" ]; then npm run test:api:ci; fi
         # continue-on-error: true
 
       # Upload this shard's blob report so the merge job can combine all shards

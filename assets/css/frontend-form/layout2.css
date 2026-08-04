@@ -68,7 +68,6 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
   box-shadow: none !important;
-  border: 0 !important;
   font-size: 14px;
   border: 1px solid var(--wpuf-l2-border) !important;
   border-radius: 5px !important;
@@ -410,7 +409,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 textarea,
 .wpuf-form-add.wpuf-form-layout2 select,
 .wpuf-form-add.wpuf-form-layout2 button {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* ==== Figma deep-sync (node 5527:36594) — exact navy palette & geometry ====

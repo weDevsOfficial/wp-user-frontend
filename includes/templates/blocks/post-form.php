@@ -219,45 +219,41 @@ if ( $form_id > 0 ) {
         $ms_active_txt = $block_config['ms_active_text_color'] ?: ( $form_settings_meta['ms_ac_txt_color'] ?? '#ffffff' );
         $ms_inactive   = $block_config['ms_inactive_bg_color'] ?: ( $form_settings_meta['ms_bgcolor'] ?? '#e4e4e4' );
 
-        // Step-by-step style: inactive step background + arrow
-        $css_rules["{$scope} .wpuf-multistep-progressbar ul.wpuf-step-wizard li"] = [
-            'background-color' => $ms_inactive . ' !important',
-            'background'       => $ms_inactive . ' !important',
+        // Step wizard (step-by-step): inactive step. The redesigned markup uses
+        // outlined circles and separate connector lines, so paint the circle
+        // border/number and the connector rather than a solid pill background.
+        $css_rules["{$scope} .wpuf-multistep-progressbar .wpuf-step-wizard .wpuf-step-item .wpuf-step-circle"] = [
+            'border-color' => $ms_inactive . ' !important',
+            'color'        => $ms_inactive . ' !important',
         ];
-        $css_rules["{$scope} .wpuf-multistep-progressbar ul.wpuf-step-wizard li::after"] = [
-            'border-left-color' => $ms_inactive . ' !important',
+        $css_rules["{$scope} .wpuf-multistep-progressbar .wpuf-step-wizard .wpuf-step-line"] = [
+            'background-color' => $ms_inactive . ' !important',
         ];
 
-        // Step-by-step style: active step background, text + arrow
-        $css_rules["{$scope} .wpuf-multistep-progressbar ul.wpuf-step-wizard li.active-step"] = [
+        // Step wizard (step-by-step): active step circle + completed connector.
+        $css_rules["{$scope} .wpuf-multistep-progressbar .wpuf-step-wizard .wpuf-step-item.active-step .wpuf-step-circle"] = [
             'background-color' => $ms_active_bg . ' !important',
+            'border-color'     => $ms_active_bg . ' !important',
             'color'            => $ms_active_txt . ' !important',
         ];
-        $css_rules["{$scope} .wpuf-multistep-progressbar ul.wpuf-step-wizard li.active-step::after"] = [
-            'border-left-color' => $ms_active_bg . ' !important',
+        $css_rules["{$scope} .wpuf-multistep-progressbar .wpuf-step-wizard .wpuf-step-line-active"] = [
+            'background-color' => $ms_active_bg . ' !important',
         ];
 
-        // Progressive style: bar track (inactive), filled portion (active), percentage text.
-        // Only apply background on .wpuf-multistep-progressbar for progressive type;
-        // step-by-step uses circles, not a filled track.
-        //
-        // Skip in editor preview — the preview injects its own static bar with an
-        // inline-styled track, so painting the outer wrapper would show through the
-        // preview's inner track and create a wrong-colored band.
+        // Progressive style: bar track (inactive) + filled portion (active).
+        // Skip the track in editor preview — the preview injects its own static bar
+        // with an inline-styled track, so painting it would show through the preview's
+        // inner track and create a wrong-colored band.
         $ms_progressbar_type = $form_settings_meta['multistep_progressbar_type'] ?? 'progressive';
 
         if ( 'progressive' === $ms_progressbar_type && ! $is_editor_preview ) {
-            $css_rules["{$scope} .wpuf-multistep-progressbar"] = [
+            $css_rules["{$scope} .wpuf-multistep-progressbar .wpuf-progressbar-track"] = [
                 'background-color' => $ms_inactive . ' !important',
-                'background'       => $ms_inactive . ' !important',
             ];
         }
 
-        $css_rules["{$scope} .wpuf-multistep-progressbar .ui-widget-header"] = [
-            'background' => $ms_active_bg . ' !important',
-        ];
-        $css_rules["{$scope} .wpuf-multistep-progressbar .wpuf-progress-percentage"] = [
-            'color' => $ms_active_txt . ' !important',
+        $css_rules["{$scope} .wpuf-multistep-progressbar .wpuf-progressbar-fill"] = [
+            'background-color' => $ms_active_bg . ' !important',
         ];
 
         // Prev / Next button styles

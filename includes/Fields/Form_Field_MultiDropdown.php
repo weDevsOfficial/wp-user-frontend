@@ -182,11 +182,10 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
      * @return void
      */
     private function enqueue_multiselect_assets() {
-        // Check if we're in the frontend
-        if ( ! is_admin() ) {
+        // Check if we're in the frontend. The custom-multiselect script and style
+        // are both registered by Pro, so only enqueue them when Pro is active.
+        if ( ! is_admin() && class_exists( 'WP_User_Frontend_Pro' ) ) {
             wp_enqueue_script( 'wpuf-custom-multiselect' );
-            // Widget styles (registered by Pro alongside the script) — no-op
-            // when Pro is inactive and the handle isn't registered.
             wp_enqueue_style( 'wpuf-custom-multiselect' );
         }
     }

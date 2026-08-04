@@ -530,8 +530,10 @@ class WPUF_Render_Form {
         </script>
         <?php
 
-        // Multistep form rendering is handled by the Pro plugin via the
-        // wpuf_form_fields_top action hook in Fields_Manager::step_start_form_top()
+        // Note: this legacy WPUF_Render_Form path does not emit the multistep
+        // progressbar markup or fire wpuf_form_fields_top. Multistep rendering runs
+        // through Frontend_Render_Form / class-frontend-render-form, where the Pro
+        // plugin hooks Fields_Manager::step_start_form_top() onto wpuf_form_fields_top.
 
         foreach ( $form_vars as $key => $form_field ) {
 

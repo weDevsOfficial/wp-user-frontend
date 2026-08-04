@@ -153,6 +153,10 @@ class Frontend {
                         'password_warning_weak'        => __( 'Your password should be at least weak in strength', 'wp-user-frontend' ),
                         'password_warning_medium'      => __( 'Your password needs to be medium strength for better protection', 'wp-user-frontend' ),
                         'password_warning_strong'      => __( 'Create a strong password for maximum security', 'wp-user-frontend' ),
+                        // translators: %step% is the step number
+                        'step_label'                   => __( 'Step %step%', 'wp-user-frontend' ),
+                        // translators: %step% is the current step number, %total% is the total number of steps
+                        'step_progress'                => __( 'Step %step% of %total%', 'wp-user-frontend' ),
                     ]
                 )
             );

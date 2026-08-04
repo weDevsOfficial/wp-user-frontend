@@ -233,12 +233,18 @@ class Frontend_Render_Form {
             $layout = isset( $this->form_settings['form_layout'] ) ? $this->form_settings['form_layout'] : 'layout1';
 
             if ( ! empty( $layout ) && 'on' !== $use_theme_css ) {
-                wp_enqueue_style( 'wpuf-post-form-' . $layout );
+                // Reuse the shared layout handle so WordPress dedupes it against the
+                // blanket enqueue in Frontend.php and Elementor's dequeue list covers it.
+                wp_enqueue_style( 'wpuf-' . $layout );
             }
         }
 
-        // Dark templates: the TinyMCE iframe loads only its own stylesheets,
-        // so the editor content area stays white unless we inject the palette.
+        // Dark templates: the TinyMCE iframe loads only its own stylesheets, so the
+        // editor content area stays white unless we inject the palette. Prepare the
+        // filter here but attach it only around this form's field render (below), so it
+        // never bleeds onto other editors on the page and never persists after render.
+        $wpuf_dark_editor_style = null;
+
         if ( 'on' !== $use_theme_css && in_array( $layout, [ 'layout2', 'layout5' ], true ) ) {
             $editor_bg = 'layout2' === $layout ? '#222C3C' : '#394141';
 
@@ -251,11 +257,6 @@ class Frontend_Render_Form {
 
                 return $mce_init;
             };
-
-            // Post Content renders as a teeny editor by default, which runs
-            // teeny_mce_before_init instead of tiny_mce_before_init.
-            add_filter( 'tiny_mce_before_init', $wpuf_dark_editor_style );
-            add_filter( 'teeny_mce_before_init', $wpuf_dark_editor_style );
         }
 
         if ( ! is_user_logged_in() && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' !== $this->form_settings['post_permission'] ) ) {
@@ -336,7 +337,20 @@ class Frontend_Render_Form {
 
                     $this->render_featured_field( $post_id );
 
+                    // Post Content renders as a teeny editor by default, which runs
+                    // teeny_mce_before_init instead of tiny_mce_before_init. Scope the
+                    // dark-editor palette to this form's fields only, then detach it.
+                    if ( $wpuf_dark_editor_style ) {
+                        add_filter( 'tiny_mce_before_init', $wpuf_dark_editor_style );
+                        add_filter( 'teeny_mce_before_init', $wpuf_dark_editor_style );
+                    }
+
                     wpuf()->fields->render_fields( $this->form_fields, $form_id, $atts, $type = 'post', $post_id );
+
+                    if ( $wpuf_dark_editor_style ) {
+                        remove_filter( 'tiny_mce_before_init', $wpuf_dark_editor_style );
+                        remove_filter( 'teeny_mce_before_init', $wpuf_dark_editor_style );
+                    }
 
                     $this->submit_button( $form_id, $this->form_settings, $post_id );
 

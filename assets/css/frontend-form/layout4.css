@@ -398,7 +398,8 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
 }
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-label,
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-label label {
-    color: #3CA6B4;
+    /* Darkened from #3CA6B4 (2.8:1) to meet WCAG AA 4.5:1 for label text on white. */
+    color: #1F7A86;
     font-size: 18px;
     font-weight: 500;
     line-height: 32px;

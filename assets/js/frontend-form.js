@@ -184,8 +184,13 @@
             if ( progressbar_type == 'progressive' && $('.wpuf-form .wpuf-multistep-fieldset').length != 0 ) {
 
                 var totalSteps = $('fieldset.wpuf-multistep-fieldset').length;
+                // Prefer the author-typed step title (legend); fall back to a translatable "Step 1 of N".
+                var firstLegend = $.trim( $('fieldset.wpuf-multistep-fieldset').first().find('legend').text() );
+                var firstStepText = ( typeof wpuf_frontend !== 'undefined' && wpuf_frontend.step_progress )
+                    ? wpuf_frontend.step_progress.replace( '%step%', 1 ).replace( '%total%', totalSteps )
+                    : 'Step 1 of ' + totalSteps;
                 var barHtml = '<div class="wpuf-progressbar-header">';
-                barHtml += '<span class="wpuf-progressbar-step-text">Step 1 of ' + totalSteps + '</span>';
+                barHtml += '<span class="wpuf-progressbar-step-text">' + ( firstLegend ? $('<div>').text( firstLegend ).html() : firstStepText ) + '</span>';
                 barHtml += '<span class="wpuf-progressbar-percent">0%</span>';
                 barHtml += '</div>';
                 barHtml += '<div class="wpuf-progressbar-track">';
@@ -206,9 +211,15 @@
                         var stepNum = index + 1;
                         var isLast = ( stepNum === stepCount );
 
+                        // Prefer the author-typed step title (legend); fall back to a translatable "Step N".
+                        var legendText = $.trim( $('legend', this).text() );
+                        var stepLabel = ( typeof wpuf_frontend !== 'undefined' && wpuf_frontend.step_label )
+                            ? wpuf_frontend.step_label.replace( '%step%', stepNum )
+                            : 'Step ' + stepNum;
+
                         nav += '<div class="wpuf-step-item' + ( index === 0 ? ' active-step' : '' ) + '" data-step="' + index + '">';
                         nav += '<div class="wpuf-step-circle">' + stepNum + '</div>';
-                        nav += '<div class="wpuf-step-label">Step ' + stepNum + '</div>';
+                        nav += '<div class="wpuf-step-label">' + ( legendText ? $('<div>').text( legendText ).html() : stepLabel ) + '</div>';
                         nav += '</div>';
 
                         if ( ! isLast ) {
@@ -289,7 +300,12 @@
                 var totalSteps = $('fieldset.wpuf-multistep-fieldset').length;
                 var progressPercent = Math.round( ( step_number + 1 ) * 100 / totalSteps );
 
-                $( '.wpuf-progressbar-step-text' ).text( 'Step ' + ( step_number + 1 ) + ' of ' + totalSteps );
+                var stepProgressText = ( typeof wpuf_frontend !== 'undefined' && wpuf_frontend.step_progress )
+                    ? wpuf_frontend.step_progress.replace( '%step%', ( step_number + 1 ) ).replace( '%total%', totalSteps )
+                    : 'Step ' + ( step_number + 1 ) + ' of ' + totalSteps;
+
+                // Prefer the author-typed step title (legend) when present.
+                $( '.wpuf-progressbar-step-text' ).text( legend ? legend : stepProgressText );
                 $( '.wpuf-progressbar-percent' ).text( progressPercent + '%' );
                 $( '.wpuf-progressbar-fill' ).css( 'width', progressPercent + '%' );
             }

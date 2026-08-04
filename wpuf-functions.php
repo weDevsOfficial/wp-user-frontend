@@ -6127,9 +6127,10 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                     ),
                     'fields' => [
                         'form_layout'    => [
-                            'label'   => __( 'Choose Form Style', 'wp-user-frontend' ),
-                            'type'    => 'pic-radio',
-                            'options' => [
+                            'label'     => __( 'Choose Form Style', 'wp-user-frontend' ),
+                            'type'      => 'pic-radio',
+                            'help_text' => __( 'Pick a form template to control the overall layout and visual style of your form.', 'wp-user-frontend' ),
+                            'options'   => [
                                 'layout1' => [
                                     'label' => __( 'Template 1', 'wp-user-frontend' ),
                                     'image' => WPUF_ASSET_URI . '/images/forms/layout1.png',

@@ -423,6 +423,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   --wpuf-l2-primary: #3B82F6;
   --wpuf-l2-help: #4A5971;
   --wpuf-l2-accent: #3B82F6;
+
   padding: 40px !important;
   border-radius: 20px !important;
 }

@@ -776,6 +776,7 @@
     color: #4B5563 !important;
     border-radius: 6px;
     max-height: 220px;
+    overflow-y: auto;
 }
 .wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .iti__country-list li,
 .wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .iti__country-list li.iti__country {

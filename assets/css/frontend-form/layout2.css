@@ -1003,6 +1003,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
     color: #FFFFFF !important;
     border-radius: 6px;
     max-height: 220px;
+    overflow-y: auto;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .iti__country-list li,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .iti__country-list li.iti__country {

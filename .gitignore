@@ -73,6 +73,20 @@ assets/css/elementor-frontend-forms.css
 assets/css/frontend-forms.css
 assets/css/registration-forms.css
 assets/css/wpuf-form-builder.css
+# vite / tailwind generated CSS (bare .min.css is not caught by *.min.css.*)
+assets/css/account.min.css
+assets/css/admin/form-builder.css
+assets/css/admin/subscriptions.min.css
+assets/css/ai-form-builder.css
+assets/css/ai-form-builder.min.css
+assets/css/forms-list.min.css
+assets/css/frontend-subscriptions.min.css
+assets/css/frontend/account.css
+# user-directory React bundle (built by npm run build:user-directory)
+assets/js/wpuf-user-directory-free.asset.php
+assets/js/wpuf-user-directory-free.js
+assets/js/wpuf-user-directory-free.js.LICENSE.txt
+assets/js/wpuf-user-directory-free.js.map
 languages/wp-user-frontend.pot
 
 # OpenSpec change proposals (local spec artifacts)

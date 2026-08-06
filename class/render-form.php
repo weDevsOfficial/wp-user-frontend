@@ -530,52 +530,10 @@ class WPUF_Render_Form {
         </script>
         <?php
 
-        //through var, we will know if multiform step started already
-        //$multiform_start = 0;
-
-        //if multistep form is enabled
-        if ( isset( $form_settings['enable_multistep'] ) && $form_settings['enable_multistep'] == 'yes' ) {
-            $ms_ac_txt_color   = isset( $form_settings['ms_ac_txt_color'] ) ? $form_settings['ms_ac_txt_color'] : '#ffffff';
-            $ms_active_bgcolor = isset( $form_settings['ms_active_bgcolor'] ) ? $form_settings['ms_active_bgcolor'] : '#00a0d2';
-            $ms_bgcolor        = isset( $form_settings['ms_bgcolor'] ) ? $form_settings['ms_bgcolor'] : '#E4E4E4'; ?>
-            <style type="text/css">
-                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li,
-                .wpuf-form .wpuf-multistep-progressbar.ui-progressbar {
-                    background-color:  <?php echo esc_html( $ms_bgcolor ); ?>;
-                    background:  <?php echo esc_html( $ms_bgcolor ); ?>;
-                }
-                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li::after{
-                    border-left-color: <?php echo esc_html( $ms_bgcolor ); ?>;
-                }
-                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li.active-step,
-                .wpuf-form .wpuf-multistep-progressbar .ui-widget-header{
-                    color: <?php echo esc_html( $ms_ac_txt_color ); ?>;
-                    background-color:  <?php echo esc_html( $ms_active_bgcolor ); ?>;
-                }
-                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li.active-step::after {
-                    border-left-color: <?php echo esc_html( $ms_active_bgcolor ); ?>;
-                }
-                .wpuf-form .wpuf-multistep-progressbar.ui-progressbar .wpuf-progress-percentage{
-                    color: <?php echo esc_html( $ms_ac_txt_color ); ?>;
-                }
-            </style>
-            <input type="hidden" name="wpuf_multistep_type" value="<?php echo esc_attr( $form_settings['multistep_progressbar_type'] ); ?>"/>
-            <?php
-            if ( $form_settings['multistep_progressbar_type'] == 'step_by_step' ) {
-                ?>
-                <!--wpuf-multistep-progressbar-> wpuf_ms_pb-->
-                <div class="wpuf-multistep-progressbar">
-
-                </div>
-            <?php
-            } else {
-                ?>
-                <div class="wpuf-multistep-progressbar">
-
-                </div>
-            <?php
-            }
-        }
+        // Note: this legacy WPUF_Render_Form path does not emit the multistep
+        // progressbar markup or fire wpuf_form_fields_top. Multistep rendering runs
+        // through Frontend_Render_Form / class-frontend-render-form, where the Pro
+        // plugin hooks Fields_Manager::step_start_form_top() onto wpuf_form_fields_top.
 
         foreach ( $form_vars as $key => $form_field ) {
 

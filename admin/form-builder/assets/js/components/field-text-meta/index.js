@@ -13,6 +13,14 @@ Vue.component('field-text-meta', {
             },
 
             set: function (value) {
+                // Meta keys must be valid identifiers: lowercase, no spaces or
+                // special characters (mirrors the auto-generated key). Prevents
+                // invalid keys like "radio button" that break the field wrapper
+                // CSS class and the input id / label "for" association.
+                if ('string' === typeof value) {
+                    value = value.replace(/\W/g, '_').toLowerCase();
+                }
+
                 this.update_value(this.option_field.name, value);
             }
         }

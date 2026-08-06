@@ -131,6 +131,25 @@ export class SettingsSetupPage extends Base {
         }
     }
 
+    /**
+     * The WPUF pages, each with the admin-list locator that identifies ITS row.
+     *
+     * Titles alone are ambiguous — Dokan ships its own "Dashboard" page, so
+     * WPUF's is created as `dashboard-2`. Every locator below therefore pins the
+     * row by the post-state badge WPUF adds ("— WPUF Dashboard Page"), or by an
+     * exact row title where WPUF owns the name outright.
+     */
+    private readonly wpufPages: Array<[string, string]> = [
+        ['Account', Selectors.settingsSetup.wpufPages.wpufAccountPage],
+        ['Dashboard', Selectors.settingsSetup.wpufPages.wpufDashboardPage],
+        ['Edit', Selectors.settingsSetup.wpufPages.wpufEditPage],
+        ['Login', Selectors.settingsSetup.wpufPages.wpufLoginPage],
+        ['Subscription', Selectors.settingsSetup.wpufPages.wpufSubscriptionPage],
+        ['Order Received', Selectors.settingsSetup.wpufPages.orderReceivedPage],
+        ['Payment', Selectors.settingsSetup.wpufPages.paymentPage],
+        ['Thank You', Selectors.settingsSetup.wpufPages.thankYouPage],
+    ];
+
     async validateWPUFpages() {
         // The Pages list paginates at 20 rows and WP takes that number from the
         // per-user screen option only (`wp_edit_posts_query()` ignores any
@@ -140,42 +159,55 @@ export class SettingsSetupPage extends Base {
         // CI: 4 groups have no second page at all, and the group that does has
         // the WPUF pages spread differently. Search for each page by title so
         // the assertion holds whatever else is installed.
-        const wpufPages: Array<[string, string]> = [
-            ['Account', Selectors.settingsSetup.wpufPages.wpufAccountPage],
-            ['Dashboard', Selectors.settingsSetup.wpufPages.wpufDashboardPage],
-            ['Edit', Selectors.settingsSetup.wpufPages.wpufEditPage],
-            ['Login', Selectors.settingsSetup.wpufPages.wpufLoginPage],
-            ['Subscription', Selectors.settingsSetup.wpufPages.wpufSubscriptionPage],
-            ['Order Received', Selectors.settingsSetup.wpufPages.orderReceivedPage],
-            ['Payment', Selectors.settingsSetup.wpufPages.paymentPage],
-            ['Thank You', Selectors.settingsSetup.wpufPages.thankYouPage],
-        ];
-
-        for (const [title, locator] of wpufPages) {
-            await this.navigateToURL(`${this.pagesPage}&s=${encodeURIComponent(title)}`);
+        for (const [title, locator] of this.wpufPages) {
+            await this.navigateToURL(this.pagesSearch(title));
             await this.assertionValidate(locator);
         }
 
         console.log('WPUF Pages are validated. all pages created successfully');
     }
 
-    async validateWPUFpagesFE() {
-        //Go to FrontEnd
-        await this.navigateToURL(Urls.baseUrl);
+    private pagesSearch(title: string) {
+        return `${this.pagesPage}&s=${encodeURIComponent(title)}`;
+    }
 
-        // Titles in the front-end page list are NOT unique across plugin sets:
-        // Dokan also ships a "Dashboard" page, so WPUF's becomes `dashboard-2`
-        // and a plain locator hits a strict-mode violation on two matches.
-        // `validateAndClickAny` takes the first visible match (and still throws
-        // when there is none), which is what this smoke check wants.
-        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
-        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.dashboardPageFE);
-        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.editPageFE);
-        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.loginPageFE);
-        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.subscriptionPageFE);
-        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.orderReceivedPageFE);
-        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.thankYouPageFE);
-        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.paymentPageFE);
+    /**
+     * Resolve a WPUF page's front-end URL through its admin row.
+     *
+     * Returns a `?page_id=N` link, which resolves whatever the slug ended up
+     * being — WPUF's own pages get `-2` suffixes whenever another plugin claimed
+     * the name first, and that differs per environment.
+     */
+    private async wpufPageUrl(title: string, rowLocator: string) {
+        await this.navigateToURL(this.pagesSearch(title));
+
+        const editHref = await this.page
+            .locator(`${rowLocator}/ancestor::tr[1]//a[contains(@class,"row-title")]`)
+            .first()
+            .getAttribute('href');
+        const postId = new URL(editHref, Urls.baseUrl).searchParams.get('post');
+
+        if (!postId) {
+            throw new Error(`Could not resolve the page ID for the WPUF "${title}" page from ${editHref}`);
+        }
+
+        return `${Urls.baseUrl}/?page_id=${postId}`;
+    }
+
+    async validateWPUFpagesFE() {
+        // Do NOT reach these pages by clicking the theme's page-list nav. That
+        // list is keyed on titles, and titles are not unique: Dokan ships its
+        // own "Dashboard" page, so clicking "Dashboard" lands on the Dokan
+        // vendor dashboard, which renders no page-list nav at all and strands
+        // every later link. Resolve each WPUF page by ID from its admin row and
+        // visit it directly.
+        for (const [title, rowLocator] of this.wpufPages) {
+            const url = await this.wpufPageUrl(title, rowLocator);
+
+            await this.navigateToURL(url);
+            await expect(this.page.locator('body')).not.toHaveClass(/error404/);
+            console.log('\x1b[34m%s\x1b[0m', `✅ WPUF "${title}" page renders at ${url}`);
+        }
     }
 
     async validateAccountPageTabs() {

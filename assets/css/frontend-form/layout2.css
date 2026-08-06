@@ -1178,3 +1178,7 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block::before {
   content: none !important;
 }
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-pricing-checkbox-item::before,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-pricing-checkbox-item::after {
+  content: none !important;
+}

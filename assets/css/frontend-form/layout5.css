@@ -1118,7 +1118,7 @@ ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout5 .wpuf-form-description { margin: 0 0 32px !important; }
 
 /* Form list must not clip dropdowns / popups (multiselect panel, etc.) */
-.wpuf-form-add.wpuf-form-layout5 ul {
+.wpuf-form-add.wpuf-form-layout5 ul.wpuf-form {
     overflow: initial !important;
 }
 

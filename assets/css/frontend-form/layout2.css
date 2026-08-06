@@ -1130,3 +1130,51 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
 .wpuf-form-add.wpuf-form-layout2 .wpuf-progressbar-header {
   color: #ffffff !important;
 }
+
+/* ============================================================
+   CHECKBOX — authoritative dark-template rendering.
+   Supersedes the earlier conflicting rules that left the input at
+   opacity:0 with a circular, near-invisible pseudo box. The input itself
+   is the visible square control, so clicking it toggles natively.
+   ============================================================ */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+  opacity: 1 !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  width: 18px !important;
+  height: 18px !important;
+  position: relative !important;
+  border: 1px solid #9CABC3 !important;
+  border-radius: 4px !important;
+  background: transparent !important;
+  cursor: pointer;
+  flex: none;
+  vertical-align: middle;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
+  content: none !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:after {
+  content: '' !important;
+  opacity: 0;
+  width: 10px !important;
+  height: 8px !important;
+  border: none !important;
+  background: transparent no-repeat center / contain !important;
+  background-image: url("data:image/svg+xml,%3Csvg width='9' height='7' viewBox='0 0 9 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.06186 0.278861C8.23568 0.45747 8.33333 0.699683 8.33333 0.952236C8.33333 1.20479 8.23568 1.447 8.06186 1.62561L3.42579 6.3878C3.25191 6.56636 3.01611 6.66667 2.77025 6.66667C2.52438 6.66667 2.28859 6.66636 2.11471 6.3878L0.26028 4.48293C0.0913804 4.3033 -0.00207753 4.06271 3.50511e-05 3.81298C0.00214763 3.56325 0.0996617 3.32437 0.271575 3.14778C0.443488 2.97119 0.676044 2.87102 0.919157 2.86885C1.16227 2.86668 1.39649 2.96268 1.57136 3.13618L2.77025 4.36768L6.75078 0.278861C6.92466 0.100307 7.16045 0 7.40632 0C7.65218 0 7.88798 0.100307 8.06186 0.278861Z' fill='white'/%3E%3C/svg%3E") !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked {
+  background: #379EFF !important;
+  border-color: #379EFF !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:after {
+  opacity: 1 !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block::after,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block::before {
+  content: none !important;
+}

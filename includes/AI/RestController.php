@@ -1094,7 +1094,7 @@ class RestController extends WP_REST_Controller {
                 // Reject a field whose input_type does not match its template
                 // (the AI form-builder object-injection primitive).
                 if ( ! $this->is_valid_field_definition( $field ) ) {
-                    wp_delete_post( $form_id, true );
+                    $this->delete_ai_form_and_field_posts( $form_id );
 
                     return new WP_Error(
                         'invalid_field_definition',
@@ -1119,7 +1119,7 @@ class RestController extends WP_REST_Controller {
 
                 if (is_wp_error($field_id)) {
                     // Clean up previously created fields and the form post
-                    wp_delete_post($form_id, true);
+                    $this->delete_ai_form_and_field_posts( $form_id );
                     return new WP_Error(
                         'field_creation_failed',
                         sprintf(__('Failed to create field at position %d: %s', 'wp-user-frontend'), $order, $field_id->get_error_message()),
@@ -1648,12 +1648,6 @@ class RestController extends WP_REST_Controller {
     }
 
     /**
-     * Update form field child posts
-     *
-     * @param int $form_id Form ID
-     * @param array $fields Updated fields
-     */
-    /**
      * Build the allowed "template => input_type" map from the field registry.
      *
      * Derived from the canonical registry (free + pro via the `wpuf_form_fields`
@@ -1716,6 +1710,43 @@ class RestController extends WP_REST_Controller {
         return $allowed[ $template ] === $field['input_type'];
     }
 
+    /**
+     * Delete an AI-created form along with any field child posts already inserted.
+     *
+     * wp_delete_post() does not cascade to children for non-hierarchical post
+     * types, so remove the wpuf_input children explicitly before the form itself
+     * to avoid orphaned field posts when an AI form build is rejected or fails.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $form_id Form ID.
+     *
+     * @return void
+     */
+    private function delete_ai_form_and_field_posts( $form_id ) {
+        $field_ids = get_posts(
+            [
+                'post_type'      => 'wpuf_input',
+                'post_parent'    => $form_id,
+                'posts_per_page' => -1,
+                'post_status'    => 'any',
+                'fields'         => 'ids',
+            ]
+        );
+
+        foreach ( $field_ids as $field_id ) {
+            wp_delete_post( $field_id, true );
+        }
+
+        wp_delete_post( $form_id, true );
+    }
+
+    /**
+     * Update form field child posts
+     *
+     * @param int $form_id Form ID
+     * @param array $fields Updated fields
+     */
     private function update_form_field_posts($form_id, $fields) {
         // Drop any field whose template/input_type pairing is invalid before saving,
         // so a mismatched (object-injection) definition can never be persisted.

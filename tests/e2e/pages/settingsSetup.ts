@@ -132,18 +132,30 @@ export class SettingsSetupPage extends Base {
     }
 
     async validateWPUFpages() {
-        await this.navigateToURL(this.pagesPage);
+        // The Pages list paginates at 20 rows and WP takes that number from the
+        // per-user screen option only (`wp_edit_posts_query()` ignores any
+        // per-page URL arg), so which list page a WPUF page lands on depends on
+        // how many pages the mounted plugins created — which differs per CI
+        // group. Paging with "Next page" therefore passes locally and breaks in
+        // CI: 4 groups have no second page at all, and the group that does has
+        // the WPUF pages spread differently. Search for each page by title so
+        // the assertion holds whatever else is installed.
+        const wpufPages: Array<[string, string]> = [
+            ['Account', Selectors.settingsSetup.wpufPages.wpufAccountPage],
+            ['Dashboard', Selectors.settingsSetup.wpufPages.wpufDashboardPage],
+            ['Edit', Selectors.settingsSetup.wpufPages.wpufEditPage],
+            ['Login', Selectors.settingsSetup.wpufPages.wpufLoginPage],
+            ['Subscription', Selectors.settingsSetup.wpufPages.wpufSubscriptionPage],
+            ['Order Received', Selectors.settingsSetup.wpufPages.orderReceivedPage],
+            ['Payment', Selectors.settingsSetup.wpufPages.paymentPage],
+            ['Thank You', Selectors.settingsSetup.wpufPages.thankYouPage],
+        ];
 
-        //Validate WPUF Pages
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufAccountPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufDashboardPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufEditPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufLoginPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.orderReceivedPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.paymentPage);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPages.clickNextPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufSubscriptionPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.thankYouPage);
+        for (const [title, locator] of wpufPages) {
+            await this.navigateToURL(`${this.pagesPage}&s=${encodeURIComponent(title)}`);
+            await this.assertionValidate(locator);
+        }
+
         console.log('WPUF Pages are validated. all pages created successfully');
     }
 
@@ -151,22 +163,26 @@ export class SettingsSetupPage extends Base {
         //Go to FrontEnd
         await this.navigateToURL(Urls.baseUrl);
 
-        //Validate WPUF Pages
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.dashboardPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.editPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.loginPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.subscriptionPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.orderReceivedPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.thankYouPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.paymentPageFE);
+        // Titles in the front-end page list are NOT unique across plugin sets:
+        // Dokan also ships a "Dashboard" page, so WPUF's becomes `dashboard-2`
+        // and a plain locator hits a strict-mode violation on two matches.
+        // `validateAndClickAny` takes the first visible match (and still throws
+        // when there is none), which is what this smoke check wants.
+        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
+        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.dashboardPageFE);
+        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.editPageFE);
+        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.loginPageFE);
+        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.subscriptionPageFE);
+        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.orderReceivedPageFE);
+        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.thankYouPageFE);
+        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.paymentPageFE);
     }
 
     async validateAccountPageTabs() {
 
         await this.navigateToURL(Urls.baseUrl);
 
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
+        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.dashboardTab);
         await this.assertionValidate(Selectors.settingsSetup.accountPageTabs.viewDashboardPara);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.postsTab);

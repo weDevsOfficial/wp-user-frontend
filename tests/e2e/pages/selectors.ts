@@ -107,7 +107,6 @@ export const Selectors = {
             orderReceivedPage: '//strong//a[normalize-space()="Order Received"]',
             thankYouPage: '//strong//a[normalize-space()="Thank You"]',
             paymentPage: '//strong//a[normalize-space()="Payment"]',
-            clickNextPage: '(//span[text()="Next page"]/following-sibling::span)[2]',
         },
 
         wpufPagesFE: {

@@ -94,11 +94,48 @@ export class Base {
             }
 
             await this.waitForLoading();
+
+            await this.skipHijackingSetupWizard(url);
+
             console.log('\x1b[34m%s\x1b[0m', `✅ Navigated to ${url}`);
             return true;
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to navigate to ${url}: ${error}`);
             throw error;
+        }
+    }
+
+    /**
+     * Re-request `url` when a plugin's one-shot welcome wizard stole it.
+     *
+     * WPUF (and Dokan, and WooCommerce) redirect the FIRST admin page load after
+     * activation to their setup wizard — WPUF via the `wpuf_activation_redirect`
+     * transient (`Setup_Wizard::redirect_to_page`). Which navigation eats that
+     * redirect is a race: on a long-lived local site the transients were spent
+     * long ago, but in CI the plugins are activated at wp-env boot, so the first
+     * admin request in the run gets hijacked — and a chain of them lands on
+     * `page=dokan-setup` and then `page=wpuf-setup`. The wizards render full
+     * screen with no admin menu, so the victim test waits for a locator that can
+     * never appear.
+     *
+     * Each redirect deletes its own transient, so simply asking again gets us
+     * where we wanted. Loop, because one navigation can only burn one wizard.
+     * Never bounce a test that asked for a wizard on purpose (LS0006).
+     */
+    private async skipHijackingSetupWizard(url: string) {
+        const wizards = ['page=wpuf-setup', 'page=dokan-setup', 'page=wc-setup', 'path=/setup-wizard'];
+
+        for (let attempt = 0; attempt < wizards.length; attempt++) {
+            const landed = this.page.url();
+            const hijacked = wizards.some((wizard) => landed.includes(wizard) && !url.includes(wizard));
+
+            if (!hijacked) {
+                return;
+            }
+
+            console.log('\x1b[33m%s\x1b[0m', `↻ Setup wizard (${landed}) stole the navigation, retrying ${url}`);
+            await this.page.goto(url);
+            await this.waitForLoading();
         }
     }
 

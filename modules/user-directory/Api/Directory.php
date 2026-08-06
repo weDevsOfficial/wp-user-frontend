@@ -513,22 +513,29 @@ class Directory extends WP_REST_Controller {
         $avatar_size  = ! empty( $request['avatar_size'] ) ? absint( $request['avatar_size'] ) : 128;
         $base_url     = ! empty( $request['base_url'] ) ? esc_url_raw( $request['base_url'] ) : '';
 
-        // Get directory settings
-        $settings = [];
-        if ( $directory_id ) {
-            $post = get_post( $directory_id );
-            if ( $post && User_Directory::POST_TYPE === $post->post_type && 'publish' === $post->post_status ) {
-                $settings = json_decode( $post->post_content, true ) ?: [];
-            } elseif ( $post && 'publish' !== $post->post_status ) {
-                return new WP_Error(
-                    'directory_not_published',
-                    __( 'Directory is not available.', 'wp-user-frontend' ),
-                    [ 'status' => 403 ]
-                );
-            }
+        // A published directory is required. Without it this public endpoint would
+        // enumerate every registered user (including admins), so refuse the request
+        // when no valid, published directory is supplied.
+        if ( ! $directory_id ) {
+            return new WP_Error(
+                'directory_required',
+                __( 'A valid directory is required.', 'wp-user-frontend' ),
+                [ 'status' => 400 ]
+            );
         }
 
-        // Merge with defaults
+        $post = get_post( $directory_id );
+
+        if ( ! $post || User_Directory::POST_TYPE !== $post->post_type || 'publish' !== $post->post_status ) {
+            return new WP_Error(
+                'directory_not_available',
+                __( 'Directory is not available.', 'wp-user-frontend' ),
+                [ 'status' => 404 ]
+            );
+        }
+
+        // Get directory settings, merged with defaults
+        $settings = json_decode( $post->post_content, true ) ?: [];
         $settings = wp_parse_args( $settings, User_Directory::get_default_settings() );
 
         // Build user query args - check users_per_page first (admin setting), then per_page

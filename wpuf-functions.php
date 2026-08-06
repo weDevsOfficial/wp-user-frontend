@@ -950,6 +950,37 @@ function wpuf_get_gateways( $context = 'admin' ) {
 }
 
 /**
+ * Unserialize a value without ever instantiating PHP objects.
+ *
+ * Stored post meta may hold a serialized object payload (e.g. submitted through a
+ * form field). Passing it to maybe_unserialize() would instantiate arbitrary
+ * classes, enabling PHP object injection. This restricts deserialization to plain
+ * data and strips any object, so a serialized-object payload can never be revived.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param mixed $value Possibly-serialized value.
+ *
+ * @return mixed Unserialized data with objects removed, or the original value.
+ */
+function wpuf_safe_unserialize( $value ) {
+    if ( ! is_string( $value ) || ! is_serialized( $value ) ) {
+        return $value;
+    }
+
+    if ( PHP_VERSION_ID >= 70000 ) {
+        return @unserialize( $value, [ 'allowed_classes' => false ] );
+    }
+
+    // PHP 5.6 fallback: refuse anything carrying an object marker (O:/C:).
+    if ( preg_match( '/(?:^|;|\{)[OC]:[0-9]+:/', $value ) ) {
+        return $value;
+    }
+
+    return maybe_unserialize( $value );
+}
+
+/**
  * Show custom fields in post content area
  *
  * @since 3.3.0 Introducing `render_field_data` to render field value
@@ -1107,7 +1138,7 @@ function wpuf_show_custom_fields( $content ) {
 
                     if ( $field_value ) {
                         if ( is_serialized( $field_value[0] ) ) {
-                            $field_value = maybe_unserialize( $field_value[0] );
+                            $field_value = wpuf_safe_unserialize( $field_value[0] );
                         }
 
                         if ( is_array( $field_value[0] ) ) {
@@ -1265,7 +1296,7 @@ function wpuf_show_custom_fields( $content ) {
 
                     // Unserialize if needed
                     if ( is_serialized( $repeat_data ) ) {
-                        $repeat_data = maybe_unserialize( $repeat_data );
+                        $repeat_data = wpuf_safe_unserialize( $repeat_data );
                     }
 
                     if ( ! is_array( $repeat_data ) ) {
@@ -1406,8 +1437,8 @@ function wpuf_show_custom_fields( $content ) {
                     if ( ! empty( $filter_html ) ) {
                         $html .= $filter_html;
                     } elseif ( is_serialized( $value[0] ) ) {
-                        $new            = maybe_unserialize( $value[0] );
-                        $modified_value = implode( $separator, $new );
+                        $new            = wpuf_safe_unserialize( $value[0] );
+                        $modified_value = is_array( $new ) ? implode( $separator, $new ) : '';
 
                         if ( $modified_value ) {
                             $html .= '<li>';

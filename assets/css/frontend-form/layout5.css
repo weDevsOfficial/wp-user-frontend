@@ -1140,3 +1140,20 @@ ul.wpuf-form li label.wpuf-form-sub-label {
     box-shadow: none !important;
     text-transform: none !important;
 }
+
+/* Multistep wizard — dark-template readability overrides (B2/B3/B4). */
+.wpuf-form-add.wpuf-form-layout5 .wpuf-step-item:not(.active-step):not(.completed-step) .wpuf-step-circle {
+  background: transparent !important;
+  border-color: #AEBABA !important;
+  color: #AEBABA !important;
+}
+.wpuf-form-add.wpuf-form-layout5 .wpuf-step-line:not(.wpuf-step-line-active) {
+  background-color: #5E6A6A !important;
+}
+.wpuf-form-add.wpuf-form-layout5 .wpuf-step-item.active-step .wpuf-step-label,
+.wpuf-form-add.wpuf-form-layout5 .wpuf-step-item.completed-step .wpuf-step-label {
+  color: #ffffff !important;
+}
+.wpuf-form-add.wpuf-form-layout5 .wpuf-progressbar-header {
+  color: #ffffff !important;
+}

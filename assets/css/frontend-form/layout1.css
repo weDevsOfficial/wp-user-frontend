@@ -4,19 +4,19 @@
  */
 
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=text],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=text],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=text],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=password],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=password],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=password],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=email],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=email],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=email],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=url],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=url],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=url],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=number],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=number],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=number],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=tel],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=tel],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=tel],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields textarea {
   background: #fafafa;
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -27,41 +27,41 @@
 }
 
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=text]:focus,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=text]:focus,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=text]:focus,
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=password]:focus,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=password]:focus,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=password]:focus,
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=email]:focus,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=email]:focus,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=email]:focus,
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=url]:focus,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=url]:focus,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=url]:focus,
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=number]:focus,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=number]:focus,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=number]:focus,
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea:focus,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea:focus {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields textarea:focus {
   color: #373737;
 }
 
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields textarea {
   padding-left: 3px !important;
   width: 95%;
 }
 
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=text],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=text],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=text],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=password],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=password],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=password],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=email],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=email],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=email],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=url],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=url],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=url],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=number],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=number] {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=number] {
   padding: 5px !important;
 }
 
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields select,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields select {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields select {
   border: 1px solid #eee !important;
   padding: 2px !important;
   height: 2em;
@@ -73,18 +73,18 @@
 }
 
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields select[multiple],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields select[multiple] {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields select[multiple] {
   height: auto;
 }
 
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields-inline,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields-inline {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields-inline {
   display: flex;
   justify-content: space-between;
 }
 
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-submit input[type=submit],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-submit input[type=submit] {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-submit input[type=submit] {
   font-size: 16px;
   padding: 5px 15px !important;
   line-height: inherit;
@@ -103,7 +103,7 @@
 }
 
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-submit input[type=submit]:disabled,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-submit input[type=submit]:disabled {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-submit input[type=submit]:disabled {
   background: #dddddd;
   border-color: #dddddd !important;
   -webkit-box-shadow: 0 1px 0 #dddddd;
@@ -113,42 +113,42 @@
 }
 
 /* Figma typography — Inter (falls back to system sans when not loaded). */
-.wpuf-form-add.wpuf-form-layout1,
-.wpuf-form-add.wpuf-form-layout1 input,
-.wpuf-form-add.wpuf-form-layout1 textarea,
-.wpuf-form-add.wpuf-form-layout1 select,
-.wpuf-form-add.wpuf-form-layout1 button {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style),
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) input,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) textarea,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) select,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) button {
     font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* ==== Figma deep-sync (node 5527:37864) — white classic template ====
    Own palette only: #FAFAFA surface, #DCDCDC border, #4B5563 text,
    #9CA3AF placeholder, #0088BB accent/submit. */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li {
   margin-bottom: 40px !important;
   padding: 0 !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-label,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-label label {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label label {
   color: #4B5563;
   font-weight: 500;
   font-size: 18px;
   line-height: 32px;
 }
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=text],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=text],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=text],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=password],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=password],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=password],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=email],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=email],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=email],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=url],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=url],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=url],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=number],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=number],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=number],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=tel],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input[type=tel],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input[type=tel],
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields textarea {
   border: 1px solid #DCDCDC !important;
   border-radius: 5px !important;
   box-shadow: none !important;
@@ -162,15 +162,15 @@
   padding: 8px 16px !important;
 }
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields textarea {
   padding: 12px 16px !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields input::placeholder,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields textarea::placeholder {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields input::placeholder,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields textarea::placeholder {
   color: #9CA3AF;
 }
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-fields select,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-fields select {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-fields select {
   background: #FAFAFA;
   border: 1px solid #DCDCDC !important;
   border-radius: 5px !important;
@@ -183,8 +183,8 @@
   line-height: 24px;
 }
 /* Controls: 20px circles, #E5E7EB rest border, #0088BB accent */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="radio"],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input[type="radio"],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -199,10 +199,14 @@
   vertical-align: middle;
   padding: 0 !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked {
+/* Checkbox is a rounded square so it stays visually distinct from the circular radio. */
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+  border-radius: 4px !important;
+}
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input[type="radio"]:checked {
   border-color: #0088BB !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked::after {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input[type="radio"]:checked::after {
   content: '';
   width: 10px;
   height: 10px;
@@ -213,11 +217,11 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked {
   background: #0088BB;
   border-color: #0088BB !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked::after {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked::after {
   content: '';
   width: 9px;
   height: 7px;
@@ -229,19 +233,19 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-radio-block,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-block {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-radio-block,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-checkbox-block {
   color: #4B5563;
   font-size: 16px;
   line-height: 24px;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-radio-list li,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-list li,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-multi-select-list li {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-radio-list li,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-checkbox-list li,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-multi-select-list li {
   margin-bottom: 12px !important;
 }
 /* Multiselect chips + panel */
-.wpuf-form-add.wpuf-form-layout1 .custom-multiselect .selected-item {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .custom-multiselect .selected-item {
   background: #F3F3F3;
   border-radius: 5px !important;
   padding: 2px 10px !important;
@@ -249,35 +253,35 @@
   font-size: 16px;
   align-items: center;
 }
-.wpuf-form-add.wpuf-form-layout1 .custom-multiselect .multiselect-dropdown {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .custom-multiselect .multiselect-dropdown {
   background: #FAFAFA;
   border: 1px solid #DCDCDC !important;
   border-radius: 5px !important;
 }
-.wpuf-form-add.wpuf-form-layout1 .custom-multiselect .multiselect-option input[type="checkbox"]:checked + label::before {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .custom-multiselect .multiselect-option input[type="checkbox"]:checked + label::before {
   background: #0088BB;
   border-color: #0088BB !important;
 }
 /* File upload zone */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-file-upload-zone {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-file-upload-zone {
   background: #FAFAFA;
   border: 1px dashed #CBD5E1 !important;
   border-radius: 5px !important;
   padding: 36px 20px !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-upload-title,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-upload-title .wpuf-label label {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-upload-title,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-upload-title .wpuf-label label {
   color: #4B5563;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-upload-instructions {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-upload-instructions {
   color: #9CA3AF;
   font-size: 12px;
   line-height: 20px;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a.file-selector {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields a.file-selector {
   display: block;
   padding: 36px 20px !important;
   border: 1px dashed #CBD5E1 !important;
@@ -292,7 +296,7 @@
   box-shadow: none !important;
   font-size: 16px;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
   background: #FAFAFA;
   border: 1px solid #DCDCDC !important;
   border-radius: 5px !important;
@@ -305,7 +309,7 @@
 }
 /* Submit pill */
 #form-preview-stage.wpuf-form-layout1 ul.wpuf-form .wpuf-submit input[type=submit],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form .wpuf-submit input[type=submit] {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form .wpuf-submit input[type=submit] {
   background: #0088BB;
   border: none !important;
   border-radius: 85px !important;
@@ -320,73 +324,73 @@
 
 
 /* Rest-state control border: template input-border tone (visible on white) */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="radio"],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input[type="radio"],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
   border-color: #DCDCDC !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input[type="radio"]:checked,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked {
   border-color: #0088BB !important;
 }
-.wpuf-form-add.wpuf-form-layout1 .custom-multiselect .multiselect-option label::before {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .custom-multiselect .multiselect-option label::before {
   border-color: #DCDCDC !important;
 }
 
 /* ---- Address field: wrapper is the field column; inner rows stack full width,
    sub-label sits under its input. Matches real markup:
    li > .wpuf-fields-address > .wpuf-address-field > .wpuf-fields.wpuf-sub-fields ---- */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields-address {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields-address {
     float: left;
     width: 70%;
     box-sizing: border-box;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form.form-label-above li .wpuf-fields-address,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form.form-label-hidden li .wpuf-fields-address {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form.form-label-above li .wpuf-fields-address,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form.form-label-hidden li .wpuf-fields-address {
     float: none;
     width: 100%;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields-address .wpuf-address-field {
     display: block;
     float: none;
     width: 100%;
     box-sizing: border-box;
     margin: 0 0 16px !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.city_name,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.zip {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.city_name,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.zip {
     margin-right: 0 !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field .wpuf-fields.wpuf-sub-fields {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields-address .wpuf-address-field .wpuf-fields.wpuf-sub-fields {
     float: none;
     width: 100%;
     display: block;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field input,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field select {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields-address .wpuf-address-field input,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields-address .wpuf-address-field select {
     width: 100%;
     box-sizing: border-box;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields-address label.wpuf-form-sub-label {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields-address label.wpuf-form-sub-label {
     display: block;
     float: none;
     margin-top: 4px !important;
 }
 
 /* Control rest border: crisp neutral gray (#DCDCDC read as invisible) */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="radio"],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input[type="radio"],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
   border-color: #9CA3AF !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input[type="radio"]:checked,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked {
   border-color: #0088BB !important;
 }
-.wpuf-form-add.wpuf-form-layout1 .custom-multiselect .multiselect-option label::before {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .custom-multiselect .multiselect-option label::before {
   border-color: #9CA3AF !important;
 }
 
 /* ---- Multiselect closed control: match the template field style ---- */
-.wpuf-form-add.wpuf-form-layout1 .custom-multiselect .multiselect-input {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .custom-multiselect .multiselect-input {
     background: #FAFAFA;
     border: 1px solid #DCDCDC !important;
     border-radius: 5px !important;
@@ -396,41 +400,41 @@
     align-items: center;
 }
 /* ---- TOC label: sentence flows naturally; links use template accent ---- */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block:has(a) {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block:has(a) {
     display: block !important;
     line-height: 24px;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block:has(a) input[type="checkbox"] {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block:has(a) input[type="checkbox"] {
     margin-right: 12px !important;
     vertical-align: middle;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a:not(.file-selector):not(.wpuf-insert-image):not(.wpuf-button):not(.wpuf-upload-trigger) {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields a:not(.file-selector):not(.wpuf-insert-image):not(.wpuf-button):not(.wpuf-upload-trigger) {
     color: #0088BB;
 }
 /* ---- Space above the submit button ---- */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li.wpuf-submit input[type="submit"] {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit input[type="submit"] {
     margin-top: 40px !important;
 }
 
 /* ---- Theme reset (Use Theme CSS = off): neutralize theme bleed so the
    template design owns the form. Only neutral props are forced — the
    template's own colors/borders/spacing rules stay in charge. ---- */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form {
     list-style: none !important;
     margin: 0 !important;
     padding: 0 !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li {
     list-style: none !important;
     background-image: none !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li::before,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li::marker {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li::before,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li::marker {
     content: none !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="file"]),
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields textarea,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields select {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="file"]),
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields textarea,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields select {
     max-width: 100% !important;
     text-shadow: none !important;
     letter-spacing: normal !important;
@@ -438,13 +442,13 @@
     background-image: none;
     box-sizing: border-box !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-label,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-label label {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label label {
     letter-spacing: normal !important;
     text-transform: none !important;
     text-shadow: none !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li.wpuf-submit input[type="submit"] {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit input[type="submit"] {
     background-image: none !important;
     text-shadow: none !important;
     text-transform: none !important;
@@ -456,17 +460,17 @@
 }
 
 /* ---- Pricing fields: palette-matched (price label, quantity, cart) ---- */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-price-label,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-price-currency-label {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-price-label,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-price-currency-label {
     color: #9CA3AF;
     font-weight: 500;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-pricing-radio-item,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-pricing-checkbox-item {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-pricing-radio-item,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-pricing-checkbox-item {
     margin-bottom: 12px !important;
     align-items: center;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-pricing-quantity {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-pricing-quantity {
     width: 80px !important;
     padding: 6px 10px !important;
     border: 1px solid #DCDCDC !important;
@@ -476,95 +480,95 @@
     margin-left: 12px !important;
     box-sizing: border-box;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-summary,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-display,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-multiselect-quantities {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-cart-summary,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-cart-total-display,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-multiselect-quantities {
     background: #FAFAFA;
     border: 1px solid #DCDCDC !important;
     border-radius: 5px !important;
     color: #4B5563;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-table {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-cart-table {
     background: transparent;
     color: #4B5563;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
     background: transparent;
     border-bottom: 1px solid #DCDCDC !important;
     color: #9CA3AF;
     font-weight: 500;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tbody td {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-cart-table tbody td {
     border-bottom: 1px solid #DCDCDC !important;
     color: #4B5563;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tfoot td {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-cart-table tfoot td {
     border-top: 1px solid #DCDCDC !important;
     color: #4B5563;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-amount {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-cart-total-amount {
     color: #0088BB;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-qty-row label {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-qty-row label {
     color: #4B5563;
 }
 
 /* ---- Self-contained surface: the light palette carries its own white
    card so labels/fields stay readable on dark themes too ---- */
-.wpuf-form-add.wpuf-form-layout1 {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) {
     background: #FFFFFF;
     padding: 40px !important;
     border-radius: 20px !important;
 }
 @media (max-width: 600px) {
-    .wpuf-form-add.wpuf-form-layout1 {
+    .wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) {
         padding: 24px !important;
     }
 }
 
 /* ---- Strength indicator: palette states (default box was WP-core white) ---- */
-.wpuf-form-add.wpuf-form-layout1 .pass-strength-result {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .pass-strength-result {
     background: #FAFAFA;
     border: 1px solid #DCDCDC !important;
     color: #9CA3AF;
     border-radius: 6px !important;
     padding: 10px 32px !important;
 }
-.wpuf-form-add.wpuf-form-layout1 .pass-strength-result.short {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .pass-strength-result.short {
     background: #FEE2E2;
     border-color: #FEE2E2 !important;
     color: #B91C1C;
 }
-.wpuf-form-add.wpuf-form-layout1 .pass-strength-result.bad {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .pass-strength-result.bad {
     background: #FFEDD5;
     border-color: #FFEDD5 !important;
     color: #C2410C;
 }
-.wpuf-form-add.wpuf-form-layout1 .pass-strength-result.good {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .pass-strength-result.good {
     background: #FEF9C3;
     border-color: #FEF9C3 !important;
     color: #A16207;
 }
-.wpuf-form-add.wpuf-form-layout1 .pass-strength-result.strong {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .pass-strength-result.strong {
     background: #E1FFEF;
     border-color: #E1FFEF !important;
     color: #00A14B;
 }
 
 /* ---- Math captcha: palette colors ---- */
-.wpuf-form-add.wpuf-form-layout1 .wpuf-math-captcha .captcha-number,
-.wpuf-form-add.wpuf-form-layout1 .wpuf-math-captcha .captcha-equal {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-math-captcha .captcha-number,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-math-captcha .captcha-equal {
     color: #4B5563;
 }
-.wpuf-form-add.wpuf-form-layout1 .wpuf-math-captcha #captchaRefresher {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-math-captcha #captchaRefresher {
     fill: #4B5563;
 }
-.wpuf-form-add.wpuf-form-layout1 .wpuf-math-captcha .wpuf-captcha-error {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-math-captcha .wpuf-captcha-error {
     color: #F20000;
 }
 
 /* ---- Multistep Prev/Next: same treatment as the template submit ---- */
-.wpuf-form-add.wpuf-form-layout1 .wpuf-multistep-nav-btn {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-multistep-nav-btn {
     background: #0088BB;
     color: #FFFFFF;
     border: none !important;
@@ -582,7 +586,7 @@
 
 /* ---- Uploaded file rows (Figma): 48px bordered thumb, 24px delete/drag
    icons, borderless row ---- */
-.wpuf-form-add.wpuf-form-layout1 .wpuf-attachment-list li.wpuf-image-wrap {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-attachment-list li.wpuf-image-wrap {
     background: transparent;
     border: none !important;
     box-shadow: none !important;
@@ -595,21 +599,21 @@
     padding: 8px 0 !important;
     margin: 0 0 8px !important;
 }
-.wpuf-form-add.wpuf-form-layout1 .wpuf-attachment-list li.wpuf-image-wrap .attachment-name img {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-attachment-list li.wpuf-image-wrap .attachment-name img {
     width: 48px;
     height: 48px;
     object-fit: cover;
     border: 1px solid #E5E7EB !important;
     border-radius: 10px !important;
 }
-.wpuf-form-add.wpuf-form-layout1 .wpuf-attachment-list li.wpuf-image-wrap .caption {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-attachment-list li.wpuf-image-wrap .caption {
     display: flex;
     align-items: center;
     gap: 8px;
     margin: 0 !important;
 }
-.wpuf-form-add.wpuf-form-layout1 .wpuf-attachment-list li.wpuf-image-wrap a.attachment-delete img,
-.wpuf-form-add.wpuf-form-layout1 .wpuf-attachment-list li.wpuf-image-wrap .wpuf-drag-file img {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-attachment-list li.wpuf-image-wrap a.attachment-delete img,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-attachment-list li.wpuf-image-wrap .wpuf-drag-file img {
     width: 24px;
     height: 24px;
     border: none !important;
@@ -618,7 +622,7 @@
 
 /* ---- Attachment rows per Figma: clean row, palette trash icon, no dark
    overlay chip; whole row stays sortable so the drag sprite is hidden ---- */
-.wpuf-form-add.wpuf-form-layout1 .wpuf-attachment-list li.wpuf-image-wrap .caption {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-attachment-list li.wpuf-image-wrap .caption {
     background: transparent !important;
     position: static !important;
     opacity: 1 !important;
@@ -627,10 +631,10 @@
     padding: 0 !important;
     width: auto !important;
 }
-.wpuf-form-add.wpuf-form-layout1 .wpuf-attachment-list li.wpuf-image-wrap .caption a.attachment-delete img {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-attachment-list li.wpuf-image-wrap .caption a.attachment-delete img {
     display: none;
 }
-.wpuf-form-add.wpuf-form-layout1 .wpuf-attachment-list li.wpuf-image-wrap .caption a.attachment-delete {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-attachment-list li.wpuf-image-wrap .caption a.attachment-delete {
     display: inline-flex;
     width: 24px;
     height: 24px;
@@ -638,10 +642,10 @@
     border: none !important;
     box-shadow: none !important;
 }
-.wpuf-form-add.wpuf-form-layout1 .wpuf-attachment-list li.wpuf-image-wrap .caption .wpuf-drag-file {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-attachment-list li.wpuf-image-wrap .caption .wpuf-drag-file {
     display: none;
 }
-.wpuf-form-add.wpuf-form-layout1 .wpuf-attachment-list li.wpuf-image-wrap .wpuf-attach-title {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-attachment-list li.wpuf-image-wrap .wpuf-attach-title {
     flex: 1;
     font-size: 16px;
     line-height: 24px;
@@ -649,79 +653,79 @@
     overflow-wrap: anywhere;
 }
 /* Legacy file-selector matches the field geometry of its template */
-.wpuf-form-add.wpuf-form-layout1 .wpuf-fields a.file-selector {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-fields a.file-selector {
     min-height: 200px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
 }
-.wpuf-form-add.wpuf-form-layout1 .wpuf-fields input:focus,
-.wpuf-form-add.wpuf-form-layout1 .wpuf-fields textarea:focus,
-.wpuf-form-add.wpuf-form-layout1 .wpuf-fields select:focus {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-fields input:focus,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-fields textarea:focus,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-fields select:focus {
     border-color: #0088BB !important;
 }
 
 /* ---- Consistency pass: forced cart palette, captcha strip, legacy icon ---- */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a.file-selector:before {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields a.file-selector:before {
     display: none !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-summary,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-display,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-multiselect-quantities {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-cart-summary,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-cart-total-display,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-multiselect-quantities {
     background: #FAFAFA !important;
     color: #4B5563 !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-table {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-cart-table {
     background: transparent !important;
     color: #4B5563 !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
     background: transparent !important;
     color: #9CA3AF !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tbody td,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tfoot td {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-cart-table tbody td,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-cart-table tfoot td {
     color: #4B5563 !important;
     background: transparent !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha {
     background: #FAFAFA !important;
     border-color: #DCDCDC !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha-number,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha-equal {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha-number,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha-equal {
     color: #4B5563 !important;
 }
 
 /* Editor: template palette */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wp-editor-wrap .wp-editor-container {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wp-editor-wrap .wp-editor-container {
     border: 1px solid #DCDCDC !important;
     border-radius: 5px !important;
     overflow: hidden;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wp-editor-wrap .mce-toolbar-grp {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wp-editor-wrap .mce-toolbar-grp {
     background: #FAFAFA !important;
     border-bottom: 1px solid #DCDCDC !important;
 }
 
 /* Legacy 150px thumbnail box: row layout needs natural height */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-attachment-list li.wpuf-image-wrap {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-attachment-list li.wpuf-image-wrap {
     height: auto !important;
     min-height: 0 !important;
 }
 
 /* Phone field (intl-tel-input): keep the flag gutter — the forced
    16px padding overlapped the dial-code/flag */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti input,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti input[type="tel"],
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .intl-tel-input input,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .intl-tel-input input[type="tel"] {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .iti input,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .iti input[type="tel"],
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .intl-tel-input input,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .intl-tel-input input[type="tel"] {
     padding-left: 52px !important;
 }
 
 /* Figma sync: upload selector zone — no underline, zone typography */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a.file-selector,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .file-selector {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields a.file-selector,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .file-selector {
     text-decoration: none !important;
     line-height: 24px !important;
     font-weight: 400 !important;
@@ -729,8 +733,8 @@
 
 /* ---- Image selectors (Figma "Select Image" bar): compact left-aligned
    icon + text bar in the template tokens ---- */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a.file-selector,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .file-selector {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields a.file-selector,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .file-selector {
     background: #FAFAFA !important;
     border: 1px solid #DCDCDC !important;
     border-radius: 5px !important;
@@ -751,8 +755,8 @@
     box-sizing: border-box !important;
     box-shadow: none !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a.file-selector:before,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .file-selector:before {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields a.file-selector:before,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .file-selector:before {
     content: '' !important;
     display: inline-block !important;
     position: static !important;
@@ -766,78 +770,78 @@
 
 /* ---- Phone country dropdown (intl-tel-input): palette panel; our forced
    li spacing must not leak into its rows ---- */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__country-list {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .iti__country-list {
     background: #FFFFFF !important;
     border: 1px solid #DCDCDC !important;
     color: #4B5563 !important;
     border-radius: 6px;
     max-height: 220px;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__country-list li,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__country-list li.iti__country {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .iti__country-list li,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .iti__country-list li.iti__country {
     margin: 0 !important;
     padding: 8px 12px !important;
     list-style: none !important;
     background-image: none !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__country-name {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .iti__country-name {
     color: #4B5563 !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__dial-code {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .iti__dial-code {
     color: #9CA3AF !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__country-list li.iti__country:hover,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__country-list li.iti__country.iti__highlight {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .iti__country-list li.iti__country:hover,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .iti__country-list li.iti__country.iti__highlight {
     background: rgba(128, 128, 128, 0.15) !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti__divider {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .iti__divider {
     border-bottom: 1px solid #DCDCDC !important;
     margin: 0 !important;
     padding: 0 !important;
 }
 
 /* Selector focus/hover: single accent border, no outline ring */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a.file-selector:hover,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a.file-selector:focus,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields a.file-selector:focus-visible,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .file-selector:hover,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .file-selector:focus,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .file-selector:focus-visible {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields a.file-selector:hover,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields a.file-selector:focus,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields a.file-selector:focus-visible,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .file-selector:hover,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .file-selector:focus,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .file-selector:focus-visible {
     outline: none !important;
     border-color: #0088BB !important;
     box-shadow: none !important;
 }
 
 /* Phone gutter: outrank the :not()-chain input padding rules */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .iti input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .intl-tel-input input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]) {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .iti input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .intl-tel-input input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]) {
     padding-left: 52px !important;
 }
 
 /* ---- Field icons follow the template palette (inline SVGs) ---- */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-upload-icon svg path,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .dropdown-arrow svg path {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-upload-icon svg path,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .dropdown-arrow svg path {
     stroke: #6B7280 !important;
 }
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .refresh svg,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .refresh svg path {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .refresh svg,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .refresh svg path {
     fill: #6B7280 !important;
 }
 
 /* Field icon (Font Awesome, Show Icon = Yes) follows the template palette */
-.wpuf-form-add.wpuf-form-layout1 .wpuf-label .wpuf-field-icon,
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-field-icon {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-label .wpuf-field-icon,
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-field-icon {
     color: #6B7280 !important;
 }
 
 /* Field Size: native selects (dropdown, time, taxonomy, pricing dropdown)
    default to content width — force them to fill the sized .wpuf-fields. */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields select {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields select {
     width: 100% !important;
 }
 
 /* Native select: hide the OS arrow, use the same chevron as the multiselect widget */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields select {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields select {
     -webkit-appearance: none !important;
     -moz-appearance: none !important;
     appearance: none !important;
@@ -849,21 +853,21 @@
 }
 
 /* Spacing: separate form title/description from the first field */
-.wpuf-form-add.wpuf-form-layout1 .wpuf-form-title { margin: 0 0 8px !important; }
-.wpuf-form-add.wpuf-form-layout1 .wpuf-form-description { margin: 0 0 32px !important; }
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-form-title { margin: 0 0 8px !important; }
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-form-description { margin: 0 0 32px !important; }
 
 /* Form list must not clip dropdowns / popups (multiselect panel, etc.) */
-.wpuf-form-add.wpuf-form-layout1 ul {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul {
     overflow: initial !important;
 }
 
 /* Help text readable per palette */
-.wpuf-form-add.wpuf-form-layout1 ul.wpuf-form li .wpuf-fields .wpuf-help {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields .wpuf-help {
     color: #6B7280 !important;
 }
 
 /* Multistep nav buttons: pill with proper padding (match registration) */
-.wpuf-form-add.wpuf-form-layout1 .wpuf-multistep-nav-btn {
+.wpuf-form-add.wpuf-form-layout1:not(.wpuf-theme-style) .wpuf-multistep-nav-btn {
     background: #0088BB !important;
     color: #FFFFFF !important;
     border: none !important;

@@ -1110,3 +1110,22 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
     box-shadow: none !important;
     text-transform: none !important;
 }
+
+/* Multistep wizard — dark-template readability overrides (B2/B3/B4).
+   Active/completed accents come from the shared wizard CSS; these only
+   fix the inactive/header colors that read as light-on-dark. */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-step-item:not(.active-step):not(.completed-step) .wpuf-step-circle {
+  background: transparent !important;
+  border-color: #64748B !important;
+  color: #AEB6C7 !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-step-line:not(.wpuf-step-line-active) {
+  background-color: #33374D !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-step-item.active-step .wpuf-step-label,
+.wpuf-form-add.wpuf-form-layout2 .wpuf-step-item.completed-step .wpuf-step-label {
+  color: #ffffff !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-progressbar-header {
+  color: #ffffff !important;
+}

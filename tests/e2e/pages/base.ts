@@ -168,15 +168,20 @@ export class Base {
     /**
      * Click a locator only if it shows up within `timeout`, otherwise skip it.
      *
-     * For genuinely optional UI — admin notices, "Allow"/"Skip" prompts, cross
-     * buttons — that may or may not render. `validateAndClick` in a try/catch
-     * burns the full 30s default wait per absent element, so a handful of them
-     * in a row exceeds the whole test timeout.
+     * For genuinely optional UI — admin notices, "Allow"/"Skip setup" prompts,
+     * dismiss crosses — that renders only on some plugin sets. `validateAndClick`
+     * in a try/catch is the wrong tool: it inherits the global action timeout, so
+     * an absent notice stalls the test instead of being skipped. `.first()` also
+     * keeps duplicated notices (WPUF + WPUF Pro both render "Allow") out of
+     * strict-mode violations.
      */
     async clickIfPresent(locator: string, timeout = 3000) {
         const element = this.page.locator(locator).first();
 
-        if (!await element.isVisible({ timeout }).catch(() => false)) {
+        try {
+            await element.waitFor({ state: 'visible', timeout });
+        } catch {
+            console.log('\x1b[33m%s\x1b[0m', `⏭ Optional element absent, skipped ${locator}`);
             return false;
         }
 

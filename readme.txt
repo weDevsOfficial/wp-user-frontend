@@ -4,7 +4,7 @@ Donate link: https://tareq.co/donate/
 Tags: frontend post, user directory, membership, user profile, user registration
 Requires at least: 5.0
 Tested up to: 7.0
-Stable tag: 4.3.9
+Stable tag: 4.3.10
 Requires PHP: 7.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -561,6 +561,17 @@ Please report security bugs found in the source code of the User Frontend plugin
 
 
 == Changelog ==
+
+
+= v4.3.10 (06 August, 2026) =
+* Enhance – Redesigned all five post form templates with a modern, consistent UI/UX.
+* Enhance – Post form multistep now matches the new registration design, with progress-bar colors driven by form settings.
+* Enhance – Improved readability of the form title, description, help text and field labels on dark templates.
+* Enhance – Modernized the file and image upload progress UI.
+* Fix – Dropdown/multiselect chevrons and the Field Size setting now render consistently across all templates.
+* Fix – Multistep next/previous button spacing no longer overlaps the field focus border.
+* Fix – Improved form label color contrast on Template 4 for better accessibility.
+* Fix – PayPal webhook now fires reliably so subscription and pack transactions are recorded.
 
 
 = v4.3.9 (20 July, 2026) =

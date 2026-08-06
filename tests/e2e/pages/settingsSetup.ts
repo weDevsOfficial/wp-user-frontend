@@ -194,54 +194,16 @@ export class SettingsSetupPage extends Base {
             }
         };
         this.page.on('dialog', dialogHandler);
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
-        } catch (error) {
-            console.log('Failed to click Run Updater:', error);
-        }
+        await this.clickIfPresent(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
         this.page.off('dialog', dialogHandler);
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
-        } catch (error) {
-            console.log('Failed to click Allow1:', error);
-        }
-
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
-        } catch (error) {
-            console.log('Failed to click Allow:', error);
-        }
-
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
-        } catch (error) {
-            console.log('Failed to click Skip Setup:', error);
-        }
-
-        // try {
-        //     await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSwitchCart);
-        // } catch (error) {
-        //     console.log('Failed to click Switch Cart:', error);
-        // }
-
-        // try {
-        //     await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDismiss);
-        // } catch (error) {
-        //     console.log('Failed to click Dismiss:', error);
-        // }
-
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
-        } catch (error) {
-            console.log('Failed to click EDD notice Cross:', error);
-        }
-
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);
-        } catch (error) {
-            console.log('Failed to click PayPal Cross:', error);
-        }
+        // All optional admin notices — absent on a clean install. Short waits so
+        // six misses cost seconds, not the whole 180s test timeout.
+        await this.clickIfPresent(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
+        await this.clickIfPresent(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
+        await this.clickIfPresent(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
+        await this.clickIfPresent(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
+        await this.clickIfPresent(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);
 
         if (ifWPUFLite == true) {
             //Activate Plugin

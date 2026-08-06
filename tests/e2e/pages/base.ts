@@ -166,6 +166,27 @@ export class Base {
     }
 
     /**
+     * Click a locator only if it shows up within `timeout`, otherwise skip it.
+     *
+     * For genuinely optional UI — admin notices, "Allow"/"Skip" prompts, cross
+     * buttons — that may or may not render. `validateAndClick` in a try/catch
+     * burns the full 30s default wait per absent element, so a handful of them
+     * in a row exceeds the whole test timeout.
+     */
+    async clickIfPresent(locator: string, timeout = 3000) {
+        const element = this.page.locator(locator).first();
+
+        if (!await element.isVisible({ timeout }).catch(() => false)) {
+            return false;
+        }
+
+        await element.click();
+        await this.waitForLoading();
+        console.log('\x1b[35m%s\x1b[0m', `✅ Clicked optional ${locator}`);
+        return true;
+    }
+
+    /**
      * Dismiss an open SweetAlert2 dialog, if any.
      *
      * The form builder pops "Oops... You already have this field in the form"

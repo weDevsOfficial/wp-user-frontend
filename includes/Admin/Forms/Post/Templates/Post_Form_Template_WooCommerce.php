@@ -341,7 +341,7 @@ Edit URL: {editlink}'
                 $images = $images[0];
             }
             if ( is_serialized( $images[0] ) ) {
-                $images = maybe_unserialize( $images[0] );
+                $images = wpuf_safe_unserialize( $images[0] );
             }
             update_post_meta( $post_id, '_product_image_gallery', implode( ',', $images ) );
         }

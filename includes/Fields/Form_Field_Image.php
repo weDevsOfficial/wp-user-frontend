@@ -35,7 +35,7 @@ class Form_Field_Image extends Field_Contract {
 
             if ( $this->is_meta( $field_settings ) && ! empty( $images[0] ) ) {
                 if ( is_serialized( $images[0] ) ) {
-                    $images = maybe_unserialize( $images[0] );
+                    $images = wpuf_safe_unserialize( $images[0] );
                 }
 
                 if ( is_array( $images[0] ) ) {

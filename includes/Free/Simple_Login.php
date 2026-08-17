@@ -1215,6 +1215,19 @@ class Simple_Login {
      * @return void
      */
     public function default_wp_login_override() {
+        // only take over the login screen itself. `login_form_login` also runs
+        // for the submitted credentials, and redirecting those would stop them
+        // ever reaching wp_signon(), so any login form that posts to
+        // wp-login.php - a page builder login element, a theme form - could
+        // never log anybody in
+        $request_method = isset( $_SERVER['REQUEST_METHOD'] )
+            ? strtoupper( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) )
+            : 'GET';
+
+        if ( 'GET' !== $request_method ) {
+            return;
+        }
+
         $override       = wpuf_get_option( 'register_link_override', 'wpuf_profile', false );
         $login_redirect = wpuf_get_option( 'wp_default_login_redirect', 'wpuf_profile', false );
         $login_page     = wpuf_get_option( 'login_page', 'wpuf_profile', null );

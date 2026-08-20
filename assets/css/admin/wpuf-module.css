@@ -353,3 +353,127 @@ ul.slider-container li img {
         margin-bottom: 2em;
     }
 }
+
+/* --- Modules page: responsive grid + self-contained card layout --- */
+/* Scope the grid to the card containers only; the page wrap also carries
+   .wpuf-modules, so a bare .wpuf-modules would turn the whole page into a grid. */
+.wp-list-table.wpuf-modules {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+    margin-top: 15px;
+}
+
+.wpuf-modules .plugin-card {
+    float: none;
+    width: auto;
+    min-width: 0;
+    margin: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    background: #fff;
+}
+
+.wpuf-modules .plugin-card .plugin-card-top {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    gap: 10px;
+    min-height: 0;
+    margin: 0;
+    padding: 18px;
+}
+
+.wpuf-modules .plugin-card .name.column-name {
+    order: 1;
+    margin: 0;
+    padding-right: 62px; /* room for the toggle pinned top-right */
+}
+
+.wpuf-modules .plugin-card .name h3 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.3;
+}
+
+.wpuf-modules .plugin-card .plugin-name {
+    order: 2;
+    min-width: 0;
+    margin-left: 0;
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+.wpuf-modules .plugin-card .plugin-name a {
+    color: #2271b1;
+    text-decoration: none;
+}
+
+.wpuf-modules .plugin-card .name h3 > a[target="_blank"] {
+    order: 1;
+    flex: 0 0 auto;
+    line-height: 0;
+}
+
+.wpuf-modules .plugin-card .plugin-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    margin: 0;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.wpuf-modules .plugin-card .desc.column-description {
+    order: 2;
+    margin: 0;
+    margin-left: 0;
+}
+
+.wpuf-modules .plugin-card .desc p {
+    margin: 0;
+    color: #50575e;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.wpuf-modules .plugin-card .action-links {
+    order: 3;
+    position: static; /* core plugin-install.css absolutely positions this; keep it in flow */
+    float: none;
+    width: auto;
+    margin: 0;
+    margin-top: auto;
+    padding: 0;
+}
+
+.wpuf-modules .plugin-card .plugin-action-buttons {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wpuf-modules .plugin-card .wpuf-doc-link {
+    clear: none;
+    margin-top: 14px;
+    padding: 12px 0 0;
+    text-align: left;
+    border-top: 1px solid #f0f0f1;
+}
+
+.wpuf-modules .plugin-card .wpuf-doc-link a {
+    color: #2271b1;
+    text-decoration: none;
+    font-weight: 500;
+}

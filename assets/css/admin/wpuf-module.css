@@ -354,21 +354,23 @@ ul.slider-container li img {
     }
 }
 
-/* --- Modules page: responsive grid + self-contained card layout --- */
-/* Scope the grid to the card containers only; the page wrap also carries
-   .wpuf-modules, so a bare .wpuf-modules would turn the whole page into a grid. */
+/* Scope the grid to the card containers (they carry .wp-list-table); a page wrap
+   could also carry .wpuf-modules, which a bare selector would turn into a grid. */
 .wp-list-table.wpuf-modules {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 16px;
     margin-top: 15px;
+    align-items: stretch;
 }
 
+/* --- Modules page: card layout (grid handled by .wp-list-table.wpuf-modules) --- */
 .wpuf-modules .plugin-card {
     float: none;
     width: auto;
     min-width: 0;
     margin: 0;
+    min-height: 156px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -379,80 +381,90 @@ ul.slider-container li img {
 }
 
 .wpuf-modules .plugin-card .plugin-card-top {
+    position: relative;
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
-    gap: 10px;
+    gap: 8px;
     min-height: 0;
     margin: 0;
     padding: 18px;
 }
 
-.wpuf-modules .plugin-card .name.column-name {
-    order: 1;
+/* Icon pinned top-left, out of flow, so the text sits in one clean column
+   regardless of core plugin-install.css floats/indents. */
+.wp-list-table.wpuf-modules .plugin-card .name h3 > a {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    width: 48px;
+    height: 48px;
     margin: 0;
-    padding-right: 62px; /* room for the toggle pinned top-right */
-}
-
-.wpuf-modules .plugin-card .name h3 {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 0;
-    font-size: 15px;
-    line-height: 1.3;
-}
-
-.wpuf-modules .plugin-card .plugin-name {
-    order: 2;
-    min-width: 0;
-    margin-left: 0;
-    overflow-wrap: break-word;
-    word-break: normal;
-}
-
-.wpuf-modules .plugin-card .plugin-name a {
-    color: #2271b1;
-    text-decoration: none;
-}
-
-.wpuf-modules .plugin-card .name h3 > a[target="_blank"] {
-    order: 1;
-    flex: 0 0 auto;
     line-height: 0;
 }
 
-.wpuf-modules .plugin-card .plugin-icon {
+.wp-list-table.wpuf-modules .plugin-card .plugin-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 48px;
     height: 48px;
-    min-width: 48px;
     margin: 0;
     border-radius: 10px;
     object-fit: cover;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
-.wpuf-modules .plugin-card .desc.column-description {
-    order: 2;
-    margin: 0;
-    margin-left: 0;
+.wp-list-table.wpuf-modules .plugin-card .name.column-name {
+    order: 1;
+    margin: 0 !important;
+    padding: 0 108px 0 62px; /* clear the icon (left) and the doc icon + toggle (right) */
+    min-height: 48px;
+    display: flex;
+    align-items: center;
 }
 
-.wpuf-modules .plugin-card .desc p {
+.wpuf-modules .plugin-card .name h3 {
     margin: 0;
+    font-size: 15px;
+    line-height: 1.3;
+}
+
+.wpuf-modules .plugin-card .plugin-name {
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+.wpuf-modules .plugin-card .plugin-name a {
+    color: #059669;
+    text-decoration: none;
+}
+
+.wp-list-table.wpuf-modules .plugin-card .desc.column-description {
+    order: 2;
+    margin: 0 !important;
+    padding-left: 62px; /* align the description under the title */
+}
+
+.wp-list-table.wpuf-modules .plugin-card .desc p {
+    margin: 0 !important;
     color: #50575e;
     font-size: 13px;
     line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .wpuf-modules .plugin-card .action-links {
     order: 3;
-    position: static; /* core plugin-install.css absolutely positions this; keep it in flow */
-    float: none;
-    width: auto;
     margin: 0;
     margin-top: auto;
     padding: 0;
+    position: static;
+    float: none;
 }
 
 .wpuf-modules .plugin-card .plugin-action-buttons {
@@ -464,16 +476,41 @@ ul.slider-container li img {
     list-style: none;
 }
 
+/* Documentation becomes a small icon button beside the on/off toggle. */
 .wpuf-modules .plugin-card .wpuf-doc-link {
-    clear: none;
-    margin-top: 14px;
-    padding: 12px 0 0;
-    text-align: left;
-    border-top: 1px solid #f0f0f1;
+    position: absolute;
+    top: 16px;
+    right: 76px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    line-height: 0;
+    margin: 0;
+    padding: 0;
+    border-top: none;
 }
 
 .wpuf-modules .plugin-card .wpuf-doc-link a {
-    color: #2271b1;
+    display: inline-flex;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    font-size: 0;
+    line-height: 0;
     text-decoration: none;
-    font-weight: 500;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23059669' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z'/%3E%3Cpath d='M14 3v5h5'/%3E%3Cpath d='M9 13h6'/%3E%3Cpath d='M9 17h4'/%3E%3C/svg%3E") center / 18px 18px no-repeat;
+    transition: background-color .15s;
+}
+
+.wpuf-modules .plugin-card .wpuf-doc-link a:hover {
+    background-color: #ecfdf5;
+}
+
+/* Locked (Other Modules) upgrade pill */
+.wpuf-modules .plugin-card.wpuf-module-locked .name.column-name {
+    padding-right: 118px;
+}
+.wpuf-modules .plugin-card .wpuf-module-upgrade {
+    white-space: nowrap;
+    font-size: 12px;
 }

@@ -554,23 +554,37 @@ ul.slider-container li img {
     .wp-list-table.wpuf-modules .plugin-card { animation: none; }
 }
 
-/* Pro-preview upgrade overlay: no fly-in transform on these cards (a transform would
-   trap the overlay behind them), the whole card overlay is the upgrade link, and the
-   badge stays at a sensible size. */
+/* Pro-preview: on hover a subtle WPUF-green highlight (content stays visible), the
+   whole card becomes the upgrade link, and a small PRO badge sits top-right. When
+   hidden the overlay is click-through so the card's own links still work; no fly-in
+   here so the overlay never gets trapped behind a card's transform. */
 .wpuf-pro-modules-preview .plugin-card {
     animation: none;
 }
+.wpuf-pro-modules-preview .form-create-overlay {
+    background: transparent;
+    border-color: #059669;
+    border-radius: 8px;
+    opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+    transition: opacity .15s, background-color .15s;
+}
 .wpuf-pro-modules-preview .plugin-card:hover .form-create-overlay {
-    z-index: 2;
+    opacity: 1;
+    z-index: 4;
+    background: rgba(5, 150, 105, 0.08);
+    pointer-events: auto;
 }
 .wpuf-pro-modules-preview .form-create-overlay a {
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
 }
 .wpuf-pro-modules-preview .form-create-overlay .wpuf-module-pro-badge {
+    position: absolute;
+    top: 13px;
+    right: 16px;
     width: auto;
-    height: 24px;
+    height: 22px;
 }

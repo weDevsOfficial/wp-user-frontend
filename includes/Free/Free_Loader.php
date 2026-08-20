@@ -1233,16 +1233,17 @@ class Free_Loader extends Pro_Prompt {
                                     </p>
                                 </div>
                             </div>
+
+                            <div class="form-create-overlay">
+                                <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=freeplugin&amp;utm_medium=prompt&amp;utm_term=wpuf_free_plugin&amp;utm_content=textlink&amp;utm_campaign=pro_prompt" target="_blank">
+                                    <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="pro icon" class="wpuf-module-pro-badge">
+                                </a>
+                            </div>
                         </div>
                         <?php
                     }
                 }
                 ?>
-                <div class="form-create-overlay">
-                    <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=freeplugin&amp;utm_medium=prompt&amp;utm_term=wpuf_free_plugin&amp;utm_content=textlink&amp;utm_campaign=pro_prompt" target="_blank">
-                        <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="pro icon" class="wpuf-module-pro-badge">
-                    </a>
-                </div>
             </div>
         </div>
         <?php

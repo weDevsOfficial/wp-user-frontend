@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" role="img" aria-label="SMS Notification">
+  <rect width="96" height="96" rx="22" fill="#f43f5e"/>
+  <path d="M28 30h40a8 8 0 0 1 8 8v20a8 8 0 0 1-8 8H47L33 76V66h-5a8 8 0 0 1-8-8V38a8 8 0 0 1 8-8z" fill="#fff"/>
+  <circle cx="38" cy="48" r="4" fill="#f43f5e"/>
+  <circle cx="50" cy="48" r="4" fill="#f43f5e"/>
+  <circle cx="62" cy="48" r="4" fill="#f43f5e"/>
+</svg>

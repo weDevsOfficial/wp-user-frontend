@@ -1351,7 +1351,7 @@ class Free_Loader extends Pro_Prompt {
                 'name'        => 'Comments Manager',
                 'description' => 'Handle comments in frontend',
                 'plugin_uri'  => 'https://wedevs.com/wp-user-frontend-pro/modules/comments-manager/',
-                'thumbnail'   => 'wpuf-comment.png',
+                'thumbnail'   => 'wpuf-comment.svg',
             ],
             'mailpoet/wpuf-mailpoet.php' => [
                 'name'        => 'Mailpoet',
@@ -1369,13 +1369,13 @@ class Free_Loader extends Pro_Prompt {
                 'name'        => 'SMS Notification',
                 'description' => 'SMS notification for post',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/sms-notification/',
-                'thumbnail'   => 'wpuf-sms.png',
+                'thumbnail'   => 'wpuf-sms.svg',
             ],
             'email-templates/email-templates.php' => [
                 'name'        => 'HTML Email Templates',
                 'description' => 'Send Email Notifications with HTML Template',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/html-email-templates/',
-                'thumbnail'   => 'email-templates.png',
+                'thumbnail'   => 'email-templates.svg',
             ],
             'getresponse/getresponse.php' => [
                 'name'        => 'GetResponse',
@@ -1399,13 +1399,13 @@ class Free_Loader extends Pro_Prompt {
                 'name'        => 'Private Message',
                 'description' => 'User to user message from Frontend',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/private-messaging/',
-                'thumbnail'   => 'message.gif',
+                'thumbnail'   => 'message.svg',
             ],
             'user-analytics/wpuf-user-analytics.php' => [
                 'name'        => 'User Analytics',
                 'description' => 'Show user tracking info during post and registration from Frontend',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/user-analytics/',
-                'thumbnail'   => 'wpuf-ua.png',
+                'thumbnail'   => 'wpuf-ua.svg',
             ],
             'mailchimp/wpuf-mailchimp.php' => [
                 'name'        => 'Mailchimp',
@@ -1417,19 +1417,19 @@ class Free_Loader extends Pro_Prompt {
                 'name'        => 'User Activity',
                 'description' => 'Handle user activity in frontend',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/user-activity/',
-                'thumbnail'   => 'wpuf-activity.png',
+                'thumbnail'   => 'wpuf-activity.svg',
             ],
             'report/wpuf-report.php' => [
                 'name'        => 'Reports',
                 'description' => 'Show various reports in WP User Frontend menu',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/reports/',
-                'thumbnail'   => 'reports.png',
+                'thumbnail'   => 'reports.svg',
             ],
             'qr-code-field/wpuf-qr-code.php' => [
                 'name'        => 'QR Code',
                 'description' => 'Post Qr code generator plugin',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/qr-code/',
-                'thumbnail'   => 'wpuf-qr.png',
+                'thumbnail'   => 'wpuf-qr.svg',
             ],
             'mailpoet3/wpuf-mailpoet-3.php' => [
                 'name'        => 'Mailpoet 3',
@@ -1447,7 +1447,7 @@ class Free_Loader extends Pro_Prompt {
                 'name'        => 'SEO Settings',
                 'description' => 'SEO settings for user directory and profiles',
                 'plugin_uri'  => 'https://wedevs.com/products/plugins/wp-user-frontend-pro/seo-settings/',
-                'thumbnail'   => 'wpuf-seo.png',
+                'thumbnail'   => 'wpuf-seo.svg',
             ],
         ];
     }

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" role="img" aria-label="Private Message">
+  <rect width="96" height="96" rx="22" fill="#22c55e"/>
+  <path d="M26 30h44a8 8 0 0 1 8 8v22a8 8 0 0 1-8 8H48L34 78V68h-8a8 8 0 0 1-8-8V38a8 8 0 0 1 8-8z" fill="#fff"/>
+  <circle cx="38" cy="49" r="4.5" fill="#22c55e">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="1.2s" begin="0s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="50" cy="49" r="4.5" fill="#22c55e">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="1.2s" begin="0.2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="62" cy="49" r="4.5" fill="#22c55e">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="1.2s" begin="0.4s" repeatCount="indefinite"/>
+  </circle>
+</svg>

@@ -100,8 +100,13 @@
 }
 
 .activate-deactivate-all span {
-    color: #0073aa;
+    color: #059669;
     cursor: pointer;
+    font-weight: 500;
+}
+
+.activate-deactivate-all span:hover {
+    text-decoration: underline;
 }
 
 .wpuf-doc-link {
@@ -498,12 +503,14 @@ ul.slider-container li img {
     font-size: 0;
     line-height: 0;
     text-decoration: none;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23059669' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z'/%3E%3Cpath d='M14 3v5h5'/%3E%3Cpath d='M9 13h6'/%3E%3Cpath d='M9 17h4'/%3E%3C/svg%3E") center / 18px 18px no-repeat;
+    background-color: #94a3b8;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z'/%3E%3Cpath d='M14 3v5h5'/%3E%3Cpath d='M9 13h6'/%3E%3Cpath d='M9 17h4'/%3E%3C/svg%3E") center / 18px 18px no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z'/%3E%3Cpath d='M14 3v5h5'/%3E%3Cpath d='M9 13h6'/%3E%3Cpath d='M9 17h4'/%3E%3C/svg%3E") center / 18px 18px no-repeat;
     transition: background-color .15s;
 }
 
 .wpuf-modules .plugin-card .wpuf-doc-link a:hover {
-    background-color: #ecfdf5;
+    background-color: #059669;
 }
 
 /* Locked (Other Modules) upgrade pill */
@@ -513,4 +520,36 @@ ul.slider-container li img {
 .wpuf-modules .plugin-card .wpuf-module-upgrade {
     white-space: nowrap;
     font-size: 12px;
+}
+
+/* On/off toggle uses the WPUF green when active (base styles come from admin.css). */
+.wpuf-modules .wpuf-toggle-switch input:checked + .slider {
+    background-color: #059669;
+}
+
+/* Cards fly in on load, gently staggered. */
+@keyframes wpuf-module-fly-in {
+    from { opacity: 0; transform: translateY(18px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.wp-list-table.wpuf-modules .plugin-card {
+    animation: wpuf-module-fly-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.wp-list-table.wpuf-modules .plugin-card:nth-child(1) { animation-delay: 0.03s; }
+.wp-list-table.wpuf-modules .plugin-card:nth-child(2) { animation-delay: 0.07s; }
+.wp-list-table.wpuf-modules .plugin-card:nth-child(3) { animation-delay: 0.11s; }
+.wp-list-table.wpuf-modules .plugin-card:nth-child(4) { animation-delay: 0.15s; }
+.wp-list-table.wpuf-modules .plugin-card:nth-child(5) { animation-delay: 0.19s; }
+.wp-list-table.wpuf-modules .plugin-card:nth-child(6) { animation-delay: 0.23s; }
+.wp-list-table.wpuf-modules .plugin-card:nth-child(7) { animation-delay: 0.27s; }
+.wp-list-table.wpuf-modules .plugin-card:nth-child(8) { animation-delay: 0.31s; }
+.wp-list-table.wpuf-modules .plugin-card:nth-child(9) { animation-delay: 0.35s; }
+.wp-list-table.wpuf-modules .plugin-card:nth-child(10) { animation-delay: 0.39s; }
+.wp-list-table.wpuf-modules .plugin-card:nth-child(11) { animation-delay: 0.43s; }
+.wp-list-table.wpuf-modules .plugin-card:nth-child(12) { animation-delay: 0.47s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .wp-list-table.wpuf-modules .plugin-card { animation: none; }
 }

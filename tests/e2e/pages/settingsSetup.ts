@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config({ quiet: true });
 import { expect, type Page, type Dialog } from '@playwright/test';
 import { Selectors } from './selectors';
-import { Urls } from '../utils/testData';
+import { Urls, Users } from '../utils/testData';
 import { Base } from './base';
 import { waitForSiteReady } from '../utils/siteReady';
 export class SettingsSetupPage extends Base {
@@ -131,42 +131,90 @@ export class SettingsSetupPage extends Base {
         }
     }
 
-    async validateWPUFpages() {
-        await this.navigateToURL(this.pagesPage);
+    /**
+     * The WPUF pages, each with the admin-list locator that identifies ITS row.
+     *
+     * Titles alone are ambiguous — Dokan ships its own "Dashboard" page, so
+     * WPUF's is created as `dashboard-2`. Every locator below therefore pins the
+     * row by the post-state badge WPUF adds ("— WPUF Dashboard Page"), or by an
+     * exact row title where WPUF owns the name outright.
+     */
+    private readonly wpufPages: Array<[string, string]> = [
+        ['Account', Selectors.settingsSetup.wpufPages.wpufAccountPage],
+        ['Dashboard', Selectors.settingsSetup.wpufPages.wpufDashboardPage],
+        ['Edit', Selectors.settingsSetup.wpufPages.wpufEditPage],
+        ['Login', Selectors.settingsSetup.wpufPages.wpufLoginPage],
+        ['Subscription', Selectors.settingsSetup.wpufPages.wpufSubscriptionPage],
+        ['Order Received', Selectors.settingsSetup.wpufPages.orderReceivedPage],
+        ['Payment', Selectors.settingsSetup.wpufPages.paymentPage],
+        ['Thank You', Selectors.settingsSetup.wpufPages.thankYouPage],
+    ];
 
-        //Validate WPUF Pages
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufAccountPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufDashboardPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufEditPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufLoginPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.orderReceivedPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.paymentPage);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPages.clickNextPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufSubscriptionPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.thankYouPage);
+    async validateWPUFpages() {
+        // The Pages list paginates at 20 rows and WP takes that number from the
+        // per-user screen option only (`wp_edit_posts_query()` ignores any
+        // per-page URL arg), so which list page a WPUF page lands on depends on
+        // how many pages the mounted plugins created — which differs per CI
+        // group. Paging with "Next page" therefore passes locally and breaks in
+        // CI: 4 groups have no second page at all, and the group that does has
+        // the WPUF pages spread differently. Search for each page by title so
+        // the assertion holds whatever else is installed.
+        for (const [title, locator] of this.wpufPages) {
+            await this.navigateToURL(this.pagesSearch(title));
+            await this.assertionValidate(locator);
+        }
+
         console.log('WPUF Pages are validated. all pages created successfully');
     }
 
-    async validateWPUFpagesFE() {
-        //Go to FrontEnd
-        await this.navigateToURL(Urls.baseUrl);
+    private pagesSearch(title: string) {
+        return `${this.pagesPage}&s=${encodeURIComponent(title)}`;
+    }
 
-        //Validate WPUF Pages
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.dashboardPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.editPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.loginPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.subscriptionPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.orderReceivedPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.thankYouPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.paymentPageFE);
+    /**
+     * Resolve a WPUF page's front-end URL through its admin row.
+     *
+     * Returns a `?page_id=N` link, which resolves whatever the slug ended up
+     * being — WPUF's own pages get `-2` suffixes whenever another plugin claimed
+     * the name first, and that differs per environment.
+     */
+    private async wpufPageUrl(title: string, rowLocator: string) {
+        await this.navigateToURL(this.pagesSearch(title));
+
+        const editHref = await this.page
+            .locator(`${rowLocator}/ancestor::tr[1]//a[contains(@class,"row-title")]`)
+            .first()
+            .getAttribute('href');
+        const postId = new URL(editHref, Urls.baseUrl).searchParams.get('post');
+
+        if (!postId) {
+            throw new Error(`Could not resolve the page ID for the WPUF "${title}" page from ${editHref}`);
+        }
+
+        return `${Urls.baseUrl}/?page_id=${postId}`;
+    }
+
+    async validateWPUFpagesFE() {
+        // Do NOT reach these pages by clicking the theme's page-list nav. That
+        // list is keyed on titles, and titles are not unique: Dokan ships its
+        // own "Dashboard" page, so clicking "Dashboard" lands on the Dokan
+        // vendor dashboard, which renders no page-list nav at all and strands
+        // every later link. Resolve each WPUF page by ID from its admin row and
+        // visit it directly.
+        for (const [title, rowLocator] of this.wpufPages) {
+            const url = await this.wpufPageUrl(title, rowLocator);
+
+            await this.navigateToURL(url);
+            await expect(this.page.locator('body')).not.toHaveClass(/error404/);
+            console.log('\x1b[34m%s\x1b[0m', `✅ WPUF "${title}" page renders at ${url}`);
+        }
     }
 
     async validateAccountPageTabs() {
 
         await this.navigateToURL(Urls.baseUrl);
 
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
+        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.dashboardTab);
         await this.assertionValidate(Selectors.settingsSetup.accountPageTabs.viewDashboardPara);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.postsTab);
@@ -194,54 +242,16 @@ export class SettingsSetupPage extends Base {
             }
         };
         this.page.on('dialog', dialogHandler);
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
-        } catch (error) {
-            console.log('Failed to click Run Updater:', error);
-        }
+        await this.clickIfPresent(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
         this.page.off('dialog', dialogHandler);
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
-        } catch (error) {
-            console.log('Failed to click Allow1:', error);
-        }
-
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
-        } catch (error) {
-            console.log('Failed to click Allow:', error);
-        }
-
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
-        } catch (error) {
-            console.log('Failed to click Skip Setup:', error);
-        }
-
-        // try {
-        //     await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSwitchCart);
-        // } catch (error) {
-        //     console.log('Failed to click Switch Cart:', error);
-        // }
-
-        // try {
-        //     await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDismiss);
-        // } catch (error) {
-        //     console.log('Failed to click Dismiss:', error);
-        // }
-
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
-        } catch (error) {
-            console.log('Failed to click EDD notice Cross:', error);
-        }
-
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);
-        } catch (error) {
-            console.log('Failed to click PayPal Cross:', error);
-        }
+        // All optional admin notices — absent on a clean install. Short waits so
+        // six misses cost seconds, not the whole 180s test timeout.
+        await this.clickIfPresent(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
+        await this.clickIfPresent(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
+        await this.clickIfPresent(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
+        await this.clickIfPresent(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
+        await this.clickIfPresent(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);
 
         if (ifWPUFLite == true) {
             //Activate Plugin
@@ -873,8 +883,20 @@ export class SettingsSetupPage extends Base {
         // instead of a fixed 20s sleep (same worst-case ceiling, faster when done).
         await this.page.waitForTimeout(3000);
         await waitForSiteReady(this.page, 60000);
+        // The reset rewrites the users table, so the admin cookie we came in with (and any
+        // cached `.auth/` session) is dead — every admin URL now bounces to wp-login.php.
+        // Log in again before touching the plugins screen. Imported lazily: basicLogin.ts
+        // imports this module, so a top-level import would be a cycle.
+        const { BasicLoginPage } = await import('./basicLogin');
+        await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
+        // The reset wipes the DB, so the next admin page load is the *first* one after
+        // (re)activation and plugins hijack it with a one-shot redirect — WPUF sends us to
+        // its setup wizard. A reload keeps us on the wizard URL; navigating again lands on
+        // plugins.php because the redirect transient is already consumed.
         await this.navigateToURL(this.pluginsPage);
-        await this.page.reload();
+        if (!this.page.url().includes('plugins.php')) {
+            await this.navigateToURL(this.pluginsPage);
+        }
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWCvendors);
 
 

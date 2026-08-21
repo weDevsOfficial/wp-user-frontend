@@ -7,6 +7,7 @@ import { RegistrationForm, VendorRegistrationForm, Urls, PostForm, Users } from 
 import { faker } from '@faker-js/faker';
 import { BasicLoginPage } from './basicLogin';
 import { BasicLogoutPage } from './basicLogout';
+import { deleteFormsByTitle } from '../utils/wpEnvCli';
 
 // new email
 let newEmail = '';
@@ -135,6 +136,10 @@ export class RegFormPage extends Base {
     //BlankForm
     async createBlankForm_RF(newRegFormName: string, newRegFormPage: string) {
 
+        // Drop any same-named form left by an earlier run, or every later
+        // "open the form called X" locator hits a strict-mode violation.
+        deleteFormsByTitle(newRegFormName);
+
         let flag = true;
 
         while (flag == true) {
@@ -191,19 +196,21 @@ export class RegFormPage extends Base {
             await this.validateAndClick(Selectors.registrationForms.addFields.clickForm(newRegFormName));
             await this.validateAndClick(Selectors.registrationForms.addFields.clickFormEditor);
 
-            await this.validateAndClick(Selectors.registrationForms.addFields.useField('Username'));
-            await this.validateAndClick(Selectors.registrationForms.addFields.useField('First Name'));
-            await this.validateAndClick(Selectors.registrationForms.addFields.useField('Last Name'));
-            await this.validateAndClick(Selectors.registrationForms.addFields.useField('Display Name'));
-            await this.validateAndClick(Selectors.registrationForms.addFields.useField('Nickname Name'));
-            await this.validateAndClick(Selectors.registrationForms.addFields.useField('Website'));
-            await this.validateAndClick(Selectors.registrationForms.addFields.useField('Biographical Info'));
-            await this.validateAndClick(Selectors.registrationForms.addFields.useField('Avatar'));
-            await this.validateAndClick(Selectors.registrationForms.addFields.useField('Profile Photo'));
-            await this.validateAndClick(Selectors.registrationForms.addFields.useField('X (Twitter)'));
-            await this.validateAndClick(Selectors.registrationForms.addFields.useField('Facebook'));
-            await this.validateAndClick(Selectors.registrationForms.addFields.useField('LinkedIn'));
-            await this.validateAndClick(Selectors.registrationForms.addFields.useField('Instagram'));
+            // The default Registration form already ships some of these fields.
+            // Re-adding one pops a SweetAlert whose backdrop blocks every later
+            // click, so dismiss it after each add — the field is present either
+            // way, which is all this test needs.
+            const profileFields = [
+                'Username', 'First Name', 'Last Name', 'Display Name', 'Nickname Name',
+                'Website', 'Biographical Info', 'Avatar', 'Profile Photo',
+                'X (Twitter)', 'Facebook', 'LinkedIn', 'Instagram',
+            ];
+
+            for (const field of profileFields) {
+                await this.validateAndClick(Selectors.registrationForms.addFields.useField(field));
+                await this.dismissBlockingModal();
+            }
+
             await this.validateAndClick(Selectors.regFormSettings.saveButton);
             flag = await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
         }

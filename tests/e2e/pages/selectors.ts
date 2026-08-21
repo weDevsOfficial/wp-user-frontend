@@ -107,7 +107,6 @@ export const Selectors = {
             orderReceivedPage: '//strong//a[normalize-space()="Order Received"]',
             thankYouPage: '//strong//a[normalize-space()="Thank You"]',
             paymentPage: '//strong//a[normalize-space()="Payment"]',
-            clickNextPage: '(//span[text()="Next page"]/following-sibling::span)[2]',
         },
 
         wpufPagesFE: {
@@ -161,6 +160,8 @@ export const Selectors = {
             showCustomFields: '//label[normalize-space()="Show custom fields on post content area"]',
             // Set Default Post Form
             setDefaultPostForm: '//select[@id="wpuf_frontend_posting[default_post_form]"]',
+            // Set Edit Page (the page holding [wpuf_edit]) — drives the dashboard Edit link
+            setEditPage: '//select[@id="wpuf_frontend_posting[edit_page_id]"]',
             // Save Changes
             settingsFrontendPostingSave: '//div[@id="wpuf_frontend_posting"]//form[@method="post"]//div//input[@id="submit"]',
 
@@ -638,8 +639,11 @@ export const Selectors = {
             postTextareaFormsFE: '//textarea[@name="textarea"]',
             // Dropdown
             postDropdownFormsFE: '//select[@name="dropdown"]',
-            // Multi Select
+            // Multi Select — the native <select> is display:none and replaced by a
+            // `.custom-multiselect` widget, so drive the widget, not the select.
             postMultiSelectFormsFE: '//select[@name="multi_select[]"]',
+            postMultiSelectToggleFE: '//select[@name="multi_select[]"]/following-sibling::div[contains(@class,"custom-multiselect")]//div[contains(@class,"multiselect-input")]',
+            postMultiSelectOptionFE: (value: string) => `//select[@name="multi_select[]"]/following-sibling::div[contains(@class,"custom-multiselect")]//div[contains(@class,"multiselect-option")][@data-value="${value}"]//label`,
             // Radio
             postRadioFormsFE: '//input[@name="radio"]',
             // Checkbox
@@ -1124,8 +1128,13 @@ export const Selectors = {
         postStatusColumn: (title: string, status: string, a: string, b: string) => `//td${a}[normalize-space(text())="${title}"]//..${b}//span[normalize-space(text())="${status}"]`,
         saveDraftButton: '//a[normalize-space(text())="Save Draft"]',
         draftSavedAlert: '//span[@class="wpuf-draft-saved"]',
-        multiStepProgressbar: '//div[normalize-space(text())="Step Start (100%)"]',
-        multiStepByStep: '//li[normalize-space(text())="Step Start"]',
+        // The revamped multistep bar renders a header + track instead of the old
+        // "Step Start (100%)" div. Pro (frontend-form-step.js) writes
+        // `.wpuf-progressbar-percent-text`, free (frontend-form.js) writes
+        // `.wpuf-progressbar-percent` — match the shared prefix so both pass.
+        multiStepProgressbar: '//div[contains(@class,"wpuf-multistep-progressbar")]//span[contains(@class,"wpuf-progressbar-percent")]',
+        // step_by_step renders a wizard whose label carries the step legend.
+        multiStepByStep: '//div[contains(@class,"wpuf-step-wizard")]//div[contains(@class,"wpuf-step-label")][normalize-space()="Step Start"]',
         removeStepStart: '//div[@class="step-start-indicator"]/../../../..//span[4]',
         confirmDelete: '//button[normalize-space()="Yes, delete it"]',
         threeDotButton: '(//div[contains(@class,"wpuf-relative wpuf-inline-block")]//button)[1]',
@@ -1489,8 +1498,9 @@ export const Selectors = {
             multiStepTypeContainer: '//label[@for="multistep_progressbar_type-selectized"]//..//..//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")]',
             multiStepTypeDropdown: '//label[@for="multistep_progressbar_type-selectized"]//..//..//div[contains(@class,"selectize-dropdown-content")]',
             multiStepTypeOption: (value: string) => `//label[@for="multistep_progressbar_type-selectized"]//..//..//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${value}"]`,
-            multiStepProgressbar: '//div[normalize-space(text())="Step Start (100%)"]',
-            multiStepByStep: '//li[normalize-space(text())="Step Start"]',
+            // Same revamped markup as postFormSettings.multiStepProgressbar above.
+            multiStepProgressbar: '//div[contains(@class,"wpuf-multistep-progressbar")]//span[contains(@class,"wpuf-progressbar-percent")]',
+            multiStepByStep: '//div[contains(@class,"wpuf-step-wizard")]//div[contains(@class,"wpuf-step-label")][normalize-space()="Step Start"]',
         },
 
         // Custom Fields Section
@@ -2175,6 +2185,187 @@ export const Selectors = {
             stripePaymentOption: '//input[@value="stripe" or @id="payment_method_stripe"]',
             
             cancelButton: '//a[contains(text(),"Cancel") or contains(@class,"cancel")]',
+        },
+    },
+
+    /*********************************/
+    /**** New Form Editor (FE) *******/
+    /*********************************/
+
+    // Revamped post form builder chrome: header (inline title, form switcher,
+    // Preview, Save), Form Editor / Settings tabs, Add Fields / Field Options
+    // side panel and the drag-sortable field stage.
+    formEditor: {
+        // Header
+        header: {
+            logo: '//img[@alt="WPUF Icon"]',
+            titleInput: '//form[@id="wpuf-form-builder"]//input[@name="post_title"]',
+            formIdChip: '//span[contains(@class,"form-id")]',
+            switcherArrow: '//i[contains(@class,"form-switcher-arrow")]',
+            switcherItem: (formName: string) => `//ul[contains(@class,"wpuf-dropdown-content")]//a[normalize-space()="${formName}"]`,
+            // First entry in the switcher that is not the form being edited.
+            switcherOtherForm: (formId: string) => `(//ul[contains(@class,"wpuf-dropdown-content")]//a[not(contains(@href,"id=${formId}"))])[1]`,
+            previewLink: '//a[contains(@href,"wpuf_preview")]',
+            saveButton: '//button[normalize-space()="Save"]',
+        },
+
+        // Top level tabs
+        tabs: {
+            navTab: (name: string) => `//a[contains(@class,"wpuf-nav-tab")][normalize-space()="${name}"]`,
+            // The active tab is the one painted white — "wpuf-nav-tab-active" is
+            // a static class present on both tabs.
+            activeNavTab: (name: string) => `//a[contains(@class,"wpuf-nav-tab")][contains(@class,"wpuf-bg-white")][normalize-space()="${name}"]`,
+            editorStage: '//ul[contains(@class,"sortable-list")]',
+            settingsPanel: '//div[@id="wpuf-form-builder-settings"]',
+        },
+
+        // Right side panel
+        panel: {
+            panelTab: (name: string) => `//a[contains(@class,"wpuf-tab")][normalize-space()="${name}"]`,
+            searchField: '//input[@id="search"]',
+            groupHeading: (group: string) => `//h3[normalize-space()="${group}"]`,
+            fieldButton: (label: string) => `//div[contains(@id,"panel-form-field-buttons")]//p[normalize-space()="${label}"]`,
+            visibleFieldButtons: '//div[contains(@id,"panel-form-field-buttons")]//p',
+            // Re-adding a single-instance field pops an "Oops…" SweetAlert (OK only);
+            // adding a custom field pops the "show custom field data" SweetAlert
+            // (Okay = cancel, Don't show again = confirm). Prefer cancel so the
+            // "don't show again" preference is never written by a test.
+            builderPopup: '//div[contains(@class,"swal2-popup")]',
+            builderPopupText: '//div[contains(@class,"swal2-popup")]//div[contains(@class,"swal2-html-container")]',
+            builderPopupCancel: '//button[contains(@class,"swal2-cancel")]',
+            builderPopupConfirm: '//button[contains(@class,"swal2-confirm")]',
+            // Field Options panel with nothing selected.
+            fieldOptionsEmptyState: '//div[contains(@class,"wpuf-form-builder-field-options")]//p[contains(.,"please start adding fields")]',
+            fieldOptionsPanel: '//div[contains(@class,"wpuf-form-builder-field-options")]',
+            fieldOptionByTitle: (title: string) => `//div[contains(@class,"wpuf-form-builder-field-options")]//label[normalize-space()="${title}"]`,
+            // Fields shown as pro previews carry the pro badge image.
+            proPreviewBadge: '//div[contains(@class,"group/pro-field")]//img[contains(@src,"pro-badge")]',
+            fieldOptionsLabel:'//div[contains(@class,"wpuf-form-builder-field-options")]//input[@name="label"] | //label[normalize-space()="Field Label"]/following::input[1]',
+        },
+
+        // Field stage
+        stage: {
+            allFields: '//ul[contains(@class,"sortable-list")]/li[contains(@class,"field-items")]',
+            fieldByType: (type: string) => `//li[contains(@class,"form-field-${type}")]`,
+            fieldLabel: (type: string) => `//li[contains(@class,"form-field-${type}")]//label`,
+            requiredMark: (type: string) => `//li[contains(@class,"form-field-${type}")]//span[contains(@class,"required") or normalize-space()="*"]`,
+            actionEdit: (type: string) => `//li[contains(@class,"form-field-${type}")]//span[normalize-space()="Edit"]`,
+            actionCopy: (type: string) => `//li[contains(@class,"form-field-${type}")]//span[normalize-space()="Copy"]`,
+            actionRemove: (type: string) => `//li[contains(@class,"form-field-${type}")]//span[normalize-space()="Remove"]`,
+            dragHandle: (type: string) => `//li[contains(@class,"form-field-${type}")]//i[contains(@class,"move")]`,
+            stepStart: '//li[contains(@class,"field-items")][contains(.,"Step Start")]',
+            helpText: (type: string) => `//li[contains(@class,"form-field-${type}")]//p[contains(@class,"wpuf-help") or contains(@class,"wpuf-text-gray")]`,
+            selectOptions: (type: string) => `//li[contains(@class,"form-field-${type}")]//select/option`,
+        },
+
+        // Settings tab
+        settings: {
+            // "Post Settings" / "Modules" are group headings; the clickable
+            // sections (General, Payment Settings, …) are links under them.
+            sidebarGroup: (name: string) => `//div[@id="wpuf-form-builder-settings"]//h2[normalize-space()="${name}"]`,
+            sidebarItem: (name: string) => `//div[@id="wpuf-form-builder-settings"]//li//a[normalize-space()="${name}"]`,
+            sectionHeading: (name: string) => `//div[@id="wpuf-form-builder-settings"]//h2[normalize-space()="${name}"]`,
+            submitTextField: '//input[@id="submit_text"]',
+            postStatusField: '//select[@id="post_status"]',
+            formTemplateField: '//select[@id="form_template"]',
+            enableMultistep: '//input[@id="enable_multistep"]',
+            multistepProgressbar: '//select[@id="multistep_progressbar_type"]',
+            // Generic accessors — every setting control uses its setting key as id.
+            controlById: (id: string) => `//div[@id="wpuf-form-builder-settings"]//*[@id="${id}"]`,
+            formLayoutPicker: '//div[@id="wpuf-form-builder-settings"]//*[@id="form_layout"]',
+            // pic-radio settings render as a div of radio inputs, not a <select>.
+            radioOptionById: (id: string, value: string) => `//div[@id="wpuf-form-builder-settings"]//*[@id="${id}"]//input[@type="radio"][@value="${value}"]`,
+        },
+
+        // Frontend rendering of the form built in the new editor
+        frontend: {
+            form: '//form[contains(@class,"wpuf-form")]',
+            titleField: '//form[contains(@class,"wpuf-form")]//input[@name="post_title"]',
+            contentField: '//form[contains(@class,"wpuf-form")]//textarea[@name="post_content"]',
+            // TinyMCE ids are per form (post_content_<formId>_ifr).
+            contentEditorFrame: 'form[class*="wpuf-form"] iframe[id$="_ifr"]',
+            submitButton: '//form[contains(@class,"wpuf-form")]//input[contains(@class,"wpuf-submit-button")]',
+            // Per-field validation message added by frontend-form.js.
+            errorMessage: '//form[contains(@class,"wpuf-form")]//div[contains(@class,"wpuf-error-msg") or contains(@class,"wpuf-errors")]',
+            successMessage: '//div[contains(@class,"wpuf-success")]',
+            formTitle: '//h2[contains(@class,"wpuf-form-title")]',
+            formDescription: '//div[contains(@class,"wpuf-form-description")]',
+            helpText: (text: string) => `//span[contains(@class,"wpuf-help")][contains(normalize-space(),"${text}")]`,
+            nativeSelect: '//form[contains(@class,"wpuf-form")]//select[not(contains(@class,"selectized"))]',
+            // Plupload renders its own hidden file input inside the field row.
+            imageUploadInput: '//li[@data-label="Image Upload"]//input[@type="file"]',
+            imageUploadButton: '//li[@data-label="Image Upload"]//a[contains(@class,"file-selector")]',
+            uploadedItem: '//li[@data-label="Image Upload"]//li[contains(@class,"wpuf-image-wrap") or contains(@class,"wpuf-attachment")]',
+            // Each step carries its own nav buttons, so the click target is the
+            // one inside the step currently on screen.
+            multistepFieldset: '//form[contains(@class,"wpuf-form")]//fieldset[contains(@class,"wpuf-multistep-fieldset")]',
+            multistepNextButton: '//form[contains(@class,"wpuf-form")]//fieldset[contains(@class,"field-active")]//button[contains(@class,"wpuf-multistep-next-btn")]',
+            multistepProgress: '//form[contains(@class,"wpuf-form")]//*[contains(@class,"wpuf-multistep-progressbar") or contains(@class,"wpuf-step-wrap")]',
+        },
+    },
+
+    /**
+     * Selectors for the post-form coverage gaps documented in
+     * docs/post-form.md §7 — view control, display/advanced settings,
+     * post expiration, guest posting, the forms list screen and the
+     * frontend messages those settings produce.
+     */
+    postFormGaps: {
+        // Every settings control carries its setting key as id; selects are
+        // selectize-enhanced, so the native <select> stays hidden next to a
+        // .selectize-control sibling inside the same wrapper.
+        settings: {
+            selectizeInput: (id: string) => `//select[@id="${id}"]/parent::*//div[contains(@class,"selectize-input")]`,
+            selectizeOption: (id: string, value: string) =>
+                `//select[@id="${id}"]/parent::*//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${value}"]`,
+            selectizeOptionByText: (id: string, text: string) =>
+                `//select[@id="${id}"]/parent::*//div[contains(@class,"selectize-dropdown-content")]//div[normalize-space()="${text}"]`,
+            // A selectize chip is `<div class="item">Editor<a class="remove">×</a></div>`,
+            // so normalize-space() over the whole node yields "Editor×" and never
+            // matches. text() takes only the label node.
+            selectizeItem: (id: string, text: string) =>
+                `//select[@id="${id}"]/parent::*//div[contains(@class,"selectize-input")]//div[contains(@class,"item")][normalize-space(text())="${text}"]`,
+        },
+
+        // Field Options controls for the structural fields (Section Break,
+        // Custom HTML, Shortcode, Action Hook, Hidden Field, Terms & Conditions).
+        // Those inputs carry no name/id, so they are addressed by their label.
+        fieldOptions: {
+            inputByLabel: (label: string) =>
+                `(//div[contains(@class,"wpuf-form-builder-field-options")]//label[normalize-space()="${label}"]/following::input)[1]`,
+            textareaByLabel: (label: string) =>
+                `(//div[contains(@class,"wpuf-form-builder-field-options")]//label[normalize-space()="${label}"]/following::textarea)[1]`,
+            // Conditional Logic block: Yes/No radios, then the rule row —
+            // [1] the field to watch, [2] the operator (!=empty / ==empty).
+            conditionalYes: '(//label[normalize-space()="Conditional Logic"]/following::input[@type="radio"])[1]',
+            conditionalNo: '(//label[normalize-space()="Conditional Logic"]/following::input[@type="radio"])[2]',
+            conditionalField: '(//label[normalize-space()="Conditional Logic"]/following::select)[1]',
+            conditionalOperator: '(//label[normalize-space()="Conditional Logic"]/following::select)[2]',
+        },
+
+        // Post Forms list screen (Vue table: tabs with counts, bulk actions,
+        // search box and a per-row "…" menu holding Edit / Duplicate / Trash).
+        formList: {
+            searchInput: '//input[@placeholder="Search Forms"]',
+            statusTab: (name: string) => `//a[contains(normalize-space(),"${name}")] | //button[contains(normalize-space(),"${name}")]`,
+            row: (formName: string) => `//tr[.//span[normalize-space()="${formName}"]]`,
+            allRows: '//tbody//tr[.//input[@type="checkbox"]]',
+            rowCheckbox: (formName: string) => `//tr[.//span[normalize-space()="${formName}"]]//input[@type="checkbox"]`,
+            rowMenuToggle: (formName: string) => `(//tr[.//span[normalize-space()="${formName}"]]//button)[last()]`,
+            rowMenuItem: (action: string) => `//div[contains(@class,"wpuf-origin-top-right")]//*[normalize-space()="${action}"]`,
+            bulkActionSelect: '//select[.//option[contains(normalize-space(),"Bulk actions")]]',
+            bulkApplyButton: '//button[normalize-space()="Apply"]',
+        },
+
+        // Messages WPUF prints instead of content/form.
+        frontend: {
+            restrictedContent: '//div[contains(@class,"wpuf-restricted-content")]',
+            // Scheduling / entry-limit / "not logged in" notices.
+            formMessage: '//div[contains(@class,"wpuf-message")]',
+            // [wpuf_edit] refusals (invalid post, not allowed to edit, lock notices).
+            infoMessage: '//div[contains(@class,"wpuf-info")]',
+            successMessage: '//div[contains(@class,"wpuf-success")]',
+            postContent: '//div[contains(@class,"entry-content") or contains(@class,"post-content")]',
         },
     },
 };

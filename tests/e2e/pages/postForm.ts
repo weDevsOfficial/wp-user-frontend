@@ -5,6 +5,7 @@ import { Selectors } from './selectors';
 import { Base } from './base';
 import { faker } from '@faker-js/faker';
 import { DownloadsForm, PostForm, ProductForm, Urls } from '../utils/testData';
+import { deleteFormsByTitle } from '../utils/wpEnvCli';
 //import { TestData } from '../tests/testdata';
 
 export class PostFormPage extends Base {
@@ -20,6 +21,10 @@ export class PostFormPage extends Base {
 
     //BlankForm
     async createBlankFormPostForm(newPostName: string) {
+
+        // Drop any same-named form left by an earlier run, or every later
+        // "open the form called X" locator hits a strict-mode violation.
+        deleteFormsByTitle(newPostName);
 
         //Visit Post Form Page
         await this.navigateToURL(this.wpufPostFormPage);
@@ -224,8 +229,9 @@ export class PostFormPage extends Base {
         console.log(PostForm.textarea);
         //Enter Dropdown
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDropdownFormsFE, PostForm.dropdown);
-        //Enter Multi Select
-        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postMultiSelectFormsFE, PostForm.multiSelect);
+        //Enter Multi Select (custom widget — the native select is hidden)
+        await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postMultiSelectToggleFE);
+        await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postMultiSelectOptionFE(PostForm.multiSelect));
         //Enter Radio
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postRadioFormsFE);
         //Enter Checkbox

@@ -77,13 +77,65 @@ export class Base {
     async navigateToURL(url: string) {
         try {
             await this.waitForLoading();
-            await this.page.goto(url);
+
+            try {
+                await this.page.goto(url);
+            } catch (error) {
+                // Chromium reports ERR_ABORTED when a still-settling page cancels
+                // the navigation (wp-admin redirects, a lingering unload handler).
+                // Nothing is wrong with the target — just ask for it again.
+                if (!String(error).includes('ERR_ABORTED')) {
+                    throw error;
+                }
+
+                console.log('\x1b[33m%s\x1b[0m', `↻ Navigation to ${url} aborted, retrying`);
+                await this.page.waitForTimeout(1000);
+                await this.page.goto(url);
+            }
+
             await this.waitForLoading();
+
+            await this.skipHijackingSetupWizard(url);
+
             console.log('\x1b[34m%s\x1b[0m', `✅ Navigated to ${url}`);
             return true;
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to navigate to ${url}: ${error}`);
             throw error;
+        }
+    }
+
+    /**
+     * Re-request `url` when a plugin's one-shot welcome wizard stole it.
+     *
+     * WPUF (and Dokan, and WooCommerce) redirect the FIRST admin page load after
+     * activation to their setup wizard — WPUF via the `wpuf_activation_redirect`
+     * transient (`Setup_Wizard::redirect_to_page`). Which navigation eats that
+     * redirect is a race: on a long-lived local site the transients were spent
+     * long ago, but in CI the plugins are activated at wp-env boot, so the first
+     * admin request in the run gets hijacked — and a chain of them lands on
+     * `page=dokan-setup` and then `page=wpuf-setup`. The wizards render full
+     * screen with no admin menu, so the victim test waits for a locator that can
+     * never appear.
+     *
+     * Each redirect deletes its own transient, so simply asking again gets us
+     * where we wanted. Loop, because one navigation can only burn one wizard.
+     * Never bounce a test that asked for a wizard on purpose (LS0006).
+     */
+    private async skipHijackingSetupWizard(url: string) {
+        const wizards = ['page=wpuf-setup', 'page=dokan-setup', 'page=wc-setup', 'path=/setup-wizard'];
+
+        for (let attempt = 0; attempt < wizards.length; attempt++) {
+            const landed = this.page.url();
+            const hijacked = wizards.some((wizard) => landed.includes(wizard) && !url.includes(wizard));
+
+            if (!hijacked) {
+                return;
+            }
+
+            console.log('\x1b[33m%s\x1b[0m', `↻ Setup wizard (${landed}) stole the navigation, retrying ${url}`);
+            await this.page.goto(url);
+            await this.waitForLoading();
         }
     }
 
@@ -147,6 +199,50 @@ export class Base {
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to click on ${locator}: ${error}`);
             throw error;
+        }
+    }
+
+    /**
+     * Click a locator only if it shows up within `timeout`, otherwise skip it.
+     *
+     * For genuinely optional UI — admin notices, "Allow"/"Skip setup" prompts,
+     * dismiss crosses — that renders only on some plugin sets. `validateAndClick`
+     * in a try/catch is the wrong tool: it inherits the global action timeout, so
+     * an absent notice stalls the test instead of being skipped. `.first()` also
+     * keeps duplicated notices (WPUF + WPUF Pro both render "Allow") out of
+     * strict-mode violations.
+     */
+    async clickIfPresent(locator: string, timeout = 3000) {
+        const element = this.page.locator(locator).first();
+
+        try {
+            await element.waitFor({ state: 'visible', timeout });
+        } catch {
+            console.log('\x1b[33m%s\x1b[0m', `⏭ Optional element absent, skipped ${locator}`);
+            return false;
+        }
+
+        await element.click();
+        await this.waitForLoading();
+        console.log('\x1b[35m%s\x1b[0m', `✅ Clicked optional ${locator}`);
+        return true;
+    }
+
+    /**
+     * Dismiss an open SweetAlert2 dialog, if any.
+     *
+     * The form builder pops "Oops... You already have this field in the form"
+     * when a field that is already on the form is clicked again. Its backdrop
+     * swallows every later click, so an undismissed dialog stalls the whole
+     * spec until the test times out. No-op when no dialog is showing.
+     */
+    async dismissBlockingModal() {
+        const confirm = this.page.locator('//div[contains(@class,"swal2-container")]//button[contains(@class,"swal2-confirm")]').first();
+
+        if (await confirm.isVisible().catch(() => false)) {
+            await confirm.click();
+            await this.page.locator('//div[contains(@class,"swal2-container")]').first()
+                .waitFor({ state: 'hidden' }).catch(() => {});
         }
     }
 

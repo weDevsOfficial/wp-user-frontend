@@ -92,7 +92,13 @@ export default defineConfig({
 
     // Shared defaults. CLI `--headed` overrides `headless` per-invocation.
     use: {
-        actionTimeout: 0,
+        // MUST stay finite. With `0` (no limit) a locator that never appears waits
+        // until the whole test times out — the run then reports the timeout at
+        // whatever line executed *after* the swallowed error, not the missing
+        // locator, and burns the full 180s. A wait longer than this on a WP admin
+        // page means the element is genuinely absent, not slow.
+        actionTimeout: 30000,
+        navigationTimeout: 60000,
         headless: true,
         viewport: { width: 1280, height: 720 },
         trace: 'retain-on-failure',

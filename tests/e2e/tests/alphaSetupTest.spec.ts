@@ -271,7 +271,9 @@ test.describe('Login and Setup', () => {
         await SettingsSetup.enableOpenAI();
     });
 
-    test.skip('LS0029 : Admin is enabling Anthropic AI', { tag: ['@Basic'] }, async () => {
+    // Was skipped outright; the Anthropic provider exists in the AI tab and saves
+    // exactly like Google/OpenAI above, so it is covered the same way.
+    test('LS0029 : Admin is enabling Anthropic AI', { tag: ['@Basic'] }, async () => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.enableAnthropicAI();
     });
@@ -304,8 +306,8 @@ test.describe('Login and Setup', () => {
 
     test('LS0035 : Admin validates AI provider selection persisted', { tag: ['@Basic', '@Test_LS0035'] }, async () => {
         const SettingsSetup = new SettingsSetupPage(page);
-        // LS0028 enabled OpenAI last, so it is the persisted active provider.
-        await SettingsSetup.validateAIProviderPersistence('openai');
+        // LS0029 enabled Anthropic last, so it is the persisted active provider.
+        await SettingsSetup.validateAIProviderPersistence('anthropic');
     });
 
     test('LS0036 : Admin validates WPUF general settings persist (round-trip)', { tag: ['@Basic', '@Test_LS0036'] }, async () => {

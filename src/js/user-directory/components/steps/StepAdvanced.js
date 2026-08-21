@@ -442,6 +442,30 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                     </div>
                 </div>
             </div>
+
+            {/* Pro-only directory features — locked preview */}
+            <div className="wpuf-mt-[25px] wpuf-border-t wpuf-border-gray-100 wpuf-pt-5">
+                <div className="wpuf-text-sm wpuf-font-semibold wpuf-text-gray-700 wpuf-mb-3">
+                    {__('More directory features', 'wp-user-frontend')}
+                </div>
+                {[
+                    { key: 'view_toggle', label: __('Visitor Grid / List view toggle', 'wp-user-frontend') },
+                    { key: 'timing', label: __('Show members on load or after search', 'wp-user-frontend') },
+                    { key: 'az', label: __('A–Z alphabetical index bar', 'wp-user-frontend') },
+                    { key: 'facets', label: __('Advanced faceted filter bar', 'wp-user-frontend') },
+                    { key: 'copylink', label: __('Shareable / copy-link filtered view', 'wp-user-frontend') },
+                ].map((feature) => (
+                    <div key={feature.key} className="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-py-2">
+                        <div className="wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-opacity-60">
+                            <span className="wpuf-inline-block wpuf-w-9 wpuf-h-5 wpuf-rounded-full wpuf-bg-gray-200 wpuf-relative wpuf-flex-shrink-0" aria-hidden="true">
+                                <span className="wpuf-absolute wpuf-top-0.5 wpuf-left-0.5 wpuf-w-4 wpuf-h-4 wpuf-rounded-full wpuf-bg-white"></span>
+                            </span>
+                            <span className="wpuf-text-sm wpuf-text-gray-500">{feature.label}</span>
+                        </div>
+                        <ProBadge config={config} utm="wpuf-user-directory-features" />
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

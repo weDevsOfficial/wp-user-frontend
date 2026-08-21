@@ -389,14 +389,82 @@
     border-color: #c4b5fd;
 }
 
-.wpuf-onboarding-grid.is-layouts {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+/* Seven previews would swamp the step, so they live behind a summary row. */
+.wpuf-onboarding-disclosure {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.wpuf-onboarding-disclosure > summary {
+    display: flex;
+    align-items: center;
     gap: 12px;
+    padding: 10px 14px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.wpuf-onboarding-disclosure > summary::-webkit-details-marker {
+    display: none;
+}
+
+.wpuf-onboarding-disclosure > summary > img {
+    width: 56px;
+    height: 38px;
+    object-fit: cover;
+    object-position: top;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    background: #f9fafb;
+}
+
+.wpuf-disclosure-text {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.wpuf-disclosure-text strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.wpuf-disclosure-text > span {
+    display: block;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.wpuf-disclosure-action {
+    flex: 0 0 auto;
+    font-size: 13px;
+    font-weight: 600;
+    color: #059669;
+}
+
+.wpuf-onboarding-disclosure[open] > summary {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.wpuf-onboarding-disclosure .wpuf-onboarding-grid.is-layouts {
+    margin: 0;
+    padding: 14px;
+}
+
+.wpuf-onboarding-disclosure .wpuf-onboarding-help {
+    padding: 0 14px 14px;
+}
+
+.wpuf-onboarding-grid.is-layouts {
+    grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+    gap: 10px;
 }
 
 .wpuf-onboarding-layout {
     display: block;
-    padding: 8px;
+    padding: 5px;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     background: #ffffff;
@@ -427,18 +495,7 @@
     background: #f9fafb;
 }
 
-.wpuf-onboarding-layout span {
-    display: block;
-    margin-top: 6px;
-    font-size: 12px;
-    line-height: 16px;
-    color: #64748b;
-    text-align: center;
-}
 
-.wpuf-onboarding-layout.is-selected span {
-    color: #059669;
-}
 
 .wpuf-onboarding-card {
     position: relative;

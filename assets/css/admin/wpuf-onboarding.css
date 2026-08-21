@@ -451,6 +451,7 @@
 .wpuf-onboarding-disclosure .wpuf-onboarding-grid.is-layouts {
     margin: 0;
     padding: 14px;
+    overflow: visible;
 }
 
 .wpuf-onboarding-disclosure .wpuf-onboarding-help {
@@ -463,17 +464,38 @@
 }
 
 .wpuf-onboarding-layout {
+    position: relative;
+    z-index: 1;
     display: block;
     padding: 5px;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     background: #ffffff;
     cursor: pointer;
-    transition: border-color .15s ease, background .15s ease;
+    transition: border-color .15s ease, background .15s ease, transform .18s ease, box-shadow .18s ease;
 }
 
+/* Thumbnails are small, so hovering blows one up to a readable size. */
 .wpuf-onboarding-layout:hover {
-    border-color: #d1d5db;
+    z-index: 5;
+    border-color: #cbd5e1;
+    transform: scale(2);
+    box-shadow: 0 12px 28px rgba(16, 24, 40, .18);
+}
+
+/* Keep the enlarged preview inside the panel at the edges. */
+.wpuf-onboarding-grid.is-layouts > .wpuf-onboarding-layout:nth-child(4n+1):hover {
+    transform-origin: left center;
+}
+
+.wpuf-onboarding-grid.is-layouts > .wpuf-onboarding-layout:nth-child(4n):hover {
+    transform-origin: right center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wpuf-onboarding-layout:hover {
+        transform: none;
+    }
 }
 
 .wpuf-onboarding-layout.is-selected {

@@ -389,6 +389,57 @@
     border-color: #c4b5fd;
 }
 
+.wpuf-onboarding-grid.is-layouts {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.wpuf-onboarding-layout {
+    display: block;
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+}
+
+.wpuf-onboarding-layout:hover {
+    border-color: #d1d5db;
+}
+
+.wpuf-onboarding-layout.is-selected {
+    border-color: #059669;
+    background: #f4fdf9;
+}
+
+.wpuf-onboarding-layout input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.wpuf-onboarding-layout img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    background: #f9fafb;
+}
+
+.wpuf-onboarding-layout span {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 16px;
+    color: #64748b;
+    text-align: center;
+}
+
+.wpuf-onboarding-layout.is-selected span {
+    color: #059669;
+}
+
 .wpuf-onboarding-card {
     position: relative;
     display: block;

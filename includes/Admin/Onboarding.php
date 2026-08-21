@@ -748,6 +748,13 @@ class Onboarding {
 
         $profile['autologin_after_registration'] = $this->posted( 'autologin_after_registration' ) ? 'on' : 'off';
 
+        // Layouts are a Pro feature; the free preview posts nothing.
+        $layout = $this->posted_value( 'wpuf_login_form_layout' );
+
+        if ( $layout && array_key_exists( $layout, wpuf_get_login_layout_options() ) ) {
+            $profile['wpuf_login_form_layout'] = $layout;
+        }
+
         update_option( 'wpuf_profile', $profile );
     }
 

@@ -176,7 +176,7 @@ class Onboarding {
             'payments'       => [
                 'step'  => '',
                 'name'  => __( 'Payments &amp; subscriptions', 'wp-user-frontend' ),
-                'desc'  => __( 'Charge per post, sell packs, or run a paid directory.', 'wp-user-frontend' ),
+                'desc'  => __( 'Charge for each post, or sell packs that cover several. Your member directory can sit behind a payment too.', 'wp-user-frontend' ),
             ],
         ];
 

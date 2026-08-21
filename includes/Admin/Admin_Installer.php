@@ -216,7 +216,8 @@ class Admin_Installer {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
 
-        if ( 'wpuf-setup' !== $page ) {
+        // The setup screens keep control of where the admin goes next.
+        if ( ! in_array( $page, [ 'wpuf-setup', Onboarding::PAGE_SLUG ], true ) ) {
             wp_safe_redirect( admin_url( 'admin.php?page=wpuf-settings&wpuf_page_installed=1' ) );
 
             exit;

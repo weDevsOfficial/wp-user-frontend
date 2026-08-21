@@ -1,0 +1,710 @@
+/**
+ * WPUF Onboarding Wizard
+ *
+ * Follows the User Directory design system tokens:
+ * primary #059669, 6px control radius, 24px step markers,
+ * #CBD5E1 control borders, #64748B secondary text.
+ */
+
+.wpuf-onboarding-body {
+    margin: 0;
+    padding: 0 0 120px;
+    background: #ffffff;
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 14px;
+    line-height: 20px;
+    color: #374151;
+    -webkit-font-smoothing: antialiased;
+}
+
+.wpuf-onboarding-body * {
+    box-sizing: border-box;
+}
+
+.wpuf-onboarding-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+}
+
+.wpuf-onboarding-topbar img {
+    display: block;
+    width: auto;
+    height: 30px;
+    max-width: 200px;
+}
+
+.wpuf-onboarding-exit {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.wpuf-onboarding-exit:hover {
+    color: #374151;
+}
+
+/* ---------- Step rail ---------- */
+
+.wpuf-onboarding-head {
+    max-width: 900px;
+    margin: 8px auto 0;
+    padding: 0 24px;
+    text-align: center;
+}
+
+.wpuf-onboarding-head h1 {
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 36px;
+    color: #111827;
+}
+
+.wpuf-onboarding-steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    list-style: none;
+    margin: 40px 0 0;
+    padding: 0;
+}
+
+.wpuf-onboarding-steps li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1 1 0;
+    list-style: none;
+    margin: 0;
+}
+
+.wpuf-onboarding-steps li:last-child {
+    flex: 0 0 auto;
+}
+
+.wpuf-onboarding-steps .wpuf-step-marker {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    border-radius: 23px;
+    border: 2px solid #d1d5db;
+    background: #ffffff;
+    text-decoration: none;
+    color: #9ca3af;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.wpuf-onboarding-steps .wpuf-step-marker:hover {
+    border-color: #9ca3af;
+}
+
+.wpuf-onboarding-steps li.is-done .wpuf-step-marker,
+.wpuf-onboarding-steps li.is-active .wpuf-step-marker {
+    border-color: #059669;
+    background: #059669;
+    color: #ffffff;
+}
+
+.wpuf-onboarding-steps .wpuf-step-line {
+    flex: 1 1 auto;
+    height: 2px;
+    background: #e5e7eb;
+}
+
+.wpuf-onboarding-steps li.is-done .wpuf-step-line {
+    background: #059669;
+}
+
+.wpuf-onboarding-steps .wpuf-step-label {
+    position: absolute;
+    top: 32px;
+    left: 12px;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 120px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    color: #374151;
+}
+
+.wpuf-onboarding-steps li.is-done .wpuf-step-label,
+.wpuf-onboarding-steps li.is-active .wpuf-step-label {
+    color: #059669;
+}
+
+/* ---------- Content ---------- */
+
+.wpuf-onboarding-content {
+    max-width: 768px;
+    margin: 0 auto;
+    padding: 96px 24px 0;
+}
+
+.wpuf-onboarding-content h2 {
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 36px;
+    text-align: center;
+    color: #000000;
+}
+
+.wpuf-onboarding-subtitle {
+    margin: 8px 0 0;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    color: #64748b;
+}
+
+.wpuf-onboarding-field {
+    margin-top: 25px;
+}
+
+.wpuf-onboarding-field:first-of-type {
+    margin-top: 48px;
+}
+
+.wpuf-onboarding-field > label,
+.wpuf-onboarding-field .wpuf-onboarding-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.wpuf-onboarding-field input[type="text"],
+.wpuf-onboarding-field input[type="number"],
+.wpuf-onboarding-field input[type="password"],
+.wpuf-onboarding-field select {
+    display: block;
+    width: 100%;
+    height: 42px;
+    margin: 0;
+    padding: 9px 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #ffffff;
+    box-shadow: none;
+    font-size: 16px;
+    line-height: 1;
+    color: #374151;
+}
+
+/* WP admin ships its own select chrome; draw ours instead so the control
+   matches the text inputs at every width. */
+.wpuf-onboarding-field select {
+    max-width: 100%;
+    min-height: 42px;
+    padding-right: 38px;
+    line-height: 22px;
+    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2364748b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 12px 8px;
+    text-overflow: ellipsis;
+}
+
+.wpuf-onboarding-field input:focus,
+.wpuf-onboarding-field select:focus {
+    outline: none;
+    border-color: #059669;
+    box-shadow: 0 0 0 1px #059669;
+}
+
+/* Replace the browser's blue focus ring with ours. */
+.wpuf-onboarding-field input:focus-visible,
+.wpuf-onboarding-field select:focus-visible {
+    outline: none;
+    border-color: #059669;
+    box-shadow: 0 0 0 1px #059669;
+}
+
+.wpuf-onboarding-field select:focus {
+    color: #374151;
+}
+
+.wpuf-onboarding-help {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 18px;
+    color: #64748b;
+}
+
+.wpuf-onboarding-help.is-spaced {
+    margin-top: 20px;
+}
+
+/* ---------- Toggle row ---------- */
+
+.wpuf-onboarding-toggle {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #ffffff;
+    margin-top: 12px;
+}
+
+.wpuf-onboarding-toggle + .wpuf-onboarding-toggle {
+    margin-top: 8px;
+}
+
+.wpuf-onboarding-toggle input[type="checkbox"] {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    margin: 2px 0 0;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    accent-color: #059669;
+}
+
+.wpuf-onboarding-toggle .wpuf-toggle-text {
+    flex: 1 1 auto;
+}
+
+.wpuf-onboarding-toggle strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.wpuf-onboarding-toggle span {
+    display: block;
+    margin-top: 2px;
+    font-size: 13px;
+    line-height: 18px;
+    color: #64748b;
+}
+
+/* ---------- Switch row ---------- */
+
+.wpuf-onboarding-toggle.is-switch {
+    align-items: center;
+    flex-direction: row-reverse;
+}
+
+.wpuf-onboarding-toggle.is-switch input[type="checkbox"] {
+    position: relative;
+    flex: 0 0 auto;
+    width: 36px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: #cbd5e1;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: background .15s ease-in-out;
+}
+
+.wpuf-onboarding-toggle.is-switch input[type="checkbox"]:before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+    transition: transform .15s ease-in-out;
+}
+
+.wpuf-onboarding-toggle.is-switch input[type="checkbox"]:checked {
+    background: #059669;
+}
+
+.wpuf-onboarding-toggle.is-switch input[type="checkbox"]:checked:before {
+    transform: translateX(16px);
+}
+
+.wpuf-onboarding-toggle.is-switch input[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.wpuf-onboarding-toggle.is-switch input[type="checkbox"]:focus-visible {
+    outline: 2px solid #059669;
+    outline-offset: 2px;
+}
+
+/* ---------- Card grid (features, plugins) ---------- */
+
+.wpuf-onboarding-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.wpuf-onboarding-grid.is-thirds {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.wpuf-onboarding-pro-badge {
+    width: 22px;
+    height: 22px;
+    margin-left: 6px;
+    vertical-align: -5px;
+}
+
+/* The whole card is the upgrade link. */
+.wpuf-onboarding-card.is-pro {
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+    text-decoration: none;
+}
+
+.wpuf-onboarding-card.is-pro:hover {
+    border-color: #c4b5fd;
+}
+
+.wpuf-onboarding-card {
+    position: relative;
+    display: block;
+    padding: 18px 52px 18px 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: border-color .15s ease, transform .15s ease, background .15s ease;
+}
+
+.wpuf-onboarding-card:hover {
+    border-color: #d1d5db;
+    transform: translateY(-1px);
+}
+
+.wpuf-onboarding-card.is-selected {
+    border-color: #059669;
+    background: #f4fdf9;
+}
+
+/* The tick sits in the corner and matches the step markers. */
+.wpuf-onboarding-card input {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    padding: 0;
+    border: 2px solid #d1d5db;
+    border-radius: 999px;
+    background: #ffffff;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+}
+
+.wpuf-onboarding-card input[type="radio"] {
+    border-radius: 999px;
+}
+
+.wpuf-onboarding-card:hover input {
+    border-color: #9ca3af;
+}
+
+.wpuf-onboarding-card input:checked {
+    border-color: #059669;
+    background-color: #059669;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 9 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 3.4001L3.4 5.8001L7.6 1.6001' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.wpuf-onboarding-card input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.wpuf-onboarding-card input:focus-visible {
+    outline: 2px solid #059669;
+    outline-offset: 2px;
+}
+
+.wpuf-onboarding-logo {
+    display: block;
+    width: 28px;
+    height: 28px;
+    margin-bottom: 12px;
+    object-fit: contain;
+}
+
+.wpuf-onboarding-card strong {
+    display: block;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: #111827;
+}
+
+.wpuf-onboarding-card p {
+    margin: 6px 0 0;
+    padding: 0;
+    font-size: 13px;
+    line-height: 19px;
+    color: #64748b;
+}
+
+.wpuf-onboarding-card.is-installed {
+    background: #f9fafb;
+    cursor: default;
+}
+
+.wpuf-onboarding-card.is-installed:hover {
+    border-color: #e5e7eb;
+    transform: none;
+}
+
+.wpuf-onboarding-badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #d1fae5;
+    color: #047857;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.wpuf-onboarding-badge.is-pro {
+    background: #ede9fe;
+    color: #6d28d9;
+}
+
+.wpuf-onboarding-badge.is-error {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* ---------- Notices ---------- */
+
+.wpuf-onboarding-note {
+    margin-top: 24px;
+    padding: 12px 16px;
+    border: 1px solid #e5e7eb;
+    border-left: 3px solid #059669;
+    border-radius: 6px;
+    background: #f9fafb;
+    font-size: 13px;
+    line-height: 18px;
+    color: #4b5563;
+}
+
+/* ---------- Checklist (ready step) ---------- */
+
+.wpuf-onboarding-checklist {
+    margin: 32px 0 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.wpuf-onboarding-checklist li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 14px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
+    color: #374151;
+}
+
+.wpuf-onboarding-checklist li:last-child {
+    border-bottom: 0;
+}
+
+.wpuf-onboarding-checklist .wpuf-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background: #e5e7eb;
+}
+
+.wpuf-onboarding-checklist li.is-done .wpuf-check {
+    background: #059669;
+}
+
+.wpuf-onboarding-checklist .wpuf-check.is-number {
+    background: #f3f4f6;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.wpuf-onboarding-checklist .wpuf-check-label {
+    flex: 1 1 auto;
+}
+
+.wpuf-onboarding-checklist a {
+    color: #059669;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.wpuf-onboarding-checklist a:hover {
+    color: #047857;
+}
+
+/* ---------- Buttons + footer ---------- */
+
+.wpuf-onboarding-btn-primary,
+.wpuf-onboarding-btn-white {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.wpuf-onboarding-btn-primary {
+    border: 1px solid #059669;
+    background: #059669;
+    color: #ffffff;
+}
+
+.wpuf-onboarding-btn-primary:hover,
+.wpuf-onboarding-btn-primary:focus {
+    background: #047857;
+    border-color: #047857;
+    color: #ffffff;
+}
+
+.wpuf-onboarding-btn-primary[disabled] {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.wpuf-onboarding-btn-white {
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    color: #374151;
+}
+
+.wpuf-onboarding-btn-white:hover,
+.wpuf-onboarding-btn-white:focus {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+#wpuf-onboarding-confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 40;
+    pointer-events: none;
+}
+
+.wpuf-onboarding-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, .06);
+}
+
+.wpuf-onboarding-footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 896px;
+    margin: 0 auto;
+    padding: 16px 24px;
+}
+
+.wpuf-onboarding-footer-left,
+.wpuf-onboarding-footer-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.wpuf-onboarding-skip {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.wpuf-onboarding-skip:hover {
+    color: #374151;
+}
+
+.wpuf-onboarding-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 999px;
+    animation: wpuf-onboarding-spin .7s linear infinite;
+}
+
+@keyframes wpuf-onboarding-spin {
+    to { transform: rotate(360deg); }
+}
+
+@media screen and (max-width: 782px) {
+    .wpuf-onboarding-steps .wpuf-step-label {
+        display: none;
+    }
+
+    .wpuf-onboarding-content {
+        padding-top: 48px;
+    }
+
+    .wpuf-onboarding-grid,
+    .wpuf-onboarding-grid.is-thirds {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

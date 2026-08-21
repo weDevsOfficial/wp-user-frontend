@@ -33,6 +33,7 @@ class Admin {
         $this->container['posting']               = new Admin\Posting();
         $this->container['shortcodes_button']     = new Admin\Shortcodes_Button();
         $this->container['tools']                 = new Admin\Admin_Tools();
+        $this->container['onboarding']            = new Admin\Onboarding();
 
         // only free users will see the promotion
         if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {

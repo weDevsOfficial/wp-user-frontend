@@ -479,7 +479,7 @@
 .wpuf-onboarding-layout:hover {
     z-index: 5;
     border-color: #cbd5e1;
-    transform: scale(2);
+    transform: scale(2.6);
     box-shadow: 0 12px 28px rgba(16, 24, 40, .18);
 }
 

@@ -15,6 +15,8 @@ $override    = wpuf_get_option( 'register_link_override', 'wpuf_profile', 'off' 
 $autologin   = wpuf_get_option( 'autologin_after_registration', 'wpuf_profile', 'off' );
 
 $is_pro      = wpuf_is_pro_active();
+$layouts     = wpuf_get_login_layout_options();
+$layout      = wpuf_get_option( 'wpuf_login_form_layout', 'wpuf_profile', 'layout1' );
 $login_pages = $this->get_pages_for_shortcode( 'wpuf-login', __( 'UF Login Page', 'wp-user-frontend' ) );
 $reg_pages   = $this->get_pages_for_shortcode( 'wpuf_profile', __( 'UF Registration Page', 'wp-user-frontend' ) );
 ?>
@@ -74,6 +76,51 @@ $reg_pages   = $this->get_pages_for_shortcode( 'wpuf_profile', __( 'UF Registrat
         </label>
     </div>
 
+    <div class="wpuf-onboarding-field">
+        <span class="wpuf-onboarding-label">
+            <?php esc_html_e( 'Login form layout', 'wp-user-frontend' ); ?>
+            <?php if ( ! $is_pro ) : ?>
+                <img class="wpuf-onboarding-pro-badge" src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="<?php esc_attr_e( 'PRO', 'wp-user-frontend' ); ?>" />
+            <?php endif; ?>
+        </span>
+
+        <div class="wpuf-onboarding-grid is-layouts">
+            <?php foreach ( $layouts as $key => $option ) : ?>
+                <label class="wpuf-onboarding-layout <?php echo $layout === $key ? 'is-selected' : ''; ?>">
+                    <input type="radio" name="wpuf_login_form_layout" value="<?php echo esc_attr( $key ); ?>" <?php checked( $layout, $key ); ?> <?php disabled( true, ! $is_pro ); ?> />
+                    <img src="<?php echo esc_url( $option['image'] ); ?>" alt="<?php echo esc_attr( $option['label'] ); ?>" />
+                    <span><?php echo esc_html( $option['label'] ); ?></span>
+                </label>
+            <?php endforeach; ?>
+        </div>
+
+        <?php if ( ! $is_pro ) : ?>
+            <p class="wpuf-onboarding-help">
+                <?php
+                printf(
+                    // translators: %s is the upgrade link
+                    esc_html__( 'Login form layouts come with %s.', 'wp-user-frontend' ),
+                    '<a href="' . esc_url( \WeDevs\Wpuf\Free\Pro_Prompt::get_pro_url() ) . '" target="_blank" rel="noopener">' . esc_html__( 'Pro', 'wp-user-frontend' ) . '</a>'
+                );
+                ?>
+            </p>
+        <?php endif; ?>
+    </div>
+
     <?php wp_nonce_field( 'wpuf-onboarding' ); ?>
     <?php $this->action_bar(); ?>
 </form>
+
+<script>
+( function () {
+    document.querySelectorAll( '.wpuf-onboarding-layout input[type="radio"]' ).forEach( function ( input ) {
+        input.addEventListener( 'change', function () {
+            document.querySelectorAll( '.wpuf-onboarding-layout' ).forEach( function ( card ) {
+                card.classList.remove( 'is-selected' );
+            } );
+
+            input.closest( '.wpuf-onboarding-layout' ).classList.add( 'is-selected' );
+        } );
+    } );
+} )();
+</script>

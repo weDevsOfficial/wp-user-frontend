@@ -19,6 +19,14 @@ $layouts     = wpuf_get_login_layout_options();
 $layout      = wpuf_get_option( 'wpuf_login_form_layout', 'wpuf_profile', 'layout1' );
 $login_pages = $this->get_pages_for_shortcode( 'wpuf-login', __( 'UF Login Page', 'wp-user-frontend' ) );
 $reg_pages   = $this->get_pages_for_shortcode( 'wpuf_profile', __( 'UF Registration Page', 'wp-user-frontend' ) );
+$account_pages = $this->get_pages_for_shortcode( 'wpuf_account', __( 'UF Account Page', 'wp-user-frontend' ) );
+$account_page  = absint( wpuf_get_option( 'account_page', 'wpuf_my_account', 0 ) );
+
+// The setting is often empty even though the page exists, so fall back to it
+// rather than offering to create a second one.
+if ( ! $account_page ) {
+    $account_page = $this->find_page_with_shortcode( 'wpuf_account' );
+}
 ?>
 <form method="post">
     <h2><?php esc_html_e( 'Login &amp; Registration', 'wp-user-frontend' ); ?></h2>
@@ -63,6 +71,18 @@ $reg_pages   = $this->get_pages_for_shortcode( 'wpuf_profile', __( 'UF Registrat
             </div>
         </div>
     <?php endif; ?>
+
+    <div class="wpuf-onboarding-field">
+        <label for="wpuf-onboarding-account-page"><?php esc_html_e( 'Account page', 'wp-user-frontend' ); ?></label>
+
+        <select name="account_page" id="wpuf-onboarding-account-page">
+            <option value="create"><?php esc_html_e( '— Create a new Account page —', 'wp-user-frontend' ); ?></option>
+            <?php foreach ( $account_pages as $page_id => $page_title ) : ?>
+                <option value="<?php echo esc_attr( $page_id ); ?>" <?php selected( $account_page, $page_id ); ?>><?php echo esc_html( $page_title ); ?></option>
+            <?php endforeach; ?>
+        </select>
+        <p class="wpuf-onboarding-help"><?php esc_html_e( 'Where members manage their posts, profile and subscription.', 'wp-user-frontend' ); ?></p>
+    </div>
 
     <div class="wpuf-onboarding-field" id="wpuf-onboarding-autologin-field">
         <span class="wpuf-onboarding-label"><?php esc_html_e( 'After they sign up', 'wp-user-frontend' ); ?></span>

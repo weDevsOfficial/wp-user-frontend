@@ -756,6 +756,38 @@ class Onboarding {
         }
 
         update_option( 'wpuf_profile', $profile );
+
+        $this->save_account_page();
+    }
+
+    /**
+     * The first page already holding a shortcode
+     *
+     * Used so an unset page setting falls back to a page that exists rather
+     * than offering to create another one.
+     *
+     * @param string $tag
+     *
+     * @return int page id, 0 when none holds it
+     */
+    public function find_page_with_shortcode( $tag ) {
+        $pages = get_posts(
+            [
+                'post_type'      => 'page',
+                'post_status'    => [ 'publish', 'draft', 'private' ],
+                'posts_per_page' => -1,
+                'orderby'        => 'ID',
+                'order'          => 'ASC',
+            ]
+        );
+
+        foreach ( $pages as $page ) {
+            if ( $this->content_has_shortcode( $page->post_content, $tag ) ) {
+                return $page->ID;
+            }
+        }
+
+        return 0;
     }
 
     /**
@@ -872,6 +904,43 @@ class Onboarding {
         $installer = new Admin_Installer();
 
         return absint( $installer->create_reg_form() );
+    }
+
+    /**
+     * Point the account page setting at a real page
+     *
+     * @return void
+     */
+    protected function save_account_page() {
+        $choice = $this->posted_value( 'account_page' );
+
+        if ( ! $choice ) {
+            return;
+        }
+
+        $account = get_option( 'wpuf_my_account', [] );
+        $account = is_array( $account ) ? $account : [];
+
+        if ( 'create' === $choice ) {
+            $installer = new Admin_Installer();
+            $page_id   = $installer->create_page( __( 'Account', 'wp-user-frontend' ), '[wpuf_account]' );
+
+            if ( ! $page_id ) {
+                return;
+            }
+        } else {
+            $page_id = absint( $choice );
+
+            if ( ! $page_id ) {
+                return;
+            }
+
+            $this->ensure_page_shortcode( $page_id, 'wpuf_account', '[wpuf_account]' );
+        }
+
+        $account['account_page'] = $page_id;
+
+        update_option( 'wpuf_my_account', $account );
     }
 
     /**

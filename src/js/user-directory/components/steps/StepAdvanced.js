@@ -454,6 +454,7 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                     { key: 'az', label: __('A–Z alphabetical index bar', 'wp-user-frontend') },
                     { key: 'facets', label: __('Advanced faceted filter bar', 'wp-user-frontend') },
                     { key: 'copylink', label: __('Shareable / copy-link filtered view', 'wp-user-frontend') },
+                    { key: 'tags', label: __('Member tags — profile chips & tag filter', 'wp-user-frontend') },
                 ].map((feature) => (
                     <div key={feature.key} className="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-py-2">
                         <div className="wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-opacity-60">

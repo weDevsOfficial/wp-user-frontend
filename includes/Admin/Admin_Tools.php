@@ -360,6 +360,19 @@ class Admin_Tools {
 
         <div class="metabox-holder">
             <div class="postbox">
+                <h3><?php esc_html_e( 'Onboarding', 'wp-user-frontend' ); ?></h3>
+
+                <div class="inside">
+                    <?php $entry = wpuf()->admin->onboarding->get_entry_point(); ?>
+                    <p><?php esc_html_e( 'Walk through post forms, registration, the user directory, payments and the settings a frontend site needs. Nothing is changed until you save a step.', 'wp-user-frontend' ); ?></p>
+
+                    <a class="button button-primary" href="<?php echo esc_url( $entry['url'] ); ?>">
+                        <?php echo esc_html( $entry['label'] ); ?>
+                    </a>
+                </div>
+            </div>
+
+            <div class="postbox">
                 <h3><?php esc_html_e( 'Page Installation', 'wp-user-frontend' ); ?></h3>
 
                 <div class="inside">

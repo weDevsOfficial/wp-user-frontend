@@ -188,6 +188,9 @@ class Assets {
                 'src'  => WPUF_ASSET_URI . '/css/admin/wpuf-setup.css',
                 'deps' => [ 'dashicons', 'install' ],
             ],
+            'onboarding'          => [
+                'src' => WPUF_ASSET_URI . '/css/admin/wpuf-onboarding.css',
+            ],
             'forms-list'           => [
                 'src' => WPUF_ASSET_URI . '/css/forms-list.min.css',
             ],

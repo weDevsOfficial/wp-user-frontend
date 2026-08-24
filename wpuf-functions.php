@@ -5,9 +5,13 @@ use WeDevs\Wpuf\Encryption_Helper;
 use WeDevs\Wpuf\Free\Pro_Prompt;
 use WeDevs\Wpuf\Frontend\Payment;
 
+// Include WooCommerce attribute label customizations
+if ( file_exists( WPUF_INCLUDES . '/functions/woocommerce-attribute-labels.php' ) ) {
+    require_once WPUF_INCLUDES . '/functions/woocommerce-attribute-labels.php';
+}
+
 // Include modules functions
 require_once WPUF_INCLUDES . '/functions/modules.php';
-
 /**
  * Start output buffering
  *

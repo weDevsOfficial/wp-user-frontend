@@ -625,6 +625,7 @@ Please report security bugs found in the source code of the User Frontend plugin
 * Security – Enforced the subscription submission gate in the AJAX post handler to stop unauthenticated post creation through a subscription-gated form (reported by Charles Vosburgh).
 * Security – Registration now fails closed when the nonce is missing or invalid and redirects to a safe URL, preventing CSRF-based login session fixation (reported by Yaswanth Reddy Sunkara).
 * Enhance – Redesigned the Modules page with a responsive card grid and modern layout.
+* Enhance – Added native support for uploading .jfif images through frontend forms.
 * Compatibility – Tested with WordPress 7.1.
 
 

@@ -1565,7 +1565,7 @@ class Render_Form {
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
-                    var uploader = new WPUF_Uploader('wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles', 'wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container', <?php echo esc_attr( $attr['count'] ); ?>, '<?php echo esc_attr( $attr['name'] ); ?>', 'jpg,jpeg,gif,png,bmp', <?php echo esc_attr( $attr['max_size'] ); ?>);
+                    var uploader = new WPUF_Uploader('wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles', 'wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container', <?php echo esc_attr( $attr['count'] ); ?>, '<?php echo esc_attr( $attr['name'] ); ?>', 'jpg,jpeg,jfif,gif,png,bmp', <?php echo esc_attr( $attr['max_size'] ); ?>);
                     wpuf_plupload_items.push(uploader);
                 });
             })(jQuery);

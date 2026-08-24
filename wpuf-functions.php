@@ -534,7 +534,7 @@ function wpuf_get_image_sizes() {
 function wpuf_allowed_extensions() {
     $extesions = [
         'images' => [
-            'ext' => 'jpg,jpeg,gif,png,bmp,webp',
+            'ext' => 'jpg,jpeg,jfif,gif,png,bmp,webp',
             'label' => __( 'Images', 'wp-user-frontend' ),
         ],
         'audio'  => [
@@ -6358,6 +6358,7 @@ if ( ! function_exists( 'wpuf_field_profile_photo_allowed_extensions' ) ) {
         $allowed_extensions = [
             'jpg'  => __( 'JPG', 'wpuf-pro' ),
             'jpeg' => __( 'JPEG', 'wpuf-pro' ),
+            'jfif' => __( 'JFIF', 'wpuf-pro' ),
             'png'  => __( 'PNG', 'wpuf-pro' ),
             'gif'  => __( 'GIF', 'wpuf-pro' ),
         ];

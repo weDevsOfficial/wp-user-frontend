@@ -152,7 +152,15 @@ class Upload_Ajax {
      * @return array attachment result with success status and attach_id
      */
     public function handle_upload( $upload_data ) {
+        // Allow the .jfif image extension (a JPEG variant) for WPUF uploads only,
+        // then unhook so the site-wide allowed types are left unchanged.
+        add_filter( 'upload_mimes', [ $this, 'allow_jfif_mime_type' ] );
+        add_filter( 'wp_check_filetype_and_ext', [ $this, 'resolve_jfif_filetype' ], 10, 4 );
+
         $uploaded_file = wp_handle_upload( $upload_data, [ 'test_form' => false ] );
+
+        remove_filter( 'upload_mimes', [ $this, 'allow_jfif_mime_type' ] );
+        remove_filter( 'wp_check_filetype_and_ext', [ $this, 'resolve_jfif_filetype' ], 10 );
         // If the wp_handle_upload call returned a local path for the image
         if ( isset( $uploaded_file['file'] ) ) {
             $file_loc    = $uploaded_file['file'];
@@ -189,6 +197,46 @@ class Upload_Ajax {
             'success' => false,
             'error'   => $uploaded_file['error'],
         ];
+    }
+
+    /**
+     * Allow the .jfif image extension (a JPEG variant) during a WPUF upload.
+     *
+     * WordPress does not permit .jfif by default, so a valid JFIF/JPEG image
+     * uploaded through a frontend field would otherwise be rejected.
+     *
+     * @since 4.3.11
+     *
+     * @param array $mimes Allowed mime types keyed by extension pattern.
+     *
+     * @return array
+     */
+    public function allow_jfif_mime_type( $mimes ) {
+        $mimes['jfif'] = 'image/jpeg';
+
+        return $mimes;
+    }
+
+    /**
+     * Resolve a .jfif file to the image/jpeg type so WordPress' real-mime check
+     * accepts it instead of flagging an extension/mime mismatch.
+     *
+     * @since 4.3.11
+     *
+     * @param array  $data     File data array with keys ext, type, proper_filename.
+     * @param string $file     Full path to the file.
+     * @param string $filename The name of the file.
+     * @param array  $mimes    Allowed mime types.
+     *
+     * @return array
+     */
+    public function resolve_jfif_filetype( $data, $file, $filename, $mimes ) {
+        if ( empty( $data['ext'] ) && preg_match( '/\.jfif$/i', $filename ) ) {
+            $data['ext']  = 'jfif';
+            $data['type'] = 'image/jpeg';
+        }
+
+        return $data;
     }
 
     public static function attach_html( $attach_id, $type = NULL, $form_id = NULL ) {

@@ -31,7 +31,7 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
             $selected = $this->get_meta( $post_id, $field_settings['name'], $type );
 
             if ( is_serialized( $selected ) ) {
-                $selected = maybe_unserialize( $selected );
+                $selected = wpuf_safe_unserialize( $selected );
             } elseif ( is_array( $selected ) ) {
                 $selected = $selected;
             } else {

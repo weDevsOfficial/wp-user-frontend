@@ -1108,7 +1108,7 @@ class WPUF_Render_Form {
 
             if ( $multiselect ) {
                 if ( is_serialized( $selected ) ) {
-                    $selected = maybe_unserialize( $selected );
+                    $selected = wpuf_safe_unserialize( $selected );
                 } elseif ( is_array( $selected ) ) {
                     $selected = $selected;
                 } else {
@@ -1192,7 +1192,7 @@ class WPUF_Render_Form {
         if ( $post_id ) {
             if ( $value = $this->get_meta( $post_id, $attr['name'], $type, true ) ) {
                 if ( is_serialized( $value ) ) {
-                    $selected = maybe_unserialize( $value );
+                    $selected = wpuf_safe_unserialize( $value );
                 } elseif ( is_array( $value ) ) {
                     $selected = $value;
                 } else {
@@ -1616,7 +1616,7 @@ class WPUF_Render_Form {
 
                 if ( $images ) {
                     if ( is_serialized( $images[0] ) ) {
-                        $images = maybe_unserialize( $images[0] );
+                        $images = wpuf_safe_unserialize( $images[0] );
                     }
 
                     if ( is_array( $images[0] ) ) {

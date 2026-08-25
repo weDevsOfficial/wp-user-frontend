@@ -166,6 +166,16 @@ class Registration {
             if ( ! wp_verify_nonce( $nonce, 'wpuf_registration_action' ) ) {
                 return;
             }
+
+            // Honour the site's registration setting on the account-creation path,
+            // the same way the Register link in get_action_links() already does.
+            // Without this, a POST to the init-hooked handler creates an account
+            // even when registration is switched off. WordPress maps
+            // users_can_register onto the network setting on multisite.
+            // Reported by Murad Akhmedov (WPScan).
+            if ( ! get_option( 'users_can_register' ) ) {
+                return;
+            }
             $validation_error = new WP_Error();
             $reg_fname  = isset( $_POST['reg_fname'] ) ? sanitize_text_field( wp_unslash( $_POST['reg_fname'] ) ) : '';
             $reg_lname  = isset( $_POST['reg_lname'] ) ? sanitize_text_field( wp_unslash( $_POST['reg_lname'] ) ) : '';

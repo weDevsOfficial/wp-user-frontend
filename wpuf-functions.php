@@ -3978,7 +3978,9 @@ function wpuf_encryption( $id, $nonce = null ) {
     }
 
     $ciphertext_raw = openssl_encrypt( $id, Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
-    $hmac           = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
+    // Authenticate the IV together with the ciphertext so a tampered IV is
+    // rejected on the way back in (see wpuf_decryption()).
+    $hmac           = hash_hmac( 'sha256', $secret_iv . $ciphertext_raw, $secret_key, true );
 
     return base64_encode( $secret_iv.$hmac.$ciphertext_raw );
 }
@@ -4019,15 +4021,19 @@ function wpuf_decryption( $id, $nonce = null ) {
     $secret_iv      = substr( $c, 0, $ivlen );
     $hmac           = substr( $c, $ivlen, 32 );
     $ciphertext_raw = substr( $c, $ivlen + 32 );
-    $original_text  = openssl_decrypt( $ciphertext_raw, Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
-    $calcmac        = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
+    // The IV travels inside the payload, so it must be authenticated too: an
+    // unauthenticated IV lets an attacker flip the first CBC plaintext block and
+    // forge a different value under the unchanged ciphertext/HMAC (e.g. a higher
+    // role in registration). Cover IV + ciphertext and verify BEFORE decrypting.
+    // Reported by Murad Akhmedov (WPScan).
+    $calcmac        = hash_hmac( 'sha256', $secret_iv . $ciphertext_raw, $secret_key, true );
 
     // timing attack safe comparison
-    if ( hash_equals( $hmac, $calcmac ) ) {
-        return $original_text;
+    if ( ! hash_equals( $hmac, $calcmac ) ) {
+        return false;
     }
 
-    return false;
+    return openssl_decrypt( $ciphertext_raw, Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
 }
 
 /**

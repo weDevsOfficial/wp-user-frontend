@@ -21,7 +21,7 @@ if ( ! function_exists( 'wpuf_ud_show_contact_info' ) ) {
      * user email to unauthenticated callers. Filterable so a site can deliberately
      * opt in to public contact info. Shared by the free and pro directory output.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.11
      *
      * @param \WP_User|null $user The user whose contact info would be shown.
      *

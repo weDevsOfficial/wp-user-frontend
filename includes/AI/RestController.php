@@ -1654,7 +1654,7 @@ class RestController extends WP_REST_Controller {
      * filter) so a submitted field cannot pair a template with a mismatched
      * input_type — the primitive behind the AI form-builder object injection.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.11
      *
      * @return array<string, string> Template slug => canonical input type.
      */
@@ -1689,7 +1689,7 @@ class RestController extends WP_REST_Controller {
      * Unknown templates pass through — the render layer no longer instantiates
      * objects, and unregistered templates are handled by their own renderers.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.11
      *
      * @param array $field Field definition.
      *
@@ -1717,7 +1717,7 @@ class RestController extends WP_REST_Controller {
      * types, so remove the wpuf_input children explicitly before the form itself
      * to avoid orphaned field posts when an AI form build is rejected or fails.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.11
      *
      * @param int $form_id Form ID.
      *

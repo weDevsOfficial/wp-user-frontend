@@ -106,7 +106,7 @@ class Menu {
      * crown is inlined rather than enqueued so it costs no extra request, and the
      * glow itself is handled in CSS — see premium_menu_styles().
      *
-     * @since WPUF_SINCE
+     * @since 4.3.11
      *
      * @return string
      */
@@ -122,7 +122,7 @@ class Menu {
      * Lives in admin_head because the admin menu renders on every screen, while
      * the plugin stylesheet is only enqueued on WPUF pages.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.11
      *
      * @return void
      */

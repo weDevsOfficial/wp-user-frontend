@@ -1,9 +1,9 @@
-= v4.3.11 (24 August, 2026) =
+= v4.3.11 (25 August, 2026) =
 * Security – Block PHP object injection when the frontend post edit form reads submitted meta (reported by WPScan)
-* Security – Enforce the subscription submission gate in the AJAX post handler to stop unauthenticated post creation through a subscription-gated form (reported by Charles Vosburgh)
-* Security – Fail closed on the registration nonce and redirect to a safe URL, preventing CSRF-based login session fixation (reported by Yaswanth Reddy Sunkara)
+* Security – Enforce the membership subscription gate in the AJAX handler to stop unauthenticated post creation through a subscription-gated frontend post form (reported by Charles Vosburgh)
+* Security – Fail closed on the user registration nonce and redirect to a safe URL, preventing CSRF-based login session fixation (reported by Yaswanth Reddy Sunkara)
 * Enhance – Redesign the Modules page with a responsive card grid and modern layout
-* Enhance – Add native support for uploading .jfif images through frontend forms
+* Enhance – Add native support for uploading .jfif images through frontend post and user profile forms
 * Compatibility – Tested with WordPress 7.1
 
 = v4.3.7 (4 June, 2026) =

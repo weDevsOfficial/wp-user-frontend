@@ -957,7 +957,7 @@ function wpuf_get_gateways( $context = 'admin' ) {
  * classes, enabling PHP object injection. This restricts deserialization to plain
  * data and strips any object, so a serialized-object payload can never be revived.
  *
- * @since WPUF_SINCE
+ * @since 4.3.11
  *
  * @param mixed $value Possibly-serialized value.
  *

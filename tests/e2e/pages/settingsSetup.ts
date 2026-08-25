@@ -306,6 +306,20 @@ export class SettingsSetupPage extends Base {
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
         }
         await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
+
+        // Already activated? The key input renders readonly with a masked value and
+        // "Activations Remaining" is shown. Filling it then blocks until the test
+        // timeout ("element is not editable"), so short-circuit instead.
+        const alreadyActivated = await this.page
+            .locator(Selectors.settingsSetup.pluginStatusCheck.activationRemaining)
+            .first()
+            .isVisible()
+            .catch(() => false);
+        if (alreadyActivated) {
+            console.log('WPUF-Pro Status: License was already Activated');
+            return;
+        }
+
         //Activate Plugin
         await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
         await this.page.waitForTimeout(200);

@@ -5,20 +5,30 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "CI=false npx playwright test --headed --config=playwright.config.ts",
-    "test:ci": "npx playwright test --config=playwright.config.ts",
+    "test": "CI=false E2E_PHASE=setup npx playwright test --config=playwright.config.ts --project=setup --headed && CI=false npx playwright test --config=playwright.config.ts --project=e2e --headed",
+    "test:e2e": "CI=false npx playwright test --config=playwright.config.ts --project=e2e",
+    "test:ci": "E2E_PHASE=setup npx playwright test --config=playwright.config.ts --project=setup && npx playwright test --config=playwright.config.ts --project=e2e",
+
+    "env:setup": "npx wp-env start",
+    "reset:env": "npx wp-env clean all && npx wp-env start",
 
     "generate-summary": "node utils/generate-summary.js",
-    
-    "test:setup": "CI=false npx playwright test --config=playwright.setup.config.ts",
-    "test:parallel": "CI=false npx playwright test --config=playwright.parallel-one.config.ts; CI=false npx playwright test --config=playwright.parallel-two.config.ts; CI=false npx playwright test --config=playwright.parallel-three.config.ts",
-    "test:sharded": "npm run test:setup; npm run test:parallel",
+    "test:api": "CI=false E2E_PHASE=api npx playwright test --config=playwright.config.ts --project=api",
+    "test:api:ci": "E2E_PHASE=api npx playwright test --config=playwright.config.ts --project=api",
 
-    "test:setup:ci": "npx playwright test --config=playwright.setup.config.ts",
-    "test:parallel:ci": "npx playwright test --config=playwright.parallel-one.config.ts; npx playwright test --config=playwright.parallel-two.config.ts; npx playwright test --config=playwright.parallel-three.config.ts",
-    "test:sharded:ci": "npm run test:setup:ci; npm run test:parallel:ci",
+    "test:setup": "CI=false E2E_PHASE=setup npx playwright test --config=playwright.config.ts --project=setup",
+    "test:parallel": "rc=0; for i in 1 2 3; do SHARD_INDEX=$i CI=false npx playwright test --config=playwright.config.ts --project=e2e --shard=$i/3 || rc=1; done; exit $rc",
+    "test:sharded": "rc=0; npm run test:setup || rc=1; npm run test:parallel || rc=1; exit $rc",
 
-    "sharded-summary": "node utils/sharded-summary.js"
+    "test:setup:ci": "E2E_PHASE=setup npx playwright test --config=playwright.config.ts --project=setup",
+    "test:parallel:ci": "rc=0; for i in 1 2 3; do SHARD_INDEX=$i npx playwright test --config=playwright.config.ts --project=e2e --shard=$i/3 || rc=1; done; exit $rc",
+    "test:sharded:ci": "rc=0; npm run test:setup:ci || rc=1; npm run test:parallel:ci || rc=1; exit $rc",
+
+    "test:all": "rc=0; npm run test:setup || rc=1; npm run test:parallel || rc=1; npm run test:api || rc=1; exit $rc",
+    "test:all:ci": "rc=0; npm run test:setup:ci || rc=1; npm run test:parallel:ci || rc=1; npm run test:api:ci || rc=1; exit $rc",
+
+    "sharded-summary": "node utils/sharded-summary.js",
+    "merge-reports": "npx playwright merge-reports --reporter html ./all-blob-reports"
   },
   "keywords": [ "playwright", "e2e", "tests", "wordpress", "wpuser-frontend", "wpuf" ],
   "author": "Rubaiyat E Mohammad",

@@ -4,6 +4,7 @@ import { expect, type Page, type Dialog } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';
 import { Base } from './base';
+import { waitForSiteReady } from '../utils/siteReady';
 export class SettingsSetupPage extends Base {
 
     constructor(page: Page) {
@@ -193,30 +194,14 @@ export class SettingsSetupPage extends Base {
             }
         };
         this.page.on('dialog', dialogHandler);
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
-        } catch (error) {
-            console.log('Failed to click Run Updater:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
         this.page.off('dialog', dialogHandler);
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
-        } catch (error) {
-            console.log('Failed to click Allow1:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
-        } catch (error) {
-            console.log('Failed to click Allow:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
-        } catch (error) {
-            console.log('Failed to click Skip Setup:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
 
         // try {
         //     await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSwitchCart);
@@ -230,17 +215,9 @@ export class SettingsSetupPage extends Base {
         //     console.log('Failed to click Dismiss:', error);
         // }
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
-        } catch (error) {
-            console.log('Failed to click EDD notice Cross:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);
-        } catch (error) {
-            console.log('Failed to click PayPal Cross:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);
 
         if (ifWPUFLite == true) {
             //Activate Plugin
@@ -329,6 +306,20 @@ export class SettingsSetupPage extends Base {
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
         }
         await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
+
+        // Already activated? The key input renders readonly with a masked value and
+        // "Activations Remaining" is shown. Filling it then blocks until the test
+        // timeout ("element is not editable"), so short-circuit instead.
+        const alreadyActivated = await this.page
+            .locator(Selectors.settingsSetup.pluginStatusCheck.activationRemaining)
+            .first()
+            .isVisible()
+            .catch(() => false);
+        if (alreadyActivated) {
+            console.log('WPUF-Pro Status: License was already Activated');
+            return;
+        }
+
         //Activate Plugin
         await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
         await this.page.waitForTimeout(200);
@@ -772,6 +763,89 @@ export class SettingsSetupPage extends Base {
         await this.validateAndClick(Selectors.settingsSetup.AI.settingsTabAISave);
     }
 
+    /*****************************************************************/
+    /********** @Settings Persistence Verification *******************/
+    /*** Reload each settings surface and assert the config saved  ***/
+    /*** during LS setup actually persisted server-side. Closes the **/
+    /*** "config toggles, not behavior / no persistence assertion"  **/
+    /*** gap for section 1 of coverage-gap.md.                       **/
+    /*****************************************************************/
+
+    // Reload Permalinks and assert the post-name structure set by setPermalink() stuck.
+    async validatePermalinkPersistence() {
+        await this.navigateToURL(this.settingsPermalinkPage);
+        await this.page.reload();
+        await expect(this.page.locator(Selectors.settingsSetup.setPermalink.fillCustomStructure))
+            .toHaveValue('/%postname%/');
+        console.log('\x1b[32m%s\x1b[0m', '✅ Permalink structure persisted: /%postname%/');
+    }
+
+    // Reload WP General settings and assert "anyone can register" stuck.
+    async validateAllowRegistrationPersistence() {
+        await this.navigateToURL(this.settingsPage);
+        await this.page.reload();
+        await expect(this.page.locator(Selectors.settingsSetup.allowRegistration.clickAnyoneRegister))
+            .toBeChecked();
+        console.log('\x1b[32m%s\x1b[0m', '✅ Anyone-can-register persisted');
+    }
+
+    // Reload WPUF > Settings > Payments and assert payments + the bank/stripe/paypal
+    // gateways enabled during setup persisted (incl. PayPal sandbox/test mode).
+    async validatePaymentGatewayPersistence() {
+        await this.navigateToURL(this.wpufSettingsPage);
+        await this.page.reload();
+        await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentTab);
+        const p = Selectors.settingsSetup.persistence;
+        await expect(this.page.locator(p.enablePaymentCheckbox)).toBeChecked();
+        await expect(this.page.locator(p.gatewayBankCheckbox)).toBeChecked();
+        await expect(this.page.locator(p.gatewayStripeCheckbox)).toBeChecked();
+        await expect(this.page.locator(p.gatewayPaypalCheckbox)).toBeChecked();
+        await expect(this.page.locator(p.paypalSandboxCheckbox)).toBeChecked();
+        console.log('\x1b[32m%s\x1b[0m', '✅ Payment gateways (bank/stripe/paypal) + sandbox persisted');
+    }
+
+    // Reload WPUF > Settings > AI and assert the active provider selection persisted.
+    // @param provider one of 'openai' | 'google' | 'anthropic'
+    async validateAIProviderPersistence(provider: string) {
+        await this.navigateToURL(this.wpufSettingsPage);
+        await this.page.reload();
+        await this.validateAndClick(Selectors.settingsSetup.AI.clickAITab);
+        await expect(this.page.locator(Selectors.settingsSetup.persistence.aiProviderRadio(provider)))
+            .toBeChecked();
+        console.log('\x1b[32m%s\x1b[0m', `✅ AI provider persisted: ${provider}`);
+    }
+
+    // Prove WPUF general settings persist end-to-end via a deterministic round-trip:
+    // write a sentinel Google Map API key, save, reload, assert it stuck, then restore
+    // the original value. Env-independent (the .env keys are stubs), so this is the real
+    // "does a setting persist" assertion. Also asserts the Turnstile enable toggle
+    // (set in LS0020) persisted.
+    async validateGeneralSettingsPersistenceRoundTrip() {
+        const sentinel = 'wpuf-qa-gmap-persist-check';
+        await this.navigateToURL(this.wpufSettingsPage);
+        await this.page.reload();
+        await this.validateAndClick(Selectors.settingsSetup.keys.clickSettingsTabGeneral);
+
+        // Turnstile enable toggle from setup persisted.
+        await expect(this.page.locator(Selectors.settingsSetup.persistence.turnstileEnableCheckbox))
+            .toBeChecked();
+
+        // Round-trip a text setting: capture original -> write sentinel -> save -> reload -> assert.
+        const gmapField = Selectors.settingsSetup.keys.fillGoogleMapAPIKey;
+        const original = await this.page.locator(gmapField).inputValue();
+        await this.page.locator(gmapField).fill(sentinel);
+        await this.validateAndClick(Selectors.settingsSetup.keys.settingsTabGeneralSave);
+        await this.page.reload();
+        await this.validateAndClick(Selectors.settingsSetup.keys.clickSettingsTabGeneral);
+        await expect(this.page.locator(gmapField)).toHaveValue(sentinel);
+        console.log('\x1b[32m%s\x1b[0m', '✅ WPUF general setting round-trip persisted (Google Map API key)');
+
+        // Restore the original value so downstream tests see the pre-existing state.
+        await this.page.locator(gmapField).fill(original);
+        await this.validateAndClick(Selectors.settingsSetup.keys.settingsTabGeneralSave);
+        await this.page.reload();
+    }
+
     /***********************************************/
     /********** @Rest WorPress Site ***************/
     /*********************************************/
@@ -785,7 +859,10 @@ export class SettingsSetupPage extends Base {
         await this.validateAndFillStrings(Selectors.resetWordpreseSite.wpResetInputBox, 'reset');
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetSubmitButton);
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset);
-        await this.page.waitForTimeout(20000);
+        // WP Reset wipes the DB then reloads; poll until the site answers again
+        // instead of a fixed 20s sleep (same worst-case ceiling, faster when done).
+        await this.page.waitForTimeout(3000);
+        await waitForSiteReady(this.page, 60000);
         await this.navigateToURL(this.pluginsPage);
         await this.page.reload();
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWCvendors);

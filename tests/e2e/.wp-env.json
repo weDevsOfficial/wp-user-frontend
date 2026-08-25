@@ -1,5 +1,9 @@
 {
   "phpVersion": "7.4",
+  "config": {
+    "WP_MEMORY_LIMIT": "512M",
+    "WP_MAX_MEMORY_LIMIT": "512M"
+  },
   "plugins": [
     "../../",
     "../../plugins/wpuf-pro",
@@ -8,6 +12,7 @@
     "../../plugins/woocommerce",
     "../../plugins/easy-digital-downloads",
     "../../plugins/wc-vendors",
-    "../../plugins/wc-multivendor-membership"
+    "../../plugins/wc-multivendor-membership",
+    "../../plugins/mailpoet"
   ]
 }

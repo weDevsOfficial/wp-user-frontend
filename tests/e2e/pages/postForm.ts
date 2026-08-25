@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config({ quiet: true });
-import { expect, request, type Page } from '@playwright/test';
+import { expect, request, type Page, type Dialog } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Base } from './base';
 import { faker } from '@faker-js/faker';
@@ -271,8 +271,8 @@ export class PostFormPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.zip, PostForm.zip);
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.country, 'BD');
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.state, 'BD-13');
-        //Enter Google Maps
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postGoogleMapsFormsFE, PostForm.googleMaps = 'Dhaka, Bangladesh');
+        //Enter Google Maps (optional — only fillable once Google Maps JS renders the search box)
+        await this.fillStringIfAvailable(Selectors.postForms.postFormsFrontendCreate.postGoogleMapsFormsFE, PostForm.googleMaps = 'Dhaka, Bangladesh');
         //await this.page.keyboard.press('Enter');
         //Enter Embed
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postEmbedFormsFE, PostForm.embed = faker.internet.url());
@@ -731,10 +731,12 @@ export class PostFormPage extends Base {
             await this.page.waitForTimeout(200);
             await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
         }
-        //Validate Product Price
-        await this.assertionValidate(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice));
-        //Validate Product Excerpt
-        await this.assertionValidate(Selectors.postForms.downloadsFormData.excerpt(DownloadsForm.excerpt));
+        //Validate Product Price — the edd_price input renders correct-but-hidden inside a
+        //collapsed price panel, so assert it is present (value is encoded in the selector)
+        //rather than visible (which would hang the full test timeout).
+        await this.validateAttached(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice));
+        //Validate Product Excerpt (same reason — presence, not visibility)
+        await this.validateAttached(Selectors.postForms.downloadsFormData.excerpt(DownloadsForm.excerpt));
         //Validate Product Category
         await this.validateAndClick(Selectors.postForms.downloadsFormData.clickDownload);
         await this.page.waitForTimeout(300);
@@ -743,5 +745,147 @@ export class PostFormPage extends Base {
         //Validate Product Tags
         //await this.validateAndClick(Selectors.postForms.downloadsFormData.clickTag);
         //await this.assertionValidate(Selectors.postForms.downloadsFormData.tagBE(DownloadsForm.tags));
+    }
+
+    /*****************************************************************/
+    /********** @Frontend post management (dashboard) ****************/
+    /*** Edit + delete a post from the account "Posts" tab. Closes  ***/
+    /*** the section-2 gap: post edit round-trip and delete had no  ***/
+    /*** coverage (PFS edits post *status*, not field data).        ***/
+    /*** Locators detected via Playwright MCP.                       ***/
+    /*****************************************************************/
+
+    // Navigate to the account "Posts" tab, tolerating a transient ERR_ABORTED that
+    // occurs when a just-submitted post-update redirect is still settling (the
+    // pending navigation aborts the fresh goto). Retry once after it lands.
+    async openPostsDashboard() {
+        try {
+            await this.navigateToURL(this.accountPostsPage);
+        } catch (error) {
+            await this.page.waitForTimeout(1000);
+            await this.navigateToURL(this.accountPostsPage);
+        }
+        await this.page.reload();
+    }
+
+    // Edit the user's first dashboard post: capture its current title, open the
+    // Edit form, change the title, and submit the update. Returns the old title.
+    async editFirstPostFromDashboard(newTitle: string): Promise<string> {
+        await this.openPostsDashboard();
+        const oldTitle = ((await this.page.locator(Selectors.postForms.dashboardManage.allPostTitles).first().textContent()) || '').trim();
+        // Open the row's "⋮" options menu, then click Edit.
+        await this.validateAndClick(Selectors.postForms.dashboardManage.optionsMenuTrigger(oldTitle));
+        await this.validateAndClick(Selectors.postForms.dashboardManage.editLinkForPost(oldTitle));
+        // Same post form in edit mode — overwrite the title and save the update.
+        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE).fill(newTitle);
+        // The post form carries a Math Captcha field. Its submit handler calls
+        // preventDefault() and silently aborts until the equation is answered, so
+        // the update never persists unless we solve it first (creation does the
+        // same). No-op when the form has no captcha.
+        await this.solveMathCaptchaIfPresent();
+        await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.submitPostFormsFE);
+        // Let the update + any post-update redirect settle before returning.
+        await this.page.waitForLoadState('load').catch(() => {});
+        console.log('\x1b[32m%s\x1b[0m', `✅ Edited post "${oldTitle}" -> "${newTitle}"`);
+        return oldTitle;
+    }
+
+    // Solve the WPUF Math Captcha when the form shows one. Reads the equation
+    // operands/operator, computes the answer, and fills the captcha input. Safe to
+    // call on forms without a captcha — it returns early when the field is absent
+    // or hidden.
+    async solveMathCaptchaIfPresent() {
+        const captcha = Selectors.postForms.postFormsFrontendCreate.postMathCaptchaFormsFE;
+        const input = this.page.locator(captcha.mathCaptcha);
+        if ((await input.count()) === 0 || !(await input.first().isVisible())) {
+            return;
+        }
+        const operand1 = await this.page.textContent(captcha.operand1);
+        const operand2 = await this.page.textContent(captcha.operand2);
+        const operator = await this.page.textContent(captcha.operator);
+        let result: number;
+        switch (operator) {
+            case '+':
+                result = Number(operand1) + Number(operand2);
+                break;
+            case '-':
+                result = Number(operand1) - Number(operand2);
+                break;
+            case 'X':
+            case 'x':
+                result = Number(operand1) * Number(operand2);
+                break;
+            case '/':
+                result = Number(operand1) / Number(operand2);
+                break;
+            default:
+                throw new Error(`Invalid math captcha operator: ${operator}`);
+        }
+        await this.validateAndFillStrings(captcha.mathCaptcha, result.toString());
+    }
+
+    // Assert the edit persisted: the new title is listed and the old one is gone.
+    async validatePostEdited(newTitle: string, oldTitle: string) {
+        await this.openPostsDashboard();
+        await this.assertionValidate(Selectors.postForms.dashboardManage.postTitleCell(newTitle));
+        await expect(this.page.locator(Selectors.postForms.dashboardManage.postTitleCell(oldTitle))).toHaveCount(0);
+        console.log('\x1b[32m%s\x1b[0m', `✅ Post edit persisted: "${newTitle}" present, "${oldTitle}" gone`);
+    }
+
+    // Prove the Math Captcha is actually ENFORCED on submission (gap #18). WPUF's
+    // frontend submit handler calls preventDefault() and, when the visible captcha
+    // input is unanswered, returns without submitting — so an unanswered edit must
+    // NOT persist, and answering the equation must let the same edit through.
+    // Operates on the user's first dashboard post and leaves its title unchanged,
+    // so a later delete step still matches it.
+    async validateMathCaptchaEnforced() {
+        const S = Selectors.postForms;
+        await this.openPostsDashboard();
+        const title = ((await this.page.locator(S.dashboardManage.allPostTitles).first().textContent()) || '').trim();
+
+        // Open the edit form for that post.
+        await this.validateAndClick(S.dashboardManage.optionsMenuTrigger(title));
+        await this.validateAndClick(S.dashboardManage.editLinkForPost(title));
+
+        // --- Negative: type a decoy title, leave the captcha blank, submit. ---
+        const decoyTitle = `${title} SHOULD-NOT-SAVE`;
+        await this.page.locator(S.postFormsFrontendCreate.postTitleFormsFE).fill(decoyTitle);
+        await this.page.locator(S.postFormsFrontendCreate.postMathCaptchaFormsFE.mathCaptcha).fill('');
+        await this.validateAndClick(S.postFormsFrontendCreate.submitPostFormsFE);
+        // Enforcement is web-first: the handler surfaces the captcha error and does
+        // NOT redirect to the success URL.
+        await expect(this.page.locator(S.postFormsFrontendCreate.postMathCaptchaFormsFE.error)).toBeVisible();
+        expect(this.page.url()).not.toContain('msg=post_updated');
+
+        // Confirm server-side the decoy title did NOT persist (original still shown).
+        await this.openPostsDashboard();
+        await expect(this.page.locator(S.dashboardManage.postTitleCell(decoyTitle))).toHaveCount(0);
+        await expect(this.page.locator(S.dashboardManage.postTitleCell(title))).toBeVisible();
+        console.log('\x1b[32m%s\x1b[0m', `✅ Math Captcha enforced: unanswered submit blocked ("${decoyTitle}" not saved)`);
+
+        // --- Positive: reopen, answer the captcha, resubmit the SAME title → success. ---
+        await this.validateAndClick(S.dashboardManage.optionsMenuTrigger(title));
+        await this.validateAndClick(S.dashboardManage.editLinkForPost(title));
+        await this.page.locator(S.postFormsFrontendCreate.postTitleFormsFE).fill(title);
+        await this.solveMathCaptchaIfPresent();
+        await this.validateAndClick(S.postFormsFrontendCreate.submitPostFormsFE);
+        await expect(this.page).toHaveURL(/msg=post_updated/, { timeout: 30000 });
+        console.log('\x1b[32m%s\x1b[0m', `✅ Math Captcha solved: update succeeded`);
+    }
+
+    // Delete a post from the dashboard, auto-accepting the "Are you sure to
+    // delete?" confirm dialog, and assert it is removed from the list.
+    async deletePostFromDashboard(title: string) {
+        await this.openPostsDashboard();
+        const dialogHandler = async (dialog: Dialog) => { await dialog.accept(); };
+        this.page.on('dialog', dialogHandler);
+        // Open the row's "⋮" options menu, then click Delete (fires the confirm).
+        await this.validateAndClick(Selectors.postForms.dashboardManage.optionsMenuTrigger(title));
+        await this.validateAndClick(Selectors.postForms.dashboardManage.deleteLinkForPost(title));
+        this.page.off('dialog', dialogHandler);
+        await this.page.waitForLoadState('domcontentloaded');
+        await this.page.reload();
+        await expect(this.page.locator(Selectors.postForms.dashboardManage.postTitleCell(title))).toHaveCount(0);
+        console.log('\x1b[32m%s\x1b[0m', `✅ Post deleted: "${title}" no longer in dashboard`);
     }
 }

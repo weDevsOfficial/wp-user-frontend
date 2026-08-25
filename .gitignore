@@ -25,13 +25,8 @@ playwright-report
 tests/e2e/node_modules/
 tests/e2e/test-results/
 tests/e2e/setup
-tests/e2e/parallel-one
-tests/e2e/parallel-two
-tests/e2e/parallel-three
-tests/e2e/parallel-four
-tests/e2e/parallel-five
-tests/e2e/parallel-six
-tests/e2e/parallel-seven
+tests/e2e/blob-report
+tests/e2e/all-blob-reports
 tests/e2e/parallel-eight
 tests/e2e/parallel-nine
 tests/e2e/parallel-ten
@@ -45,6 +40,7 @@ tests/e2e/parallel-seventeen
 tests/e2e/parallel-eighteen
 tests/e2e/parallel-nineteen
 tests/e2e/parallel-twenty
+tests/e2e/parallel-results
 tests/e2e/json-results
 tests/e2e/playwright-report/
 tests/e2e/playwright/.cache/
@@ -77,7 +73,25 @@ assets/css/elementor-frontend-forms.css
 assets/css/frontend-forms.css
 assets/css/registration-forms.css
 assets/css/wpuf-form-builder.css
+# vite / tailwind generated CSS (bare .min.css is not caught by *.min.css.*)
+assets/css/account.min.css
+assets/css/admin/form-builder.css
+assets/css/admin/subscriptions.min.css
+assets/css/ai-form-builder.css
+assets/css/ai-form-builder.min.css
+assets/css/forms-list.min.css
+assets/css/frontend-subscriptions.min.css
+assets/css/frontend/account.css
+# user-directory React bundle (built by npm run build:user-directory)
+assets/js/wpuf-user-directory-free.asset.php
+assets/js/wpuf-user-directory-free.js
+assets/js/wpuf-user-directory-free.js.LICENSE.txt
+assets/js/wpuf-user-directory-free.js.map
 languages/wp-user-frontend.pot
 
 # OpenSpec change proposals (local spec artifacts)
 openspec/
+
+# wp-env local test plugins scaffold (mounted by tests/e2e/.wp-env.json)
+/plugins/
+/assets/*

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import fs from 'fs/promises';
-import { existsSync } from 'fs';
+import { existsSync, readdirSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import yaml from 'js-yaml';
@@ -9,17 +9,26 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const setupResultsPath = path.join(__dirname, '../setup/setup-results.json');
+const parallelResultsDir = path.join(__dirname, '../parallel-results');
 
-// Get all available result files (Pro or Lite, whatever exists)
+// Discover every native-shard result file (shard-1-results.json, shard-2-…, …).
+// The sharded UI phase now uses Playwright's built-in `--shard=i/n`; each shard
+// writes `parallel-results/shard-<i>-results.json`. This globs whatever exists,
+// so the summary is shard-count agnostic.
 function getAllAvailableResultFiles() {
-  const allPossibleFiles = [
-    path.join(__dirname, '../parallel-one/parallel-one-results.json'),
-    path.join(__dirname, '../parallel-two/parallel-two-results.json'),
-    path.join(__dirname, '../parallel-three/parallel-three-results.json'),
-  ];
-  
-  // Return only files that actually exist
-  return allPossibleFiles.filter(file => existsSync(file));
+  if (!existsSync(parallelResultsDir)) {
+    return [];
+  }
+
+  return readdirSync(parallelResultsDir)
+    .filter(file => /^shard-.*-results\.json$/.test(file))
+    // Sort by shard number so shard-2 doesn't sort before shard-10, etc.
+    .sort((a, b) => {
+      const na = parseInt((a.match(/shard-(\d+)-/) || [])[1] || '0', 10);
+      const nb = parseInt((b.match(/shard-(\d+)-/) || [])[1] || '0', 10);
+      return na - nb;
+    })
+    .map(file => path.join(parallelResultsDir, file));
 }
 
 const parallelResultsPaths = getAllAvailableResultFiles();
@@ -33,9 +42,7 @@ async function cleanupResultFiles() {
   
   const directoriesToClean = [
     path.join(__dirname, '../setup'),
-    path.join(__dirname, '../parallel-one'),
-    path.join(__dirname, '../parallel-two'),
-    path.join(__dirname, '../parallel-three'),
+    parallelResultsDir,
   ];
   
   // Remove JSON files
@@ -143,10 +150,8 @@ async function mergeParallelResults() {
       flaky: 0,
       skipped: 0
     },
-    // Store individual shard durations for sharded execution calculation
-    parallelOneDuration: 0,
-    parallelTwoDuration: 0,
-    parallelThreeDuration: 0,
+    // Sum of every shard's wall-clock duration (shards run sequentially).
+    parallelDuration: 0,
   };
 
   let totalDuration = 0;
@@ -159,14 +164,9 @@ async function mergeParallelResults() {
     const results = await loadTestResults(filePath);
     if (!results) continue;
 
-    // Store individual shard durations
-    const fileName = path.basename(filePath);
-    if (fileName.includes('parallel-one') && results.stats?.duration) {
-      allResults.parallelOneDuration = results.stats.duration;
-    } else if (fileName.includes('parallel-two') && results.stats?.duration) {
-      allResults.parallelTwoDuration = results.stats.duration;
-    } else if (fileName.includes('parallel-three') && results.stats?.duration) {
-      allResults.parallelThreeDuration = results.stats.duration;
+    // Accumulate each shard's wall-clock duration.
+    if (results.stats?.duration) {
+      allResults.parallelDuration += results.stats.duration;
     }
 
     // Merge suites
@@ -469,14 +469,12 @@ async function generateShardedSummary() {
     !['expected', 'passed', 'unexpected', 'failed', 'flaky', 'skipped'].includes(t.status)
   ).length;
   
-  // Calculate actual sharded execution time (wall-clock time)
+  // Calculate actual sharded execution time (wall-clock time). Shards run
+  // sequentially, so total = setup + sum of every shard's duration.
   const setupDuration = setupResults?.stats?.duration || 0;
-  const parallelOneDuration = mergedParallelResults.parallelOneDuration || 0;
-  const parallelTwoDuration = mergedParallelResults.parallelTwoDuration || 0;
-  const parallelThreeDuration = mergedParallelResults.parallelThreeDuration || 0;
-  
-  // Total sharded duration is setup + parallelOne + parallelTwo + parallelThree
-  const totalWallClockDuration = setupDuration + parallelOneDuration + parallelTwoDuration + parallelThreeDuration;
+  const parallelDuration = mergedParallelResults.parallelDuration || 0;
+
+  const totalWallClockDuration = setupDuration + parallelDuration;
   
   // Calculate average based on sum of all individual test durations
   const totalTestDuration = allTests.reduce((sum, test) => sum + test.duration, 0);

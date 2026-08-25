@@ -199,16 +199,12 @@ class Frontend_Render_Form {
 
         $label_position = isset( $this->form_settings['label_position'] ) ? $this->form_settings['label_position'] : 'left';
 
-        $layout = 'layout1';
-
-        $theme_css = isset( $this->form_settings['use_theme_css'] ) ? $this->form_settings['use_theme_css'] : 'wpuf-style';
+        $layout    = 'layout1';
+        $use_theme_css = isset( $this->form_settings['use_theme_css'] ) ? $this->form_settings['use_theme_css'] : '';
 
         do_action( 'wpuf_before_form_render', $form_id );
 
         $form = new Form($form_id);
-
-        // Check if Use Theme CSS is enabled - if so, don't enqueue plugin styles
-        $use_theme_css = isset( $this->form_settings['use_theme_css'] ) ? $this->form_settings['use_theme_css'] : '';
 
         if ( 'wpuf_profile' === $form->data->post_type && 'on' !== $use_theme_css ) {
             $layout = isset( $this->form_settings['profile_form_layout'] ) ? $this->form_settings['profile_form_layout'] : 'layout1';
@@ -237,10 +233,30 @@ class Frontend_Render_Form {
             $layout = isset( $this->form_settings['form_layout'] ) ? $this->form_settings['form_layout'] : 'layout1';
 
             if ( ! empty( $layout ) && 'on' !== $use_theme_css ) {
-                // Always enqueue the base template style
-                wp_enqueue_style( 'wpuf-reg-template-base' );
+                // Reuse the shared layout handle so WordPress dedupes it against the
+                // blanket enqueue in Frontend.php and Elementor's dequeue list covers it.
                 wp_enqueue_style( 'wpuf-' . $layout );
             }
+        }
+
+        // Dark templates: the TinyMCE iframe loads only its own stylesheets, so the
+        // editor content area stays white unless we inject the palette. Prepare the
+        // filter here but attach it only around this form's field render (below), so it
+        // never bleeds onto other editors on the page and never persists after render.
+        $wpuf_dark_editor_style = null;
+
+        if ( 'on' !== $use_theme_css && in_array( $layout, [ 'layout2', 'layout5' ], true ) ) {
+            $editor_bg = 'layout2' === $layout ? '#222C3C' : '#394141';
+
+            $wpuf_dark_editor_style = function ( $mce_init ) use ( $editor_bg ) {
+                $style = sprintf( 'body.mceContentBody { background: %s; color: #ffffff; caret-color: #ffffff; }', $editor_bg );
+
+                $mce_init['content_style'] = isset( $mce_init['content_style'] )
+                    ? $mce_init['content_style'] . ' ' . $style
+                    : $style;
+
+                return $mce_init;
+            };
         }
 
         if ( ! is_user_logged_in() && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' !== $this->form_settings['post_permission'] ) ) {
@@ -270,7 +286,7 @@ class Frontend_Render_Form {
         if ( $this->form_fields ) {
             ?>
 
-            <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?> <?php echo ( 'layout1' === $layout ) ? esc_html( $theme_css ) : 'wpuf-style'; ?>" action="" method="post">
+            <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?><?php echo ( 'layout1' === $layout && 'on' === $use_theme_css ) ? ' wpuf-theme-style' : ''; ?>" action="" method="post">
 
                 <?php
                 // Display form title if enabled
@@ -321,7 +337,20 @@ class Frontend_Render_Form {
 
                     $this->render_featured_field( $post_id );
 
+                    // Post Content renders as a teeny editor by default, which runs
+                    // teeny_mce_before_init instead of tiny_mce_before_init. Scope the
+                    // dark-editor palette to this form's fields only, then detach it.
+                    if ( $wpuf_dark_editor_style ) {
+                        add_filter( 'tiny_mce_before_init', $wpuf_dark_editor_style );
+                        add_filter( 'teeny_mce_before_init', $wpuf_dark_editor_style );
+                    }
+
                     wpuf()->fields->render_fields( $this->form_fields, $form_id, $atts, $type = 'post', $post_id );
+
+                    if ( $wpuf_dark_editor_style ) {
+                        remove_filter( 'tiny_mce_before_init', $wpuf_dark_editor_style );
+                        remove_filter( 'teeny_mce_before_init', $wpuf_dark_editor_style );
+                    }
 
                     $this->submit_button( $form_id, $this->form_settings, $post_id );
 

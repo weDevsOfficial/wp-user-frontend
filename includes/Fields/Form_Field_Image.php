@@ -35,7 +35,7 @@ class Form_Field_Image extends Field_Contract {
 
             if ( $this->is_meta( $field_settings ) && ! empty( $images[0] ) ) {
                 if ( is_serialized( $images[0] ) ) {
-                    $images = maybe_unserialize( $images[0] );
+                    $images = wpuf_safe_unserialize( $images[0] );
                 }
 
                 if ( is_array( $images[0] ) ) {
@@ -78,7 +78,7 @@ class Form_Field_Image extends Field_Contract {
             <script type="text/javascript">
                 (function($) {
                     $(document).ready( function(){
-                        var uploader = new WPUF_Uploader('wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles', 'wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container', <?php echo esc_attr( isset( $field_settings['count'] ) ? $field_settings['count'] : 1 ); ?>, '<?php echo esc_attr( $field_settings['name'] ); ?>', 'jpg,jpeg,gif,png,bmp,webp', <?php echo esc_attr( isset( $field_settings['max_size'] ) ? $field_settings['max_size'] : 1024 ); ?>);
+                        var uploader = new WPUF_Uploader('wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles', 'wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container', <?php echo esc_attr( isset( $field_settings['count'] ) ? $field_settings['count'] : 1 ); ?>, '<?php echo esc_attr( $field_settings['name'] ); ?>', 'jpg,jpeg,jfif,gif,png,bmp,webp', <?php echo esc_attr( isset( $field_settings['max_size'] ) ? $field_settings['max_size'] : 1024 ); ?>);
                         wpuf_plupload_items.push(uploader);
                     });
                 })(jQuery);

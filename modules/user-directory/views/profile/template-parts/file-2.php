@@ -18,7 +18,7 @@ if ( $table_exists ) {
     ) );
     
     foreach ( $messages as $message ) {
-        $message_data = maybe_unserialize( $message->message );
+        $message_data = wpuf_safe_unserialize( $message->message );
         if ( is_array( $message_data ) && ! empty( $message_data['files'] ) && is_array( $message_data['files'] ) ) {
             $private_message_attachment_ids = array_merge( $private_message_attachment_ids, $message_data['files'] );
         }

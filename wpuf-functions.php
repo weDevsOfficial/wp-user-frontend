@@ -534,7 +534,7 @@ function wpuf_get_image_sizes() {
 function wpuf_allowed_extensions() {
     $extesions = [
         'images' => [
-            'ext' => 'jpg,jpeg,gif,png,bmp,webp',
+            'ext' => 'jpg,jpeg,jfif,gif,png,bmp,webp',
             'label' => __( 'Images', 'wp-user-frontend' ),
         ],
         'audio'  => [
@@ -950,6 +950,37 @@ function wpuf_get_gateways( $context = 'admin' ) {
 }
 
 /**
+ * Unserialize a value without ever instantiating PHP objects.
+ *
+ * Stored post meta may hold a serialized object payload (e.g. submitted through a
+ * form field). Passing it to maybe_unserialize() would instantiate arbitrary
+ * classes, enabling PHP object injection. This restricts deserialization to plain
+ * data and strips any object, so a serialized-object payload can never be revived.
+ *
+ * @since 4.3.11
+ *
+ * @param mixed $value Possibly-serialized value.
+ *
+ * @return mixed Unserialized data with objects removed, or the original value.
+ */
+function wpuf_safe_unserialize( $value ) {
+    if ( ! is_string( $value ) || ! is_serialized( $value ) ) {
+        return $value;
+    }
+
+    if ( PHP_VERSION_ID >= 70000 ) {
+        return @unserialize( $value, [ 'allowed_classes' => false ] );
+    }
+
+    // PHP 5.6 fallback: refuse anything carrying an object marker (O:/C:).
+    if ( preg_match( '/(?:^|;|\{)[OC]:[0-9]+:/', $value ) ) {
+        return $value;
+    }
+
+    return maybe_unserialize( $value );
+}
+
+/**
  * Show custom fields in post content area
  *
  * @since 3.3.0 Introducing `render_field_data` to render field value
@@ -1107,7 +1138,7 @@ function wpuf_show_custom_fields( $content ) {
 
                     if ( $field_value ) {
                         if ( is_serialized( $field_value[0] ) ) {
-                            $field_value = maybe_unserialize( $field_value[0] );
+                            $field_value = wpuf_safe_unserialize( $field_value[0] );
                         }
 
                         if ( is_array( $field_value[0] ) ) {
@@ -1265,7 +1296,7 @@ function wpuf_show_custom_fields( $content ) {
 
                     // Unserialize if needed
                     if ( is_serialized( $repeat_data ) ) {
-                        $repeat_data = maybe_unserialize( $repeat_data );
+                        $repeat_data = wpuf_safe_unserialize( $repeat_data );
                     }
 
                     if ( ! is_array( $repeat_data ) ) {
@@ -1406,8 +1437,8 @@ function wpuf_show_custom_fields( $content ) {
                     if ( ! empty( $filter_html ) ) {
                         $html .= $filter_html;
                     } elseif ( is_serialized( $value[0] ) ) {
-                        $new            = maybe_unserialize( $value[0] );
-                        $modified_value = implode( $separator, $new );
+                        $new            = wpuf_safe_unserialize( $value[0] );
+                        $modified_value = is_array( $new ) ? implode( $separator, $new ) : '';
 
                         if ( $modified_value ) {
                             $html .= '<li>';
@@ -6126,7 +6157,34 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'wp-user-frontend'
                     ),
                     'fields' => [
-                        'use_theme_css'           => [
+                        'form_layout'    => [
+                            'label'     => __( 'Choose Form Style', 'wp-user-frontend' ),
+                            'type'      => 'pic-radio',
+                            'help_text' => __( 'Pick a form template to control the overall layout and visual style of your form.', 'wp-user-frontend' ),
+                            'options'   => [
+                                'layout1' => [
+                                    'label' => __( 'Template 1', 'wp-user-frontend' ),
+                                    'image' => WPUF_ASSET_URI . '/images/forms/layout1.png',
+                                ],
+                                'layout2' => [
+                                    'label' => __( 'Template 2', 'wp-user-frontend' ),
+                                    'image' => WPUF_ASSET_URI . '/images/forms/layout2.png',
+                                ],
+                                'layout3' => [
+                                    'label' => __( 'Template 3', 'wp-user-frontend' ),
+                                    'image' => WPUF_ASSET_URI . '/images/forms/layout3.png',
+                                ],
+                                'layout4' => [
+                                    'label' => __( 'Template 4', 'wp-user-frontend' ),
+                                    'image' => WPUF_ASSET_URI . '/images/forms/layout4.png',
+                                ],
+                                'layout5' => [
+                                    'label' => __( 'Template 5', 'wp-user-frontend' ),
+                                    'image' => WPUF_ASSET_URI . '/images/forms/layout5.png',
+                                ],
+                            ],
+                        ],
+                        'use_theme_css'  => [
                             'label'     => __( 'Use Theme CSS', 'wp-user-frontend' ),
                             'type'      => 'toggle',
                             'help_text' => __(
@@ -6300,6 +6358,7 @@ if ( ! function_exists( 'wpuf_field_profile_photo_allowed_extensions' ) ) {
         $allowed_extensions = [
             'jpg'  => __( 'JPG', 'wpuf-pro' ),
             'jpeg' => __( 'JPEG', 'wpuf-pro' ),
+            'jfif' => __( 'JFIF', 'wpuf-pro' ),
             'png'  => __( 'PNG', 'wpuf-pro' ),
             'gif'  => __( 'GIF', 'wpuf-pro' ),
         ];

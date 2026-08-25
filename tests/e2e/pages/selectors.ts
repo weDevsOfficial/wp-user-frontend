@@ -31,6 +31,22 @@ export const Selectors = {
             clickDokanSidebar: '//div[normalize-space(text())="Dokan"]',
             licenseTab: '//li[@id="toplevel_page_wp-user-frontend"]//ul//li[normalize-space()="License"]',
         },
+        // WPUF frontend [wpuf-login] shortcode (templates/login-form.php,
+        // lost-pass-form.php, logged-in.php — Lite Simple_Login)
+        frontendLogin: {
+            loginForm: '#wpuf-login-form form#loginform',
+            usernameField: '#wpuf-login-form input#wpuf-user_login',
+            passwordField: '#wpuf-login-form input#wpuf-user_pass',
+            rememberMeCheckbox: '#wpuf-login-form input#wpuf-rememberme',
+            submitButton: '#wpuf-login-form input#wp-submit',
+            lostPasswordLink: '#wpuf-login-form .wpuf-lost-password a',
+            errorNotice: 'div.wpuf-error',
+            messageNotice: 'div.wpuf-message',
+            loggedInView: 'div.wpuf-user-loggedin',
+            lostPasswordForm: '#wpuf-login-form form#lostpasswordform',
+            lostPasswordUserField: '#wpuf-login-form form#lostpasswordform input#wpuf-user_login',
+            lostPasswordSubmit: '#wpuf-login-form form#lostpasswordform input#wp-submit',
+        },
     },
 
     /*******************************************/
@@ -74,8 +90,8 @@ export const Selectors = {
             // PostFormPage
             clickPostFormMenuOption: '//h3[normalize-space(text())="Post Forms"]',
             clickRegFormMenuOption: '//h3[normalize-space()="Registration Forms"]',
-            wpufPostFormCheckAddButton: ' //button[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
-            wpufRegFormCheckAddButton: ' //a[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
+            wpufPostFormCheckAddButton: '(//button[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
+            wpufRegFormCheckAddButton: '(//a[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
             noFormMsg: '//h2[normalize-space()="No Post Forms Created Yet"]',
             formTitleCheck: (formName: string) => `//span[normalize-space(text())='${formName}']`,
             clickRegFormListPage: '//a[normalize-space()="Registration Forms"]'
@@ -280,8 +296,25 @@ export const Selectors = {
             googleButton: '//span[normalize-space()="Google"]',
             inputAPIKey: '//input[@id="wpuf_ai_api_key_field"]',
             settingsTabAISave: '//div[@id="wpuf_ai"]//form[@method="post"]//div//input[@id="submit"]',
-        }
+        },
 
+        // Settings-persistence assertion locators (detected via Playwright MCP
+        // snapshot/evaluate). Target the real <input> by its bracketed id — WPUF
+        // renders a hidden input + a visible checkbox that share the same name,
+        // so a name-based selector would be ambiguous; the id (prefixed "wpuf-"
+        // for checkboxes/radios) is unique.
+        persistence: {
+            // General tab — Turnstile enable checkbox
+            turnstileEnableCheckbox: '//input[@id="wpuf-wpuf_general[enable_turnstile]"]',
+            // Payments tab — master enable + gateway toggles + PayPal sandbox mode
+            enablePaymentCheckbox: '//input[@id="wpuf-wpuf_payment[enable_payment]"]',
+            gatewayBankCheckbox: '//input[@id="wpuf-wpuf_payment[active_gateways][bank]"]',
+            gatewayStripeCheckbox: '//input[@id="wpuf-wpuf_payment[active_gateways][stripe]"]',
+            gatewayPaypalCheckbox: '//input[@id="wpuf-wpuf_payment[active_gateways][paypal]"]',
+            paypalSandboxCheckbox: '//input[@id="wpuf-wpuf_payment[sandbox_mode]"]',
+            // AI tab — active provider radio, keyed by provider slug (openai|google|anthropic)
+            aiProviderRadio: (provider: string) => `//input[@id="wpuf-wpuf_ai[ai_provider][${provider}]"]`,
+        },
     },
 
     /*********************************/
@@ -311,7 +344,7 @@ export const Selectors = {
         /* Locators creating Navigating Post Forms Page */
         navigatePage_PF: {
             // WPUF > Pages > Navigation
-            checkAddButton_PF: '//button[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
+            checkAddButton_PF: '(//button[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
             postFormsPageFormsTitleCheck_PF: (formName: string) => `//span[normalize-space()="${formName}"]`,
             postFormShortCode: (formName: string) => `//span[normalize-space()="${formName}"]//..//..//code`,
         },
@@ -322,7 +355,7 @@ export const Selectors = {
             clickpostFormsMenuOption: '//a[contains(text(), "Post Forms")]',
 
             // Add Form
-            clickPostAddForm: '//button[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
+            clickPostAddForm: '(//button[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
 
             // Start > Blank Form
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
@@ -667,6 +700,9 @@ export const Selectors = {
                 operand2: '//span[@id="operand_two"]',
                 operator: '//span[@id="operator"]',
                 mathCaptcha: '(//label[contains(.,"Math Captcha *")]/following::input)[1]',
+                // Error container the WPUF submit handler fills when the captcha is
+                // unanswered/wrong (jQuery `.wpuf-captcha-error`). Used to prove enforcement.
+                error: '//*[contains(@class,"wpuf-captcha-error")]',
             },
             // Guest name
             guestName: '//input[@name="guest_name"]',
@@ -676,6 +712,20 @@ export const Selectors = {
             submitPostFormsFE: '//input[@name="submit"]',
             // Validate Post Submitted
             validatePostSubmitted: (postFormTitle: string) => `//h1[normalize-space(text())='${postFormTitle}']`,
+        },
+
+        // Frontend dashboard post management — account "Posts" tab
+        // (/account/?section=post). Locators detected via Playwright MCP. Rows
+        // are scoped by post title so a user owning multiple posts doesn't trip
+        // Playwright strict mode; the Options cell holds the Edit + Delete links.
+        dashboardManage: {
+            allPostTitles: '//td[@data-label="Title: "]//a',
+            postTitleCell: (title: string) => `//td[@data-label="Title: "]//a[normalize-space()="${title}"]`,
+            // The Options cell is a "⋮" dropdown — its trigger must be clicked
+            // to reveal the Edit/Delete menu items (they are display:none until then).
+            optionsMenuTrigger: (title: string) => `//tr[.//td[@data-label="Title: "]//a[normalize-space()="${title}"]]//button[contains(@class,"wpuf-posts-menu-button")]`,
+            editLinkForPost: (title: string) => `//tr[.//td[@data-label="Title: "]//a[normalize-space()="${title}"]]//td[@data-label="Options: "]//a[normalize-space()="Edit"]`,
+            deleteLinkForPost: (title: string) => `//tr[.//td[@data-label="Title: "]//a[normalize-space()="${title}"]]//td[@data-label="Options: "]//a[normalize-space()="Delete"]`,
         },
 
         productFrontendCreate: {
@@ -806,7 +856,9 @@ export const Selectors = {
             purchaseButton: '//span[@class="edd-add-to-cart-label"]',
             downloadsImage: '//figure[@class="wp-block-post-featured-image"]',
             titleBE: (title: string) => `//a[normalize-space()='${title}']`,
-            price: (price: string) => `(//input[@id="edd_price" and @value="${price}.00" ])[2]`,
+            // Scope to EDD's native price field container: the page also carries a hidden
+            // WPUF-rendered #edd_price twin, so a bare positional index can land on it.
+            price: (price: string) => `//div[@id="edd_regular_price_field"]//input[@id="edd_price" and @value="${price}.00"]`,
             clickDownload: '//div[@class="interface-complementary-area editor-sidebar"]//div//button//span[normalize-space()="Download"]',
             clickCategory: '//button[normalize-space()="Categories"]',
             categoryBE: (category: string) => `//label[normalize-space()='${category}']`,
@@ -866,7 +918,7 @@ export const Selectors = {
         // Navigate Registration Forms Page
         navigatePage_RF: {
             // WPUF > Pages > Navigation
-            checkAddButton_RF: '(//a[contains(@class,"new-wpuf-form wpuf-rounded-md")])',
+            checkAddButton_RF: '(//a[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
             postFormsPageFormTitleCheck_RF: '(//a[@class="row-title"])[1]',
 
             // New_Created_NAME_Checker
@@ -882,7 +934,7 @@ export const Selectors = {
             validateRegistrationFormPageName: '//h2[contains(text(), "Profile Forms")]',
 
             // Start
-            clickRegistraionAddForm: '//a[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
+            clickRegistraionAddForm: '(//a[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
             //hoverBlankForm: '(//a[contains(@class,"new-wpuf-form wpuf-rounded-md")])',
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
 
@@ -1051,7 +1103,7 @@ export const Selectors = {
     postFormSettings: {
         // Navigation and Basic Elements
         formNameInput: '//input[@name="post_title"]',
-        addNewButton: '//button[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
+        addNewButton: '(//button[contains(@class,"new-wpuf-form wpuf-rounded-md")])[1]',
         saveButton: '//button[normalize-space(text())="Save"]',
         postTypeColumn: (formName: string, postType: string) => `//span[normalize-space()="${formName}"]//..//..//td[normalize-space()="${postType}"]`,
         postSubmissionStatusColumn: (formName: string, status: string) => `//span[normalize-space()="${formName}"]//..//..//td[normalize-space()="${status}"]`,
@@ -1446,6 +1498,19 @@ export const Selectors = {
             customFieldsStepStart: '//p[normalize-space(text())="Step Start"]',
             customFieldsText: '//p[normalize-space(text())="Text"]',
             customFieldsUrl: '//p[normalize-space(text())="Website URL"]',
+        },
+
+        // MailPoet email-marketing module + per-form subscription settings
+        mailPoet: {
+            // WPUF > Modules : the "Mailpoet 3" module card + its enable toggle
+            moduleCard: '.plugin-card:has(a[href*="modules/mailpoet3/"])',
+            moduleToggle: '.plugin-card:has(a[href*="modules/mailpoet3/"]) label.wpuf-toggle-switch',
+            moduleCheckbox: '.plugin-card:has(a[href*="modules/mailpoet3/"]) input.wpuf-toggle-module',
+            // Registration form builder > Settings > Modules > Mailpoet 3
+            settingsMenuItem: '//li[normalize-space()="Mailpoet 3"]',
+            enableToggle: 'label[for="enable_mailpoet_3"].wpuf-cursor-pointer',
+            enableCheckbox: '#enable_mailpoet_3',
+            listSelect: '#mailpoet_3_list',
         },
     },
 

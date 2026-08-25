@@ -72,21 +72,22 @@
         },
 
         showHide: function () {
+            // The upload prompt is either the legacy `.file-selector` button or the
+            // redesigned `.wpuf-file-upload-zone`. Toggle whichever is present so the
+            // single-vs-multi rule holds for both markups. Use setProperty(..., 'important')
+            // because the template CSS forces `display: flex !important`, which a plain
+            // .hide()/.show() (inline display) cannot override.
+            var $selector = $('#' + this.container).find('.file-selector, .wpuf-file-upload-zone');
 
-            if ( this.count >= this.max) {
-
-                if ( this.count > this.max ) {
-                    $('#' + this.container + ' .wpuf-file-warning').html( wpuf_upload.warning );
-                } else {
-                    $('#' + this.container + ' .wpuf-file-warning').html( wpuf_upload.warning );
-                }
-
-                $('#' + this.container).find('.file-selector').hide();
+            if ( this.count >= this.max ) {
+                $('#' + this.container + ' .wpuf-file-warning').html( wpuf_upload.warning );
+                $selector.each(function () { this.style.setProperty('display', 'none', 'important'); });
 
                 return;
-            };
+            }
+
             $('#' + this.container + ' .wpuf-file-warning').html( '' );
-            $('#' + this.container).find('.file-selector').show();
+            $selector.each(function () { this.style.removeProperty('display'); });
         },
 
         added: function (up, files) {
@@ -181,9 +182,8 @@
 
             this.count = $('#' + this.container).find('.wpuf-attachment-list > li').length;
 
-            if ( this.count >= this.max ) {
-                $('#' + this.container).find('.file-selector').hide();
-            }
+            // Hide/show the upload prompt for both legacy and redesigned markups.
+            this.showHide();
 
             if ( FileProgress === uploaded ) {
                 if ( typeof grecaptcha !== 'undefined' && $('.wpuf-form-add #g-recaptcha-response').length ) {

@@ -1,0 +1,2 @@
+# Saved logged-in sessions (Playwright storageState) — never commit credentials/cookies.
+.auth/

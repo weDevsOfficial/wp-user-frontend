@@ -1233,16 +1233,17 @@ class Free_Loader extends Pro_Prompt {
                                     </p>
                                 </div>
                             </div>
+
+                            <div class="form-create-overlay">
+                                <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=freeplugin&amp;utm_medium=prompt&amp;utm_term=wpuf_free_plugin&amp;utm_content=textlink&amp;utm_campaign=pro_prompt" target="_blank">
+                                    <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="pro icon" class="wpuf-module-pro-badge">
+                                </a>
+                            </div>
                         </div>
                         <?php
                     }
                 }
                 ?>
-                <div class="form-create-overlay">
-                    <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=freeplugin&amp;utm_medium=prompt&amp;utm_term=wpuf_free_plugin&amp;utm_content=textlink&amp;utm_campaign=pro_prompt" target="_blank">
-                        <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="pro icon" class="wpuf-module-pro-badge">
-                    </a>
-                </div>
             </div>
         </div>
         <?php
@@ -1333,121 +1334,121 @@ class Free_Loader extends Pro_Prompt {
                 'name'        => 'Campaign Monitor',
                 'description' => 'Subscribe a contact to Campaign Monitor when a form is submited',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/campaign-monitor/',
-                'thumbnail'   => 'campaign_monitor.png',
+                'thumbnail'   => 'campaign_monitor.svg',
             ],
             'social-login/wpuf-social-login.php' => [
                 'name'        => 'Social Login & Registration',
                 'description' => 'Add Social Login and registration feature in WP User Frontend',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/social-login-registration/',
-                'thumbnail'   => 'Social-Media-Login.png',
+                'thumbnail'   => 'Social-Media-Login.svg',
             ],
             'bp-profile/wpuf-bp.php' => [
                 'name'        => 'BuddyPress Profile',
                 'description' => 'Register and upgrade user profiles and sync data with BuddyPress',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/buddypress-profile-integration/',
-                'thumbnail'   => 'wpuf-buddypress.png',
+                'thumbnail'   => 'wpuf-buddypress.svg',
             ],
             'comments/comments.php' => [
                 'name'        => 'Comments Manager',
                 'description' => 'Handle comments in frontend',
                 'plugin_uri'  => 'https://wedevs.com/wp-user-frontend-pro/modules/comments-manager/',
-                'thumbnail'   => 'wpuf-comment.png',
+                'thumbnail'   => 'wpuf-comment.svg',
             ],
             'mailpoet/wpuf-mailpoet.php' => [
                 'name'        => 'Mailpoet',
                 'description' => 'Add subscribers to mailpoet mailing list when they registers via WP User Frontend Pro',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/mailpoet/',
-                'thumbnail'   => 'wpuf-mailpoet.png',
+                'thumbnail'   => 'wpuf-mailpoet.svg',
             ],
             'pmpro/wpuf-pmpro.php' => [
                 'name'        => 'Paid Membership Pro Integration',
                 'description' => 'Membership Integration of WP User Frontend PRO with Paid Membership Pro',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/install-and-configure-pmpro-add-on-for-wpuf/',
-                'thumbnail'   => 'wpuf-pmpro.png',
+                'thumbnail'   => 'wpuf-pmpro.svg',
             ],
             'sms-notification/wpuf-sms.php' => [
                 'name'        => 'SMS Notification',
                 'description' => 'SMS notification for post',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/sms-notification/',
-                'thumbnail'   => 'wpuf-sms.png',
+                'thumbnail'   => 'wpuf-sms.svg',
             ],
             'email-templates/email-templates.php' => [
                 'name'        => 'HTML Email Templates',
                 'description' => 'Send Email Notifications with HTML Template',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/html-email-templates/',
-                'thumbnail'   => 'email-templates.png',
+                'thumbnail'   => 'email-templates.svg',
             ],
             'getresponse/getresponse.php' => [
                 'name'        => 'GetResponse',
                 'description' => 'Subscribe a contact to GetResponse when a form is submited',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/get-response/',
-                'thumbnail'   => 'getresponse.png',
+                'thumbnail'   => 'getresponse.svg',
             ],
             'zapier/zapier.php' => [
                 'name'        => 'Zapier',
                 'description' => 'Subscribe a contact to Zapier when a form is submited',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/zapier/',
-                'thumbnail'   => 'zapier.png',
+                'thumbnail'   => 'zapier.svg',
             ],
             'convertkit/convertkit.php' => [
                 'name'        => 'ConvertKit',
                 'description' => 'Subscribe a contact to ConvertKit when a form is submited',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/convertkit/',
-                'thumbnail'   => 'convertkit.png',
+                'thumbnail'   => 'convertkit.svg',
             ],
             'private-message/private-message.php' => [
                 'name'        => 'Private Message',
                 'description' => 'User to user message from Frontend',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/private-messaging/',
-                'thumbnail'   => 'message.gif',
+                'thumbnail'   => 'message.svg',
             ],
             'user-analytics/wpuf-user-analytics.php' => [
                 'name'        => 'User Analytics',
                 'description' => 'Show user tracking info during post and registration from Frontend',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/user-analytics/',
-                'thumbnail'   => 'wpuf-ua.png',
+                'thumbnail'   => 'wpuf-ua.svg',
             ],
             'mailchimp/wpuf-mailchimp.php' => [
                 'name'        => 'Mailchimp',
                 'description' => 'Add subscribers to Mailchimp mailing list when they registers via WP User Frontend Pro',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/add-users-to-mailchimp-subscribers-list-upon-registration-from-frontend/',
-                'thumbnail'   => 'wpuf-mailchimp.png',
+                'thumbnail'   => 'wpuf-mailchimp.svg',
             ],
             'user-activity/user_activity.php' => [
                 'name'        => 'User Activity',
                 'description' => 'Handle user activity in frontend',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/user-activity/',
-                'thumbnail'   => 'wpuf-activity.png',
+                'thumbnail'   => 'wpuf-activity.svg',
             ],
             'report/wpuf-report.php' => [
                 'name'        => 'Reports',
                 'description' => 'Show various reports in WP User Frontend menu',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/reports/',
-                'thumbnail'   => 'reports.png',
+                'thumbnail'   => 'reports.svg',
             ],
             'qr-code-field/wpuf-qr-code.php' => [
                 'name'        => 'QR Code',
                 'description' => 'Post Qr code generator plugin',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/qr-code/',
-                'thumbnail'   => 'wpuf-qr.png',
+                'thumbnail'   => 'wpuf-qr.svg',
             ],
             'mailpoet3/wpuf-mailpoet-3.php' => [
                 'name'        => 'Mailpoet 3',
                 'description' => 'Add subscribers to mailpoet mailing list when they registers via WP User Frontend Pro',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/mailpoet3/',
-                'thumbnail'   => 'mailpoet3.png',
+                'thumbnail'   => 'mailpoet3.svg',
             ],
             'stripe/wpuf-stripe.php' => [
                 'name'        => 'Stripe Payment',
                 'description' => 'Stripe payment gateway for WP User Frontend',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/stripe/',
-                'thumbnail'   => 'wpuf-stripe.png',
+                'thumbnail'   => 'wpuf-stripe.svg',
             ],
             'seo/wpuf-seo.php' => [
                 'name'        => 'SEO Settings',
                 'description' => 'SEO settings for user directory and profiles',
                 'plugin_uri'  => 'https://wedevs.com/products/plugins/wp-user-frontend-pro/seo-settings/',
-                'thumbnail'   => 'wpuf-seo.png',
+                'thumbnail'   => 'wpuf-seo.svg',
             ],
         ];
     }
@@ -1838,39 +1839,6 @@ class Free_Loader extends Pro_Prompt {
      * @return array
      */
     public function form_settings_preview_display( $display_settings ) {
-        $display_settings['section']['custom_form_style']['pro_preview']['fields'] = [
-            'form_layout'         => [
-                'label'     => __( 'Choose Form Style', 'wp-user-frontend' ),
-                'type'      => 'pic-radio',
-                'help_text' => __(
-                    'If selected a form template, it will try to execute that integration options when new post created and updated.',
-                    'wp-user-frontend'
-                ),
-                'options'   => [
-                    'layout1' => [
-                        'label' => __( 'Post Form', 'wp-user-frontend' ),
-                        'image' => WPUF_ASSET_URI . '/images/forms/layout1.png',
-                    ],
-                    'layout2' => [
-                        'label' => __( 'Post Form', 'wp-user-frontend' ),
-                        'image' => WPUF_ASSET_URI . '/images/forms/layout2.png',
-                    ],
-                    'layout3' => [
-                        'label' => __( 'Post Form', 'wp-user-frontend' ),
-                        'image' => WPUF_ASSET_URI . '/images/forms/layout3.png',
-                    ],
-                    'layout4' => [
-                        'label' => __( 'Post Form', 'wp-user-frontend' ),
-                        'image' => WPUF_ASSET_URI . '/images/forms/layout4.png',
-                    ],
-                    'layout5' => [
-                        'label' => __( 'Post Form', 'wp-user-frontend' ),
-                        'image' => WPUF_ASSET_URI . '/images/forms/layout5.png',
-                    ],
-                ],
-            ],
-        ];
-
         return $display_settings;
     }
 

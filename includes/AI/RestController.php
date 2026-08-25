@@ -1091,6 +1091,18 @@ class RestController extends WP_REST_Controller {
                     continue; // Skip invalid fields
                 }
 
+                // Reject a field whose input_type does not match its template
+                // (the AI form-builder object-injection primitive).
+                if ( ! $this->is_valid_field_definition( $field ) ) {
+                    $this->delete_ai_form_and_field_posts( $form_id );
+
+                    return new WP_Error(
+                        'invalid_field_definition',
+                        __( 'A submitted field has a template and input type that do not match.', 'wp-user-frontend' ),
+                        [ 'status' => 400 ]
+                    );
+                }
+
                 // Sanitize field data
                 $field['name'] = sanitize_key($field['name']);
                 $field['label'] = sanitize_text_field($field['label'] ?? '');
@@ -1107,7 +1119,7 @@ class RestController extends WP_REST_Controller {
 
                 if (is_wp_error($field_id)) {
                     // Clean up previously created fields and the form post
-                    wp_delete_post($form_id, true);
+                    $this->delete_ai_form_and_field_posts( $form_id );
                     return new WP_Error(
                         'field_creation_failed',
                         sprintf(__('Failed to create field at position %d: %s', 'wp-user-frontend'), $order, $field_id->get_error_message()),
@@ -1636,12 +1648,110 @@ class RestController extends WP_REST_Controller {
     }
 
     /**
+     * Build the allowed "template => input_type" map from the field registry.
+     *
+     * Derived from the canonical registry (free + pro via the `wpuf_form_fields`
+     * filter) so a submitted field cannot pair a template with a mismatched
+     * input_type — the primitive behind the AI form-builder object injection.
+     *
+     * @since 4.3.11
+     *
+     * @return array<string, string> Template slug => canonical input type.
+     */
+    private function get_allowed_field_type_map() {
+        static $map = null;
+
+        if ( null !== $map ) {
+            return $map;
+        }
+
+        $map           = [];
+        $field_manager = new \WeDevs\Wpuf\Admin\Forms\Field_Manager();
+
+        foreach ( $field_manager->get_fields() as $template => $field_object ) {
+            if ( is_object( $field_object ) && method_exists( $field_object, 'get_field_props' ) ) {
+                $props = $field_object->get_field_props();
+
+                if ( isset( $props['input_type'] ) ) {
+                    $map[ $template ] = $props['input_type'];
+                }
+            }
+        }
+
+        return $map;
+    }
+
+    /**
+     * Whether a submitted field's input_type is consistent with its template.
+     *
+     * Rejects mismatched definitions (e.g. input_type "text" on a "section_break"
+     * template) so an attacker cannot route a field through the wrong renderer.
+     * Unknown templates pass through — the render layer no longer instantiates
+     * objects, and unregistered templates are handled by their own renderers.
+     *
+     * @since 4.3.11
+     *
+     * @param array $field Field definition.
+     *
+     * @return bool
+     */
+    private function is_valid_field_definition( $field ) {
+        if ( empty( $field['template'] ) || empty( $field['input_type'] ) ) {
+            return true;
+        }
+
+        $allowed  = $this->get_allowed_field_type_map();
+        $template = sanitize_key( $field['template'] );
+
+        if ( ! isset( $allowed[ $template ] ) ) {
+            return true;
+        }
+
+        return $allowed[ $template ] === $field['input_type'];
+    }
+
+    /**
+     * Delete an AI-created form along with any field child posts already inserted.
+     *
+     * wp_delete_post() does not cascade to children for non-hierarchical post
+     * types, so remove the wpuf_input children explicitly before the form itself
+     * to avoid orphaned field posts when an AI form build is rejected or fails.
+     *
+     * @since 4.3.11
+     *
+     * @param int $form_id Form ID.
+     *
+     * @return void
+     */
+    private function delete_ai_form_and_field_posts( $form_id ) {
+        $field_ids = get_posts(
+            [
+                'post_type'      => 'wpuf_input',
+                'post_parent'    => $form_id,
+                'posts_per_page' => -1,
+                'post_status'    => 'any',
+                'fields'         => 'ids',
+            ]
+        );
+
+        foreach ( $field_ids as $field_id ) {
+            wp_delete_post( $field_id, true );
+        }
+
+        wp_delete_post( $form_id, true );
+    }
+
+    /**
      * Update form field child posts
      *
      * @param int $form_id Form ID
      * @param array $fields Updated fields
      */
     private function update_form_field_posts($form_id, $fields) {
+        // Drop any field whose template/input_type pairing is invalid before saving,
+        // so a mismatched (object-injection) definition can never be persisted.
+        $fields = array_values( array_filter( $fields, [ $this, 'is_valid_field_definition' ] ) );
+
         // Get existing field posts ordered by menu_order
         $existing_posts = get_posts([
             'post_type' => 'wpuf_input',

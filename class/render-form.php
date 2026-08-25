@@ -1108,7 +1108,7 @@ class WPUF_Render_Form {
 
             if ( $multiselect ) {
                 if ( is_serialized( $selected ) ) {
-                    $selected = maybe_unserialize( $selected );
+                    $selected = wpuf_safe_unserialize( $selected );
                 } elseif ( is_array( $selected ) ) {
                     $selected = $selected;
                 } else {
@@ -1192,7 +1192,7 @@ class WPUF_Render_Form {
         if ( $post_id ) {
             if ( $value = $this->get_meta( $post_id, $attr['name'], $type, true ) ) {
                 if ( is_serialized( $value ) ) {
-                    $selected = maybe_unserialize( $value );
+                    $selected = wpuf_safe_unserialize( $value );
                 } elseif ( is_array( $value ) ) {
                     $selected = $value;
                 } else {
@@ -1616,7 +1616,7 @@ class WPUF_Render_Form {
 
                 if ( $images ) {
                     if ( is_serialized( $images[0] ) ) {
-                        $images = maybe_unserialize( $images[0] );
+                        $images = wpuf_safe_unserialize( $images[0] );
                     }
 
                     if ( is_array( $images[0] ) ) {
@@ -1680,7 +1680,7 @@ class WPUF_Render_Form {
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
-                    var uploader = new WPUF_Uploader('wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles', 'wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container', <?php echo esc_attr( $attr['count'] ); ?>, '<?php echo esc_attr( $attr['name'] ); ?>', 'jpg,jpeg,gif,png,bmp', <?php echo esc_attr( $attr['max_size'] ); ?>);
+                    var uploader = new WPUF_Uploader('wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles', 'wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container', <?php echo esc_attr( $attr['count'] ); ?>, '<?php echo esc_attr( $attr['name'] ); ?>', 'jpg,jpeg,jfif,gif,png,bmp', <?php echo esc_attr( $attr['max_size'] ); ?>);
                     wpuf_plupload_items.push(uploader);
                 });
             })(jQuery);

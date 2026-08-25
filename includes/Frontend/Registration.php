@@ -161,9 +161,10 @@ class Registration {
         if ( ! empty( $_POST['wpuf_registration'] ) && ! empty( $_POST['_wpnonce'] ) ) {
             $userdata = [];
             $user     = '';
-            if ( isset( $_POST['_wpnonce'] ) ) {
-                $nonce = sanitize_key( wp_unslash( $_POST['_wpnonce'] ) );
-                wp_verify_nonce( $nonce, 'wpuf_registration_action' );
+            $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+
+            if ( ! wp_verify_nonce( $nonce, 'wpuf_registration_action' ) ) {
+                return;
             }
             $validation_error = new WP_Error();
             $reg_fname  = isset( $_POST['reg_fname'] ) ? sanitize_text_field( wp_unslash( $_POST['reg_fname'] ) ) : '';
@@ -336,7 +337,7 @@ class Registration {
                 } else {
                     $redirect = $this->get_registration_url() . '?success=yes';
                 }
-                wp_redirect( apply_filters( 'wpuf_registration_redirect', $redirect, $user ) );
+                wp_safe_redirect( apply_filters( 'wpuf_registration_redirect', $redirect, $user ) );
                 exit;
             }
         }

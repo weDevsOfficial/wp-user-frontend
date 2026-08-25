@@ -194,30 +194,14 @@ export class SettingsSetupPage extends Base {
             }
         };
         this.page.on('dialog', dialogHandler);
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
-        } catch (error) {
-            console.log('Failed to click Run Updater:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
         this.page.off('dialog', dialogHandler);
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
-        } catch (error) {
-            console.log('Failed to click Allow1:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
-        } catch (error) {
-            console.log('Failed to click Allow:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
-        } catch (error) {
-            console.log('Failed to click Skip Setup:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
 
         // try {
         //     await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSwitchCart);
@@ -231,17 +215,9 @@ export class SettingsSetupPage extends Base {
         //     console.log('Failed to click Dismiss:', error);
         // }
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
-        } catch (error) {
-            console.log('Failed to click EDD notice Cross:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);
-        } catch (error) {
-            console.log('Failed to click PayPal Cross:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);
 
         if (ifWPUFLite == true) {
             //Activate Plugin

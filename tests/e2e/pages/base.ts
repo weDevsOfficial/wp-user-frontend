@@ -233,6 +233,25 @@ export class Base {
         }
     }
 
+    // Click only if the element shows up quickly (best-effort, non-blocking).
+    // Use for OPTIONAL one-off notices/dismissals that may simply not exist on a
+    // given site (setup wizards, EDD/PayPal admin notices). `validateAndClick`
+    // waits the full 30s page default for each, so a handful of absent notices
+    // burned the entire 180s test budget before the real assertion ran.
+    async clickIfAvailable(locator: string, timeoutMs: number = 3000): Promise<boolean> {
+        try {
+            const element = this.page.locator(locator).first();
+            await element.waitFor({ state: 'visible', timeout: timeoutMs });
+            await element.click();
+            await this.waitForLoading();
+            console.log('\x1b[35m%s\x1b[0m', `✅ Clicked optional ${locator}`);
+            return true;
+        } catch (error) {
+            console.log('\x1b[33m%s\x1b[0m', `⚠️  Optional element absent within ${timeoutMs}ms — skipped: ${locator}`);
+            return false;
+        }
+    }
+
     // Validate and Fill Numbers
     async validateAndFillNumbers(locator: string, value: number) {
         try {

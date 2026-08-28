@@ -574,12 +574,14 @@ class Paypal {
 
             foreach ( $required_headers as $header ) {
                 if ( empty( $headers[ $header ] ) ) {
+                    wpuf_log( 'PayPal webhook verification failed: missing required header ' . $header, 'error' );
                     return false;
                 }
             }
 
             $access_token = $this->get_access_token();
             if ( ! $access_token ) {
+                wpuf_log( 'PayPal webhook verification failed: could not retrieve access token', 'error' );
                 return false;
             }
 
@@ -589,6 +591,7 @@ class Paypal {
 
             $webhook_id = $this->webhook_id;
             if ( empty( $webhook_id ) ) {
+                wpuf_log( 'PayPal webhook verification failed: webhook ID is not configured', 'error' );
                 return false;
             }
 
@@ -614,6 +617,7 @@ class Paypal {
             );
 
             if ( is_wp_error( $response ) ) {
+                wpuf_log( 'PayPal webhook verification request failed: ' . $response->get_error_message(), 'error' );
                 return false;
             }
 
@@ -621,8 +625,14 @@ class Paypal {
 
             $is_verified = isset( $body['verification_status'] ) && $body['verification_status'] === 'SUCCESS';
 
+            if ( ! $is_verified ) {
+                $status = isset( $body['verification_status'] ) ? $body['verification_status'] : 'unknown';
+                wpuf_log( 'PayPal webhook signature verification failed with status: ' . $status, 'warning' );
+            }
+
             return $is_verified;
         } catch ( \Exception $e ) {
+            wpuf_log( 'PayPal webhook verification exception: ' . $e->getMessage(), 'error' );
             return false;
         }
     }
@@ -918,6 +928,7 @@ class Paypal {
 
             // If no subscription ID or transaction ID, exit
             if ( empty( $subscription_id ) || empty( $transaction_id ) ) {
+                wpuf_log( 'PayPal subscription payment skipped: missing subscription_id or transaction_id', 'warning' );
                 return;
             }
 
@@ -990,6 +1001,7 @@ class Paypal {
             }
 
             if ( ! $user_id ) {
+                wpuf_log( 'PayPal subscription payment failed: could not resolve user for subscription ' . $subscription_id, 'error' );
                 // Clean up any transients even if user not found
                 $this->clean_up_transients( $subscription_id );
                 return;
@@ -998,6 +1010,7 @@ class Paypal {
             // Get user data
             $user = get_user_by( 'id', $user_id );
             if ( ! $user ) {
+                wpuf_log( 'PayPal subscription payment failed: user ID ' . $user_id . ' does not exist for subscription ' . $subscription_id, 'error' );
                 $this->clean_up_transients( $subscription_id );
                 return;
             }

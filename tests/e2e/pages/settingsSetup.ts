@@ -354,10 +354,20 @@ export class SettingsSetupPage extends Base {
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDokanLite);
 
                 await this.navigateToURL(this.pluginsPage);
+                // Activation is confirmed by the Deactivate control appearing.
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickDokanLiteDeactivate);
 
-                await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
-
+                // Some Dokan versions surface an Appsero opt-in ("Allow") after activation and
+                // some do not. Dismiss it when present, but never block on it — it is optional
+                // UI, and activation is already verified above. Blocking here hung LS0030 for
+                // the full test timeout on builds where the notice never appears.
+                const dokanAllow = this.page.locator(Selectors.settingsSetup.pluginStatusCheck.clickAllow).first();
+                try {
+                    await dokanAllow.waitFor({ timeout: 5000 });
+                    await dokanAllow.click();
+                } catch (e) {
+                    console.log('Dokan Appsero opt-in not shown; continuing');
+                }
 
                 await this.navigateToURL(this.wpAdminPage);
                 await this.validateAndClick(Selectors.login.basicNavigation.clickDokanSidebar);

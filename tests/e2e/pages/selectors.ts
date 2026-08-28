@@ -232,6 +232,9 @@ export const Selectors = {
             clickCategoryMenu: '//a[normalize-space()="Categories"]',
             addNewCategory: '//input[@id="tag-name"]',
             submitCategory: '//input[@id="submit"]',
+            // No //td segment on purpose: WordPress renders the term name in the list's primary
+            // column as a <th scope="row">, not a <td>. //td//strong//a never matched, so the
+            // add succeeded but validation hung until the test timeout. Do not re-add //td.
             validateCategory: (categoryName: string) => `//tbody[@id="the-list"]//tr//strong//a[normalize-space()="${categoryName}"]`,
         },
 
@@ -239,6 +242,9 @@ export const Selectors = {
             clickTagsMenu: '//a[normalize-space()="Tags"]',
             addNewTag: '//input[@id="tag-name"]',
             submitTag: '//input[@id="submit"]',
+            // No //td segment on purpose: WordPress renders the term name in the list's primary
+            // column as a <th scope="row">, not a <td>. //td//strong//a never matched, so the
+            // add succeeded but validation hung until the test timeout. Do not re-add //td.
             validateTag: (tagName: string) => `//tbody[@id="the-list"]//tr//strong//a[normalize-space()="${tagName}"]`,
         },
 

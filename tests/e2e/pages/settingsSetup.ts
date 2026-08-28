@@ -583,17 +583,36 @@ export class SettingsSetupPage extends Base {
     }
 
     async createPostCategories() {
-        //Go to Admin-Users
-        await this.navigateToURL(this.categoriesPage);
-        //Add New Category
-        //await this.validateAndClick(Selectors.settingsSetup.categories.clickCategoryMenu);
-        await this.page.waitForLoadState('domcontentloaded');
         const categoryNames: string[] = ['Science', 'Music'];
         for (let i = 0; i < categoryNames.length; i++) {
+            // Reload the categories screen for every term. WordPress's "Add New Category"
+            // form falls back to a full-page POST when its AJAX handler isn't bound, so filling
+            // the next term into a form left over from the previous submit races that reload and
+            // posts an empty name. A fresh page guarantees a stable form for each term.
+            await this.navigateToURL(this.categoriesPage);
+            await this.page.waitForLoadState('domcontentloaded');
+
+            const categoryRow = this.page
+                .locator(Selectors.settingsSetup.categories.validateCategory(categoryNames[i]))
+                .first();
+
+            // Idempotent: skip terms that already exist (e.g. a re-run against a used site).
+            if ( await categoryRow.count() > 0 ) {
+                continue;
+            }
+
             await this.validateAndFillStrings(Selectors.settingsSetup.categories.addNewCategory, categoryNames[i]);
             await this.validateAndClick(Selectors.settingsSetup.categories.submitCategory);
             await this.page.waitForTimeout(500);
-            await this.assertionValidate(Selectors.settingsSetup.categories.validateCategory(categoryNames[i]));
+
+            // The add completes either via AJAX (row injected in place) or a full-page POST (the
+            // submit navigates and the row is present after the redirect). Settle the page, then
+            // wait on the row; .first() tolerates any duplicate left on a re-used site.
+            await this.page.waitForLoadState('domcontentloaded').catch(() => {});
+            await this.page
+                .locator(Selectors.settingsSetup.categories.validateCategory(categoryNames[i]))
+                .first()
+                .waitFor({ timeout: 20000 });
         }
     }
     async createPostTags() {

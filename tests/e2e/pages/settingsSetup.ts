@@ -132,18 +132,27 @@ export class SettingsSetupPage extends Base {
     }
 
     async validateWPUFpages() {
-        await this.navigateToURL(this.pagesPage);
+        // Validate each WPUF page independently of pagination. The pages list is sorted
+        // alphabetically and other plugins (WooCommerce, MailPoet, Dokan, EDD) add their own
+        // pages, so which pagination page a WPUF row lands on is not stable — relying on a
+        // fixed "page 1 then Next" split makes this flaky (a shifted row times out). Instead
+        // search the list for each page (WP admin `s=` param) so its row is always on screen.
+        const wpufPages: Array<[string, string]> = [
+            [ 'Account', Selectors.settingsSetup.wpufPages.wpufAccountPage ],
+            [ 'Dashboard', Selectors.settingsSetup.wpufPages.wpufDashboardPage ],
+            [ 'Edit', Selectors.settingsSetup.wpufPages.wpufEditPage ],
+            [ 'Login', Selectors.settingsSetup.wpufPages.wpufLoginPage ],
+            [ 'Order Received', Selectors.settingsSetup.wpufPages.orderReceivedPage ],
+            [ 'Payment', Selectors.settingsSetup.wpufPages.paymentPage ],
+            [ 'Subscription', Selectors.settingsSetup.wpufPages.wpufSubscriptionPage ],
+            [ 'Thank You', Selectors.settingsSetup.wpufPages.thankYouPage ],
+        ];
 
-        //Validate WPUF Pages
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufAccountPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufDashboardPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufEditPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufLoginPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.orderReceivedPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.paymentPage);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPages.clickNextPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufSubscriptionPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.thankYouPage);
+        for (const [ pageName, selector ] of wpufPages) {
+            await this.navigateToURL(`${this.pagesPage}&s=${encodeURIComponent(pageName)}`);
+            await this.page.waitForLoadState('domcontentloaded');
+            await this.assertionValidate(selector);
+        }
         console.log('WPUF Pages are validated. all pages created successfully');
     }
 

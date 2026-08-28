@@ -30,6 +30,18 @@ if ( ! defined( 'ABSPATH' ) ) {
             
         </div>
     <?php endif; ?>
+    <div class="wpuf-ud-result-count !wpuf-text-sm !wpuf-text-gray-500 !wpuf-mb-4" data-total="<?php echo esc_attr( $total ); ?>">
+        <?php
+        echo esc_html(
+            sprintf(
+                /* translators: 1: number of members shown on this page, 2: total members matched */
+                _n( 'Showing %1$s of %2$s member', 'Showing %1$s of %2$s members', (int) $total, 'wp-user-frontend' ),
+                number_format_i18n( count( $users ) ),
+                number_format_i18n( $total )
+            )
+        );
+        ?>
+    </div>
     <div class="wpuf-ud-list wpuf-ud-list-layout-3 wpuf-flow-root">
         <?php if ( ! empty( $users ) ) { ?>
             <div>

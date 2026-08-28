@@ -33,6 +33,7 @@ class Admin {
         $this->container['posting']               = new Admin\Posting();
         $this->container['shortcodes_button']     = new Admin\Shortcodes_Button();
         $this->container['tools']                 = new Admin\Admin_Tools();
+        $this->container['transaction']           = new Admin\Transaction();
 
         // only free users will see the promotion
         if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
@@ -110,6 +111,10 @@ class Admin {
                 'nonce'                        => wp_create_nonce( 'wpuf_nonce' ),
                 'cleared_schedule_lock'        => __( 'Post lock has been cleared', 'wp-user-frontend' ),
                 'asset_url'                    => WPUF_ASSET_URI,
+                'assetUrl'                     => WPUF_ASSET_URI,
+                'supportUrl'                   => esc_url(
+                    'https://wedevs.com/contact/?utm_source=wpuf-subscription'
+                ),
                 'admin_url'                    => admin_url(),
                 'support_url'                  => esc_url(
                     'https://wedevs.com/contact/?utm_source=wpuf-subscription'

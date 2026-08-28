@@ -232,14 +232,14 @@ export const Selectors = {
             clickCategoryMenu: '//a[normalize-space()="Categories"]',
             addNewCategory: '//input[@id="tag-name"]',
             submitCategory: '//input[@id="submit"]',
-            validateCategory: (categoryName: string) => `//tbody[@id="the-list"]//tr//td//strong//a[normalize-space()="${categoryName}"]`,
+            validateCategory: (categoryName: string) => `//tbody[@id="the-list"]//tr//strong//a[normalize-space()="${categoryName}"]`,
         },
 
         tags: {
             clickTagsMenu: '//a[normalize-space()="Tags"]',
             addNewTag: '//input[@id="tag-name"]',
             submitTag: '//input[@id="submit"]',
-            validateTag: (tagName: string) => `//tbody[@id="the-list"]//tr//td//strong//a[normalize-space()="${tagName}"]`,
+            validateTag: (tagName: string) => `//tbody[@id="the-list"]//tr//strong//a[normalize-space()="${tagName}"]`,
         },
 
         keys: {

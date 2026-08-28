@@ -1706,7 +1706,71 @@ function wpuf_has_shortcode( $shortcode = '', $post_id = false ) {
         $found = true;
     }
 
+    // page builders that keep the layout outside post_content, e.g. Oxygen
+    if ( ! $found && wpuf_builder_layout_has_shortcode( $shortcode, $post_to_check->ID ) ) {
+        $found = true;
+    }
+
     return $found;
+}
+
+/**
+ * Check whether a page builder layout contains a shortcode
+ *
+ * Builders like Oxygen keep the layout in their own post meta and leave
+ * post_content empty, so wpuf_has_shortcode() cannot see a shortcode placed in
+ * a builder element. Without this the frontend assets never get enqueued on
+ * such pages and every script driven WPUF form stops working.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $shortcode shortcode tag, without brackets
+ * @param int    $post_id   post to inspect
+ *
+ * @return bool
+ */
+function wpuf_builder_layout_has_shortcode( $shortcode, $post_id ) {
+    if ( empty( $shortcode ) || empty( $post_id ) ) {
+        return false;
+    }
+
+    $needle = '[' . $shortcode;
+
+    $meta_keys = apply_filters(
+        'wpuf_builder_layout_meta_keys', [
+            '_ct_builder_shortcodes', // Oxygen
+            '_ct_builder_json',       // Oxygen
+            '_elementor_data',        // Elementor
+        ]
+    );
+
+    foreach ( $meta_keys as $meta_key ) {
+        $layout = get_post_meta( $post_id, $meta_key, true );
+
+        if ( is_string( $layout ) && stripos( $layout, $needle ) !== false ) {
+            return true;
+        }
+    }
+
+    // Oxygen can also serve the shortcode from the template applied to this request
+    if (
+        defined( 'CT_VERSION' )
+        && absint( $post_id ) === absint( get_the_ID() )
+        && function_exists( 'ct_template_output' )
+    ) {
+        static $oxygen_template = null;
+
+        if ( null === $oxygen_template ) {
+            $template        = ct_template_output( true );
+            $oxygen_template = is_string( $template ) ? $template : '';
+        }
+
+        if ( '' !== $oxygen_template && stripos( $oxygen_template, $needle ) !== false ) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /**

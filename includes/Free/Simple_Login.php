@@ -299,7 +299,37 @@ class Simple_Login {
             return $url;
         }
 
+        // the lost password step is rendered by [wpuf-login]; if the configured
+        // login page does not have it, keep WordPress' own url so the user can
+        // still reset the password
+        if ( ! $this->login_page_renders_wpuf_form() ) {
+            return $url;
+        }
+
         return $this->get_action_url( 'lostpassword', $redirect );
+    }
+
+    /**
+     * Whether the configured login page renders the WPUF login form
+     *
+     * The `action` routing for lostpassword, rp and resetpass only runs inside
+     * the [wpuf-login] shortcode, so a login page built with another login form
+     * cannot serve those steps.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    protected function login_page_renders_wpuf_form() {
+        $page_id = wpuf_get_option( 'login_page', 'wpuf_profile', false );
+
+        if ( ! $page_id ) {
+            return false;
+        }
+
+        $has_form = wpuf_has_shortcode( 'wpuf-login', $page_id );
+
+        return apply_filters( 'wpuf_login_page_renders_form', $has_form, $page_id );
     }
 
     /**
@@ -1185,6 +1215,19 @@ class Simple_Login {
      * @return void
      */
     public function default_wp_login_override() {
+        // only take over the login screen itself. `login_form_login` also runs
+        // for the submitted credentials, and redirecting those would stop them
+        // ever reaching wp_signon(), so any login form that posts to
+        // wp-login.php - a page builder login element, a theme form - could
+        // never log anybody in
+        $request_method = isset( $_SERVER['REQUEST_METHOD'] )
+            ? strtoupper( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) )
+            : 'GET';
+
+        if ( 'GET' !== $request_method ) {
+            return;
+        }
+
         $override       = wpuf_get_option( 'register_link_override', 'wpuf_profile', false );
         $login_redirect = wpuf_get_option( 'wp_default_login_redirect', 'wpuf_profile', false );
         $login_page     = wpuf_get_option( 'login_page', 'wpuf_profile', null );

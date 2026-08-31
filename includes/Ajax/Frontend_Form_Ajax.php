@@ -183,18 +183,25 @@ class Frontend_Form_Ajax {
         // site-wide guest nonce can be replayed against a subscription-gated form to
         // create a post with no order and no pending-payment status.
         //
-        // A draft-backed submission still counts as new: it carries a post_id but sends
-        // wpuf_form_status "new" (same signal the update logic honours below), so key the
-        // gate on both so a replayed draft id cannot skip it.
-        $wpuf_form_status    = isset( $_POST['wpuf_form_status'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_form_status'] ) ) : '';
-        $is_new_submission   = ! isset( $_POST['post_id'] ) || 'new' === $wpuf_form_status;
+        // Whether this is a new submission is decided from server state, never from a
+        // client-supplied field. Keying it on the request shape let a caller carry a
+        // post_id and omit wpuf_form_status to have the request treated as an edit, which
+        // skipped the gate entirely while the update branch still published the post.
+        //
+        // A draft that has not been submitted yet still counts as new: draft_post() flags
+        // it with _wpuf_draft_pending and that flag is cleared once the submission goes
+        // through, so finishing a draft is gated exactly once. Posts without the flag are
+        // genuine edits (including everything created before this flag existed) and are
+        // not re-gated, matching [wpuf_edit], which the renderer never gates.
+        $posted_post_id    = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
+        $is_new_submission = ! $posted_post_id || (bool) get_post_meta( $posted_post_id, '_wpuf_draft_pending', true );
 
         if ( $is_new_submission ) {
             [ $user_can_post, $submission_info ] = $form->is_submission_open( $form, $this->form_settings );
             $user_can_post                       = apply_filters( 'wpuf_can_post', $user_can_post, $form_id, $this->form_settings );
             $submission_info                     = apply_filters( 'wpuf_addpost_notice', $submission_info, $form_id, $this->form_settings );
 
-            if ( 'yes' !== $user_can_post ) {
+            if ( ! wpuf_is_option_on( $user_can_post ) ) {
                 wpuf()->ajax->send_error(
                     ! empty( $submission_info )
                         ? $submission_info
@@ -407,6 +414,13 @@ class Frontend_Form_Ajax {
             $this->update_post_meta( $meta_vars, $post_id );
             // set the post form_id for later usage
             update_post_meta( $post_id, self::$config_id, $form_id );
+
+            // The submission went through, so the post is no longer an unsubmitted draft.
+            // Clearing the flag means later edits are treated as edits and are not gated
+            // again, which keeps someone whose pack has since expired able to edit their
+            // own content.
+            delete_post_meta( $post_id, '_wpuf_draft_pending' );
+
             // if user has a subscription pack
             $this->wpuf_user_subscription_pack( $this->form_settings, $post_id );
             // set the post form_id for later usage

@@ -203,6 +203,31 @@ class Frontend_Form extends Frontend_Render_Form {
             wp_send_json_error( [ 'message' => __( 'You must be logged in to save drafts.', 'wp-user-frontend' ) ] );
         }
 
+        // Saving a new draft is part of the add-post flow, so it has to pass the same
+        // submission gate the renderer applies before it will show the form at all
+        // (Frontend_Form::add_post_shortcode()). Without this, a subscription-gated form
+        // could be driven through the draft endpoint to create a post that never passed
+        // the gate, which submit_post() would then finish.
+        //
+        // Editing an existing draft is deliberately not re-gated: [wpuf_edit] is not
+        // gated either, so re-checking here would stop someone whose pack has since
+        // expired from editing content they already own.
+        if ( ! isset( $_POST['post_id'] ) ) {
+            [ $user_can_post, $submission_info ] = $form->is_submission_open( $form, $this->form_settings );
+            $user_can_post                       = apply_filters( 'wpuf_can_post', $user_can_post, $form_id, $this->form_settings );
+            $submission_info                     = apply_filters( 'wpuf_addpost_notice', $submission_info, $form_id, $this->form_settings );
+
+            if ( ! wpuf_is_option_on( $user_can_post ) ) {
+                wp_send_json_error(
+                    [
+                        'message' => ! empty( $submission_info )
+                            ? $submission_info
+                            : __( 'You are not allowed to submit to this form.', 'wp-user-frontend' ),
+                    ]
+                );
+            }
+        }
+
         [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
         $entry_fields = $form->prepare_entries();
@@ -288,6 +313,13 @@ class Frontend_Form extends Frontend_Render_Form {
 
             // set the post form_id for later usage
             update_post_meta( $post_id, self::$config_id, $form_id );
+
+            // Mark the draft as still awaiting submission. submit_post() reads this to tell
+            // a draft being finished (which must pass the submission gate) apart from an
+            // edit of a post that was already submitted (which must not be re-gated), so
+            // that it never has to trust a client-supplied "is this new" field. Posts that
+            // predate this meta simply have no flag and are treated as edits, as before.
+            update_post_meta( $post_id, '_wpuf_draft_pending', 1 );
 
             // save post formats if have any
             if ( isset( $this->form_settings['post_format'] ) && $this->form_settings['post_format'] !== '0' ) {

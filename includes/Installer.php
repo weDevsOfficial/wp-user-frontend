@@ -20,7 +20,7 @@ class Installer {
 
         $installed = get_option( 'wpuf_installed' );
 
-        if ( !$installed ) {
+        if ( ! $installed ) {
             update_option( 'wpuf_installed', time() );
 
             // Only a site seeing WPUF for the very first time is offered the guided
@@ -47,11 +47,11 @@ class Installer {
         $collate = '';
 
         if ( $wpdb->has_cap( 'collation' ) ) {
-            if ( !empty( $wpdb->charset ) ) {
+            if ( ! empty( $wpdb->charset ) ) {
                 $collate .= "DEFAULT CHARACTER SET $wpdb->charset";
             }
 
-            if ( !empty( $wpdb->collate ) ) {
+            if ( ! empty( $wpdb->collate ) ) {
                 $collate .= " COLLATE $wpdb->collate";
             }
         }

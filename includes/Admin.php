@@ -97,10 +97,11 @@ class Admin {
         wp_enqueue_script( 'wpuf-sweetalert2' );
         wp_enqueue_script( 'wpuf-admin' );
 
-        $page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
         $selected_page = [ 'wpuf-post-forms', 'wpuf-profile-forms', 'wpuf_subscription', 'wpuf_transaction', 'wpuf_tools' ];
 
-        if ( in_array( $page, $selected_page ) ) {
+        if ( in_array( $page, $selected_page, true ) ) {
             wpuf_load_headway_badge();
         }
 
@@ -136,7 +137,8 @@ class Admin {
         );
 
         // Add inline script for dynamic API key link
-        wp_add_inline_script( 'wpuf-admin', '
+        wp_add_inline_script(
+            'wpuf-admin', '
             jQuery(document).ready(function($) {
                 function updateAPIKeyLink() {
                     var provider = $("[name=\'wpuf_ai[ai_provider]\']").val() || "openai";
@@ -153,7 +155,8 @@ class Admin {
                 // Initial update when page loads
                 updateAPIKeyLink();
             });
-        ' );
+        '
+        );
     }
 
     public function enqueue_cpt_page_scripts( $hook_suffix ) {
@@ -211,7 +214,7 @@ class Admin {
         wp_enqueue_style( 'wpuf-ai-form-builder' );
 
         // Get AI settings
-        $ai_settings = get_option('wpuf_ai', []);
+        $ai_settings = get_option( 'wpuf_ai', [] );
 
         // Determine if we should expose API key status based on user capabilities
         $show_api_status = current_user_can( wpuf_admin_role() );
@@ -234,24 +237,24 @@ class Admin {
             'formType'             => $form_type, // Pass form type to frontend
             'provider'             => $ai_settings['ai_provider'] ?? 'openai',
             'model'                => $ai_settings['ai_model'] ?? 'gpt-3.5-turbo',
-            'hasApiKey'            => $show_api_status ? !empty($ai_settings['ai_api_key']) : null,
+            'hasApiKey'            => $show_api_status ? ! empty( $ai_settings['ai_api_key'] ) : null,
             'isProActive'          => class_exists( 'WP_User_Frontend_Pro' ),
             'temperature'          => floatval( $ai_settings['temperature'] ?? 0.7 ),
             'maxTokens'            => intval( $ai_settings['max_tokens'] ?? 2000 ),
             'promptTemplates'      => $ai_manager->get_all_prompt_templates(),
             'promptAIInstructions' => $ai_manager->get_all_prompt_ai_instructions(),
             'i18n' => [
-                'errorTitle' => __('Error', 'wp-user-frontend'),
-                'errorMessage' => __('Something went wrong. Please try again.', 'wp-user-frontend'),
-                'invalidRequest' => __('Invalid Request', 'wp-user-frontend'),
-                'nonFormRequest' => __('I can only help with form creation. Try: "Create a contact form"', 'wp-user-frontend'),
-                'proFieldWarning' => __('Pro Feature Required', 'wp-user-frontend'),
-                'proFieldMessage' => __('This field type requires WP User Frontend Pro. You can continue without it or upgrade to Pro for full functionality.', 'wp-user-frontend'),
-                'continueWithoutPro' => __('Continue without Pro', 'wp-user-frontend'),
-                'upgradeToPro' => __('Upgrade to Pro', 'wp-user-frontend'),
-                'tryAgain' => __('Try Again', 'wp-user-frontend'),
-                'close' => __('Close', 'wp-user-frontend'),
-            ]
+                'errorTitle' => __( 'Error', 'wp-user-frontend' ),
+                'errorMessage' => __( 'Something went wrong. Please try again.', 'wp-user-frontend' ),
+                'invalidRequest' => __( 'Invalid Request', 'wp-user-frontend' ),
+                'nonFormRequest' => __( 'I can only help with form creation. Try: "Create a contact form"', 'wp-user-frontend' ),
+                'proFieldWarning' => __( 'Pro Feature Required', 'wp-user-frontend' ),
+                'proFieldMessage' => __( 'This field type requires WP User Frontend Pro. You can continue without it or upgrade to Pro for full functionality.', 'wp-user-frontend' ),
+                'continueWithoutPro' => __( 'Continue without Pro', 'wp-user-frontend' ),
+                'upgradeToPro' => __( 'Upgrade to Pro', 'wp-user-frontend' ),
+                'tryAgain' => __( 'Try Again', 'wp-user-frontend' ),
+                'close' => __( 'Close', 'wp-user-frontend' ),
+            ],
         ];
 
         /**
@@ -271,8 +274,6 @@ class Admin {
             'wpufAIFormBuilder',
             $localize_data
         );
-
-
     }
 
     /**
@@ -291,7 +292,7 @@ class Admin {
         $access_level = wpuf_get_option( 'admin_access', 'wpuf_general', 'read' );
         $valid_pages  = [ 'admin-ajax.php', 'admin-post.php', 'async-upload.php', 'media-upload.php' ];
 
-        if ( ! current_user_can( $access_level ) && ! in_array( $pagenow, $valid_pages ) ) {
+        if ( ! current_user_can( $access_level ) && ! in_array( $pagenow, $valid_pages, true ) ) {
             // wp_die( __( 'Access Denied. Your site administrator has blocked your access to the WordPress back-office.', 'wpuf' ) );
             wp_redirect( home_url() );
             exit;

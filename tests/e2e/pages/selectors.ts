@@ -1130,8 +1130,13 @@ export const Selectors = {
         postStatusColumn: (title: string, status: string, a: string, b: string) => `//td${a}[normalize-space(text())="${title}"]//..${b}//span[normalize-space(text())="${status}"]`,
         saveDraftButton: '//a[normalize-space(text())="Save Draft"]',
         draftSavedAlert: '//span[@class="wpuf-draft-saved"]',
-        multiStepProgressbar: '//div[normalize-space(text())="Step Start (100%)"]',
-        multiStepByStep: '//li[normalize-space(text())="Step Start"]',
+        // Progressbar ("progressive") type — the default. The frontend renders a header
+        // (.wpuf-progressbar-header) with "Step N of M" step text plus a percent, not the old
+        // "Step Start (100%)" label. Match the new step-text span.
+        multiStepProgressbar: '//div[contains(@class,"wpuf-multistep-progressbar")]//span[contains(@class,"wpuf-progressbar-step-text") and starts-with(normalize-space(.),"Step 1 of")]',
+        // Step-by-step type — renders a .wpuf-step-wizard of .wpuf-step-item circles, each with
+        // a .wpuf-step-label carrying the step legend ("Step Start"), not the old <li> markup.
+        multiStepByStep: '//div[contains(@class,"wpuf-step-wizard")]//div[contains(@class,"wpuf-step-label") and normalize-space(text())="Step Start"]',
         removeStepStart: '//div[@class="step-start-indicator"]/../../../..//span[4]',
         confirmDelete: '//button[normalize-space()="Yes, delete it"]',
         threeDotButton: '(//div[contains(@class,"wpuf-relative wpuf-inline-block")]//button)[1]',
@@ -1495,8 +1500,8 @@ export const Selectors = {
             multiStepTypeContainer: '//label[@for="multistep_progressbar_type-selectized"]//..//..//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")]',
             multiStepTypeDropdown: '//label[@for="multistep_progressbar_type-selectized"]//..//..//div[contains(@class,"selectize-dropdown-content")]',
             multiStepTypeOption: (value: string) => `//label[@for="multistep_progressbar_type-selectized"]//..//..//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${value}"]`,
-            multiStepProgressbar: '//div[normalize-space(text())="Step Start (100%)"]',
-            multiStepByStep: '//li[normalize-space(text())="Step Start"]',
+            multiStepProgressbar: '//div[contains(@class,"wpuf-multistep-progressbar")]//span[contains(@class,"wpuf-progressbar-step-text") and starts-with(normalize-space(.),"Step 1 of")]',
+            multiStepByStep: '//div[contains(@class,"wpuf-step-wizard")]//div[contains(@class,"wpuf-step-label") and normalize-space(text())="Step Start"]',
         },
 
         // Custom Fields Section

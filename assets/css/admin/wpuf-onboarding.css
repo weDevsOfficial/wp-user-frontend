@@ -556,6 +556,21 @@
     transition: opacity .15s ease, border-color .15s ease, transform .15s ease;
 }
 
+/* These cards are anchors, so the admin stylesheet underlines everything inside
+   them. The whole card is the target; underlining its label and hint just makes
+   it look broken next to the cards beside it. */
+.wpuf-onboarding-card.is-pro,
+.wpuf-onboarding-card.is-unavailable,
+.wpuf-onboarding-card.is-pro:hover,
+.wpuf-onboarding-card.is-unavailable:hover,
+.wpuf-onboarding-card.is-pro strong,
+.wpuf-onboarding-card.is-unavailable strong,
+.wpuf-onboarding-card.is-pro .wpuf-onboarding-card-hint,
+.wpuf-onboarding-card.is-unavailable .wpuf-onboarding-card-hint {
+    text-decoration: none;
+    box-shadow: none;
+}
+
 .wpuf-onboarding-card.is-unavailable:hover,
 .wpuf-onboarding-card.is-pro:hover,
 .wpuf-onboarding-card.is-pro:focus-visible {

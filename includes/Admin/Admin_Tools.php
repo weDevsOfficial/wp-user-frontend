@@ -223,7 +223,7 @@ class Admin_Tools {
     public function export_forms( $form_type, $export_type, $form_ids ) {
         if ( $export_type === 'all' ) {
             static::export_to_json( $form_type );
-        } else if ( 'selected' === $export_type ) {
+        } elseif ( 'selected' === $export_type ) {
             if ( empty( $form_ids ) ) {
                 printf(
                     '<div class="error"><p>%s</p></div>',
@@ -248,7 +248,7 @@ class Admin_Tools {
         $date           = date( 'Y-m-d' ); // phpcs:ignore
         $json_name      = $blogname . '-wpuf-' . $post_type . '-' . $date; // Namming the filename will be generated.
 
-        if ( !empty( $post_ids ) ) {
+        if ( ! empty( $post_ids ) ) {
             foreach ( $post_ids as $key => $value ) {
                 array_push( $ids, $value );
             }
@@ -257,7 +257,7 @@ class Admin_Tools {
         $args = [
             'post_status' => 'publish',
             'post_type'   => $post_type,
-            'post__in'    => ( !empty( $ids ) ) ? $ids : '',
+            'post__in'    => ( ! empty( $ids ) ) ? $ids : '',
         ];
 
         $query = new WP_Query( $args );
@@ -298,10 +298,10 @@ class Admin_Tools {
      * @return array
      */
     public function formetted_meta_key_value( $array ) {
-        $result = [ ];
+        $result = [];
 
         foreach ( $array as $key => $val ) {
-            $result[$key] = $val[0];
+            $result[ $key ] = $val[0];
         }
 
         return $result;
@@ -346,7 +346,8 @@ class Admin_Tools {
                 </p>
             </div>
 
-        <?php }
+			<?php
+        }
 
         if ( $error_text ) {
             ?>
@@ -359,6 +360,26 @@ class Admin_Tools {
         <?php } ?>
 
         <div class="metabox-holder">
+            <div class="postbox">
+                <h3><?php esc_html_e( 'Onboarding', 'wp-user-frontend' ); ?></h3>
+
+                <div class="inside">
+                    <?php $entry = wpuf()->admin->onboarding->get_entry_point(); ?>
+                    <p><?php esc_html_e( 'Walk through post forms, registration, the user directory, payments and the settings a frontend site needs. Nothing is changed until you save a step.', 'wp-user-frontend' ); ?></p>
+
+                    <?php if ( ! empty( $entry['warning'] ) ) : ?>
+                        <p class="notice notice-warning inline" style="padding: 8px 12px; margin: 0 0 12px;">
+                            <strong><?php esc_html_e( 'Heads up:', 'wp-user-frontend' ); ?></strong>
+                            <?php echo esc_html( $entry['warning'] ); ?>
+                        </p>
+                    <?php endif; ?>
+
+                    <a class="button button-primary" href="<?php echo esc_url( $entry['url'] ); ?>">
+                        <?php echo esc_html( $entry['label'] ); ?>
+                    </a>
+                </div>
+            </div>
+
             <div class="postbox">
                 <h3><?php esc_html_e( 'Page Installation', 'wp-user-frontend' ); ?></h3>
 

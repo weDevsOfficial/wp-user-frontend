@@ -20,8 +20,14 @@ class Installer {
 
         $installed = get_option( 'wpuf_installed' );
 
-        if ( !$installed ) {
+        if ( ! $installed ) {
             update_option( 'wpuf_installed', time() );
+
+            // Only a site seeing WPUF for the very first time is offered the guided
+            // onboarding. Every later activation, including plugin updates and a
+            // deactivate/reactivate on a site already in use, leaves this unset so
+            // an existing install is never pulled out of what it was doing.
+            set_transient( 'wpuf_onboarding_redirect', true, 30 );
         }
 
         flush_rewrite_rules( false );
@@ -41,11 +47,11 @@ class Installer {
         $collate = '';
 
         if ( $wpdb->has_cap( 'collation' ) ) {
-            if ( !empty( $wpdb->charset ) ) {
+            if ( ! empty( $wpdb->charset ) ) {
                 $collate .= "DEFAULT CHARACTER SET $wpdb->charset";
             }
 
-            if ( !empty( $wpdb->collate ) ) {
+            if ( ! empty( $wpdb->collate ) ) {
                 $collate .= " COLLATE $wpdb->collate";
             }
         }

@@ -65,6 +65,9 @@ test.describe('Onboarding Wizard Tests', () => {
      * @Test_ONB0023 : Admin is validating unrelated settings were left alone
      * @Test_ONB0024 : Admin is validating the re-run warning is shown once completed
      * @Test_ONB0025 : Admin is validating a second run creates no duplicate pages
+     * @Test_ONB0026 : Admin is validating the wizard logo is a vector that loads
+     * @Test_ONB0027 : Admin is validating every companion plugin logo loads
+     * @Test_ONB0028 : Admin is validating no wizard screen ships a raster image
      *
      ***-----------------------------------------------------------------------------------**/
 
@@ -323,6 +326,47 @@ test.describe('Onboarding Wizard Tests', () => {
         // Each UF page must still exist exactly once.
         for (const shortcode of ['[wpuf-login]', '[wpuf_account]', '[wpuf_edit]']) {
             expect(await countPages(shortcode), `${shortcode} should exist once`).toBeLessThanOrEqual(1);
+        }
+    });
+
+    test('ONB0026 : Admin is validating the wizard logo is a vector that loads', { tag: ['@Basic'] }, async () => {
+        await onboarding.gotoWizard('features');
+
+        const logo = page.locator('.wpuf-onboarding-topbar img');
+
+        await expect(logo).toBeVisible();
+        await expect(logo).toHaveAttribute('src', /onboarding-logo\.svg$/);
+
+        // A missing or broken file still renders an <img>, so the decoded width is
+        // what actually proves it arrived.
+        const loaded = await logo.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0);
+        expect(loaded, 'the header logo should decode').toBeTruthy();
+    });
+
+    test('ONB0027 : Admin is validating every companion plugin logo loads', { tag: ['@Basic'] }, async () => {
+        await onboarding.gotoWizard('plugins');
+
+        const logos = await onboarding.getPluginLogos();
+
+        test.skip(logos.length === 0, 'Every companion plugin is already active, so the step is not shown.');
+
+        for (const logo of logos) {
+            expect(logo.file, `${logo.name} should use a vector logo`).toMatch(/\.svg$/);
+            expect(logo.loaded, `${logo.name} logo (${logo.file}) should decode`).toBeTruthy();
+        }
+    });
+
+    test('ONB0028 : Admin is validating no wizard screen ships a raster image', { tag: ['@Basic'] }, async () => {
+        // Walked per step, because each renders its own artwork.
+        for (const step of ['features', 'post_form', 'registration', 'common', 'plugins', 'ready']) {
+            await onboarding.gotoWizard(step);
+
+            const images = await onboarding.getImageReport();
+
+            for (const image of images) {
+                expect(image.isSvg, `${step} step still ships a raster image: ${image.file}`).toBeTruthy();
+                expect(image.loaded, `${step} step image ${image.file} should decode`).toBeTruthy();
+            }
         }
     });
 });

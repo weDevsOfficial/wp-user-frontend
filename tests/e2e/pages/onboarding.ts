@@ -298,6 +298,49 @@ export class OnboardingPage extends Base {
         } );
     }
 
+    /**
+     * Every image the wizard renders, described well enough to prove it is a
+     * vector that actually loaded rather than a broken or raster asset.
+     */
+    async getImageReport(): Promise<Array<{ file: string; loaded: boolean; isSvg: boolean; naturalW: number }>> {
+        return await this.page.evaluate( () => {
+            const imgs = Array.from( document.querySelectorAll( 'img' ) ) as HTMLImageElement[];
+
+            return imgs
+                .filter( img => ( img.getAttribute( 'src' ) || '' ).includes( '/images/' ) )
+                .map( img => {
+                    const src = img.getAttribute( 'src' ) || '';
+
+                    return {
+                        file: src.split( '/' ).pop()!.split( '?' )[0],
+                        // A broken image reports a natural width of 0 once it has settled.
+                        loaded: img.complete && img.naturalWidth > 0,
+                        isSvg: /\.svg$/i.test( src.split( '?' )[0] ),
+                        naturalW: img.naturalWidth,
+                    };
+                } );
+        } );
+    }
+
+    /**
+     * The plugin logos on the companion plugins step, in card order.
+     */
+    async getPluginLogos(): Promise<Array<{ name: string; file: string; loaded: boolean }>> {
+        return await this.page.evaluate( () =>
+            Array.from( document.querySelectorAll( '.wpuf-onboarding-card' ) )
+                .filter( card => card.querySelector( '.wpuf-onboarding-logo' ) )
+                .map( card => {
+                    const img = card.querySelector( '.wpuf-onboarding-logo' ) as HTMLImageElement;
+
+                    return {
+                        name: ( card.querySelector( 'strong' )?.textContent || '' ).trim(),
+                        file: ( img.getAttribute( 'src' ) || '' ).split( '/' ).pop() || '',
+                        loaded: img.complete && img.naturalWidth > 0,
+                    };
+                } )
+        );
+    }
+
     /**************************************************/
     /*************** @Step: ready ********************/
     /************************************************/

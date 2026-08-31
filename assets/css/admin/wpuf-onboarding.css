@@ -370,6 +370,40 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+/* Gateway cards centre their logo and name, the way the settings screen draws
+   them. The feature cards elsewhere stay left aligned, because they carry a
+   description under the title and centring that would be hard to read. The
+   checkbox is absolutely positioned, so the padding can be even here and the
+   logo actually lands in the middle of the card. */
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card {
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+}
+
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card strong {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 22px;
+}
+
+/* The badge already carries its own left margin for inline use; inside the
+   centred flex row the gap does that job instead. */
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-pro-badge {
+    margin-left: 0;
+}
+
+/* An upgrade card is a link, so it takes browser focus. Draw our ring rather
+   than the default blue one. */
+.wpuf-onboarding-card:focus,
+.wpuf-onboarding-card:focus-visible {
+    outline: none;
+    border-color: #059669;
+    box-shadow: 0 0 0 1px #059669;
+}
+
 /* Gateway logo on a payment card, sized to match the settings screen cards. */
 .wpuf-onboarding-card-icon {
     display: flex;

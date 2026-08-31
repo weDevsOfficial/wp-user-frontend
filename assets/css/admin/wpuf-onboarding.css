@@ -370,6 +370,23 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+/* Gateway logo on a payment card, sized to match the settings screen cards. */
+.wpuf-onboarding-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+.wpuf-onboarding-card-icon img,
+.wpuf-onboarding-card-icon svg {
+    max-width: 100%;
+    max-height: 40px;
+    width: auto;
+    height: auto;
+}
+
 .wpuf-onboarding-pro-badge {
     width: 22px;
     height: 22px;
@@ -378,9 +395,11 @@
 }
 
 /* The whole card is the upgrade link. */
+/* Same block layout as a selectable card, so the icon sits above the label in
+   every card rather than beside it in this one. Only the checkbox gutter goes,
+   because an upgrade link has no checkbox. */
 .wpuf-onboarding-card.is-pro {
-    display: flex;
-    align-items: center;
+    display: block;
     padding-right: 20px;
     text-decoration: none;
 }

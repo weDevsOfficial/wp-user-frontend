@@ -191,6 +191,12 @@ class Onboarding {
             return;
         }
 
+        // Give the post form and registration steps something to pick from. Only
+        // the pages those two steps offer; the rest wait for the settings step.
+        $installer = new Admin_Installer();
+
+        $installer->init_essential_pages();
+
         wp_safe_redirect( admin_url( 'index.php?page=' . self::PAGE_SLUG ) );
 
         exit;
@@ -854,6 +860,34 @@ class Onboarding {
         // The directory has no step of its own, so the choice made here is
         // what switches the module on or off.
         $this->toggle_directory( in_array( 'user_directory', $picked, true ) );
+
+        // Payments has no step of its own either. Unticking it has to switch the
+        // setting off, not merely hide the menus, or the gateways carry on working
+        // while the admin believes they turned the whole thing off.
+        $this->toggle_payments( in_array( 'payments', $picked, true ) );
+    }
+
+    /**
+     * Switch the payment setting to match the feature pick
+     *
+     * Switching payments off writes the setting the rest of the plugin actually
+     * reads. Switching it back on only lifts that block; which gateways are active
+     * stays with the settings step, so a site turning payments on again does not
+     * silently get a gateway it never chose.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param bool $enabled
+     *
+     * @return void
+     */
+    public function toggle_payments( $enabled ) {
+        $payment = get_option( 'wpuf_payment', [] );
+        $payment = is_array( $payment ) ? $payment : [];
+
+        $payment['enable_payment'] = $enabled ? 'on' : 'off';
+
+        update_option( 'wpuf_payment', $payment );
     }
 
     /**

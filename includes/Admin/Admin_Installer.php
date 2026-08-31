@@ -485,6 +485,79 @@ HTML;
     }
 
     /**
+     * Create only the pages the first two wizard steps need
+     *
+     * The post form and registration steps both offer a page picker, and an empty
+     * picker on a brand new site is a dead end: the admin can only choose "create a
+     * new page" for every one of them. Creating this handful up front means those
+     * steps open with something already selected.
+     *
+     * The rest, the dashboard, subscription and payment pages, are left for the
+     * settings step, which calls init_pages(). That is idempotent, so it creates
+     * only what is still missing and never a second copy of anything made here.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function init_essential_pages() {
+        $frontend_posting = $this->get_option_array( 'wpuf_frontend_posting' );
+        $profile_options  = $this->get_option_array( 'wpuf_profile' );
+        $account_options  = $this->get_option_array( 'wpuf_my_account' );
+
+        $login_page = $this->get_or_create_page(
+            __( 'Login', 'wp-user-frontend' ),
+            '[wpuf-login]',
+            isset( $profile_options['login_page'] ) ? absint( $profile_options['login_page'] ) : 0,
+            '[wpuf-login]'
+        );
+
+        if ( $login_page ) {
+            $profile_options['login_page'] = $login_page;
+        }
+
+        $edit_page = $this->get_or_create_page(
+            __( 'Edit', 'wp-user-frontend' ),
+            '[wpuf_edit]',
+            isset( $frontend_posting['edit_page_id'] ) ? absint( $frontend_posting['edit_page_id'] ) : 0,
+            '[wpuf_edit]'
+        );
+
+        if ( $edit_page ) {
+            $frontend_posting['edit_page_id'] = $edit_page;
+
+            update_option( 'wpuf_frontend_posting', $frontend_posting );
+        }
+
+        $account_page = $this->get_or_create_page(
+            __( 'Account', 'wp-user-frontend' ),
+            '[wpuf_account]',
+            isset( $account_options['account_page'] ) ? absint( $account_options['account_page'] ) : 0,
+            '[wpuf_account]'
+        );
+
+        if ( $account_page ) {
+            $account_options['account_page'] = $account_page;
+
+            update_option( 'wpuf_my_account', $account_options );
+        }
+
+        // Registration is a Pro page, built by whatever answers this filter. Free
+        // simply gets nothing back and carries on.
+        $data = apply_filters( 'wpuf_pro_page_install', $profile_options );
+
+        if ( is_array( $data ) && isset( $data['profile_options'] ) && is_array( $data['profile_options'] ) ) {
+            $profile_options = $data['profile_options'];
+        }
+
+        if ( ! empty( $profile_options['reg_override_page'] ) ) {
+            $profile_options['register_link_override'] = 'on';
+        }
+
+        update_option( 'wpuf_profile', $profile_options );
+    }
+
+    /**
      * Read an option that is expected to hold an array of settings
      *
      * Returns an empty array for an unset option, and for a corrupt one that

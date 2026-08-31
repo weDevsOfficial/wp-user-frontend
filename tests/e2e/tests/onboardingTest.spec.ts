@@ -323,6 +323,13 @@ test.describe('Onboarding Wizard Tests', () => {
             return await page.locator('#the-list tr.iedit').count();
         };
 
+        const shortcodes = ['[wpuf-login]', '[wpuf_account]', '[wpuf_edit]'];
+        const before: Record<string, number> = {};
+
+        for (const shortcode of shortcodes) {
+            before[shortcode] = await countPages(shortcode);
+        }
+
         // Walk the page-creating steps again with the same answers.
         await onboarding.gotoWizard('registration');
         await onboarding.continueStep();
@@ -330,9 +337,14 @@ test.describe('Onboarding Wizard Tests', () => {
         await onboarding.setCommonOptions({ installPages: true });
         await onboarding.continueStep();
 
-        // Each UF page must still exist exactly once.
-        for (const shortcode of ['[wpuf-login]', '[wpuf_account]', '[wpuf_edit]']) {
-            expect(await countPages(shortcode), `${shortcode} should exist once`).toBeLessThanOrEqual(1);
+        // The claim is that a second run adds nothing, so this compares against what
+        // the site had a moment ago rather than asserting one page per shortcode.
+        // Other specs, and the setup project, seed pages carrying these same
+        // shortcodes, so an absolute count says nothing about the wizard.
+        for (const shortcode of shortcodes) {
+            const after = await countPages(shortcode);
+
+            expect(after, `${shortcode} count should not grow on a second run`).toBeLessThanOrEqual(before[shortcode]);
         }
     });
 

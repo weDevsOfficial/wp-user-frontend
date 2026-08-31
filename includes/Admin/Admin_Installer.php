@@ -9,6 +9,17 @@ namespace WeDevs\Wpuf\Admin;
  */
 class Admin_Installer {
 
+    /**
+     * How a User Directory page can be recognised
+     *
+     * The installer writes the shortcode on a classic theme and the block on a
+     * block theme, so a page built one way has to be found when looking the other,
+     * or every run publishes another copy of it.
+     *
+     * @since WPUF_SINCE
+     */
+    const USER_DIRECTORY_MARKERS = [ '[wpuf_user_listing', 'wp:wpuf-ud/directory' ];
+
     public function __construct() {
         add_action( 'admin_notices', [ $this, 'admin_notice' ] );
         add_action( 'admin_init', [ $this, 'handle_request' ] );
@@ -239,7 +250,7 @@ class Admin_Installer {
                 __( 'User Directory', 'wp-user-frontend' ),
                 $this->get_user_directory_page_content(),
                 0,
-                '[wpuf_user_listing'
+                self::USER_DIRECTORY_MARKERS
             );
         }
 
@@ -542,12 +553,27 @@ HTML;
             update_option( 'wpuf_my_account', $account_options );
         }
 
-        // Registration is a Pro page, built by whatever answers this filter. Free
-        // simply gets nothing back and carries on.
+        // Pro builds the registration page from its own form via this filter.
         $data = apply_filters( 'wpuf_pro_page_install', $profile_options );
 
         if ( is_array( $data ) && isset( $data['profile_options'] ) && is_array( $data['profile_options'] ) ) {
             $profile_options = $data['profile_options'];
+        }
+
+        // Free has a registration form of its own, [wpuf-registration], so a site
+        // without Pro still gets a working sign-up page rather than none at all.
+        // Only the form builder behind it is a Pro feature.
+        if ( empty( $profile_options['reg_override_page'] ) ) {
+            $reg_page = $this->get_or_create_page(
+                __( 'Registration', 'wp-user-frontend' ),
+                '[wpuf-registration]',
+                0,
+                '[wpuf-registration]'
+            );
+
+            if ( $reg_page ) {
+                $profile_options['reg_override_page'] = $reg_page;
+            }
         }
 
         if ( ! empty( $profile_options['reg_override_page'] ) ) {
@@ -610,12 +636,17 @@ HTML;
      *
      * @since WPUF_SINCE
      *
-     * @param string $marker Shortcode or block opening tag to look for.
+     * @param string|array $marker One or more shortcodes or block tags to look for.
+     *                             Any one of them matching is enough, which is what
+     *                             lets a page be found whether it was built with the
+     *                             shortcode or with the block.
      *
      * @return int page id, 0 when no page holds it
      */
     protected function find_page_with_marker( $marker ) {
-        if ( empty( $marker ) ) {
+        $markers = array_filter( array_map( 'strval', (array) $marker ) );
+
+        if ( empty( $markers ) ) {
             return 0;
         }
 
@@ -634,8 +665,14 @@ HTML;
         foreach ( $pages as $page_id ) {
             $content = get_post_field( 'post_content', $page_id );
 
-            if ( is_string( $content ) && false !== strpos( $content, $marker ) ) {
-                return absint( $page_id );
+            if ( ! is_string( $content ) ) {
+                continue;
+            }
+
+            foreach ( $markers as $needle ) {
+                if ( false !== strpos( $content, $needle ) ) {
+                    return absint( $page_id );
+                }
             }
         }
 
@@ -655,7 +692,8 @@ HTML;
      * @param string $page_title
      * @param string $post_content
      * @param int    $existing_id Page id currently stored in the setting, 0 when unset.
-     * @param string $marker      Shortcode or block tag identifying the page, optional.
+     * @param string|array $marker Shortcode or block tag identifying the page, or
+     *                             several of them, optional.
      *
      * @return false|int
      */

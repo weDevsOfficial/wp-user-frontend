@@ -431,10 +431,35 @@
     vertical-align: middle;
 }
 
-/* On its own line under a description, rather than trailing a label. */
-.wpuf-onboarding-pro-badge.is-standalone {
-    display: inline-block;
-    margin: 10px 0 0;
+/* Every badge trails its label inline, exactly as the one on the Stripe payment
+   card does. The badge carries its own left margin and middle alignment, so no
+   :has() is needed and the rule works in every browser the admin supports. */
+.wpuf-onboarding-toggle strong,
+.wpuf-onboarding-disclosure summary strong {
+    display: block;
+}
+
+/* The badge keeps its own appearance on hover. Settings dims a whole pro-locked
+   card and leaves the badge alone, so nothing here recolours or resizes it; the
+   card border is what reacts. Stated explicitly so a future card hover rule does
+   not start restyling the badge by inheritance. */
+.wpuf-onboarding-card:hover .wpuf-onboarding-pro-badge,
+.wpuf-onboarding-card:focus .wpuf-onboarding-pro-badge,
+.wpuf-onboarding-disclosure summary:hover .wpuf-onboarding-pro-badge {
+    opacity: 1;
+    filter: none;
+    transform: none;
+}
+
+/* Matches the settings screen, where a pro-locked card sits at 60% until hovered. */
+.wpuf-onboarding-card.is-pro {
+    opacity: 0.75;
+    transition: opacity .15s ease, border-color .15s ease, transform .15s ease;
+}
+
+.wpuf-onboarding-card.is-pro:hover,
+.wpuf-onboarding-card.is-pro:focus-visible {
+    opacity: 1;
 }
 
 /* The whole card is the upgrade link. */

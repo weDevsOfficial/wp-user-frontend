@@ -945,7 +945,15 @@ class Onboarding {
         $login_choice = $this->posted_value( 'login_page' );
 
         if ( 'create' === $login_choice ) {
-            $login_page = $installer->create_page( __( 'Login', 'wp-user-frontend' ), '[wpuf-login]' );
+            // Reuse a page that already carries the shortcode. Choosing "create" on a
+            // second run should still land on the existing page rather than publish a
+            // duplicate of it.
+            $login_page = $installer->get_or_create_page(
+                __( 'Login', 'wp-user-frontend' ),
+                '[wpuf-login]',
+                isset( $profile['login_page'] ) ? absint( $profile['login_page'] ) : 0,
+                '[wpuf-login]'
+            );
 
             if ( $login_page ) {
                 $profile['login_page'] = $login_page;
@@ -957,23 +965,49 @@ class Onboarding {
         }
 
         $reg_choice = $this->posted_value( 'reg_page' );
+        $is_pro     = wpuf_is_pro_active();
 
         if ( 'create' === $reg_choice ) {
-            $data = apply_filters( 'wpuf_pro_page_install', $profile );
+            if ( $is_pro ) {
+                $data = apply_filters( 'wpuf_pro_page_install', $profile );
 
-            if ( is_array( $data ) && isset( $data['profile_options'] ) ) {
-                $profile = $data['profile_options'];
+                if ( is_array( $data ) && isset( $data['profile_options'] ) && is_array( $data['profile_options'] ) ) {
+                    $profile = $data['profile_options'];
+                }
+            } else {
+                // Free ships its own registration form on [wpuf-registration], so a
+                // site without Pro still gets a working sign-up page. Only building
+                // custom forms on top of it is the Pro part.
+                $installer = new Admin_Installer();
+                $reg_page  = $installer->get_or_create_page(
+                    __( 'Registration', 'wp-user-frontend' ),
+                    '[wpuf-registration]',
+                    0,
+                    '[wpuf-registration]'
+                );
+
+                if ( $reg_page ) {
+                    $profile['reg_override_page'] = $reg_page;
+                }
             }
         } elseif ( absint( $reg_choice ) ) {
             $profile['reg_override_page'] = absint( $reg_choice );
 
-            $form_id = $this->get_registration_form_id();
+            if ( $is_pro ) {
+                $form_id = $this->get_registration_form_id();
 
-            if ( $form_id ) {
+                if ( $form_id ) {
+                    $this->ensure_page_shortcode(
+                        absint( $reg_choice ),
+                        'wpuf_profile',
+                        '[wpuf_profile type="registration" id="' . $form_id . '"]'
+                    );
+                }
+            } else {
                 $this->ensure_page_shortcode(
                     absint( $reg_choice ),
-                    'wpuf_profile',
-                    '[wpuf_profile type="registration" id="' . $form_id . '"]'
+                    'wpuf-registration',
+                    '[wpuf-registration]'
                 );
             }
         }
@@ -1170,7 +1204,12 @@ class Onboarding {
 
         if ( 'create' === $choice ) {
             $installer = new Admin_Installer();
-            $page_id   = $installer->create_page( __( 'Account', 'wp-user-frontend' ), '[wpuf_account]' );
+            $page_id   = $installer->get_or_create_page(
+                __( 'Account', 'wp-user-frontend' ),
+                '[wpuf_account]',
+                isset( $account['account_page'] ) ? absint( $account['account_page'] ) : 0,
+                '[wpuf_account]'
+            );
 
             if ( ! $page_id ) {
                 return;
@@ -1292,7 +1331,19 @@ class Onboarding {
 
             // init_pages() only makes the directory page when the Pro module is
             // loaded, so cover the free module here too.
-            if ( $this->wants( 'user_directory' ) && $this->is_directory_active() && ! $this->page_exists( '[wpuf_user_listing' ) ) {
+            // A directory page renders as a shortcode on a classic theme and as a
+            // block on a block theme, so both spellings have to count as "exists".
+            $directory_exists = false;
+
+            foreach ( Admin_Installer::USER_DIRECTORY_MARKERS as $directory_marker ) {
+                if ( $this->page_exists( $directory_marker ) ) {
+                    $directory_exists = true;
+
+                    break;
+                }
+            }
+
+            if ( $this->wants( 'user_directory' ) && $this->is_directory_active() && ! $directory_exists ) {
                 $installer->create_page(
                     __( 'User Directory', 'wp-user-frontend' ),
                     $installer->get_user_directory_page_content()

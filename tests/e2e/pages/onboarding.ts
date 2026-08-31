@@ -341,6 +341,60 @@ export class OnboardingPage extends Base {
         );
     }
 
+    /**
+     * How the required controls on the current step are marked.
+     */
+    async getRequiredMarkers(): Promise<{ marks: number; srWords: number; requiredControls: number }> {
+        return await this.page.evaluate( () => ( {
+            marks: document.querySelectorAll( '.wpuf-onboarding-required' ).length,
+            srWords: document.querySelectorAll( '.wpuf-onboarding-required + .screen-reader-text' ).length,
+            requiredControls: document.querySelectorAll( '[required][aria-required="true"]' ).length,
+        } ) );
+    }
+
+    /**
+     * Whether the step's behaviour comes from an enqueued file rather than inline
+     * markup. The localised settings object is data and does not count.
+     */
+    async getScriptReport(): Promise<{ externalFiles: string[]; inlineBehaviourBlocks: number }> {
+        return await this.page.evaluate( () => {
+            const inline = Array.from( document.querySelectorAll( 'script:not([src])' ) )
+                .map( tag => tag.textContent || '' )
+                // wp_localize_script emits a var assignment; anything else is behaviour.
+                .filter( body => body.trim() && ! /^\s*(var|window)\s+\w+\s*=/.test( body.trim() ) );
+
+            return {
+                externalFiles: Array.from( document.querySelectorAll( 'script[src]' ) )
+                    .map( tag => ( tag as HTMLScriptElement ).src.split( '/' ).pop()!.split( '?' )[0] )
+                    .filter( name => name.indexOf( 'onboarding' ) !== -1 ),
+                inlineBehaviourBlocks: inline.length,
+            };
+        } );
+    }
+
+    /**
+     * Horizontal overflow and rail-label collisions at the current viewport.
+     */
+    async getLayoutHealth(): Promise<{ overflow: number; labelOverlaps: number }> {
+        return await this.page.evaluate( () => {
+            const root = document.documentElement;
+            const boxes = Array.from( document.querySelectorAll( '.wpuf-step-label' ) )
+                .filter( label => ( label as HTMLElement ).offsetParent !== null )
+                .map( label => label.getBoundingClientRect() )
+                .sort( ( a, b ) => a.left - b.left );
+
+            let overlaps = 0;
+
+            for ( let i = 1; i < boxes.length; i++ ) {
+                if ( boxes[ i ].left < boxes[ i - 1 ].right - 1 ) {
+                    overlaps++;
+                }
+            }
+
+            return { overflow: root.scrollWidth - root.clientWidth, labelOverlaps: overlaps };
+        } );
+    }
+
     /**************************************************/
     /*************** @Step: ready ********************/
     /************************************************/

@@ -15,7 +15,7 @@ $checklist  = $this->get_checklist();
 
 // Set only by the redirect from the previous step's Continue button.
 // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-$celebrate  = ! empty( $_GET['celebrate'] );
+$celebrate  = isset( $_GET['celebrate'] ) && '1' === sanitize_text_field( wp_unslash( $_GET['celebrate'] ) );
 $progress   = $this->get_progress();
 $revisiting = in_array( 'ready', $progress['completed'], true );
 $share      = $revisiting ? wpuf_get_option( 'share_wpuf_essentials', 'wpuf_general', 'off' ) : 'on';
@@ -28,7 +28,7 @@ if ( $this->wants( 'post_form' ) ) {
     $cta_label = __( 'Open my registration forms', 'wp-user-frontend' );
 } elseif ( $this->wants( 'registration' ) ) {
     $cta_url   = admin_url( 'admin.php?page=wpuf-settings#wpuf_profile' );
-    $cta_label = __( 'Open login &amp; registration settings', 'wp-user-frontend' );
+    $cta_label = __( 'Open login & registration settings', 'wp-user-frontend' );
 } elseif ( $this->wants( 'user_directory' ) ) {
     $cta_url   = admin_url( 'admin.php?page=wpuf_userlisting' );
     $cta_label = __( 'Open my user directories', 'wp-user-frontend' );
@@ -96,125 +96,7 @@ if ( $this->wants( 'post_form' ) ) {
 </div>
 </form>
 
-<script>
-( function () {
-    var redirect = document.getElementById( 'wpuf-onboarding-redirect' );
-
-    document.querySelectorAll( '.wpuf-onboarding-footer button[data-redirect]' ).forEach( function ( button ) {
-        button.addEventListener( 'click', function () {
-            redirect.value = button.getAttribute( 'data-redirect' );
-        } );
-    } );
-} )();
-</script>
-
 <?php if ( $celebrate ) : ?>
 <canvas id="wpuf-onboarding-confetti" aria-hidden="true"></canvas>
 
-<script>
-( function () {
-    var canvas = document.getElementById( 'wpuf-onboarding-confetti' );
-
-    if ( ! canvas || ! canvas.getContext ) {
-        return;
-    }
-
-    // Respect people who asked the OS for less movement.
-    if ( window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches ) {
-        canvas.remove();
-        return;
-    }
-
-    var ctx    = canvas.getContext( '2d' );
-    var icon   = new Image();
-    var pieces = [];
-    var start  = null;
-    var LIFE   = 4000;
-
-    function resize() {
-        canvas.width  = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-
-    var COLORS = [ '#059669', '#34d399', '#6d28d9', '#f59e0b', '#0ea5e9', '#ec4899' ];
-
-    function build() {
-        var count = Math.min( 120, Math.round( window.innerWidth / 10 ) );
-
-        for ( var i = 0; i < count; i++ ) {
-            // Every third piece is the plugin icon, the rest is paper.
-            var isIcon = i % 3 === 0;
-
-            pieces.push( {
-                icon: isIcon,
-                color: COLORS[ Math.floor( Math.random() * COLORS.length ) ],
-                x: Math.random() * window.innerWidth,
-                y: -40 - ( Math.random() * window.innerHeight * 0.6 ),
-                size: isIcon ? 16 + Math.random() * 16 : 6 + Math.random() * 7,
-                ratio: 0.4 + Math.random() * 0.6,
-                vx: -1.2 + Math.random() * 2.4,
-                vy: 2 + Math.random() * 3.5,
-                rot: Math.random() * Math.PI * 2,
-                vr: -0.12 + Math.random() * 0.24,
-                sway: Math.random() * Math.PI * 2
-            } );
-        }
-    }
-
-    function frame( now ) {
-        if ( ! start ) {
-            start = now;
-        }
-
-        var elapsed = now - start;
-        var fade    = elapsed > LIFE - 900 ? Math.max( 0, ( LIFE - elapsed ) / 900 ) : 1;
-
-        ctx.clearRect( 0, 0, canvas.width, canvas.height );
-        ctx.globalAlpha = fade;
-
-        pieces.forEach( function ( p ) {
-            p.sway += 0.03;
-            p.x    += p.vx + Math.sin( p.sway ) * 0.7;
-            p.y    += p.vy;
-            p.rot  += p.vr;
-
-            ctx.save();
-            ctx.translate( p.x, p.y );
-            ctx.rotate( p.rot );
-
-            if ( p.icon ) {
-                // Clip to a circle so the icon falls as a round chip.
-                ctx.beginPath();
-                ctx.arc( 0, 0, p.size / 2, 0, Math.PI * 2 );
-                ctx.closePath();
-                ctx.clip();
-
-                ctx.fillStyle = '#ffffff';
-                ctx.fill();
-                ctx.drawImage( icon, -p.size / 2, -p.size / 2, p.size, p.size );
-            } else {
-                ctx.fillStyle = p.color;
-                ctx.fillRect( -p.size / 2, -( p.size * p.ratio ) / 2, p.size, p.size * p.ratio );
-            }
-
-            ctx.restore();
-        } );
-
-        if ( elapsed < LIFE ) {
-            window.requestAnimationFrame( frame );
-        } else {
-            canvas.remove();
-        }
-    }
-
-    icon.onload = function () {
-        resize();
-        build();
-        window.addEventListener( 'resize', resize );
-        window.requestAnimationFrame( frame );
-    };
-
-    icon.src = <?php echo wp_json_encode( esc_url_raw( WPUF_ASSET_URI . '/images/onboarding/icon.svg' ) ); ?>;
-} )();
-</script>
 <?php endif; ?>

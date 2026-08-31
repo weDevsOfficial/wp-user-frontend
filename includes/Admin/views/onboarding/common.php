@@ -74,7 +74,6 @@ if ( ! function_exists( 'wpuf_onboarding_gateway_fallback_icon' ) ) {
 $progress      = $this->get_progress();
 $revisiting    = in_array( 'common', $progress['completed'], true );
 
-
 ?>
 <form method="post">
     <h2><?php esc_html_e( 'A few basics', 'wp-user-frontend' ); ?></h2>
@@ -175,26 +174,3 @@ $revisiting    = in_array( 'common', $progress['completed'], true );
     <?php $this->action_bar(); ?>
 </form>
 
-<script>
-( function () {
-    var enable  = document.getElementById( 'wpuf-onboarding-enable-payment' );
-    var gateway = document.getElementById( 'wpuf-onboarding-gateway-field' );
-
-    if ( ! enable || ! gateway ) {
-        return;
-    }
-
-    function render() {
-        gateway.style.display = enable.checked ? '' : 'none';
-    }
-
-    enable.addEventListener( 'change', render );
-    render();
-
-    document.querySelectorAll( '#wpuf-onboarding-gateway-field input[type="checkbox"]' ).forEach( function ( input ) {
-        input.addEventListener( 'change', function () {
-            input.closest( '.wpuf-onboarding-card' ).classList.toggle( 'is-selected', input.checked );
-        } );
-    } );
-} )();
-</script>

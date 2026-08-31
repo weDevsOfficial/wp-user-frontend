@@ -73,6 +73,23 @@ class Onboarding {
     }
 
     /**
+     * Mark the label of a control that has to be answered
+     *
+     * The asterisk is not the only signal: it carries a screen-reader word too, so
+     * the requirement is not communicated by colour alone (WCAG 1.4.1).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public static function required_mark() {
+        printf(
+            '<span class="wpuf-onboarding-required" aria-hidden="true">*</span><span class="screen-reader-text">%s</span>',
+            esc_html__( 'required', 'wp-user-frontend' )
+        );
+    }
+
+    /**
      * Menu slugs belonging to each feature offered in the first step
      *
      * Post forms are deliberately absent: their submenu slug is the plugin's own
@@ -315,7 +332,7 @@ class Onboarding {
             ],
             'registration'   => [
                 'step'  => 'registration',
-                'name'  => __( 'Registration &amp; login', 'wp-user-frontend' ),
+                'name'  => __( 'Registration & login', 'wp-user-frontend' ),
                 'desc'  => __( 'Sign-up and login pages that look like your site, not WordPress.', 'wp-user-frontend' ),
             ],
             'user_directory' => [
@@ -325,7 +342,7 @@ class Onboarding {
             ],
             'payments'       => [
                 'step'  => '',
-                'name'  => __( 'Payments &amp; subscriptions', 'wp-user-frontend' ),
+                'name'  => __( 'Payments & subscriptions', 'wp-user-frontend' ),
                 'desc'  => __( 'Charge per post, sell packs, or put your directory behind a payment.', 'wp-user-frontend' ),
             ],
         ];
@@ -441,6 +458,17 @@ class Onboarding {
      */
     protected function render_header() {
         wp_enqueue_style( 'wpuf-onboarding' );
+        wp_enqueue_script( 'wpuf-onboarding' );
+
+        // The confetti needs a URL, and the wizard's markup carries no inline
+        // script to put one in, so it arrives as data instead.
+        wp_localize_script(
+            'wpuf-onboarding',
+            'wpufOnboarding',
+            [
+                'confettiIcon' => esc_url_raw( WPUF_ASSET_URI . '/images/onboarding/icon.svg' ),
+            ]
+        );
 
         $steps        = $this->steps;
         $current      = $this->step;
@@ -543,6 +571,9 @@ class Onboarding {
      * @return void
      */
     protected function render_footer() {
+        // The wizard builds its own document, so there is no wp_footer() to hang
+        // enqueued scripts off. They are printed explicitly instead.
+        wp_print_scripts( 'wpuf-onboarding' );
         ?>
         </body>
         </html>
@@ -561,7 +592,7 @@ class Onboarding {
     public function action_bar( $args = [] ) {
         $args = wp_parse_args(
             $args, [
-                'next_label' => __( 'Save &amp; Continue', 'wp-user-frontend' ),
+                'next_label' => __( 'Save & Continue', 'wp-user-frontend' ),
                 'show_prev'  => true,
                 'show_skip'  => true,
             ]
@@ -1385,9 +1416,33 @@ class Onboarding {
             return;
         }
 
+        // Four plugins downloaded one after another in a single request is the
+        // slowest thing the wizard does, and on a host with a short
+        // max_execution_time it is what times out. Ask for room, then keep an eye
+        // on the clock and stop cleanly rather than being killed mid-install.
+        wp_raise_memory_limit( 'admin' );
+
+        $budget = $this->get_install_time_budget();
+        $started = microtime( true );
+
         foreach ( $picked as $slug ) {
             if ( ! isset( $plugins[ $slug ] ) ) {
                 continue;
+            }
+
+            // Stop while there is still time to render a page. Whatever is left is
+            // reported rather than silently dropped, and the step reappears with
+            // those plugins still on it, so a second click finishes the job.
+            if ( $budget > 0 && ( microtime( true ) - $started ) > $budget ) {
+                $errors[ $plugins[ $slug ]['name'] ] = __( 'Not installed yet: the wizard ran out of time on this request. Select it again to finish.', 'wp-user-frontend' );
+
+                continue;
+            }
+
+            // Each plugin gets its own slice of the clock where the host allows it.
+            if ( function_exists( 'set_time_limit' ) ) {
+                // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- disabled on some hosts.
+                @set_time_limit( 120 );
             }
 
             $result = $this->install_and_activate( $slug );
@@ -1402,6 +1457,28 @@ class Onboarding {
         } else {
             delete_option( self::PLUGIN_ERRORS_OPTION );
         }
+    }
+
+    /**
+     * How long this request may spend installing before it stops
+     *
+     * Leaves roughly a quarter of the host's execution time to render the next
+     * screen, so a run that cannot finish reports what is left instead of dying
+     * half way. Returns 0 when the host sets no limit, in which case there is
+     * nothing to budget against.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return float seconds, 0 when the host imposes no limit
+     */
+    protected function get_install_time_budget() {
+        $limit = (int) ini_get( 'max_execution_time' );
+
+        if ( $limit <= 0 ) {
+            return 0;
+        }
+
+        return max( 5, $limit * 0.75 );
     }
 
     /**

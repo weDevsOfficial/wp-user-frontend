@@ -11,6 +11,19 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+if ( ! function_exists( 'wpuf_onboarding_required_mark' ) ) {
+    /**
+     * Print the required marker beside a label
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    function wpuf_onboarding_required_mark() {
+        \WeDevs\Wpuf\Admin\Onboarding::required_mark();
+    }
+}
+
 $login_page  = absint( wpuf_get_option( 'login_page', 'wpuf_profile', 0 ) );
 $reg_page    = absint( wpuf_get_option( 'reg_override_page', 'wpuf_profile', 0 ) );
 $override    = wpuf_get_option( 'register_link_override', 'wpuf_profile', 'off' );
@@ -59,9 +72,12 @@ if ( ! $account_page ) {
     </p>
 
     <div class="wpuf-onboarding-field">
-        <label for="wpuf-onboarding-login-page"><?php esc_html_e( 'Login page', 'wp-user-frontend' ); ?></label>
+        <label for="wpuf-onboarding-login-page">
+            <?php esc_html_e( 'Login page', 'wp-user-frontend' ); ?>
+            <?php wpuf_onboarding_required_mark(); ?>
+        </label>
 
-        <select name="login_page" id="wpuf-onboarding-login-page">
+        <select name="login_page" id="wpuf-onboarding-login-page" required aria-required="true">
             <option value="create"><?php esc_html_e( '— Create a new Login page —', 'wp-user-frontend' ); ?></option>
             <?php foreach ( $login_pages as $page_id => $page_title ) : ?>
                 <option value="<?php echo esc_attr( $page_id ); ?>" <?php selected( $login_page, $page_id ); ?>><?php echo esc_html( $page_title ); ?></option>
@@ -72,9 +88,12 @@ if ( ! $account_page ) {
 
     <?php if ( $is_pro ) : ?>
         <div class="wpuf-onboarding-field" id="wpuf-onboarding-reg-page-field">
-            <label for="wpuf-onboarding-reg-page"><?php esc_html_e( 'Registration page', 'wp-user-frontend' ); ?></label>
+            <label for="wpuf-onboarding-reg-page">
+                <?php esc_html_e( 'Registration page', 'wp-user-frontend' ); ?>
+                <?php wpuf_onboarding_required_mark(); ?>
+            </label>
 
-            <select name="reg_page" id="wpuf-onboarding-reg-page">
+            <select name="reg_page" id="wpuf-onboarding-reg-page" required aria-required="true">
                 <option value="create"><?php esc_html_e( '— Create a new Registration page and form —', 'wp-user-frontend' ); ?></option>
                 <?php foreach ( $reg_pages as $page_id => $page_title ) : ?>
                     <option value="<?php echo esc_attr( $page_id ); ?>" <?php selected( $reg_page, $page_id ); ?>><?php echo esc_html( $page_title ); ?></option>
@@ -84,9 +103,12 @@ if ( ! $account_page ) {
         </div>
     <?php else : ?>
         <div class="wpuf-onboarding-field" id="wpuf-onboarding-reg-page-field">
-            <label for="wpuf-onboarding-reg-page"><?php esc_html_e( 'Registration page', 'wp-user-frontend' ); ?></label>
+            <label for="wpuf-onboarding-reg-page">
+                <?php esc_html_e( 'Registration page', 'wp-user-frontend' ); ?>
+                <?php wpuf_onboarding_required_mark(); ?>
+            </label>
 
-            <select name="reg_page" id="wpuf-onboarding-reg-page">
+            <select name="reg_page" id="wpuf-onboarding-reg-page" required aria-required="true">
                 <option value="create"><?php esc_html_e( '— Create a new Registration page —', 'wp-user-frontend' ); ?></option>
                 <?php foreach ( $reg_pages as $page_id => $page_title ) : ?>
                     <option value="<?php echo esc_attr( $page_id ); ?>" <?php selected( $reg_page, $page_id ); ?>><?php echo esc_html( $page_title ); ?></option>
@@ -107,9 +129,12 @@ if ( ! $account_page ) {
     <?php endif; ?>
 
     <div class="wpuf-onboarding-field">
-        <label for="wpuf-onboarding-account-page"><?php esc_html_e( 'Account page', 'wp-user-frontend' ); ?></label>
+        <label for="wpuf-onboarding-account-page">
+            <?php esc_html_e( 'Account page', 'wp-user-frontend' ); ?>
+            <?php wpuf_onboarding_required_mark(); ?>
+        </label>
 
-        <select name="account_page" id="wpuf-onboarding-account-page">
+        <select name="account_page" id="wpuf-onboarding-account-page" required aria-required="true">
             <option value="create"><?php esc_html_e( '— Create a new Account page —', 'wp-user-frontend' ); ?></option>
             <?php foreach ( $account_pages as $page_id => $page_title ) : ?>
                 <option value="<?php echo esc_attr( $page_id ); ?>" <?php selected( $account_page, $page_id ); ?>><?php echo esc_html( $page_title ); ?></option>
@@ -173,29 +198,3 @@ if ( ! $account_page ) {
     <?php $this->action_bar(); ?>
 </form>
 
-<script>
-( function () {
-    var preview = document.getElementById( 'wpuf-onboarding-layout-preview' );
-    var name    = document.getElementById( 'wpuf-onboarding-layout-name' );
-
-    document.querySelectorAll( '.wpuf-onboarding-layout input[type="radio"]' ).forEach( function ( input ) {
-        input.addEventListener( 'change', function () {
-            document.querySelectorAll( '.wpuf-onboarding-layout' ).forEach( function ( card ) {
-                card.classList.remove( 'is-selected' );
-            } );
-
-            input.closest( '.wpuf-onboarding-layout' ).classList.add( 'is-selected' );
-
-            // Fold the picker away again, showing what was chosen.
-            preview.src   = input.getAttribute( 'data-image' );
-            name.textContent = input.getAttribute( 'data-label' );
-
-            var box = input.closest( 'details' );
-
-            if ( box ) {
-                box.open = false;
-            }
-        } );
-    } );
-} )();
-</script>

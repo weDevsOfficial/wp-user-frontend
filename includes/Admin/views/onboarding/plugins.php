@@ -75,12 +75,3 @@ $install_errors  = is_array( $install_errors ) ? $install_errors : [];
     ?>
 </form>
 
-<script>
-( function () {
-    document.querySelectorAll( '.wpuf-onboarding-card input[name="plugins[]"]' ).forEach( function ( input ) {
-        input.addEventListener( 'change', function () {
-            input.closest( '.wpuf-onboarding-card' ).classList.toggle( 'is-selected', input.checked );
-        } );
-    } );
-} )();
-</script>

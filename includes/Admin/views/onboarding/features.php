@@ -28,7 +28,7 @@ $picked      = $this->get_features();
                 ?>
                 <label class="wpuf-onboarding-card <?php echo $checked ? 'is-selected' : ''; ?>">
                     <input type="checkbox" name="features[]" value="<?php echo esc_attr( $key ); ?>" <?php checked( true, $checked ); ?> />
-                    <strong><?php echo esc_html( wp_specialchars_decode( $feature['name'] ) ); ?></strong>
+                    <strong><?php echo esc_html( $feature['name'] ); ?></strong>
                     <p><?php echo esc_html( $feature['desc'] ); ?></p>
                 </label>
             <?php endforeach; ?>
@@ -40,16 +40,3 @@ $picked      = $this->get_features();
     <?php $this->action_bar( [ 'next_label' => __( 'Continue', 'wp-user-frontend' ), 'show_skip' => false ] ); ?>
 </form>
 
-<script>
-( function () {
-    document.querySelectorAll( '#wpuf-onboarding-features .wpuf-onboarding-card, .wpuf-onboarding-card input[name="features[]"]' ).forEach( function ( input ) {
-        if ( 'INPUT' !== input.tagName ) {
-            return;
-        }
-
-        input.addEventListener( 'change', function () {
-            input.closest( '.wpuf-onboarding-card' ).classList.toggle( 'is-selected', input.checked );
-        } );
-    } );
-} )();
-</script>

@@ -68,6 +68,10 @@ test.describe('Onboarding Wizard Tests', () => {
      * @Test_ONB0026 : Admin is validating the wizard logo is a vector that loads
      * @Test_ONB0027 : Admin is validating every companion plugin logo loads
      * @Test_ONB0028 : Admin is validating no wizard screen ships a raster image
+     * @Test_ONB0029 : Admin is validating plugin icons render at icon size
+     * @Test_ONB0030 : Admin is validating required fields are marked accessibly
+     * @Test_ONB0031 : Admin is validating behaviour comes from an enqueued script
+     * @Test_ONB0032 : Admin is validating the wizard fits common desktop widths
      *
      ***-----------------------------------------------------------------------------------**/
 
@@ -368,5 +372,86 @@ test.describe('Onboarding Wizard Tests', () => {
                 expect(image.loaded, `${step} step image ${image.file} should decode`).toBeTruthy();
             }
         }
+    });
+
+    test('ONB0029 : Admin is validating plugin icons render at icon size', { tag: ['@Basic'] }, async () => {
+        await onboarding.gotoWizard('plugins');
+
+        const logo = page.locator('.wpuf-onboarding-logo').first();
+
+        test.skip(await logo.count() === 0, 'Every companion plugin is already active, so the step is not shown.');
+
+        // The art is a 96px tile; drawing it much smaller shrinks the tile to a speck.
+        const box = await logo.boundingBox();
+        expect(box!.width, 'plugin icon should read as an icon, not a dot').toBeGreaterThanOrEqual(40);
+    });
+
+    test('ONB0030 : Admin is validating required fields are marked accessibly', { tag: ['@Basic'] }, async () => {
+        await onboarding.gotoWizard('registration');
+
+        const marks = await onboarding.getRequiredMarkers();
+
+        expect(marks.marks, 'required labels should carry a marker').toBeGreaterThan(0);
+        expect(marks.requiredControls, 'marked labels need a required control').toBeGreaterThan(0);
+
+        // Colour alone must not carry the meaning (WCAG 1.4.1), so each marker is
+        // paired with a word only assistive tech reads.
+        expect(marks.srWords, 'every marker needs its screen-reader word').toBe(marks.marks);
+    });
+
+    test('ONB0031 : Admin is validating behaviour comes from an enqueued script', { tag: ['@Basic'] }, async () => {
+        await onboarding.gotoWizard('common');
+
+        const scripts = await onboarding.getScriptReport();
+
+        expect(scripts.externalFiles, 'the wizard script should be enqueued').toContain('wpuf-onboarding.js');
+        expect(scripts.inlineBehaviourBlocks, 'no step should carry inline behaviour').toBe(0);
+
+        // Proves the enqueued file is actually wired up, not merely present: this
+        // show/hide is one of the behaviours that moved into it.
+        const gateway = await page.evaluate(() => {
+            const toggle = document.getElementById('wpuf-onboarding-enable-payment') as HTMLInputElement | null;
+            const field = document.getElementById('wpuf-onboarding-gateway-field') as HTMLElement | null;
+
+            if (!toggle || !field) {
+                return null;
+            }
+
+            toggle.checked = false;
+            toggle.dispatchEvent(new Event('change'));
+            const hidden = field.style.display === 'none';
+
+            toggle.checked = true;
+            toggle.dispatchEvent(new Event('change'));
+
+            return { hidden, shownAgain: field.style.display !== 'none' };
+        });
+
+        // The gateway picker only exists while payments are switched on. When it is
+        // not rendered the checks above already prove the file is enqueued and that
+        // nothing is inline, so there is no reason to skip the whole scenario.
+        if (gateway !== null) {
+            expect(gateway.hidden).toBeTruthy();
+            expect(gateway.shownAgain).toBeTruthy();
+        }
+    });
+
+    test('ONB0032 : Admin is validating the wizard fits common desktop widths', { tag: ['@Basic'] }, async () => {
+        const widths = [1024, 1280, 1440, 1920];
+
+        for (const width of widths) {
+            await page.setViewportSize({ width, height: 900 });
+
+            for (const step of ['features', 'registration', 'common', 'plugins']) {
+                await onboarding.gotoWizard(step);
+
+                const health = await onboarding.getLayoutHealth();
+
+                expect(health.overflow, `${step} step scrolls sideways at ${width}px`).toBeLessThanOrEqual(0);
+                expect(health.labelOverlaps, `step labels collide at ${width}px`).toBe(0);
+            }
+        }
+
+        await page.setViewportSize({ width: 1280, height: 900 });
     });
 });

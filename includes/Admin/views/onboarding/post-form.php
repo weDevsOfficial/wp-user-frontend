@@ -16,6 +16,17 @@ $existing     = absint( wpuf_get_option( 'default_post_form', 'wpuf_frontend_pos
 $post_edit    = wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' );
 $post_del     = wpuf_get_option( 'enable_post_del', 'wpuf_dashboard', 'yes' );
 $existing_url = $existing ? admin_url( 'admin.php?page=wpuf-post-forms&action=edit&id=' . $existing ) : '';
+
+// A site that already has a default form has nothing to choose here, so the step
+// opens on "do not create a form" rather than silently offering to replace it.
+// Only a site with no form yet is preselected onto the standard template.
+$selected_template = $existing ? 'skip' : 'post_form_template_post';
+
+// Keep the preselection honest if that template is not registered on this build.
+if ( 'skip' !== $selected_template && ! array_key_exists( $selected_template, $templates ) ) {
+    $first_template    = key( $templates );
+    $selected_template = null !== $first_template ? $first_template : 'skip';
+}
 ?>
 <form method="post">
     <h2><?php esc_html_e( 'Post Form', 'wp-user-frontend' ); ?></h2>
@@ -28,11 +39,11 @@ $existing_url = $existing ? admin_url( 'admin.php?page=wpuf-post-forms&action=ed
 
         <select name="post_form_template" id="wpuf-onboarding-template">
             <?php foreach ( $templates as $key => $template ) : ?>
-                <option value="<?php echo esc_attr( $key ); ?>" data-desc="<?php echo esc_attr( $template->get_description() ); ?>" <?php selected( 'post_form_template_post', $key ); ?>>
+                <option value="<?php echo esc_attr( $key ); ?>" data-desc="<?php echo esc_attr( $template->get_description() ); ?>" <?php selected( $selected_template, $key ); ?>>
                     <?php echo esc_html( $template->get_title() ); ?>
                 </option>
             <?php endforeach; ?>
-            <option value="skip" data-desc="<?php esc_attr_e( 'Keep your current form and build one later.', 'wp-user-frontend' ); ?>">
+            <option value="skip" data-desc="<?php esc_attr_e( 'Keep your current form and build one later.', 'wp-user-frontend' ); ?>" <?php selected( $selected_template, 'skip' ); ?>>
                 <?php esc_html_e( 'Do not create a form', 'wp-user-frontend' ); ?>
             </option>
         </select>
@@ -76,16 +87,3 @@ $existing_url = $existing ? admin_url( 'admin.php?page=wpuf-post-forms&action=ed
     <?php $this->action_bar(); ?>
 </form>
 
-<script>
-( function () {
-    var select = document.getElementById( 'wpuf-onboarding-template' );
-    var desc   = document.getElementById( 'wpuf-onboarding-template-desc' );
-
-    function render() {
-        desc.textContent = select.options[ select.selectedIndex ].getAttribute( 'data-desc' ) || '';
-    }
-
-    select.addEventListener( 'change', render );
-    render();
-} )();
-</script>

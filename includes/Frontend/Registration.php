@@ -178,14 +178,39 @@ class Registration {
             return false;
         }
 
-        // Capabilities that amount to control of the site. A role holding any of them is
-        // never handed out by a public registration form, even if it is what the form was
-        // configured with. shop_manager, vendor/seller and the standard author roles hold
-        // none of these, so marketplace and editorial setups are unaffected.
+        // Capabilities that amount to control of the site: running code on it (plugin,
+        // theme and core install/update/edit), changing its settings, or promoting
+        // yourself. A role holding any of them is never handed out by a public
+        // registration form, whatever the form was configured with.
+        //
+        // Deliberately *not* listed: unfiltered_html, which the stock editor role holds,
+        // and edit_users, which some marketplace plugins grant to store-manager roles.
+        // Including either would refuse roles sites legitimately register into. Verified
+        // against a WooCommerce + Dokan install: no non-administrator role holds any
+        // capability in this list.
+        $default_site_control_caps = [
+            'manage_options',
+            'activate_plugins',
+            'install_plugins',
+            'update_plugins',
+            'edit_plugins',
+            'edit_themes',
+            'update_core',
+            'edit_files',
+            'promote_users',
+            'manage_network',
+        ];
+
         $site_control_caps = apply_filters(
             'wpuf_registration_forbidden_capabilities',
-            [ 'manage_options', 'install_plugins', 'edit_plugins', 'edit_themes', 'edit_files' ]
+            $default_site_control_caps
         );
+
+        // A third-party filter returning a non-array must not fatal here, and returning
+        // empty must not silently turn the check off.
+        $site_control_caps = ! empty( $site_control_caps ) && is_array( $site_control_caps )
+            ? $site_control_caps
+            : $default_site_control_caps;
 
         foreach ( $site_control_caps as $capability ) {
             if ( ! empty( $role_object->capabilities[ $capability ] ) ) {

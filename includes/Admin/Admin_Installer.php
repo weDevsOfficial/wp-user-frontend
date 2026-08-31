@@ -129,84 +129,117 @@ class Admin_Installer {
      * @return void
      */
     public function init_pages() {
+        $frontend_posting = $this->get_option_array( 'wpuf_frontend_posting' );
+        $profile_options  = $this->get_option_array( 'wpuf_profile' );
+        $payment_options  = $this->get_option_array( 'wpuf_payment' );
+
         // create a dashboard page
-        $dashboard_page = $this->create_page( __( 'Dashboard', 'wp-user-frontend' ), '[wpuf_dashboard]' );
-        $account_page   = $this->create_page( __( 'Account', 'wp-user-frontend' ), '[wpuf_account]' );
-        $edit_page      = $this->create_page( __( 'Edit', 'wp-user-frontend' ), '[wpuf_edit]' );
+        $dashboard_page = $this->get_or_create_page( __( 'Dashboard', 'wp-user-frontend' ), '[wpuf_dashboard]', 0, '[wpuf_dashboard]' );
+        $account_page   = $this->get_or_create_page( __( 'Account', 'wp-user-frontend' ), '[wpuf_account]', 0, '[wpuf_account]' );
+        $edit_page      = $this->get_or_create_page(
+            __( 'Edit', 'wp-user-frontend' ),
+            '[wpuf_edit]',
+            isset( $frontend_posting['edit_page_id'] ) ? absint( $frontend_posting['edit_page_id'] ) : 0,
+            '[wpuf_edit]'
+        );
         // login page
-        $login_page = $this->create_page( __( 'Login', 'wp-user-frontend' ), '[wpuf-login]' );
-        $post_form  = $this->create_form();
+        $login_page = $this->get_or_create_page(
+            __( 'Login', 'wp-user-frontend' ),
+            '[wpuf-login]',
+            isset( $profile_options['login_page'] ) ? absint( $profile_options['login_page'] ) : 0,
+            '[wpuf-login]'
+        );
+
+        // Keep the form the site already posts with; only build a sample when there is none.
+        $post_form = isset( $frontend_posting['default_post_form'] ) ? absint( $frontend_posting['default_post_form'] ) : 0;
+
+        if ( ! $this->post_is_usable( $post_form, 'wpuf_forms' ) ) {
+            $post_form = $this->create_form();
+        }
+
         if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
             // payment page
-            $subscr_page  = $this->create_page(
+            $subscr_page  = $this->get_or_create_page(
                 __( 'Subscription', 'wp-user-frontend' ),
-                __( '[wpuf_sub_pack]', 'wp-user-frontend' )
+                __( '[wpuf_sub_pack]', 'wp-user-frontend' ),
+                isset( $payment_options['subscription_page'] ) ? absint( $payment_options['subscription_page'] ) : 0,
+                '[wpuf_sub_pack]'
             );
-            $payment_page = $this->create_page(
+            $payment_page = $this->get_or_create_page(
                 __( 'Payment', 'wp-user-frontend' ),
-                __( 'Please select a gateway for payment', 'wp-user-frontend' )
+                __( 'Please select a gateway for payment', 'wp-user-frontend' ),
+                isset( $payment_options['payment_page'] ) ? absint( $payment_options['payment_page'] ) : 0
             );
-            $thank_page   = $this->create_page(
+            $thank_page   = $this->get_or_create_page(
                 __( 'Thank You', 'wp-user-frontend' ),
                 __(
                     '<h1>Payment is complete</h1><p>Congratulations, your payment has been completed!</p>',
                     'wp-user-frontend'
-                )
+                ),
+                isset( $payment_options['payment_success'] ) ? absint( $payment_options['payment_success'] ) : 0
             );
-            $bank_page    = $this->create_page(
+            $bank_page    = $this->get_or_create_page(
                 __( 'Order Received', 'wp-user-frontend' ),
                 __(
                     'Hi, we have received your order. We will validate the order and will take necessary steps to move forward.',
                     'wp-user-frontend'
-                )
+                ),
+                isset( $payment_options['bank_success'] ) ? absint( $payment_options['bank_success'] ) : 0
             );
         }
-        // save the settings
+
+        // save the settings. Every option below is merged into what is already
+        // stored, never replaced, so settings this installer does not own are kept.
         if ( $edit_page ) {
-            update_option(
-                'wpuf_frontend_posting', [
-					'edit_page_id'      => $edit_page,
-					'default_post_form' => $post_form,
-				]
-            );
+            $frontend_posting['edit_page_id']      = $edit_page;
+            $frontend_posting['default_post_form'] = $post_form;
+
+            update_option( 'wpuf_frontend_posting', $frontend_posting );
         }
+
         // profile pages
-        $profile_options = [];
-        $reg_page        = false;
+        $reg_page = false;
+
         if ( $login_page ) {
             $profile_options['login_page'] = $login_page;
         }
+
         $data = apply_filters( 'wpuf_pro_page_install', $profile_options );
+
         if ( is_array( $data ) ) {
-            if ( isset( $data['profile_options'] ) ) {
+            if ( isset( $data['profile_options'] ) && is_array( $data['profile_options'] ) ) {
                 $profile_options = $data['profile_options'];
             }
             if ( isset( $data['reg_page'] ) ) {
                 $reg_page = $data['reg_page'];
             }
         }
+
         if ( $login_page && $reg_page ) {
             $profile_options['register_link_override'] = 'on';
         }
+
         update_option( 'wpuf_profile', $profile_options );
+
         if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
             // payment pages
-            update_option(
-                'wpuf_payment', [
-					'subscription_page' => $subscr_page,
-					'payment_page'      => $payment_page,
-					'payment_success'   => $thank_page,
-					'bank_success'      => $bank_page,
-				]
-            );
+            $payment_options['subscription_page'] = $subscr_page;
+            $payment_options['payment_page']      = $payment_page;
+            $payment_options['payment_success']   = $thank_page;
+            $payment_options['bank_success']      = $bank_page;
+
+            update_option( 'wpuf_payment', $payment_options );
         }
+
         update_option( '_wpuf_page_created', '1' );
 
         // User Directory page (Pro only): created when WPUF_User_Listing is available.
         if ( class_exists( 'WPUF_User_Listing' ) ) {
-            $this->create_page(
+            $this->get_or_create_page(
                 __( 'User Directory', 'wp-user-frontend' ),
-                $this->get_user_directory_page_content()
+                $this->get_user_directory_page_content(),
+                0,
+                '[wpuf_user_listing'
             );
         }
 
@@ -449,6 +482,122 @@ class Admin_Installer {
 <!-- /wp:columns --></div>
 <!-- /wp:wpuf-ud/profile -->
 HTML;
+    }
+
+    /**
+     * Read an option that is expected to hold an array of settings
+     *
+     * Returns an empty array for an unset option, and for a corrupt one that
+     * stored a scalar, so the caller can always merge into the result.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $option_name
+     *
+     * @return array
+     */
+    protected function get_option_array( $option_name ) {
+        $value = get_option( $option_name, [] );
+
+        return is_array( $value ) ? $value : [];
+    }
+
+    /**
+     * Whether a post id points at a post that can still be used
+     *
+     * A setting pointing at a trashed or deleted post is treated as unset, so
+     * the caller replaces it rather than keeping a dead reference.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int    $post_id
+     * @param string $post_type
+     *
+     * @return bool
+     */
+    protected function post_is_usable( $post_id, $post_type = 'page' ) {
+        $post_id = absint( $post_id );
+
+        if ( ! $post_id ) {
+            return false;
+        }
+
+        $post = get_post( $post_id );
+
+        return $post instanceof \WP_Post
+            && $post_type === $post->post_type
+            && ! in_array( $post->post_status, [ 'trash', 'auto-draft' ], true );
+    }
+
+    /**
+     * The first page whose content already holds a marker
+     *
+     * Used so a re-run points an unset setting at the page the site is already
+     * serving instead of publishing a second copy of it.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $marker Shortcode or block opening tag to look for.
+     *
+     * @return int page id, 0 when no page holds it
+     */
+    protected function find_page_with_marker( $marker ) {
+        if ( empty( $marker ) ) {
+            return 0;
+        }
+
+        $pages = get_posts(
+            [
+                'post_type'        => 'page',
+                'post_status'      => [ 'publish', 'draft', 'private' ],
+                'posts_per_page'   => -1,
+                'orderby'          => 'ID',
+                'order'            => 'ASC',
+                'fields'           => 'ids',
+                'suppress_filters' => false,
+            ]
+        );
+
+        foreach ( $pages as $page_id ) {
+            $content = get_post_field( 'post_content', $page_id );
+
+            if ( is_string( $content ) && false !== strpos( $content, $marker ) ) {
+                return absint( $page_id );
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Reuse the page this setting already points at, or publish one
+     *
+     * Resolution order: the id the setting already holds, then any page whose
+     * content carries the marker, then a fresh page. This is what keeps the
+     * installer idempotent, so running it twice, or running it on a site that
+     * has already been set up, does not leave two of every page behind.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $page_title
+     * @param string $post_content
+     * @param int    $existing_id Page id currently stored in the setting, 0 when unset.
+     * @param string $marker      Shortcode or block tag identifying the page, optional.
+     *
+     * @return false|int
+     */
+    public function get_or_create_page( $page_title, $post_content = '', $existing_id = 0, $marker = '' ) {
+        if ( $this->post_is_usable( $existing_id ) ) {
+            return absint( $existing_id );
+        }
+
+        $found = $this->find_page_with_marker( $marker );
+
+        if ( $found ) {
+            return $found;
+        }
+
+        return $this->create_page( $page_title, $post_content );
     }
 
     /**

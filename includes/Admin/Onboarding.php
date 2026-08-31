@@ -63,6 +63,137 @@ class Onboarding {
         add_action( 'admin_menu', [ $this, 'register_page' ] );
         add_action( 'admin_head', [ $this, 'hide_menu_link' ] );
         add_action( 'admin_init', [ $this, 'render' ], 1 );
+
+        // Ahead of Setup_Wizard::redirect_to_page(), which runs at 9999, so a
+        // first install lands here rather than in the legacy three step wizard.
+        add_action( 'admin_init', [ $this, 'maybe_redirect_after_activation' ], 5 );
+
+        // Late, so every menu this might hide is registered by the time it runs.
+        add_action( 'admin_menu', [ $this, 'hide_menus_for_unpicked_features' ], 999 );
+    }
+
+    /**
+     * Menu slugs belonging to each feature offered in the first step
+     *
+     * Post forms are deliberately absent: their submenu slug is the plugin's own
+     * top level slug, so hiding it would take the whole User Frontend menu with it.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array feature key => list of submenu slugs
+     */
+    public function get_feature_menus() {
+        $menus = [
+            // Free and Pro both register the registration forms screen on this slug.
+            'registration'   => [
+                'wpuf-profile-forms',
+            ],
+            'user_directory' => [
+                'wpuf_userlisting',
+            ],
+            'payments'       => [
+                'wpuf_subscription',
+                'wpuf_transaction',
+                'wpuf_subscribers',
+                'wpuf_coupon',
+            ],
+        ];
+
+        /**
+         * Filter the menus hidden when a feature is switched off during onboarding
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $menus Feature key => list of submenu slugs.
+         */
+        $menus = apply_filters( 'wpuf_onboarding_feature_menus', $menus );
+
+        return ! empty( $menus ) && is_array( $menus ) ? $menus : [];
+    }
+
+    /**
+     * Hide the menus for the features the admin said they do not need
+     *
+     * This only takes effect once the picker has actually been answered. A site
+     * that has never run the wizard has no stored picks, so every menu stays where
+     * it is and an existing install sees no change at all.
+     *
+     * The menu is hidden, not the feature. Everything keeps working and the screens
+     * stay reachable by URL, which is what keeps this reversible: re-running the
+     * wizard and ticking the feature brings its menu straight back.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function hide_menus_for_unpicked_features() {
+        $saved = get_option( self::FEATURES_OPTION, null );
+
+        // Never answered, so nothing is switched off. Leave every menu alone.
+        if ( ! is_array( $saved ) ) {
+            return;
+        }
+
+        $parent = 'wp-user-frontend';
+
+        if ( isset( wpuf()->admin->menu->parent_slug ) ) {
+            $parent = wpuf()->admin->menu->parent_slug;
+        }
+
+        foreach ( $this->get_feature_menus() as $feature => $slugs ) {
+            if ( in_array( $feature, $saved, true ) || ! is_array( $slugs ) ) {
+                continue;
+            }
+
+            foreach ( $slugs as $slug ) {
+                remove_submenu_page( $parent, $slug );
+
+                // Subscribers hangs off the subscription CPT, not the plugin menu.
+                remove_submenu_page( 'edit.php?post_type=wpuf_subscription', $slug );
+                remove_submenu_page( 'edit.php?post_type=wpuf_coupon', $slug );
+            }
+        }
+    }
+
+    /**
+     * Send a brand new install to the wizard, once
+     *
+     * Only fires for a site installing WPUF for the first time: Installer::install()
+     * sets the transient this reads exclusively when wpuf_installed was previously
+     * unset. An existing site is never redirected, whatever state its legacy setup
+     * wizard was left in, so updating or reactivating the plugin on a site already
+     * in use changes nothing.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function maybe_redirect_after_activation() {
+        if ( ! get_transient( 'wpuf_onboarding_redirect' ) ) {
+            return;
+        }
+
+        delete_transient( 'wpuf_onboarding_redirect' );
+
+        // The legacy wizard reads its own transient later in this same request.
+        // Clearing it here keeps the two from fighting over one activation.
+        delete_transient( 'wpuf_activation_redirect' );
+
+        // Match the legacy wizard: single site only, and never mid bulk activation.
+        // Presence of the flag is all that is read, and the transient consumed above
+        // is what authorises this, not the request.
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
+            return;
+        }
+
+        if ( ! current_user_can( 'manage_options' ) || wp_doing_ajax() ) {
+            return;
+        }
+
+        wp_safe_redirect( admin_url( 'index.php?page=' . self::PAGE_SLUG ) );
+
+        exit;
     }
 
     /**
@@ -564,21 +695,30 @@ class Onboarding {
      * @return array url and label
      */
     public function get_entry_point() {
-        $progress = $this->get_progress();
+        $progress  = $this->get_progress();
+        $completed = $this->is_completed();
 
-        if ( $this->is_completed() || empty( $progress['last_step'] ) || 'features' === $progress['last_step'] ) {
+        if ( $completed || empty( $progress['last_step'] ) || 'features' === $progress['last_step'] ) {
             return [
-                'url'   => wp_nonce_url(
+                'url'     => wp_nonce_url(
                     add_query_arg( 'restart', '1', $this->get_step_link( 'features' ) ),
                     'wpuf-onboarding-restart'
                 ),
-                'label' => __( 'Start Onboarding', 'wp-user-frontend' ),
+                'label'   => $completed
+                    ? __( 'Run Onboarding Again', 'wp-user-frontend' )
+                    : __( 'Start Onboarding', 'wp-user-frontend' ),
+                // Only a site that has already been through the wizard has settings
+                // worth warning about overwriting.
+                'warning' => $completed
+                    ? __( 'You have already completed onboarding. Running it again walks through the same steps and saves over the choices you made last time. Existing pages and forms are reused rather than duplicated, and nothing changes until you save a step.', 'wp-user-frontend' )
+                    : '',
             ];
         }
 
         return [
-            'url'   => $this->get_step_link( $progress['last_step'] ),
-            'label' => __( 'Resume Onboarding', 'wp-user-frontend' ),
+            'url'     => $this->get_step_link( $progress['last_step'] ),
+            'label'   => __( 'Resume Onboarding', 'wp-user-frontend' ),
+            'warning' => '',
         ];
     }
 
@@ -642,6 +782,10 @@ class Onboarding {
 
         if ( 'ready' === $step ) {
             update_option( self::COMPLETED_OPTION, 1 );
+
+            // Finishing here counts as finishing setup, so the legacy three step
+            // wizard stops claiming the activation redirect and stops nagging.
+            update_option( 'wpuf_setup_wizard', 1 );
         }
 
         if ( $progress['last_step'] === $step ) {
@@ -1101,6 +1245,10 @@ class Onboarding {
             ? [ 'administrator' ]
             : [ 'administrator', 'editor', 'author', 'contributor' ];
 
+        // Persist the choice, not just act on it. Admin_Installer::admin_notice()
+        // reads this to decide whether to keep nagging about installing the pages.
+        $general['install_wpuf_pages'] = $this->posted( 'install_wpuf_pages' ) ? 'on' : 'off';
+
         update_option( 'wpuf_general', $general );
 
         if ( $this->posted( 'install_wpuf_pages' ) ) {
@@ -1262,6 +1410,54 @@ class Onboarding {
         $this->clear_activation_redirects();
 
         return true;
+    }
+
+    /**
+     * Drop the "just activated" redirects the companion plugins set for themselves
+     *
+     * Activating a plugin from inside the wizard makes that plugin queue its own
+     * welcome or setup redirect, which fires on the next admin screen and throws the
+     * admin out of onboarding half way through. Clearing the flags keeps the admin
+     * in the wizard; the plugin's own setup screens stay reachable from its menu.
+     *
+     * Best effort by design. Deleting a transient that was never set is a no-op, and
+     * the list is filterable so a plugin using a key not covered here can add it
+     * rather than needing a change in this file.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    protected function clear_activation_redirects() {
+        $default_transients = [
+            // WPUF's own, so finishing an install here does not bounce the admin
+            // into the legacy setup wizard.
+            'wpuf_activation_redirect',
+            'wpuf_onboarding_redirect',
+            // The companion plugins offered by this step.
+            'wemail_activation_redirect',
+            'erp_activation_redirect',
+            '_erp_setup_page_redirect',
+            'wedocs_activation_redirect',
+            'pm_activation_redirect',
+            'cpm_activation_redirect',
+        ];
+
+        /**
+         * Filter the activation redirect flags cleared after a companion plugin installs
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $transients Transient names to delete.
+         */
+        $transients = apply_filters( 'wpuf_onboarding_activation_redirects', $default_transients );
+        $transients = ! empty( $transients ) && is_array( $transients ) ? $transients : $default_transients;
+
+        foreach ( $transients as $transient ) {
+            if ( is_string( $transient ) && '' !== $transient ) {
+                delete_transient( $transient );
+            }
+        }
     }
 
     /**

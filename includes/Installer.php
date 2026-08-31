@@ -22,6 +22,12 @@ class Installer {
 
         if ( !$installed ) {
             update_option( 'wpuf_installed', time() );
+
+            // Only a site seeing WPUF for the very first time is offered the guided
+            // onboarding. Every later activation, including plugin updates and a
+            // deactivate/reactivate on a site already in use, leaves this unset so
+            // an existing install is never pulled out of what it was doing.
+            set_transient( 'wpuf_onboarding_redirect', true, 30 );
         }
 
         flush_rewrite_rules( false );

@@ -366,6 +366,13 @@ class Admin_Tools {
                     <?php $entry = wpuf()->admin->onboarding->get_entry_point(); ?>
                     <p><?php esc_html_e( 'Walk through post forms, registration, the user directory, payments and the settings a frontend site needs. Nothing is changed until you save a step.', 'wp-user-frontend' ); ?></p>
 
+                    <?php if ( ! empty( $entry['warning'] ) ) : ?>
+                        <p class="notice notice-warning inline" style="padding: 8px 12px; margin: 0 0 12px;">
+                            <strong><?php esc_html_e( 'Heads up:', 'wp-user-frontend' ); ?></strong>
+                            <?php echo esc_html( $entry['warning'] ); ?>
+                        </p>
+                    <?php endif; ?>
+
                     <a class="button button-primary" href="<?php echo esc_url( $entry['url'] ); ?>">
                         <?php echo esc_html( $entry['label'] ); ?>
                     </a>

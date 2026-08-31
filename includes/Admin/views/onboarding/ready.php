@@ -214,7 +214,7 @@ if ( $this->wants( 'post_form' ) ) {
         window.requestAnimationFrame( frame );
     };
 
-    icon.src = '<?php echo esc_url( WPUF_ASSET_URI . '/images/icon-128x128.png' ); ?>';
+    icon.src = <?php echo wp_json_encode( esc_url_raw( WPUF_ASSET_URI . '/images/onboarding/icon.svg' ) ); ?>;
 } )();
 </script>
 <?php endif; ?>

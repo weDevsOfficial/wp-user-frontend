@@ -459,7 +459,7 @@ class Onboarding {
         </head>
         <body class="wpuf-onboarding-body">
             <div class="wpuf-onboarding-topbar">
-                <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/onboarding-logo.png' ); ?>" alt="<?php esc_attr_e( 'User Frontend', 'wp-user-frontend' ); ?>" />
+                <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/onboarding-logo.svg' ); ?>" alt="<?php esc_attr_e( 'User Frontend', 'wp-user-frontend' ); ?>" />
                 <a class="wpuf-onboarding-exit" href="<?php echo esc_url( $exit_url ); ?>">
                     <?php esc_html_e( 'Exit setup', 'wp-user-frontend' ); ?>
                 </a>
@@ -1596,19 +1596,19 @@ class Onboarding {
                 'desc' => __( 'Welcome mails, newsletters and campaigns to the people who sign up.', 'wp-user-frontend' ),
             ],
             'erp'                 => [
-                'logo' => 'onboarding/erp.png',
+                'logo' => 'onboarding/erp.svg',
                 'name' => __( 'WP ERP', 'wp-user-frontend' ),
                 'file' => 'erp/wp-erp.php',
                 'desc' => __( 'Turn your members into CRM contacts, with every interaction on one profile.', 'wp-user-frontend' ),
             ],
             'wedocs'              => [
-                'logo' => 'onboarding/wedocs.png',
+                'logo' => 'onboarding/wedocs.svg',
                 'name' => __( 'weDocs', 'wp-user-frontend' ),
                 'file' => 'wedocs/wedocs.php',
                 'desc' => __( 'A docs area members can read instead of opening a ticket.', 'wp-user-frontend' ),
             ],
             'wedevs-project-manager' => [
-                'logo' => 'onboarding/wedevs-project-manager.png',
+                'logo' => 'onboarding/wedevs-project-manager.svg',
                 'name' => __( 'WP Project Manager', 'wp-user-frontend' ),
                 'file' => 'wedevs-project-manager/cpm.php',
                 'desc' => __( 'Run projects and tasks with the members who sign up.', 'wp-user-frontend' ),

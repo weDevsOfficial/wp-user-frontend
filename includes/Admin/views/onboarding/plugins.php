@@ -30,7 +30,7 @@ $install_errors  = is_array( $install_errors ) ? $install_errors : [];
         <div class="wpuf-onboarding-note">
             <?php esc_html_e( 'These did not install last time:', 'wp-user-frontend' ); ?>
             <?php foreach ( $install_errors as $name => $message ) : ?>
-                <br /><strong><?php echo esc_html( $name ); ?></strong> — <?php echo esc_html( $message ); ?>
+                <br /><strong><?php echo esc_html( $name ); ?>:</strong> <?php echo esc_html( $message ); ?>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>

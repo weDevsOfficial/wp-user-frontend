@@ -422,7 +422,7 @@ class Onboarding {
 
             call_user_func( $this->steps[ $this->step ]['handler'] );
 
-            // A handler can change which steps exist — the features step does.
+            // A handler can change which steps exist; the features step does.
             $this->steps = $this->get_steps();
 
             $this->mark_done( $this->step );

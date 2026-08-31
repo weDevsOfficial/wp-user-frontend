@@ -78,7 +78,7 @@ if ( ! $account_page ) {
         </label>
 
         <select name="login_page" id="wpuf-onboarding-login-page" required aria-required="true">
-            <option value="create"><?php esc_html_e( '— Create a new Login page —', 'wp-user-frontend' ); ?></option>
+            <option value="create"><?php esc_html_e( 'Create a new Login page', 'wp-user-frontend' ); ?></option>
             <?php foreach ( $login_pages as $page_id => $page_title ) : ?>
                 <option value="<?php echo esc_attr( $page_id ); ?>" <?php selected( $login_page, $page_id ); ?>><?php echo esc_html( $page_title ); ?></option>
             <?php endforeach; ?>
@@ -94,7 +94,7 @@ if ( ! $account_page ) {
             </label>
 
             <select name="reg_page" id="wpuf-onboarding-reg-page" required aria-required="true">
-                <option value="create"><?php esc_html_e( '— Create a new Registration page and form —', 'wp-user-frontend' ); ?></option>
+                <option value="create"><?php esc_html_e( 'Create a new Registration page and form', 'wp-user-frontend' ); ?></option>
                 <?php foreach ( $reg_pages as $page_id => $page_title ) : ?>
                     <option value="<?php echo esc_attr( $page_id ); ?>" <?php selected( $reg_page, $page_id ); ?>><?php echo esc_html( $page_title ); ?></option>
                 <?php endforeach; ?>
@@ -109,7 +109,7 @@ if ( ! $account_page ) {
             </label>
 
             <select name="reg_page" id="wpuf-onboarding-reg-page" required aria-required="true">
-                <option value="create"><?php esc_html_e( '— Create a new Registration page —', 'wp-user-frontend' ); ?></option>
+                <option value="create"><?php esc_html_e( 'Create a new Registration page', 'wp-user-frontend' ); ?></option>
                 <?php foreach ( $reg_pages as $page_id => $page_title ) : ?>
                     <option value="<?php echo esc_attr( $page_id ); ?>" <?php selected( $reg_page, $page_id ); ?>><?php echo esc_html( $page_title ); ?></option>
                 <?php endforeach; ?>
@@ -135,7 +135,7 @@ if ( ! $account_page ) {
         </label>
 
         <select name="account_page" id="wpuf-onboarding-account-page" required aria-required="true">
-            <option value="create"><?php esc_html_e( '— Create a new Account page —', 'wp-user-frontend' ); ?></option>
+            <option value="create"><?php esc_html_e( 'Create a new Account page', 'wp-user-frontend' ); ?></option>
             <?php foreach ( $account_pages as $page_id => $page_title ) : ?>
                 <option value="<?php echo esc_attr( $page_id ); ?>" <?php selected( $account_page, $page_id ); ?>><?php echo esc_html( $page_title ); ?></option>
             <?php endforeach; ?>

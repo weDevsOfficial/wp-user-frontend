@@ -4,6 +4,7 @@ import { BasicLoginPage } from '../pages/basicLogin';
 import { Selectors } from '../pages/selectors';
 import { Users } from '../utils/testData';
 import { configureSpecFailFast } from '../utils/specFailFast';
+import { wpCli } from '../utils/wpEnvCli';
 
 let browser: Browser;
 let context: BrowserContext;
@@ -15,6 +16,68 @@ let login: BasicLoginPage;
 // run and a Pro run without being told which it is.
 let isPro = false;
 
+// This spec drives a wizard whose whole job is rewriting site-wide settings, and
+// the specs that run after it in the same suite read those settings. Every option
+// it touches is captured whole and put back afterwards, so the next spec inherits
+// the site it expected rather than one that has been through onboarding.
+//
+// Whole options rather than individual keys on purpose: `option patch get` returns
+// nothing for these sections, so a per-key snapshot reads as null and the restore
+// would delete the very values it was meant to preserve.
+const TOUCHED_OPTIONS = [
+    'wpuf_frontend_posting',
+    'wpuf_profile',
+    'wpuf_dashboard',
+    'wpuf_payment',
+    'wpuf_my_account',
+    'wpuf_general',
+    'wpuf_onboarding_features',
+    'wpuf_onboarding_progress',
+    'wpuf_onboarding_completed',
+    'wpuf_onboarding_plugin_errors',
+];
+
+const originalOptions: Record<string, string | null> = {};
+
+function snapshotSiteState() {
+    for (const option of TOUCHED_OPTIONS) {
+        try {
+            const value = wpCli(`option get ${option} --format=json`).trim();
+            originalOptions[option] = value === '' ? null : value;
+        } catch {
+            // Not set on this site; the restore should leave it unset.
+            originalOptions[option] = null;
+        }
+    }
+}
+
+/**
+ * Quote a value for a single-quoted shell argument.
+ *
+ * These option payloads contain apostrophes (one of the stock payment strings
+ * reads "you don't have a PayPal account"), which close the quote early and
+ * corrupt the command, so the restore silently does nothing.
+ */
+function shellQuote(value: string): string {
+    return `'${value.split("'").join(`'\\''`)}'`;
+}
+
+function restoreSiteState() {
+    for (const option of TOUCHED_OPTIONS) {
+        const before = originalOptions[option];
+
+        try {
+            if (before === null) {
+                wpCli(`option delete ${option}`);
+            } else {
+                wpCli(`option update ${option} ${shellQuote(before)} --format=json`);
+            }
+        } catch {
+            // Deleting an option that was never there is already the wanted state.
+        }
+    }
+}
+
 test.beforeAll(async () => {
     browser = await chromium.launch();
     context = await browser.newContext();
@@ -23,12 +86,17 @@ test.beforeAll(async () => {
     onboarding = new OnboardingPage(page);
     login = new BasicLoginPage(page);
 
+    snapshotSiteState();
+
     await login.basicLogin(Users.adminUsername, Users.adminPassword);
 
     isPro = await onboarding.isProActive();
 });
 
 test.afterAll(async () => {
+    // Put the site back before the next spec starts.
+    restoreSiteState();
+
     await context?.close();
     await browser?.close();
 });

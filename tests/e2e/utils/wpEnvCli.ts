@@ -26,7 +26,13 @@ export function wpCli(command: string): string {
     // "Please run npx @wordpress/env instead" and exits 0 without running wp-cli, which
     // made every wpCli() call return that message and throw when parsing its result.
     const full = `npx @wordpress/env run ${wpEnvCliContainer()} wp --skip-plugins --skip-themes ${command}`;
-    return execSync(full, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] });
+    // `@wordpress/env` resolves the instance from its working directory. In CI the suite and
+    // the wp-env instance share this directory, so the default cwd is correct. For a local
+    // setup where the wp-env project lives elsewhere (its .wp-env.json is not under tests/e2e),
+    // point WPUF_E2E_WP_ENV_DIR at that project dir so DB assertions hit the running instance
+    // instead of an unstarted one in the test cwd.
+    const cwd = process.env.WPUF_E2E_WP_ENV_DIR || process.cwd();
+    return execSync(full, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'], cwd } );
 }
 
 /**

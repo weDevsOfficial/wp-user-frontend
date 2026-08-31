@@ -142,7 +142,17 @@ export class MailPoetPage extends Base {
      * email is a subscriber inside the named MailPoet list.
      */
     async validateUserSubscribedToList(email: string, listName: string) {
-        const subscribed = isMailPoetSubscriberInList(email, listName);
+        // WPUF hands the subscriber to MailPoet during registration, but MailPoet commits the
+        // segment link asynchronously, so an immediate DB read right after EM0004 can miss it.
+        // Poll a few times before asserting rather than failing on the first (too-early) read.
+        let subscribed = false;
+        for (let attempt = 0; attempt < 10; attempt++) {
+            subscribed = isMailPoetSubscriberInList(email, listName);
+            if (subscribed) {
+                break;
+            }
+            await this.page.waitForTimeout(1000);
+        }
         expect(
             subscribed,
             `Expected ${email} to be a MailPoet subscriber in list "${listName}"`

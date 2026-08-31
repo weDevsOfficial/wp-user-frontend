@@ -1103,9 +1103,9 @@ class Onboarding {
     /**
      * Whether content holds a shortcode
      *
-     * has_shortcode() only matches tags registered at the time of the call,
-     * and the WPUF shortcodes are not registered on the wizard screen, so the
-     * tag is matched directly instead.
+     * The has_shortcode() helper only matches tags registered at the time of the
+     * call, and the WPUF shortcodes are not registered on the wizard screen, so
+     * the tag is matched directly instead.
      *
      * @since WPUF_SINCE
      *

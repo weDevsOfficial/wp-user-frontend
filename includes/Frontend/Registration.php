@@ -153,6 +153,50 @@ class Registration {
     }
 
     /**
+     * Whether a role may be assigned by frontend registration
+     *
+     * The role a form offers is configurable — sites legitimately register
+     * contributors, authors, editors and marketplace roles such as Dokan's or
+     * WooCommerce's shop_manager — so this is deliberately not an allow-list of
+     * role names, which would break those installs. It only refuses roles that
+     * could take the site over, whatever they are named.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $role Role slug decoded from the submitted registration form.
+     *
+     * @return bool
+     */
+    protected function is_role_allowed_for_registration( $role ) {
+        if ( 'administrator' === $role ) {
+            return false;
+        }
+
+        $role_object = get_role( $role );
+
+        if ( ! $role_object ) {
+            return false;
+        }
+
+        // Capabilities that amount to control of the site. A role holding any of them is
+        // never handed out by a public registration form, even if it is what the form was
+        // configured with. shop_manager, vendor/seller and the standard author roles hold
+        // none of these, so marketplace and editorial setups are unaffected.
+        $site_control_caps = apply_filters(
+            'wpuf_registration_forbidden_capabilities',
+            [ 'manage_options', 'install_plugins', 'edit_plugins', 'edit_themes', 'edit_files' ]
+        );
+
+        foreach ( $site_control_caps as $capability ) {
+            if ( ! empty( $role_object->capabilities[ $capability ] ) ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Process registration form
      *
      * @return void
@@ -164,6 +208,23 @@ class Registration {
             $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 
             if ( ! wp_verify_nonce( $nonce, 'wpuf_registration_action' ) ) {
+                return;
+            }
+
+            // The registration form only ever renders for logged-out visitors, so a
+            // request arriving with an authenticated session did not come from it.
+            //
+            // This guard is what actually stops the reported session fixation: the nonce
+            // cannot, because wp_nonce_field() on a logged-out-only template mints it at
+            // user id 0 with an empty session token, so every anonymous visitor is served
+            // the same value and it stays valid for around a day. Anyone can fetch the
+            // page once and embed that value in a cross-site form. Without this check the
+            // handler runs on init for a logged-in victim, and the autologin below then
+            // clears their session and hands their browser a cookie for the account it
+            // just created.
+            //
+            // Reported by Yaswanth Reddy Sunkara (WPScan).
+            if ( is_user_logged_in() ) {
                 return;
             }
 
@@ -279,9 +340,9 @@ class Registration {
             $userdata['user_email'] = $reg_email;
             $userdata['user_pass']  = $pwd1;
             if ( get_role( $dec_role ) ) {
-                $userdata['role'] = empty( $dec_role ) || 'administrator' === $dec_role ? get_option(
-                    'default_role'
-                ) : $dec_role;
+                $userdata['role'] = empty( $dec_role ) || ! $this->is_role_allowed_for_registration( $dec_role )
+                    ? get_option( 'default_role' )
+                    : $dec_role;
             }
             $user = wp_insert_user( $userdata );
             if ( is_wp_error( $user ) ) {

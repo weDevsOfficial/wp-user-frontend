@@ -424,6 +424,24 @@
     box-shadow: 0 0 0 1px #059669;
 }
 
+/* Payment gateways read as one set rather than a row of competing brand colours,
+   so their logos are desaturated here. Done in CSS on purpose: the gateway art is
+   shared with the settings screen, which shows it in full colour, so the files
+   themselves must not be touched. */
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card-icon img,
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card-icon svg {
+    filter: grayscale(1);
+    opacity: .7;
+    transition: opacity .15s ease;
+}
+
+/* Selection is carried by the border and the tick, so the icon stays grey and
+   only lifts out of the wash a little. */
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card.is-selected .wpuf-onboarding-card-icon img,
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card.is-selected .wpuf-onboarding-card-icon svg {
+    opacity: 1;
+}
+
 /* Gateway logo on a payment card, sized to match the settings screen cards. */
 .wpuf-onboarding-card-icon {
     display: flex;

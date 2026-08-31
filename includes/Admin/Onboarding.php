@@ -493,13 +493,16 @@ class Onboarding {
                                 ?>
                                 <li class="<?php echo esc_attr( $state ); ?>">
                                     <a class="wpuf-step-marker" href="<?php echo esc_url( $this->get_step_link( $key ) ); ?>">
-                                        <?php if ( 'is-done' === $state ) : ?>
-                                            <svg width="9" height="7" viewBox="0 0 9 7" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path d="M1 3.4001L3.4 5.8001L7.6 1.6001" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        <?php else : ?>
-                                            <?php echo esc_html( $index + 1 ); ?>
-                                        <?php endif; ?>
+                                        <?php
+                                        // Every marker carries the same tick, as the User Directory
+                                        // wizard does. A step not yet reached draws it in white on
+                                        // white, so it reads as an empty circle; a step reached fills
+                                        // emerald and the tick shows. No digits, so the rail cannot
+                                        // renumber itself when a step drops out of the flow.
+                                        ?>
+                                        <svg width="9" height="7" viewBox="0 0 9 7" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                            <path d="M1 3.4001L3.4 5.8001L7.6 1.6001" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
                                     </a>
                                     <span class="wpuf-step-label"><?php echo esc_html( $rail[ $key ]['label'] ); ?></span>
                                     <?php if ( $index !== $rail_last ) : ?>
@@ -1562,7 +1565,7 @@ class Onboarding {
         update_option( 'wpuf_general', $general );
 
         if ( wpuf()->tracker && isset( wpuf()->tracker->insights ) ) {
-            if ( 'on' === $share ) {
+            if ( wpuf_is_checkbox_or_toggle_on( $share ) ) {
                 wpuf()->tracker->insights->optin();
             } else {
                 wpuf()->tracker->insights->optout();
@@ -1835,7 +1838,9 @@ class Onboarding {
         if ( $this->wants( 'payments' ) ) {
             $checklist[] = [
                 'label' => __( 'Payments ready', 'wp-user-frontend' ),
-                'done'  => ! empty( $payment['enable_payment'] ) && 'on' === $payment['enable_payment'] && ! empty( $payment['active_gateways'] ),
+                'done'  => ! empty( $payment['enable_payment'] )
+                    && wpuf_is_checkbox_or_toggle_on( $payment['enable_payment'] )
+                    && ! empty( $payment['active_gateways'] ),
                 'url'   => admin_url( 'admin.php?page=wpuf-settings#wpuf_payment' ),
                 'link'  => __( 'Payments', 'wp-user-frontend' ),
             ];

@@ -69,7 +69,7 @@ if ( $this->wants( 'post_form' ) ) {
 
 <div class="wpuf-onboarding-field">
     <label class="wpuf-onboarding-toggle is-switch">
-        <input type="checkbox" name="share_essentials" value="1" <?php checked( 'on', $share ); ?> />
+        <input type="checkbox" name="share_essentials" value="1" <?php checked( true, wpuf_is_checkbox_or_toggle_on( $share ) ); ?> />
         <span class="wpuf-toggle-text">
             <strong><?php esc_html_e( 'Share diagnostic data', 'wp-user-frontend' ); ?></strong>
             <span><?php esc_html_e( 'Versions, site name and your email — it tells us what to fix first. Never your members\' data.', 'wp-user-frontend' ); ?></span>

@@ -2188,4 +2188,120 @@ export const Selectors = {
             cancelButton: '//a[contains(text(),"Cancel") or contains(@class,"cancel")]',
         },
     },
+
+    /*************************************/
+    /***** Onboarding Wizard Selectors ***/
+    /*************************************/
+
+    onboarding: {
+        // Entry point on User Frontend > Tools
+        entry: {
+            onboardingBox: '//div[@class="postbox"][.//h3[normalize-space()="Onboarding"]]',
+            startButton: '//div[@class="postbox"][.//h3[normalize-space()="Onboarding"]]//a[contains(@class,"button-primary")]',
+            rerunWarning: '//div[@class="postbox"][.//h3[normalize-space()="Onboarding"]]//p[contains(@class,"notice-warning")]',
+        },
+
+        // Shared chrome
+        chrome: {
+            wizardBody: '//body[contains(@class,"wpuf-onboarding-body")]',
+            heading: '//div[contains(@class,"wpuf-onboarding-head")]//h1',
+            stepRail: '//ol[contains(@class,"wpuf-onboarding-steps")]',
+            railItems: '//ol[contains(@class,"wpuf-onboarding-steps")]/li',
+            railLabels: '//ol[contains(@class,"wpuf-onboarding-steps")]//span[contains(@class,"wpuf-step-label")]',
+            activeStep: '//ol[contains(@class,"wpuf-onboarding-steps")]/li[contains(@class,"is-active")]//span[contains(@class,"wpuf-step-label")]',
+            doneMarkers: '//ol[contains(@class,"wpuf-onboarding-steps")]/li[contains(@class,"is-done")]',
+            markerCheckIcon: '//ol[contains(@class,"wpuf-onboarding-steps")]//a[contains(@class,"wpuf-step-marker")]/svg',
+            exitLink: '//a[contains(@class,"wpuf-onboarding-exit")]',
+            continueButton: '//button[contains(@class,"wpuf-onboarding-btn-primary")]',
+            skipLink: '//a[contains(@class,"wpuf-onboarding-skip")]',
+            previousButton: '//a[contains(@class,"wpuf-onboarding-btn-white")]',
+            nonceField: '//input[@name="_wpnonce"]',
+        },
+
+        // Step 1: what you need
+        features: {
+            cards: '//div[contains(@class,"wpuf-onboarding-grid")]//label[contains(@class,"wpuf-onboarding-card")]',
+            postFormCheckbox: '//input[@name="features[]"][@value="post_form"]',
+            registrationCheckbox: '//input[@name="features[]"][@value="registration"]',
+            userDirectoryCheckbox: '//input[@name="features[]"][@value="user_directory"]',
+            paymentsCheckbox: '//input[@name="features[]"][@value="payments"]',
+        },
+
+        // Step 2: post form
+        postForm: {
+            templateSelect: '//select[@name="post_form_template"]',
+            enablePostEdit: '//input[@name="enable_post_edit"]',
+            enablePostDelete: '//input[@name="enable_post_del"]',
+        },
+
+        // Step 3: login and registration
+        registration: {
+            loginPageSelect: '//select[@name="login_page"]',
+            regPageSelect: '//select[@name="reg_page"]',
+            accountPageSelect: '//select[@name="account_page"]',
+            autologinCheckbox: '//input[@name="autologin_after_registration"]',
+            loginLayoutRadio: '//input[@name="wpuf_login_form_layout"]',
+            proBadge: '//img[contains(@class,"wpuf-onboarding-pro-badge")]',
+        },
+
+        // Step 4: settings
+        common: {
+            installPages: '//input[@name="install_wpuf_pages"]',
+            hideAdminBar: '//input[@name="hide_admin_bar"]',
+            addLogoutMenu: '//input[@name="add_logout_menu"]',
+            enablePayments: '//input[@name="enable_payment"]',
+            gatewayGrid: '//div[contains(@class,"wpuf-onboarding-grid") and contains(@class,"is-thirds")]',
+            gatewayCards: '//div[contains(@class,"is-thirds")]/*[contains(@class,"wpuf-onboarding-card")]',
+            gatewayIcons: '//div[contains(@class,"is-thirds")]//span[contains(@class,"wpuf-onboarding-card-icon")]',
+            gatewayProCard: '//div[contains(@class,"is-thirds")]//a[contains(@class,"is-pro")]',
+            gatewayProBadge: '//div[contains(@class,"is-thirds")]//img[contains(@class,"wpuf-onboarding-pro-badge")]',
+            bankGateway: '//input[@name="active_gateways[]"][@value="bank"]',
+            paypalGateway: '//input[@name="active_gateways[]"][@value="paypal"]',
+        },
+
+        // Step 5: plugins
+        plugins: {
+            pluginCards: '//label[contains(@class,"wpuf-onboarding-card")][.//input[@name="plugins[]"]]',
+            errorBadge: '//span[contains(@class,"wpuf-onboarding-badge") and contains(@class,"is-error")]',
+        },
+
+        // Step 6: ready
+        ready: {
+            checklist: '//ul[contains(@class,"wpuf-onboarding-checklist")]',
+            checklistRows: '//ul[contains(@class,"wpuf-onboarding-checklist")]/li',
+            shareCheckbox: '//input[@name="share_essentials"]',
+            finishButton: '//button[@name="wpuf_onboarding_save"]',
+        },
+    },
+
+    // WPUF admin menus, used to assert a switched-off feature hides its menu
+    onboardingMenus: {
+        parentMenu: '//li[@id="toplevel_page_wp-user-frontend"]',
+        submenuLinks: '//li[@id="toplevel_page_wp-user-frontend"]//ul[contains(@class,"wp-submenu")]//a',
+        postFormsMenu: '//li[@id="toplevel_page_wp-user-frontend"]//a[contains(@href,"page=wpuf-post-forms")]',
+        registrationFormsMenu: '//li[@id="toplevel_page_wp-user-frontend"]//a[contains(@href,"page=wpuf-profile-forms")]',
+        userDirectoryMenu: '//li[@id="toplevel_page_wp-user-frontend"]//a[contains(@href,"page=wpuf_userlisting")]',
+        subscriptionsMenu: '//li[@id="toplevel_page_wp-user-frontend"]//a[contains(@href,"page=wpuf_subscription")]',
+        transactionsMenu: '//li[@id="toplevel_page_wp-user-frontend"]//a[contains(@href,"page=wpuf_transaction")]',
+        settingsMenu: '//li[@id="toplevel_page_wp-user-frontend"]//a[contains(@href,"page=wpuf-settings")]',
+        // Registered only when Pro is inactive, so its absence is what identifies a
+        // Pro build. The registration forms menu cannot be used: free registers it too.
+        premiumMenu: '//li[@id="toplevel_page_wp-user-frontend"]//a[contains(@href,"page=wpuf_premium")]',
+        toolsMenu: '//li[@id="toplevel_page_wp-user-frontend"]//a[contains(@href,"page=wpuf_tools")]',
+    },
+
+    // The settings screen fields the wizard writes, so a wizard choice can be
+    // asserted where the admin would actually see it afterwards.
+    // The settings API renders checkboxes with a wpuf- prefixed id and selects
+    // without one, so the two are not interchangeable here.
+    onboardingSettingsCheck: {
+        autologin: '//input[@id="wpuf-wpuf_profile[autologin_after_registration]"]',
+        enablePayment: '//input[@id="wpuf-wpuf_payment[enable_payment]"]',
+        showAdminBar: '//input[@id="wpuf-wpuf_general[show_admin_bar][administrator]"]',
+        // Selects: yes/no rather than a checkbox, and no wpuf- prefix on the id.
+        loginPage: '//select[@id="wpuf_profile[login_page]"]',
+        regOverridePage: '//select[@id="wpuf_profile[reg_override_page]"]',
+        enablePostEdit: '//select[@id="wpuf_dashboard[enable_post_edit]"]',
+        enablePostDelete: '//select[@id="wpuf_dashboard[enable_post_del]"]',
+    },
 };

@@ -122,7 +122,7 @@ if ( ! $account_page ) {
         <span class="wpuf-onboarding-label"><?php esc_html_e( 'After they sign up', 'wp-user-frontend' ); ?></span>
 
         <label class="wpuf-onboarding-toggle is-switch">
-            <input type="checkbox" name="autologin_after_registration" value="1" <?php checked( 'on', $autologin ); ?> />
+            <input type="checkbox" name="autologin_after_registration" value="1" <?php checked( true, wpuf_is_checkbox_or_toggle_on( $autologin ) ); ?> />
             <span class="wpuf-toggle-text">
                 <strong><?php esc_html_e( 'Log them in straight away', 'wp-user-frontend' ); ?></strong>
                 <span><?php esc_html_e( 'They are in as soon as they submit. Leave off if you approve members yourself.', 'wp-user-frontend' ); ?></span>

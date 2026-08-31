@@ -56,7 +56,7 @@ $existing_url = $existing ? admin_url( 'admin.php?page=wpuf-post-forms&action=ed
         <span class="wpuf-onboarding-label"><?php esc_html_e( 'What authors can do after posting', 'wp-user-frontend' ); ?></span>
 
         <label class="wpuf-onboarding-toggle is-switch">
-            <input type="checkbox" name="enable_post_edit" value="1" <?php checked( 'yes', $post_edit ); ?> />
+            <input type="checkbox" name="enable_post_edit" value="1" <?php checked( true, wpuf_is_checkbox_or_toggle_on( $post_edit ) ); ?> />
             <span class="wpuf-toggle-text">
                 <strong><?php esc_html_e( 'Let authors edit their posts', 'wp-user-frontend' ); ?></strong>
                 <span><?php esc_html_e( 'They can change their own posts from the frontend dashboard.', 'wp-user-frontend' ); ?></span>
@@ -64,7 +64,7 @@ $existing_url = $existing ? admin_url( 'admin.php?page=wpuf-post-forms&action=ed
         </label>
 
         <label class="wpuf-onboarding-toggle is-switch">
-            <input type="checkbox" name="enable_post_del" value="1" <?php checked( 'yes', $post_del ); ?> />
+            <input type="checkbox" name="enable_post_del" value="1" <?php checked( true, wpuf_is_checkbox_or_toggle_on( $post_del ) ); ?> />
             <span class="wpuf-toggle-text">
                 <strong><?php esc_html_e( 'Let authors delete their posts', 'wp-user-frontend' ); ?></strong>
                 <span><?php esc_html_e( 'Deleted posts go to trash, so you can get them back.', 'wp-user-frontend' ); ?></span>

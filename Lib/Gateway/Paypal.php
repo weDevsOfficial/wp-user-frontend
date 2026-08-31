@@ -2129,6 +2129,38 @@ class Paypal {
                 throw new \Exception( 'Payment not completed' );
             }
 
+            // Payment captured. Record the transaction and publish the post
+            // (or activate the pack) synchronously, so it does not depend solely
+            // on the PayPal webhook — which may be blocked or misconfigured on
+            // some hosts. process_payment_capture() is idempotent (it skips when
+            // the transaction already exists), so the webhook can still fire
+            // afterwards without creating a duplicate record.
+            if ( isset( $body['purchase_units'][0]['payments']['captures'][0] ) ) {
+                $capture = $body['purchase_units'][0]['payments']['captures'][0];
+
+                // PayPal usually copies custom_id onto the capture resource;
+                // fall back to the purchase unit's custom_id when it is absent.
+                if ( empty( $capture['custom_id'] ) && ! empty( $body['purchase_units'][0]['custom_id'] ) ) {
+                    $capture['custom_id'] = $body['purchase_units'][0]['custom_id'];
+                }
+
+                try {
+                    $this->process_payment_capture( $capture );
+                } catch ( \Exception $e ) {
+                    // Do not block the success redirect if local processing
+                    // fails; the webhook remains as a fallback. Emit a hook so the
+                    // "paid but not published" path leaves a diagnostic trail.
+                    do_action(
+                        'wpuf_paypal_return_processing_failed',
+                        [
+                            'token'      => $token,
+                            'capture_id' => isset( $capture['id'] ) ? $capture['id'] : '',
+                            'message'    => $e->getMessage(),
+                        ]
+                    );
+                }
+            }
+
             // Redirect to success page
             $success_url = add_query_arg(
                 [

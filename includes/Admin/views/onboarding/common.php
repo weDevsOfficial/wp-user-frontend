@@ -2,6 +2,8 @@
 /**
  * Onboarding: the settings that have to be right first
  *
+ * @since WPUF_SINCE
+ *
  * @var \WeDevs\Wpuf\Admin\Onboarding $this
  */
 

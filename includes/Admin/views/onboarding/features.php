@@ -2,6 +2,8 @@
 /**
  * Onboarding: what the admin wants to use
  *
+ * @since WPUF_SINCE
+ *
  * @var \WeDevs\Wpuf\Admin\Onboarding $this
  */
 

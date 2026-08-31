@@ -6,6 +6,8 @@
  * active the step drops out of the wizard, and it comes back if one is
  * later deactivated or deleted.
  *
+ * @since WPUF_SINCE
+ *
  * @var \WeDevs\Wpuf\Admin\Onboarding $this
  */
 

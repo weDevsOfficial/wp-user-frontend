@@ -2,6 +2,8 @@
 /**
  * Onboarding: ready
  *
+ * @since WPUF_SINCE
+ *
  * @var \WeDevs\Wpuf\Admin\Onboarding $this
  */
 

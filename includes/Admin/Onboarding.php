@@ -11,7 +11,7 @@ namespace WeDevs\Wpuf\Admin;
  *
  * Rendered as a standalone screen using the User Directory design system.
  *
- * @since 4.3.10
+ * @since WPUF_SINCE
  */
 class Onboarding {
 
@@ -54,6 +54,11 @@ class Onboarding {
      */
     protected $steps = [];
 
+    /**
+     * Boot the wizard
+     *
+     * @since WPUF_SINCE
+     */
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'register_page' ] );
         add_action( 'admin_head', [ $this, 'hide_menu_link' ] );
@@ -62,6 +67,8 @@ class Onboarding {
 
     /**
      * Register the hidden page that hosts the wizard
+     *
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -78,6 +85,8 @@ class Onboarding {
     /**
      * Keep the hosting page out of the Dashboard submenu
      *
+     * @since WPUF_SINCE
+     *
      * @return void
      */
     public function hide_menu_link() {
@@ -86,6 +95,8 @@ class Onboarding {
 
     /**
      * Get the step definitions
+     *
+     * @since WPUF_SINCE
      *
      * @return array
      */
@@ -144,7 +155,7 @@ class Onboarding {
         /**
          * Filter the onboarding wizard steps
          *
-         * @since 4.3.10
+         * @since WPUF_SINCE
          *
          * @param array $steps
          */
@@ -153,6 +164,8 @@ class Onboarding {
 
     /**
      * The things WPUF can do, as offered in the first step
+     *
+     * @since WPUF_SINCE
      *
      * @return array
      */
@@ -183,7 +196,7 @@ class Onboarding {
         /**
          * Filter the features offered in the onboarding wizard
          *
-         * @since 4.3.10
+         * @since WPUF_SINCE
          *
          * @param array $features
          */
@@ -195,6 +208,8 @@ class Onboarding {
      *
      * Everything is on until the choice is made, so the wizard is complete
      * for anyone who walks straight past the first step.
+     *
+     * @since WPUF_SINCE
      *
      * @return array
      */
@@ -211,6 +226,8 @@ class Onboarding {
     /**
      * Whether a feature was picked
      *
+     * @since WPUF_SINCE
+     *
      * @param string $feature
      *
      * @return bool
@@ -221,6 +238,8 @@ class Onboarding {
 
     /**
      * Render the wizard and stop WordPress from rendering the admin screen
+     *
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -278,6 +297,8 @@ class Onboarding {
 
     /**
      * Wizard document head, logo and step rail
+     *
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -358,6 +379,8 @@ class Onboarding {
     /**
      * Render the current step view
      *
+     * @since WPUF_SINCE
+     *
      * @return void
      */
     protected function render_content() {
@@ -375,6 +398,8 @@ class Onboarding {
     /**
      * Close the document
      *
+     * @since WPUF_SINCE
+     *
      * @return void
      */
     protected function render_footer() {
@@ -386,6 +411,8 @@ class Onboarding {
 
     /**
      * Render the fixed action bar of a step
+     *
+     * @since WPUF_SINCE
      *
      * @param array $args
      *
@@ -427,6 +454,8 @@ class Onboarding {
     /**
      * Link of a given step
      *
+     * @since WPUF_SINCE
+     *
      * @param string $step
      *
      * @return string
@@ -442,6 +471,8 @@ class Onboarding {
 
     /**
      * Key of the step that follows the current one
+     *
+     * @since WPUF_SINCE
      *
      * @return string empty when this is the last step
      */
@@ -459,6 +490,8 @@ class Onboarding {
     /**
      * Link of the next step
      *
+     * @since WPUF_SINCE
+     *
      * @return string
      */
     public function get_next_step_link() {
@@ -474,6 +507,8 @@ class Onboarding {
 
     /**
      * Link of the previous step
+     *
+     * @since WPUF_SINCE
      *
      * @return string
      */
@@ -491,6 +526,8 @@ class Onboarding {
     /**
      * Whether a full run has been finished
      *
+     * @since WPUF_SINCE
+     *
      * @return bool
      */
     public function is_completed() {
@@ -499,6 +536,8 @@ class Onboarding {
 
     /**
      * Wipe the progress of a finished run so the wizard opens on step one
+     *
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -519,6 +558,8 @@ class Onboarding {
 
     /**
      * Where the Tools button should send the admin, and what it should say
+     *
+     * @since WPUF_SINCE
      *
      * @return array url and label
      */
@@ -543,6 +584,8 @@ class Onboarding {
 
     /**
      * Stored progress of the wizard
+     *
+     * @since WPUF_SINCE
      *
      * @return array
      */
@@ -569,6 +612,8 @@ class Onboarding {
     /**
      * Mark a step as completed
      *
+     * @since WPUF_SINCE
+     *
      * @param string $step
      *
      * @return void
@@ -585,6 +630,8 @@ class Onboarding {
 
     /**
      * Remember where the admin left off
+     *
+     * @since WPUF_SINCE
      *
      * @param string $step
      *
@@ -609,6 +656,8 @@ class Onboarding {
     /**
      * Whether a checkbox of the current step was submitted
      *
+     * @since WPUF_SINCE
+     *
      * @param string $key
      *
      * @return bool
@@ -621,6 +670,8 @@ class Onboarding {
 
     /**
      * Value of a submitted field of the current step
+     *
+     * @since WPUF_SINCE
      *
      * @param string $key
      * @param string $default
@@ -640,6 +691,8 @@ class Onboarding {
 
     /**
      * Step 1: what the site is for
+     *
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -661,6 +714,8 @@ class Onboarding {
 
     /**
      * Step 2: frontend posting
+     *
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -698,6 +753,8 @@ class Onboarding {
 
     /**
      * Step 2: login and registration
+     *
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -766,6 +823,8 @@ class Onboarding {
      * Used so an unset page setting falls back to a page that exists rather
      * than offering to create another one.
      *
+     * @since WPUF_SINCE
+     *
      * @param string $tag
      *
      * @return int page id, 0 when none holds it
@@ -792,6 +851,8 @@ class Onboarding {
 
     /**
      * Pages for a wizard dropdown, flagging the ones already holding a shortcode
+     *
+     * @since WPUF_SINCE
      *
      * @param string $tag    shortcode tag to look for
      * @param string $marker  what to show in brackets on a page that has it
@@ -831,6 +892,8 @@ class Onboarding {
      * and the WPUF shortcodes are not registered on the wizard screen, so the
      * tag is matched directly instead.
      *
+     * @since WPUF_SINCE
+     *
      * @param string $content
      * @param string $tag
      *
@@ -849,6 +912,8 @@ class Onboarding {
      *
      * Picking an existing page from the wizard is only useful if the page
      * actually renders the form, so the shortcode is appended when missing.
+     *
+     * @since WPUF_SINCE
      *
      * @param int    $page_id
      * @param string $tag       shortcode tag to look for
@@ -883,6 +948,8 @@ class Onboarding {
     /**
      * A registration form to point a page at, creating one if needed
      *
+     * @since WPUF_SINCE
+     *
      * @return int form id, 0 when none could be made
      */
     protected function get_registration_form_id() {
@@ -908,6 +975,8 @@ class Onboarding {
 
     /**
      * Point the account page setting at a real page
+     *
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -946,6 +1015,8 @@ class Onboarding {
     /**
      * Switch the user directory module on or off
      *
+     * @since WPUF_SINCE
+     *
      * @param bool $enabled
      *
      * @return void
@@ -974,6 +1045,8 @@ class Onboarding {
 
     /**
      * Payments, saved as part of the settings step
+     *
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -1011,6 +1084,8 @@ class Onboarding {
 
     /**
      * Step 5: the settings that have to be right first
+     *
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -1056,6 +1131,8 @@ class Onboarding {
      * Plugins are installed over ajax from the step itself, so nothing is
      * saved here beyond marking the step as visited.
      *
+     * @since WPUF_SINCE
+     *
      * @return void
      */
     public function save_plugins() {
@@ -1097,6 +1174,8 @@ class Onboarding {
      * A plugin that is later deactivated or deleted comes back on the list,
      * and with it the step.
      *
+     * @since WPUF_SINCE
+     *
      * @return array slug => plugin
      */
     public function get_pending_plugins() {
@@ -1123,6 +1202,8 @@ class Onboarding {
 
     /**
      * Install a recommended plugin from wordpress.org and switch it on
+     *
+     * @since WPUF_SINCE
      *
      * @param string $slug
      *
@@ -1186,6 +1267,8 @@ class Onboarding {
     /**
      * Last step: the diagnostics opt-in, then off to the dashboard
      *
+     * @since WPUF_SINCE
+     *
      * @return void
      */
     public function save_share() {
@@ -1215,6 +1298,8 @@ class Onboarding {
 
     /**
      * The companion plugins offered in the wizard
+     *
+     * @since WPUF_SINCE
      *
      * @return array
      */
@@ -1249,7 +1334,7 @@ class Onboarding {
         /**
          * Filter the plugins recommended during onboarding
          *
-         * @since 4.3.10
+         * @since WPUF_SINCE
          *
          * @param array $plugins
          */
@@ -1258,6 +1343,8 @@ class Onboarding {
 
     /**
      * Whether a plugin is present on the site
+     *
+     * @since WPUF_SINCE
      *
      * @param string $basename
      *
@@ -1272,6 +1359,8 @@ class Onboarding {
      *
      * Plugins are matched by their folder, so a main file we did not guess
      * exactly still resolves to what is really on disk.
+     *
+     * @since WPUF_SINCE
      *
      * @param string $basename
      *
@@ -1302,6 +1391,8 @@ class Onboarding {
     /**
      * Turn the Pro user directory module on or off
      *
+     * @since WPUF_SINCE
+     *
      * @param bool $enable
      *
      * @return void
@@ -1329,6 +1420,8 @@ class Onboarding {
     /**
      * Whether the user directory is available on this site
      *
+     * @since WPUF_SINCE
+     *
      * @return bool
      */
     public function is_directory_active() {
@@ -1341,6 +1434,8 @@ class Onboarding {
 
     /**
      * Create a post form from a template without leaving the wizard
+     *
+     * @since WPUF_SINCE
      *
      * @param string $template
      *
@@ -1393,6 +1488,8 @@ class Onboarding {
     /**
      * Whether a page holding the given shortcode already exists
      *
+     * @since WPUF_SINCE
+     *
      * @param string $needle
      *
      * @return bool
@@ -1413,6 +1510,8 @@ class Onboarding {
 
     /**
      * Checklist of what the wizard has configured
+     *
+     * @since WPUF_SINCE
      *
      * @return array
      */

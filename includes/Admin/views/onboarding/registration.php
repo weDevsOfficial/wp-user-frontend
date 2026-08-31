@@ -68,7 +68,7 @@ if ( ! $account_page ) {
                 <span class="wpuf-toggle-text">
                     <strong><?php esc_html_e( 'Custom registration forms', 'wp-user-frontend' ); ?></strong>
                     <span><?php esc_html_e( 'Your own fields, roles and paid sign ups come with Pro. WordPress registration keeps working until then.', 'wp-user-frontend' ); ?></span>
-                    <span class="wpuf-onboarding-badge is-pro"><?php esc_html_e( 'Pro', 'wp-user-frontend' ); ?></span>
+                    <img class="wpuf-onboarding-pro-badge is-standalone" src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="<?php esc_attr_e( 'PRO', 'wp-user-frontend' ); ?>" />
                 </span>
             </div>
         </div>

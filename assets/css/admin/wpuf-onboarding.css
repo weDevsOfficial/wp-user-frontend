@@ -387,11 +387,20 @@
     height: auto;
 }
 
+/* The badge asset is 39x22. Give it a height and let the width follow, or the
+   pill gets squashed into a square. Height matches the 14px label it sits beside,
+   the same relationship the settings screen uses. */
 .wpuf-onboarding-pro-badge {
-    width: 22px;
-    height: 22px;
+    width: auto;
+    height: 18px;
     margin-left: 6px;
-    vertical-align: -5px;
+    vertical-align: middle;
+}
+
+/* On its own line under a description, rather than trailing a label. */
+.wpuf-onboarding-pro-badge.is-standalone {
+    display: inline-block;
+    margin: 10px 0 0;
 }
 
 /* The whole card is the upgrade link. */
@@ -405,7 +414,8 @@
 }
 
 .wpuf-onboarding-card.is-pro:hover {
-    border-color: #c4b5fd;
+    border-color: #059669;
+    transform: translateY(-1px);
 }
 
 /* Seven previews would swamp the step, so they live behind a summary row. */
@@ -550,7 +560,7 @@
 }
 
 .wpuf-onboarding-card:hover {
-    border-color: #d1d5db;
+    border-color: #059669;
     transform: translateY(-1px);
 }
 

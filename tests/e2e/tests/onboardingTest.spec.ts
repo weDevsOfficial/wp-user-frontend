@@ -72,6 +72,8 @@ test.describe('Onboarding Wizard Tests', () => {
      * @Test_ONB0030 : Admin is validating required fields are marked accessibly
      * @Test_ONB0031 : Admin is validating behaviour comes from an enqueued script
      * @Test_ONB0032 : Admin is validating the wizard fits common desktop widths
+     * @Test_ONB0033 : Admin is validating a card is always offered for every gateway
+     * @Test_ONB0034 : Admin is validating each gateway says whether it is ready to use
      *
      ***-----------------------------------------------------------------------------------**/
 
@@ -453,5 +455,55 @@ test.describe('Onboarding Wizard Tests', () => {
         }
 
         await page.setViewportSize({ width: 1280, height: 900 });
+    });
+
+    test('ONB0033 : Admin is validating a card is always offered for every gateway', { tag: ['@Basic'] }, async () => {
+        // An earlier scenario switches payments off, so this one puts them back
+        // rather than skipping on a state it can set for itself.
+        await onboarding.enablePaymentsFeature();
+        await onboarding.gotoWizard('common');
+
+        const cards = await onboarding.getGatewayCards();
+
+        expect(cards.length, 'the gateway picker should render with payments on').toBeGreaterThan(0);
+
+        const labels = cards.map(card => card.label);
+
+        // Bank and PayPal ship with the free plugin.
+        expect(labels.some(label => /bank/i.test(label)), 'bank transfer should be offered').toBeTruthy();
+        expect(labels.some(label => /paypal/i.test(label)), 'PayPal should be offered').toBeTruthy();
+
+        // The card-style gateway must never simply vanish. Without Pro it is a
+        // badged upsell; with Pro but the module switched off it points at Modules.
+        // Dropping it entirely reads as "not supported", which is what this guards.
+        expect(labels.some(label => /credit card|stripe/i.test(label)), 'a card gateway should always be offered').toBeTruthy();
+    });
+
+    test('ONB0034 : Admin is validating each gateway says whether it is ready to use', { tag: ['@Basic'] }, async () => {
+        await onboarding.enablePaymentsFeature();
+        await onboarding.gotoWizard('common');
+
+        const cards = await onboarding.getGatewayCards();
+
+        expect(cards.length, 'the gateway picker should render with payments on').toBeGreaterThan(0);
+
+        const bank = cards.find(card => /bank/i.test(card.label));
+        const paypal = cards.find(card => /paypal/i.test(card.label));
+
+        // Bank takes money the moment onboarding finishes; PayPal cannot until its
+        // keys are entered, and saying so here is the difference between a working
+        // checkout and a silently broken one.
+        expect(bank!.hint, 'bank should say it works immediately').toMatch(/right away/i);
+        expect(paypal!.hint, 'PayPal should say it needs credentials').toMatch(/key|setting/i);
+
+        // And the step as a whole repeats it, linked to where the keys go.
+        const notice = page.locator('.wpuf-onboarding-help.is-warning');
+        await expect(notice).toBeVisible();
+        await expect(notice).toContainText('PayPal');
+
+        // These cards are a smaller decision than the feature cards, so they stay compact.
+        for (const card of cards) {
+            expect(card.height, `${card.label} card should stay compact`).toBeLessThanOrEqual(130);
+        }
     });
 });

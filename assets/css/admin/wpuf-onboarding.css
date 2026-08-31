@@ -415,6 +415,66 @@
     margin-left: 0;
 }
 
+/* A gateway is a smaller decision than a feature, so its card is smaller too:
+   less padding, a smaller logo, and room for one line of guidance. */
+.wpuf-onboarding-grid.is-thirds {
+    gap: 10px;
+}
+
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card {
+    padding-top: 14px;
+    padding-bottom: 12px;
+}
+
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card-icon {
+    height: 28px;
+    margin-bottom: 8px;
+}
+
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card-icon img,
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card-icon svg {
+    max-height: 28px;
+}
+
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card strong {
+    font-size: 13px;
+}
+
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card input {
+    top: 12px;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+}
+
+/* One line under the name saying whether this gateway can take money yet. */
+.wpuf-onboarding-card-hint {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 16px;
+    color: #64748b;
+}
+
+/* Amber rather than red: nothing is broken, it just is not finished. */
+.wpuf-onboarding-card-hint.is-warning {
+    color: #b45309;
+}
+
+.wpuf-onboarding-help.is-warning {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-left: 3px solid #f59e0b;
+    border-radius: 4px;
+    background: #fffbeb;
+    color: #92400e;
+}
+
+.wpuf-onboarding-help.is-warning a {
+    color: #92400e;
+    font-weight: 600;
+}
+
 /* An upgrade card is a link, so it takes browser focus. Draw our ring rather
    than the default blue one. */
 .wpuf-onboarding-card:focus,
@@ -490,11 +550,13 @@
 }
 
 /* Matches the settings screen, where a pro-locked card sits at 60% until hovered. */
-.wpuf-onboarding-card.is-pro {
+.wpuf-onboarding-card.is-pro,
+.wpuf-onboarding-card.is-unavailable {
     opacity: 0.75;
     transition: opacity .15s ease, border-color .15s ease, transform .15s ease;
 }
 
+.wpuf-onboarding-card.is-unavailable:hover,
 .wpuf-onboarding-card.is-pro:hover,
 .wpuf-onboarding-card.is-pro:focus-visible {
     opacity: 1;

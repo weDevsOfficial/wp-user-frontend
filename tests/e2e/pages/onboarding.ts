@@ -149,6 +149,28 @@ export class OnboardingPage extends Base {
         return state;
     }
 
+    /**
+     * Make sure the payments feature is on, so the settings step renders its
+     * gateway picker. Saves the picker step, since the choice only takes effect
+     * once it is submitted.
+     */
+    async enablePaymentsFeature() {
+        await this.gotoWizard( 'features' );
+
+        const current = await this.getFeatureStates();
+
+        if ( current.payments ) {
+            return;
+        }
+
+        const wanted = Object.keys( current ).filter( key => current[ key ] );
+
+        wanted.push( 'payments' );
+
+        await this.setFeatures( wanted );
+        await this.continueStep();
+    }
+
     /**************************************************/
     /*************** @Step: post form ****************/
     /************************************************/
@@ -233,7 +255,7 @@ export class OnboardingPage extends Base {
      * Gateway cards, described the way the assertions need them: every card should
      * carry a logo, and the PRO badge should appear only while Pro is inactive.
      */
-    async getGatewayCards(): Promise<Array<{ label: string; hasIcon: boolean; isPro: boolean }>> {
+    async getGatewayCards(): Promise<Array<{ label: string; hasIcon: boolean; isPro: boolean; isUnavailable: boolean; hint: string; height: number }>> {
         return await this.page.evaluate( () => {
             const grid = document.querySelector( '.wpuf-onboarding-grid.is-thirds' );
 
@@ -244,7 +266,12 @@ export class OnboardingPage extends Base {
             return Array.from( grid.children ).map( card => ( {
                 label: ( card.querySelector( 'strong' )?.textContent || '' ).trim().replace( /\s+/g, ' ' ),
                 hasIcon: !! card.querySelector( '.wpuf-onboarding-card-icon img, .wpuf-onboarding-card-icon svg' ),
-                isPro: card.classList.contains( 'is-pro' ),
+                // The badge is the claim being made, so read that rather than a class
+                // that also covers a gateway this site owns but has not switched on.
+                isPro: !! card.querySelector( '.wpuf-onboarding-pro-badge' ),
+                isUnavailable: card.classList.contains( 'is-unavailable' ),
+                hint: ( card.querySelector( '.wpuf-onboarding-card-hint' )?.textContent || '' ).trim(),
+                height: Math.round( card.getBoundingClientRect().height ),
             } ) );
         } );
     }

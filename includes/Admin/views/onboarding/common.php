@@ -16,10 +16,9 @@ $admin_bar     = is_array( $admin_bar ) ? $admin_bar : [ $admin_bar ];
 $admins_only   = [ 'administrator' ] === array_values( $admin_bar );
 
 // On a first run these default on; a repeat run shows what was saved.
-// The selector context is the one that carries the logo and the pro flag, which is
-// what the settings screen renders from too, so both places stay in step.
-$gateway_cards = wpuf_get_gateways( 'gateway_selector' );
-$gateway_cards = is_array( $gateway_cards ) ? $gateway_cards : [];
+// Built from the same source the settings screen renders, annotated with what each
+// gateway still needs before it can take money.
+$gateway_cards = $this->get_gateway_cards();
 $active_ways   = wpuf_get_option( 'active_gateways', 'wpuf_payment', [] );
 $active_ways   = is_array( $active_ways ) ? $active_ways : [];
 
@@ -137,8 +136,22 @@ $revisiting    = in_array( 'common', $progress['completed'], true );
                         ? ( ! $revisiting || in_array( $gateway_id, $active_ways, true ) )
                         : in_array( $gateway_id, $active_ways, true );
                     ?>
-                    <?php if ( $gateway_is_pro ) : ?>
-                        <a class="wpuf-onboarding-card is-pro" href="<?php echo esc_url( \WeDevs\Wpuf\Free\Pro_Prompt::get_pro_url() ); ?>" target="_blank" rel="noopener">
+                    <?php
+                    // Pro missing entirely sends the admin to pricing; Pro present but
+                    // the module switched off sends them to Modules, where the fix is.
+                    $gateway_needs_module = ! empty( $gateway['needs_module'] );
+                    $gateway_link         = $gateway_needs_module
+                        ? admin_url( 'admin.php?page=wpuf-modules' )
+                        : \WeDevs\Wpuf\Free\Pro_Prompt::get_pro_url();
+                    ?>
+                    <?php if ( $gateway_is_pro || $gateway_needs_module ) : ?>
+                        <?php
+                        // is-pro means a genuine upsell and is what carries the badge.
+                        // is-unavailable is the same card shape for a gateway this site
+                        // owns but has not switched on, which is not an upsell at all.
+                        $gateway_class = $gateway_is_pro ? 'is-pro' : 'is-unavailable';
+                        ?>
+                        <a class="wpuf-onboarding-card <?php echo esc_attr( $gateway_class ); ?>" href="<?php echo esc_url( $gateway_link ); ?>"<?php echo $gateway_needs_module ? '' : ' target="_blank" rel="noopener"'; ?>>
                             <span class="wpuf-onboarding-card-icon">
                                 <?php if ( $gateway_icon ) : ?>
                                     <img src="<?php echo esc_url( $gateway_icon ); ?>" alt="<?php echo esc_attr( $gateway_label ); ?>" />
@@ -148,8 +161,13 @@ $revisiting    = in_array( 'common', $progress['completed'], true );
                             </span>
                             <strong>
                                 <?php echo esc_html( $gateway_label ); ?>
-                                <img class="wpuf-onboarding-pro-badge" src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="<?php esc_attr_e( 'PRO', 'wp-user-frontend' ); ?>" />
+                                <?php if ( $gateway_is_pro ) : ?>
+                                    <img class="wpuf-onboarding-pro-badge" src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="<?php esc_attr_e( 'PRO', 'wp-user-frontend' ); ?>" />
+                                <?php endif; ?>
                             </strong>
+                            <?php if ( ! empty( $gateway['hint'] ) ) : ?>
+                                <span class="wpuf-onboarding-card-hint"><?php echo esc_html( $gateway['hint'] ); ?></span>
+                            <?php endif; ?>
                         </a>
                     <?php else : ?>
                         <label class="wpuf-onboarding-card<?php echo $gateway_on ? ' is-selected' : ''; ?>">
@@ -162,10 +180,39 @@ $revisiting    = in_array( 'common', $progress['completed'], true );
                                 <?php endif; ?>
                             </span>
                             <strong><?php echo esc_html( $gateway_label ); ?></strong>
+                            <?php if ( ! empty( $gateway['hint'] ) ) : ?>
+                                <span class="wpuf-onboarding-card-hint<?php echo ! empty( $gateway['needs_setup'] ) ? ' is-warning' : ''; ?>">
+                                    <?php echo esc_html( $gateway['hint'] ); ?>
+                                </span>
+                            <?php endif; ?>
                         </label>
                     <?php endif; ?>
                 <?php endforeach; ?>
             </div>
+
+            <?php
+            $needs_setup_labels = [];
+
+            foreach ( $gateway_cards as $card ) {
+                if ( ! empty( $card['needs_setup'] ) && ! empty( $card['admin_label'] ) ) {
+                    $needs_setup_labels[] = $card['admin_label'];
+                }
+            }
+            ?>
+
+            <?php if ( $needs_setup_labels ) : ?>
+                <p class="wpuf-onboarding-help is-warning">
+                    <?php
+                    printf(
+                        /* translators: 1: gateway names, for example "PayPal", 2: opening link tag, 3: closing link tag */
+                        esc_html__( 'Bank transfer starts taking payments as soon as you finish here. %1$s still needs its API keys, so add them in %2$sPayment settings%3$s before you go live.', 'wp-user-frontend' ),
+                        esc_html( implode( ', ', $needs_setup_labels ) ),
+                        '<a href="' . esc_url( admin_url( 'admin.php?page=wpuf-settings' ) ) . '" target="_blank" rel="noopener">',
+                        '</a>'
+                    );
+                    ?>
+                </p>
+            <?php endif; ?>
         </div>
 
     <?php endif; ?>

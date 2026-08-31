@@ -1482,6 +1482,71 @@ class Onboarding {
     }
 
     /**
+     * The gateways offered on the settings step, with what each one still needs
+     *
+     * Built from the same source the settings screen renders, then annotated so a
+     * card can say whether it is ready to take money or still wants credentials.
+     * Bank transfer is the only one that works on the spot, which is why it is the
+     * default; the rest send the admin to Settings afterwards.
+     *
+     * Stripe is added back when nothing registered it. Without this the card
+     * simply vanishes on a Pro site whose Stripe module is switched off, which
+     * reads as "we do not support Stripe" rather than "turn the module on".
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array gateway id => card data
+     */
+    public function get_gateway_cards() {
+        $gateways = wpuf_get_gateways( 'gateway_selector' );
+        $gateways = is_array( $gateways ) ? $gateways : [];
+
+        if ( ! isset( $gateways['stripe'] ) ) {
+            $gateways['stripe'] = [
+                'admin_label'    => __( 'Credit Card', 'wp-user-frontend' ),
+                'icon'           => '',
+                'is_pro_preview' => ! wpuf_is_pro_active(),
+            ];
+
+            // Pro is here, so the gateway is available; its module is just off.
+            if ( wpuf_is_pro_active() ) {
+                $gateways['stripe']['needs_module'] = true;
+            }
+        }
+
+        // Anything that cannot take a payment until the admin enters credentials.
+        $needs_credentials = [ 'paypal', 'stripe' ];
+
+        foreach ( $gateways as $id => $gateway ) {
+            $is_pro_preview = ! empty( $gateway['is_pro_preview'] );
+
+            $gateways[ $id ]['is_pro_preview'] = $is_pro_preview;
+            $gateways[ $id ]['needs_setup']    = ! $is_pro_preview && in_array( $id, $needs_credentials, true );
+
+            if ( ! empty( $gateway['needs_module'] ) ) {
+                $gateways[ $id ]['hint'] = __( 'Turn the Stripe module on, then add your keys.', 'wp-user-frontend' );
+            } elseif ( $is_pro_preview ) {
+                $gateways[ $id ]['hint'] = '';
+            } elseif ( $gateways[ $id ]['needs_setup'] ) {
+                $gateways[ $id ]['hint'] = __( 'Needs your API keys in Settings.', 'wp-user-frontend' );
+            } else {
+                $gateways[ $id ]['hint'] = __( 'Works right away.', 'wp-user-frontend' );
+            }
+        }
+
+        /**
+         * Filter the gateway cards shown on the onboarding settings step
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $gateways Gateway id => card data.
+         */
+        $gateways = apply_filters( 'wpuf_onboarding_gateway_cards', $gateways );
+
+        return is_array( $gateways ) ? $gateways : [];
+    }
+
+    /**
      * The recommended plugins that are not running yet
      *
      * A plugin that is later deactivated or deleted comes back on the list,

@@ -74,6 +74,7 @@ test.describe('Onboarding Wizard Tests', () => {
      * @Test_ONB0032 : Admin is validating the wizard fits common desktop widths
      * @Test_ONB0033 : Admin is validating a card is always offered for every gateway
      * @Test_ONB0034 : Admin is validating each gateway says whether it is ready to use
+     * @Test_ONB0035 : Admin is validating an unavailable gateway is inert, not a link
      *
      ***-----------------------------------------------------------------------------------**/
 
@@ -505,5 +506,34 @@ test.describe('Onboarding Wizard Tests', () => {
         for (const card of cards) {
             expect(card.height, `${card.label} card should stay compact`).toBeLessThanOrEqual(130);
         }
+    });
+
+    test('ONB0035 : Admin is validating an unavailable gateway is inert, not a link', { tag: ['@Basic'] }, async () => {
+        await onboarding.enablePaymentsFeature();
+        await onboarding.gotoWizard('common');
+
+        const card = page.locator('.wpuf-onboarding-card.is-pro, .wpuf-onboarding-card.is-unavailable').first();
+
+        test.skip(await card.count() === 0, 'Every gateway is available on this build, so there is no inert card.');
+
+        // It cannot be switched on from here, so it must not offer to be clicked or
+        // ticked. It states why instead, the way PayPal states what it still needs.
+        const shape = await card.evaluate(node => ({
+            tag: node.tagName,
+            href: node.getAttribute('href'),
+            hasCheckbox: !!node.querySelector('input'),
+            hint: (node.querySelector('.wpuf-onboarding-card-hint')?.textContent || '').trim(),
+        }));
+
+        expect(shape.tag, 'an unavailable gateway should not be an anchor').not.toBe('A');
+        expect(shape.href, 'an unavailable gateway should have no link target').toBeNull();
+        expect(shape.hasCheckbox, 'an unavailable gateway should not be selectable').toBeFalsy();
+        expect(shape.hint.length, 'an unavailable gateway should say why').toBeGreaterThan(0);
+
+        // And clicking it should leave the admin where they were, mid-wizard.
+        const before = page.url();
+        await card.click({ force: true });
+        await page.waitForTimeout(400);
+        expect(page.url(), 'clicking the card should not navigate away').toBe(before);
     });
 });

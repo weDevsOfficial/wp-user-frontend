@@ -1524,9 +1524,9 @@ class Onboarding {
             $gateways[ $id ]['needs_setup']    = ! $is_pro_preview && in_array( $id, $needs_credentials, true );
 
             if ( ! empty( $gateway['needs_module'] ) ) {
-                $gateways[ $id ]['hint'] = __( 'Turn the Stripe module on, then add your keys.', 'wp-user-frontend' );
+                $gateways[ $id ]['hint'] = __( 'Turn the Stripe module on in Modules, then add your keys.', 'wp-user-frontend' );
             } elseif ( $is_pro_preview ) {
-                $gateways[ $id ]['hint'] = '';
+                $gateways[ $id ]['hint'] = __( 'Comes with Pro.', 'wp-user-frontend' );
             } elseif ( $gateways[ $id ]['needs_setup'] ) {
                 $gateways[ $id ]['hint'] = __( 'Needs your API keys in Settings.', 'wp-user-frontend' );
             } else {

@@ -137,21 +137,21 @@ $revisiting    = in_array( 'common', $progress['completed'], true );
                         : in_array( $gateway_id, $active_ways, true );
                     ?>
                     <?php
-                    // Pro missing entirely sends the admin to pricing; Pro present but
-                    // the module switched off sends them to Modules, where the fix is.
                     $gateway_needs_module = ! empty( $gateway['needs_module'] );
-                    $gateway_link         = $gateway_needs_module
-                        ? admin_url( 'admin.php?page=wpuf-modules' )
-                        : \WeDevs\Wpuf\Free\Pro_Prompt::get_pro_url();
+
+                    // is-pro means a genuine upsell and is what carries the badge.
+                    // is-unavailable is the same card shape for a gateway this site
+                    // owns but has not switched on, which is not an upsell at all.
+                    $gateway_class = $gateway_is_pro ? 'is-pro' : 'is-unavailable';
                     ?>
                     <?php if ( $gateway_is_pro || $gateway_needs_module ) : ?>
                         <?php
-                        // is-pro means a genuine upsell and is what carries the badge.
-                        // is-unavailable is the same card shape for a gateway this site
-                        // owns but has not switched on, which is not an upsell at all.
-                        $gateway_class = $gateway_is_pro ? 'is-pro' : 'is-unavailable';
+                        // Deliberately not a link and not a checkbox. This gateway
+                        // cannot be switched on from here, so the card states why and
+                        // stays inert rather than navigating the admin out of a wizard
+                        // they are part way through.
                         ?>
-                        <a class="wpuf-onboarding-card <?php echo esc_attr( $gateway_class ); ?>" href="<?php echo esc_url( $gateway_link ); ?>"<?php echo $gateway_needs_module ? '' : ' target="_blank" rel="noopener"'; ?>>
+                        <div class="wpuf-onboarding-card <?php echo esc_attr( $gateway_class ); ?>">
                             <span class="wpuf-onboarding-card-icon">
                                 <?php if ( $gateway_icon ) : ?>
                                     <img src="<?php echo esc_url( $gateway_icon ); ?>" alt="<?php echo esc_attr( $gateway_label ); ?>" />
@@ -166,9 +166,9 @@ $revisiting    = in_array( 'common', $progress['completed'], true );
                                 <?php endif; ?>
                             </strong>
                             <?php if ( ! empty( $gateway['hint'] ) ) : ?>
-                                <span class="wpuf-onboarding-card-hint"><?php echo esc_html( $gateway['hint'] ); ?></span>
+                                <span class="wpuf-onboarding-card-hint is-warning"><?php echo esc_html( $gateway['hint'] ); ?></span>
                             <?php endif; ?>
-                        </a>
+                        </div>
                     <?php else : ?>
                         <label class="wpuf-onboarding-card<?php echo $gateway_on ? ' is-selected' : ''; ?>">
                             <input type="checkbox" name="active_gateways[]" value="<?php echo esc_attr( $gateway_id ); ?>" <?php checked( true, $gateway_on ); ?> />

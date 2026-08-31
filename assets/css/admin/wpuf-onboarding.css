@@ -571,10 +571,18 @@
     box-shadow: none;
 }
 
-.wpuf-onboarding-card.is-unavailable:hover,
+/* Inert on purpose: this gateway cannot be switched on from the wizard, so the
+   card neither lifts nor changes on hover. It states why and stays put. */
+.wpuf-onboarding-card.is-pro,
+.wpuf-onboarding-card.is-unavailable {
+    cursor: default;
+    transform: none;
+}
+
 .wpuf-onboarding-card.is-pro:hover,
-.wpuf-onboarding-card.is-pro:focus-visible {
-    opacity: 1;
+.wpuf-onboarding-card.is-unavailable:hover {
+    border-color: #e5e7eb;
+    transform: none;
 }
 
 /* The whole card is the upgrade link. */

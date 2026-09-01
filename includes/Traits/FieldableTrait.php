@@ -890,7 +890,12 @@ trait FieldableTrait {
                                     if ( in_array( $inner_field['template'], [ 'checkbox_field', 'multiple_select' ] ) ) {
                                         // For checkbox and multiselect, keep as array and sanitize each element
                                         if ( is_array( $row[ $fname ] ) ) {
-                                            $sanitized_row[ $fname ] = array_map( function( $item ) { return strip_shortcodes( sanitize_text_field( $item ) ); }, $row[ $fname ] );
+                                            $sanitized_row[ $fname ] = array_map(
+                                                function ( $item ) {
+                                                    return strip_shortcodes( sanitize_text_field( $item ) );
+                                                },
+                                                $row[ $fname ]
+                                            );
                                         } else {
                                             $sanitized_row[ $fname ] = strip_shortcodes( sanitize_text_field( $row[ $fname ] ) );
                                         }
@@ -906,10 +911,21 @@ trait FieldableTrait {
                         }
                         $meta_key_value[ $value['name'] ] = $rows;
                     } else {
-                        // Fallback to old logic for single-field repeaters or legacy structure
-                        $meta_key_value[ $value['name'] ] = is_array( $repeater_value ) ? implode(
-                            self::$separator, $repeater_value
-                        ) : '';
+                        // Fallback to old logic for single-field repeaters or legacy structure.
+                        // Sanitize each element at the storage layer (no output escaping so
+                        // structured/multi-value data still round-trips).
+                        if ( is_array( $repeater_value ) ) {
+                            $sanitized_repeater = array_map(
+                                function ( $item ) {
+                                    return strip_shortcodes( sanitize_text_field( $item ) );
+                                },
+                                $repeater_value
+                            );
+
+                            $meta_key_value[ $value['name'] ] = implode( self::$separator, $sanitized_repeater );
+                        } else {
+                            $meta_key_value[ $value['name'] ] = '';
+                        }
                     }
                     break;
 

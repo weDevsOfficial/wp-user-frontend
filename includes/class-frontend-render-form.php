@@ -783,8 +783,22 @@ class WPUF_Frontend_Render_Form {
                     $formatted_key = $parent_name . '_' . $i . '_' . $meta_key;
 
                     if ( '' !== $meta_key && ! empty( $_POST[ $formatted_key ] ) ) {
-                        $repeat_fields['fields'][ $formatted_key ] = wp_unslash( $_POST[ $formatted_key ] );
-                        $meta_key_value[ $formatted_key ] = wp_unslash( $_POST[ $formatted_key ] );  // phpcs:ignore WordPress.Security
+                        // Storage-layer sanitization for repeat-field child values. Use the
+                        // textarea sanitizer for textarea children (preserve newlines),
+                        // otherwise the text-field sanitizer. Sanitize per element so
+                        // multi-value repeat data still round-trips.
+                        $repeat_sanitize_cb = ( isset( $value['input_type'] ) && 'textarea' === $value['input_type'] )
+                            ? 'sanitize_textarea_field'
+                            : 'sanitize_text_field';
+
+                        $raw_repeat_value = wp_unslash( $_POST[ $formatted_key ] ); // phpcs:ignore WordPress.Security.NonceVerification
+
+                        $sanitized_repeat_value = is_array( $raw_repeat_value )
+                            ? array_map( $repeat_sanitize_cb, $raw_repeat_value )
+                            : call_user_func( $repeat_sanitize_cb, $raw_repeat_value );
+
+                        $repeat_fields['fields'][ $formatted_key ] = $sanitized_repeat_value;
+                        $meta_key_value[ $formatted_key ]          = $sanitized_repeat_value;
                     }
                 }
             }

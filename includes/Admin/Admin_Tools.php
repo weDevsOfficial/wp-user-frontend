@@ -184,13 +184,29 @@ class Admin_Tools {
 
         $errors = new WP_Error();
 
+        $allowed_post_types    = [ 'wpuf_forms', 'wpuf_profile' ];
+        $allowed_post_statuses = [ 'publish', 'draft', 'pending' ];
+
         foreach ( $options as $key => $value ) {
+            // Allowlist post_type and post_status to prevent mass-assignment of an
+            // arbitrary post type/status through an imported JSON file.
+            $post_type   = $value['post_data']['post_type'] ?? '';
+            $post_status = $value['post_data']['post_status'] ?? '';
+
+            if ( ! in_array( $post_type, $allowed_post_types, true ) ) {
+                $post_type = 'wpuf_forms';
+            }
+
+            if ( ! in_array( $post_status, $allowed_post_statuses, true ) ) {
+                $post_status = 'publish';
+            }
+
             $generate_post = [
-                'post_title'     => $value['post_data']['post_title'],
-                'post_status'    => $value['post_data']['post_status'],
-                'post_type'      => $value['post_data']['post_type'],
-                'ping_status'    => $value['post_data']['ping_status'],
-                'comment_status' => $value['post_data']['comment_status'],
+                'post_title'     => $value['post_data']['post_title'] ?? '',
+                'post_status'    => $post_status,
+                'post_type'      => $post_type,
+                'ping_status'    => $value['post_data']['ping_status'] ?? '',
+                'comment_status' => $value['post_data']['comment_status'] ?? '',
             ];
 
             $post_id = wp_insert_post( $generate_post, true );

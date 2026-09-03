@@ -34,7 +34,7 @@
   "author": "Rubaiyat E Mohammad",
   "license": "MIT",
   "devDependencies": {
-    "@faker-js/faker": "^10.1.0",
+    "@faker-js/faker": "^10.5.0",
     "@playwright/test": "^1.57.0",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^24.10.1",

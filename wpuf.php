@@ -34,6 +34,32 @@ define( 'WPUF_INCLUDES', WPUF_ROOT . '/includes' );
 
 use WeDevs\WpUtils\SingletonTrait;
 
+// vendor/ (the Composer dependencies, including wedevs/wp-utils which provides
+// the SingletonTrait used below) is intentionally not committed to the git
+// repository. A checkout that has not run `composer install` would otherwise
+// fatal on the missing trait when this class is declared, taking the whole
+// site down with a white screen. Fail soft with an admin notice instead so a
+// fresh clone is recoverable.
+if ( ! trait_exists( SingletonTrait::class ) ) {
+    add_action(
+        'admin_notices',
+        function () {
+            $message = sprintf(
+                /* translators: %s: the composer install command, shown as code */
+                esc_html__( 'WP User Frontend could not load its dependencies. Please run %s inside the plugin directory.', 'wp-user-frontend' ),
+                '<code>composer install</code>'
+            );
+
+            printf(
+                '<div class="notice notice-error"><p>%s</p></div>',
+                wp_kses( $message, [ 'code' => [] ] )
+            );
+        }
+    );
+
+    return;
+}
+
 /**
  * Main bootstrap class for WP User Frontend
  */

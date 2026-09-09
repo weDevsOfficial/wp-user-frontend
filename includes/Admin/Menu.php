@@ -81,7 +81,7 @@ class Menu {
             add_action( 'load-' . $premium_hook, [ $this, 'enqueue_premium_script' ] );
         }
 
-        $help_hook = add_submenu_page( $this->parent_slug, __( 'Help', 'wp-user-frontend' ), sprintf( '<span style="color:#f18500">%s</span>', __( 'Help', 'wp-user-frontend' ) ), $capability, 'wpuf-support', [ $this, 'support_page' ] );
+        $help_hook = add_submenu_page( $this->parent_slug, __( 'Help', 'wp-user-frontend' ), __( 'Help', 'wp-user-frontend' ), $capability, 'wpuf-support', [ $this, 'support_page' ] );
         $this->all_submenu_hooks['help'] = $help_hook;
 
         add_action( 'load-' . $help_hook, [ $this, 'enqueue_help_script' ] );
@@ -100,24 +100,21 @@ class Menu {
     }
 
     /**
-     * Build the Premium submenu title with its crown icon.
+     * Build the Premium submenu title.
      *
      * WordPress prints submenu titles unescaped, so markup is allowed here. The
-     * crown is inlined rather than enqueued so it costs no extra request, and the
-     * glow itself is handled in CSS — see premium_menu_styles().
+     * wrapping span lets premium_menu_styles() color the label.
      *
      * @since 4.3.11
      *
      * @return string
      */
     public function get_premium_menu_title() {
-        $crown = '<svg class="wpuf-premium-menu__crown" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 16L3 6l5.5 4L12 4l3.5 6L21 6l-2 10H5zm14 3a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1h14v1z"/></svg>';
-
-        return '<span class="wpuf-premium-menu">' . esc_html__( 'Premium', 'wp-user-frontend' ) . $crown . '</span>';
+        return '<span class="wpuf-premium-menu">' . esc_html__( 'Premium', 'wp-user-frontend' ) . '</span>';
     }
 
     /**
-     * Print the glow styles for the Premium submenu item.
+     * Print the color styles for the Premium submenu item.
      *
      * Lives in admin_head because the admin menu renders on every screen, while
      * the plugin stylesheet is only enqueued on WPUF pages.
@@ -133,44 +130,14 @@ class Menu {
         ?>
         <style id="wpuf-premium-menu-style">
             #adminmenu .wpuf-premium-menu {
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
                 font-weight: 600;
-                color: #ffb900;
-            }
-
-            #adminmenu .wpuf-premium-menu__crown {
-                width: 14px;
-                height: 14px;
-                flex-shrink: 0;
-                fill: currentColor;
-                animation: wpuf-premium-glow 2.4s ease-in-out infinite;
+                color: #c9922e;
             }
 
             #adminmenu a:hover .wpuf-premium-menu,
             #adminmenu a:focus .wpuf-premium-menu,
             #adminmenu .current .wpuf-premium-menu {
-                color: #ffc83d;
-            }
-
-            @keyframes wpuf-premium-glow {
-                0%, 100% {
-                    filter: drop-shadow( 0 0 0 rgba( 255, 185, 0, 0 ) );
-                    transform: scale( 1 );
-                }
-
-                50% {
-                    filter: drop-shadow( 0 0 5px rgba( 255, 185, 0, .9 ) );
-                    transform: scale( 1.12 );
-                }
-            }
-
-            @media ( prefers-reduced-motion: reduce ) {
-                #adminmenu .wpuf-premium-menu__crown {
-                    animation: none;
-                    filter: drop-shadow( 0 0 3px rgba( 255, 185, 0, .7 ) );
-                }
+                color: #d9a94a;
             }
         </style>
         <?php

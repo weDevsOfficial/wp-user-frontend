@@ -20,6 +20,11 @@ class Frontend_Form extends Frontend_Render_Form {
         add_action( 'wpuf_guest_post_email_verified', [ $this, 'send_mail_to_admin_after_guest_mail_verified' ] );
 
         $this->set_wp_post_types();
+        
+        // Initialize WooCommerce hooks for proper attribute display
+        if ( method_exists( $this, 'init_woocommerce_hooks' ) ) {
+            $this->init_woocommerce_hooks();
+        }
 
         // Enable post edit link for post authors in frontend
         if ( ! is_admin() ) {

@@ -700,13 +700,13 @@ class Paypal {
             $period = isset( $pack_meta['_cycle_period'] ) ? $pack_meta['_cycle_period'] : 'month';
             $interval = isset( $pack_meta['_billing_cycle_number'] ) ? intval( $pack_meta['_billing_cycle_number'] ) : 1;
 
-            // Create subscription data structure with all necessary meta
+            // 'pending' — BILLING.SUBSCRIPTION.CREATED fires before first payment; ACTIVATED event promotes to 'completed'.
             $subscription_data = [
                 'pack_id' => $custom_data['item_number'],
                 'posts' => isset( $pack_meta['_post_types'] ) ? $pack_meta['_post_types'] : [],
                 'total_feature_item' => isset( $pack_meta['_total_feature_item'] ) ? $pack_meta['_total_feature_item'] : '-1',
                 'remove_feature_item' => isset( $pack_meta['_remove_feature_item'] ) ? $pack_meta['_remove_feature_item'] : '-1',
-                'status' => 'completed',
+                'status' => 'pending',
                 'expire' => isset( $pack_meta['expire'] ) ? $pack_meta['expire'] : '',
                 'profile_id' => $subscription_id,
                 'recurring' => 'yes',
@@ -872,12 +872,11 @@ class Paypal {
                 }
             }
 
-            // Update local subscription status regardless of PayPal API result
-            $updated_subscription = [
-                'profile_id' => $subscription_id,
-                'status' => 'cancel',
-                'updated' => gmdate( 'Y-m-d H:i:s' ),
-            ];
+            // Merge status into existing subscription data to preserve pack_id, posts, recurring, etc.
+            $existing             = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
+            $updated_subscription = is_array( $existing ) ? $existing : [];
+            $updated_subscription['status']  = 'cancel';
+            $updated_subscription['updated'] = gmdate( 'Y-m-d H:i:s' );
 
             update_user_meta( $user_id, '_wpuf_subscription_pack', $updated_subscription );
             update_user_meta( $user_id, '_wpuf_paypal_subscription_status', 'cancel' );
@@ -2240,12 +2239,12 @@ class Paypal {
             $user_id = $custom_data['user_id'];
             $subscription_id = $subscription['id'];
 
-            // Update subscription status in user meta
-            $subscription_data = [
-                'profile_id' => $subscription_id,
-                'status' => 'cancel',
-                'updated' => gmdate( 'Y-m-d H:i:s' ),
-            ];
+            // Merge status into existing subscription data to preserve pack_id, posts, recurring, etc.
+            $existing          = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
+            $subscription_data = is_array( $existing ) ? $existing : [];
+            $subscription_data['profile_id'] = $subscription_id;
+            $subscription_data['status']     = 'cancel';
+            $subscription_data['updated']    = gmdate( 'Y-m-d H:i:s' );
 
             update_user_meta( $user_id, '_wpuf_subscription_pack', $subscription_data );
 

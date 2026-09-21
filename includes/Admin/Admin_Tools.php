@@ -346,7 +346,7 @@ class Admin_Tools {
                 </p>
             </div>
 
-			<?php
+            <?php
         }
 
         if ( $error_text ) {

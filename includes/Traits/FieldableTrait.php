@@ -562,7 +562,24 @@ trait FieldableTrait {
 
                 //if file numbers are greated than allowed number, prevent it from being uploaded
                 if ( $file_numbers >= $file_input['count'] ) {
-                    wp_delete_attachment( $attachment_id );
+                    // Only ever delete an over-limit file the requester actually
+                    // owns (their own fresh upload) or can delete. A crafted
+                    // wpuf_files value that repeats an attachment id past the
+                    // field count must not become an arbitrary-file-deletion
+                    // primitive against another user's media.
+                    $overflow_attachment = get_post( $attachment_id );
+
+                    if (
+                        $overflow_attachment instanceof \WP_Post
+                        && 'attachment' === $overflow_attachment->post_type
+                        && (
+                            self::current_user_owns_attachment( $overflow_attachment )
+                            || current_user_can( 'delete_post', $attachment_id )
+                        )
+                    ) {
+                        wp_delete_attachment( $attachment_id );
+                    }
+
                     continue;
                 }
 
@@ -624,7 +641,7 @@ trait FieldableTrait {
             return true;
         }
 
-        // Attached to a different post — never allow hijacking it.
+        // Attached to a different post: never allow hijacking it.
         if ( $parent ) {
             return false;
         }

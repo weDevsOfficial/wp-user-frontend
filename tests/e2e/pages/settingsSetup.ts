@@ -2,9 +2,10 @@ import dotenv from 'dotenv';
 dotenv.config({ quiet: true });
 import { expect, type Page, type Dialog } from '@playwright/test';
 import { Selectors } from './selectors';
-import { Urls } from '../utils/testData';
+import { Urls, Users } from '../utils/testData';
 import { Base } from './base';
 import { waitForSiteReady } from '../utils/siteReady';
+import { clearSavedSession } from '../utils/authSession';
 export class SettingsSetupPage extends Base {
 
     constructor(page: Page) {
@@ -901,9 +902,22 @@ export class SettingsSetupPage extends Base {
         // instead of a fixed 20s sleep (same worst-case ceiling, faster when done).
         await this.page.waitForTimeout(3000);
         await waitForSiteReady(this.page, 60000);
+
+        // The reset wipes the users/usermeta tables, so the current cookie (and any
+        // cached .auth state) is dead — every admin page below would render wp-login.
+        // Re-authenticate before touching plugins.php.
+        clearSavedSession(Users.adminUsername);
+        const { BasicLoginPage } = await import('./basicLogin'); // dynamic: basicLogin imports this module
+        await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
+
         await this.navigateToURL(this.pluginsPage);
         await this.page.reload();
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWCvendors);
+        // WP Reset only restores the plugins that were active when it ran, so a site
+        // whose EDD had drifted inactive comes back without the `download_*` taxonomies
+        // and PF0018 dies on "Invalid taxonomy". Optional click: no-op when already active.
+        await this.navigateToURL(this.pluginsPage);
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickEDD);
 
 
         await this.navigateToURL(this.pluginsPage);

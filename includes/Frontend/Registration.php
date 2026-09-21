@@ -72,7 +72,7 @@ class Registration {
      *
      * @return bool|string
      */
-    public function get_registration_url( $register_url = NULL ) {
+    public function get_registration_url( $register_url = null ) {
         $register_link_override = wpuf_get_option( 'register_link_override', 'wpuf_profile', false );
         $page_id                = wpuf_get_option( 'reg_override_page', 'wpuf_profile', false );
         if ( $register_link_override === 'off' ) {
@@ -137,9 +137,9 @@ class Registration {
         } else {
             $queries = wp_unslash( $_GET );
             array_walk(
-                $queries, function( &$a ) {
-                $a = sanitize_text_field( $a );
-            }
+                $queries, function ( &$a ) {
+					$a = sanitize_text_field( $a );
+				}
             );
             $args = [
                 'action_url' => add_query_arg( $queries, $reg_page ),
@@ -161,7 +161,7 @@ class Registration {
      * role names, which would break those installs. It only refuses roles that
      * could take the site over, whatever they are named.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.12
      *
      * @param string $role Role slug decoded from the submitted registration form.
      *
@@ -279,64 +279,64 @@ class Registration {
             );
             if ( $validation_error->get_error_code() ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . $validation_error->get_error_message();
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . $validation_error->get_error_message();
 
                 return;
             }
             if ( empty( $reg_fname ) ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'First name is required.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'First name is required.', 'wp-user-frontend' );
 
                 return;
             }
             if ( empty( $reg_lname ) ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'Last name is required.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'Last name is required.', 'wp-user-frontend' );
 
                 return;
             }
             if ( empty( $reg_email ) ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'Email is required.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'Email is required.', 'wp-user-frontend' );
 
                 return;
             }
             if ( empty( $log ) ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'Username is required.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'Username is required.', 'wp-user-frontend' );
 
                 return;
             }
             if ( empty( $pwd1 ) ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'Password is required.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'Password is required.', 'wp-user-frontend' );
 
                 return;
             }
             if ( empty( $pwd2 ) ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'Confirm Password is required.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'Confirm Password is required.', 'wp-user-frontend' );
 
                 return;
             }
             if ( $pwd1 !== $pwd2 ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'Passwords are not same.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'Passwords are not same.', 'wp-user-frontend' );
 
                 return;
             }
             if ( get_user_by( 'login', $log ) === $log ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'A user with same username already exists.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'A user with same username already exists.', 'wp-user-frontend' );
 
                 return;
             }
@@ -348,11 +348,11 @@ class Registration {
                     $userdata['user_login'] = $user->user_login;
                 } else {
                     $this->registration_errors[] = '<strong>' . esc_html__(
-                            'Error', 'wp-user-frontend'
-                        ) . ':</strong> ' . esc_html__(
-                                                       'A user could not be found with this email address.',
-                                                       'wp-user-frontend'
-                                                   );
+                        'Error', 'wp-user-frontend'
+                    ) . ':</strong> ' . esc_html__(
+                        'A user could not be found with this email address.',
+                        'wp-user-frontend'
+                    );
 
                     return;
                 }
@@ -381,9 +381,9 @@ class Registration {
                 $blogname   = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
                 $message = sprintf(
                             /* translators: %s: site name */
-                               esc_html__( 'New user registration on your site %s:', 'wp-user-frontend' ),
-                               get_option( 'blogname' )
-                           ) . "\r\n\r\n";
+                    esc_html__( 'New user registration on your site %s:', 'wp-user-frontend' ),
+                    get_option( 'blogname' )
+                ) . "\r\n\r\n";
                 /* translators: %s: username */
                 $message .= sprintf( esc_html__( 'Username: %s', 'wp-user-frontend' ), $user_login ) . "\r\n\r\n";
                 /* translators: %s: email */
@@ -396,8 +396,8 @@ class Registration {
                     get_option( 'admin_email' ),
                     sprintf(
                         /* translators: %s %s: site name subject*/
-                        esc_html__( '[%1$s] %2$s', 'wp-user-frontend' ), 
-                        $blogname, $subject 
+                        esc_html__( '[%1$s] %2$s', 'wp-user-frontend' ),
+                        $blogname, $subject
                     ), $message
                 );
                 /* translators: %s: username */
@@ -411,8 +411,8 @@ class Registration {
                 wp_mail(
                     $user_email, sprintf(
                         /* translators: %s %s: site name subject*/
-                        esc_html__( '[%1$s] %2$s', 'wp-user-frontend' ), 
-                        $blogname, $subject 
+                        esc_html__( '[%1$s] %2$s', 'wp-user-frontend' ),
+                        $blogname, $subject
                     ),
                     $message
                 );
@@ -466,11 +466,11 @@ class Registration {
      */
     public function registration_page_redirects() {
 
-        $request_uri = $_SERVER['REQUEST_URI'] ?? '';
-        if( false !== strpos( $request_uri, 'sitemap.xml' ) || false !== strpos( $request_uri, '.xml' ) ) {
+        $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+        if ( false !== strpos( $request_uri, 'sitemap.xml' ) || false !== strpos( $request_uri, '.xml' ) ) {
             return;
         }
-        
+
         global $post;
         $registration_page = wpuf_get_option( 'reg_override_page', 'wpuf_profile' );
         if ( ! isset( $post->ID ) || $post->ID !== absint( $registration_page ) ) {

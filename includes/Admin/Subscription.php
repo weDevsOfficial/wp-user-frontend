@@ -56,10 +56,12 @@ class Subscription {
     public static function subscriber_cancel( $user_id, $pack_id ) {
         global $wpdb;
 
-        $result = $wpdb->get_row( $wpdb->prepare(
-            'SELECT transaction_id FROM ' . $wpdb->prefix . 'wpuf_transaction
+        $result = $wpdb->get_row(
+            $wpdb->prepare(
+                'SELECT transaction_id FROM ' . $wpdb->prefix . 'wpuf_transaction
             WHERE user_id = %d AND pack_id = %d LIMIT 1', $user_id, $pack_id
-        ) );
+            )
+        );
 
         $transaction_id = $result ? $result->transaction_id : 'Free';
 
@@ -438,7 +440,9 @@ class Subscription {
 
         if ( isset( $post_data['post_expiration_settings'] ) ) {
             if ( isset( $post_data['post_expiration_settings']['expiration_time_value'] ) && isset( $post_data['post_expiration_settings']['expiration_time_type'] ) ) {
-                $expiration_time = sanitize_text_field( wp_unslash( $post_data['post_expiration_settings']['expiration_time_value'] ) ) . ' subscription.php' . sanitize_text_field( wp_unslash( $post_data['post_expiration_settings']['expiration_time_type'] ) );
+                // Stored as a strtotime()-readable duration, e.g. "7 day". The separator must be a
+                // single space; anything else makes strtotime() fail and the post expire immediately.
+                $expiration_time = sanitize_text_field( wp_unslash( $post_data['post_expiration_settings']['expiration_time_value'] ) ) . ' ' . sanitize_text_field( wp_unslash( $post_data['post_expiration_settings']['expiration_time_type'] ) );
             }
 
             if ( isset( $post_data['post_expiration_settings']['enable_post_expiration'] ) && isset( $post_data['post_expiration_settings']['enable_post_expiration'] ) ) {
@@ -790,11 +794,13 @@ class Subscription {
         global $wpdb;
 
         //$post = get_post( $post_id );
-        return $wpdb->get_row( $wpdb->prepare(
-            "SELECT p.ID, p.post_status
+        return $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT p.ID, p.post_status
             FROM $wpdb->posts p, $wpdb->postmeta m
             WHERE p.ID = m.post_id AND p.post_status <> 'publish' AND m.meta_key = '_wpuf_order_id' AND m.meta_value = %s", $order_id
-        ) );
+            )
+        );
     }
 
     /**
@@ -944,10 +950,12 @@ class Subscription {
             ?>
 
             <p><i><?php esc_html_e( 'You have a subscription pack activated.', 'wp-user-frontend' ); ?></i></p>
-            <p><i><?php
+            <p><i>
+            <?php
                 // translators: %s: pack title
                 printf( esc_html__( 'Pack name: %s', 'wp-user-frontend' ), esc_html( get_the_title( $current_pack['pack_id'] ) ) );
-            ?></i></p>
+            ?>
+            </i></p>
 
             <?php echo '<p><i>' . esc_html__( 'To cancel the pack, press the following cancel button', 'wp-user-frontend' ) . '</i></p>'; ?>
 

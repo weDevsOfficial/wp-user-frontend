@@ -4,6 +4,7 @@ namespace WeDevs\Wpuf\Ajax;
 
 use DOMDocument;
 use WeDevs\Wpuf\Admin\Forms\Form;
+use WeDevs\Wpuf\Frontend\Frontend_Form;
 use WeDevs\Wpuf\Traits\FieldableTrait;
 use WeDevs\Wpuf\User_Subscription;
 use WP_Error;
@@ -38,6 +39,16 @@ class Frontend_Form_Ajax {
         @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
         $form_id               = isset( $_POST['form_id'] ) ? intval( wp_unslash( $_POST['form_id'] ) ) : 0;
+
+        // The nonce is action-wide, not bound to a form, so form_id is fully
+        // attacker-controlled. Pointing it at an ordinary post/page id yields a
+        // form with empty settings, which then defaults to publishing a `post`
+        // authored by the requester regardless of their capabilities. Only accept
+        // a real WPUF form id.
+        if ( ! $form_id || 'wpuf_forms' !== get_post_type( $form_id ) ) {
+            wpuf()->ajax->send_error( __( 'Invalid form.', 'wp-user-frontend' ) );
+        }
+
         $form                  = new Form( $form_id );
         $this->form_settings   = $form->get_settings();
         // Load notification settings and merge them with existing notification data
@@ -123,9 +134,12 @@ class Frontend_Form_Ajax {
             foreach ( $protected_shortcodes as $shortcode ) {
                 $search_for = '[' . $shortcode;
                 if ( strpos( $current_data, $search_for ) !== false ) {
-                    wpuf()->ajax->send_error( sprintf(
+                    wpuf()->ajax->send_error(
+                        sprintf(
                         // translators: %s is shortcode
-                        __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $shortcode ) );
+                            __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $shortcode
+                        )
+                    );
                 }
             }
         }
@@ -226,9 +240,9 @@ class Frontend_Form_Ajax {
             $this->on_edit_no_check_recaptcha( $post_vars );
         }
 
-        $is_update           = false;
+        $is_update = false;
         // $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );
-        $post_author         = $this->wpuf_get_post_user();
+        $post_author = $this->wpuf_get_post_user();
 
         $allowed_tags = wp_kses_allowed_html( 'post' );
         $postarr = [
@@ -336,10 +350,8 @@ class Frontend_Form_Ajax {
             if ( 'pending' === get_post_meta( $post_id, '_wpuf_payment_status', true ) ) {
                 $postarr['post_status'] = 'pending';
             }
-        } else {
-            if ( isset( $this->form_settings['comment_status'] ) ) {
-                $postarr['comment_status'] = $this->form_settings['comment_status'];
-            }
+        } elseif ( isset( $this->form_settings['comment_status'] ) ) {
+            $postarr['comment_status'] = $this->form_settings['comment_status'];
         }
 
         // check the form status, it might be already a draft
@@ -445,7 +457,12 @@ class Frontend_Form_Ajax {
                         $url           = str_replace( [ '"', "'", '\\' ], '', $url );
                         $attachment_id = wpuf_get_attachment_id_from_url( $url );
 
-                        if ( $attachment_id ) {
+                        // Only reparent an attachment the requester may actually
+                        // associate: one that already belongs to this post, or is
+                        // unattached AND owned by the requester. Without this a
+                        // crafted post_content <img> could reparent any Media
+                        // Library item (the first half of the file-deletion IDOR).
+                        if ( $attachment_id && self::is_attachment_associable( $attachment_id, $post_id ) ) {
                             wpuf_associate_attachment( $attachment_id, $post_id );
                         }
                     }
@@ -492,21 +509,19 @@ class Frontend_Form_Ajax {
             } else {
                 $redirect_to = get_permalink( $post_id );
             }
+        } elseif ( $this->form_settings['redirect_to'] === 'page' ) {
+            $redirect_to = get_permalink( $this->form_settings['page_id'] );
+        } elseif ( $this->form_settings['redirect_to'] === 'url' ) {
+            $redirect_to = $this->form_settings['url'];
+        } elseif ( $this->form_settings['redirect_to'] === 'same' ) {
+            $show_message = true;
         } else {
-            if ( $this->form_settings['redirect_to'] === 'page' ) {
-                $redirect_to = get_permalink( $this->form_settings['page_id'] );
-            } elseif ( $this->form_settings['redirect_to'] === 'url' ) {
-                $redirect_to = $this->form_settings['url'];
-            } elseif ( $this->form_settings['redirect_to'] === 'same' ) {
-                $show_message = true;
-            } else {
-                $redirect_to = get_permalink( $post_id );
-            }
+            $redirect_to = get_permalink( $post_id );
         }
 
         if ( $charging_enabled === 'yes' && isset( $this->form_settings['payment_options'] )
-             && 'enable_pay_per_post' === $this->form_settings['payment_options']
-             && ! $is_update
+            && 'enable_pay_per_post' === $this->form_settings['payment_options']
+            && ! $is_update
         ) {
             $redirect_to = add_query_arg(
                 [
@@ -532,6 +547,10 @@ class Frontend_Form_Ajax {
             $post_id_encoded          = wpuf_encryption( $post_id );
             $form_id_encoded          = wpuf_encryption( $form_id );
 
+            // Mark the post as waiting for its verification link, so the verifier
+            // can tell a guest submission from any other draft on the same form.
+            update_post_meta( $post_id, Frontend_Form::$guest_verify_id, 'yes' );
+
             wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, 'yes', 1 );
 
             $response['show_message'] = true;
@@ -545,6 +564,7 @@ class Frontend_Form_Ajax {
             $response['message']      = __( 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!', 'wp-user-frontend' );
 
             update_post_meta( $post_id, '_wpuf_payment_status', 'pending' );
+            update_post_meta( $post_id, Frontend_Form::$guest_verify_id, 'yes' );
             wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, 'no', 2 );
         }
 
@@ -568,15 +588,16 @@ class Frontend_Form_Ajax {
                 $to     = implode(
                     ',',
                     array_filter(
-                        array_map( static function ( $addr ) {
-                            $addr = trim( $addr );
-                            return is_email( $addr ) ? $addr : null;
-                        }, explode( ',', $to_raw ) )
+                        array_map(
+                            static function ( $addr ) {
+                                $addr = trim( $addr );
+                                return is_email( $addr ) ? $addr : null;
+                            }, explode( ',', $to_raw )
+                        )
                     )
                 );
-                if ( empty( $to ) ) {
-                    // Nothing valid to send to – skip mail sending
-                } else {
+                // Nothing valid to send to, so skip mail sending.
+                if ( ! empty( $to ) ) {
                     $subject   = $this->prepare_mail_body( $edit_subject, $post_author, $post_id );
                     $subject   = wp_strip_all_tags( $subject );
                     $mail_body = get_formatted_mail_body( $mail_body, $subject );
@@ -598,15 +619,16 @@ class Frontend_Form_Ajax {
                 $to     = implode(
                     ',',
                     array_filter(
-                        array_map( static function ( $addr ) {
-                            $addr = trim( $addr );
-                            return is_email( $addr ) ? $addr : null;
-                        }, explode( ',', $to_raw ) )
+                        array_map(
+                            static function ( $addr ) {
+                                $addr = trim( $addr );
+                                return is_email( $addr ) ? $addr : null;
+                            }, explode( ',', $to_raw )
+                        )
                     )
                 );
-                if ( empty( $to ) ) {
-                    // Nothing valid to send to – skip mail sending
-                } else {
+                // Nothing valid to send to, so skip mail sending.
+                if ( ! empty( $to ) ) {
                     $subject   = $this->prepare_mail_body( $new_notification['subject'], $post_author, $post_id );
                     $subject   = wp_strip_all_tags( $subject );
                     $mail_body = get_formatted_mail_body( $mail_body, $subject );
@@ -707,7 +729,7 @@ class Frontend_Form_Ajax {
                 $to      = isset( $notification_conf['to'] ) ? $notification_conf['to'] : '';
                 $subject = isset( $notification_conf['subject'] ) ? $notification_conf['subject'] : '';
 
-            // 2) Legacy flat flag: string 'on' at notification[type]
+                // 2) Legacy flat flag: string 'on' at notification[type]
             } elseif ( is_string( $notification_conf ) && wpuf_is_checkbox_or_toggle_on( $notification_conf ) ) {
                 $enabled = true;
                 $body    = isset( $this->form_settings['notification'][ $type . '_body' ] ) ? $this->form_settings['notification'][ $type . '_body' ] : '';
@@ -717,12 +739,12 @@ class Frontend_Form_Ajax {
         }
 
         // 3) Very old separate fields (only for edit notifications)
-        if ( ! $enabled && 'edit' === $type && ! empty( $this->form_settings['notification_' . $type ] )
-             && wpuf_is_checkbox_or_toggle_on( $this->form_settings['notification_' . $type ] ) ) {
+        if ( ! $enabled && 'edit' === $type && ! empty( $this->form_settings[ 'notification_' . $type ] )
+            && wpuf_is_checkbox_or_toggle_on( $this->form_settings[ 'notification_' . $type ] ) ) {
             $enabled = true;
-            $body    = isset( $this->form_settings['notification_' . $type . '_body' ] ) ? $this->form_settings['notification_' . $type . '_body' ] : '';
-            $to      = isset( $this->form_settings['notification_' . $type . '_to' ] ) ? $this->form_settings['notification_' . $type . '_to' ] : '';
-            $subject = isset( $this->form_settings['notification_' . $type . '_subject' ] ) ? $this->form_settings['notification_' . $type . '_subject' ] : '';
+            $body    = isset( $this->form_settings[ 'notification_' . $type . '_body' ] ) ? $this->form_settings[ 'notification_' . $type . '_body' ] : '';
+            $to      = isset( $this->form_settings[ 'notification_' . $type . '_to' ] ) ? $this->form_settings[ 'notification_' . $type . '_to' ] : '';
+            $subject = isset( $this->form_settings[ 'notification_' . $type . '_subject' ] ) ? $this->form_settings[ 'notification_' . $type . '_subject' ] : '';
         }
 
         return [
@@ -734,9 +756,22 @@ class Frontend_Form_Ajax {
     }
 
     public function wpuf_get_post_user() {
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+        // submit_post() gates the request with check_ajax_referer( 'wpuf_form_add' ),
+        // which accepts the nonce in either _ajax_nonce or _wpnonce. Reading only
+        // _wpnonce here let an attacker move a valid nonce into _ajax_nonce: this
+        // check then failed on an empty value and returned null, and the caller
+        // persisted post_author = 0 for a logged-out request, minting the
+        // author-less post the email-verification publisher looks for. Verify the
+        // same nonce the referer check honoured.
+        $nonce = '';
 
-        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_form_add' ) ) {
+        if ( isset( $_REQUEST['_wpnonce'] ) ) {
+            $nonce = sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) );
+        } elseif ( isset( $_REQUEST['_ajax_nonce'] ) ) {
+            $nonce = sanitize_key( wp_unslash( $_REQUEST['_ajax_nonce'] ) );
+        }
+
+        if ( ! wp_verify_nonce( $nonce, 'wpuf_form_add' ) ) {
             return;
         }
 
@@ -745,7 +780,7 @@ class Frontend_Form_Ajax {
         if ( ! is_user_logged_in() ) {
             if ( isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] && ! empty( $this->form_settings['guest_details'] ) && wpuf_is_checkbox_or_toggle_on(
                 $this->form_settings['guest_details']
-            )) {
+            ) ) {
                 $guest_name = isset( $_POST['guest_name'] ) ? sanitize_text_field( wp_unslash( $_POST['guest_name'] ) ) : '';
                 $guest_email = isset( $_POST['guest_email'] ) ? sanitize_email(
                     wp_unslash( $_POST['guest_email'] )
@@ -825,7 +860,7 @@ class Frontend_Form_Ajax {
 
             // the user must be logged in already
         } elseif ( ( ! empty( $this->form_settings['post_permission'] ) && 'role_base' === $this->form_settings['post_permission'] )
-                   && ( ! empty( $this->form_settings['roles'] ) && ! wpuf_user_has_roles( $this->form_settings['roles'] ) ) ) {
+                    && ( ! empty( $this->form_settings['roles'] ) && ! wpuf_user_has_roles( $this->form_settings['roles'] ) ) ) {
             wpuf()->ajax->send_error( __( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ) );
         } else {
             $post_author = get_current_user_id();
@@ -840,17 +875,37 @@ class Frontend_Form_Ajax {
         $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );
         $wpuf_user               = wpuf_get_user();
         $user_subscription       = new User_Subscription( $wpuf_user );
-        if ( ! empty( $user_wpuf_subscription_pack ) && isset( $user_wpuf_subscription_pack['_enable_post_expiration'] )
-             && isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) >= time() ) {
-            $expire_date = gmdate( 'Y-m-d', strtotime( '+' . $user_wpuf_subscription_pack['_post_expiration_time'] ) );
-            update_post_meta( $post_id, $this->post_expiration_date, $expire_date );
-            // save post status after expiration
-            $expired_post_status = $user_wpuf_subscription_pack['_expired_post_status'];
-            update_post_meta( $post_id, $this->expired_post_status, $expired_post_status );
-            // if mail active
-            if ( isset( $user_wpuf_subscription_pack['_enable_mail_after_expired'] ) && $user_wpuf_subscription_pack['_enable_mail_after_expired'] === 'on' ) {
-                $post_expiration_message = $user_subscription->get_subscription_exp_msg( $user_wpuf_subscription_pack['pack_id'] );
-                update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
+        // Only the pack value 'on'/'yes'/'true'/'1' means expiration is enabled. Guarding on
+        // isset() alone let a pack storing 'off' (or an empty value) still expire posts.
+        $pack_expiration_enabled = ! empty( $user_wpuf_subscription_pack )
+            && is_array( $user_wpuf_subscription_pack )
+            && isset( $user_wpuf_subscription_pack['_enable_post_expiration'] )
+            && wpuf_validate_boolean( $user_wpuf_subscription_pack['_enable_post_expiration'] )
+            && isset( $user_wpuf_subscription_pack['expire'] )
+            && strtotime( $user_wpuf_subscription_pack['expire'] ) >= time();
+
+        if ( $pack_expiration_enabled ) {
+            $post_expiration_time = isset( $user_wpuf_subscription_pack['_post_expiration_time'] )
+                ? trim( $user_wpuf_subscription_pack['_post_expiration_time'] )
+                : '';
+
+            // strtotime() returns false for an empty or unparsable duration. Without this guard
+            // gmdate() renders that false as 1970-01-01, so the post expires on the next cron run.
+            $expire_timestamp = '' !== $post_expiration_time
+                ? strtotime( '+' . $post_expiration_time )
+                : false;
+
+            if ( $expire_timestamp ) {
+                $expire_date = gmdate( 'Y-m-d', $expire_timestamp );
+                update_post_meta( $post_id, $this->post_expiration_date, $expire_date );
+                // save post status after expiration
+                $expired_post_status = $user_wpuf_subscription_pack['_expired_post_status'];
+                update_post_meta( $post_id, $this->expired_post_status, $expired_post_status );
+                // if mail active
+                if ( isset( $user_wpuf_subscription_pack['_enable_mail_after_expired'] ) && $user_wpuf_subscription_pack['_enable_mail_after_expired'] === 'on' ) {
+                    $post_expiration_message = $user_subscription->get_subscription_exp_msg( $user_wpuf_subscription_pack['pack_id'] );
+                    update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
+                }
             }
         }
 
@@ -892,7 +947,7 @@ class Frontend_Form_Ajax {
 
         $home_url = sprintf( '<a href="%s">%s</a>', home_url(), home_url() );
         $post_url = sprintf( '<a href="%s">%s</a>', get_permalink( $post_id ), get_permalink( $post_id ) );
-	    $post_edit_link = sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?action=edit&post=' . $post_id ), admin_url( 'post.php?action=edit&post=' . $post_id ) );
+        $post_edit_link = sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?action=edit&post=' . $post_id ), admin_url( 'post.php?action=edit&post=' . $post_id ) );
 
         $post_field_replace = [
             $post->post_title,
@@ -1025,5 +1080,4 @@ class Frontend_Form_Ajax {
 
         return $url ? $url : $value;
     }
-
 }

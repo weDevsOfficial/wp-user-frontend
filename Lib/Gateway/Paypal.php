@@ -778,7 +778,7 @@ class Paypal {
     /**
      * Check whether a PayPal subscription resource is inside its trial cycle
      *
-     * @since WPUF_SINCE
+     * @since 4.3.12
      *
      * @param array $subscription PayPal subscription resource.
      *
@@ -1858,7 +1858,7 @@ class Paypal {
      * Compares the plan's REGULAR billing cycle price, currency and
      * period/interval against the pack settings the current checkout is using.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.12
      *
      * @param array      $plan     Plan representation returned by PayPal.
      * @param int|float  $amount   Current pack amount.
@@ -2389,7 +2389,7 @@ class Paypal {
      * having no active pack. A later reactivation re-grants it through the
      * ACTIVATED / PAYMENT.SALE.COMPLETED handlers.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.12
      *
      * @param array  $subscription PayPal subscription resource.
      * @param string $event_type   Originating webhook event type.
@@ -2441,7 +2441,7 @@ class Paypal {
             /**
              * Fires after a PayPal subscription is revoked on expiry or suspension.
              *
-             * @since WPUF_SINCE
+             * @since 4.3.12
              *
              * @param int    $user_id
              * @param string $subscription_id

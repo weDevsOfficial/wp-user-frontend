@@ -19,7 +19,7 @@ class Frontend_Form extends Frontend_Render_Form {
      * `yes` while the verification mail is outstanding, `no` once the link has
      * been used. Posts submitted before this marker existed carry no value at all.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.12
      *
      * @var string
      */

@@ -242,7 +242,6 @@ final class WP_User_Frontend {
             $is_elementor = ( $get_action === 'elementor' )
                 || ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) && $request_act === 'elementor_ajax' );
 
-
             if ( $is_elementor ) {
                 $this->container['frontend'] = new WeDevs\Wpuf\Frontend();
             }
@@ -330,8 +329,9 @@ final class WP_User_Frontend {
             <h2><?php esc_html_e( 'Your WP User Frontend Pro is almost ready!', 'wp-user-frontend' ); ?></h2>
             <p>
                 <?php
-                    echo wp_kses_post( 
-                        sprintf( 
+                    echo wp_kses_post(
+                        sprintf(
+                            /* translators: %1$s: opening link tag to the WP User Frontend plugin page, %2$s: closing link tag */
                             __( 'We\'ve pushed a major update on both <b>WP User Frontend Free</b> and <b>%1$sWP User Frontend Pro%2$s</b> that requires you to use latest version of both. Please update the WPUF pro to the latest version. <br><strong>Please make sure to take a complete backup of your site before updating.</strong>', 'wp-user-frontend' ),
                             '<a target="_blank" href="https://wordpress.org/plugins/wp-user-frontend/">',
                             '</a>'
@@ -421,11 +421,11 @@ final class WP_User_Frontend {
      */
     public function plugin_action_links( $links ) {
         $links[] = '<a href="' . admin_url( 'admin.php?page=wpuf-settings' ) . '">' . esc_html( 'Settings' ) . '</a>';
-        $links[] = '<a href="https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/" target="_blank"> '. esc_html( 'Docs' ) . '</a>';
+        $links[] = '<a href="https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/" target="_blank"> ' . esc_html( 'Docs' ) . '</a>';
 
         if ( ! $this->is_pro() ) {
-            $links[] = '<a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=installed_plugins" target="_blank" style="color: #64C273;"> '. esc_html( 'Upgrade to Pro' ) . '</a>';
-            $links[] = '<a href="https://wedevs.com/coupons/?utm_source=installed_plugins" target="_blank" style="color: #5368FF;">'. esc_html( 'Check Discounts' ) . '</a>';
+            $links[] = '<a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=installed_plugins" target="_blank" style="color: #64C273;"> ' . esc_html( 'Upgrade to Pro' ) . '</a>';
+            $links[] = '<a href="https://wedevs.com/coupons/?utm_source=installed_plugins" target="_blank" style="color: #5368FF;">' . esc_html( 'Check Discounts' ) . '</a>';
         }
 
         return $links;
@@ -490,6 +490,7 @@ final class WP_User_Frontend {
  *
  * @return WP_User_Frontend
  */
+// phpcs:ignore Universal.Files.SeparateFunctionsFromOO.Mixed -- wpuf() is the public accessor every add-on calls; it is declared beside the class it returns on purpose.
 function wpuf() {
     return WP_User_Frontend::instance();
 }

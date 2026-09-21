@@ -31,7 +31,7 @@ class Elementor {
      * render-time fallback in Frontend: they render through do_shortcode(), and
      * Frontend::enqueue_on_shortcode_render() loads the bundle at that moment.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.12
      *
      * @return bool
      */

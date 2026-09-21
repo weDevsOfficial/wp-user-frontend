@@ -58,7 +58,7 @@ class Frontend {
     /**
      * Shortcodes whose output needs the frontend form bundle.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.12
      *
      * @return string[]
      */
@@ -80,7 +80,7 @@ class Frontend {
         /**
          * Filters the shortcodes that trigger loading of the WPUF frontend form assets.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.12
          *
          * @param string[] $shortcodes Shortcode tags.
          */
@@ -93,7 +93,7 @@ class Frontend {
      * Only pages that actually hold a WPUF shortcode, block, Elementor widget,
      * or one of the special WPUF pages get the bundle. Nothing else loads it.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.12
      *
      * @return bool
      */
@@ -117,7 +117,7 @@ class Frontend {
         /**
          * Filters whether the WPUF frontend form assets should load on this request.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.12
          *
          * @param bool $should_load Whether to load the frontend form bundle.
          */
@@ -131,7 +131,7 @@ class Frontend {
      * reload) and on documents that contain a WPUF widget or shortcode. A plain
      * Elementor page loads nothing.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.12
      *
      * @return bool
      */
@@ -155,7 +155,7 @@ class Frontend {
      * Reads the raw `_elementor_data` JSON (a single cached meta read) and looks
      * for a `wpuf-*` widget type or a `[wpuf` shortcode inside any widget.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.12
      *
      * @param int $post_id Post ID. Defaults to the queried post.
      *
@@ -194,7 +194,7 @@ class Frontend {
      *
      * Hooked to `pre_do_shortcode_tag`; never changes the shortcode output.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.12
      *
      * @param false|string $output Short-circuit return value.
      * @param string       $tag    Shortcode tag.
@@ -216,7 +216,7 @@ class Frontend {
     /**
      * Enqueue the account page CSS and JS.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.12
      *
      * @return void
      */
@@ -232,7 +232,7 @@ class Frontend {
      * Fires `wpuf_enqueue_form_assets` so Pro and add-ons can attach their own
      * form assets exactly when the free bundle loads.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.12
      *
      * @return void
      */
@@ -384,7 +384,7 @@ class Frontend {
          * Pro and add-ons hook here to load their own form assets, so they
          * follow the same on-demand decision as the free bundle.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.12
          */
         do_action( 'wpuf_enqueue_form_assets' );
     }

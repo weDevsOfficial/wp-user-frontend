@@ -240,9 +240,9 @@ class Frontend_Form_Ajax {
             $this->on_edit_no_check_recaptcha( $post_vars );
         }
 
-        $is_update           = false;
+        $is_update = false;
         // $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );
-        $post_author         = $this->wpuf_get_post_user();
+        $post_author = $this->wpuf_get_post_user();
 
         $allowed_tags = wp_kses_allowed_html( 'post' );
         $postarr = [
@@ -520,8 +520,8 @@ class Frontend_Form_Ajax {
         }
 
         if ( $charging_enabled === 'yes' && isset( $this->form_settings['payment_options'] )
-             && 'enable_pay_per_post' === $this->form_settings['payment_options']
-             && ! $is_update
+            && 'enable_pay_per_post' === $this->form_settings['payment_options']
+            && ! $is_update
         ) {
             $redirect_to = add_query_arg(
                 [
@@ -860,7 +860,7 @@ class Frontend_Form_Ajax {
 
             // the user must be logged in already
         } elseif ( ( ! empty( $this->form_settings['post_permission'] ) && 'role_base' === $this->form_settings['post_permission'] )
-                   && ( ! empty( $this->form_settings['roles'] ) && ! wpuf_user_has_roles( $this->form_settings['roles'] ) ) ) {
+                    && ( ! empty( $this->form_settings['roles'] ) && ! wpuf_user_has_roles( $this->form_settings['roles'] ) ) ) {
             wpuf()->ajax->send_error( __( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ) );
         } else {
             $post_author = get_current_user_id();
@@ -875,17 +875,37 @@ class Frontend_Form_Ajax {
         $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );
         $wpuf_user               = wpuf_get_user();
         $user_subscription       = new User_Subscription( $wpuf_user );
-        if ( ! empty( $user_wpuf_subscription_pack ) && isset( $user_wpuf_subscription_pack['_enable_post_expiration'] )
-             && isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) >= time() ) {
-            $expire_date = gmdate( 'Y-m-d', strtotime( '+' . $user_wpuf_subscription_pack['_post_expiration_time'] ) );
-            update_post_meta( $post_id, $this->post_expiration_date, $expire_date );
-            // save post status after expiration
-            $expired_post_status = $user_wpuf_subscription_pack['_expired_post_status'];
-            update_post_meta( $post_id, $this->expired_post_status, $expired_post_status );
-            // if mail active
-            if ( isset( $user_wpuf_subscription_pack['_enable_mail_after_expired'] ) && $user_wpuf_subscription_pack['_enable_mail_after_expired'] === 'on' ) {
-                $post_expiration_message = $user_subscription->get_subscription_exp_msg( $user_wpuf_subscription_pack['pack_id'] );
-                update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
+        // Only the pack value 'on'/'yes'/'true'/'1' means expiration is enabled. Guarding on
+        // isset() alone let a pack storing 'off' (or an empty value) still expire posts.
+        $pack_expiration_enabled = ! empty( $user_wpuf_subscription_pack )
+            && is_array( $user_wpuf_subscription_pack )
+            && isset( $user_wpuf_subscription_pack['_enable_post_expiration'] )
+            && wpuf_validate_boolean( $user_wpuf_subscription_pack['_enable_post_expiration'] )
+            && isset( $user_wpuf_subscription_pack['expire'] )
+            && strtotime( $user_wpuf_subscription_pack['expire'] ) >= time();
+
+        if ( $pack_expiration_enabled ) {
+            $post_expiration_time = isset( $user_wpuf_subscription_pack['_post_expiration_time'] )
+                ? trim( $user_wpuf_subscription_pack['_post_expiration_time'] )
+                : '';
+
+            // strtotime() returns false for an empty or unparsable duration. Without this guard
+            // gmdate() renders that false as 1970-01-01, so the post expires on the next cron run.
+            $expire_timestamp = '' !== $post_expiration_time
+                ? strtotime( '+' . $post_expiration_time )
+                : false;
+
+            if ( $expire_timestamp ) {
+                $expire_date = gmdate( 'Y-m-d', $expire_timestamp );
+                update_post_meta( $post_id, $this->post_expiration_date, $expire_date );
+                // save post status after expiration
+                $expired_post_status = $user_wpuf_subscription_pack['_expired_post_status'];
+                update_post_meta( $post_id, $this->expired_post_status, $expired_post_status );
+                // if mail active
+                if ( isset( $user_wpuf_subscription_pack['_enable_mail_after_expired'] ) && $user_wpuf_subscription_pack['_enable_mail_after_expired'] === 'on' ) {
+                    $post_expiration_message = $user_subscription->get_subscription_exp_msg( $user_wpuf_subscription_pack['pack_id'] );
+                    update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
+                }
             }
         }
 
@@ -927,7 +947,7 @@ class Frontend_Form_Ajax {
 
         $home_url = sprintf( '<a href="%s">%s</a>', home_url(), home_url() );
         $post_url = sprintf( '<a href="%s">%s</a>', get_permalink( $post_id ), get_permalink( $post_id ) );
-	    $post_edit_link = sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?action=edit&post=' . $post_id ), admin_url( 'post.php?action=edit&post=' . $post_id ) );
+        $post_edit_link = sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?action=edit&post=' . $post_id ), admin_url( 'post.php?action=edit&post=' . $post_id ) );
 
         $post_field_replace = [
             $post->post_title,

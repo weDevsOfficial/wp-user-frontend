@@ -636,7 +636,7 @@ Please report security bugs found in the source code of the User Frontend plugin
 * Fix – Guest post email verification works again: the link in the confirmation email publishes the post instead of showing an error.
 * Fix – A recurring membership pack now activates with the correct post limit and expiry date, including packs that start with a free trial, and comes back after a paused subscription is reactivated.
 * Fix – Posts no longer expire when post expiration is switched off on the membership pack, or when the expiration time is left empty or invalid.
-* Fix – A site whose plugin files were installed without their dependencies now shows a clear admin notice instead of a fatal error.
+* Fix – A site whose plugin files were installed without their dependencies now shows a clear admin notice instead of a fatal error, whether or not WP User Frontend Pro is also installed.
 * Fix – Updating the plugin's dependencies no longer breaks the site with a missing-trait fatal error.
 * Enhance – Frontend form scripts and styles now load only on pages that actually use a WP User Frontend form, including pages built with Elementor, so the rest of the site stays lighter.
 

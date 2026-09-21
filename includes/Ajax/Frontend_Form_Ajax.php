@@ -4,6 +4,7 @@ namespace WeDevs\Wpuf\Ajax;
 
 use DOMDocument;
 use WeDevs\Wpuf\Admin\Forms\Form;
+use WeDevs\Wpuf\Frontend\Frontend_Form;
 use WeDevs\Wpuf\Traits\FieldableTrait;
 use WeDevs\Wpuf\User_Subscription;
 use WP_Error;
@@ -546,6 +547,10 @@ class Frontend_Form_Ajax {
             $post_id_encoded          = wpuf_encryption( $post_id );
             $form_id_encoded          = wpuf_encryption( $form_id );
 
+            // Mark the post as waiting for its verification link, so the verifier
+            // can tell a guest submission from any other draft on the same form.
+            update_post_meta( $post_id, Frontend_Form::$guest_verify_id, 'yes' );
+
             wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, 'yes', 1 );
 
             $response['show_message'] = true;
@@ -559,6 +564,7 @@ class Frontend_Form_Ajax {
             $response['message']      = __( 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!', 'wp-user-frontend' );
 
             update_post_meta( $post_id, '_wpuf_payment_status', 'pending' );
+            update_post_meta( $post_id, Frontend_Form::$guest_verify_id, 'yes' );
             wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, 'no', 2 );
         }
 

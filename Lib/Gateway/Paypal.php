@@ -699,15 +699,7 @@ class Paypal {
             $is_trial = $trial_period_days > 0;
 
             // Check if we're in a trial period
-            $is_in_trial = false;
-            if ( isset( $subscription['billing_info']['cycle_executions'] ) ) {
-                foreach ( $subscription['billing_info']['cycle_executions'] as $cycle ) {
-                    if ( 'TRIAL' === $cycle['tenure_type'] && $cycle['cycles_completed'] < $cycle['cycles_remaining'] ) {
-                        $is_in_trial = true;
-                        break;
-                    }
-                }
-            }
+            $is_in_trial = $this->is_subscription_in_trial( $subscription );
 
             // Get the pack details
             $pack = get_post( $custom_data['item_number'] );
@@ -781,6 +773,33 @@ class Paypal {
         } catch ( \Exception $e ) {
             throw $e;
         }
+    }
+
+    /**
+     * Check whether a PayPal subscription resource is inside its trial cycle
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $subscription PayPal subscription resource.
+     *
+     * @return bool
+     */
+    private function is_subscription_in_trial( $subscription ) {
+        if ( empty( $subscription['billing_info']['cycle_executions'] ) || ! is_array( $subscription['billing_info']['cycle_executions'] ) ) {
+            return false;
+        }
+
+        foreach ( $subscription['billing_info']['cycle_executions'] as $cycle ) {
+            if ( ! isset( $cycle['tenure_type'], $cycle['cycles_completed'], $cycle['cycles_remaining'] ) ) {
+                continue;
+            }
+
+            if ( 'TRIAL' === $cycle['tenure_type'] && $cycle['cycles_completed'] < $cycle['cycles_remaining'] ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -2479,13 +2498,47 @@ class Paypal {
 
             // Get user pack to check status and trial
             $user_pack = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
+            $user_pack = is_array( $user_pack ) ? $user_pack : [];
 
-            // Update subscription status if needed
-            if ( ! $user_pack || ! isset( $user_pack['pack_id'] ) || $user_pack['pack_id'] !== $pack_id ) {
-                // User pack doesn't exist or doesn't match, create/update it
+            // PayPal only ever sends BILLING.SUBSCRIPTION.CREATED while the
+            // subscription is still APPROVAL_PENDING, so the ACTIVE gate in
+            // handle_subscription_created() leaves ACTIVATED as the first event
+            // that may grant the pack. Writing a bare pack_id/status pair here left
+            // the user with no quota and no expiry, which current_pack() reads as
+            // expired. Packs without a trial were repaired moments later by
+            // PAYMENT.SALE.COMPLETED, but a free trial sends no sale event until it
+            // ends. Grant through the canonical path so quota, expiry and the
+            // recurring flags land whichever event arrives first.
+            $has_usable_pack = isset( $user_pack['pack_id'] )
+                && (int) $user_pack['pack_id'] === $pack_id
+                && ! empty( $user_pack['posts'] );
+
+            if ( ! $has_usable_pack ) {
+                $trial_days = isset( $custom_data['trial_period_days'] ) ? intval( $custom_data['trial_period_days'] ) : 0;
+                $is_trial   = $trial_days > 0 || $this->is_subscription_in_trial( $subscription );
+
+                if ( $is_trial ) {
+                    // Zero-cost trial transaction: wpuf_payment_received grants the
+                    // pack through User_Subscription::add_pack().
+                    $this->create_trial_payment_record( $user_id, $pack_id, $subscription_id );
+                } else {
+                    wpuf_get_user( $user_id )->subscription()->add_pack( $pack_id, $subscription_id, true, 'completed' );
+                }
+
+                $user_pack = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
+                $user_pack = is_array( $user_pack ) ? $user_pack : [];
+
+                if ( $is_trial && ! empty( $user_pack ) ) {
+                    $user_pack['trial'] = 'yes';
+                }
+            }
+
+            if ( empty( $user_pack ) ) {
+                // Nothing could be granted; keep the previous minimal record so the
+                // status handling below still has something to work with.
                 $user_pack = [
                     'pack_id' => $pack_id,
-                    'status' => 'completed',
+                    'status'  => 'completed',
                 ];
             }
 

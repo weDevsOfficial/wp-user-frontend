@@ -351,7 +351,7 @@ class Frontend_Form_Ajax {
                 $postarr['post_status'] = 'pending';
             }
         } elseif ( isset( $this->form_settings['comment_status'] ) ) {
-                $postarr['comment_status'] = $this->form_settings['comment_status'];
+            $postarr['comment_status'] = $this->form_settings['comment_status'];
         }
 
         // check the form status, it might be already a draft
@@ -510,7 +510,7 @@ class Frontend_Form_Ajax {
                 $redirect_to = get_permalink( $post_id );
             }
         } elseif ( $this->form_settings['redirect_to'] === 'page' ) {
-                $redirect_to = get_permalink( $this->form_settings['page_id'] );
+            $redirect_to = get_permalink( $this->form_settings['page_id'] );
         } elseif ( $this->form_settings['redirect_to'] === 'url' ) {
             $redirect_to = $this->form_settings['url'];
         } elseif ( $this->form_settings['redirect_to'] === 'same' ) {
@@ -596,7 +596,7 @@ class Frontend_Form_Ajax {
                         )
                     )
                 );
-                // Skip mail sending when there is no valid recipient.
+                // Nothing valid to send to, so skip mail sending.
                 if ( ! empty( $to ) ) {
                     $subject   = $this->prepare_mail_body( $edit_subject, $post_author, $post_id );
                     $subject   = wp_strip_all_tags( $subject );
@@ -627,7 +627,7 @@ class Frontend_Form_Ajax {
                         )
                     )
                 );
-                // Skip mail sending when there is no valid recipient.
+                // Nothing valid to send to, so skip mail sending.
                 if ( ! empty( $to ) ) {
                     $subject   = $this->prepare_mail_body( $new_notification['subject'], $post_author, $post_id );
                     $subject   = wp_strip_all_tags( $subject );
@@ -740,7 +740,7 @@ class Frontend_Form_Ajax {
 
         // 3) Very old separate fields (only for edit notifications)
         if ( ! $enabled && 'edit' === $type && ! empty( $this->form_settings[ 'notification_' . $type ] )
-             && wpuf_is_checkbox_or_toggle_on( $this->form_settings[ 'notification_' . $type ] ) ) {
+            && wpuf_is_checkbox_or_toggle_on( $this->form_settings[ 'notification_' . $type ] ) ) {
             $enabled = true;
             $body    = isset( $this->form_settings[ 'notification_' . $type . '_body' ] ) ? $this->form_settings[ 'notification_' . $type . '_body' ] : '';
             $to      = isset( $this->form_settings[ 'notification_' . $type . '_to' ] ) ? $this->form_settings[ 'notification_' . $type . '_to' ] : '';

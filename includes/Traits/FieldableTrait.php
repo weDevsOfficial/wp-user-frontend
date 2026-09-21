@@ -423,7 +423,7 @@ trait FieldableTrait {
      * @return array
      */
     private function adjust_thumbnail_id( $postarr ) {
-        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing -- each element is cast with absint() immediately below; the nonce is verified by the submit/draft handler that calls this.
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing -- each element is cast with absint() immediately below; the nonce is verified by the handler that calls this.
         $wpuf_files_raw = ! empty( $_POST['wpuf_files'] ) ? wp_unslash( $_POST['wpuf_files'] ) : [];
         $wpuf_files = [];
 
@@ -898,7 +898,7 @@ trait FieldableTrait {
                     break;
 
                 case 'repeat':
-                    // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing -- each element is sanitised below before use; the nonce is verified by the submit/draft handler that calls this.
+                    // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing -- each element is sanitised below before use; the nonce is verified by the handler that calls this.
                     $repeater_value = isset( $_POST[ $value['name'] ] ) ? wp_unslash( $_POST[ $value['name'] ] ) : [];
 
                     // If this repeat field has inner_fields and the value is an array of rows (ACF-style)
@@ -919,7 +919,8 @@ trait FieldableTrait {
                                             $sanitized_row[ $fname ] = array_map(
                                                 function ( $item ) {
                                                     return strip_shortcodes( sanitize_text_field( $item ) );
-                                                }, $row[ $fname ]
+                                                },
+                                                $row[ $fname ]
                                             );
                                         } else {
                                             $sanitized_row[ $fname ] = strip_shortcodes( sanitize_text_field( $row[ $fname ] ) );

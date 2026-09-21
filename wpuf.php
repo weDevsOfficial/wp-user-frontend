@@ -21,7 +21,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $autoload = __DIR__ . '/vendor/autoload.php';
 
-if ( file_exists( $autoload ) ) {
+// Tracked separately: another plugin (WPUF Pro ships its own copy of
+// wedevs/wp-utils) can satisfy the trait below through its autoloader, which
+// would let this file sail past the guard and then fatal on the first class of
+// its own that nothing can autoload.
+$wpuf_autoload_loaded = file_exists( $autoload );
+
+if ( $wpuf_autoload_loaded ) {
     require_once $autoload;
 }
 
@@ -40,7 +46,7 @@ use WeDevs\WpUtils\SingletonTrait;
 // fatal on the missing trait when this class is declared, taking the whole
 // site down with a white screen. Fail soft with an admin notice instead so a
 // fresh clone is recoverable.
-if ( ! trait_exists( SingletonTrait::class ) ) {
+if ( ! $wpuf_autoload_loaded || ! trait_exists( SingletonTrait::class ) ) {
     add_action(
         'admin_notices',
         function () {

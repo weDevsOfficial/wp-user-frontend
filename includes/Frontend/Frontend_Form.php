@@ -13,6 +13,18 @@ class Frontend_Form extends Frontend_Render_Form {
 
     public static $config_id = '_wpuf_form_id';
 
+    /**
+     * Meta key marking a guest submission that is waiting for e-mail verification
+     *
+     * `yes` while the verification mail is outstanding, `no` once the link has
+     * been used. Posts submitted before this marker existed carry no value at all.
+     *
+     * @since 4.3.12
+     *
+     * @var string
+     */
+    public static $guest_verify_id = '_wpuf_guest_email_verify';
+
     public function __construct() {
         // // guest post hook
         add_action( 'init', [ $this, 'publish_guest_post' ] );
@@ -203,6 +215,31 @@ class Frontend_Form extends Frontend_Render_Form {
             wp_send_json_error( [ 'message' => __( 'You must be logged in to save drafts.', 'wp-user-frontend' ) ] );
         }
 
+        // Saving a new draft is part of the add-post flow, so it has to pass the same
+        // submission gate the renderer applies before it will show the form at all
+        // (Frontend_Form::add_post_shortcode()). Without this, a subscription-gated form
+        // could be driven through the draft endpoint to create a post that never passed
+        // the gate, which submit_post() would then finish.
+        //
+        // Editing an existing draft is deliberately not re-gated: [wpuf_edit] is not
+        // gated either, so re-checking here would stop someone whose pack has since
+        // expired from editing content they already own.
+        if ( ! isset( $_POST['post_id'] ) ) {
+            [ $user_can_post, $submission_info ] = $form->is_submission_open( $form, $this->form_settings );
+            $user_can_post                       = apply_filters( 'wpuf_can_post', $user_can_post, $form_id, $this->form_settings );
+            $submission_info                     = apply_filters( 'wpuf_addpost_notice', $submission_info, $form_id, $this->form_settings );
+
+            if ( ! wpuf_is_option_on( $user_can_post ) ) {
+                wp_send_json_error(
+                    [
+                        'message' => ! empty( $submission_info )
+                            ? $submission_info
+                            : __( 'You are not allowed to submit to this form.', 'wp-user-frontend' ),
+                    ]
+                );
+            }
+        }
+
         [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
         $entry_fields = $form->prepare_entries();
@@ -288,6 +325,13 @@ class Frontend_Form extends Frontend_Render_Form {
 
             // set the post form_id for later usage
             update_post_meta( $post_id, self::$config_id, $form_id );
+
+            // Mark the draft as still awaiting submission. submit_post() reads this to tell
+            // a draft being finished (which must pass the submission gate) apart from an
+            // edit of a post that was already submitted (which must not be re-gated), so
+            // that it never has to trust a client-supplied "is this new" field. Posts that
+            // predate this meta simply have no flag and are treated as edits, as before.
+            update_post_meta( $post_id, '_wpuf_draft_pending', 1 );
 
             // save post formats if have any
             if ( isset( $this->form_settings['post_format'] ) && $this->form_settings['post_format'] !== '0' ) {
@@ -387,12 +431,6 @@ class Frontend_Form extends Frontend_Render_Form {
             wp_die( esc_html__( 'Invalid post.', 'wp-user-frontend' ) );
         }
 
-        $post_author_id = (int) $post->post_author;
-
-        if ( $post_author_id !== 0 ) {
-            wp_die( esc_html__( 'This post cannot be published via email verification.', 'wp-user-frontend' ) );
-        }
-
         $current_status   = get_post_status( $post_id );
         $allowed_statuses = [ 'draft', 'pending', 'auto-draft' ];
 
@@ -400,9 +438,48 @@ class Frontend_Form extends Frontend_Render_Form {
             wp_die( esc_html__( 'This post has already been published.', 'wp-user-frontend' ) );
         }
 
-        $form_settings  = wpuf_get_form_settings( $form_id );
+        // p_id and f_id are encrypted independently with the same primitive and
+        // are never bound to each other. Replaying the post-id token as f_id makes
+        // the charging decision run against a non-form object, whose empty settings
+        // read as uncharged and publish the post for free. Trust only the form id
+        // the post itself was submitted through, and refuse a f_id that does not
+        // match it, so the paywall is always evaluated against the real form.
+        $real_form_id = absint( get_post_meta( $post_id, self::$config_id, true ) );
+        $form_id      = absint( $form_id );
+
+        if ( ! $real_form_id || get_post_type( $real_form_id ) !== 'wpuf_forms' ) {
+            wp_die( esc_html__( 'Invalid post.', 'wp-user-frontend' ) );
+        }
+
+        if ( $form_id !== $real_form_id ) {
+            wp_die( esc_html__( 'This post cannot be published via email verification.', 'wp-user-frontend' ) );
+        }
+
+        $form_settings = wpuf_get_form_settings( $real_form_id );
+
+        // This replaces a `post_author !== 0` gate that could never match a real
+        // submission: the guest path always stores a real author (the auto-created
+        // guest user, or the default post owner when guest details are off), so
+        // every legitimate verification link died here. What actually has to hold
+        // is that the post came from a guest form that asks for e-mail
+        // verification, and that it is still waiting for that verification.
+        $is_guest_verify_form = ! empty( $form_settings['post_permission'] )
+            && 'guest_post' === $form_settings['post_permission']
+            && ! empty( $form_settings['guest_email_verify'] )
+            && wpuf_is_checkbox_or_toggle_on( $form_settings['guest_email_verify'] );
+
+        if ( ! $is_guest_verify_form ) {
+            wp_die( esc_html__( 'This post cannot be published via email verification.', 'wp-user-frontend' ) );
+        }
+
+        // `no` means the link was already used; an empty value means the post
+        // predates the marker, where the form check above is the only gate.
+        if ( 'no' === get_post_meta( $post_id, self::$guest_verify_id, true ) ) {
+            wp_die( esc_html__( 'This post has already been published.', 'wp-user-frontend' ) );
+        }
+
         $payment_status = new Subscription();
-        $form           = new Form( $form_id );
+        $form           = new Form( $real_form_id );
         $pay_per_post   = $form->is_enabled_pay_per_post();
         $force_pack     = $form->is_enabled_force_pack();
 
@@ -432,6 +509,8 @@ class Frontend_Form extends Frontend_Render_Form {
                         'post_status' => isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish',
                     ]
                 );
+
+                update_post_meta( $post_id, self::$guest_verify_id, 'no' );
 
                 echo wp_kses_post( "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wp-user-frontend' ) . '</div>' );
             }
@@ -569,15 +648,29 @@ class Frontend_Form extends Frontend_Render_Form {
      *
      * @return void
      */
-    public function send_mail_to_admin_after_guest_mail_verified() {
+    public function send_mail_to_admin_after_guest_mail_verified( $post_id = 0 ) {
         // Email-verification flow: link is sent to guest's inbox; payload is validated
         // via wpuf_decryption() before use — no form nonce applies.
         // phpcs:disable WordPress.Security.NonceVerification.Recommended
-        $post_id = ! empty( $_GET['p_id'] ) ? wpuf_decryption( sanitize_text_field( wp_unslash( $_GET['p_id'] ) ) ) : 0;
-        $form_id = ! empty( $_GET['f_id'] ) ? wpuf_decryption( sanitize_text_field( wp_unslash( $_GET['f_id'] ) ) ) : 0;
+        $post_id = absint( $post_id );
+
+        if ( ! $post_id ) {
+            $post_id = ! empty( $_GET['p_id'] ) ? absint( wpuf_decryption( sanitize_text_field( wp_unslash( $_GET['p_id'] ) ) ) ) : 0;
+        }
         // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-        if ( empty( $post_id ) || empty( $form_id ) ) {
+        if ( ! $post_id || ! get_post( $post_id ) ) {
+            return;
+        }
+
+        // The f_id query argument used to be trusted here. `empty( $form->data )`
+        // does not reject an ordinary post id, so any post passed as f_id built a
+        // Form around a non-form object whose settings are a string, and indexing
+        // that string fatals on PHP 8. Bind to the post's own form, exactly as
+        // publish_guest_post() does, instead of reading the parameter.
+        $form_id = absint( get_post_meta( $post_id, self::$config_id, true ) );
+
+        if ( ! $form_id || 'wpuf_forms' !== get_post_type( $form_id ) ) {
             return;
         }
 
@@ -590,7 +683,13 @@ class Frontend_Form extends Frontend_Render_Form {
         $this->form_fields   = $form->get_fields();
         $this->form_settings = $form->get_settings();
 
-        $author_id = get_post_field( 'post_author', $post_id );
+        if ( ! is_array( $this->form_settings ) || empty( $this->form_settings['notification'] )
+            || ! is_array( $this->form_settings['notification'] ) ) {
+            return;
+        }
+
+        $notification = $this->form_settings['notification'];
+        $author_id    = get_post_field( 'post_author', $post_id );
 
         $is_email_varified = get_user_meta( $author_id, 'wpuf_guest_email_verified', true );
 
@@ -600,9 +699,9 @@ class Frontend_Form extends Frontend_Render_Form {
             return;
         }
 
-        $mail_body = $this->prepare_mail_body( $this->form_settings['notification']['new_body'], $author_id, $post_id );
+        $mail_body = $this->prepare_mail_body( isset( $notification['new_body'] ) ? $notification['new_body'] : '', $author_id, $post_id );
         // Validate & sanitise recipient addresses before sending
-        $to_raw      = $this->prepare_mail_body( $this->form_settings['notification']['new_to'], $author_id, $post_id );
+        $to_raw      = $this->prepare_mail_body( isset( $notification['new_to'] ) ? $notification['new_to'] : '', $author_id, $post_id );
         $to          = implode(
             ',',
             array_filter(
@@ -614,7 +713,7 @@ class Frontend_Form extends Frontend_Render_Form {
                 )
             )
         );
-        $subject     = $this->prepare_mail_body( $this->form_settings['notification']['new_subject'], $author_id, $post_id );
+        $subject     = $this->prepare_mail_body( isset( $notification['new_subject'] ) ? $notification['new_subject'] : '', $author_id, $post_id );
         $subject     = wp_strip_all_tags( $subject );
         $mail_body   = get_formatted_mail_body( $mail_body, $subject );
         $headers     = [ 'Content-Type: text/html; charset=UTF-8' ];

@@ -1,2 +1,5 @@
 # Saved logged-in sessions (Playwright storageState) — never commit credentials/cookies.
 .auth/
+
+# Symlinks to the wp-env container debug logs — machine-local paths.
+debug/

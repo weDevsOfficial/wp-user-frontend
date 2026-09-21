@@ -90,7 +90,7 @@ class WPUF_Frontend_Render_Form {
     }
 
     /**
-     * reCaptcha Validation
+     * Validate reCaptcha
      *
      * @return void
      */
@@ -110,9 +110,9 @@ class WPUF_Frontend_Render_Form {
             }
 
             $response  = null;
-            $reCaptcha = new WPUF_ReCaptcha( $private_key );
+            $re_captcha = new WPUF_ReCaptcha( $private_key );
 
-            $resp = $reCaptcha->verifyResponse(
+            $resp = $re_captcha->verifyResponse(
                 $remote_addr,
                 $g_recaptcha_response
             );
@@ -136,20 +136,21 @@ class WPUF_Frontend_Render_Form {
 
             $response = $object->verifyResponse( $recaptcha );
 
-            if ( isset( $response['success'] ) and $response['success'] != true ) {
+            if ( isset( $response['success'] ) && $response['success'] != true ) {
                 $this->send_error( __( 'Invisible reCAPTCHA validation failed', 'wp-user-frontend' ) );
             }
         }
     }
 
     /**
-     * render submit button
+     * Render submit button
      *
      * @param [type] $form_id       [description]
      * @param [type] $form_settings [description]
      * @param [type] $post_id       [description]
      */
-    public function submit_button( $form_id, $form_settings, $post_id = null ) { ?>
+    public function submit_button( $form_id, $form_settings, $post_id = null ) {
+        ?>
 
         <li class="wpuf-submit">
             <div class="wpuf-label">
@@ -188,7 +189,7 @@ class WPUF_Frontend_Render_Form {
     }
 
     /**
-     * guest post field
+     * Guest post field
      *
      * @param [type] $form_settings [description]
      */
@@ -275,7 +276,7 @@ class WPUF_Frontend_Render_Form {
     }
 
     /**
-     * render form
+     * Render form
      *
      * @param [type] $form_id [description]
      * @param [type] $post_id [description]
@@ -401,7 +402,7 @@ class WPUF_Frontend_Render_Form {
     }
 
     /**
-     * add post field setting on form builder
+     * Add post field setting on form builder
      *
      * @param array $field_settings
      */
@@ -489,7 +490,7 @@ class WPUF_Frontend_Render_Form {
             $taxonomies = get_object_taxonomies( $post_type, 'object' );
 
             foreach ( $taxonomies as $tax_name => $taxonomy ) {
-                if ( ! in_array( $tax_name, $ignore_taxonomies ) ) {
+                if ( ! in_array( $tax_name, $ignore_taxonomies, true ) ) {
                     $this->wp_post_types[ $post_type ][ $tax_name ] = [
                         'title'         => $taxonomy->label,
                         'hierarchical'  => $taxonomy->hierarchical,
@@ -507,7 +508,7 @@ class WPUF_Frontend_Render_Form {
     }
 
     /**
-     * get Input fields
+     * Get input fields
      *
      * @param array $form_vars
      *
@@ -515,11 +516,13 @@ class WPUF_Frontend_Render_Form {
      */
     public function get_input_fields( $form_vars ) {
         $ignore_lists = [ 'section_break', 'html' ];
-        $post_vars    = $meta_vars = $taxonomy_vars = [];
+        $post_vars     = [];
+        $meta_vars     = [];
+        $taxonomy_vars = [];
 
         foreach ( $form_vars as $key => $value ) {
             // ignore section break and HTML input type
-            if ( in_array( $value['input_type'], $ignore_lists ) ) {
+            if ( in_array( $value['input_type'], $ignore_lists, true ) ) {
                 continue;
             }
 
@@ -535,7 +538,7 @@ class WPUF_Frontend_Render_Form {
                                 $column_field['is_repeat_child'] = 'yes';
                             }
 
-                            if ( in_array( $column_field['input_type'], $ignore_lists ) ) {
+                            if ( in_array( $column_field['input_type'], $ignore_lists, true ) ) {
                                 continue;
                             }
 
@@ -560,12 +563,10 @@ class WPUF_Frontend_Render_Form {
                     }
                 }
                 continue;
-            } else {
                 // separate the post and custom fields
-                if ( isset( $value['is_meta'] ) && 'yes' === $value['is_meta'] ) {
-                    $meta_vars[] = $value;
-                    continue;
-                }
+            } elseif ( isset( $value['is_meta'] ) && 'yes' === $value['is_meta'] ) {
+                $meta_vars[] = $value;
+                continue;
             }
 
             if ( $value['input_type'] == 'taxonomy' ) {
@@ -585,7 +586,7 @@ class WPUF_Frontend_Render_Form {
     }
 
     /**
-     * set custom taxonomy
+     * Set custom taxonomy
      *
      * @param int   $post_id
      * @param array $taxonomy_vars
@@ -643,39 +644,34 @@ class WPUF_Frontend_Render_Form {
                         if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $taxonomy_name ) ) {
                             $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
                         }
-                    } else {
-                        if ( is_taxonomy_hierarchical( $taxonomy['name'] ) ) {
+                    } elseif ( is_taxonomy_hierarchical( $taxonomy['name'] ) ) {
                             wp_set_post_terms( $post_id, $taxonomy_name, $taxonomy['name'] );
 
                             // woocommerce check
-                            if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $taxonomy_name ) ) {
-                                $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
+                        if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $taxonomy_name ) ) {
+                            $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
+                        }
+                    } elseif ( $tax ) {
+                            $non_hierarchical = [];
+
+                        foreach ( $tax as $value ) {
+                            $term = get_term_by( 'id', $value, $taxonomy['name'] );
+
+                            if ( $term && ! is_wp_error( $term ) ) {
+                                $non_hierarchical[] = $term->name;
                             }
-                        } else {
-                            if ( $tax ) {
-                                $non_hierarchical = [];
+                        }
 
-                                foreach ( $tax as $value ) {
-                                    $term = get_term_by( 'id', $value, $taxonomy['name'] );
+                            wp_set_post_terms( $post_id, $non_hierarchical, $taxonomy['name'] );
 
-                                    if ( $term && ! is_wp_error( $term ) ) {
-                                        $non_hierarchical[] = $term->name;
-                                    }
-                                }
-
-                                wp_set_post_terms( $post_id, $non_hierarchical, $taxonomy['name'] );
-
-                                // woocommerce check
-                                if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $_POST[ $taxonomy['name'] ] ) ) {
-                                    $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
-                                }
-                            }
-                        } // hierarchical
-                    } // is text
+                            // woocommerce check
+                        if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $_POST[ $taxonomy['name'] ] ) ) {
+                            $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
+                        }
+                    } // hierarchical / is text
                 } // is object tax
-            } // isset tax
-
-            else {
+                // isset tax
+            } else {
                 if ( isset( $taxonomy_name ) && 0 === absint( $taxonomy_name ) ) {
                     wp_set_post_terms( $post_id, $taxonomy_name, $taxonomy['name'] );
                 }
@@ -709,7 +705,7 @@ class WPUF_Frontend_Render_Form {
     }
 
     /**
-     * prepare meta fields
+     * Prepare meta fields
      *
      * @param array $meta_vars
      *
@@ -721,7 +717,8 @@ class WPUF_Frontend_Render_Form {
         // process repeatable fields separately
         // if the input is array type, implode with separator in a field
         // /check_ajax_referer( 'wpuf_form_add' );
-        $post_data = wp_unslash( $_POST ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is verified by the submit/draft handler that calls this.
+        $post_data = wp_unslash( $_POST );
         $files          = [];
         $meta_key_value = [];
         $repeat_fields  = []; // repeat field and sub-fields data
@@ -782,9 +779,25 @@ class WPUF_Frontend_Render_Form {
                     $meta_key      = ! empty( $value['name'] ) ? $value['name'] : '';
                     $formatted_key = $parent_name . '_' . $i . '_' . $meta_key;
 
+                    // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is verified by the submit/draft handler that calls this.
                     if ( '' !== $meta_key && ! empty( $_POST[ $formatted_key ] ) ) {
-                        $repeat_fields['fields'][ $formatted_key ] = wp_unslash( $_POST[ $formatted_key ] );
-                        $meta_key_value[ $formatted_key ] = wp_unslash( $_POST[ $formatted_key ] );  // phpcs:ignore WordPress.Security
+                        // Storage-layer sanitization for repeat-field child values. Use the
+                        // textarea sanitizer for textarea children (preserve newlines),
+                        // otherwise the text-field sanitizer. Sanitize per element so
+                        // multi-value repeat data still round-trips.
+                        $repeat_sanitize_cb = ( isset( $value['input_type'] ) && 'textarea' === $value['input_type'] )
+                            ? 'sanitize_textarea_field'
+                            : 'sanitize_text_field';
+
+                        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification -- sanitised element-wise immediately below; the nonce is verified by the handler that calls this.
+                        $raw_repeat_value = wp_unslash( $_POST[ $formatted_key ] );
+
+                        $sanitized_repeat_value = is_array( $raw_repeat_value )
+                            ? array_map( $repeat_sanitize_cb, $raw_repeat_value )
+                            : call_user_func( $repeat_sanitize_cb, $raw_repeat_value );
+
+                        $repeat_fields['fields'][ $formatted_key ] = $sanitized_repeat_value;
+                        $meta_key_value[ $formatted_key ]          = $sanitized_repeat_value;
                     }
                 }
             }
@@ -871,7 +884,7 @@ class WPUF_Frontend_Render_Form {
     }
 
     /**
-     * checking recaptcha
+     * Checking recaptcha
      *
      * @param [type] $post_vars [description]
      *
@@ -883,7 +896,9 @@ class WPUF_Frontend_Render_Form {
         if ( $this->search( $post_vars, 'input_type', 'really_simple_captcha' ) ) {
             $this->validate_rs_captcha();
         }
-        $no_captcha      = $invisible_captcha      = $recaptcha_type      = '';
+        $no_captcha         = '';
+        $invisible_captcha  = '';
+        $recaptcha_type     = '';
         $check_recaptcha = $this->search( $post_vars, 'input_type', 'recaptcha' );
 
         if ( ! empty( $check_recaptcha ) ) {
@@ -931,13 +946,16 @@ class WPUF_Frontend_Render_Form {
                 <div >
                     <label >
                          <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
-                         <span class="wpuf-message-box" id="remaining-feature-item"> <?php
-                            // translators: %1$s is Post type and %2$s is total feature item
+                         <span class="wpuf-message-box" id="remaining-feature-item"> 
+                         <?php
                             printf(
+                                /* translators: %1$s: post type name, %2$d: number of featured items remaining */
                                 wp_kses_post( __( 'Mark the %1$s as featured (remaining %2$d)', 'wp-user-frontend' ) ),
                                 esc_html( $this->form_settings['post_type'] ),
                                 esc_html( isset( $user_sub['total_feature_item'] ) ? $user_sub['total_feature_item'] : 0 )
-                            ); ?></span>
+                            );
+                            ?>
+                            </span>
                     </label>
                 </div>
             </li>

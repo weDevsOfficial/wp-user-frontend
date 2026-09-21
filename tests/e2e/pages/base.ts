@@ -329,6 +329,40 @@ export class Base {
         }
     }
 
+    // Select a value in an enhanced multiselect. WPUF's redesigned multi-select field
+    // (Form_Field_MultiDropdown enqueues wpuf-custom-multiselect) wraps the native
+    // <select multiple> in a custom widget and hides the real element, so page.selectOption()
+    // hangs waiting for a visible option. Set the option on the (attached but hidden) native
+    // select and dispatch change/input so the widget syncs — robust to the widget's markup.
+    async selectMultiSelectByValue(locator: string, value: string) {
+        try {
+            await this.waitForLoading();
+            const element = this.page.locator(locator).first();
+            await element.waitFor({ state: 'attached' });
+            const matched = await element.evaluate((select: HTMLSelectElement, val: string) => {
+                const opt = Array.from(select.options).find(
+                    o => o.value === val || o.text.trim() === val
+                );
+                if (!opt) {
+                    return false;
+                }
+                opt.selected = true;
+                select.dispatchEvent(new Event('change', { bubbles: true }));
+                select.dispatchEvent(new Event('input', { bubbles: true }));
+                return true;
+            }, value);
+            expect(
+                matched,
+                `Multiselect ${locator} has no option matching "${value}"`
+            ).toBe(true);
+            await this.waitForLoading();
+            console.log('\x1b[33m%s\x1b[0m', `✅ Multiselected ${locator} with ${value}`);
+        } catch (error) {
+            console.log('\x1b[31m%s\x1b[0m', `❌ Failed to multiselect ${locator} with value ${value}: ${error}`);
+            throw error;
+        }
+    }
+
     // Wait for networkidle
     async waitForLoading() {
         await this.page.waitForLoadState('domcontentloaded');

@@ -72,7 +72,7 @@ class Registration {
      *
      * @return bool|string
      */
-    public function get_registration_url( $register_url = NULL ) {
+    public function get_registration_url( $register_url = null ) {
         $register_link_override = wpuf_get_option( 'register_link_override', 'wpuf_profile', false );
         $page_id                = wpuf_get_option( 'reg_override_page', 'wpuf_profile', false );
         if ( $register_link_override === 'off' ) {
@@ -137,9 +137,9 @@ class Registration {
         } else {
             $queries = wp_unslash( $_GET );
             array_walk(
-                $queries, function( &$a ) {
-                $a = sanitize_text_field( $a );
-            }
+                $queries, function ( &$a ) {
+					$a = sanitize_text_field( $a );
+				}
             );
             $args = [
                 'action_url' => add_query_arg( $queries, $reg_page ),
@@ -150,6 +150,75 @@ class Registration {
         }
 
         return ob_get_clean();
+    }
+
+    /**
+     * Whether a role may be assigned by frontend registration
+     *
+     * The role a form offers is configurable — sites legitimately register
+     * contributors, authors, editors and marketplace roles such as Dokan's or
+     * WooCommerce's shop_manager — so this is deliberately not an allow-list of
+     * role names, which would break those installs. It only refuses roles that
+     * could take the site over, whatever they are named.
+     *
+     * @since 4.3.12
+     *
+     * @param string $role Role slug decoded from the submitted registration form.
+     *
+     * @return bool
+     */
+    protected function is_role_allowed_for_registration( $role ) {
+        if ( 'administrator' === $role ) {
+            return false;
+        }
+
+        $role_object = get_role( $role );
+
+        if ( ! $role_object ) {
+            return false;
+        }
+
+        // Capabilities that amount to control of the site: running code on it (plugin,
+        // theme and core install/update/edit), changing its settings, or promoting
+        // yourself. A role holding any of them is never handed out by a public
+        // registration form, whatever the form was configured with.
+        //
+        // Deliberately *not* listed: unfiltered_html, which the stock editor role holds,
+        // and edit_users, which some marketplace plugins grant to store-manager roles.
+        // Including either would refuse roles sites legitimately register into. Verified
+        // against a WooCommerce + Dokan install: no non-administrator role holds any
+        // capability in this list.
+        $default_site_control_caps = [
+            'manage_options',
+            'activate_plugins',
+            'install_plugins',
+            'update_plugins',
+            'edit_plugins',
+            'edit_themes',
+            'update_core',
+            'edit_files',
+            'promote_users',
+            'manage_network',
+        ];
+
+        $site_control_caps = apply_filters(
+            'wpuf_registration_forbidden_capabilities',
+            $default_site_control_caps
+        );
+
+        // A third-party filter returning a non-array must not fatal here, and returning
+        // empty must not silently turn the check off.
+        $site_control_caps = ! empty( $site_control_caps ) && is_array( $site_control_caps )
+            ? $site_control_caps
+            : $default_site_control_caps;
+
+        foreach ( $site_control_caps as $capability ) {
+            if ( ! empty( $role_object->capabilities[ $capability ] ) ) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -164,6 +233,33 @@ class Registration {
             $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 
             if ( ! wp_verify_nonce( $nonce, 'wpuf_registration_action' ) ) {
+                return;
+            }
+
+            // The registration form only ever renders for logged-out visitors, so a
+            // request arriving with an authenticated session did not come from it.
+            //
+            // This guard is what actually stops the reported session fixation: the nonce
+            // cannot, because wp_nonce_field() on a logged-out-only template mints it at
+            // user id 0 with an empty session token, so every anonymous visitor is served
+            // the same value and it stays valid for around a day. Anyone can fetch the
+            // page once and embed that value in a cross-site form. Without this check the
+            // handler runs on init for a logged-in victim, and the autologin below then
+            // clears their session and hands their browser a cookie for the account it
+            // just created.
+            //
+            // Reported by Yaswanth Reddy Sunkara (WPScan).
+            if ( is_user_logged_in() ) {
+                return;
+            }
+
+            // Honour the site's registration setting on the account-creation path,
+            // the same way the Register link in get_action_links() already does.
+            // Without this, a POST to the init-hooked handler creates an account
+            // even when registration is switched off. WordPress maps
+            // users_can_register onto the network setting on multisite.
+            // Reported by Murad Akhmedov (WPScan).
+            if ( ! get_option( 'users_can_register' ) ) {
                 return;
             }
             $validation_error = new WP_Error();
@@ -183,64 +279,64 @@ class Registration {
             );
             if ( $validation_error->get_error_code() ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . $validation_error->get_error_message();
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . $validation_error->get_error_message();
 
                 return;
             }
             if ( empty( $reg_fname ) ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'First name is required.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'First name is required.', 'wp-user-frontend' );
 
                 return;
             }
             if ( empty( $reg_lname ) ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'Last name is required.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'Last name is required.', 'wp-user-frontend' );
 
                 return;
             }
             if ( empty( $reg_email ) ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'Email is required.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'Email is required.', 'wp-user-frontend' );
 
                 return;
             }
             if ( empty( $log ) ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'Username is required.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'Username is required.', 'wp-user-frontend' );
 
                 return;
             }
             if ( empty( $pwd1 ) ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'Password is required.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'Password is required.', 'wp-user-frontend' );
 
                 return;
             }
             if ( empty( $pwd2 ) ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'Confirm Password is required.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'Confirm Password is required.', 'wp-user-frontend' );
 
                 return;
             }
             if ( $pwd1 !== $pwd2 ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'Passwords are not same.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'Passwords are not same.', 'wp-user-frontend' );
 
                 return;
             }
             if ( get_user_by( 'login', $log ) === $log ) {
                 $this->registration_errors[] = '<strong>' . esc_html__(
-                        'Error', 'wp-user-frontend'
-                    ) . ':</strong> ' . esc_html__( 'A user with same username already exists.', 'wp-user-frontend' );
+                    'Error', 'wp-user-frontend'
+                ) . ':</strong> ' . esc_html__( 'A user with same username already exists.', 'wp-user-frontend' );
 
                 return;
             }
@@ -252,11 +348,11 @@ class Registration {
                     $userdata['user_login'] = $user->user_login;
                 } else {
                     $this->registration_errors[] = '<strong>' . esc_html__(
-                            'Error', 'wp-user-frontend'
-                        ) . ':</strong> ' . esc_html__(
-                                                       'A user could not be found with this email address.',
-                                                       'wp-user-frontend'
-                                                   );
+                        'Error', 'wp-user-frontend'
+                    ) . ':</strong> ' . esc_html__(
+                        'A user could not be found with this email address.',
+                        'wp-user-frontend'
+                    );
 
                     return;
                 }
@@ -269,9 +365,9 @@ class Registration {
             $userdata['user_email'] = $reg_email;
             $userdata['user_pass']  = $pwd1;
             if ( get_role( $dec_role ) ) {
-                $userdata['role'] = empty( $dec_role ) || 'administrator' === $dec_role ? get_option(
-                    'default_role'
-                ) : $dec_role;
+                $userdata['role'] = empty( $dec_role ) || ! $this->is_role_allowed_for_registration( $dec_role )
+                    ? get_option( 'default_role' )
+                    : $dec_role;
             }
             $user = wp_insert_user( $userdata );
             if ( is_wp_error( $user ) ) {
@@ -285,9 +381,9 @@ class Registration {
                 $blogname   = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
                 $message = sprintf(
                             /* translators: %s: site name */
-                               esc_html__( 'New user registration on your site %s:', 'wp-user-frontend' ),
-                               get_option( 'blogname' )
-                           ) . "\r\n\r\n";
+                    esc_html__( 'New user registration on your site %s:', 'wp-user-frontend' ),
+                    get_option( 'blogname' )
+                ) . "\r\n\r\n";
                 /* translators: %s: username */
                 $message .= sprintf( esc_html__( 'Username: %s', 'wp-user-frontend' ), $user_login ) . "\r\n\r\n";
                 /* translators: %s: email */
@@ -300,8 +396,8 @@ class Registration {
                     get_option( 'admin_email' ),
                     sprintf(
                         /* translators: %s %s: site name subject*/
-                        esc_html__( '[%1$s] %2$s', 'wp-user-frontend' ), 
-                        $blogname, $subject 
+                        esc_html__( '[%1$s] %2$s', 'wp-user-frontend' ),
+                        $blogname, $subject
                     ), $message
                 );
                 /* translators: %s: username */
@@ -315,8 +411,8 @@ class Registration {
                 wp_mail(
                     $user_email, sprintf(
                         /* translators: %s %s: site name subject*/
-                        esc_html__( '[%1$s] %2$s', 'wp-user-frontend' ), 
-                        $blogname, $subject 
+                        esc_html__( '[%1$s] %2$s', 'wp-user-frontend' ),
+                        $blogname, $subject
                     ),
                     $message
                 );
@@ -370,11 +466,11 @@ class Registration {
      */
     public function registration_page_redirects() {
 
-        $request_uri = $_SERVER['REQUEST_URI'] ?? '';
-        if( false !== strpos( $request_uri, 'sitemap.xml' ) || false !== strpos( $request_uri, '.xml' ) ) {
+        $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+        if ( false !== strpos( $request_uri, 'sitemap.xml' ) || false !== strpos( $request_uri, '.xml' ) ) {
             return;
         }
-        
+
         global $post;
         $registration_page = wpuf_get_option( 'reg_override_page', 'wpuf_profile' );
         if ( ! isset( $post->ID ) || $post->ID !== absint( $registration_page ) ) {

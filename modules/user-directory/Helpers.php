@@ -462,12 +462,18 @@ function wpuf_ud_get_profile_data( $user, $template_data = [], $layout = 'layout
     $avatar_size = isset( $template_data['avatar_size'] ) ? $template_data['avatar_size'] : 192;
     $back_url    = isset( $template_data['back_url'] ) ? $template_data['back_url'] : '';
 
+    // The contact-visibility rule is applied here, at the source, so no layout or
+    // consumer of this array can surface the address by accident. The key is kept
+    // and blanked rather than dropped, so anything reading it gets an empty string
+    // instead of an undefined value.
+    $show_contact_info = wpuf_ud_show_contact_info( $user );
+
     // Build user_meta array
     $user_meta = [
         'display_name' => $full_name,
         'first_name'   => $first_name,
         'last_name'    => $last_name,
-        'email'        => $user->user_email,
+        'email'        => $show_contact_info ? $user->user_email : '',
         'website'      => $user->user_url,
         'bio'          => get_user_meta( $user->ID, 'description', true ),
     ];
@@ -551,7 +557,7 @@ function wpuf_ud_get_profile_data( $user, $template_data = [], $layout = 'layout
         'full_name'       => $full_name,
         'first_name'      => $first_name,
         'last_name'       => $last_name,
-        'email'           => $user->user_email,
+        'email'           => $show_contact_info ? $user->user_email : '',
         'website'         => $user->user_url,
         'bio'             => get_user_meta( $user->ID, 'description', true ),
         'avatar_size'     => $avatar_size,

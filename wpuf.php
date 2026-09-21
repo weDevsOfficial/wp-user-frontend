@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 4.3.11
+Version: 4.3.12
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 Requires at least: 5.0
 Requires PHP: 7.4
@@ -21,11 +21,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $autoload = __DIR__ . '/vendor/autoload.php';
 
-if ( file_exists( $autoload ) ) {
+// Tracked separately: another plugin (WPUF Pro ships its own copy of
+// wedevs/wp-utils) can satisfy the trait below through its autoloader, which
+// would let this file sail past the guard and then fatal on the first class of
+// its own that nothing can autoload.
+$wpuf_autoload_loaded = file_exists( $autoload );
+
+if ( $wpuf_autoload_loaded ) {
     require_once $autoload;
 }
 
-define( 'WPUF_VERSION', '4.3.11' );
+define( 'WPUF_VERSION', '4.3.12' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -33,6 +39,32 @@ define( 'WPUF_ASSET_URI', WPUF_ROOT_URI . '/assets' );
 define( 'WPUF_INCLUDES', WPUF_ROOT . '/includes' );
 
 use WeDevs\WpUtils\SingletonTrait;
+
+// vendor/ (the Composer dependencies, including wedevs/wp-utils which provides
+// the SingletonTrait used below) is intentionally not committed to the git
+// repository. A checkout that has not run `composer install` would otherwise
+// fatal on the missing trait when this class is declared, taking the whole
+// site down with a white screen. Fail soft with an admin notice instead so a
+// fresh clone is recoverable.
+if ( ! $wpuf_autoload_loaded || ! trait_exists( SingletonTrait::class ) ) {
+    add_action(
+        'admin_notices',
+        function () {
+            $message = sprintf(
+                /* translators: %s: the composer install command, shown as code */
+                esc_html__( 'WP User Frontend could not load its dependencies. Please run %s inside the plugin directory.', 'wp-user-frontend' ),
+                '<code>composer install</code>'
+            );
+
+            printf(
+                '<div class="notice notice-error"><p>%s</p></div>',
+                wp_kses( $message, [ 'code' => [] ] )
+            );
+        }
+    );
+
+    return;
+}
 
 /**
  * Main bootstrap class for WP User Frontend
@@ -210,7 +242,6 @@ final class WP_User_Frontend {
             $is_elementor = ( $get_action === 'elementor' )
                 || ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) && $request_act === 'elementor_ajax' );
 
-
             if ( $is_elementor ) {
                 $this->container['frontend'] = new WeDevs\Wpuf\Frontend();
             }
@@ -298,8 +329,9 @@ final class WP_User_Frontend {
             <h2><?php esc_html_e( 'Your WP User Frontend Pro is almost ready!', 'wp-user-frontend' ); ?></h2>
             <p>
                 <?php
-                    echo wp_kses_post( 
-                        sprintf( 
+                    echo wp_kses_post(
+                        sprintf(
+                            /* translators: %1$s: opening link tag to the WP User Frontend plugin page, %2$s: closing link tag */
                             __( 'We\'ve pushed a major update on both <b>WP User Frontend Free</b> and <b>%1$sWP User Frontend Pro%2$s</b> that requires you to use latest version of both. Please update the WPUF pro to the latest version. <br><strong>Please make sure to take a complete backup of your site before updating.</strong>', 'wp-user-frontend' ),
                             '<a target="_blank" href="https://wordpress.org/plugins/wp-user-frontend/">',
                             '</a>'
@@ -389,11 +421,11 @@ final class WP_User_Frontend {
      */
     public function plugin_action_links( $links ) {
         $links[] = '<a href="' . admin_url( 'admin.php?page=wpuf-settings' ) . '">' . esc_html( 'Settings' ) . '</a>';
-        $links[] = '<a href="https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/" target="_blank"> '. esc_html( 'Docs' ) . '</a>';
+        $links[] = '<a href="https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/" target="_blank"> ' . esc_html( 'Docs' ) . '</a>';
 
         if ( ! $this->is_pro() ) {
-            $links[] = '<a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=installed_plugins" target="_blank" style="color: #64C273;"> '. esc_html( 'Upgrade to Pro' ) . '</a>';
-            $links[] = '<a href="https://wedevs.com/coupons/?utm_source=installed_plugins" target="_blank" style="color: #5368FF;">'. esc_html( 'Check Discounts' ) . '</a>';
+            $links[] = '<a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=installed_plugins" target="_blank" style="color: #64C273;"> ' . esc_html( 'Upgrade to Pro' ) . '</a>';
+            $links[] = '<a href="https://wedevs.com/coupons/?utm_source=installed_plugins" target="_blank" style="color: #5368FF;">' . esc_html( 'Check Discounts' ) . '</a>';
         }
 
         return $links;
@@ -458,6 +490,7 @@ final class WP_User_Frontend {
  *
  * @return WP_User_Frontend
  */
+// phpcs:ignore Universal.Files.SeparateFunctionsFromOO.Mixed -- wpuf() is the public accessor every add-on calls; it is declared beside the class it returns on purpose.
 function wpuf() {
     return WP_User_Frontend::instance();
 }

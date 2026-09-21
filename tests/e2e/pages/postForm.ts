@@ -224,8 +224,8 @@ export class PostFormPage extends Base {
         console.log(PostForm.textarea);
         //Enter Dropdown
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDropdownFormsFE, PostForm.dropdown);
-        //Enter Multi Select
-        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postMultiSelectFormsFE, PostForm.multiSelect);
+        //Enter Multi Select (redesigned into a custom widget over a hidden native select)
+        await this.selectMultiSelectByValue(Selectors.postForms.postFormsFrontendCreate.postMultiSelectFormsFE, PostForm.multiSelect);
         //Enter Radio
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postRadioFormsFE);
         //Enter Checkbox

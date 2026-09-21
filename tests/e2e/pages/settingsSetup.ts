@@ -2,9 +2,10 @@ import dotenv from 'dotenv';
 dotenv.config({ quiet: true });
 import { expect, type Page, type Dialog } from '@playwright/test';
 import { Selectors } from './selectors';
-import { Urls } from '../utils/testData';
+import { Urls, Users } from '../utils/testData';
 import { Base } from './base';
 import { waitForSiteReady } from '../utils/siteReady';
+import { clearSavedSession } from '../utils/authSession';
 export class SettingsSetupPage extends Base {
 
     constructor(page: Page) {
@@ -132,18 +133,27 @@ export class SettingsSetupPage extends Base {
     }
 
     async validateWPUFpages() {
-        await this.navigateToURL(this.pagesPage);
+        // Validate each WPUF page independently of pagination. The pages list is sorted
+        // alphabetically and other plugins (WooCommerce, MailPoet, Dokan, EDD) add their own
+        // pages, so which pagination page a WPUF row lands on is not stable — relying on a
+        // fixed "page 1 then Next" split makes this flaky (a shifted row times out). Instead
+        // search the list for each page (WP admin `s=` param) so its row is always on screen.
+        const wpufPages: Array<[string, string]> = [
+            [ 'Account', Selectors.settingsSetup.wpufPages.wpufAccountPage ],
+            [ 'Dashboard', Selectors.settingsSetup.wpufPages.wpufDashboardPage ],
+            [ 'Edit', Selectors.settingsSetup.wpufPages.wpufEditPage ],
+            [ 'Login', Selectors.settingsSetup.wpufPages.wpufLoginPage ],
+            [ 'Order Received', Selectors.settingsSetup.wpufPages.orderReceivedPage ],
+            [ 'Payment', Selectors.settingsSetup.wpufPages.paymentPage ],
+            [ 'Subscription', Selectors.settingsSetup.wpufPages.wpufSubscriptionPage ],
+            [ 'Thank You', Selectors.settingsSetup.wpufPages.thankYouPage ],
+        ];
 
-        //Validate WPUF Pages
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufAccountPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufDashboardPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufEditPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufLoginPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.orderReceivedPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.paymentPage);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPages.clickNextPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufSubscriptionPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.thankYouPage);
+        for (const [ pageName, selector ] of wpufPages) {
+            await this.navigateToURL(`${this.pagesPage}&s=${encodeURIComponent(pageName)}`);
+            await this.page.waitForLoadState('domcontentloaded');
+            await this.assertionValidate(selector);
+        }
         console.log('WPUF Pages are validated. all pages created successfully');
     }
 
@@ -345,10 +355,20 @@ export class SettingsSetupPage extends Base {
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDokanLite);
 
                 await this.navigateToURL(this.pluginsPage);
+                // Activation is confirmed by the Deactivate control appearing.
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickDokanLiteDeactivate);
 
-                await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
-
+                // Some Dokan versions surface an Appsero opt-in ("Allow") after activation and
+                // some do not. Dismiss it when present, but never block on it — it is optional
+                // UI, and activation is already verified above. Blocking here hung LS0030 for
+                // the full test timeout on builds where the notice never appears.
+                const dokanAllow = this.page.locator(Selectors.settingsSetup.pluginStatusCheck.clickAllow).first();
+                try {
+                    await dokanAllow.waitFor({ timeout: 5000 });
+                    await dokanAllow.click();
+                } catch (e) {
+                    console.log('Dokan Appsero opt-in not shown; continuing');
+                }
 
                 await this.navigateToURL(this.wpAdminPage);
                 await this.validateAndClick(Selectors.login.basicNavigation.clickDokanSidebar);
@@ -583,17 +603,36 @@ export class SettingsSetupPage extends Base {
     }
 
     async createPostCategories() {
-        //Go to Admin-Users
-        await this.navigateToURL(this.categoriesPage);
-        //Add New Category
-        //await this.validateAndClick(Selectors.settingsSetup.categories.clickCategoryMenu);
-        await this.page.waitForLoadState('domcontentloaded');
         const categoryNames: string[] = ['Science', 'Music'];
         for (let i = 0; i < categoryNames.length; i++) {
+            // Reload the categories screen for every term. WordPress's "Add New Category"
+            // form falls back to a full-page POST when its AJAX handler isn't bound, so filling
+            // the next term into a form left over from the previous submit races that reload and
+            // posts an empty name. A fresh page guarantees a stable form for each term.
+            await this.navigateToURL(this.categoriesPage);
+            await this.page.waitForLoadState('domcontentloaded');
+
+            const categoryRow = this.page
+                .locator(Selectors.settingsSetup.categories.validateCategory(categoryNames[i]))
+                .first();
+
+            // Idempotent: skip terms that already exist (e.g. a re-run against a used site).
+            if ( await categoryRow.count() > 0 ) {
+                continue;
+            }
+
             await this.validateAndFillStrings(Selectors.settingsSetup.categories.addNewCategory, categoryNames[i]);
             await this.validateAndClick(Selectors.settingsSetup.categories.submitCategory);
             await this.page.waitForTimeout(500);
-            await this.assertionValidate(Selectors.settingsSetup.categories.validateCategory(categoryNames[i]));
+
+            // The add completes either via AJAX (row injected in place) or a full-page POST (the
+            // submit navigates and the row is present after the redirect). Settle the page, then
+            // wait on the row; .first() tolerates any duplicate left on a re-used site.
+            await this.page.waitForLoadState('domcontentloaded').catch(() => {});
+            await this.page
+                .locator(Selectors.settingsSetup.categories.validateCategory(categoryNames[i]))
+                .first()
+                .waitFor({ timeout: 20000 });
         }
     }
     async createPostTags() {
@@ -863,9 +902,22 @@ export class SettingsSetupPage extends Base {
         // instead of a fixed 20s sleep (same worst-case ceiling, faster when done).
         await this.page.waitForTimeout(3000);
         await waitForSiteReady(this.page, 60000);
+
+        // The reset wipes the users/usermeta tables, so the current cookie (and any
+        // cached .auth state) is dead — every admin page below would render wp-login.
+        // Re-authenticate before touching plugins.php.
+        clearSavedSession(Users.adminUsername);
+        const { BasicLoginPage } = await import('./basicLogin'); // dynamic: basicLogin imports this module
+        await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
+
         await this.navigateToURL(this.pluginsPage);
         await this.page.reload();
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWCvendors);
+        // WP Reset only restores the plugins that were active when it ran, so a site
+        // whose EDD had drifted inactive comes back without the `download_*` taxonomies
+        // and PF0018 dies on "Invalid taxonomy". Optional click: no-op when already active.
+        await this.navigateToURL(this.pluginsPage);
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickEDD);
 
 
         await this.navigateToURL(this.pluginsPage);

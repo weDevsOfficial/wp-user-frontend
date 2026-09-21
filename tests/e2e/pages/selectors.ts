@@ -64,6 +64,7 @@ export const Selectors = {
             clickWPUFPluginLite: '//a[@id="activate-wp-user-frontend"]',
             clickWPUFPluginPro: '//a[@id="activate-wp-user-frontend-pro"]',
             clickWCvendors: '//a[@id="activate-wc-vendors"]',
+            clickEDD: '//a[@id="activate-easy-digital-downloads"]',
             clickDokanLite: '//a[@id="activate-dokan-lite"]',
             clickWPUFPluginDeactivate: '//a[@id="deactivate-wp-user-frontend"]',
             clickWPUFPluginProDeactivate: '//a[@id="deactivate-wp-user-frontend-pro"]',

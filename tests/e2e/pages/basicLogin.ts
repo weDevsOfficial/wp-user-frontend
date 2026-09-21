@@ -37,13 +37,25 @@ export class BasicLoginPage extends Base {
         //Go to BackEnd
         await this.navigateToURL(this.wpAdminPage);
 
-        const emailStateCheck = await this.page.isVisible(Selectors.login.basicLogin.loginEmailField);
+        const backendField = this.page.locator(Selectors.login.basicLogin.loginEmailField);
+        const frontendField = this.page.locator(Selectors.login.basicLogin.loginEmailField2);
+
+        // A login form can still be painting when we land (wp-admin -> wp-login redirect,
+        // or right after a WP Reset). A bare isVisible() raced that and fell through to
+        // the frontend branch, which then waited out the whole test timeout.
+        await backendField.or(frontendField).first()
+            .waitFor({ state: 'visible', timeout: 15000 })
+            .catch(() => { /* neither form: we may already be logged in */ });
+
         //if in BackEnd or FrontEnd
-        if (emailStateCheck) {
+        if (await backendField.isVisible()) {
             await this.backendLogin(adminEmail, adminPassword);
         }
-        else {
+        else if (await frontendField.isVisible()) {
             await this.frontendLogin(adminEmail, adminPassword);
+        }
+        else if (!(await this.isLoggedIn())) {
+            throw new Error('No login form rendered and the session is not authenticated');
         }
 
         // Persist the freshly authenticated session for later reuse.

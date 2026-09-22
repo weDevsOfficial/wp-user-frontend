@@ -188,6 +188,9 @@ class Assets {
                 'src'  => WPUF_ASSET_URI . '/css/admin/wpuf-setup.css',
                 'deps' => [ 'dashicons', 'install' ],
             ],
+            'onboarding'          => [
+                'src' => WPUF_ASSET_URI . '/css/admin/wpuf-onboarding.css',
+            ],
             'forms-list'           => [
                 'src' => WPUF_ASSET_URI . '/css/forms-list.min.css',
             ],
@@ -229,6 +232,10 @@ class Assets {
             ]
         );
         $scripts = [
+            'onboarding'           => [
+                'src'       => WPUF_ASSET_URI . '/js/wpuf-onboarding.js',
+                'in_footer' => true,
+            ],
             'vue'                      => [
                 'src'       => WPUF_ASSET_URI . '/vendor/vue/vue' . $this->suffix . '.js',
                 'in_footer' => true,

@@ -239,7 +239,7 @@ class Admin_Tools {
     public function export_forms( $form_type, $export_type, $form_ids ) {
         if ( $export_type === 'all' ) {
             static::export_to_json( $form_type );
-        } else if ( 'selected' === $export_type ) {
+        } elseif ( 'selected' === $export_type ) {
             if ( empty( $form_ids ) ) {
                 printf(
                     '<div class="error"><p>%s</p></div>',
@@ -376,6 +376,26 @@ class Admin_Tools {
         <?php } ?>
 
         <div class="metabox-holder">
+            <div class="postbox">
+                <h3><?php esc_html_e( 'Onboarding', 'wp-user-frontend' ); ?></h3>
+
+                <div class="inside">
+                    <?php $entry = wpuf()->admin->onboarding->get_entry_point(); ?>
+                    <p><?php esc_html_e( 'Walk through post forms, registration, the user directory, payments and the settings a frontend site needs. Nothing is changed until you save a step.', 'wp-user-frontend' ); ?></p>
+
+                    <?php if ( ! empty( $entry['warning'] ) ) : ?>
+                        <p class="notice notice-warning inline" style="padding: 8px 12px; margin: 0 0 12px;">
+                            <strong><?php esc_html_e( 'Heads up:', 'wp-user-frontend' ); ?></strong>
+                            <?php echo esc_html( $entry['warning'] ); ?>
+                        </p>
+                    <?php endif; ?>
+
+                    <a class="button button-primary" href="<?php echo esc_url( $entry['url'] ); ?>">
+                        <?php echo esc_html( $entry['label'] ); ?>
+                    </a>
+                </div>
+            </div>
+
             <div class="postbox">
                 <h3><?php esc_html_e( 'Page Installation', 'wp-user-frontend' ); ?></h3>
 

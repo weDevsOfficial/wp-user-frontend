@@ -1,5 +1,10 @@
+# EditorConfig for WP User Frontend & WPUF Pro
+# https://editorconfig.org
+# Based on WordPress Coding Standards and phpcs.xml.dist
+
 root = true
 
+# Default settings for all files
 [*]
 indent_style = space
 indent_size = 4
@@ -8,12 +13,102 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-[*.md]
-trim_trailing_whitespace = false
+# PHP files - WordPress Coding Standards with spaces (4 spaces)
+# Ref: phpcs.xml excludes Generic.WhiteSpace.DisallowSpaceIndent
+[*.php]
+indent_style = space
+indent_size = 4
 
-[{.jshintrc,*.json,*.yml}]
+# JavaScript files - camelCase convention, 4 spaces
+[*.js]
+indent_style = space
+indent_size = 4
+
+# Vue.js component files
+[*.vue]
+indent_style = space
+indent_size = 4
+
+# CSS files - hyphen-separated classes with wpuf- prefix
+[*.css]
+indent_style = space
+indent_size = 4
+
+# SCSS files
+[*.scss]
+indent_style = space
+indent_size = 4
+
+# HTML template files
+[*.html]
+indent_style = space
+indent_size = 4
+
+# Twig template files
+[*.twig]
+indent_style = space
+indent_size = 4
+
+# JSON configuration files
+[*.json]
 indent_style = space
 indent_size = 2
 
-[{*.txt,wp-config-sample.php}]
+# YAML configuration files
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+
+# JSHint configuration
+[.jshintrc]
+indent_style = space
+indent_size = 2
+
+# XML files (phpcs.xml, phpunit.xml, etc.)
+[*.xml]
+indent_style = tab
+indent_size = 4
+
+[*.xml.dist]
+indent_style = tab
+indent_size = 4
+
+# Markdown files - preserve trailing whitespace for line breaks
+[*.md]
+trim_trailing_whitespace = false
+
+# Text files
+[*.txt]
 end_of_line = lf
+
+# WordPress config sample
+[wp-config-sample.php]
+end_of_line = lf
+
+# Makefile requires tabs
+[Makefile]
+indent_style = tab
+
+# Shell scripts
+[*.sh]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+
+# Minified files - ignore formatting
+[*.min.js]
+indent_style = ignore
+indent_size = ignore
+insert_final_newline = ignore
+trim_trailing_whitespace = ignore
+
+[*.min.css]
+indent_style = ignore
+indent_size = ignore
+insert_final_newline = ignore
+trim_trailing_whitespace = ignore
+
+# Translation files
+[*.{po,pot}]
+indent_style = space
+indent_size = 4

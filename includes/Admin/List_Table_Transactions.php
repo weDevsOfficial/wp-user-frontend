@@ -197,11 +197,13 @@ class List_Table_Transactions extends WP_List_Table {
                 return ! empty( $item->pack_id ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?post=' . $item->pack_id . '&action=edit' ), $item->pack_id ) : '-';
 
             case 'payer':
-                return ! empty( $item->payer_first_name ) ? $item->payer_first_name . ' ' . $item->payer_last_name : '-';
+                return ! empty( $item->payer_first_name ) ? esc_html( $item->payer_first_name . ' ' . $item->payer_last_name ) : '-';
             case 'created':
                 return ! empty( $item->created ) ? gmdate( 'd-m-Y', strtotime( $item->created ) ) : '-';
             default:
-                return ! empty( $item->{$column_name} ) ? $item->{$column_name} : '-';
+                // Covers the gateway, email and transaction id columns, which carry values
+                // that came from the checkout request.
+                return ! empty( $item->{$column_name} ) ? esc_html( $item->{$column_name} ) : '-';
                 break;
         }
     }

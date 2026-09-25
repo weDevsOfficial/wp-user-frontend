@@ -550,6 +550,12 @@ class Payment {
                 $item_number = $pack->ID;
                 break;
         }
+        // Keep the submitted request for the gateways, but never carry the raw payment
+        // method with it: only the sanitized gateway name routes the payment, so storing
+        // the raw value would let markup survive into the admin transaction list.
+        $post_data                        = $_POST; // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- nonce verified at the top of this method; the array is handed to the gateways unchanged, as before.
+        $post_data['wpuf_payment_method'] = $gateway;
+
         $payment_vars = [
             'currency'            => wpuf_get_option( 'currency', 'wpuf_payment' ),
             'price'               => $amount,
@@ -563,7 +569,7 @@ class Payment {
                 'last_name'  => $userdata->last_name,
             ],
             'date'                => gmdate( 'Y-m-d H:i:s' ),
-            'post_data'           => $_POST,
+            'post_data'           => $post_data,
             'custom'              => isset( $custom ) ? $custom : '',
             'wpuf_payment_method' => $gateway,
         ];

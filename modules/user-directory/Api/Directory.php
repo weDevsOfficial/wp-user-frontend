@@ -649,6 +649,12 @@ class Directory extends WP_REST_Controller {
                 _n( '%d user found', '%d users found', $total, 'wp-user-frontend' ),
                 $total
             ),
+            'count_label'     => sprintf(
+                /* translators: 1: number of members shown on this page, 2: total members matched */
+                _n( 'Showing %1$s of %2$s member', 'Showing %1$s of %2$s members', $total, 'wp-user-frontend' ),
+                number_format_i18n( count( $users ) ),
+                number_format_i18n( $total )
+            ),
         ] );
     }
 

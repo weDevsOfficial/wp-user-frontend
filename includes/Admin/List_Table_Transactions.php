@@ -132,15 +132,21 @@ class List_Table_Transactions extends WP_List_Table {
             $accept_nonce = wp_create_nonce( 'wpuf-accept-transaction' );
             $reject_nonce = wp_create_nonce( 'wpuf-reject-transaction' );
             $actions = [
-                'accept' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ),
-                                     'accept', absint( $id ), $accept_nonce, __( 'Accept', 'wp-user-frontend' ) ),
-                'reject' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ),
-                                     'reject', absint( $id ), $reject_nonce, __( 'Reject', 'wp-user-frontend' ) ),
+                'accept' => sprintf(
+                    '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ),
+                    'accept', absint( $id ), $accept_nonce, __( 'Accept', 'wp-user-frontend' )
+                ),
+                'reject' => sprintf(
+                    '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ),
+                    'reject', absint( $id ), $reject_nonce, __( 'Reject', 'wp-user-frontend' )
+                ),
             ];
         } else {
             $actions = [
-                'delete' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ),
-                                     'delete', absint( $id ), $delete_nonce, __( 'Delete', 'wp-user-frontend' ) ),
+                'delete' => sprintf(
+                    '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ),
+                    'delete', absint( $id ), $delete_nonce, __( 'Delete', 'wp-user-frontend' )
+                ),
             ];
         }
 
@@ -233,7 +239,7 @@ class List_Table_Transactions extends WP_List_Table {
         ];
         if ( 'pending' === $status ) {
             $actions = $pending_action;
-        } else if ( 'completed' === $status ) {
+        } elseif ( 'completed' === $status ) {
             $actions = $completed_action;
         } else {
             $actions = array_merge( $completed_action, $pending_action );
@@ -253,15 +259,17 @@ class List_Table_Transactions extends WP_List_Table {
         $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : 'all';
         if ( 'pending' === $status ) {
             $total_items = wpuf_get_pending_transactions( [ 'count' => true ] );
-        } else if ( 'completed' === $status ) {
+        } elseif ( 'completed' === $status ) {
             $total_items = wpuf_get_completed_transactions( [ 'count' => true ] );
         } else {
             $total_items = wpuf_get_all_transactions( [ 'count' => true ] );
         }
-        $this->set_pagination_args( [
-                                        'total_items' => $total_items,
-                                        'per_page'    => $per_page,
-                                    ] );
+        $this->set_pagination_args(
+            [
+                'total_items' => $total_items,
+                'per_page'    => $per_page,
+            ]
+        );
         $this->_column_headers = $this->get_column_info();
         $this->process_actions();
         $offset = ( $current_page - 1 ) * $per_page;
@@ -275,7 +283,7 @@ class List_Table_Transactions extends WP_List_Table {
         }
         if ( 'pending' === $status ) {
             $this->items = wpuf_get_pending_transactions( $args );
-        } else if ( 'completed' === $status ) {
+        } elseif ( 'completed' === $status ) {
             $this->items = wpuf_get_completed_transactions( $args );
         } else {
             $this->items = wpuf_get_all_transactions( $args );
@@ -310,8 +318,10 @@ class List_Table_Transactions extends WP_List_Table {
             if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
                 return false;
             }
-            $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map( 'sanitize_text_field',
-                                                                        wp_unslash( $_REQUEST['bulk-items'] ) ) : [];
+            $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map(
+                'sanitize_text_field',
+                wp_unslash( $_REQUEST['bulk-items'] )
+            ) : [];
             $ids = esc_sql( $bulk_items );
             foreach ( $ids as $id ) {
                 $id = absint( $id );
@@ -340,8 +350,10 @@ class List_Table_Transactions extends WP_List_Table {
             if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
                 return false;
             }
-            $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map( 'sanitize_text_field',
-                                                                        wp_unslash( $_REQUEST['bulk-items'] ) ) : [];
+            $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map(
+                'sanitize_text_field',
+                wp_unslash( $_REQUEST['bulk-items'] )
+            ) : [];
             $ids        = esc_sql( $bulk_items );
             foreach ( $ids as $id ) {
                 $id      = absint( $id );
@@ -419,8 +431,10 @@ class List_Table_Transactions extends WP_List_Table {
             if ( ! current_user_can( 'manage_options' ) ) {
                 return;
             }
-            $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map( 'sanitize_text_field',
-                                                                        wp_unslash( $_REQUEST['bulk-items'] ) ) : [];
+            $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map(
+                'sanitize_text_field',
+                wp_unslash( $_REQUEST['bulk-items'] )
+            ) : [];
             $ids        = esc_sql( $bulk_items );
             foreach ( $ids as $id ) {
                 $id = absint( $id );

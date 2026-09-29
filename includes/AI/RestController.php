@@ -1091,6 +1091,10 @@ class RestController extends WP_REST_Controller {
                     continue; // Skip invalid fields
                 }
 
+                // The AI templates name input_type after the template; store the
+                // registered input_type instead, like a form built by hand.
+                $field = $this->normalize_field_input_type( $field );
+
                 // Reject a field whose input_type does not match its template
                 // (the AI form-builder object-injection primitive).
                 if ( ! $this->is_valid_field_definition( $field ) ) {
@@ -1682,6 +1686,38 @@ class RestController extends WP_REST_Controller {
     }
 
     /**
+     * Give an AI-built field the input_type its registered template uses.
+     *
+     * The AI field templates set input_type to the template name ("post_title",
+     * "date_field"), while every registered field, and every form built in the form
+     * builder, stores the field's own input type ("text", "date"). Without this the
+     * template/input_type check rejects every AI form. Only that exact shape is
+     * rewritten, so a genuinely mismatched pairing is still rejected.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $field Field definition.
+     *
+     * @return array
+     */
+    private function normalize_field_input_type( $field ) {
+        if ( ! is_array( $field ) || empty( $field['template'] ) || empty( $field['input_type'] ) ) {
+            return $field;
+        }
+
+        $allowed  = $this->get_allowed_field_type_map();
+        $template = sanitize_key( $field['template'] );
+
+        // Only the AI shape is rewritten: input_type spelled exactly as the template.
+        // Any other pairing is left for is_valid_field_definition() to judge.
+        if ( isset( $allowed[ $template ] ) && $template === $field['input_type'] ) {
+            $field['input_type'] = $allowed[ $template ];
+        }
+
+        return $field;
+    }
+
+    /**
      * Whether a submitted field's input_type is consistent with its template.
      *
      * Rejects mismatched definitions (e.g. input_type "text" on a "section_break"
@@ -1750,6 +1786,7 @@ class RestController extends WP_REST_Controller {
     private function update_form_field_posts($form_id, $fields) {
         // Drop any field whose template/input_type pairing is invalid before saving,
         // so a mismatched (object-injection) definition can never be persisted.
+        $fields = array_map( [ $this, 'normalize_field_input_type' ], $fields );
         $fields = array_values( array_filter( $fields, [ $this, 'is_valid_field_definition' ] ) );
 
         // Get existing field posts ordered by menu_order

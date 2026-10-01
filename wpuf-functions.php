@@ -954,6 +954,42 @@ function wpuf_get_gateways( $context = 'admin' ) {
 }
 
 /**
+ * Get the display label for a stored payment method
+ *
+ * The stored value comes from the checkout request, so it is never trusted here:
+ * it is sanitized, then matched against the registered gateways. Anything that is
+ * not a known gateway is reported as unknown instead of being echoed back.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $payment_method Stored payment method.
+ *
+ * @return string
+ */
+function wpuf_get_payment_type_label( $payment_method ) {
+    $payment_method = is_scalar( $payment_method ) ? sanitize_text_field( (string) $payment_method ) : '';
+
+    if ( empty( $payment_method ) ) {
+        return __( 'Unknown', 'wp-user-frontend' );
+    }
+
+    if ( 'bank' === $payment_method ) {
+        return __( 'Bank/Manual', 'wp-user-frontend' );
+    }
+
+    $gateways = wpuf_get_gateways();
+
+    if ( isset( $gateways[ $payment_method ] ) ) {
+        return $gateways[ $payment_method ];
+    }
+
+    // A gateway that is switched off, or that belongs to a plugin that is not active
+    // right now, is no longer registered: keep showing the stored name for those old
+    // transactions. It is sanitized above, so it can never carry markup.
+    return ucwords( $payment_method );
+}
+
+/**
  * Unserialize a value without ever instantiating PHP objects.
  *
  * Stored post meta may hold a serialized object payload (e.g. submitted through a
@@ -2495,7 +2531,7 @@ function wpuf_get_pending_transactions( $args = [] ) {
             'payer_first_name' => $info['user_info']['first_name'],
             'payer_last_name'  => $info['user_info']['last_name'],
             'payer_email'      => $info['user_info']['email'],
-            'payment_type'     => ( $info['post_data']['wpuf_payment_method'] === 'bank' ) ? 'Bank/Manual' : ucwords( $info['post_data']['wpuf_payment_method'] ),
+            'payment_type'     => wpuf_get_payment_type_label( isset( $info['post_data']['wpuf_payment_method'] ) ? $info['post_data']['wpuf_payment_method'] : '' ),
             'transaction_id'   => 0,
             'created'          => $info['date'],
         ];

@@ -1,6 +1,6 @@
 {
   "name": "wp-user-frontend",
-  "version": "4.3.12",
+  "version": "4.3.13",
   "engines": {
     "node": ">=22",
     "npm": ">=10"

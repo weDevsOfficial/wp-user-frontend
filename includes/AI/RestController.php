@@ -373,35 +373,35 @@ class RestController extends WP_REST_Controller {
      * @param WP_REST_Request $request REST request object
      * @return WP_REST_Response|WP_Error Response object
      */
-    public function generate_form(WP_REST_Request $request) {
+    public function generate_form( WP_REST_Request $request ) {
         // Validate request size to prevent abuse
-        $content_length = $request->get_header('content-length');
-        if ($content_length && $content_length > 1048576) { // 1MB limit
+        $content_length = $request->get_header( 'content-length' );
+        if ( $content_length && $content_length > 1048576 ) { // 1MB limit
             return new WP_Error(
                 'request_too_large',
-                __('Request payload too large', 'wp-user-frontend'),
-                ['status' => 413]
+                __( 'Request payload too large', 'wp-user-frontend' ),
+                [ 'status' => 413 ]
             );
         }
 
-        $prompt = $request->get_param('prompt');
-        $session_id = $request->get_param('session_id');
-        $conversation_context = $request->get_param('conversation_context') ?? [];
-        $form_type = $request->get_param('form_type') ?? 'post';
-        $integration = $request->get_param('integration') ?? '';
-        $provider = $request->get_param('provider');
-        $temperature = $request->get_param('temperature');
-        $max_tokens = $request->get_param('max_tokens');
-        $language = $request->get_param('language') ?? 'English';
+        $prompt = $request->get_param( 'prompt' );
+        $session_id = $request->get_param( 'session_id' );
+        $conversation_context = $request->get_param( 'conversation_context' ) ?? [];
+        $form_type = $request->get_param( 'form_type' ) ?? 'post';
+        $integration = $request->get_param( 'integration' ) ?? '';
+        $provider = $request->get_param( 'provider' );
+        $temperature = $request->get_param( 'temperature' );
+        $max_tokens = $request->get_param( 'max_tokens' );
+        $language = $request->get_param( 'language' ) ?? 'English';
 
         // Rate limiting removed - AI provider handles their own limits
 
         // Validate session ID format to prevent injection
-        if (!empty($session_id) && !preg_match('/^[a-zA-Z0-9_-]{1,64}$/', $session_id)) {
+        if ( ! empty( $session_id ) && ! preg_match( '/^[a-zA-Z0-9_-]{1,64}$/', $session_id ) ) {
             return new WP_Error(
                 'invalid_session',
-                __('Invalid session ID format', 'wp-user-frontend'),
-                ['status' => 400]
+                __( 'Invalid session ID format', 'wp-user-frontend' ),
+                [ 'status' => 400 ]
             );
         }
 
@@ -418,38 +418,38 @@ class RestController extends WP_REST_Controller {
                 'provider' => $provider,
                 'temperature' => $temperature,
                 'max_tokens' => $max_tokens,
-                'language' => $language
+                'language' => $language,
             ];
 
-            $result = $this->form_generator->generate_form($prompt, $options);
+            $result = $this->form_generator->generate_form( $prompt, $options );
 
             // Log the generation attempt
-            $this->log_generation_attempt($prompt, $result);
+            $this->log_generation_attempt( $prompt, $result );
 
-            if (isset($result['error']) && $result['error']) {
+            if ( isset( $result['error'] ) && $result['error'] ) {
                 return new WP_Error(
                     'generation_failed',
-                    $result['message'] ?? __('Form generation failed', 'wp-user-frontend'),
-                    ['status' => 400]
+                    $result['message'] ?? __( 'Form generation failed', 'wp-user-frontend' ),
+                    [ 'status' => 400 ]
                 );
             }
-
 
             // Add integration to response so it can be persisted for regeneration
             if ( ! empty( $integration ) ) {
                 $result['integration'] = $integration;
             }
 
-            return new WP_REST_Response([
-                'success' => true,
-                'data' => $result
-            ], 200);
-
-        } catch (\Exception $e) {
+            return new WP_REST_Response(
+                [
+                    'success' => true,
+                    'data' => $result,
+                ], 200
+            );
+        } catch ( \Exception $e ) {
             return new WP_Error(
                 'generation_error',
-                __('An error occurred while generating the form. Please try again.', 'wp-user-frontend'),
-                ['status' => 500]
+                __( 'An error occurred while generating the form. Please try again.', 'wp-user-frontend' ),
+                [ 'status' => 500 ]
             );
         }
     }
@@ -461,56 +461,61 @@ class RestController extends WP_REST_Controller {
      * @param array $rules Validation rules
      * @return array|WP_Error Validated data or error
      */
-    private function validate_input($data, $rules) {
+    private function validate_input( $data, $rules ) {
         $validated = [];
 
-        foreach ($rules as $field => $rule) {
-            $value = $data[$field] ?? null;
+        foreach ( $rules as $field => $rule ) {
+            $value = $data[ $field ] ?? null;
 
             // Required field check
-            if (isset($rule['required']) && $rule['required'] && empty($value)) {
+            if ( isset( $rule['required'] ) && $rule['required'] && empty( $value ) ) {
                 return new WP_Error(
                     'missing_field',
-                    sprintf(__('Field %s is required', 'wp-user-frontend'), $field),
-                    ['status' => 400]
+                    /* translators: %s: field name */
+                    sprintf( __( 'Field %s is required', 'wp-user-frontend' ), $field ),
+                    [ 'status' => 400 ]
                 );
             }
 
             // Type validation
-            if (!empty($value) && isset($rule['type'])) {
-                switch ($rule['type']) {
+            if ( ! empty( $value ) && isset( $rule['type'] ) ) {
+                switch ( $rule['type'] ) {
                     case 'string':
-                        if (!is_string($value)) {
-                            return new WP_Error('invalid_type', sprintf(__('Field %s must be a string', 'wp-user-frontend'), $field));
+                        if ( ! is_string( $value ) ) {
+                            /* translators: %s: field name */
+                            return new WP_Error( 'invalid_type', sprintf( __( 'Field %s must be a string', 'wp-user-frontend' ), $field ) );
                         }
                         break;
                     case 'array':
-                        if (!is_array($value)) {
-                            return new WP_Error('invalid_type', sprintf(__('Field %s must be an array', 'wp-user-frontend'), $field));
+                        if ( ! is_array( $value ) ) {
+                            /* translators: %s: field name */
+                            return new WP_Error( 'invalid_type', sprintf( __( 'Field %s must be an array', 'wp-user-frontend' ), $field ) );
                         }
                         break;
                     case 'integer':
-                        if (!is_numeric($value)) {
-                            return new WP_Error('invalid_type', sprintf(__('Field %s must be numeric', 'wp-user-frontend'), $field));
+                        if ( ! is_numeric( $value ) ) {
+                            /* translators: %s: field name */
+                            return new WP_Error( 'invalid_type', sprintf( __( 'Field %s must be numeric', 'wp-user-frontend' ), $field ) );
                         }
                         break;
                 }
             }
 
             // Length validation
-            if (!empty($value) && isset($rule['max_length']) && strlen($value) > $rule['max_length']) {
+            if ( ! empty( $value ) && isset( $rule['max_length'] ) && strlen( $value ) > $rule['max_length'] ) {
                 return new WP_Error(
                     'field_too_long',
-                    sprintf(__('Field %s cannot exceed %d characters', 'wp-user-frontend'), $field, $rule['max_length']),
-                    ['status' => 400]
+                    /* translators: 1: field name, 2: maximum number of characters */
+                    sprintf( __( 'Field %1$s cannot exceed %2$d characters', 'wp-user-frontend' ), $field, $rule['max_length'] ),
+                    [ 'status' => 400 ]
                 );
             }
 
             // Sanitize and store
-            if (!empty($value)) {
-                $validated[$field] = isset($rule['sanitize']) ?
-                    call_user_func($rule['sanitize'], $value) :
-                    sanitize_text_field($value);
+            if ( ! empty( $value ) ) {
+                $validated[ $field ] = isset( $rule['sanitize'] ) ?
+                    call_user_func( $rule['sanitize'], $value ) :
+                    sanitize_text_field( $value );
             }
         }
 
@@ -523,23 +528,24 @@ class RestController extends WP_REST_Controller {
      * @param WP_REST_Request $request REST request object
      * @return WP_REST_Response Response object
      */
-    public function test_connection(WP_REST_Request $request) {
+    public function test_connection( WP_REST_Request $request ) {
         try {
             // Get parameters from request
-            $api_key = $request->get_param('api_key');
-            $provider = $request->get_param('provider');
-            $model = $request->get_param('model');
+            $api_key = $request->get_param( 'api_key' );
+            $provider = $request->get_param( 'provider' );
+            $model = $request->get_param( 'model' );
 
             // Pass provider and model to test_connection
-            $result = $this->form_generator->test_connection($api_key, $provider, $model);
+            $result = $this->form_generator->test_connection( $api_key, $provider, $model );
 
-            return new WP_REST_Response($result, $result['success'] ? 200 : 400);
-
-        } catch (\Exception $e) {
-            return new WP_REST_Response([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
+            return new WP_REST_Response( $result, $result['success'] ? 200 : 400 );
+        } catch ( \Exception $e ) {
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                ], 500
+            );
         }
     }
 
@@ -549,15 +555,17 @@ class RestController extends WP_REST_Controller {
      * @param WP_REST_Request $request REST request object
      * @return WP_REST_Response Response object
      */
-    public function get_providers(WP_REST_Request $request) {
+    public function get_providers( WP_REST_Request $request ) {
         $providers = $this->form_generator->get_providers();
         $current_provider = $this->form_generator->get_current_provider();
 
-        return new WP_REST_Response([
-            'success' => true,
-            'providers' => $providers,
-            'current_provider' => $current_provider
-        ], 200);
+        return new WP_REST_Response(
+            [
+                'success' => true,
+                'providers' => $providers,
+                'current_provider' => $current_provider,
+            ], 200
+        );
     }
 
     /**
@@ -570,8 +578,8 @@ class RestController extends WP_REST_Controller {
      * @param WP_REST_Request $request REST request object
      * @return WP_REST_Response Response object
      */
-    public function get_integrations(WP_REST_Request $request) {
-        $form_type = $request->get_param('form_type') ?? 'post';
+    public function get_integrations( WP_REST_Request $request ) {
+        $form_type = $request->get_param( 'form_type' ) ?? 'post';
 
         // Define all possible integrations with their requirements
         $all_integrations = [
@@ -582,7 +590,7 @@ class RestController extends WP_REST_Controller {
                 'description' => __( 'Create WooCommerce product submission forms', 'wp-user-frontend' ),
                 'enabled'     => class_exists( 'WooCommerce', false ),
                 'form_types'  => [ 'post' ],
-                'icon'        => 'woocommerce'
+                'icon'        => 'woocommerce',
             ],
             'edd' => [
                 'id'          => 'edd',
@@ -590,7 +598,7 @@ class RestController extends WP_REST_Controller {
                 'description' => __( 'Create EDD download submission forms', 'wp-user-frontend' ),
                 'enabled'     => class_exists( 'Easy_Digital_Downloads' ),
                 'form_types'  => [ 'post' ],
-                'icon'        => 'download'
+                'icon'        => 'download',
             ],
             'events_calendar' => [
                 'id'          => 'events_calendar',
@@ -598,7 +606,7 @@ class RestController extends WP_REST_Controller {
                 'description' => __( 'Create event submission forms', 'wp-user-frontend' ),
                 'enabled'     => class_exists( 'Tribe__Events__Main' ),
                 'form_types'  => [ 'post' ],
-                'icon'        => 'calendar'
+                'icon'        => 'calendar',
             ],
             // Registration form integrations
             'dokan' => [
@@ -607,7 +615,7 @@ class RestController extends WP_REST_Controller {
                 'description' => __( 'Create Dokan vendor registration forms', 'wp-user-frontend' ),
                 'enabled'     => class_exists( 'WeDevs_Dokan' ),
                 'form_types'  => [ 'profile', 'registration' ],
-                'icon'        => 'store'
+                'icon'        => 'store',
             ],
             'wc_vendors' => [
                 'id'          => 'wc_vendors',
@@ -615,7 +623,7 @@ class RestController extends WP_REST_Controller {
                 'description' => __( 'Create WC Vendors registration forms', 'wp-user-frontend' ),
                 'enabled'     => class_exists( 'WC_Vendors' ),
                 'form_types'  => [ 'profile', 'registration' ],
-                'icon'        => 'store'
+                'icon'        => 'store',
             ],
             'wcfm' => [
                 'id'          => 'wcfm',
@@ -623,8 +631,8 @@ class RestController extends WP_REST_Controller {
                 'description' => __( 'Create WCFM vendor registration forms', 'wp-user-frontend' ),
                 'enabled'     => class_exists( 'WCFMvm' ),
                 'form_types'  => [ 'profile', 'registration' ],
-                'icon'        => 'store'
-            ]
+                'icon'        => 'store',
+            ],
         ];
 
         // Filter integrations based on form type and enabled status
@@ -648,11 +656,13 @@ class RestController extends WP_REST_Controller {
          */
         $available_integrations = apply_filters( 'wpuf_ai_integrations', $available_integrations, $form_type );
 
-        return new WP_REST_Response([
-            'success' => true,
-            'integrations' => $available_integrations,
-            'form_type' => $form_type
-        ], 200);
+        return new WP_REST_Response(
+            [
+                'success' => true,
+                'integrations' => $available_integrations,
+                'form_type' => $form_type,
+            ], 200
+        );
     }
 
     /**
@@ -661,79 +671,85 @@ class RestController extends WP_REST_Controller {
      * @param WP_REST_Request $request REST request object
      * @return WP_REST_Response Response object
      */
-    public function save_settings(WP_REST_Request $request) {
-        $provider    = $request->get_param('provider');
-        $model       = $request->get_param('model');
-        $api_key     = $request->get_param('api_key');
-        $temperature = $request->get_param('temperature');
-        $max_tokens  = $request->get_param('max_tokens');
+    public function save_settings( WP_REST_Request $request ) {
+        $provider    = $request->get_param( 'provider' );
+        $model       = $request->get_param( 'model' );
+        $api_key     = $request->get_param( 'api_key' );
+        $temperature = $request->get_param( 'temperature' );
+        $max_tokens  = $request->get_param( 'max_tokens' );
 
         // Get existing settings
-        $existing = get_option('wpuf_ai', []);
+        $existing = get_option( 'wpuf_ai', [] );
 
         // Validate API key format if provided
-        if (!empty($api_key)) {
-            $api_key = sanitize_text_field($api_key);
-            if (strlen($api_key) < 10) {
-                return new WP_REST_Response([
-                    'success' => false,
-                    'message' => __('API key appears to be too short', 'wp-user-frontend')
-                ], 400);
+        if ( ! empty( $api_key ) ) {
+            $api_key = sanitize_text_field( $api_key );
+            if ( strlen( $api_key ) < 10 ) {
+                return new WP_REST_Response(
+                    [
+                        'success' => false,
+                        'message' => __( 'API key appears to be too short', 'wp-user-frontend' ),
+                    ], 400
+                );
             }
         }
 
         // Normalize optional params
-        if ($temperature !== null) {
-            $temperature = max(0.0, min(1.0, (float) $temperature));
+        if ( $temperature !== null ) {
+            $temperature = max( 0.0, min( 1.0, (float) $temperature ) );
         }
-        if ($max_tokens !== null) {
-            $max_tokens = max(100, min(4000, (int) $max_tokens));
+        if ( $max_tokens !== null ) {
+            $max_tokens = max( 100, min( 4000, (int) $max_tokens ) );
         }
 
         // Update with new values
         $settings = [
-            'ai_provider' => $provider ?: ($existing['ai_provider'] ?? 'openai'),
-            'ai_model'    => $model    ?: ($existing['ai_model']    ?? 'gpt-3.5-turbo'),
-            'ai_api_key'  => !empty($api_key)
+            'ai_provider' => $provider ? $provider : ( $existing['ai_provider'] ?? 'openai' ),
+            'ai_model'    => $model ? $model : ( $existing['ai_model'] ?? 'gpt-3.5-turbo' ),
+            'ai_api_key'  => ! empty( $api_key )
                                 ? $api_key
-                                : ($existing['ai_api_key'] ?? ''),
+                                : ( $existing['ai_api_key'] ?? '' ),
             'temperature' => $temperature !== null
                                 ? $temperature
-                                : ($existing['temperature'] ?? 0.7),
+                                : ( $existing['temperature'] ?? 0.7 ),
             'max_tokens'  => $max_tokens !== null
                                 ? $max_tokens
-                                : ($existing['max_tokens']  ?? 2000),
+                                : ( $existing['max_tokens'] ?? 2000 ),
         ];
 
-        $saved = update_option('wpuf_ai', $settings);
+        $saved = update_option( 'wpuf_ai', $settings );
 
         // Auto-refresh all models when settings are saved
-        if ($saved) {
+        if ( $saved ) {
             // Check if models need refresh (cache older than 1 hour or not exists)
-            $cached = get_transient('wpuf_ai_models_cache');
+            $cached = get_transient( 'wpuf_ai_models_cache' );
             $should_refresh = true;
 
-            if (false !== $cached && is_array($cached) && isset($cached['last_updated'])) {
+            if ( false !== $cached && is_array( $cached ) && isset( $cached['last_updated'] ) ) {
                 $cache_age = time() - $cached['last_updated'];
                 $should_refresh = $cache_age > HOUR_IN_SECONDS;
             }
 
-            if ($should_refresh) {
+            if ( $should_refresh ) {
                 // Fetch all models from all providers (don't fail if this errors)
                 Config::update_all_models();
             }
         }
 
-        if ($saved) {
-            return new WP_REST_Response([
-                'success' => true,
-                'message' => __('Settings saved successfully', 'wp-user-frontend')
-            ], 200);
+        if ( $saved ) {
+            return new WP_REST_Response(
+                [
+                    'success' => true,
+                    'message' => __( 'Settings saved successfully', 'wp-user-frontend' ),
+                ], 200
+            );
         } else {
-            return new WP_REST_Response([
-                'success' => false,
-                'message' => __('Failed to save settings', 'wp-user-frontend')
-            ], 400);
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => __( 'Failed to save settings', 'wp-user-frontend' ),
+                ], 400
+            );
         }
     }
 
@@ -743,9 +759,9 @@ class RestController extends WP_REST_Controller {
      * @param WP_REST_Request $request REST request object
      * @return WP_REST_Response Response object
      */
-    public function get_settings(WP_REST_Request $request) {
+    public function get_settings( WP_REST_Request $request ) {
         // Get settings from WPUF settings system
-        $wpuf_ai_settings = get_option('wpuf_ai', []);
+        $wpuf_ai_settings = get_option( 'wpuf_ai', [] );
 
         // Map to expected format
         $settings = [
@@ -753,17 +769,19 @@ class RestController extends WP_REST_Controller {
             'model' => $wpuf_ai_settings['ai_model'] ?? 'gpt-3.5-turbo',
             'temperature' => $wpuf_ai_settings['temperature'] ?? 0.7,
             'max_tokens' => $wpuf_ai_settings['max_tokens'] ?? 2000,
-            'api_key' => $wpuf_ai_settings['ai_api_key'] ?? ''
+            'api_key' => $wpuf_ai_settings['ai_api_key'] ?? '',
         ];
 
         // Don't expose the actual API key, just whether it's set
-        $settings['has_api_key'] = !empty($settings['api_key']);
-        unset($settings['api_key']);
+        $settings['has_api_key'] = ! empty( $settings['api_key'] );
+        unset( $settings['api_key'] );
 
-        return new WP_REST_Response([
-            'success' => true,
-            'settings' => $settings
-        ], 200);
+        return new WP_REST_Response(
+            [
+                'success' => true,
+                'settings' => $settings,
+            ], 200
+        );
     }
 
     /**
@@ -772,38 +790,44 @@ class RestController extends WP_REST_Controller {
      * @param WP_REST_Request $request REST request object
      * @return WP_REST_Response Response object
      */
-    public function refresh_google_models(WP_REST_Request $request) {
+    public function refresh_google_models( WP_REST_Request $request ) {
         // Get Google API key from settings
-        $wpuf_ai_settings = get_option('wpuf_ai', []);
+        $wpuf_ai_settings = get_option( 'wpuf_ai', [] );
 
         // Check for Google API key (stored as google_api_key)
         $api_key = $wpuf_ai_settings['google_api_key'] ?? '';
 
-        if (empty($api_key)) {
-            return new WP_REST_Response([
-                'success' => false,
-                'message' => __('Google API key not configured. Please save your Google API key first.', 'wp-user-frontend')
-            ], 400);
+        if ( empty( $api_key ) ) {
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => __( 'Google API key not configured. Please save your Google API key first.', 'wp-user-frontend' ),
+                ], 400
+            );
         }
 
         // Fetch models from all providers
         $result = Config::update_all_models();
 
-        if (is_wp_error($result)) {
-            return new WP_REST_Response([
-                'success' => false,
-                'message' => $result->get_error_message()
-            ], 400);
+        if ( is_wp_error( $result ) ) {
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => $result->get_error_message(),
+                ], 400
+            );
         }
 
         // Get the updated models
         $models = Config::get_models();
 
-        return new WP_REST_Response([
-            'success' => true,
-            'message' => __('Google models updated successfully', 'wp-user-frontend'),
-            'models' => $models
-        ], 200);
+        return new WP_REST_Response(
+            [
+                'success' => true,
+                'message' => __( 'Google models updated successfully', 'wp-user-frontend' ),
+                'models' => $models,
+            ], 200
+        );
     }
 
     /**
@@ -812,14 +836,16 @@ class RestController extends WP_REST_Controller {
      * @param WP_REST_Request $request REST request object
      * @return WP_REST_Response Response object
      */
-    public function get_models(WP_REST_Request $request) {
+    public function get_models( WP_REST_Request $request ) {
         // Get all models from cache
         $models = Config::get_models();
 
-        return new WP_REST_Response([
-            'success' => true,
-            'models' => $models
-        ], 200);
+        return new WP_REST_Response(
+            [
+                'success' => true,
+                'models' => $models,
+            ], 200
+        );
     }
 
     /**
@@ -828,54 +854,57 @@ class RestController extends WP_REST_Controller {
      * @param WP_REST_Request $request REST request object
      * @return WP_REST_Response|WP_Error Response object
      */
-    public function generate_field_options(WP_REST_Request $request) {
+    public function generate_field_options( WP_REST_Request $request ) {
         try {
-            $prompt = $request->get_param('prompt');
-            $field_type = $request->get_param('field_type');
-            $output_format = $request->get_param('output_format') ?? 'one_per_line';
-            $tone = $request->get_param('tone') ?? 'casual';
-            $max_options = $request->get_param('max_options') ?? 20;
+            $prompt = $request->get_param( 'prompt' );
+            $field_type = $request->get_param( 'field_type' );
+            $output_format = $request->get_param( 'output_format' ) ?? 'one_per_line';
+            $tone = $request->get_param( 'tone' ) ?? 'casual';
+            $max_options = $request->get_param( 'max_options' ) ?? 20;
 
             // Validate max options
-            if ($max_options < 1 || $max_options > 100) {
+            if ( $max_options < 1 || $max_options > 100 ) {
                 return new WP_Error(
                     'invalid_max_options',
-                    __('Maximum options must be between 1 and 100', 'wp-user-frontend'),
-                    ['status' => 400]
+                    __( 'Maximum options must be between 1 and 100', 'wp-user-frontend' ),
+                    [ 'status' => 400 ]
                 );
             }
 
             // Call FormGenerator to generate options
-            $result = $this->form_generator->generate_field_options($prompt, [
-                'field_type' => $field_type,
-                'output_format' => $output_format,
-                'tone' => $tone,
-                'max_options' => $max_options
-            ]);
+            $result = $this->form_generator->generate_field_options(
+                $prompt, [
+                    'field_type' => $field_type,
+                    'output_format' => $output_format,
+                    'tone' => $tone,
+                    'max_options' => $max_options,
+                ]
+            );
 
             // Check for both error === true and success === false as failure conditions
             if ( ( isset( $result['error'] ) && $result['error'] ) || ( isset( $result['success'] ) && ! $result['success'] ) ) {
                 return new WP_Error(
                     'generation_failed',
-                    $result['message'] ?? __('Failed to generate field options', 'wp-user-frontend'),
-                    ['status' => 400]
+                    $result['message'] ?? __( 'Failed to generate field options', 'wp-user-frontend' ),
+                    [ 'status' => 400 ]
                 );
             }
 
             // Sanitize generated options
-            $sanitized_options = $this->sanitize_field_options($result['options'] ?? []);
+            $sanitized_options = $this->sanitize_field_options( $result['options'] ?? [] );
 
-            return new WP_REST_Response([
-                'success' => true,
-                'options' => $sanitized_options,
-                'message' => __('Options generated successfully', 'wp-user-frontend')
-            ], 200);
-
-        } catch (\Exception $e) {
+            return new WP_REST_Response(
+                [
+                    'success' => true,
+                    'options' => $sanitized_options,
+                    'message' => __( 'Options generated successfully', 'wp-user-frontend' ),
+                ], 200
+            );
+        } catch ( \Exception $e ) {
             return new WP_Error(
                 'generation_error',
-                __('An error occurred while generating options. Please try again.', 'wp-user-frontend'),
-                ['status' => 500]
+                __( 'An error occurred while generating options. Please try again.', 'wp-user-frontend' ),
+                [ 'status' => 500 ]
             );
         }
     }
@@ -926,8 +955,8 @@ class RestController extends WP_REST_Controller {
             wp_send_json_error( [ 'message' => __( 'Permission denied', 'wp-user-frontend' ) ] );
         }
 
-        $prompt = sanitize_textarea_field( $_POST['prompt'] ?? '' );
-        $field_type = sanitize_text_field( $_POST['field_type'] ?? 'dropdown_field' );
+        $prompt = sanitize_textarea_field( wp_unslash( $_POST['prompt'] ?? '' ) );
+        $field_type = sanitize_text_field( wp_unslash( $_POST['field_type'] ?? 'dropdown_field' ) );
 
         if ( empty( $prompt ) ) {
             wp_send_json_error( [ 'message' => __( 'Prompt is required', 'wp-user-frontend' ) ] );
@@ -960,25 +989,25 @@ class RestController extends WP_REST_Controller {
      */
     public function check_permission() {
         // Check for proper WPUF capabilities and AI feature access
-        if (!is_user_logged_in()) {
+        if ( ! is_user_logged_in() ) {
             return false;
         }
 
         // Check if user can create forms
-        if (!current_user_can('edit_posts') && !current_user_can('wpuf_create_forms')) {
+        if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'wpuf_create_forms' ) ) {
             return false;
         }
 
         // Allow admin override
-        if (current_user_can('manage_options')) {
+        if ( current_user_can( 'manage_options' ) ) {
             return true;
         }
 
         // Check if AI features are enabled for this user role
-        $allowed_roles = apply_filters('wpuf_ai_allowed_roles', ['administrator', 'editor']);
+        $allowed_roles = apply_filters( 'wpuf_ai_allowed_roles', [ 'administrator', 'editor' ] );
         $user = wp_get_current_user();
 
-        return !empty(array_intersect($allowed_roles, $user->roles));
+        return ! empty( array_intersect( $allowed_roles, $user->roles ) );
     }
 
     /**
@@ -987,7 +1016,7 @@ class RestController extends WP_REST_Controller {
      * @return bool
      */
     public function check_admin_permission() {
-        return current_user_can('manage_options');
+        return current_user_can( 'manage_options' );
     }
 
     /**
@@ -998,18 +1027,18 @@ class RestController extends WP_REST_Controller {
      * @param string $param Parameter name
      * @return bool|WP_Error
      */
-    public function validate_prompt($value, $request, $param) {
-        if (empty(trim($value))) {
+    public function validate_prompt( $value, $request, $param ) {
+        if ( empty( trim( $value ) ) ) {
             return new WP_Error(
                 'invalid_prompt',
-                __('Prompt cannot be empty', 'wp-user-frontend')
+                __( 'Prompt cannot be empty', 'wp-user-frontend' )
             );
         }
 
-        if (strlen($value) > 1000) {
+        if ( strlen( $value ) > 1000 ) {
             return new WP_Error(
                 'prompt_too_long',
-                __('Prompt is too long. Maximum 1000 characters allowed.', 'wp-user-frontend')
+                __( 'Prompt is too long. Maximum 1000 characters allowed.', 'wp-user-frontend' )
             );
         }
 
@@ -1023,57 +1052,57 @@ class RestController extends WP_REST_Controller {
      * @param WP_REST_Request $request REST request object
      * @return WP_REST_Response|WP_Error Response object
      */
-    public function create_form_from_ai(WP_REST_Request $request) {
+    public function create_form_from_ai( WP_REST_Request $request ) {
         try {
-            $form_data = $request->get_param('form_data');
-            $form_type = $request->get_param('form_type') ?? 'post'; // Get form type, default to 'post'
+            $form_data = $request->get_param( 'form_data' );
+            $form_type = $request->get_param( 'form_type' ) ?? 'post'; // Get form type, default to 'post'
 
             // Validate required fields
-            if (empty($form_data['form_title']) || empty($form_data['wpuf_fields'])) {
+            if ( empty( $form_data['form_title'] ) || empty( $form_data['wpuf_fields'] ) ) {
                 return new WP_Error(
                     'missing_data',
-                    __('Form title and fields are required', 'wp-user-frontend'),
-                    ['status' => 400]
+                    __( 'Form title and fields are required', 'wp-user-frontend' ),
+                    [ 'status' => 400 ]
                 );
             }
 
             // Validate form title length
-            if (strlen($form_data['form_title']) > 200) {
+            if ( strlen( $form_data['form_title'] ) > 200 ) {
                 return new WP_Error(
                     'title_too_long',
-                    __('Form title cannot exceed 200 characters', 'wp-user-frontend'),
-                    ['status' => 400]
+                    __( 'Form title cannot exceed 200 characters', 'wp-user-frontend' ),
+                    [ 'status' => 400 ]
                 );
             }
 
             // Validate field count to prevent excessive forms
-            if (count($form_data['wpuf_fields']) > 50) {
+            if ( count( $form_data['wpuf_fields'] ) > 50 ) {
                 return new WP_Error(
                     'too_many_fields',
-                    __('Form cannot have more than 50 fields', 'wp-user-frontend'),
-                    ['status' => 400]
+                    __( 'Form cannot have more than 50 fields', 'wp-user-frontend' ),
+                    [ 'status' => 400 ]
                 );
             }
 
             // Determine post type based on form type
-            $post_type = ($form_type === 'profile' || $form_type === 'registration') ? 'wpuf_profile' : 'wpuf_forms';
+            $post_type = ( $form_type === 'profile' || $form_type === 'registration' ) ? 'wpuf_profile' : 'wpuf_forms';
 
             // Create the form post
             $form_post = array(
-                'post_title' => sanitize_text_field($form_data['form_title']),
-                'post_content' => sanitize_textarea_field($form_data['form_description'] ?? ''),
+                'post_title' => sanitize_text_field( $form_data['form_title'] ),
+                'post_content' => sanitize_textarea_field( $form_data['form_description'] ?? '' ),
                 'post_status' => 'publish',
                 'post_type' => $post_type,
-                'post_author' => get_current_user_id()
+                'post_author' => get_current_user_id(),
             );
 
-            $form_id = wp_insert_post($form_post);
+            $form_id = wp_insert_post( $form_post );
 
-            if (is_wp_error($form_id)) {
+            if ( is_wp_error( $form_id ) ) {
                 return new WP_Error(
                     'form_creation_failed',
                     $form_id->get_error_message(),
-                    ['status' => 500]
+                    [ 'status' => 500 ]
                 );
             }
 
@@ -1081,15 +1110,18 @@ class RestController extends WP_REST_Controller {
             $wpuf_fields = $form_data['wpuf_fields'];
 
             // Sanitize all field data to prevent XSS
-            $wpuf_fields = $this->sanitize_form_fields($wpuf_fields);
-
+            $wpuf_fields = $this->sanitize_form_fields( $wpuf_fields );
 
             // Create child posts for each field (WPUF's storage method)
-            foreach ($wpuf_fields as $order => $field) {
+            foreach ( $wpuf_fields as $order => $field ) {
                 // Validate required field properties
-                if (empty($field['name']) || empty($field['input_type'])) {
+                if ( empty( $field['name'] ) || empty( $field['input_type'] ) ) {
                     continue; // Skip invalid fields
                 }
+
+                // The AI templates name input_type after the template; store the
+                // registered input_type instead, like a form built by hand.
+                $field = $this->normalize_field_input_type( $field );
 
                 // Reject a field whose input_type does not match its template
                 // (the AI form-builder object-injection primitive).
@@ -1104,36 +1136,37 @@ class RestController extends WP_REST_Controller {
                 }
 
                 // Sanitize field data
-                $field['name'] = sanitize_key($field['name']);
-                $field['label'] = sanitize_text_field($field['label'] ?? '');
+                $field['name'] = sanitize_key( $field['name'] );
+                $field['label'] = sanitize_text_field( $field['label'] ?? '' );
 
                 $field_post = array(
                     'post_type' => 'wpuf_input',
                     'post_status' => 'publish',
                     'post_parent' => $form_id,
                     'menu_order' => $order,
-                    'post_content' => serialize($field) // WPUF stores field data as serialized content
+                    'post_content' => serialize( $field ), // WPUF stores field data as serialized content
                 );
 
-                $field_id = wp_insert_post($field_post);
+                $field_id = wp_insert_post( $field_post );
 
-                if (is_wp_error($field_id)) {
+                if ( is_wp_error( $field_id ) ) {
                     // Clean up previously created fields and the form post
                     $this->delete_ai_form_and_field_posts( $form_id );
                     return new WP_Error(
                         'field_creation_failed',
-                        sprintf(__('Failed to create field at position %d: %s', 'wp-user-frontend'), $order, $field_id->get_error_message()),
-                        ['status' => 500]
+                        /* translators: 1: field position, 2: error message */
+                        sprintf( __( 'Failed to create field at position %1$d: %2$s', 'wp-user-frontend' ), $order, $field_id->get_error_message() ),
+                        [ 'status' => 500 ]
                     );
                 }
             }
 
             // Also save as meta for compatibility (some functions might still use this)
             // Fields already have correct structure from AI provider
-            update_post_meta($form_id, 'wpuf_form_fields', $wpuf_fields);
+            update_post_meta( $form_id, 'wpuf_form_fields', $wpuf_fields );
 
             // Add form version for compatibility
-            update_post_meta($form_id, 'wpuf_form_version', WPUF_VERSION);
+            update_post_meta( $form_id, 'wpuf_form_version', WPUF_VERSION );
 
             // Save form settings
             $default_settings = [
@@ -1143,14 +1176,14 @@ class RestController extends WP_REST_Controller {
                 'guest_post' => 'false',
                 'redirect_to' => 'post',
                 'comment_status' => 'open',
-                'submit_text' => __('Submit Form', 'wp-user-frontend'),
+                'submit_text' => __( 'Submit Form', 'wp-user-frontend' ),
                 'edit_post_status' => 'publish',
                 'edit_redirect_to' => 'same',
-                'update_message' => __('Form has been updated successfully.', 'wp-user-frontend'),
-                'update_text' => __('Update Form', 'wp-user-frontend')
+                'update_message' => __( 'Form has been updated successfully.', 'wp-user-frontend' ),
+                'update_text' => __( 'Update Form', 'wp-user-frontend' ),
             ];
 
-            $form_settings = wp_parse_args($form_data['form_settings'] ?? [], $default_settings);
+            $form_settings = wp_parse_args( $form_data['form_settings'] ?? [], $default_settings );
 
             // Set form_template based on post_type for proper integration handling
             // This is critical for integrations to properly save meta fields via their hooks
@@ -1162,50 +1195,51 @@ class RestController extends WP_REST_Controller {
                 }
             }
 
-            update_post_meta($form_id, 'wpuf_form_settings', $form_settings);
+            update_post_meta( $form_id, 'wpuf_form_settings', $form_settings );
 
             // Add form creation metadata
-            update_post_meta($form_id, 'wpuf_ai_generated', true);
-            update_post_meta($form_id, 'wpuf_ai_created_at', current_time('mysql'));
-            update_post_meta($form_id, 'wpuf_ai_created_by', get_current_user_id());
+            update_post_meta( $form_id, 'wpuf_ai_generated', true );
+            update_post_meta( $form_id, 'wpuf_ai_created_at', current_time( 'mysql' ) );
+            update_post_meta( $form_id, 'wpuf_ai_created_by', get_current_user_id() );
 
             // Log the form creation
-            $this->log_form_creation($form_id, $form_data);
+            $this->log_form_creation( $form_id, $form_data );
 
             // Determine the correct edit URL based on form type
-            $page = ($form_type === 'profile' || $form_type === 'registration') ? 'wpuf-profile-forms' : 'wpuf-post-forms';
-            $list_page = ($form_type === 'profile' || $form_type === 'registration') ? 'wpuf-profile-forms' : 'wpuf-post-forms';
+            $page = ( $form_type === 'profile' || $form_type === 'registration' ) ? 'wpuf-profile-forms' : 'wpuf-post-forms';
+            $list_page = ( $form_type === 'profile' || $form_type === 'registration' ) ? 'wpuf-profile-forms' : 'wpuf-post-forms';
 
-            return new WP_REST_Response([
-                'success' => true,
-                'form_id' => $form_id,
-                'form_type' => $form_type,
-                'form_data' => [
-                    'wpuf_fields' => $wpuf_fields,
-                    'form_title' => $form_data['form_title'],
-                    'form_description' => $form_data['form_description'] ?? ''
-                ],
-                'edit_url' => admin_url("admin.php?page={$page}&action=edit&id={$form_id}"),
-                'list_url' => admin_url("admin.php?page={$list_page}"),
-                'message' => __('Form created successfully', 'wp-user-frontend')
-            ], 201);
-
-        } catch (\Exception $e) {
+            return new WP_REST_Response(
+                [
+                    'success' => true,
+                    'form_id' => $form_id,
+                    'form_type' => $form_type,
+                    'form_data' => [
+                        'wpuf_fields' => $wpuf_fields,
+                        'form_title' => $form_data['form_title'],
+                        'form_description' => $form_data['form_description'] ?? '',
+                    ],
+                    'edit_url' => admin_url( "admin.php?page={$page}&action=edit&id={$form_id}" ),
+                    'list_url' => admin_url( "admin.php?page={$list_page}" ),
+                    'message' => __( 'Form created successfully', 'wp-user-frontend' ),
+                ], 201
+            );
+        } catch ( \Exception $e ) {
             // Enhanced error logging with context
             $error_context = [
                 'user_id' => get_current_user_id(),
                 'form_title' => $form_data['form_title'] ?? 'Unknown',
-                'field_count' => count($form_data['wpuf_fields'] ?? []),
+                'field_count' => count( $form_data['wpuf_fields'] ?? [] ),
                 'error_message' => $e->getMessage(),
                 'error_file' => $e->getFile(),
                 'error_line' => $e->getLine(),
-                'timestamp' => current_time('mysql')
+                'timestamp' => current_time( 'mysql' ),
             ];
 
             return new WP_Error(
                 'form_creation_error',
-                __('An error occurred while creating the form. Please try again.', 'wp-user-frontend'),
-                ['status' => 500]
+                __( 'An error occurred while creating the form. Please try again.', 'wp-user-frontend' ),
+                [ 'status' => 500 ]
             );
         }
     }
@@ -1216,18 +1250,18 @@ class RestController extends WP_REST_Controller {
      * @param WP_REST_Request $request REST request object
      * @return WP_REST_Response|WP_Error Response object
      */
-    public function modify_form_from_ai(WP_REST_Request $request) {
+    public function modify_form_from_ai( WP_REST_Request $request ) {
         try {
-            $form_id = $request->get_param('form_id');
-            $modification_data = $request->get_param('modification_data');
+            $form_id = $request->get_param( 'form_id' );
+            $modification_data = $request->get_param( 'modification_data' );
 
             // Validate form exists and user has permission
-            $form = get_post($form_id);
-            if (!$form || $form->post_type !== 'wpuf_forms') {
+            $form = get_post( $form_id );
+            if ( ! $form || $form->post_type !== 'wpuf_forms' ) {
                 return new WP_Error(
                     'form_not_found',
-                    __('Form not found', 'wp-user-frontend'),
-                    ['status' => 404]
+                    __( 'Form not found', 'wp-user-frontend' ),
+                    [ 'status' => 404 ]
                 );
             }
 
@@ -1236,11 +1270,11 @@ class RestController extends WP_REST_Controller {
             $current_form = $modification_data['current_form'] ?? [];
             $conversation_context = $modification_data['conversation_context'] ?? [];
 
-            if (empty($prompt)) {
+            if ( empty( $prompt ) ) {
                 return new WP_Error(
                     'missing_prompt',
-                    __('Modification prompt is required', 'wp-user-frontend'),
-                    ['status' => 400]
+                    __( 'Modification prompt is required', 'wp-user-frontend' ),
+                    [ 'status' => 400 ]
                 );
             }
 
@@ -1252,28 +1286,29 @@ class RestController extends WP_REST_Controller {
 
             // Call AI to get modification instructions
             // Do NOT use prepare_modification_prompt() - let FormGenerator handle system prompt
-            $ai_response = $this->form_generator->generate_form($prompt, [
-                'session_id' => $modification_data['session_id'] ?? $this->generate_session_id(),
-                'provider' => get_option('wpuf_ai')['ai_provider'] ?? 'openai',
-                'temperature' => 0.3, // Lower temperature for more consistent modifications
-                'conversation_context' => $modification_context,
-                'form_type' => $current_form['form_type'] ?? 'post'
-            ]);
+            $ai_response = $this->form_generator->generate_form(
+                $prompt, [
+                    'session_id' => $modification_data['session_id'] ?? $this->generate_session_id(),
+                    'provider' => get_option( 'wpuf_ai' )['ai_provider'] ?? 'openai',
+                    'temperature' => 0.3, // Lower temperature for more consistent modifications
+                    'conversation_context' => $modification_context,
+                    'form_type' => $current_form['form_type'] ?? 'post',
+                ]
+            );
 
-
-            if (!$ai_response || !$ai_response['success']) {
+            if ( ! $ai_response || ! $ai_response['success'] ) {
                 return new WP_Error(
                     'ai_generation_failed',
-                    $ai_response['message'] ?? __('Failed to process modification request', 'wp-user-frontend'),
-                    ['status' => 500]
+                    $ai_response['message'] ?? __( 'Failed to process modification request', 'wp-user-frontend' ),
+                    [ 'status' => 500 ]
                 );
             }
 
             // Process AI response - could be direct modification instructions or new form data
-            if (isset($ai_response['action']) && $ai_response['action'] === 'modify') {
+            if ( isset( $ai_response['action'] ) && $ai_response['action'] === 'modify' ) {
                 // Direct modification instructions from AI
-                $current_fields = get_post_meta($form_id, 'wpuf_form_fields', true);
-                if (!is_array($current_fields)) {
+                $current_fields = get_post_meta( $form_id, 'wpuf_form_fields', true );
+                if ( ! is_array( $current_fields ) ) {
                     $current_fields = [];
                 }
 
@@ -1281,62 +1316,62 @@ class RestController extends WP_REST_Controller {
                 $target = $ai_response['target'] ?? '';
                 $changes = $ai_response['changes'] ?? [];
 
-                switch ($modification_type) {
+                switch ( $modification_type ) {
                     case 'add_field':
-                        if (!isset($changes['field'])) {
+                        if ( ! isset( $changes['field'] ) ) {
                             return new WP_Error(
                                 'missing_field_data',
-                                __('Field data is required for add_field action', 'wp-user-frontend'),
-                                ['status' => 400]
+                                __( 'Field data is required for add_field action', 'wp-user-frontend' ),
+                                [ 'status' => 400 ]
                             );
                         }
-                        $current_fields = $this->add_field_to_form($current_fields, $changes);
+                        $current_fields = $this->add_field_to_form( $current_fields, $changes );
                         break;
 
                     case 'remove_field':
-                        if (empty($target)) {
+                        if ( empty( $target ) ) {
                             return new WP_Error(
                                 'missing_target',
-                                __('Target field is required for remove_field action', 'wp-user-frontend'),
-                                ['status' => 400]
+                                __( 'Target field is required for remove_field action', 'wp-user-frontend' ),
+                                [ 'status' => 400 ]
                             );
                         }
-                        $current_fields = $this->remove_field_from_form($current_fields, $target);
+                        $current_fields = $this->remove_field_from_form( $current_fields, $target );
                         break;
 
                     case 'update_field':
-                        if (empty($target) || empty($changes)) {
+                        if ( empty( $target ) || empty( $changes ) ) {
                             return new WP_Error(
                                 'missing_update_data',
-                                __('Target field and changes are required for update_field action', 'wp-user-frontend'),
-                                ['status' => 400]
+                                __( 'Target field and changes are required for update_field action', 'wp-user-frontend' ),
+                                [ 'status' => 400 ]
                             );
                         }
-                        $current_fields = $this->update_field_in_form($current_fields, $target, $changes);
+                        $current_fields = $this->update_field_in_form( $current_fields, $target, $changes );
                         break;
 
                     case 'update_settings':
-                        $this->update_form_settings($form_id, $target, $changes);
+                        $this->update_form_settings( $form_id, $target, $changes );
                         break;
 
                     default:
                         return new WP_Error(
                             'invalid_modification_type',
-                            __('Invalid modification type from AI', 'wp-user-frontend'),
-                            ['status' => 400]
+                            __( 'Invalid modification type from AI', 'wp-user-frontend' ),
+                            [ 'status' => 400 ]
                         );
                 }
 
                 // Update form fields if they were modified
-                if (in_array($modification_type, ['add_field', 'remove_field', 'update_field'])) {
+                if ( in_array( $modification_type, [ 'add_field', 'remove_field', 'update_field' ], true ) ) {
                     // Sanitize fields to ensure show_in_post and other properties are properly set
-                    $converted_fields = $this->sanitize_form_fields($current_fields);
+                    $converted_fields = $this->sanitize_form_fields( $current_fields );
 
                     // Update form meta
-                    update_post_meta($form_id, 'wpuf_form_fields', $converted_fields);
+                    update_post_meta( $form_id, 'wpuf_form_fields', $converted_fields );
 
                     // Also update child posts
-                    $this->update_form_field_posts($form_id, $converted_fields);
+                    $this->update_form_field_posts( $form_id, $converted_fields );
                 }
 
                 $response_data = [
@@ -1345,12 +1380,11 @@ class RestController extends WP_REST_Controller {
                     'form_data' => [
                         'wpuf_fields' => $converted_fields ?? $current_fields,
                         'form_title' => $form->post_title,
-                        'form_description' => $form->post_content
+                        'form_description' => $form->post_content,
                     ],
-                    'message' => $ai_response['message'] ?? __('Form modified successfully', 'wp-user-frontend')
+                    'message' => $ai_response['message'] ?? __( 'Form modified successfully', 'wp-user-frontend' ),
                 ];
-
-            } elseif (isset($ai_response['fields']) || isset($ai_response['wpuf_fields'])) {
+            } elseif ( isset( $ai_response['fields'] ) || isset( $ai_response['wpuf_fields'] ) ) {
                 // AI returned complete modified form - use SAME path as initial generation
                 // Build complete form from AI response using Form_Builder (same as FormGenerator)
                 $form_data = \WeDevs\Wpuf\AI\Form_Builder::build_form( $ai_response );
@@ -1359,33 +1393,37 @@ class RestController extends WP_REST_Controller {
                 if ( ! empty( $form_data['error'] ) ) {
                     return new WP_Error(
                         'form_build_failed',
-                        $form_data['message'] ?? __('Failed to build form structure', 'wp-user-frontend'),
-                        ['status' => 500]
+                        $form_data['message'] ?? __( 'Failed to build form structure', 'wp-user-frontend' ),
+                        [ 'status' => 500 ]
                     );
                 }
 
                 // Sanitize fields to ensure show_in_post and other properties are properly set
-                $converted_fields = $this->sanitize_form_fields($form_data['wpuf_fields'] ?? []);
+                $converted_fields = $this->sanitize_form_fields( $form_data['wpuf_fields'] ?? [] );
 
                 // Update form meta
-                update_post_meta($form_id, 'wpuf_form_fields', $converted_fields);
+                update_post_meta( $form_id, 'wpuf_form_fields', $converted_fields );
 
                 // Also update child posts
-                $this->update_form_field_posts($form_id, $converted_fields);
+                $this->update_form_field_posts( $form_id, $converted_fields );
 
                 // Update form title/description if provided
-                if (isset($ai_response['form_title'])) {
-                    wp_update_post([
-                        'ID' => $form_id,
-                        'post_title' => sanitize_text_field($ai_response['form_title'])
-                    ]);
+                if ( isset( $ai_response['form_title'] ) ) {
+                    wp_update_post(
+                        [
+                            'ID' => $form_id,
+                            'post_title' => sanitize_text_field( $ai_response['form_title'] ),
+                        ]
+                    );
                 }
 
-                if (isset($ai_response['form_description'])) {
-                    wp_update_post([
-                        'ID' => $form_id,
-                        'post_content' => sanitize_textarea_field($ai_response['form_description'])
-                    ]);
+                if ( isset( $ai_response['form_description'] ) ) {
+                    wp_update_post(
+                        [
+                            'ID' => $form_id,
+                            'post_content' => sanitize_textarea_field( $ai_response['form_description'] ),
+                        ]
+                    );
                 }
 
                 $response_data = [
@@ -1394,25 +1432,24 @@ class RestController extends WP_REST_Controller {
                     'form_data' => [
                         'wpuf_fields' => $converted_fields,
                         'form_title' => $ai_response['form_title'] ?? $form->post_title,
-                        'form_description' => $ai_response['form_description'] ?? $form->post_content
+                        'form_description' => $ai_response['form_description'] ?? $form->post_content,
                     ],
-                    'message' => $ai_response['message'] ?? __('Form updated successfully', 'wp-user-frontend')
+                    'message' => $ai_response['message'] ?? __( 'Form updated successfully', 'wp-user-frontend' ),
                 ];
             } else {
                 return new WP_Error(
                     'invalid_ai_response',
-                    __('AI response format not recognized', 'wp-user-frontend'),
-                    ['status' => 500]
+                    __( 'AI response format not recognized', 'wp-user-frontend' ),
+                    [ 'status' => 500 ]
                 );
             }
 
-            return new WP_REST_Response($response_data);
-
-        } catch (\Exception $e) {
+            return new WP_REST_Response( $response_data );
+        } catch ( \Exception $e ) {
             return new WP_Error(
                 'modification_error',
-                __('Form modification failed', 'wp-user-frontend'),
-                ['status' => 500]
+                __( 'Form modification failed', 'wp-user-frontend' ),
+                [ 'status' => 500 ]
             );
         }
     }
@@ -1420,7 +1457,7 @@ class RestController extends WP_REST_Controller {
     /**
      * Prepare modification prompt with current form context
      */
-    private function prepare_modification_prompt($prompt, $current_form) {
+    private function prepare_modification_prompt( $prompt, $current_form ) {
         $form_title = $current_form['form_title'] ?? 'Current Form';
         $form_description = $current_form['form_description'] ?? '';
         $fields = $current_form['wpuf_fields'] ?? [];
@@ -1430,16 +1467,16 @@ class RestController extends WP_REST_Controller {
         $context .= "Form Description: {$form_description}\n";
         $context .= "Current Fields:\n";
 
-        foreach ($fields as $index => $field) {
+        foreach ( $fields as $index => $field ) {
             $label = $field['label'] ?? 'Unnamed';
-            $required = ($field['required'] ?? false) ? ' (Required)' : ' (Optional)';
+            $required = ( $field['required'] ?? false ) ? ' (Required)' : ' (Optional)';
             $input_type = $field['input_type'] ?? $field['type'] ?? 'text';
-            $type = $this->get_human_readable_field_type($input_type);
+            $type = $this->get_human_readable_field_type( $input_type );
             $context .= "- {$label}{$required} - {$type}\n";
         }
 
         $context .= "\nUSER REQUEST: {$prompt}\n\n";
-        $context .= "Please provide the modification instructions or updated form structure.";
+        $context .= 'Please provide the modification instructions or updated form structure.';
 
         return $context;
     }
@@ -1447,7 +1484,7 @@ class RestController extends WP_REST_Controller {
     /**
      * Get human readable field type
      */
-    private function get_human_readable_field_type($type) {
+    private function get_human_readable_field_type( $type ) {
         $types = [
             'text_field' => 'Text Input',
             'email_address' => 'Email Field',
@@ -1461,10 +1498,10 @@ class RestController extends WP_REST_Controller {
             'phone_field' => 'Phone Number',
             'address_field' => 'Address',
             'ratings' => 'Star Rating',
-            'toc' => 'Terms & Conditions'
+            'toc' => 'Terms & Conditions',
         ];
 
-        return $types[$type] ?? ucfirst(str_replace('_', ' ', $type));
+        return $types[ $type ] ?? ucfirst( str_replace( '_', ' ', $type ) );
     }
 
     /**
@@ -1522,7 +1559,13 @@ class RestController extends WP_REST_Controller {
 
         if ( $needs_conversion ) {
             // Extract custom properties (everything except template, label, and id)
-            $custom_props = array_diff_key( $field, [ 'template' => '', 'label' => '', 'id' => '' ] );
+            $custom_props = array_diff_key(
+                $field, [
+                    'template' => '',
+                    'label' => '',
+                    'id' => '',
+                ]
+            );
 
             // Build complete field structure using Field_Templates
             // This ensures all required properties (zoom, default_pos, wpuf_cond, etc.) are added
@@ -1564,11 +1607,13 @@ class RestController extends WP_REST_Controller {
      * @param string $target Field name to remove
      * @return array Updated fields
      */
-    private function remove_field_from_form($fields, $target) {
-        return array_filter($fields, function($field) use ($target) {
-            // Only use field name for matching to avoid unintended removals when multiple fields have the same label
-            return ($field['name'] ?? '') !== $target;
-        });
+    private function remove_field_from_form( $fields, $target ) {
+        return array_filter(
+            $fields, function ( $field ) use ( $target ) {
+                // Only use field name for matching to avoid unintended removals when multiple fields have the same label
+                return ( $field['name'] ?? '' ) !== $target;
+            }
+        );
     }
 
     /**
@@ -1589,7 +1634,7 @@ class RestController extends WP_REST_Controller {
                 } else {
                     // Apply individual property changes
                     foreach ( $changes as $key => $value ) {
-                        $field[$key] = $value;
+                        $field[ $key ] = $value;
                     }
                 }
                 break;
@@ -1605,30 +1650,34 @@ class RestController extends WP_REST_Controller {
      * @param string $target Setting to update
      * @param array $changes Changes to apply
      */
-    private function update_form_settings($form_id, $target, $changes) {
-        if ($target === 'form_title' && isset($changes['form_title'])) {
-            wp_update_post([
-                'ID' => $form_id,
-                'post_title' => sanitize_text_field($changes['form_title'])
-            ]);
+    private function update_form_settings( $form_id, $target, $changes ) {
+        if ( $target === 'form_title' && isset( $changes['form_title'] ) ) {
+            wp_update_post(
+                [
+                    'ID' => $form_id,
+                    'post_title' => sanitize_text_field( $changes['form_title'] ),
+                ]
+            );
         }
 
-        if ($target === 'form_description' && isset($changes['form_description'])) {
-            wp_update_post([
-                'ID' => $form_id,
-                'post_content' => sanitize_textarea_field($changes['form_description'])
-            ]);
+        if ( $target === 'form_description' && isset( $changes['form_description'] ) ) {
+            wp_update_post(
+                [
+                    'ID' => $form_id,
+                    'post_content' => sanitize_textarea_field( $changes['form_description'] ),
+                ]
+            );
         }
 
         // Update other form settings
-        $current_settings = get_post_meta($form_id, 'wpuf_form_settings', true);
-        if (!is_array($current_settings)) {
+        $current_settings = get_post_meta( $form_id, 'wpuf_form_settings', true );
+        if ( ! is_array( $current_settings ) ) {
             $current_settings = [];
         }
 
-        foreach ($changes as $key => $value) {
-            if ($key !== 'form_title' && $key !== 'form_description') {
-                $current_settings[$key] = $value;
+        foreach ( $changes as $key => $value ) {
+            if ( $key !== 'form_title' && $key !== 'form_description' ) {
+                $current_settings[ $key ] = $value;
             }
         }
 
@@ -1644,7 +1693,7 @@ class RestController extends WP_REST_Controller {
             }
         }
 
-        update_post_meta($form_id, 'wpuf_form_settings', $current_settings);
+        update_post_meta( $form_id, 'wpuf_form_settings', $current_settings );
     }
 
     /**
@@ -1682,6 +1731,38 @@ class RestController extends WP_REST_Controller {
     }
 
     /**
+     * Give an AI-built field the input_type its registered template uses.
+     *
+     * The AI field templates set input_type to the template name ("post_title",
+     * "date_field"), while every registered field, and every form built in the form
+     * builder, stores the field's own input type ("text", "date"). Without this the
+     * template/input_type check rejects every AI form. Only that exact shape is
+     * rewritten, so a genuinely mismatched pairing is still rejected.
+     *
+     * @since 4.3.13
+     *
+     * @param array $field Field definition.
+     *
+     * @return array
+     */
+    private function normalize_field_input_type( $field ) {
+        if ( ! is_array( $field ) || empty( $field['template'] ) || empty( $field['input_type'] ) ) {
+            return $field;
+        }
+
+        $allowed  = $this->get_allowed_field_type_map();
+        $template = sanitize_key( $field['template'] );
+
+        // Only the AI shape is rewritten: input_type spelled exactly as the template.
+        // Any other pairing is left for is_valid_field_definition() to judge.
+        if ( isset( $allowed[ $template ] ) && $template === $field['input_type'] ) {
+            $field['input_type'] = $allowed[ $template ];
+        }
+
+        return $field;
+    }
+
+    /**
      * Whether a submitted field's input_type is consistent with its template.
      *
      * Rejects mismatched definitions (e.g. input_type "text" on a "section_break"
@@ -1713,7 +1794,7 @@ class RestController extends WP_REST_Controller {
     /**
      * Delete an AI-created form along with any field child posts already inserted.
      *
-     * wp_delete_post() does not cascade to children for non-hierarchical post
+     * The wp_delete_post() function does not cascade to children for non-hierarchical post
      * types, so remove the wpuf_input children explicitly before the form itself
      * to avoid orphaned field posts when an AI form build is rejected or fails.
      *
@@ -1747,33 +1828,38 @@ class RestController extends WP_REST_Controller {
      * @param int $form_id Form ID
      * @param array $fields Updated fields
      */
-    private function update_form_field_posts($form_id, $fields) {
+    private function update_form_field_posts( $form_id, $fields ) {
         // Drop any field whose template/input_type pairing is invalid before saving,
         // so a mismatched (object-injection) definition can never be persisted.
+        $fields = array_map( [ $this, 'normalize_field_input_type' ], $fields );
         $fields = array_values( array_filter( $fields, [ $this, 'is_valid_field_definition' ] ) );
 
         // Get existing field posts ordered by menu_order
-        $existing_posts = get_posts([
-            'post_type' => 'wpuf_input',
-            'post_parent' => $form_id,
-            'posts_per_page' => -1,
-            'post_status' => 'any',
-            'orderby' => 'menu_order',
-            'order' => 'ASC'
-        ]);
+        $existing_posts = get_posts(
+            [
+                'post_type' => 'wpuf_input',
+                'post_parent' => $form_id,
+                'posts_per_page' => -1,
+                'post_status' => 'any',
+                'orderby' => 'menu_order',
+                'order' => 'ASC',
+            ]
+        );
 
-        $existing_count = count($existing_posts);
-        $new_count = count($fields);
+        $existing_count = count( $existing_posts );
+        $new_count = count( $fields );
 
         // Update or create field posts
-        foreach ($fields as $order => $field) {
-            if ($order < $existing_count) {
+        foreach ( $fields as $order => $field ) {
+            if ( $order < $existing_count ) {
                 // Update existing post
-                wp_update_post([
-                    'ID' => $existing_posts[$order]->ID,
-                    'menu_order' => $order,
-                    'post_content' => serialize($field)
-                ]);
+                wp_update_post(
+                    [
+                        'ID' => $existing_posts[ $order ]->ID,
+                        'menu_order' => $order,
+                        'post_content' => serialize( $field ),
+                    ]
+                );
             } else {
                 // Create new post
                 $field_post = array(
@@ -1781,16 +1867,16 @@ class RestController extends WP_REST_Controller {
                     'post_status' => 'publish',
                     'post_parent' => $form_id,
                     'menu_order' => $order,
-                    'post_content' => serialize($field)
+                    'post_content' => serialize( $field ),
                 );
-                wp_insert_post($field_post);
+                wp_insert_post( $field_post );
             }
         }
 
         // Delete excess posts if new count is less than existing
-        if ($new_count < $existing_count) {
-            for ($i = $new_count; $i < $existing_count; $i++) {
-                wp_delete_post($existing_posts[$i]->ID, true);
+        if ( $new_count < $existing_count ) {
+            for ( $i = $new_count; $i < $existing_count; $i++ ) {
+                wp_delete_post( $existing_posts[ $i ]->ID, true );
             }
         }
     }
@@ -1801,22 +1887,21 @@ class RestController extends WP_REST_Controller {
      * @param int $form_id Created form ID
      * @param array $form_data Form data used for creation
      */
-    private function log_form_creation($form_id, $form_data) {
+    private function log_form_creation( $form_id, $form_data ) {
         $log_data = [
             'form_id' => $form_id,
             'user_id' => get_current_user_id(),
-            'timestamp' => current_time('mysql'),
+            'timestamp' => current_time( 'mysql' ),
             'form_title' => $form_data['form_title'],
-            'field_count' => count($form_data['wpuf_fields'] ?? []),
-            'has_settings' => !empty($form_data['form_settings'])
+            'field_count' => count( $form_data['wpuf_fields'] ?? [] ),
+            'has_settings' => ! empty( $form_data['form_settings'] ),
         ];
 
-
         // Store in option for analytics
-        $creation_log = get_option('wpuf_ai_form_creation_log', []);
-        array_unshift($creation_log, $log_data);
-        $creation_log = array_slice($creation_log, 0, 50);
-        update_option('wpuf_ai_form_creation_log', $creation_log);
+        $creation_log = get_option( 'wpuf_ai_form_creation_log', [] );
+        array_unshift( $creation_log, $log_data );
+        $creation_log = array_slice( $creation_log, 0, 50 );
+        update_option( 'wpuf_ai_form_creation_log', $creation_log );
     }
 
     /**
@@ -1825,9 +1910,9 @@ class RestController extends WP_REST_Controller {
      * @param string $field_name
      * @return bool
      */
-    private function should_be_meta($field_name) {
-        $post_fields = ['post_title', 'post_content', 'post_excerpt', 'post_tags', 'post_category'];
-        return !in_array($field_name, $post_fields);
+    private function should_be_meta( $field_name ) {
+        $post_fields = [ 'post_title', 'post_content', 'post_excerpt', 'post_tags', 'post_category' ];
+        return ! in_array( $field_name, $post_fields, true );
     }
 
     /**
@@ -1859,22 +1944,21 @@ class RestController extends WP_REST_Controller {
      * @param string $prompt User prompt
      * @param array $result Generation result
      */
-    private function log_generation_attempt($prompt, $result) {
+    private function log_generation_attempt( $prompt, $result ) {
         $log_data = [
             'user_id' => get_current_user_id(),
-            'timestamp' => current_time('mysql'),
-            'prompt_length' => strlen($prompt),
+            'timestamp' => current_time( 'mysql' ),
+            'prompt_length' => strlen( $prompt ),
             'provider' => $result['provider'] ?? 'unknown',
-            'success' => isset($result['success']) ? $result['success'] : false,
-            'session_id' => $result['session_id'] ?? ''
+            'success' => isset( $result['success'] ) ? $result['success'] : false,
+            'session_id' => $result['session_id'] ?? '',
         ];
 
-
         // Store in option for basic analytics (keep last 100 entries)
-        $log_history = get_option('wpuf_ai_generation_log', []);
-        array_unshift($log_history, $log_data);
-        $log_history = array_slice($log_history, 0, 100);
-        update_option('wpuf_ai_generation_log', $log_history);
+        $log_history = get_option( 'wpuf_ai_generation_log', [] );
+        array_unshift( $log_history, $log_data );
+        $log_history = array_slice( $log_history, 0, 100 );
+        update_option( 'wpuf_ai_generation_log', $log_history );
     }
 
     /**
@@ -1883,69 +1967,69 @@ class RestController extends WP_REST_Controller {
      * @param array $fields
      * @return array
      */
-    private function sanitize_form_fields($fields) {
-        if (!is_array($fields)) {
+    private function sanitize_form_fields( $fields ) {
+        if ( ! is_array( $fields ) ) {
             return [];
         }
 
-        foreach ($fields as &$field) {
-            if (!is_array($field)) {
+        foreach ( $fields as &$field ) {
+            if ( ! is_array( $field ) ) {
                 continue;
             }
 
             // Sanitize common field properties
-            if (isset($field['label'])) {
-                $field['label'] = sanitize_text_field($field['label']);
+            if ( isset( $field['label'] ) ) {
+                $field['label'] = sanitize_text_field( $field['label'] );
             }
-            if (isset($field['placeholder'])) {
-                $field['placeholder'] = sanitize_text_field($field['placeholder']);
+            if ( isset( $field['placeholder'] ) ) {
+                $field['placeholder'] = sanitize_text_field( $field['placeholder'] );
             }
 
             // CRITICAL FIX: Map 'help_text' to 'help' if needed (standardize property name)
             // WPUF uses 'help' as the standard property name, but AI might generate 'help_text'
-            if (isset($field['help_text']) && !isset($field['help'])) {
+            if ( isset( $field['help_text'] ) && ! isset( $field['help'] ) ) {
                 $field['help'] = $field['help_text'];
             }
 
-            if (isset($field['help'])) {
-                $field['help'] = wp_kses_post($field['help']);
+            if ( isset( $field['help'] ) ) {
+                $field['help'] = wp_kses_post( $field['help'] );
             }
-            if (isset($field['default'])) {
-                $field['default'] = sanitize_text_field($field['default']);
+            if ( isset( $field['default'] ) ) {
+                $field['default'] = sanitize_text_field( $field['default'] );
             }
-            if (isset($field['css'])) {
+            if ( isset( $field['css'] ) ) {
                 // More restrictive CSS sanitization to prevent XSS
-                $field['css'] = strip_tags($field['css']);
-                $field['css'] = preg_replace('/[^a-zA-Z0-9\s\-_\.\#\:\;\,\%\(\)]/', '', $field['css']);
-                $field['css'] = substr($field['css'], 0, 200); // Limit length
+                $field['css'] = strip_tags( $field['css'] );
+                $field['css'] = preg_replace( '/[^a-zA-Z0-9\s\-_\.\#\:\;\,\%\(\)]/', '', $field['css'] );
+                $field['css'] = substr( $field['css'], 0, 200 ); // Limit length
             }
 
             // Sanitize options array
-            if (isset($field['options']) && is_array($field['options'])) {
-                foreach ($field['options'] as $key => $value) {
-                    $field['options'][sanitize_key($key)] = sanitize_text_field($value);
+            if ( isset( $field['options'] ) && is_array( $field['options'] ) ) {
+                foreach ( $field['options'] as $key => $value ) {
+                    $field['options'][ sanitize_key( $key ) ] = sanitize_text_field( $value );
                 }
             }
 
             // Handle google_map field: Auto-populate missing required properties
-            if (($field['input_type'] === 'google_map' || $field['template'] === 'google_map')) {
+            if ( ( $field['input_type'] === 'google_map' || $field['template'] === 'google_map' ) ) {
                 // Ensure all required Google Map properties exist with defaults
-                if (!isset($field['zoom']) || empty($field['zoom'])) {
+                if ( ! isset( $field['zoom'] ) || empty( $field['zoom'] ) ) {
                     $field['zoom'] = '12';
                 }
-                if (!isset($field['default_pos']) || empty($field['default_pos'])) {
+                if ( ! isset( $field['default_pos'] ) || empty( $field['default_pos'] ) ) {
                     $field['default_pos'] = '40.7143528,-74.0059731';
                 }
-                if (!isset($field['directions'])) {
+                if ( ! isset( $field['directions'] ) ) {
                     $field['directions'] = false;
                 }
-                if (!isset($field['address']) || empty($field['address'])) {
+                if ( ! isset( $field['address'] ) || empty( $field['address'] ) ) {
                     $field['address'] = 'no';
                 }
-                if (!isset($field['show_lat']) || empty($field['show_lat'])) {
+                if ( ! isset( $field['show_lat'] ) || empty( $field['show_lat'] ) ) {
                     $field['show_lat'] = 'no';
                 }
-                if (!isset($field['show_in_post']) || empty($field['show_in_post'])) {
+                if ( ! isset( $field['show_in_post'] ) || empty( $field['show_in_post'] ) ) {
                     $field['show_in_post'] = 'yes';
                 }
             }
@@ -1953,8 +2037,8 @@ class RestController extends WP_REST_Controller {
             // CRITICAL FIX: Ensure 'show_in_post' is set for ALL meta fields
             // This is a safety net in case Field_Templates didn't set it (shouldn't happen but ensures consistency)
             // Matches WPUF default behavior where all meta fields show data in posts by default
-            if (isset($field['is_meta']) && $field['is_meta'] === 'yes') {
-                if (!isset($field['show_in_post']) || empty($field['show_in_post']) || $field['show_in_post'] === null) {
+            if ( isset( $field['is_meta'] ) && $field['is_meta'] === 'yes' ) {
+                if ( ! isset( $field['show_in_post'] ) || empty( $field['show_in_post'] ) || $field['show_in_post'] === null ) {
                     $field['show_in_post'] = 'yes';
                 }
             }
@@ -1963,13 +2047,13 @@ class RestController extends WP_REST_Controller {
             // This is a safety net to ensure field labels are shown by default
             // Matches WPUF default behavior where all fields show labels by default
             // 'no' means "don't hide" = show the label (default behavior)
-            if (!isset($field['hide_field_label']) || empty($field['hide_field_label']) || $field['hide_field_label'] === null) {
+            if ( ! isset( $field['hide_field_label'] ) || empty( $field['hide_field_label'] ) || $field['hide_field_label'] === null ) {
                 $field['hide_field_label'] = 'no';
             }
 
             // CRITICAL FIX: Ensure 'button_label' is set for upload fields
             // Matches WPUF default behavior for image/file upload fields
-            if (!isset($field['button_label']) || empty($field['button_label'])) {
+            if ( ! isset( $field['button_label'] ) || empty( $field['button_label'] ) ) {
                 $template = $field['template'] ?? '';
                 $defaults = [
                     'image_upload' => 'Select Image',
@@ -1977,24 +2061,24 @@ class RestController extends WP_REST_Controller {
                     'featured_image' => 'Select Image',
                     'avatar' => 'Select Image',
                     'user_avatar' => 'Select Image',
-                    'profile_photo' => 'Select Image'
+                    'profile_photo' => 'Select Image',
                 ];
-                if (isset($defaults[$template])) {
-                    $field['button_label'] = $defaults[$template];
+                if ( isset( $defaults[ $template ] ) ) {
+                    $field['button_label'] = $defaults[ $template ];
                 }
             }
 
             // CRITICAL ENFORCEMENT: Ensure column_field ALWAYS has min_column and max_column
             // This fixes old AI-generated forms that were created before these properties were added
             // Matches normal builder behavior where these are REQUIRED for slider to work
-            if (($field['template'] ?? '') === 'column_field' || ($field['input_type'] ?? '') === 'column_field') {
+            if ( ( $field['template'] ?? '' ) === 'column_field' || ( $field['input_type'] ?? '' ) === 'column_field' ) {
                 // Enforce columns as integer
-                if (isset($field['columns'])) {
-                    $field['columns'] = intval($field['columns']);
+                if ( isset( $field['columns'] ) ) {
+                    $field['columns'] = intval( $field['columns'] );
                     // Clamp between 1 and 3
-                    if ($field['columns'] < 1) {
+                    if ( $field['columns'] < 1 ) {
                         $field['columns'] = 1;
-                    } elseif ($field['columns'] > 3) {
+                    } elseif ( $field['columns'] > 3 ) {
                         $field['columns'] = 3;
                     }
                 } else {
@@ -2006,29 +2090,29 @@ class RestController extends WP_REST_Controller {
                 $field['max_column'] = 3;
 
                 // Ensure column_space exists
-                if (!isset($field['column_space']) || $field['column_space'] === '') {
+                if ( ! isset( $field['column_space'] ) || $field['column_space'] === '' ) {
                     $field['column_space'] = '5';
                 }
 
                 // Ensure inner_fields and inner_columns_size are properly structured
-                if (!isset($field['inner_fields']) || !is_array($field['inner_fields'])) {
+                if ( ! isset( $field['inner_fields'] ) || ! is_array( $field['inner_fields'] ) ) {
                     $field['inner_fields'] = [];
-                    for ($i = 1; $i <= $field['columns']; $i++) {
-                        $field['inner_fields']['column-' . $i] = [];
+                    for ( $i = 1; $i <= $field['columns']; $i++ ) {
+                        $field['inner_fields'][ 'column-' . $i ] = [];
                     }
                 }
 
-                if (!isset($field['inner_columns_size']) || !is_array($field['inner_columns_size'])) {
+                if ( ! isset( $field['inner_columns_size'] ) || ! is_array( $field['inner_columns_size'] ) ) {
                     $field['inner_columns_size'] = [];
                     $column_width = 100 / $field['columns'];
-                    for ($i = 1; $i <= $field['columns']; $i++) {
-                        $field['inner_columns_size']["column-$i"] = number_format($column_width, 2, '.', '') . '%';
+                    for ( $i = 1; $i <= $field['columns']; $i++ ) {
+                        $field['inner_columns_size'][ "column-$i" ] = number_format( $column_width, 2, '.', '' ) . '%';
                     }
                 }
             }
 
             // Handle address_field: Auto-populate missing address structure
-            if (($field['input_type'] === 'address_field' || $field['template'] === 'address_field') && !isset($field['address'])) {
+            if ( ( $field['input_type'] === 'address_field' || $field['template'] === 'address_field' ) && ! isset( $field['address'] ) ) {
                 // AI didn't include the required address structure, add it as fallback
                 $field['address'] = [
                     'street_address' => [
@@ -2037,7 +2121,7 @@ class RestController extends WP_REST_Controller {
                         'required' => 'checked',
                         'label' => 'Address Line 1',
                         'value' => '',
-                        'placeholder' => ''
+                        'placeholder' => '',
                     ],
                     'street_address2' => [
                         'checked' => 'checked',
@@ -2045,7 +2129,7 @@ class RestController extends WP_REST_Controller {
                         'required' => '',
                         'label' => 'Address Line 2',
                         'value' => '',
-                        'placeholder' => ''
+                        'placeholder' => '',
                     ],
                     'city_name' => [
                         'checked' => 'checked',
@@ -2053,7 +2137,7 @@ class RestController extends WP_REST_Controller {
                         'required' => 'checked',
                         'label' => 'City',
                         'value' => '',
-                        'placeholder' => ''
+                        'placeholder' => '',
                     ],
                     'zip' => [
                         'checked' => 'checked',
@@ -2061,7 +2145,7 @@ class RestController extends WP_REST_Controller {
                         'required' => 'checked',
                         'label' => 'Zip Code',
                         'value' => '',
-                        'placeholder' => ''
+                        'placeholder' => '',
                     ],
                     'country_select' => [
                         'checked' => 'checked',
@@ -2071,7 +2155,7 @@ class RestController extends WP_REST_Controller {
                         'value' => '',
                         'country_list_visibility_opt_name' => 'all',
                         'country_select_hide_list' => [],
-                        'country_select_show_list' => []
+                        'country_select_show_list' => [],
                     ],
                     'state' => [
                         'checked' => 'checked',
@@ -2079,166 +2163,166 @@ class RestController extends WP_REST_Controller {
                         'required' => 'checked',
                         'label' => 'State',
                         'value' => '',
-                        'placeholder' => ''
-                    ]
+                        'placeholder' => '',
+                    ],
                 ];
             }
 
             // Sanitize address field nested structure (if present or just added)
-            if (isset($field['address']) && is_array($field['address'])) {
-                foreach ($field['address'] as $subfield_key => &$subfield) {
-                    if (is_array($subfield)) {
+            if ( isset( $field['address'] ) && is_array( $field['address'] ) ) {
+                foreach ( $field['address'] as $subfield_key => &$subfield ) {
+                    if ( is_array( $subfield ) ) {
                         // Sanitize each sub-field property
-                        if (isset($subfield['label'])) {
-                            $subfield['label'] = sanitize_text_field($subfield['label']);
+                        if ( isset( $subfield['label'] ) ) {
+                            $subfield['label'] = sanitize_text_field( $subfield['label'] );
                         }
-                        if (isset($subfield['placeholder'])) {
-                            $subfield['placeholder'] = sanitize_text_field($subfield['placeholder']);
+                        if ( isset( $subfield['placeholder'] ) ) {
+                            $subfield['placeholder'] = sanitize_text_field( $subfield['placeholder'] );
                         }
-                        if (isset($subfield['value'])) {
-                            $subfield['value'] = sanitize_text_field($subfield['value']);
+                        if ( isset( $subfield['value'] ) ) {
+                            $subfield['value'] = sanitize_text_field( $subfield['value'] );
                         }
                         // Keep other properties like 'checked', 'type', 'required' as-is (they're already validated)
                     }
                 }
-                unset($subfield); // Break reference
+                unset( $subfield ); // Break reference
             }
 
             // Handle taxonomy field: Auto-populate missing required properties
-            if ($field['input_type'] === 'taxonomy' || $field['template'] === 'taxonomy') {
+            if ( $field['input_type'] === 'taxonomy' || $field['template'] === 'taxonomy' ) {
                 // Add missing required properties with defaults
-                if (!isset($field['type'])) {
+                if ( ! isset( $field['type'] ) ) {
                     $field['type'] = 'select';
                 }
-                if (!isset($field['first'])) {
+                if ( ! isset( $field['first'] ) ) {
                     $field['first'] = '- Select -';
                 }
-                if (!isset($field['orderby'])) {
+                if ( ! isset( $field['orderby'] ) ) {
                     $field['orderby'] = 'name';
                 }
-                if (!isset($field['order'])) {
+                if ( ! isset( $field['order'] ) ) {
                     $field['order'] = 'ASC';
                 }
-                if (!isset($field['exclude_type'])) {
+                if ( ! isset( $field['exclude_type'] ) ) {
                     $field['exclude_type'] = 'exclude';
                 }
-                if (!isset($field['exclude'])) {
+                if ( ! isset( $field['exclude'] ) ) {
                     $field['exclude'] = [];
                 }
-                if (!isset($field['woo_attr'])) {
+                if ( ! isset( $field['woo_attr'] ) ) {
                     $field['woo_attr'] = 'no';
                 }
-                if (!isset($field['woo_attr_vis'])) {
+                if ( ! isset( $field['woo_attr_vis'] ) ) {
                     $field['woo_attr_vis'] = 'no';
                 }
             }
 
             // Handle phone_field: Auto-populate missing required properties
-            if ($field['input_type'] === 'phone_field' || $field['template'] === 'phone_field') {
-                if (!isset($field['show_country_list'])) {
+            if ( $field['input_type'] === 'phone_field' || $field['template'] === 'phone_field' ) {
+                if ( ! isset( $field['show_country_list'] ) ) {
                     $field['show_country_list'] = 'yes';
                 }
-                if (!isset($field['auto_placeholder'])) {
+                if ( ! isset( $field['auto_placeholder'] ) ) {
                     $field['auto_placeholder'] = 'yes';
                 }
-                if (!isset($field['country_list'])) {
+                if ( ! isset( $field['country_list'] ) ) {
                     $field['country_list'] = [
                         'name' => '',
                         'country_list_visibility_opt_name' => 'all',
                         'country_select_show_list' => [],
-                        'country_select_hide_list' => []
+                        'country_select_hide_list' => [],
                     ];
                 }
             }
 
             // Handle password field: Auto-populate missing required properties
-            if ($field['input_type'] === 'password' || $field['template'] === 'password') {
-                if (!isset($field['min_length'])) {
+            if ( $field['input_type'] === 'password' || $field['template'] === 'password' ) {
+                if ( ! isset( $field['min_length'] ) ) {
                     $field['min_length'] = '5';
                 }
-                if (!isset($field['repeat_pass'])) {
+                if ( ! isset( $field['repeat_pass'] ) ) {
                     $field['repeat_pass'] = 'yes';
                 }
-                if (!isset($field['re_pass_label'])) {
+                if ( ! isset( $field['re_pass_label'] ) ) {
                     $field['re_pass_label'] = 'Confirm Password';
                 }
-                if (!isset($field['pass_strength'])) {
+                if ( ! isset( $field['pass_strength'] ) ) {
                     $field['pass_strength'] = 'yes';
                 }
-                if (!isset($field['re_pass_placeholder'])) {
+                if ( ! isset( $field['re_pass_placeholder'] ) ) {
                     $field['re_pass_placeholder'] = '';
                 }
-                if (!isset($field['minimum_strength'])) {
+                if ( ! isset( $field['minimum_strength'] ) ) {
                     $field['minimum_strength'] = 'weak';
                 }
-                if (!isset($field['re_pass_help'])) {
+                if ( ! isset( $field['re_pass_help'] ) ) {
                     $field['re_pass_help'] = '';
                 }
             }
 
             // Handle country_list_field: Auto-populate missing required properties
-            if ($field['input_type'] === 'country_list' || $field['template'] === 'country_list_field') {
-                if (!isset($field['country_list'])) {
+            if ( $field['input_type'] === 'country_list' || $field['template'] === 'country_list_field' ) {
+                if ( ! isset( $field['country_list'] ) ) {
                     $field['country_list'] = [
                         'name' => '',
                         'country_list_visibility_opt_name' => 'all',
                         'country_select_show_list' => [],
-                        'country_select_hide_list' => []
+                        'country_select_hide_list' => [],
                     ];
                 }
             }
 
             // Handle date_field: Auto-populate missing required properties
-            if ($field['input_type'] === 'date' || $field['input_type'] === 'date_field' || $field['template'] === 'date_field') {
-                if (!isset($field['format'])) {
+            if ( $field['input_type'] === 'date' || $field['input_type'] === 'date_field' || $field['template'] === 'date_field' ) {
+                if ( ! isset( $field['format'] ) ) {
                     $field['format'] = 'dd/mm/yy';
                 }
             }
 
             // Handle file_upload: Auto-populate missing required properties
-            if ($field['input_type'] === 'file_upload' || $field['template'] === 'file_upload') {
-                if (!isset($field['max_size'])) {
+            if ( $field['input_type'] === 'file_upload' || $field['template'] === 'file_upload' ) {
+                if ( ! isset( $field['max_size'] ) ) {
                     $field['max_size'] = '1024';
                 }
-                if (!isset($field['count'])) {
+                if ( ! isset( $field['count'] ) ) {
                     $field['count'] = '1';
                 }
-                if (!isset($field['extension'])) {
-                    $field['extension'] = ['images', 'audio', 'video', 'pdf', 'office', 'zip', 'csv'];
+                if ( ! isset( $field['extension'] ) ) {
+                    $field['extension'] = [ 'images', 'audio', 'video', 'pdf', 'office', 'zip', 'csv' ];
                 }
             }
 
             // Handle image_upload and other image upload variants: Auto-populate missing required properties
-            if ($field['input_type'] === 'image_upload' || $field['template'] === 'image_upload' ||
+            if ( $field['input_type'] === 'image_upload' || $field['template'] === 'image_upload' ||
                 $field['template'] === 'featured_image' || $field['template'] === 'avatar' ||
-                $field['template'] === 'user_avatar' || $field['template'] === 'profile_photo') {
-                if (!isset($field['max_size'])) {
+                $field['template'] === 'user_avatar' || $field['template'] === 'profile_photo' ) {
+                if ( ! isset( $field['max_size'] ) ) {
                     $field['max_size'] = '2048';
                 }
-                if (!isset($field['count'])) {
+                if ( ! isset( $field['count'] ) ) {
                     $field['count'] = '1';
                 }
-                if (!isset($field['readonly'])) {
+                if ( ! isset( $field['readonly'] ) ) {
                     $field['readonly'] = 'no';
                 }
-                if (!isset($field['show_icon'])) {
+                if ( ! isset( $field['show_icon'] ) ) {
                     $field['show_icon'] = 'no';
                 }
             }
 
             // Handle embed: Auto-populate missing required properties
-            if ($field['input_type'] === 'embed' || $field['template'] === 'embed') {
-                if (!isset($field['preview_width'])) {
+            if ( $field['input_type'] === 'embed' || $field['template'] === 'embed' ) {
+                if ( ! isset( $field['preview_width'] ) ) {
                     $field['preview_width'] = '123';
                 }
-                if (!isset($field['preview_height'])) {
+                if ( ! isset( $field['preview_height'] ) ) {
                     $field['preview_height'] = '456';
                 }
             }
 
             // Handle ratings: Auto-populate missing required properties
-            if ($field['input_type'] === 'ratings' || $field['template'] === 'ratings') {
-                if (!isset($field['options']) || empty($field['options'])) {
+            if ( $field['input_type'] === 'ratings' || $field['template'] === 'ratings' ) {
+                if ( ! isset( $field['options'] ) || empty( $field['options'] ) ) {
                     $field['options'] = [
                         '1' => '1',
                         '2' => '2',
@@ -2247,20 +2331,20 @@ class RestController extends WP_REST_Controller {
                         '5' => '5',
                     ];
                 }
-                if (!isset($field['selected'])) {
+                if ( ! isset( $field['selected'] ) ) {
                     $field['selected'] = '';
                 }
-                if (!isset($field['inline'])) {
+                if ( ! isset( $field['inline'] ) ) {
                     $field['inline'] = 'no';
                 }
             }
 
             // Handle shortcode: Validate format and ensure square brackets
-            if ($field['input_type'] === 'shortcode' || $field['template'] === 'shortcode') {
-                if (isset($field['shortcode']) && !empty($field['shortcode'])) {
+            if ( $field['input_type'] === 'shortcode' || $field['template'] === 'shortcode' ) {
+                if ( isset( $field['shortcode'] ) && ! empty( $field['shortcode'] ) ) {
                     // Ensure shortcode has proper format with square brackets
-                    $shortcode = trim($field['shortcode']);
-                    if (!empty($shortcode) && $shortcode[0] !== '[') {
+                    $shortcode = trim( $field['shortcode'] );
+                    if ( ! empty( $shortcode ) && $shortcode[0] !== '[' ) {
                         $field['shortcode'] = "[$shortcode]";
                     }
                 } else {
@@ -2270,55 +2354,58 @@ class RestController extends WP_REST_Controller {
             }
 
             // Handle column_field: Auto-populate missing required properties
-            if ($field['input_type'] === 'column_field' || $field['template'] === 'column_field') {
-                if (!isset($field['columns']) || empty($field['columns'])) {
+            if ( $field['input_type'] === 'column_field' || $field['template'] === 'column_field' ) {
+                if ( ! isset( $field['columns'] ) || empty( $field['columns'] ) ) {
                     $field['columns'] = '2';
                 }
-                if (!isset($field['inner_fields']) || empty($field['inner_fields'])) {
-                    $field['inner_fields'] = [ 'column-1' => [], 'column-2' => [] ];
+                if ( ! isset( $field['inner_fields'] ) || empty( $field['inner_fields'] ) ) {
+                    $field['inner_fields'] = [
+                        'column-1' => [],
+                        'column-2' => [],
+                    ];
                 }
             }
 
             // Handle pricing fields: Auto-populate missing required properties
-            if (in_array($field['input_type'], ['pricing_radio', 'pricing_checkbox', 'pricing_dropdown', 'pricing_multiselect']) ||
-                in_array($field['template'], ['pricing_radio', 'pricing_checkbox', 'pricing_dropdown', 'pricing_multiselect'])) {
-                if (!isset($field['options']) || empty($field['options'])) {
+            if ( in_array( $field['input_type'], [ 'pricing_radio', 'pricing_checkbox', 'pricing_dropdown', 'pricing_multiselect' ], true ) ||
+                in_array( $field['template'], [ 'pricing_radio', 'pricing_checkbox', 'pricing_dropdown', 'pricing_multiselect' ], true ) ) {
+                if ( ! isset( $field['options'] ) || empty( $field['options'] ) ) {
                     $field['options'] = [
                         'first_item' => 'First Item',
                         'second_item' => 'Second Item',
                         'third_item' => 'Third Item',
                     ];
                 }
-                if (!isset($field['prices']) || empty($field['prices'])) {
+                if ( ! isset( $field['prices'] ) || empty( $field['prices'] ) ) {
                     $field['prices'] = [
                         'first_item' => '10',
                         'second_item' => '25',
                         'third_item' => '50',
                     ];
                 }
-                if (!isset($field['enable_quantity'])) {
+                if ( ! isset( $field['enable_quantity'] ) ) {
                     $field['enable_quantity'] = 'no';
                 }
                 // Pricing radio and checkbox specific
-                if (in_array($field['template'], ['pricing_radio', 'pricing_checkbox'])) {
-                    if (!isset($field['inline'])) {
+                if ( in_array( $field['template'], [ 'pricing_radio', 'pricing_checkbox' ], true ) ) {
+                    if ( ! isset( $field['inline'] ) ) {
                         $field['inline'] = 'no';
                     }
-                    if (!isset($field['show_price_label'])) {
+                    if ( ! isset( $field['show_price_label'] ) ) {
                         $field['show_price_label'] = 'yes';
                     }
                 }
                 // Pricing dropdown specific
-                if ($field['template'] === 'pricing_dropdown') {
-                    if (!isset($field['first'])) {
+                if ( $field['template'] === 'pricing_dropdown' ) {
+                    if ( ! isset( $field['first'] ) ) {
                         $field['first'] = '- Select -';
                     }
                 }
             }
 
             // Handle cart_total: Auto-populate missing required properties
-            if ($field['input_type'] === 'cart_total' || $field['template'] === 'cart_total') {
-                if (!isset($field['show_summary'])) {
+            if ( $field['input_type'] === 'cart_total' || $field['template'] === 'cart_total' ) {
+                if ( ! isset( $field['show_summary'] ) ) {
                     $field['show_summary'] = 'yes';
                 }
             }
@@ -2339,13 +2426,13 @@ class RestController extends WP_REST_Controller {
      * @param WP_REST_Request $request The REST request
      * @return bool|WP_Error True if valid, WP_Error if not
      */
-    private function perform_security_validation(WP_REST_Request $request) {
+    private function perform_security_validation( WP_REST_Request $request ) {
         // Verify user capabilities with enhanced checks
-        if (!current_user_can('edit_posts')) {
+        if ( ! current_user_can( 'edit_posts' ) ) {
             return new WP_Error(
                 'insufficient_capabilities',
-                __('You do not have permission to use AI form builder', 'wp-user-frontend'),
-                ['status' => 403]
+                __( 'You do not have permission to use AI form builder', 'wp-user-frontend' ),
+                [ 'status' => 403 ]
             );
         }
 
@@ -2353,11 +2440,11 @@ class RestController extends WP_REST_Controller {
 
         // Validate session integrity
         $session_token = wp_get_session_token();
-        if (empty($session_token)) {
+        if ( empty( $session_token ) ) {
             return new WP_Error(
                 'invalid_session',
-                __('Invalid user session', 'wp-user-frontend'),
-                ['status' => 401]
+                __( 'Invalid user session', 'wp-user-frontend' ),
+                [ 'status' => 401 ]
             );
         }
 

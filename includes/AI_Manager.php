@@ -71,42 +71,47 @@ class AI_Manager {
      */
     public function enqueue_scripts() {
         // Safe fetch of AI settings
-        $wpuf_ai = get_option('wpuf_ai', []);
+        $wpuf_ai = get_option( 'wpuf_ai', [] );
 
         // Localize the data for Vue components to the main form builder script
-        wp_localize_script('wpuf-form-builder-mixins', 'wpufAIFormBuilder', [
-            'rest_url' => get_rest_url(null, '/'),
-            'nonce' => wp_create_nonce('wp_rest'),
-            'provider' => $wpuf_ai['ai_provider'] ?? 'openai',
-            'temperature' => $wpuf_ai['temperature'] ?? 0.7,
-            'maxTokens' => $wpuf_ai['max_tokens'] ?? 2000,
-            'assetUrl' => WPUF_ASSET_URI,
-            'isProActive' => class_exists('WP_User_Frontend_Pro'),
-            'strings' => [
-                'generating' => __('Generating form...', 'wp-user-frontend'),
-                'error' => __('Error occurred while generating form', 'wp-user-frontend'),
-                'success' => __('Form generated successfully', 'wp-user-frontend'),
+        wp_localize_script(
+            'wpuf-form-builder-mixins',
+            'wpufAIFormBuilder',
+            [
+                'rest_url'    => get_rest_url( null, '/' ),
+                'nonce'       => wp_create_nonce( 'wp_rest' ),
+                'provider'    => $wpuf_ai['ai_provider'] ?? 'openai',
+                'temperature' => $wpuf_ai['temperature'] ?? 0.7,
+                'maxTokens'   => $wpuf_ai['max_tokens'] ?? 2000,
+                'assetUrl'    => WPUF_ASSET_URI,
+                'isProActive' => class_exists( 'WP_User_Frontend_Pro' ),
+                'strings'     => [
+                    'generating' => __( 'Generating form...', 'wp-user-frontend' ),
+                    'error'      => __( 'Error occurred while generating form', 'wp-user-frontend' ),
+                    'success'    => __( 'Form generated successfully', 'wp-user-frontend' ),
+                ],
             ]
-        ]);
+        );
     }
 
     /**
      * Enqueue admin scripts
      */
-    public function enqueue_admin_scripts($hook) {
+    public function enqueue_admin_scripts( $hook ) {
         // Fetch AI settings once and cast to array to avoid "array offset on bool" notices
-        $wpuf_ai = (array) get_option('wpuf_ai', []);
+        $wpuf_ai = (array) get_option( 'wpuf_ai', [] );
 
         // Get provider with fallback
         $provider = $wpuf_ai['ai_provider'] ?? 'openai';
 
         // Check if API key is available
-        $hasApiKey = !empty($wpuf_ai['ai_api_key']);
+        $has_api_key = ! empty( $wpuf_ai['ai_api_key'] );
 
         // Determine form type based on current admin page
         $form_type = 'post'; // Default to post
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only screen detection, no state change.
         if ( isset( $_GET['page'] ) ) {
-            $page = sanitize_text_field( wp_unslash( $_GET['page'] ) );
+            $page = sanitize_text_field( wp_unslash( $_GET['page'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             if ( 'wpuf-profile-forms' === $page ) {
                 $form_type = 'profile';
             } elseif ( 'wpuf-post-forms' === $page ) {
@@ -119,7 +124,7 @@ class AI_Manager {
             'nonce'                 => wp_create_nonce( 'wp_rest' ),
             'ajaxUrl'               => admin_url( 'admin-ajax.php' ),
             'provider'              => $provider,
-            'hasApiKey'             => $hasApiKey,
+            'hasApiKey'             => $has_api_key,
             'formType'              => $form_type,
             'isProActive'           => class_exists( 'WP_User_Frontend_Pro' ),
             'promptTemplates'       => $this->get_all_prompt_templates(),
@@ -132,15 +137,18 @@ class AI_Manager {
         ];
 
         // Localize to the main form builder script
-        wp_localize_script('wpuf-form-builder-mixins', 'wpufAIFormBuilder', $localization_data);
+        wp_localize_script( 'wpuf-form-builder-mixins', 'wpufAIFormBuilder', $localization_data );
 
         // Also add a fallback by injecting directly into the page
-        if ($this->is_ai_form_builder_admin_page($hook)) {
-            add_action('admin_footer', function() use ($localization_data) {
-                echo '<script type="text/javascript">';
-                echo 'window.wpufAIFormBuilder = ' . wp_json_encode($localization_data) . ';';
-                echo '</script>';
-            });
+        if ( $this->is_ai_form_builder_admin_page( $hook ) ) {
+            add_action(
+                'admin_footer',
+                function () use ( $localization_data ) {
+                    echo '<script type="text/javascript">';
+                    echo 'window.wpufAIFormBuilder = ' . wp_json_encode( $localization_data ) . ';';
+                    echo '</script>';
+                }
+            );
         }
     }
 
@@ -150,7 +158,7 @@ class AI_Manager {
      * @param string $hook Current admin page hook
      * @return bool
      */
-    private function is_ai_form_builder_admin_page($hook) {
+    private function is_ai_form_builder_admin_page( $hook ) {
         // Check if we're on form builder admin pages
         $ai_pages = [
             'wpuf-post-forms', // Forms page
@@ -159,13 +167,14 @@ class AI_Manager {
         ];
 
         // Check by hook suffix
-        if (in_array($hook, $ai_pages)) {
+        if ( in_array( $hook, $ai_pages, true ) ) {
             return true;
         }
 
         // Check by page parameter
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only screen detection, no state change.
         if ( isset( $_GET['page'] ) ) {
-            $page = sanitize_text_field( wp_unslash( $_GET['page'] ) );
+            $page = sanitize_text_field( wp_unslash( $_GET['page'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             if ( strpos( $page, 'wpuf' ) !== false ) {
                 return true;
             }
@@ -180,14 +189,14 @@ class AI_Manager {
      * @return array
      */
     public function get_ai_settings() {
-        $settings = get_option('wpuf_ai', []);
+        $settings = get_option( 'wpuf_ai', [] );
 
         return [
             'provider'   => $settings['ai_provider'] ?? 'openai',
             'model'      => $settings['ai_model'] ?? 'gpt-3.5-turbo',
-            'temperature'=> isset($settings['temperature']) ? floatval($settings['temperature']) : 0.7,
-            'max_tokens' => isset($settings['max_tokens']) ? intval($settings['max_tokens']) : 2000,
-            'has_api_key'=> !empty($settings['ai_api_key']),
+            'temperature' => isset( $settings['temperature'] ) ? floatval( $settings['temperature'] ) : 0.7,
+            'max_tokens' => isset( $settings['max_tokens'] ) ? intval( $settings['max_tokens'] ) : 2000,
+            'has_api_key' => ! empty( $settings['ai_api_key'] ),
         ];
     }
 
@@ -351,7 +360,50 @@ class AI_Manager {
          * @param string $form_type   Form type ('post' or 'profile')
          * @param string $integration Integration identifier (empty for no integration)
          */
-        return apply_filters( 'wpuf_ai_prompt_templates', $templates, $form_type, $integration );
+        $templates = apply_filters( 'wpuf_ai_prompt_templates', $templates, $form_type, $integration );
+
+        return $this->unique_prompt_templates( $templates );
+    }
+
+    /**
+     * Drop prompt templates whose id is already listed
+     *
+     * The free plugin and the wpuf_ai_prompt_templates filter can both supply
+     * the same template (Pro adds the default registration prompts again), which
+     * rendered every prompt button twice. A later entry replaces an earlier one
+     * with the same id but keeps its position, so Pro can still override a free
+     * template's label.
+     *
+     * @since 4.3.13
+     *
+     * @param array $templates Templates with 'id' and 'label' keys
+     *
+     * @return array Templates with unique ids
+     */
+    protected function unique_prompt_templates( $templates ) {
+        if ( ! is_array( $templates ) ) {
+            return [];
+        }
+
+        $positions = [];
+        $unique    = [];
+
+        foreach ( $templates as $template ) {
+            $id = isset( $template['id'] ) ? (string) $template['id'] : '';
+
+            if ( '' !== $id && isset( $positions[ $id ] ) ) {
+                $unique[ $positions[ $id ] ] = $template;
+                continue;
+            }
+
+            if ( '' !== $id ) {
+                $positions[ $id ] = count( $unique );
+            }
+
+            $unique[] = $template;
+        }
+
+        return $unique;
     }
 
     /**

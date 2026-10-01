@@ -960,7 +960,7 @@ function wpuf_get_gateways( $context = 'admin' ) {
  * it is sanitized, then matched against the registered gateways. Anything that is
  * not a known gateway is reported as unknown instead of being echoed back.
  *
- * @since WPUF_SINCE
+ * @since 4.3.13
  *
  * @param string $payment_method Stored payment method.
  *

@@ -374,7 +374,7 @@ class AI_Manager {
      * with the same id but keeps its position, so Pro can still override a free
      * template's label.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.13
      *
      * @param array $templates Templates with 'id' and 'label' keys
      *

@@ -1739,7 +1739,7 @@ class RestController extends WP_REST_Controller {
      * template/input_type check rejects every AI form. Only that exact shape is
      * rewritten, so a genuinely mismatched pairing is still rejected.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.13
      *
      * @param array $field Field definition.
      *

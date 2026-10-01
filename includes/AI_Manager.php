@@ -370,7 +370,9 @@ class AI_Manager {
      *
      * The free plugin and the wpuf_ai_prompt_templates filter can both supply
      * the same template (Pro adds the default registration prompts again), which
-     * rendered every prompt button twice. The first occurrence wins.
+     * rendered every prompt button twice. A later entry replaces an earlier one
+     * with the same id but keeps its position, so Pro can still override a free
+     * template's label.
      *
      * @since WPUF_SINCE
      *
@@ -383,18 +385,22 @@ class AI_Manager {
             return [];
         }
 
-        $seen   = [];
-        $unique = [];
+        $positions = [];
+        $unique    = [];
 
         foreach ( $templates as $template ) {
             $id = isset( $template['id'] ) ? (string) $template['id'] : '';
 
-            if ( '' !== $id && isset( $seen[ $id ] ) ) {
+            if ( '' !== $id && isset( $positions[ $id ] ) ) {
+                $unique[ $positions[ $id ] ] = $template;
                 continue;
             }
 
-            $seen[ $id ] = true;
-            $unique[]    = $template;
+            if ( '' !== $id ) {
+                $positions[ $id ] = count( $unique );
+            }
+
+            $unique[] = $template;
         }
 
         return $unique;

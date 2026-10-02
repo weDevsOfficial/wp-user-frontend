@@ -54,6 +54,11 @@ class Subscription extends WP_REST_Controller {
             '/' . $this->base . '/(?P<subscription_id>\d+)',
             [
                 [
+                    'methods'             => WP_REST_Server::READABLE,
+                    'callback'            => [ $this, 'get_item' ],
+                    'permission_callback' => [ $this, 'permission_check' ],
+                ],
+                [
                     'methods'             => WP_REST_Server::EDITABLE,
                     'callback'            => [ $this, 'edit_item' ],
                     'permission_callback' => [ $this, 'permission_check' ],
@@ -243,6 +248,52 @@ class Subscription extends WP_REST_Controller {
             [
                 'success'    => true,
                 'subscribers' => $subscribers,
+            ]
+        );
+    }
+
+    /**
+     * Get a single subscription by ID
+     *
+     * @since 4.2.7
+     *
+     * @param WP_REST_Request $request Full details about the request.
+     *
+     * @return WP_REST_Response
+     */
+    public function get_item( $request ) {
+        $subscription_id = ! empty( $request['subscription_id'] ) ? (int) sanitize_text_field( $request['subscription_id'] ) : 0;
+
+        if ( ! $subscription_id ) {
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => __( 'Subscription ID is required', 'wp-user-frontend' ),
+                ]
+            );
+        }
+
+        $args = [
+            'post_status'    => 'any',
+            'posts_per_page' => 1,
+            'p'              => $subscription_id,
+        ];
+
+        $subscriptions = wpuf()->subscription->get_subscriptions( $args );
+
+        if ( ! is_array( $subscriptions ) || empty( $subscriptions ) ) {
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => __( 'Subscription not found', 'wp-user-frontend' ),
+                ]
+            );
+        }
+
+        return new WP_REST_Response(
+            [
+                'success'      => true,
+                'subscription' => $subscriptions[0],
             ]
         );
     }

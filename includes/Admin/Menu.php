@@ -291,7 +291,7 @@ class Menu {
      * @return void
      */
     public function subscription_menu_page() {
-        $page = WPUF_INCLUDES . '/Admin/views/subscriptions.php';
+        $page = WPUF_INCLUDES . '/Admin/views/subscriptions-react.php';
 
         wpuf_require_once( $page );
     }

@@ -31,14 +31,14 @@ const Header = ( { utm = 'wpuf-header' } ) => {
             <div className="wpuf-flex wpuf-justify-start wpuf-items-center">
                 <img src={ logoUrl } alt="WPUF Icon" className="wpuf-w-12 wpuf-mr-4" />
                 <h2 className="wpuf-text-2xl wpuf-leading-7 wpuf-font-bold">{ headerTitle }</h2>
-                <span className="wpuf-ml-2 wpuf-inline-flex wpuf-items-center wpuf-rounded-full wpuf-bg-green-100 wpuf-px-2 wpuf-py-1 wpuf-text-xs wpuf-font-medium wpuf-text-green-700 wpuf-ring-1 wpuf-ring-inset wpuf-ring-green-600/20">
-                    v{ headerVersion }
-                </span>
                 { headerPlan && (
                     <span className="wpuf-ml-2 wpuf-inline-flex wpuf-items-center wpuf-rounded-full wpuf-bg-green-100 wpuf-px-2 wpuf-py-1 wpuf-text-xs wpuf-font-semibold wpuf-text-green-700 wpuf-ring-1 wpuf-ring-inset wpuf-ring-green-600/20">
                         { headerPlan }
                     </span>
                 ) }
+                <span className="wpuf-ml-2 wpuf-inline-flex wpuf-items-center wpuf-rounded-full wpuf-bg-green-100 wpuf-px-2 wpuf-py-1 wpuf-text-xs wpuf-font-medium wpuf-text-green-700 wpuf-ring-1 wpuf-ring-inset wpuf-ring-green-600/20">
+                    v{ headerVersion }
+                </span>
                 { ! wpuf.isProActive && (
                     <a
                         href={ upgradeUrl }
@@ -56,7 +56,7 @@ const Header = ( { utm = 'wpuf-header' } ) => {
                     className="wpuf-border wpuf-border-gray-100 wpuf-mr-[16px] wpuf-rounded-full wpuf-p-1 wpuf-shadow-sm hover:wpuf-bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 ></span>
                 <a
-                    className="wpuf-border wpuf-border-gray-100 wpuf-mr-[16px] wpuf-canny-link wpuf-text-center wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-shadow-sm hover:wpuf-bg-slate-100 focus:wpuf-bg-slate-100"
+                    className="wpuf-border wpuf-border-gray-100 wpuf-mr-[16px] wpuf-feedback-link wpuf-text-center wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-shadow-sm hover:wpuf-bg-slate-100 focus:wpuf-bg-slate-100"
                     target="_blank"
                     rel="noopener noreferrer"
                     href="https://feedback.wedevs.com/b/user-frontend"

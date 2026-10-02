@@ -1,9 +1,6 @@
 const colors = require('tailwindcss/colors');
 
-import {
-    scopedPreflightStyles,
-    isolateInsideOfContainer,
-} from 'tailwindcss-scoped-preflight';
+const { scopedPreflightStyles, isolateInsideOfContainer } = require('tailwindcss-scoped-preflight');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -21,12 +18,16 @@ module.exports = {
         './templates/**/*.php',
         'wpuf-functions.php',
         './src/**/*.{js,css}',
+        './assets/js/components-react/**/*.{js,jsx}',
+        './assets/js/subscriptions-react.jsx',
+        './src/js/components-react/**/*.{js,jsx}',
+        './src/js/subscriptions-react.jsx',
         // Free User Directory module templates
         './modules/user-directory/**/*.php',
         './modules/user-directory/views/**/*.php',
     ],
     theme: {
-         extend: {
+        extend: {
             colors: {
                 primary: colors.emerald[600],
                 primaryHover: colors.emerald[500],
@@ -49,7 +50,7 @@ module.exports = {
     plugins: [
         require('@tailwindcss/forms')({ strategy: 'class' }),
         require('daisyui'),
-        scopedPreflightStyles( {
+        scopedPreflightStyles({
             isolationStrategy: isolateInsideOfContainer(
                 [
                     '.wpuf_packs',

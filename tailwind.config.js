@@ -1,42 +1,56 @@
 const colors = require('tailwindcss/colors');
 
-import {
-    scopedPreflightStyles,
-    isolateInsideOfContainer,
-} from 'tailwindcss-scoped-preflight';
+const { scopedPreflightStyles, isolateInsideOfContainer } = require('tailwindcss-scoped-preflight');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     prefix: 'wpuf-',
     content: [
-        // Original paths (critical for form builder - keeps @tailwindcss/forms styles)
         './assets/**/*.{js,jsx,ts,tsx,vue,html}',
         './includes/Admin/**/*.php',
         './includes/Free/Free_Loader.php',
         './includes/Admin/template-parts/*.php',
         './admin/form-builder/views/*.php',
-        './admin/form-builder/assets/js/**/*.php',
+        // Vue cleanup: old Vue component PHP templates deleted
+        // './admin/form-builder/assets/js/**/*.php',
+        './admin/form-builder/src/**/*.{js,jsx}',
+        './admin/forms-list/src/**/*.{js,jsx}',
         './templates/**/*.php',
         'wpuf-functions.php',
-        // New paths from upstream (for subscription templates)
-        './templates/**/*.php',
         './src/**/*.{js,css}',
+        './assets/js/components-react/**/*.{js,jsx}',
+        './assets/js/subscriptions-react.jsx',
+        './src/js/components-react/**/*.{js,jsx}',
+        './src/js/subscriptions-react.jsx',
         // Free User Directory module templates
         './modules/user-directory/**/*.php',
         './modules/user-directory/views/**/*.php',
     ],
     theme: {
-         extend: {
+        extend: {
             colors: {
                 primary: colors.emerald[600],
                 primaryHover: colors.emerald[500],
-            }
+            },
+            spacing: {
+                '1.75': '7px',
+                '3.75': '15px',
+                '4.5': '18px',
+                '13': '52px',
+            },
+            fontSize: {
+                '2xs': '13px',
+            },
+            minWidth: {
+                'btn-cancel': '101px',
+                'btn-save': '158px',
+            },
         },
     },
     plugins: [
         require('@tailwindcss/forms')({ strategy: 'class' }),
         require('daisyui'),
-        scopedPreflightStyles( {
+        scopedPreflightStyles({
             isolationStrategy: isolateInsideOfContainer(
                 [
                     '.wpuf_packs',

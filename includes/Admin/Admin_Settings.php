@@ -27,6 +27,7 @@ class Admin_Settings {
 
     public function __construct() {
         wpuf_require_once( WPUF_INCLUDES . '/functions/settings-options.php' );
+        wpuf_require_once( WPUF_INCLUDES . '/functions/settings-react.php' );
         wpuf_require_once( WPUF_ROOT . '/Lib/WeDevs_Settings_API.php' );
 
         $this->settings_api = new WeDevs_Settings_API();
@@ -65,7 +66,14 @@ class Admin_Settings {
         ?>
         <div class="wrap">
 
-            <h2 style="margin-bottom: 15px;"><?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?></h2>
+            <h2 style="margin-bottom: 15px;">
+                <?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?>
+                <?php if ( function_exists( 'wpuf_settings_ui_switch_url' ) ) : ?>
+                    <a href="<?php echo esc_url( wpuf_settings_ui_switch_url() ); ?>" class="page-title-action">
+                        <?php esc_html_e( 'Switch to new settings', 'wp-user-frontend' ); ?>
+                    </a>
+                <?php endif; ?>
+            </h2>
             <div class="wpuf-settings-wrap">
                 <?php
                 settings_errors();

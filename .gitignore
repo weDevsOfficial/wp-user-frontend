@@ -96,3 +96,10 @@ openspec/
 # wp-env local test plugins scaffold (mounted by tests/e2e/.wp-env.json)
 /plugins/
 /assets/*
+
+# React settings screen: generated build outputs (built via
+# `npm run build:settings-react`; produced fresh in the release workflow).
+assets/js/settings-react.min.js
+assets/js/settings-react.min.js.map
+assets/js/settings-react.min.asset.php
+assets/css/settings-react.css

@@ -1,0 +1,1053 @@
+/**
+ * WPUF Onboarding Wizard
+ *
+ * Follows the User Directory design system tokens:
+ * primary #059669, 6px control radius, 24px step markers,
+ * #CBD5E1 control borders, #64748B secondary text.
+ */
+
+.wpuf-onboarding-body {
+    margin: 0;
+    padding: 0 0 120px;
+    background: #ffffff;
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 14px;
+    line-height: 20px;
+    color: #374151;
+    -webkit-font-smoothing: antialiased;
+}
+
+.wpuf-onboarding-body * {
+    box-sizing: border-box;
+}
+
+.wpuf-onboarding-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+}
+
+.wpuf-onboarding-topbar img {
+    display: block;
+    width: auto;
+    height: 30px;
+    max-width: 200px;
+}
+
+.wpuf-onboarding-exit {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.wpuf-onboarding-exit:hover {
+    color: #374151;
+}
+
+/* ---------- Step rail ---------- */
+
+.wpuf-onboarding-head {
+    max-width: 900px;
+    margin: 8px auto 0;
+    padding: 0 24px;
+    text-align: center;
+}
+
+.wpuf-onboarding-head h1 {
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 36px;
+    color: #111827;
+}
+
+.wpuf-onboarding-steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    list-style: none;
+    margin: 40px 0 0;
+    padding: 0;
+}
+
+.wpuf-onboarding-steps li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1 1 0;
+    list-style: none;
+    margin: 0;
+}
+
+.wpuf-onboarding-steps li:last-child {
+    flex: 0 0 auto;
+}
+
+.wpuf-onboarding-steps .wpuf-step-marker {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    border-radius: 23px;
+    border: 2px solid #d1d5db;
+    background: #ffffff;
+    text-decoration: none;
+}
+
+.wpuf-onboarding-steps .wpuf-step-marker:hover {
+    border-color: #9ca3af;
+}
+
+.wpuf-onboarding-steps li.is-done .wpuf-step-marker,
+.wpuf-onboarding-steps li.is-active .wpuf-step-marker {
+    border-color: #059669;
+    background: #059669;
+    color: #ffffff;
+}
+
+.wpuf-onboarding-steps .wpuf-step-line {
+    flex: 1 1 auto;
+    height: 2px;
+    background: #e5e7eb;
+}
+
+.wpuf-onboarding-steps li.is-done .wpuf-step-line {
+    background: #059669;
+}
+
+.wpuf-onboarding-steps .wpuf-step-label {
+    position: absolute;
+    top: 32px;
+    left: 12px;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 120px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    color: #374151;
+}
+
+.wpuf-onboarding-steps li.is-done .wpuf-step-label,
+.wpuf-onboarding-steps li.is-active .wpuf-step-label {
+    color: #059669;
+}
+
+/* ---------- Content ---------- */
+
+.wpuf-onboarding-content {
+    max-width: 768px;
+    margin: 0 auto;
+    padding: 96px 24px 0;
+}
+
+.wpuf-onboarding-content h2 {
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 36px;
+    text-align: center;
+    color: #000000;
+}
+
+.wpuf-onboarding-subtitle {
+    margin: 8px 0 0;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    color: #64748b;
+}
+
+.wpuf-onboarding-field {
+    margin-top: 25px;
+}
+
+.wpuf-onboarding-field:first-of-type {
+    margin-top: 48px;
+}
+
+.wpuf-onboarding-field > label,
+.wpuf-onboarding-field .wpuf-onboarding-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.wpuf-onboarding-field input[type="text"],
+.wpuf-onboarding-field input[type="number"],
+.wpuf-onboarding-field input[type="password"],
+.wpuf-onboarding-field select {
+    display: block;
+    width: 100%;
+    height: 42px;
+    margin: 0;
+    padding: 9px 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #ffffff;
+    box-shadow: none;
+    font-size: 16px;
+    line-height: 1;
+    color: #374151;
+}
+
+/* WP admin ships its own select chrome; draw ours instead so the control
+   matches the text inputs at every width. */
+.wpuf-onboarding-field select {
+    max-width: 100%;
+    min-height: 42px;
+    padding-right: 38px;
+    line-height: 22px;
+    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2364748b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 12px 8px;
+    text-overflow: ellipsis;
+}
+
+.wpuf-onboarding-field input:focus,
+.wpuf-onboarding-field select:focus {
+    outline: none;
+    border-color: #059669;
+    box-shadow: 0 0 0 1px #059669;
+}
+
+/* Replace the browser's blue focus ring with ours. */
+.wpuf-onboarding-field input:focus-visible,
+.wpuf-onboarding-field select:focus-visible {
+    outline: none;
+    border-color: #059669;
+    box-shadow: 0 0 0 1px #059669;
+}
+
+.wpuf-onboarding-field select:focus {
+    color: #374151;
+}
+
+/* Required marker. Paired with a screen-reader word in the markup, so the colour
+   is reinforcement rather than the only signal. */
+.wpuf-onboarding-required {
+    margin-left: 2px;
+    color: #d63638;
+    font-weight: 600;
+    line-height: 1;
+}
+
+/* WP core ships this class in the admin, but the wizard renders its own document
+   and does not load the admin stylesheet, so it has to be defined here. */
+.wpuf-onboarding-body .screen-reader-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.wpuf-onboarding-help {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 18px;
+    color: #64748b;
+}
+
+.wpuf-onboarding-help.is-spaced {
+    margin-top: 20px;
+}
+
+/* ---------- Toggle row ---------- */
+
+.wpuf-onboarding-toggle {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #ffffff;
+    margin-top: 12px;
+}
+
+.wpuf-onboarding-toggle + .wpuf-onboarding-toggle {
+    margin-top: 8px;
+}
+
+.wpuf-onboarding-toggle input[type="checkbox"] {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    margin: 2px 0 0;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    accent-color: #059669;
+}
+
+.wpuf-onboarding-toggle .wpuf-toggle-text {
+    flex: 1 1 auto;
+}
+
+.wpuf-onboarding-toggle strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.wpuf-onboarding-toggle span {
+    display: block;
+    margin-top: 2px;
+    font-size: 13px;
+    line-height: 18px;
+    color: #64748b;
+}
+
+/* ---------- Switch row ---------- */
+
+.wpuf-onboarding-toggle.is-switch {
+    align-items: center;
+    flex-direction: row-reverse;
+}
+
+.wpuf-onboarding-toggle.is-switch input[type="checkbox"] {
+    position: relative;
+    flex: 0 0 auto;
+    width: 36px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: #cbd5e1;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: background .15s ease-in-out;
+}
+
+.wpuf-onboarding-toggle.is-switch input[type="checkbox"]:before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+    transition: transform .15s ease-in-out;
+}
+
+.wpuf-onboarding-toggle.is-switch input[type="checkbox"]:checked {
+    background: #059669;
+}
+
+.wpuf-onboarding-toggle.is-switch input[type="checkbox"]:checked:before {
+    transform: translateX(16px);
+}
+
+.wpuf-onboarding-toggle.is-switch input[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.wpuf-onboarding-toggle.is-switch input[type="checkbox"]:focus-visible {
+    outline: 2px solid #059669;
+    outline-offset: 2px;
+}
+
+/* ---------- Card grid (features, plugins) ---------- */
+
+.wpuf-onboarding-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.wpuf-onboarding-grid.is-thirds {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Gateway cards centre their logo and name, the way the settings screen draws
+   them. The feature cards elsewhere stay left aligned, because they carry a
+   description under the title and centring that would be hard to read. The
+   checkbox is absolutely positioned, so the padding can be even here and the
+   logo actually lands in the middle of the card. */
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card {
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+}
+
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card strong {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 22px;
+}
+
+/* The badge already carries its own left margin for inline use; inside the
+   centred flex row the gap does that job instead. */
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-pro-badge {
+    margin-left: 0;
+}
+
+/* A gateway is a smaller decision than a feature, so its card is smaller too:
+   less padding, a smaller logo, and room for one line of guidance. */
+.wpuf-onboarding-grid.is-thirds {
+    gap: 10px;
+}
+
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card {
+    padding-top: 14px;
+    padding-bottom: 12px;
+}
+
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card-icon {
+    height: 28px;
+    margin-bottom: 8px;
+}
+
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card-icon img,
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card-icon svg {
+    max-height: 28px;
+}
+
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card strong {
+    font-size: 13px;
+}
+
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card input {
+    top: 12px;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+}
+
+/* One line under the name saying whether this gateway can take money yet. */
+.wpuf-onboarding-card-hint {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 16px;
+    color: #64748b;
+}
+
+/* Amber rather than red: nothing is broken, it just is not finished. */
+.wpuf-onboarding-card-hint.is-warning {
+    color: #b45309;
+}
+
+.wpuf-onboarding-help.is-warning {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-left: 3px solid #f59e0b;
+    border-radius: 4px;
+    background: #fffbeb;
+    color: #92400e;
+}
+
+.wpuf-onboarding-help.is-warning a {
+    color: #92400e;
+    font-weight: 600;
+}
+
+/* An upgrade card is a link, so it takes browser focus. Draw our ring rather
+   than the default blue one. */
+.wpuf-onboarding-card:focus,
+.wpuf-onboarding-card:focus-visible {
+    outline: none;
+    border-color: #059669;
+    box-shadow: 0 0 0 1px #059669;
+}
+
+/* Payment gateways read as one set rather than a row of competing brand colours,
+   so their logos are desaturated here. Done in CSS on purpose: the gateway art is
+   shared with the settings screen, which shows it in full colour, so the files
+   themselves must not be touched. */
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card-icon img,
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card-icon svg {
+    filter: grayscale(1);
+    opacity: .7;
+    transition: opacity .15s ease;
+}
+
+/* Selection is carried by the border and the tick, so the icon stays grey and
+   only lifts out of the wash a little. */
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card.is-selected .wpuf-onboarding-card-icon img,
+.wpuf-onboarding-grid.is-thirds .wpuf-onboarding-card.is-selected .wpuf-onboarding-card-icon svg {
+    opacity: 1;
+}
+
+/* Gateway logo on a payment card, sized to match the settings screen cards. */
+.wpuf-onboarding-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+.wpuf-onboarding-card-icon img,
+.wpuf-onboarding-card-icon svg {
+    max-width: 100%;
+    max-height: 40px;
+    width: auto;
+    height: auto;
+}
+
+/* The badge asset is 39x22. Give it a height and let the width follow, or the
+   pill gets squashed into a square. Height matches the 14px label it sits beside,
+   the same relationship the settings screen uses. */
+.wpuf-onboarding-pro-badge {
+    width: auto;
+    height: 18px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+/* Every badge trails its label inline, exactly as the one on the Stripe payment
+   card does. The badge carries its own left margin and middle alignment, so no
+   :has() is needed and the rule works in every browser the admin supports. */
+.wpuf-onboarding-toggle strong,
+.wpuf-onboarding-disclosure summary strong {
+    display: block;
+}
+
+/* The badge keeps its own appearance on hover. Settings dims a whole pro-locked
+   card and leaves the badge alone, so nothing here recolours or resizes it; the
+   card border is what reacts. Stated explicitly so a future card hover rule does
+   not start restyling the badge by inheritance. */
+.wpuf-onboarding-card:hover .wpuf-onboarding-pro-badge,
+.wpuf-onboarding-card:focus .wpuf-onboarding-pro-badge,
+.wpuf-onboarding-disclosure summary:hover .wpuf-onboarding-pro-badge {
+    opacity: 1;
+    filter: none;
+    transform: none;
+}
+
+/* Matches the settings screen, where a pro-locked card sits at 60% until hovered. */
+.wpuf-onboarding-card.is-pro,
+.wpuf-onboarding-card.is-unavailable {
+    opacity: 0.75;
+    transition: opacity .15s ease, border-color .15s ease, transform .15s ease;
+}
+
+/* These cards are anchors, so the admin stylesheet underlines everything inside
+   them. The whole card is the target; underlining its label and hint just makes
+   it look broken next to the cards beside it. */
+.wpuf-onboarding-card.is-pro,
+.wpuf-onboarding-card.is-unavailable,
+.wpuf-onboarding-card.is-pro:hover,
+.wpuf-onboarding-card.is-unavailable:hover,
+.wpuf-onboarding-card.is-pro strong,
+.wpuf-onboarding-card.is-unavailable strong,
+.wpuf-onboarding-card.is-pro .wpuf-onboarding-card-hint,
+.wpuf-onboarding-card.is-unavailable .wpuf-onboarding-card-hint {
+    text-decoration: none;
+    box-shadow: none;
+}
+
+/* Inert on purpose: this gateway cannot be switched on from the wizard, so the
+   card neither lifts nor changes on hover. It states why and stays put. */
+.wpuf-onboarding-card.is-pro,
+.wpuf-onboarding-card.is-unavailable {
+    cursor: default;
+    transform: none;
+}
+
+.wpuf-onboarding-card.is-pro:hover,
+.wpuf-onboarding-card.is-unavailable:hover {
+    border-color: #e5e7eb;
+    transform: none;
+}
+
+/* The whole card is the upgrade link. */
+/* Same block layout as a selectable card, so the icon sits above the label in
+   every card rather than beside it in this one. Only the checkbox gutter goes,
+   because an upgrade link has no checkbox. */
+.wpuf-onboarding-card.is-pro {
+    display: block;
+    padding-right: 20px;
+    text-decoration: none;
+}
+
+.wpuf-onboarding-card.is-pro:hover {
+    border-color: #059669;
+    transform: translateY(-1px);
+}
+
+/* Seven previews would swamp the step, so they live behind a summary row. */
+.wpuf-onboarding-disclosure {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.wpuf-onboarding-disclosure > summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.wpuf-onboarding-disclosure > summary::-webkit-details-marker {
+    display: none;
+}
+
+.wpuf-onboarding-disclosure > summary > img {
+    width: 56px;
+    height: 38px;
+    object-fit: cover;
+    object-position: top;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    background: #f9fafb;
+}
+
+.wpuf-disclosure-text {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.wpuf-disclosure-text strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.wpuf-disclosure-text > span {
+    display: block;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.wpuf-disclosure-action {
+    flex: 0 0 auto;
+    font-size: 13px;
+    font-weight: 600;
+    color: #059669;
+}
+
+.wpuf-onboarding-disclosure[open] > summary {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.wpuf-onboarding-disclosure .wpuf-onboarding-grid.is-layouts {
+    margin: 0;
+    padding: 14px;
+    overflow: visible;
+}
+
+.wpuf-onboarding-disclosure .wpuf-onboarding-help {
+    padding: 0 14px 14px;
+}
+
+.wpuf-onboarding-grid.is-layouts {
+    grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+    gap: 10px;
+}
+
+.wpuf-onboarding-layout {
+    position: relative;
+    z-index: 1;
+    display: block;
+    padding: 5px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease, transform .18s ease, box-shadow .18s ease;
+}
+
+/* Thumbnails are small, so hovering blows one up to a readable size. */
+.wpuf-onboarding-layout:hover {
+    z-index: 5;
+    border-color: #cbd5e1;
+    transform: scale(2.6);
+    box-shadow: 0 12px 28px rgba(16, 24, 40, .18);
+}
+
+/* Keep the enlarged preview inside the panel at the edges. */
+.wpuf-onboarding-grid.is-layouts > .wpuf-onboarding-layout:nth-child(4n+1):hover {
+    transform-origin: left center;
+}
+
+.wpuf-onboarding-grid.is-layouts > .wpuf-onboarding-layout:nth-child(4n):hover {
+    transform-origin: right center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wpuf-onboarding-layout:hover {
+        transform: none;
+    }
+}
+
+.wpuf-onboarding-layout.is-selected {
+    border-color: #059669;
+    background: #f4fdf9;
+}
+
+.wpuf-onboarding-layout input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.wpuf-onboarding-layout img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    background: #f9fafb;
+}
+
+
+
+.wpuf-onboarding-card {
+    position: relative;
+    display: block;
+    padding: 18px 52px 18px 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: border-color .15s ease, transform .15s ease, background .15s ease;
+}
+
+.wpuf-onboarding-card:hover {
+    border-color: #059669;
+    transform: translateY(-1px);
+}
+
+.wpuf-onboarding-card.is-selected {
+    border-color: #059669;
+    background: #f4fdf9;
+}
+
+/* The tick sits in the corner and matches the step markers. */
+.wpuf-onboarding-card input {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    padding: 0;
+    border: 2px solid #d1d5db;
+    border-radius: 999px;
+    background: #ffffff;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+}
+
+.wpuf-onboarding-card input[type="radio"] {
+    border-radius: 999px;
+}
+
+.wpuf-onboarding-card:hover input {
+    border-color: #9ca3af;
+}
+
+.wpuf-onboarding-card input:checked {
+    border-color: #059669;
+    background-color: #059669;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 9 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 3.4001L3.4 5.8001L7.6 1.6001' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.wpuf-onboarding-card input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.wpuf-onboarding-card input:focus-visible {
+    outline: 2px solid #059669;
+    outline-offset: 2px;
+}
+
+/* The artwork is a 96x96 tile, so drawing it at 28px shrank the tile to a speck.
+   Sized to read as an icon the way the modules screen does. */
+.wpuf-onboarding-logo {
+    display: block;
+    width: 56px;
+    height: 56px;
+    margin-bottom: 14px;
+    object-fit: contain;
+}
+
+.wpuf-onboarding-card strong {
+    display: block;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: #111827;
+}
+
+.wpuf-onboarding-card p {
+    margin: 6px 0 0;
+    padding: 0;
+    font-size: 13px;
+    line-height: 19px;
+    color: #64748b;
+}
+
+.wpuf-onboarding-card.is-installed {
+    background: #f9fafb;
+    cursor: default;
+}
+
+.wpuf-onboarding-card.is-installed:hover {
+    border-color: #e5e7eb;
+    transform: none;
+}
+
+.wpuf-onboarding-badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #d1fae5;
+    color: #047857;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.wpuf-onboarding-badge.is-pro {
+    background: #ede9fe;
+    color: #6d28d9;
+}
+
+.wpuf-onboarding-badge.is-error {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* ---------- Notices ---------- */
+
+.wpuf-onboarding-note {
+    margin-top: 24px;
+    padding: 12px 16px;
+    border: 1px solid #e5e7eb;
+    border-left: 3px solid #059669;
+    border-radius: 6px;
+    background: #f9fafb;
+    font-size: 13px;
+    line-height: 18px;
+    color: #4b5563;
+}
+
+/* ---------- Checklist (ready step) ---------- */
+
+.wpuf-onboarding-checklist {
+    margin: 32px 0 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.wpuf-onboarding-checklist li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 14px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
+    color: #374151;
+}
+
+.wpuf-onboarding-checklist li:last-child {
+    border-bottom: 0;
+}
+
+.wpuf-onboarding-checklist .wpuf-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background: #e5e7eb;
+}
+
+.wpuf-onboarding-checklist li.is-done .wpuf-check {
+    background: #059669;
+}
+
+.wpuf-onboarding-checklist .wpuf-check.is-number {
+    background: #f3f4f6;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.wpuf-onboarding-checklist .wpuf-check-label {
+    flex: 1 1 auto;
+}
+
+.wpuf-onboarding-checklist a {
+    color: #059669;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.wpuf-onboarding-checklist a:hover {
+    color: #047857;
+}
+
+/* ---------- Buttons + footer ---------- */
+
+.wpuf-onboarding-btn-primary,
+.wpuf-onboarding-btn-white {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.wpuf-onboarding-btn-primary {
+    border: 1px solid #059669;
+    background: #059669;
+    color: #ffffff;
+}
+
+.wpuf-onboarding-btn-primary:hover,
+.wpuf-onboarding-btn-primary:focus {
+    background: #047857;
+    border-color: #047857;
+    color: #ffffff;
+}
+
+.wpuf-onboarding-btn-primary[disabled] {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.wpuf-onboarding-btn-white {
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    color: #374151;
+}
+
+.wpuf-onboarding-btn-white:hover,
+.wpuf-onboarding-btn-white:focus {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+#wpuf-onboarding-confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 40;
+    pointer-events: none;
+}
+
+.wpuf-onboarding-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, .06);
+}
+
+.wpuf-onboarding-footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 896px;
+    margin: 0 auto;
+    padding: 16px 24px;
+}
+
+.wpuf-onboarding-footer-left,
+.wpuf-onboarding-footer-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.wpuf-onboarding-skip {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.wpuf-onboarding-skip:hover {
+    color: #374151;
+}
+
+.wpuf-onboarding-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 999px;
+    animation: wpuf-onboarding-spin .7s linear infinite;
+}
+
+@keyframes wpuf-onboarding-spin {
+    to { transform: rotate(360deg); }
+}
+
+@media screen and (max-width: 782px) {
+    .wpuf-onboarding-steps .wpuf-step-label {
+        display: none;
+    }
+
+    .wpuf-onboarding-content {
+        padding-top: 48px;
+    }
+
+    .wpuf-onboarding-grid,
+    .wpuf-onboarding-grid.is-thirds {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

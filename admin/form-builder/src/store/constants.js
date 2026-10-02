@@ -1,0 +1,53 @@
+export const STORE_NAME = 'wpuf/form-builder';
+
+// Initialization
+export const SET_POST = 'SET_POST';
+export const INITIALIZE_STATE = 'INITIALIZE_STATE';
+
+// Field actions
+export const SET_FORM_FIELDS = 'SET_FORM_FIELDS';
+export const ADD_FIELD = 'ADD_FIELD';
+export const REMOVE_FIELD = 'REMOVE_FIELD';
+export const MOVE_FIELD = 'MOVE_FIELD';
+export const CLONE_FIELD = 'CLONE_FIELD';
+export const UPDATE_FIELD = 'UPDATE_FIELD';
+
+// Column field actions
+export const ADD_COLUMN_FIELD = 'ADD_COLUMN_FIELD';
+export const REMOVE_COLUMN_FIELD = 'REMOVE_COLUMN_FIELD';
+export const MOVE_COLUMN_FIELD = 'MOVE_COLUMN_FIELD';
+export const CLONE_COLUMN_FIELD = 'CLONE_COLUMN_FIELD';
+export const MERGE_COLUMN_FIELDS = 'MERGE_COLUMN_FIELDS';
+
+// Repeat field actions
+export const ADD_REPEAT_FIELD = 'ADD_REPEAT_FIELD';
+export const REMOVE_REPEAT_FIELD = 'REMOVE_REPEAT_FIELD';
+export const MOVE_REPEAT_FIELD = 'MOVE_REPEAT_FIELD';
+export const CLONE_REPEAT_FIELD = 'CLONE_REPEAT_FIELD';
+
+// Panel/UI actions
+export const SET_CURRENT_PANEL = 'SET_CURRENT_PANEL';
+export const SET_EDITING_FIELD = 'SET_EDITING_FIELD';
+export const OPEN_FIELD_SETTINGS = 'OPEN_FIELD_SETTINGS';
+export const SET_INDEX_TO_INSERT = 'SET_INDEX_TO_INSERT';
+export const TOGGLE_PANEL_SECTION = 'TOGGLE_PANEL_SECTION';
+export const SET_PANEL_SECTIONS = 'SET_PANEL_SECTIONS';
+export const SET_PANEL_SECTION_FIELDS = 'SET_PANEL_SECTION_FIELDS';
+
+// Settings
+export const SET_FORM_SETTINGS = 'SET_FORM_SETTINGS';
+export const UPDATE_FORM_SETTING = 'UPDATE_FORM_SETTING';
+
+// Notifications
+export const ADD_NOTIFICATION = 'ADD_NOTIFICATION';
+export const REMOVE_NOTIFICATION = 'REMOVE_NOTIFICATION';
+export const CLONE_NOTIFICATION = 'CLONE_NOTIFICATION';
+export const UPDATE_NOTIFICATION = 'UPDATE_NOTIFICATION';
+export const UPDATE_NOTIFICATION_PROPERTY = 'UPDATE_NOTIFICATION_PROPERTY';
+
+// Integrations
+export const UPDATE_INTEGRATION = 'UPDATE_INTEGRATION';
+
+// Dirty state
+export const MARK_DIRTY = 'MARK_DIRTY';
+export const MARK_CLEAN = 'MARK_CLEAN';

@@ -10,6 +10,7 @@ const entries = {
     'forms-list': './assets/js/forms-list.js',
     'account': './assets/js/account.js',
     'ai-form-builder': './assets/js/ai-form-builder.js',
+    'transactions': './src/js/transactions.js',
 };
 
 export default defineConfig(() => {

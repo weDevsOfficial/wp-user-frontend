@@ -4,6 +4,7 @@ namespace WeDevs\Wpuf;
 
 use WeDevs\Wpuf\Api\FormList;
 use WeDevs\Wpuf\Api\Subscription;
+use WeDevs\Wpuf\Api\Transaction;
 use WeDevs\WpUtils\ContainerTrait;
 
 /**
@@ -21,6 +22,7 @@ class API {
      */
     public function __construct() {
         $this->subscription = new Subscription();
+        $this->transaction  = new Transaction();
         $this->form_list    = new FormList();
 
         add_action( 'rest_api_init', [ $this, 'init_api' ] );

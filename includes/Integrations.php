@@ -23,6 +23,7 @@ class Integrations {
         'WCMp'                => 'WPUF_WCMp_Integration',
         'ACF'                 => 'WPUF_ACF_Compatibility',
         'Tribe__Events__Main' => 'Events_Calendar\Events_Calendar_Integration',
+        'WP_Job_Manager'      => 'WP_Job_Manager\WPUF_WP_Job_Manager_Integration',
         'N8N'                 => 'WPUF_N8N_Integration',
     ];
 

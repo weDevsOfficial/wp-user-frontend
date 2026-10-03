@@ -1,7 +1,7 @@
 <?php
 
 $no_form_notice = __( 'No post form assigned yet by the administrator.', 'wp-user-frontend' );
-$selected_form  = wpuf_get_option( 'default_post_form', 'wpuf_frontend_posting' );
+$selected_form  = wpuf_get_option( 'post_submission_form', 'wpuf_my_account' );
 
 if ( empty( $selected_form ) ) {
     echo wp_kses_post( '<div class="wpuf-info">' . $no_form_notice . '</div>' );

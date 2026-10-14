@@ -107,7 +107,8 @@ const evaluate = ( cond, values ) => {
         return true;
     }
 
-    const results = rulesOf( cond ).map( ( rule ) => ruleMatches( rule, values ) );
+    // Rules without a field are skipped, as the classic renderer drops them.
+    const results = rulesOf( cond ).filter( ( rule ) => rule.name ).map( ( rule ) => ruleMatches( rule, values ) );
 
     if ( ! results.length ) {
         return true;

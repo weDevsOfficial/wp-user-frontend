@@ -187,12 +187,16 @@ export default function FormRenderer( {
         { slots.submit && <ServerHtml html={ slots.submit } slug="submit" className="wpuf-slot-inline" /> }
         <input
             type="submit"
-            className={ cx( 'wpuf-submit-button', ! profile && `wpuf_submit_${ schema.id }`, busy && 'button-primary-disabled' ) }
+            className={ cx( 'wpuf-submit-button', ! profile && `wpuf_submit_${ schema.id }`, busy && 'is-busy' ) }
+            aria-busy={ busy ? 'true' : undefined }
             name="submit"
             value={ submitLabel }
-            disabled={ busy || uploadBusy || ! submitAllowed }
+            // Busy: dimmed in its own colour (aria-disabled, the submit handler ignores
+            // repeats); the layouts' grey :disabled look stays for "cannot submit yet".
+            aria-disabled={ busy ? 'true' : undefined }
+            disabled={ uploadBusy || ! submitAllowed }
         />
-        { layout.draft && 'create' === schema.mode && onDraft && (
+        { layout.draft && onDraft && (
             <a
                 href="#draft"
                 className="btn"
@@ -210,8 +214,8 @@ export default function FormRenderer( {
                 { __( 'Save Draft', 'wp-user-frontend' ) }
             </a>
         ) }
-        { draftBusy && <span className="wpuf-loading" /> }
-        { busy && <span className="wpuf-loading" /> }
+        { draftBusy && <span className="wpuf-loading" role="status" aria-label={ __( 'Saving…', 'wp-user-frontend' ) } /> }
+        { busy && <span className="wpuf-loading" role="status" aria-label={ __( 'Submitting…', 'wp-user-frontend' ) } /> }
         { loginUrl && (
             <>
                 <br />
@@ -240,7 +244,7 @@ export default function FormRenderer( {
                     }
                 } }
             >
-                { layout.show_title && schema.title && <h3 className="wpuf-form-title">{ schema.title }</h3> }
+                { layout.show_title && schema.title && <h2 className="wpuf-form-title">{ schema.title }</h2> }
                 { layout.description && <ServerHtml html={ layout.description } className="wpuf-form-description" /> }
 
                 <ul className={ cx( 'wpuf-form', `form-label-${ layout.label_position || 'left' }` ) }>

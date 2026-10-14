@@ -265,3 +265,71 @@
     background: #3B82F6;
     border-color: #3B82F6;
 }
+
+/* Select arrow: one chevron in every layout (a reset elsewhere on the page
+   must not let the layout sheets' arrow image tile). */
+.wpuf-frontend form.wpuf-form-add select:not([multiple]) {
+    background-repeat: no-repeat !important;
+}
+
+/* ---- Submit states in the new design ----
+   The classic look (WordPress spinner gif, a fixed blue "disabled" button)
+   is replaced: the button keeps its layout colour and dims, a token spinner
+   turns next to it, the success / draft notices use the kit colours. */
+.wpuf-frontend form.wpuf-form-add .wpuf-submit .wpuf-submit-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.wpuf-frontend form.wpuf-form-add .wpuf-submit .wpuf-submit-button.is-busy {
+    opacity: 0.7;
+    cursor: progress;
+    pointer-events: none;
+}
+
+.wpuf-frontend .wpuf-loading {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-inline-start: 10px;
+    vertical-align: middle;
+    background: none !important;
+    border: 2px solid var(--wpuf-fe-border);
+    border-top-color: var(--wpuf-fe-primary);
+    border-radius: 50%;
+    animation: wpuf-fe-spin 0.7s linear infinite;
+}
+
+@keyframes wpuf-fe-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wpuf-frontend .wpuf-loading {
+        animation-duration: 2s;
+    }
+}
+
+.wpuf-frontend .wpuf-success {
+    margin: 0 0 20px;
+    padding: 12px 16px;
+    background: var(--wpuf-fe-success-soft);
+    border: 1px solid #a7f3d0;
+    border-radius: var(--wpuf-fe-radius);
+    color: #065f46;
+    font-size: var(--wpuf-fe-size);
+    line-height: 1.5;
+}
+
+.wpuf-frontend .wpuf-success a {
+    color: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.wpuf-frontend .wpuf-draft-saved {
+    color: var(--wpuf-fe-success);
+    font-weight: 500;
+}

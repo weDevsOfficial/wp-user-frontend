@@ -266,7 +266,13 @@ class Renderer_Switch {
      */
     public function form_markup( array $schema, $part ) {
         if ( empty( $schema['state']['open'] ) ) {
-            return '<div class="wpuf-message">' . wp_kses_post( isset( $schema['state']['message'] ) ? $schema['state']['message'] : '' ) . '</div>';
+            // The classic wrappers: a closed post form (pack, payment, limit) and the edit gates
+            // (locks, pending, disabled) are `wpuf-info` boxes; login / role / profile gates `wpuf-message`.
+            $reason = isset( $schema['state']['reason'] ) ? $schema['state']['reason'] : '';
+            $post   = 'post' === ( isset( $schema['form_type'] ) ? $schema['form_type'] : 'post' );
+            $class  = $post && ! in_array( $reason, [ 'login', 'role', '' ], true ) ? 'wpuf-info' : 'wpuf-message';
+
+            return '<div class="' . esc_attr( $class ) . '">' . wp_kses_post( isset( $schema['state']['message'] ) ? $schema['state']['message'] : '' ) . '</div>';
         }
 
         wp_enqueue_style( 'wpuf-font-awesome' );

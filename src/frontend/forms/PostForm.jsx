@@ -251,7 +251,7 @@ export default function PostForm( { schema: boot, root } ) {
                 formError={ formError }
                 busy={ busy }
                 draftBusy={ draftBusy }
-                submitAllowed={ submitAllowed( schema.settings, form.values ) && captchaSolved }
+                submitAllowed={ ! ( schema.state && schema.state.locked ) && submitAllowed( schema.settings, form.values ) && captchaSolved }
             />
         </>
     );

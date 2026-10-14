@@ -592,9 +592,8 @@
    The PHP sections (billing Update, invoices, subscription) and the post
    form inside Submit Post bring their own button styles; they take the kit
    primary button's size, radius and type so every action matches. */
-.wpuf-frontend .wpuf-account-content .wpuf-account-html button[type="submit"],
-.wpuf-frontend .wpuf-account-content .wpuf-account-html input[type="submit"],
-.wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-btn-primary,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway button[type="submit"],
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input[type="submit"],
 .wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit input[type="submit"],
 .wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit button[type="submit"],
 .wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit .wpuf-submit-button {
@@ -621,16 +620,16 @@
     cursor: pointer;
 }
 
-.wpuf-frontend .wpuf-account-content .wpuf-account-html button[type="submit"]:hover,
-.wpuf-frontend .wpuf-account-content .wpuf-account-html input[type="submit"]:hover,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway button[type="submit"]:hover,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input[type="submit"]:hover,
 .wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit input[type="submit"]:hover,
 .wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit button[type="submit"]:hover,
 .wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit .wpuf-submit-button:hover {
     background: var(--wpuf-fe-primary-hover) !important;
 }
 
-.wpuf-frontend .wpuf-account-content .wpuf-account-html button[type="submit"]:focus-visible,
-.wpuf-frontend .wpuf-account-content .wpuf-account-html input[type="submit"]:focus-visible,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway button[type="submit"]:focus-visible,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input[type="submit"]:focus-visible,
 .wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit input[type="submit"]:focus-visible,
 .wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit .wpuf-submit-button:focus-visible {
     outline: none;
@@ -640,9 +639,9 @@
 /* ---- Corners of the parts the account hosts ----
    PHP sections (classic Tailwind rounded-* classes, fields), the post form
    inside Submit Post and the chat follow the same scale. */
-.wpuf-frontend .wpuf-account-content .wpuf-account-html input:not([type="checkbox"]):not([type="radio"]),
-.wpuf-frontend .wpuf-account-content .wpuf-account-html select,
-.wpuf-frontend .wpuf-account-content .wpuf-account-html textarea,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input:not([type="checkbox"]):not([type="radio"]),
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway select,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway textarea,
 .wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-rounded,
 .wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-rounded-md,
 .wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
@@ -669,7 +668,7 @@
 /* Select arrows: one chevron, never tiled (the classic preflight resets
    background-repeat on the layout sheets' arrow image). */
 .wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields select,
-.wpuf-frontend .wpuf-account-content .wpuf-account-html select {
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway select {
     background-repeat: no-repeat !important;
     background-position: right 12px center !important;
     padding-inline-end: 36px !important;
@@ -679,9 +678,9 @@
 .wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields input:not([type="checkbox"]):not([type="radio"]):focus,
 .wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields select:focus,
 .wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields textarea:focus,
-.wpuf-frontend .wpuf-account-content .wpuf-account-html input:not([type="checkbox"]):not([type="radio"]):focus,
-.wpuf-frontend .wpuf-account-content .wpuf-account-html select:focus,
-.wpuf-frontend .wpuf-account-content .wpuf-account-html textarea:focus {
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input:not([type="checkbox"]):not([type="radio"]):focus,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway select:focus,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway textarea:focus {
     outline: none !important;
     border-color: var(--wpuf-fe-primary) !important;
     box-shadow: var(--wpuf-fe-focus) !important;

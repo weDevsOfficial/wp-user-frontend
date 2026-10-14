@@ -64,6 +64,7 @@ class Form_Schema {
         'submit_text',
         'update_text',
         'draft_post',
+        'submit_button_cond',
         'form_layout',
         'label_position',
         'use_theme_css',
@@ -233,7 +234,7 @@ class Form_Schema {
                 'update_text'    => isset( $settings['update_text'] ) ? $settings['update_text'] : __( 'Update', 'wp-user-frontend' ),
                 'draft'          => isset( $settings['draft_post'] ) && wpuf_is_checkbox_or_toggle_on( $settings['draft_post'] ),
                 'multistep'      => isset( $settings['enable_multistep'] ) && wpuf_is_checkbox_or_toggle_on( $settings['enable_multistep'] ),
-                'progress'       => isset( $settings['multistep_progressbar_type'] ) ? $settings['multistep_progressbar_type'] : 'progressive',
+                'progress'       => isset( $settings['multistep_progressbar_type'] ) ? $settings['multistep_progressbar_type'] : 'step_by_step',
             ],
             'guest'    => $this->guest_facts( $settings ),
             'featured' => $this->featured_facts( $settings, $post_id ),
@@ -342,10 +343,10 @@ class Form_Schema {
                 'show_title'     => false,
                 'description'    => '',
                 'submit_text'    => isset( $settings['submit_text'] ) ? $settings['submit_text'] : __( 'Register', 'wp-user-frontend' ),
-                'update_text'    => isset( $settings['update_text'] ) ? $settings['update_text'] : __( 'Update', 'wp-user-frontend' ),
+                'update_text'    => isset( $settings['update_text'] ) ? $settings['update_text'] : __( 'Update Profile', 'wp-user-frontend' ),
                 'draft'          => false,
                 'multistep'      => isset( $settings['enable_multistep'] ) && wpuf_is_checkbox_or_toggle_on( $settings['enable_multistep'] ),
-                'progress'       => isset( $settings['multistep_progressbar_type'] ) ? $settings['multistep_progressbar_type'] : 'progressive',
+                'progress'       => isset( $settings['multistep_progressbar_type'] ) ? $settings['multistep_progressbar_type'] : 'step_by_step',
             ],
             'guest'        => [ 'enabled' => false, 'fields' => false ],
             'featured'     => [ 'enabled' => false ],
@@ -368,8 +369,8 @@ class Form_Schema {
             'slots'        => $state['open'] ? $this->profile_slots( $form, $form_id, $mode, $settings ) : [],
         ];
 
-        if ( 'registration' === $mode && isset( wpuf()->frontend->simple_login ) ) {
-            $schema['links']['login'] = wpuf()->frontend->simple_login->get_login_url();
+        if ( 'registration' === $mode ) {
+            $schema['links']['login'] = $this->registration_login_url();
         }
 
         /** This filter is documented above in build(). */
@@ -517,7 +518,64 @@ class Form_Schema {
             'open'    => true,
             'reason'  => '',
             'message' => '',
+            'locked'  => $this->submit_locked( $form_id, $settings ),
         ];
+    }
+
+    /**
+     * Whether the classic form would show the submit button disabled: outside
+     * the schedule window (wpuf_show_form_schedule_message()) or with the
+     * entry limit reached (wpuf_show_form_limit_message()). The messages come
+     * through the `before_form` slot; the button stays locked in React too.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int   $form_id  Form id
+     * @param array $settings Form settings
+     *
+     * @return bool
+     */
+    private function submit_locked( $form_id, array $settings ) {
+        if ( isset( $settings['schedule_form'] ) && wpuf_is_checkbox_or_toggle_on( $settings['schedule_form'] ) ) {
+            $start = ! empty( $settings['schedule_start'] ) ? strtotime( $settings['schedule_start'] ) : 0;
+            $end   = ! empty( $settings['schedule_end'] ) ? strtotime( $settings['schedule_end'] ) : 0;
+            $now   = current_time( 'timestamp' ); // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested -- same clock as the classic check.
+
+            if ( $now < $start || $now > $end ) {
+                return true;
+            }
+        }
+
+        if ( isset( $settings['limit_entries'] ) && wpuf_is_checkbox_or_toggle_on( $settings['limit_entries'] ) ) {
+            $limit = ! empty( $settings['limit_number'] ) ? (int) $settings['limit_number'] : 0;
+
+            if ( $limit && $limit <= wpuf_form_posts_count( $form_id ) ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * The "Already have an account? Login" link of a registration form, as
+     * Pro's Profile_Form::login_url() builds it: wp-login.php unless "Login /
+     * registration override" is on and a login page is set.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string
+     */
+    private function registration_login_url() {
+        $default = site_url( 'wp-login.php', 'login' );
+
+        if ( 'on' !== wpuf_get_option( 'register_link_override', 'wpuf_profile', 'off' ) ) {
+            return $default;
+        }
+
+        $page_id = wpuf_get_option( 'login_page', 'wpuf_profile', false );
+
+        return $page_id ? home_url( basename( get_permalink( $page_id ) ), 'login' ) : $default;
     }
 
     /**
@@ -570,10 +628,15 @@ class Form_Schema {
             return $closed( 'published', __( "You're not allowed to edit this post.", 'wp-user-frontend' ) );
         }
 
+        // The schedule lock applies to edits too; the entry limit does not (classic skips it on edit pages).
+        $settings = $this->form_settings;
+        unset( $settings['limit_entries'] );
+
         return [
             'open'    => true,
             'reason'  => '',
             'message' => '',
+            'locked'  => $this->submit_locked( 0, $settings ),
         ];
     }
 

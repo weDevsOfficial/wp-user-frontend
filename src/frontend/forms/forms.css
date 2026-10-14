@@ -355,6 +355,18 @@
     pointer-events: none;
 }
 
+/* Submitting: the fields dim and take no input (the list is `inert`); the submit row
+   keeps its spinner. Restored as soon as the answer comes back (an error keeps the values). */
+.wpuf-frontend form.wpuf-form-add.is-submitting {
+    cursor: progress;
+}
+
+.wpuf-frontend form.wpuf-form-add.is-submitting > ul.wpuf-form > li:not(.wpuf-submit),
+.wpuf-frontend form.wpuf-form-add.is-submitting > ul.wpuf-form > fieldset > li:not(.wpuf-submit) {
+    opacity: 0.55;
+    transition: opacity 0.15s ease;
+}
+
 .wpuf-frontend .wpuf-loading {
     display: inline-block;
     width: 18px;

@@ -235,7 +235,8 @@ export default function FormRenderer( {
             { slots.before_form && <ServerHtml html={ slots.before_form } slug="before_form" /> }
             <form
                 ref={ formRef }
-                className={ cx( 'wpuf-form-add', `wpuf-form-${ layoutName }`, styleClass ) }
+                className={ cx( 'wpuf-form-add', `wpuf-form-${ layoutName }`, styleClass, ( busy || draftBusy ) && 'is-submitting' ) }
+                aria-busy={ busy || draftBusy ? 'true' : undefined }
                 action=""
                 method="post"
                 onSubmit={ ( event ) => {
@@ -249,7 +250,9 @@ export default function FormRenderer( {
                 { layout.show_title && schema.title && <h2 className="wpuf-form-title">{ schema.title }</h2> }
                 { layout.description && <ServerHtml html={ layout.description } className="wpuf-form-description" /> }
 
-                <ul className={ cx( 'wpuf-form', `form-label-${ layout.label_position || 'left' }` ) }>
+                { /* While it submits (or saves a draft) the form is inert: no typing, clicks or focus,
+                     editors, selects and uploads included, so what is sent is what is shown. */ }
+                <ul className={ cx( 'wpuf-form', `form-label-${ layout.label_position || 'left' }` ) } inert={ busy || draftBusy ? '' : undefined }>
                     { /* The classic list opens with its init <script>, so no field row is :first-child; the template sheets rely on that. */ }
                     <li className="wpuf-form-anchor" hidden aria-hidden="true" style={ { display: 'none' } } />
                     { slots.fields_top && <ServerHtml html={ multistep ? withoutProgressHost( slots.fields_top ) : slots.fields_top } slug="fields_top" className="wpuf-slot-inline" /> }

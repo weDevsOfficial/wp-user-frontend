@@ -10,7 +10,10 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities) source(none);
 @import "./v3-theme.css";
+/* The TipTap rich editor of the rich text settings (shared/ui/RichEditor.jsx). */
+@import "../../../src/frontend/kit/fields/editor/editor.css";
 
+@source "../../../src/admin/shared/ui/RichEditor.jsx";
 @source "../../../src/admin/apps/settings";
 @source "../../../includes/Admin/Screens/Settings.php";
 

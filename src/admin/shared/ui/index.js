@@ -30,6 +30,7 @@ export { default as DataTable } from './DataTable';
 export { default as PageHeader } from './PageHeader';
 export { default as PageFooter, PageShell, usePageFillHeight } from './PageFooter';
 export { default as WpEditor } from './WpEditor';
+export { default as RichEditor } from './RichEditor';
 export { default as Modal } from './Modal';
 export { default as Notice } from './Notice';
 export { default as dialogs, DialogHost } from './dialogs';

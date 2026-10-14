@@ -1,4 +1,4 @@
-import { WpEditor } from '@wpuf/components';
+import { RichEditor } from '@wpuf/components';
 import SettingLabel from './SettingLabel';
 import { HelpTextIcon } from '@wpuf/components';
 
@@ -8,7 +8,7 @@ const LEGACY_TEENY_TOOLBAR = 'bold,italic,underline,blockquote,strikethrough,bul
 const LEGACY_TINYMCE = { plugins: 'colorpicker,lists,fullscreen,image,wordpress,wpeditimage,wplink', height: 100 };
 
 /**
- * Rich text (wysiwyg) setting on the shared WpEditor (4.6a): the WordPress
+ * Rich text (wysiwyg) setting on the shared RichEditor (TipTap with the WordPress editor as fallback, 2026-10-14; WpEditor since 4.6a): the WordPress
  * TinyMCE editor as on the legacy screen (guest mail body, gateway
  * instructions). Same editor as the legacy wp_editor() (teeny toolbar, no
  * Add Media, 10 rows) and the same stored shape: what that form posted, the
@@ -25,7 +25,7 @@ export default function WysiwygField( { field, name, value, onChange } ) {
                 { ! field.desc && field.help_text && <HelpTextIcon text={ field.help_text } /> }
             </SettingLabel>
             <div className="mt-1 wpuf-wysiwyg-wrap">
-                <WpEditor
+                <RichEditor
                     id={ name }
                     value={ value || field.default || '' }
                     onChange={ ( content ) => onChange( name, content ) }
@@ -33,6 +33,7 @@ export default function WysiwygField( { field, name, value, onChange } ) {
                     tinymce={ LEGACY_TINYMCE }
                     mediaButtons={ false }
                     rows={ 10 }
+                label={ field.label }
                     format="wp"
                 />
             </div>

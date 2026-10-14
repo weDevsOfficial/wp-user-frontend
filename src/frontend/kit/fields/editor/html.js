@@ -52,6 +52,31 @@ const unwrapListItem = ( li ) => {
     }
 };
 
+/**
+ * An alignment / indent set before the text became a list item sits on the
+ * item's paragraph (`<li><p style="text-align: left;">`); TinyMCE puts it
+ * on the item (`<li style="text-align: left;">`). Moved there, so the
+ * paragraph unwraps like any other.
+ */
+const liftParagraphStyle = ( li ) => {
+    const kids = Array.from( li.childNodes ).filter( ( node ) => ! ( 3 === node.nodeType && ! node.nodeValue.trim() ) );
+    const first = kids[ 0 ];
+
+    if ( ! first || 1 !== first.nodeType || 'p' !== first.tagName.toLowerCase() || 1 !== first.attributes.length || ! first.hasAttribute( 'style' ) ) {
+        return;
+    }
+
+    if ( ! kids.slice( 1 ).every( ( node ) => 1 === node.nodeType && [ 'ul', 'ol' ].includes( node.tagName.toLowerCase() ) ) ) {
+        return;
+    }
+
+    const own = String( li.getAttribute( 'style' ) || '' ).trim();
+    const moved = String( first.getAttribute( 'style' ) || '' ).trim();
+
+    li.setAttribute( 'style', own ? `${ own.replace( /;?$/, ';' ) } ${ moved }` : moved );
+    first.removeAttribute( 'style' );
+};
+
 const unwrapSingle = ( parent, childTag ) => {
     const kids = Array.from( parent.childNodes ).filter( ( node ) => ! ( 3 === node.nodeType && ! node.nodeValue.trim() ) );
 
@@ -80,6 +105,7 @@ export function serialize( html ) {
     body.querySelectorAll( 'img.emoji[alt], img.wp-smiley[alt]' ).forEach( ( img ) => img.replaceWith( doc.createTextNode( img.getAttribute( 'alt' ) ) ) );
 
     body.querySelectorAll( 'li' ).forEach( ( li ) => {
+        liftParagraphStyle( li );
         unwrapSingle( li, 'p' );
         unwrapListItem( li );
     } );

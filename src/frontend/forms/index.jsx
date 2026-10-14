@@ -9,6 +9,7 @@ import { createRoot } from '@wordpress/element';
 import { mountAll } from '@wpuf/frontend-kit';
 import PostForm from './PostForm';
 import './forms.css';
+import '../kit/fields/editor/editor.css';
 
 // The classic globals that captured slot scripts push into (Pro's submit
 // button condition script); the React form reads the settings instead.

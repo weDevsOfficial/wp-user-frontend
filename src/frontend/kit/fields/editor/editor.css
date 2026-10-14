@@ -1,0 +1,480 @@
+/**
+ * The TipTap rich editor (editor/TipTapEditor.jsx): the frontend forms
+ * (imported by forms/index.jsx) and the admin rich text settings (imported
+ * by the admin stylesheets). Every rule stays under `.wpuf-frontend`; the
+ * admin wraps the editor in it.
+ *
+ * @since WPUF_SINCE
+ */
+
+/*
+ * TipTap editor (kit/fields/editor). Neutral by default (theme CSS forms),
+ * the template palette when the modern design's tokens are set.
+ */
+.wpuf-frontend .wpuf-tiptap {
+    box-sizing: border-box;
+    overflow: hidden;
+    border: 1px solid var(--wpuf-m-border, #d1d5db);
+    border-radius: var(--wpuf-m-radius, 8px);
+    background: var(--wpuf-m-input-bg, #ffffff);
+    box-shadow: var(--wpuf-m-shadow, none);
+    color: var(--wpuf-m-input-text, inherit);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.wpuf-frontend .wpuf-tiptap:focus-within {
+    border-color: var(--wpuf-m-accent, #2563eb);
+    box-shadow: 0 0 0 3px var(--wpuf-m-ring, rgba(37, 99, 235, 0.18));
+}
+
+.wpuf-frontend .wpuf-fields.has-error .wpuf-tiptap {
+    border-color: #dc2626 !important;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12) !important;
+}
+
+.wpuf-frontend .wpuf-tiptap--loading {
+    min-height: 160px;
+}
+
+.wpuf-frontend .wpuf-tiptap-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px;
+    border-bottom: 1px solid var(--wpuf-m-border, #e5e7eb);
+    background: color-mix(in srgb, var(--wpuf-m-input-bg, #ffffff) 92%, var(--wpuf-m-text, #374151));
+}
+
+.wpuf-frontend .wpuf-tiptap-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px;
+}
+
+.wpuf-frontend .wpuf-tiptap-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    box-shadow: none;
+    color: var(--wpuf-m-text, #374151);
+    cursor: pointer;
+    line-height: 1;
+}
+
+.wpuf-frontend .wpuf-tiptap-btn:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--wpuf-m-text, #374151) 10%, transparent);
+}
+
+.wpuf-frontend .wpuf-tiptap-btn:focus-visible {
+    outline: 2px solid var(--wpuf-m-accent, #2563eb);
+    outline-offset: 1px;
+}
+
+.wpuf-frontend .wpuf-tiptap-btn.is-active {
+    background: color-mix(in srgb, var(--wpuf-m-accent, #2563eb) 16%, transparent);
+    color: var(--wpuf-m-accent, #2563eb);
+}
+
+.wpuf-frontend .wpuf-tiptap-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.wpuf-frontend .wpuf-tiptap-sep {
+    width: 1px;
+    height: 20px;
+    margin: 0 4px;
+    background: var(--wpuf-m-border, #e5e7eb);
+}
+
+.wpuf-frontend .wpuf-tiptap .wpuf-tiptap-format,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-tiptap select.wpuf-tiptap-format {
+    flex: none;
+    max-width: 180px;
+    line-height: 30px !important;
+    width: auto !important;
+    min-height: 32px !important;
+    height: 32px !important;
+    margin: 0 4px 0 0;
+    padding: 0 28px 0 8px !important;
+    border: 1px solid var(--wpuf-m-border, #e5e7eb) !important;
+    border-radius: 6px !important;
+    background-color: var(--wpuf-m-input-bg, #ffffff) !important;
+    box-shadow: none !important;
+    color: var(--wpuf-m-text, #374151) !important;
+    font-size: 13px !important;
+}
+
+.wpuf-frontend .wpuf-tiptap-popwrap {
+    position: relative;
+    display: inline-flex;
+}
+
+.wpuf-frontend .wpuf-tiptap-pop {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 50;
+    min-width: 220px;
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px -8px rgba(16, 24, 40, 0.25);
+    color: #111827;
+    font-size: 13px;
+}
+
+.wpuf-frontend .wpuf-tiptap-link {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 260px;
+}
+
+.wpuf-frontend .wpuf-tiptap-link input[type="url"] {
+    box-sizing: border-box;
+    width: 100%;
+    height: 34px;
+    padding: 6px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #111827;
+    font-size: 13px;
+}
+
+.wpuf-frontend .wpuf-tiptap-link label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #374151;
+}
+
+.wpuf-frontend .wpuf-tiptap-link__actions {
+    display: flex;
+    gap: 6px;
+}
+
+.wpuf-frontend .wpuf-tiptap-link__actions button,
+.wpuf-frontend .wpuf-tiptap-nocolor {
+    padding: 6px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #111827;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.wpuf-frontend .wpuf-tiptap-link__actions button:first-child {
+    border-color: var(--wpuf-m-accent, #2563eb);
+    background: var(--wpuf-m-accent, #2563eb);
+    color: var(--wpuf-m-accent-text, #ffffff);
+}
+
+.wpuf-frontend .wpuf-tiptap-colors {
+    display: grid;
+    grid-template-columns: repeat(8, 22px);
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.wpuf-frontend .wpuf-tiptap-color {
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.wpuf-frontend .wpuf-tiptap-chars {
+    display: grid;
+    grid-template-columns: repeat(10, 26px);
+    gap: 2px;
+}
+
+.wpuf-frontend .wpuf-tiptap-chars button {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: #111827;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.wpuf-frontend .wpuf-tiptap-chars button:hover {
+    background: #f3f4f6;
+}
+
+.wpuf-frontend .wpuf-tiptap-help {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 4px 16px;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.wpuf-frontend .wpuf-tiptap-help dt {
+    color: #6b7280;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.wpuf-frontend .wpuf-tiptap-help dd {
+    margin: 0;
+}
+
+.wpuf-frontend .wpuf-tiptap-body .wpuf-tiptap-content {
+    box-sizing: border-box;
+    min-height: clamp(120px, calc(var(--wpuf-tiptap-rows, 5) * 22px), 420px);
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 12px 14px;
+    outline: none;
+    font-size: 15px;
+    line-height: 1.6;
+    word-wrap: break-word;
+}
+
+.wpuf-frontend .wpuf-tiptap-content > :first-child {
+    margin-top: 0;
+}
+
+.wpuf-frontend .wpuf-tiptap-content > :last-child {
+    margin-bottom: 0;
+}
+
+.wpuf-frontend .wpuf-tiptap-content p {
+    margin: 0 0 0.9em;
+}
+
+.wpuf-frontend .wpuf-tiptap-content ul,
+.wpuf-frontend .wpuf-tiptap-content ol {
+    margin: 0 0 0.9em;
+    padding-left: 1.6em;
+}
+
+.wpuf-frontend .wpuf-tiptap-content ul {
+    list-style: disc;
+}
+
+.wpuf-frontend .wpuf-tiptap-content ol {
+    list-style: decimal;
+}
+
+.wpuf-frontend .wpuf-tiptap-content li > p {
+    margin: 0;
+}
+
+.wpuf-frontend .wpuf-tiptap-content blockquote {
+    margin: 0 0 0.9em;
+    padding-left: 1em;
+    border-left: 3px solid var(--wpuf-m-border, #d1d5db);
+    color: var(--wpuf-m-muted, #6b7280);
+}
+
+.wpuf-frontend .wpuf-tiptap-content pre {
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: rgba(127, 127, 127, 0.12);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    white-space: pre-wrap;
+}
+
+.wpuf-frontend .wpuf-tiptap-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+.wpuf-frontend .wpuf-tiptap-content img.ProseMirror-selectednode,
+.wpuf-frontend .wpuf-tiptap-content .ProseMirror-selectednode {
+    outline: 2px solid var(--wpuf-m-accent, #2563eb);
+}
+
+.wpuf-frontend .wpuf-tiptap-content a {
+    color: var(--wpuf-m-accent, #2563eb);
+    text-decoration: underline;
+}
+
+.wpuf-frontend .wpuf-tiptap-content hr {
+    margin: 1em 0;
+    border: 0;
+    border-top: 1px solid var(--wpuf-m-border, #d1d5db);
+}
+
+.wpuf-frontend .wpuf-tiptap-content p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    color: var(--wpuf-m-muted, #9ca3af);
+    pointer-events: none;
+}
+
+/* Kept-as-is HTML and the more / page break markers. */
+.wpuf-frontend .wpuf-tiptap-raw {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+    margin: 0 0 0.9em;
+    padding: 6px 10px;
+    overflow: hidden;
+    border: 1px dashed var(--wpuf-m-border, #d1d5db);
+    border-radius: 6px;
+    background: rgba(127, 127, 127, 0.08);
+    font-size: 12px;
+    cursor: default;
+}
+
+.wpuf-frontend span.wpuf-tiptap-raw {
+    display: inline-flex;
+    margin: 0 2px;
+    vertical-align: middle;
+}
+
+.wpuf-frontend .wpuf-tiptap-raw__label {
+    flex: none;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: var(--wpuf-m-accent, #2563eb);
+    color: var(--wpuf-m-accent-text, #ffffff);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.wpuf-frontend .wpuf-tiptap-raw code {
+    overflow: hidden;
+    background: none;
+    color: var(--wpuf-m-muted, #6b7280);
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.wpuf-frontend .wpuf-tiptap-marker {
+    position: relative;
+    margin: 1em 0;
+    border-top: 2px dashed var(--wpuf-m-border, #d1d5db);
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--wpuf-m-muted, #6b7280);
+    cursor: default;
+}
+
+.wpuf-frontend .wpuf-tiptap.is-fullscreen {
+    position: fixed;
+    inset: var(--wp-admin--admin-bar--height, 0px) 0 0 0;
+    z-index: 100000;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0;
+}
+
+.wpuf-frontend .wpuf-tiptap.is-fullscreen .wpuf-tiptap-body {
+    flex: 1;
+    overflow: auto;
+}
+
+.wpuf-frontend .wpuf-tiptap.is-fullscreen .wpuf-tiptap-content {
+    max-height: none;
+    min-height: 100%;
+}
+
+
+/* The form's row rules (`ul.wpuf-form li`) must not reach the lists inside the editor. */
+.wpuf-frontend form.wpuf-form-add ul.wpuf-form li .wpuf-tiptap .wpuf-tiptap-content ul,
+.wpuf-frontend form.wpuf-form-add ul.wpuf-form li .wpuf-tiptap .wpuf-tiptap-content ol {
+    display: block !important;
+    margin: 0 0 0.9em !important;
+    padding: 0 0 0 1.6em !important;
+    border: 0 !important;
+    background: none !important;
+}
+
+.wpuf-frontend form.wpuf-form-add ul.wpuf-form li .wpuf-tiptap .wpuf-tiptap-content ul {
+    list-style: disc outside !important;
+}
+
+.wpuf-frontend form.wpuf-form-add ul.wpuf-form li .wpuf-tiptap .wpuf-tiptap-content ol {
+    list-style: decimal outside !important;
+}
+
+.wpuf-frontend form.wpuf-form-add ul.wpuf-form li .wpuf-tiptap .wpuf-tiptap-content ul ul {
+    list-style-type: circle !important;
+}
+
+.wpuf-frontend form.wpuf-form-add ul.wpuf-form li .wpuf-tiptap .wpuf-tiptap-content li {
+    display: list-item !important;
+    float: none !important;
+    width: auto !important;
+    margin: 0 0 0.25em !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: none !important;
+    list-style: inherit !important;
+}
+
+.wpuf-frontend form.wpuf-form-add ul.wpuf-form li .wpuf-tiptap .wpuf-tiptap-content li::before,
+.wpuf-frontend form.wpuf-form-add ul.wpuf-form li .wpuf-tiptap .wpuf-tiptap-content li::after {
+    content: none !important;
+}
+
+.wpuf-frontend form.wpuf-form-add ul.wpuf-form li .wpuf-tiptap .wpuf-tiptap-content li > p {
+    margin: 0 !important;
+}
+
+.wpuf-frontend form.wpuf-form-add ul.wpuf-form li .wpuf-tiptap .wpuf-tiptap-content li::marker {
+    content: normal !important;
+}
+
+/* The admin's rich text settings (shared/ui/RichEditor.jsx): the admin green. */
+.wpuf-frontend.wpuf-admin-tiptap {
+    --wpuf-m-accent: var(--color-primary, #059669);
+    --wpuf-m-ring: rgba(5, 150, 105, 0.2);
+    --wpuf-m-radius: 8px;
+    --wpuf-m-border: #d1d5db;
+    --wpuf-m-text: #374151;
+}
+
+/* Admin: plain colours for hover / active (the admin stylesheet build turns the
+   color-mix() tints above into solid colours). */
+.wpuf-frontend.wpuf-admin-tiptap .wpuf-tiptap .wpuf-tiptap-btn {
+    background: transparent;
+    color: #374151;
+}
+
+.wpuf-frontend.wpuf-admin-tiptap .wpuf-tiptap .wpuf-tiptap-btn:hover:not(:disabled) {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.wpuf-frontend.wpuf-admin-tiptap .wpuf-tiptap .wpuf-tiptap-btn.is-active,
+.wpuf-frontend.wpuf-admin-tiptap .wpuf-tiptap .wpuf-tiptap-btn.is-active:hover {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.wpuf-frontend.wpuf-admin-tiptap .wpuf-tiptap .wpuf-tiptap-btn:focus-visible {
+    outline: 2px solid #059669;
+    outline-offset: 1px;
+}
+
+.wpuf-frontend.wpuf-admin-tiptap .wpuf-tiptap .wpuf-tiptap-toolbar {
+    background: #f9fafb;
+}

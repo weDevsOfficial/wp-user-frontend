@@ -75,6 +75,11 @@ const config = ( group, withWpufExternals ) => ( {
     entry: group,
     output: {
         filename: 'js/react/[name].js',
+        // Lazy chunks (the rich text editor), next to the bundle that loads them.
+        chunkFilename: 'js/react/[name].[contenthash:8].chunk.js',
+        publicPath: 'auto',
+        // Each group has its own webpack runtime on the page: separate chunk registries.
+        uniqueName: withWpufExternals ? 'wpuf-admin-screens' : 'wpuf-admin-shared',
         path: path.resolve( __dirname, 'assets' ),
         // assets/ holds every other build's output and tracked sources: never clean it.
         clean: false,

@@ -117,3 +117,30 @@ export function dateToYmd( date ) {
 
     return `${ date.getFullYear() }-${ pad( date.getMonth() + 1 ) }-${ pad( date.getDate() ) }`;
 }
+
+/**
+ * Option keys a setting sends as an "empty list" message, not as a choice
+ * (Pro View Control's `no_packs` when no subscription pack exists).
+ *
+ * @since WPUF_SINCE
+ */
+export const PLACEHOLDER_OPTION_KEYS = [ 'no_packs' ];
+
+/**
+ * Splits a multiselect's options into the real choices and the message of a
+ * placeholder-only list ("No subscription packs available"), which is shown
+ * as a note, never ticked or stored.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param {Array} options [{ value, label }].
+ *
+ * @return {{ choices: Array, empty: string }} Choices, and the note ('' when none).
+ */
+export function multiSelectChoices( options ) {
+    const list = options || [];
+    const choices = list.filter( ( option ) => ! PLACEHOLDER_OPTION_KEYS.includes( String( option.value ) ) );
+    const placeholder = list.find( ( option ) => PLACEHOLDER_OPTION_KEYS.includes( String( option.value ) ) );
+
+    return { choices, empty: ! choices.length && placeholder ? String( placeholder.label ) : '' };
+}

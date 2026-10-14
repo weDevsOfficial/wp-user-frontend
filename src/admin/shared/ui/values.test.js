@@ -1,4 +1,4 @@
-import { normalizeOptions, numberKeyAllowed, selectShownValue } from './values';
+import { multiSelectChoices, normalizeOptions, numberKeyAllowed, selectShownValue } from './values';
 
 test( 'number inputs block "-" unless negatives are allowed', () => {
     expect( numberKeyAllowed( '-', false ) ).toBe( false );
@@ -46,4 +46,22 @@ test( 'dates round-trip without a timezone shift', () => {
     expect( ymdToDate( '' ) ).toBeUndefined();
     expect( ymdToDate( 'nope' ) ).toBeUndefined();
     expect( dateToYmd( undefined ) ).toBe( '' );
+} );
+
+describe( 'multiSelectChoices', () => {
+    it( 'shows a placeholder-only list as a note, with nothing to tick', () => {
+        expect( multiSelectChoices( [ { value: 'no_packs', label: 'No subscription packs available' } ] ) )
+            .toEqual( { choices: [], empty: 'No subscription packs available' } );
+    } );
+
+    it( 'keeps real choices and drops a placeholder next to them', () => {
+        const packs = [ { value: '12', label: 'Gold' }, { value: '13', label: 'Silver' } ];
+
+        expect( multiSelectChoices( packs ) ).toEqual( { choices: packs, empty: '' } );
+        expect( multiSelectChoices( [ ...packs, { value: 'no_packs', label: 'x' } ] ) ).toEqual( { choices: packs, empty: '' } );
+    } );
+
+    it( 'has no note for an empty list', () => {
+        expect( multiSelectChoices( [] ) ).toEqual( { choices: [], empty: '' } );
+    } );
 } );

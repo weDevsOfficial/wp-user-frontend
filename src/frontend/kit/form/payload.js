@@ -10,11 +10,52 @@ import { __ } from '@wordpress/i18n';
 import { UPLOAD_TEMPLATES, PASSIVE_TEMPLATES } from './validation';
 
 /**
+ * What a field hidden by conditional logic posts in the classic form, where
+ * the row is hidden but its inputs still post. Most fields post their form
+ * value through the usual path (null); an address
+ * posts its parts as its inputs hold them (stored or default value, "-1" on
+ * an empty country / state select) and a server-rendered field its stored
+ * value (its markup is not on the page while hidden).
+ *
+ * @since WPUF_SINCE
+ *
+ * @param {Object} field Field.
+ * @param {*}      value Form value.
+ * @return {*} The value to post, null for the usual path, undefined for nothing.
+ */
+export function hiddenValue( field, value ) {
+    if ( 'address_field' === field.template ) {
+        const current = value && 'object' === typeof value ? value : {};
+        const out = {};
+
+        Object.entries( field.address || {} ).forEach( ( [ key, sub ] ) => {
+            if ( ! sub || ! sub.checked ) {
+                return;
+            }
+
+            const part = current[ key ] ?? sub.value ?? '';
+            const asInput = [ 'text', 'hidden', 'email', 'password' ].includes( sub.type );
+            const select = ( 'country_select' === key || 'state' === key ) && ! asInput;
+
+            out[ key ] = select && '' === String( part ) ? '-1' : String( part );
+        } );
+
+        return out;
+    }
+
+    if ( field.server_rendered ) {
+        return undefined === field.value || null === field.value ? undefined : field.value;
+    }
+
+    return null;
+}
+
+/**
  * The request body of a submit (create or update) or a draft.
  *
  * @param {Object}      schema  The form schema.
  * @param {Object}      values  name => value
- * @param {Set<string>} visible Names of the visible fields (hidden fields post nothing).
+ * @param {Set<string>} visible Names of the visible fields (hidden ones post what they hold, see hiddenValue()).
  * @param {Array}       fields  Flat list of the fields.
  * @param {Object}      extra   Extra keys (captcha tokens, guest fields, is_featured_item).
  * @return {Object} Body
@@ -36,9 +77,27 @@ export function buildPayload( schema, values, visible, fields, extra = {} ) {
     }
 
     fields.forEach( ( field ) => {
-        // Hidden by conditional logic, passive, or read-only (the classic form disables those inputs, so they post nothing).
-        if ( ! field.name || PASSIVE_TEMPLATES.includes( field.template ) || ! visible.has( field.name ) || 'yes' === field.read_only ) {
+        // Passive or read-only: the classic form disables those inputs, so they post nothing.
+        if ( ! field.name || PASSIVE_TEMPLATES.includes( field.template ) || 'yes' === field.read_only ) {
             return;
+        }
+
+        // A field hidden by conditional logic posts what it holds, as the classic form
+        // (it only hides the row; its inputs stay enabled). The server stores '' for a
+        // meta field that posts nothing, so leaving it out would empty a saved value
+        // on edit. It is not rendered here: no input of its own posts it.
+        if ( ! visible.has( field.name ) ) {
+            const held = hiddenValue( field, values[ field.name ] );
+
+            if ( undefined === held ) {
+                return;
+            }
+
+            if ( 'address_field' === field.template || field.server_rendered ) {
+                body[ field.name ] = held;
+
+                return;
+            }
         }
 
         const value = values[ field.name ];

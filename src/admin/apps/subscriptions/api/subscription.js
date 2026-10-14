@@ -114,3 +114,16 @@ export const saveSubscriptionSettings = async (settings) => {
         data: settings,
     });
 };
+
+/**
+ * Fetch the subscribers of one pack (the Subscribers view)
+ *
+ * @param {number} subscriptionId - Subscription pack ID
+ * @param {Object} params - status, orderby, order, page, per_page
+ * @return {Promise<Object>} { pack, items, total, pages, counts }
+ */
+export const fetchPackSubscribers = async (subscriptionId, params = {}) => {
+    return request(addQueryArgs(`${NAMESPACE}/admin/subscriptions/${subscriptionId}/subscribers`, params), {
+        method: 'GET',
+    });
+};

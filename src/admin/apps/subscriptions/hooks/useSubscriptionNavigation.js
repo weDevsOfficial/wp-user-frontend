@@ -23,6 +23,15 @@ export const useSubscriptionNavigation = () => {
 	}, [navigate]);
 
 	/**
+	 * Navigate to the subscribers of a pack
+	 *
+	 * @param {number} id - Subscription ID
+	 */
+	const goToSubscribers = useCallback((id) => {
+		navigate({ action: 'subscribers', id: String(id), post_status: null, p: null });
+	}, [navigate]);
+
+	/**
 	 * Navigate to new subscription form
 	 */
 	const goToNew = useCallback(() => {
@@ -62,7 +71,7 @@ export const useSubscriptionNavigation = () => {
 		navigate(params);
 	}, [navigate]);
 
-	return { goToEdit, goToNew, goToList, goToPage };
+	return { goToEdit, goToSubscribers, goToNew, goToList, goToPage };
 };
 
 export default useSubscriptionNavigation;

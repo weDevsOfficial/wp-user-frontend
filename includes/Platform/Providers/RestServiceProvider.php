@@ -13,6 +13,7 @@ use WeDevs\Wpuf\Platform\REST\Controllers\FormListController;
 use WeDevs\Wpuf\Platform\REST\Controllers\FormsController;
 use WeDevs\Wpuf\Platform\REST\Controllers\OnboardingController;
 use WeDevs\Wpuf\Platform\REST\Controllers\SettingsController;
+use WeDevs\Wpuf\Platform\REST\Controllers\SubscribersController;
 use WeDevs\Wpuf\Platform\REST\Controllers\SubscriptionController;
 use WeDevs\Wpuf\Platform\REST\Controllers\ToolsController;
 use WeDevs\Wpuf\Platform\REST\Controllers\TransactionsController;
@@ -78,6 +79,14 @@ class RestServiceProvider extends ServiceProvider {
             ToolsController::class,
             function ( $container ) {
                 return new ToolsController( $container->get( ToolsService::class ) );
+            }
+        );
+
+        // wpuf/v1/admin/subscriptions/{id}/subscribers (a pack's subscribers).
+        $this->share_tagged(
+            SubscribersController::class,
+            function ( $container ) {
+                return new SubscribersController( $container->get( TransactionService::class ) );
             }
         );
 

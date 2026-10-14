@@ -9,7 +9,7 @@ import { applyFilters } from '@wordpress/hooks';
 import { pencil, trash, check, closeSmall } from '@wordpress/icons';
 import { decodeEntities } from '@wordpress/html-entities';
 import { ActionMenu, ConfirmDialog, notify } from '@wpuf/components';
-import { useSubscriptionActions } from '../../hooks';
+import { useSubscriptionActions, useSubscriptionNavigation } from '../../hooks';
 import { SubscriptionBoxFooter } from '../../slots';
 import { fetchSubscribers } from '../../api/subscription';
 
@@ -68,7 +68,8 @@ const SubscriptionBox = ({ subscription, onEdit, onChanged }) => {
 		return isRecurring(subscription);
 	}, [subscription, isRecurring]);
 
-	const subscribersLink = window.wpufSubscriptions.siteUrl + '/wp-admin/edit.php?post_type=wpuf_subscription&page=wpuf_subscribers&post_ID=' + subscription.ID;
+	// The pack's Subscribers view in this app (replaces the classic list table).
+	const { goToSubscribers } = useSubscriptionNavigation();
 
 	// Fetch subscribers count
 	useEffect(() => {
@@ -231,7 +232,17 @@ const SubscriptionBox = ({ subscription, onEdit, onChanged }) => {
 				{/* Subscribers Count */}
 				<div className="flex px-6 pb-6 justify-between items-center">
 					<p className="text-gray-500 text-sm m-0">{__('Total Subscribers', 'wp-user-frontend')}</p>
-					<a href={subscribersLink} className="text-gray-500">{subscribers}</a>
+					<a
+						href="#"
+						className="text-gray-500"
+						aria-label={__('View subscribers', 'wp-user-frontend')}
+						onClick={(event) => {
+							event.preventDefault();
+							goToSubscribers(subscription.ID);
+						}}
+					>
+						{subscribers}
+					</a>
 				</div>
 
 				{/* Extension slot: Pro and third-party plugins can add content to card footer */}

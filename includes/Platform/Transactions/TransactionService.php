@@ -241,13 +241,16 @@ class TransactionService {
     }
 
     /**
-     * The plugin's mark for a gateway label (PayPal, bank, else a card).
+     * The plugin's mark for a gateway label (PayPal, bank, else a card). Also
+     * used by the pack Subscribers list.
+     *
+     * @since WPUF_SINCE
      *
      * @param string $gateway Gateway label
      *
      * @return string Image URL
      */
-    private function gateway_logo( $gateway ) {
+    public function gateway_logo( $gateway ) {
         $gateway = strtolower( $gateway );
         $file    = 'credit-card.svg';
 

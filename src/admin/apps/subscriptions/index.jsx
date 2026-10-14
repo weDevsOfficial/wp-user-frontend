@@ -4,11 +4,11 @@
  */
 import { createRoot } from '@wordpress/element';
 import { useSelect, useDispatch, dispatch as dataDispatch } from '@wordpress/data';
-import { useState, useCallback, useEffect, useRef, createInterpolateElement } from '@wordpress/element';
+import { useState, useCallback, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { SlotFillProvider } from '@wordpress/components';
 import { doAction } from '@wordpress/hooks';
-import { WpufProviders, PageFooter, PageHeader, PageShell, UnsavedGuard } from '@wpuf/components';
+import { WpufProviders, PageHeader, PageShell, UnsavedGuard } from '@wpuf/components';
 import SubscriptionForm from './components/subscriptions/SubscriptionForm';
 import SubscriptionList from './components/subscriptions/SubscriptionList';
 import SidebarMenu from './components/subscriptions/SidebarMenu';
@@ -16,6 +16,7 @@ import ContentHeader from './components/subscriptions/ContentHeader';
 import QuickEdit from './components/subscriptions/QuickEdit';
 import Preferences from './components/subscriptions/Preferences';
 import Notices from './components/subscriptions/Notices';
+import Subscribers from './components/subscriptions/Subscribers';
 
 // Import stores to register them
 import './stores-react/subscription';
@@ -140,9 +141,6 @@ const SubscriptionsApp = () => {
         setPendingStatus(null);
     }, [setIsUnsavedPopupOpen]);
 
-    // Boot payload (Admin\BootPayload).
-    const adminUrl = ( window.wpufAdmin || {} ).adminUrl || '';
-
     return (
         <PageShell>
             <PageHeader
@@ -175,6 +173,8 @@ const SubscriptionsApp = () => {
                             onDiscardChanges={handleDiscardChanges}
                             onContinueEditing={handleContinueEditing}
                         />
+                    ) : action === 'subscribers' && subscriptionId ? (
+                        <Subscribers subscriptionId={subscriptionId} />
                     ) : status === 'preferences' ? (
                         <Preferences />
                     ) : (
@@ -197,14 +197,6 @@ const SubscriptionsApp = () => {
             {/* Quick edit / preferences notices go to the shared toasts (develop's Notice list position) */}
             <Notices />
 
-            {/* WordPress's footer is hidden on shared-layer screens (D26): its
-                "classic UI" link (Admin_Subscription::admin_footer_text) moves here. */}
-            <PageFooter>
-                { createInterpolateElement(
-                    __( 'Use the <a>classic UI</a>.', 'wp-user-frontend' ),
-                    { a: <a href={ adminUrl + 'edit.php?post_type=wpuf_subscription' } className="text-gray-500 underline hover:text-gray-700 focus:text-gray-700" /> }
-                ) }
-            </PageFooter>
         </PageShell>
     );
 };

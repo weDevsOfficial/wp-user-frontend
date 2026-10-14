@@ -11,7 +11,6 @@ class Menu {
         add_action( 'admin_menu', [ $this, 'admin_menu' ] );
 
         add_filter( 'parent_file', [ $this, 'fix_parent_menu' ] );
-        add_filter( 'submenu_file', [ $this, 'fix_submenu_file' ] );
         add_filter( 'script_loader_tag', [ $this , 'add_async_attribute' ], 10, 3 );
         add_action( 'admin_head', [ $this, 'premium_menu_styles' ] );
     }
@@ -95,6 +94,9 @@ class Menu {
         $_registered_pages['user-frontend_page_wpuf_subscribers'] = true; // hack to work the nested subscribers page. WPUF > Subscriptions > Subscribers
 
         $this->all_submenu_hooks['subscribers_hook'] = $subscribers_page_hook;
+
+        // The old Subscribers URL opens the pack's React Subscribers view.
+        add_action( 'load-' . $subscribers_page_hook, [ $this, 'subscribers_menu_action' ] );
 
         $settings_page_hook = add_submenu_page( $this->parent_slug, __( 'Settings', 'wp-user-frontend' ), __( 'Settings', 'wp-user-frontend' ), $capability, 'wpuf-settings', [ $this, 'plugin_settings_page' ] );
 
@@ -266,6 +268,18 @@ class Menu {
     }
 
     /**
+     * Load step of the old Subscribers page: redirects to the subscriptions
+     * app's Subscribers view (Admin\Screens\Subscribers).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function subscribers_menu_action() {
+        $this->screens()->load( 'wpuf_subscribers' );
+    }
+
+    /**
      * The subscribers page content
      *
      * @param $post_ID
@@ -317,25 +331,6 @@ class Menu {
         }
 
         return $parent_file;
-    }
-
-    /**
-     * Fix the submenu class in admin menu
-     *
-     * @since 2.6.0
-     *
-     * @param string $submenu_file
-     *
-     * @return string
-     */
-    public function fix_submenu_file( $submenu_file ) {
-        $current_screen = get_current_screen();
-
-        if ( 'wpuf_subscription' === $current_screen->post_type && $current_screen->base === 'admin_page_wpuf_subscribers' ) {
-            $submenu_file = 'edit.php?post_type=wpuf_subscription';
-        }
-
-        return $submenu_file;
     }
 
     /**

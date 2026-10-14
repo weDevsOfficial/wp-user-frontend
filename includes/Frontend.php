@@ -36,6 +36,7 @@ class Frontend {
 
         // show admin bar as per wpuf settings
         add_filter( 'show_admin_bar', [ $this, 'show_admin_bar' ] );
+        add_action( 'wp_head', [ $this, 'print_custom_css' ], 100 );
     }
 
     /**
@@ -485,6 +486,28 @@ class Frontend {
         return class_exists( 'WeDevs_Dokan' )
                 && function_exists( 'dokan_is_seller_dashboard' )
                 && dokan_is_seller_dashboard();
+    }
+
+    /**
+     * Settings > General > "Custom CSS codes": printed in the page head in a
+     * style tag, as the setting says (the old output line had been commented
+     * out since 2018, so the setting did nothing). Only when it has a value.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function print_custom_css() {
+        $css = trim( wp_strip_all_tags( (string) wpuf_get_option( 'custom_css', 'wpuf_general', '' ) ) );
+
+        if ( '' === $css ) {
+            return;
+        }
+
+        // Admin-entered CSS (manage options); `</` could still close the tag.
+        $css = str_replace( '</', '<\\/', $css );
+
+        echo "<style id=\"wpuf-custom-css\">\n" . $css . "\n</style>\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CSS context: tags stripped, `</` neutralised.
     }
 
     /**

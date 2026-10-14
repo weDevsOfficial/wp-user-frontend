@@ -398,14 +398,17 @@ class Account_Service {
         $payment     = (string) Stores::submissions()->payment_status( $post->ID );
         $edit_page   = (int) wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' );
         // Not wp_nonce_url(): it HTML-escapes the URL (&amp;), which is right in an attribute and wrong in JSON.
-        $edit_url    = $edit_page ? add_query_arg(
+        // Same rules as the classic posts table: wpuf_is_post_editable() (the
+        // enable_post_edit, pending / published edit and edit lock settings)
+        // and the enable_post_del setting.
+        $edit_url    = $edit_page && wpuf_is_post_editable( $post ) ? add_query_arg(
             [
                 'pid'      => $post->ID,
                 '_wpnonce' => wp_create_nonce( 'wpuf_edit' ),
             ],
             get_permalink( $edit_page )
         ) : '';
-        $can_delete  = (int) $post->post_author === get_current_user_id() || current_user_can( 'delete_others_pages' );
+        $can_delete  = $this->deletion_allowed() && ( (int) $post->post_author === get_current_user_id() || current_user_can( 'delete_others_pages' ) );
         $pay_url     = '';
         $payment_url = get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
 
@@ -439,6 +442,18 @@ class Account_Service {
             'pay_url'        => $pay_url,
             'comments'       => (int) $post->comment_count,
         ];
+    }
+
+    /**
+     * Whether users may delete their posts from the account page (Settings >
+     * Dashboard > "Users can delete post?", as the classic posts table).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    private function deletion_allowed() {
+        return 'yes' === wpuf_get_option( 'enable_post_del', 'wpuf_dashboard', 'yes' );
     }
 
     /**
@@ -476,6 +491,10 @@ class Account_Service {
 
         if ( ! $post instanceof WP_Post || ! in_array( $post->post_type, $this->allowed_post_types(), true ) ) {
             return new WP_Error( 'wpuf_account_post_not_found', __( 'Post not found.', 'wp-user-frontend' ), [ 'status' => 404 ] );
+        }
+
+        if ( ! $this->deletion_allowed() ) {
+            return new WP_Error( 'wpuf_account_delete_disabled', __( 'Deleting posts is turned off.', 'wp-user-frontend' ), [ 'status' => 403 ] );
         }
 
         $is_author = (int) $post->post_author === get_current_user_id();

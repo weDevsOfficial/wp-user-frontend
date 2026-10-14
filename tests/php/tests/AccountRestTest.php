@@ -152,6 +152,27 @@ class AccountRestTest extends WP_UnitTestCase {
         $this->assertSame( 404, $this->request( 'GET', '/wpuf/v1/account/posts', [ 'type' => 'page' ] )->get_status(), 'only the post types enabled for the page' );
     }
 
+    public function test_posts_follow_the_dashboard_edit_and_delete_settings() {
+        $user_id = $this->user();
+        $post    = self::factory()->post->create( [ 'post_author' => $user_id ] );
+        update_option( 'wpuf_frontend_posting', [ 'edit_page_id' => self::factory()->post->create( [ 'post_type' => 'page' ] ) ] );
+
+        update_option( 'wpuf_dashboard', [ 'enable_post_edit' => 'no', 'enable_post_del' => 'no' ] );
+        $item = $this->request( 'GET', '/wpuf/v1/account/posts', [ 'type' => 'post' ] )->get_data()['items'][0];
+
+        $this->assertSame( '', $item['edit_url'], 'no edit link when editing is off (wpuf_is_post_editable)' );
+        $this->assertFalse( $item['can_delete'] );
+        $this->assertSame( 403, $this->request( 'DELETE', '/wpuf/v1/account/posts/' . $post )->get_status(), 'the route refuses too' );
+        $this->assertSame( 'publish', get_post_status( $post ) );
+
+        update_option( 'wpuf_dashboard', [ 'enable_post_edit' => 'yes', 'enable_post_del' => 'yes' ] );
+        $item = $this->request( 'GET', '/wpuf/v1/account/posts', [ 'type' => 'post' ] )->get_data()['items'][0];
+
+        $this->assertNotSame( '', $item['edit_url'] );
+        $this->assertTrue( $item['can_delete'] );
+        delete_option( 'wpuf_dashboard' );
+    }
+
     public function test_posts_section_falls_back_to_html_when_a_column_hook_is_attached() {
         $this->user();
 

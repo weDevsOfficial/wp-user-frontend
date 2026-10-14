@@ -113,7 +113,9 @@ export function buildPayload( schema, values, visible, fields, extra = {} ) {
             if ( 'text' === field.type || 'ajax' === field.type ) {
                 const text = Array.isArray( value ) ? value.join( ', ' ) : String( value || '' );
 
-                if ( text.trim() ) {
+                // The classic text input always posts (empty clears the terms on edit);
+                // the ajax selects post their own levels.
+                if ( text.trim() || 'text' === field.type ) {
                     body[ field.name ] = text;
                 }
 
@@ -132,6 +134,10 @@ export function buildPayload( schema, values, visible, fields, extra = {} ) {
 
             if ( list.length ) {
                 body[ field.name ] = list;
+            } else if ( 'checkbox' === field.type ) {
+                // The classic checklist carries a hidden `name=0`: nothing ticked posts 0,
+                // which clears the terms (an edit that unticks everything).
+                body[ field.name ] = '0';
             }
 
             return;

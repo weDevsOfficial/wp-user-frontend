@@ -721,6 +721,10 @@ trait FieldableTrait {
         $woo_attr = [];
 
         foreach ( $taxonomy_vars as $taxonomy ) {
+            // Each taxonomy reads its own input: one that posts nothing must not reuse
+            // the previous one's (a WooCommerce attribute nobody filled was added).
+            unset( $taxonomy_name );
+
             if ( isset( $_POST[ $taxonomy['name'] ] ) && is_array( $_POST[ $taxonomy['name'] ] ) ) {
                 $taxonomy_name = array_map( 'sanitize_text_field', wp_unslash( $_POST[ $taxonomy['name'] ] ) );
             }

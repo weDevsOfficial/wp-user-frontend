@@ -10,6 +10,7 @@ namespace WeDevs\Wpuf\Platform\REST\Controllers;
 
 use WeDevs\Wpuf\Frontend\Account\Account_Service;
 use WeDevs\Wpuf\Frontend\Forms\Upload_Service;
+use WeDevs\Wpuf\Platform\Http\Admin_Ajax_Context;
 use WeDevs\Wpuf\Platform\REST\RestController;
 use WP_Error;
 use WP_REST_Request;
@@ -221,7 +222,8 @@ class AccountController extends RestController {
      * @return \WP_REST_Response|WP_Error
      */
     public function update_profile( WP_REST_Request $request ) {
-        $result = $this->account->update_profile( $this->body( $request ) );
+        $body   = $this->body( $request );
+        $result = Admin_Ajax_Context::run( fn() => $this->account->update_profile( $body ) );
 
         return is_wp_error( $result ) ? $result : rest_ensure_response(
             [

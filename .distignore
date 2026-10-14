@@ -39,6 +39,8 @@ modules/user-directory/node_modules
 /.nvmrc
 /.travis.yml
 /.php_cs.dist
+/.php_cs
+/.phpunit.result.cache
 /phpcs.xml
 /phpcs.xml.dist
 /phpunit.xml
@@ -53,9 +55,12 @@ modules/user-directory/node_modules
 /webpack.admin.config.js
 /webpack.config.js
 /webpack.wpuf-externals.js
+/webpack.frontend.config.js
 /tailwind.config.js
 /postcss.config.js
 /postcss.user-directory.config.js
+/postcss.config.react.js
+/postcss.config.frontend.js
 /package.json
 /package-lock.json
 /pnpm-lock.yaml

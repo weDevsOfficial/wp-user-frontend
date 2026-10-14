@@ -81,9 +81,11 @@ function openMedia( onInsert ) {
  * @param {number}   [props.rows]         Code tab rows.
  * @param {string}   [props.format]       html|wp.
  * @param {string}   [props.label]        Accessible name of the editing area.
+ * @param {Object}   [props.apiRef]       Ref that gets `{ insert( text ) }`: puts text at the cursor
+ *                                        (merge tag chips), in whichever editor is showing.
  */
 export default function RichEditor( props ) {
-    const { id, value = '', onChange, teeny = false, toolbar, mediaButtons = true, rows = 10, format = 'html', className, label } = props;
+    const { id, value = '', onChange, teeny = false, toolbar, mediaButtons = true, rows = 10, format = 'html', className, label, apiRef } = props;
     const instanceId = useInstanceId( RichEditor, 'wpuf-editor' );
     const editorId = id ? `wpuf-editor-${ id }` : instanceId;
     const buttons = String( toolbar || ( teeny ? TEENY_TOOLBAR : FULL_TOOLBAR ) ).split( ',' ).map( ( name ) => name.trim() ).filter( Boolean );
@@ -121,6 +123,30 @@ export default function RichEditor( props ) {
             setMount( ( n ) => n + 1 );
         }
     }, [ value ] );
+
+    if ( apiRef ) {
+        apiRef.current = {
+            insert( text ) {
+                const mce = window.tinymce && window.tinymce.get( editorId );
+                const area = document.getElementById( editorId );
+
+                if ( 'wp' === engine && mce && ! mce.isHidden() ) {
+                    mce.insertContent( text );
+                    mce.fire( 'change' );
+                } else if ( 'tiptap' === engine && 'visual' === tab && instance.current ) {
+                    instance.current.chain().focus().insertContent( text ).run();
+                } else if ( area && 'TEXTAREA' === area.tagName ) {
+                    // Code tab (or the WordPress editor's Text tab): at the caret, then the usual input event.
+                    const start = area.selectionStart ?? area.value.length;
+                    const end = area.selectionEnd ?? start;
+
+                    area.setRangeText( text, start, end, 'end' );
+                    area.dispatchEvent( new window.Event( 'input', { bubbles: true } ) );
+                    area.focus();
+                }
+            },
+        };
+    }
 
     if ( 'wp' === engine ) {
         return <WpEditor { ...props } />;

@@ -276,9 +276,6 @@ class Assets {
             'admin'               => [
                 'src' => WPUF_ASSET_URI . '/css/admin.css',
             ],
-            'registration-forms'  => [
-                'src' => WPUF_ASSET_URI . '/css/registration-forms.css',
-            ],
             'module'              => [
                 'src' => WPUF_ASSET_URI . '/css/admin/wpuf-module.css',
             ],

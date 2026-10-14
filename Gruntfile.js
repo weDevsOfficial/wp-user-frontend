@@ -30,8 +30,7 @@ module.exports = function( grunt) {
             admin: {
                 files: {
                     // wpuf-form-builder.css is plain CSS now (tools/admin-css/src/legacy/, task 5.1b).
-                    '<%= dirs.css %>/admin.css': ['<%= dirs.less %>/admin.less'],
-                    '<%= dirs.css %>/registration-forms.css': ['<%= dirs.less %>/registration-forms.less']
+                    '<%= dirs.css %>/admin.css': ['<%= dirs.less %>/admin.less']
                 }
             }
         },
@@ -172,7 +171,6 @@ module.exports = function( grunt) {
                     '!config.codekit',
                     '!**/nbproject/**',
                     '!assets/less/**',
-                    '!assets/tailwind/**',
                     '!tests/**',
                     '!tools/**',
                     '!**/Gruntfile.js',

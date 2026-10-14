@@ -31,7 +31,6 @@ export const built = [
     'assets/css/frontend-forms.css',
     'assets/css/frontend/account.css',
     'assets/css/frontend-subscriptions.min.css',
-    'assets/css/registration-forms.css',
     'assets/css/settings-react.css',
     'assets/css/settings-react-rtl.css',
     'assets/css/subscriptions.css',

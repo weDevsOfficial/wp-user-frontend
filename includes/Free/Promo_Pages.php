@@ -116,11 +116,16 @@ class Promo_Pages extends Pro_Prompt {
         }
     }
 
-    public function admin_reg_forms_page() {
-        $file_location = __DIR__ . '/templates/page-registration-form.php';
-
-        wpuf_require_once( $file_location );
-    }
+    /**
+     * Menu callback of Registration Forms without Pro. Prints nothing: the
+     * page's load step (reg_form_menu_action()) redirects to the React
+     * route (Screens\RegistrationPromo); the classic PHP promo page is gone.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function admin_reg_forms_page() {}
 
     public function admin_coupon_page() {
         ?>

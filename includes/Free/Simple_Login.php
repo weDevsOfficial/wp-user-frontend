@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf\Free;
 
+use WeDevs\Wpuf\Frontend\Renderer_Switch;
 use WeDevs\Wpuf\Render_Form;
 use WeDevs\Wpuf\WPUF_User;
 use WP_Error;
@@ -399,7 +400,7 @@ class Simple_Login {
                     if ( $reset === 'true' ) {
                         $this->messages[] = __( 'Your password has been reset successfully', 'wp-user-frontend' );
 
-                        wpuf_load_template( 'login-form.php', $args );
+                        $this->render_login_form( $args );
 
                         break;
                     } else {
@@ -424,13 +425,119 @@ class Simple_Login {
 
                     $args['redirect_to'] = $this->get_login_redirect_link( $args['redirect_to'] );
 
-                    wpuf_load_template( 'login-form.php', $args );
+                    $this->render_login_form( $args );
 
                     break;
             }
         }
 
         return ob_get_clean();
+    }
+
+    /**
+     * Print the login form: the React form when the frontend runs on React
+     * (and no theme overrides login-form.php), else the classic template.
+     *
+     * The React form posts to the same URL with the same field names, so
+     * process_login() handles it exactly as before; what the template prints
+     * through filters and hooks (`login_message`, the notices, reCAPTCHA,
+     * Turnstile, `wpuf_login_form_bottom`, the action links) is captured here
+     * and shown in place.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $args action_url, redirect_to
+     *
+     * @return void
+     */
+    private function render_login_form( array $args ) {
+        $renderer = function_exists( 'wpuf' ) && method_exists( wpuf(), 'platform' ) ? wpuf()->platform()->get( Renderer_Switch::class ) : null;
+
+        if ( ! $renderer || ! $renderer->is_react( 'login' ) ) {
+            wpuf_load_template( 'login-form.php', $args );
+
+            return;
+        }
+
+        echo $renderer->markup( 'login', $this->react_login_data( $args ), '', 'wpuf-login-react' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup() escapes its attributes and JSON-encodes the data.
+    }
+
+    /**
+     * Boot data of the React login form.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $args action_url, redirect_to
+     *
+     * @return array
+     */
+    private function react_login_data( array $args ) {
+        $capture = function ( callable $print ) {
+            ob_start();
+            $print();
+
+            return (string) ob_get_clean();
+        };
+
+        $recaptcha = 'on' === wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' );
+        $turnstile = 'on' === wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' );
+        $captcha   = '';
+
+        if ( $recaptcha && function_exists( 'recaptcha_get_html' ) ) {
+            $captcha .= '<div class="wpuf-fields">' . recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ) . '</div>';
+        }
+
+        if ( $turnstile ) {
+            $site_key = wpuf_get_option( 'turnstile_site_key', 'wpuf_general', '' );
+
+            wp_enqueue_script( 'wpuf-turnstile' );
+
+            $captcha .= sprintf(
+                '<div id="wpuf-turnstile" class="wpuf-turnstile" data-sitekey="%1$s" data-callback="javascriptCallback"></div><script>window.onloadTurnstileCallback = function () { turnstile.render("#wpuf-turnstile", { sitekey: "%2$s" }); };</script>',
+                esc_attr( $site_key ),
+                esc_js( $site_key )
+            );
+        }
+
+        $data = [
+            'id'            => 0,
+            'action_url'    => esc_url_raw( $args['action_url'] ),
+            'redirect_to'   => (string) $args['redirect_to'],
+            'nonce'         => wp_create_nonce( 'wpuf_login_action' ),
+            'lost_password' => esc_url_raw( wp_lostpassword_url() ),
+            'message'       => wp_kses_post( apply_filters( 'login_message', '' ) ),
+            'notices'       => $capture(
+                function () {
+                    $this->show_errors();
+                    $this->show_messages();
+                }
+            ),
+            'captcha'       => $captcha,
+            'bottom'        => $capture(
+                function () {
+                    do_action( 'wpuf_login_form_bottom' );
+                }
+            ),
+            'links'         => wp_kses_post( $this->get_action_links( [ 'login' => false, 'lostpassword' => false ] ) ),
+            'texts'         => [
+                'usernameLabel' => __( 'Username or Email', 'wp-user-frontend' ),
+                'passwordLabel' => __( 'Password', 'wp-user-frontend' ),
+                'rememberMe'    => __( 'Remember Me', 'wp-user-frontend' ),
+                'lostPassword'  => __( 'Lost Password', 'wp-user-frontend' ),
+                'buttonText'    => __( 'Log In', 'wp-user-frontend' ),
+            ],
+        ];
+
+        /**
+         * Filters the boot data of the React login form (texts, links, the
+         * captured hook output).
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $data Boot data
+         * @param array $args action_url, redirect_to
+         */
+        return apply_filters( 'wpuf_login_form_react_data', $data, $args );
     }
 
     /**
@@ -740,8 +847,8 @@ class Simple_Login {
         if ( isset( $_POST['user_login'] ) && isset( $_POST['_wpnonce'] ) ) {
             $nonce = ! empty( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 
-            if ( ! empty( $nonce) && ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
-                return ;
+            if ( ! empty( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
+                return;
             }
 
             if ( $this->retrieve_password() ) {

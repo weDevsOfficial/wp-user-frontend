@@ -1,0 +1,135 @@
+/**
+ * The React login form keeps the classic markup, so the classic and Pro
+ * login sheets style it. This sheet only covers what the classic form has
+ * not: the password button, the field messages and the posting state, in
+ * the kit's tokens and the React forms' look (forms.css: invalid field with
+ * a red border and soft ring, a small red message with the alert icon, the
+ * token spinner). Every rule stays under `.wpuf-frontend`.
+ */
+/* The root is the classic form box: the theme's font, size and colour, as the
+   classic div had (the kit sets its own on .wpuf-frontend). */
+.wpuf-frontend.wpuf-login-react {
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.wpuf-frontend .wpuf-slot-inline {
+    display: contents;
+}
+
+.wpuf-frontend#wpuf-login-form .wpuf-login-password {
+    position: relative;
+    display: block;
+}
+
+.wpuf-frontend#wpuf-login-form .wpuf-login-password input.input {
+    width: 100%;
+    padding-inline-end: 40px;
+    box-sizing: border-box;
+}
+
+.wpuf-frontend#wpuf-login-form .wpuf-login-password__toggle {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    margin: 0;
+    padding: 0;
+    color: var(--wpuf-fe-muted);
+    background: none;
+    border: 0;
+    box-shadow: none;
+    cursor: pointer;
+}
+
+.wpuf-frontend#wpuf-login-form .wpuf-login-password__toggle:hover,
+.wpuf-frontend#wpuf-login-form .wpuf-login-password__toggle:focus-visible {
+    color: var(--wpuf-fe-text);
+    background: none;
+}
+
+.wpuf-frontend#wpuf-login-form .wpuf-login-password__toggle:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -6px;
+    border-radius: 6px;
+}
+
+.wpuf-frontend#wpuf-login-form .wpuf-login-password__toggle svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* The classic sheet paints .wpuf-error-msg as a pink box; the React forms
+   show a small red message with the alert icon (forms.css), here too. */
+.wpuf-frontend#wpuf-login-form .wpuf-error-msg {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 6px;
+    margin: 6px 0 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0;
+    background: transparent !important;
+    color: var(--wpuf-fe-danger) !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    line-height: 18px !important;
+}
+
+.wpuf-frontend#wpuf-login-form .wpuf-error-msg svg {
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+    margin-top: 2px;
+}
+
+/* Invalid field: the layout's own border turns red (layouts 1-2 draw only a
+   bottom line, so no ring around the box). */
+.wpuf-frontend#wpuf-login-form input.input[aria-invalid="true"],
+.wpuf-frontend#wpuf-login-form input.input[aria-invalid="true"]:focus {
+    border-color: var(--wpuf-fe-danger) !important;
+    box-shadow: none !important;
+    outline: none;
+}
+
+.wpuf-frontend#wpuf-login-form form.is-submitting {
+    cursor: progress;
+}
+
+.wpuf-frontend#wpuf-login-form form.is-submitting > p:not(.submit) {
+    opacity: 0.55;
+    transition: opacity 0.15s ease;
+}
+
+.wpuf-frontend#wpuf-login-form #wp-submit.is-busy {
+    cursor: progress;
+    opacity: 0.85;
+    pointer-events: none;
+}
+
+/* The spinner in the button's text colour, before the label. */
+.wpuf-frontend#wpuf-login-form #wp-submit .wpuf-loading {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-inline-end: 8px;
+    vertical-align: -2px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: wpuf-login-spin 0.7s linear infinite;
+}
+
+@keyframes wpuf-login-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    }

@@ -94,6 +94,7 @@ class React_Assets implements Hookable {
         $frontend_runtime = $this->frontend_asset( 'runtime', $frontend_deps );
         $frontend_forms   = $this->frontend_asset( 'forms', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
         $frontend_account = $this->frontend_asset( 'account-react', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
+        $frontend_login   = $this->frontend_asset( 'login', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
         $admin_ui_asset      = $this->react_asset( 'admin-ui', [ 'react', 'react-dom', 'react-jsx-runtime', 'wp-components', 'wp-element', 'wp-i18n', 'wp-plugins' ] );
 
         return [
@@ -217,6 +218,12 @@ class React_Assets implements Hookable {
                 'version'   => $frontend_account['version'],
                 'in_footer' => true,
             ],
+            'frontend-login'            => [
+                'src'       => WPUF_ASSET_URI . '/js/frontend/login.js',
+                'deps'      => array_values( array_unique( array_merge( [ 'wpuf-frontend-runtime' ], $frontend_login['dependencies'] ) ) ),
+                'version'   => $frontend_login['version'],
+                'in_footer' => true,
+            ],
         ];
     }
 
@@ -313,6 +320,11 @@ class React_Assets implements Hookable {
             'frontend-react-account' => [
                 'src'     => WPUF_ASSET_URI . '/css/frontend/account-react.css',
                 'version' => $this->css_version( 'css/frontend/account-react.css' ),
+                'rtl'     => true,
+            ],
+            'frontend-react-login'   => [
+                'src'     => WPUF_ASSET_URI . '/css/frontend/login.css',
+                'version' => $this->css_version( 'css/frontend/login.css' ),
                 'rtl'     => true,
             ],
             // The classic account sheet scoped to the PHP sections of the React account (tools/frontend-css/account-sections.mjs).

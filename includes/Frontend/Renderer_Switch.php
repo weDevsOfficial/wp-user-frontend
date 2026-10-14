@@ -37,6 +37,7 @@ class Renderer_Switch {
         'edit_form'    => [ 'forms', [] ],
         'registration' => [ 'forms', [] ],
         'profile'      => [ 'forms', [] ],
+        'login'        => [ 'login', [ 'login-form.php' ] ],
         'account'   => [ 'account', [ 'account.php', 'unauthorized.php', 'submit-post.php', 'dashboard/dashboard.php', 'dashboard/posts.php', 'dashboard/edit-profile.php', 'dashboard/change-password.php', 'dashboard/billing-address.php', 'dashboard/subscription.php' ] ],
     ];
 

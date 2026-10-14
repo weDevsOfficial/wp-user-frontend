@@ -95,6 +95,13 @@ export function buildPayload( schema, values, visible, fields, extra = {} ) {
             return;
         }
 
+        // An untouched address has no value yet: its inputs post as they stand
+        // (`name[street_address]` ... `name[country_select]=-1`), as the classic
+        // form posted them (mergeFormInputs() adds them), not one empty string.
+        if ( 'address_field' === field.template && ( undefined === value || null === value || '' === value ) ) {
+            return;
+        }
+
         body[ field.name ] = undefined === value || null === value ? '' : value;
     } );
 

@@ -1,4 +1,4 @@
-import { useCallback } from '@wordpress/element';
+import { useCallback, useEffect, useRef } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
 import { STORE_NAME } from '../../store';
 import { getFieldSettingInput } from '../../extensions/registry';
@@ -18,6 +18,7 @@ import HtmlHelpText from './inputs/HtmlHelpText';
 import IconSelectorInput from './inputs/IconSelectorInput';
 import ProFeatureAlert from './inputs/ProFeatureAlert';
 import FieldConditionalLogic from '../ConditionalLogic/FieldConditionalLogic';
+import { revealedDefault } from '../../utils/revealedDefault';
 
 const INPUT_MAP = {
     text: TextInput,
@@ -50,6 +51,29 @@ export default function SettingInput( { optionField, field } ) {
     const handleChange = useCallback( ( value ) => {
         updateField( field.id, optionField.name, value );
     }, [ field.id, optionField.name, updateField ] );
+
+    // A setting revealed by the user (Show Icon = Yes shows Field Icon and Icon
+    // Position) stores the default it shows when the field has no value: a field
+    // saved before the setting existed showed "Left of Label" with nothing behind
+    // it, so the label icon stayed hidden until the position was changed. Opening
+    // a field writes nothing: only a hidden -> shown change of the same field does.
+    const shown = useRef( { id: field.id, visible: isVisible } );
+
+    useEffect( () => {
+        const revealed = shown.current.id === field.id && ! shown.current.visible && isVisible;
+
+        shown.current = { id: field.id, visible: isVisible };
+
+        if ( ! revealed ) {
+            return;
+        }
+
+        const value = revealedDefault( optionField, field );
+
+        if ( undefined !== value ) {
+            updateField( field.id, optionField.name, value );
+        }
+    }, [ isVisible, field.id ] ); // eslint-disable-line react-hooks/exhaustive-deps
 
     if ( ! isVisible ) {
         return null;

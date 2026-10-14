@@ -822,6 +822,19 @@ class Form_Schema {
                 $field['choices'] = $this->term_choices( $field );
             }
 
+            // The Events Calendar venue / organizer lists: the classic dropdown swaps its
+            // options for the published venues / organizers when it renders.
+            if ( 'dropdown_field' === $field['template'] && isset( $field['name'] ) && method_exists( $object, 'get_posts' ) ) {
+                $event_lists = [
+                    '_EventVenueID'     => 'tribe_venue',
+                    '_EventOrganizerID' => 'tribe_organizer',
+                ];
+
+                if ( isset( $event_lists[ $field['name'] ] ) ) {
+                    $field['options'] = $object->get_posts( $event_lists[ $field['name'] ] );
+                }
+            }
+
             if ( in_array( $field['template'], [ 'country_list_field', 'address_field', 'profile_phone', 'phone_field' ], true ) && class_exists( '\WeDevs\Wpuf\Data\Country_State' ) ) {
                 $field['countries'] = $this->country_choices( $field );
             }

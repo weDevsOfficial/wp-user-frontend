@@ -137,6 +137,22 @@ async function editReact(page: Page, row: Locator, item: Plan): Promise<string |
     }
     if ('wysiwyg' === type) {
         const id = `wpuf-editor-${field.name}`;
+        // The TipTap editor (shared/ui/RichEditor): type the HTML in its Code tab, as
+        // a user does in the WordPress editor's Text tab. TinyMCE is the fallback engine.
+        const code = row.locator('.wpuf-rich-editor [role="tab"]').filter({ hasText: 'Code' });
+        if (await code.count()) {
+            await code.first().click();
+            const area = row.locator(`textarea#${id}`);
+            await area.waitFor({ timeout: 5000 });
+            // The Code tab holds the wpautop-free text (WordPress' Text tab): the
+            // value as TinyMCE's removep() turns the develop side's visual HTML.
+            const text = await page.evaluate((html) => {
+                const api = (window as unknown as { wp?: { editor?: { removep?: (h: string) => string } } }).wp?.editor;
+                return api && api.removep ? api.removep(html) : html;
+            }, value as string);
+            await area.fill(text);
+            return null;
+        }
         try {
             await expect.poll(() => page.evaluate((editor) => !!(window as unknown as { tinymce?: { get: (i: string) => { initialized?: boolean } | null } }).tinymce?.get(editor)?.initialized, id), { timeout: 8000 }).toBe(true);
         } catch {
@@ -160,7 +176,11 @@ async function editReact(page: Page, row: Locator, item: Plan): Promise<string |
         return null;
     }
     if ('radio' === type) {
-        const radio = row.locator(`[role="radio"][data-value="${value}"]`).first();
+        let radio = row.locator(`[role="radio"][data-value="${value}"]`).first();
+        if (!(await radio.count()) && labels[0]) {
+            // Picture radios (login form layout): one button per option, named by its label.
+            radio = row.locator('button[role="radio"]').filter({ hasText: labels[0] }).first();
+        }
         if (!(await radio.count())) {
             return 'no radio';
         }
@@ -458,9 +478,11 @@ test.describe('Parity settings custom blocks', () => {
             let section = await open('login_registration', 'wpuf_profile');
             const roles = section.locator('[data-setting="profile_form_roles"]');
             await pickOption(page, roles.locator('div.flex.items-center.gap-4').filter({ hasText: /^\s*Editor/ }).first(), formTitle);
-            const layout = section.locator('[data-setting="wpuf_login_form_layout"] input[type="radio"][value="layout3"]');
+            // Picture radio: one button per layout.
+            const layout = section.locator('[data-setting="wpuf_login_form_layout"] button[role="radio"]').filter({ hasText: 'Layout 3' });
             await layout.evaluate((el) => el.scrollIntoView({ block: 'center' }));
-            await layout.check({ force: true });
+            await layout.click();
+            await expect(layout).toHaveAttribute('aria-checked', 'true');
             await save();
 
             section = await open('email', 'wpuf_mails');

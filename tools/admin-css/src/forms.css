@@ -16,6 +16,7 @@
 @import "../../../src/frontend/kit/fields/editor/editor.css";
 
 @source "../../../src/admin/shared/ui/RichEditor.jsx";
+@source "../../../src/admin/shared/ui/AiButton.jsx";
 @source "../../../src/admin/apps/form-builder";
 @source "../../../src/admin/apps/forms-list";
 

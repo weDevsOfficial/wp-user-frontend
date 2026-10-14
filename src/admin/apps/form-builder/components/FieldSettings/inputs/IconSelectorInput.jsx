@@ -10,10 +10,22 @@ import SettingHelpText from './SettingHelpText';
  * Replaces Vue field-icon_selector component.
  *
  * Features: icon grid with search, image upload tab via wp.media,
- * auto-default icon when show_icon toggled on.
+ * (the default icon on Show Icon = Yes comes from SettingInput's revealedDefault()).
  */
-export default function IconSelectorInput( { optionField, field, value, onChange } ) {
+export default function IconSelectorInput( { optionField, field, value, onChange: setValue } ) {
     const { updateField } = useDispatch( STORE_NAME );
+
+    // A field saved before the icon settings has no icon_position: the Icon Position
+    // select shows its default ("Left of Label") but the label (canvas and form,
+    // Field_Contract::print_label()) shows no icon without a stored position. Picking
+    // an icon stores that default too, so what the select shows is what is saved.
+    const onChange = useCallback( ( next ) => {
+        setValue( next );
+
+        if ( next && ! field.icon_position ) {
+            updateField( field.id, 'icon_position', 'left_label' );
+        }
+    }, [ setValue, field.id, field.icon_position, updateField ] );
     const [ showIconPicker, setShowIconPicker ] = useState( false );
     const [ searchTerm, setSearchTerm ] = useState( '' );
     const [ activeTab, setActiveTab ] = useState( 'icon' );
@@ -61,24 +73,8 @@ export default function IconSelectorInput( { optionField, field, value, onChange
         return `${ filteredIcons.length } ${ status }`;
     }, [ filteredIcons.length, searchTerm, i18n ] );
 
-    // Auto-default icon when show_icon toggled on
-    // Pick a default icon when Show Icon is switched on here, not when the
-    // panel opens (opening must not write to the field or mark the form dirty).
-    const firstRun = useRef( true );
-
-    useEffect( () => {
-        if ( firstRun.current ) {
-            firstRun.current = false;
-            return;
-        }
-
-        if ( field.show_icon === 'yes' && ( ! value || value === 'fas fa-0' ) ) {
-            const defaultIcons = window.wpuf_form_builder?.defaultIcons || {};
-            const fieldType = field.template || field.input_type || 'text';
-            const defaultIcon = defaultIcons[ fieldType ] || 'fa-solid fa-circle';
-            onChange( defaultIcon );
-        }
-    }, [ field.show_icon ] ); // eslint-disable-line react-hooks/exhaustive-deps
+    // The default icon on Show Icon = Yes: SettingInput (revealedDefault()), since this
+    // input only mounts once Show Icon is on.
 
     // Auto-switch tab based on value type
     useEffect( () => {

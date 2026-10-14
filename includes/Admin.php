@@ -154,28 +154,6 @@ class Admin {
                 ),
             ]
         );
-
-        // Add inline script for dynamic API key link
-        wp_add_inline_script(
-            'wpuf-admin', '
-            jQuery(document).ready(function($) {
-                function updateAPIKeyLink() {
-                    var provider = $("[name=\'wpuf_ai[ai_provider]\']").val() || "openai";
-                    var $link = $(".wpuf-api-key-link");
-                    if ($link.length) {
-                        var url = $link.data(provider) || $link.data("openai");
-                        $link.attr("href", url);
-                    }
-                }
-
-                // Update on provider change
-                $(document).on("change", "[name=\'wpuf_ai[ai_provider]\']", updateAPIKeyLink);
-
-                // Initial update when page loads
-                updateAPIKeyLink();
-            });
-        '
-        );
     }
 
     public function enqueue_cpt_page_scripts( $hook_suffix ) {

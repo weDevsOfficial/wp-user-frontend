@@ -305,7 +305,6 @@ add_action(
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $suffix .= isset( $_GET['tab'] ) ? '-' . sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-        $suffix .= isset( $_GET['wpuf_settings_ui'] ) ? '-' . sanitize_key( wp_unslash( $_GET['wpuf_settings_ui'] ) ) : '';
 
         $data = [
             'screen'  => $screen->id,

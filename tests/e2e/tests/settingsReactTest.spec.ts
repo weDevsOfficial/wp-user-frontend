@@ -54,9 +54,7 @@ test.describe('React Settings Screen Tests', () => {
      * @Test_SR0018 : Clear (X) button resets the search
      * @Test_SR0019 : Clicking a tab clears an active search
      * @Test_SR0020 : (depends_on — covered by SettingsSection valueMatches unit logic)
-     * @Test_SR0021 : Legacy fallback — "Classic view" renders the classic screen
-     * @Test_SR0022 : Legacy emergency override (?wpuf_settings_ui=legacy) works
-     * @Test_SR0023 : Switch back from classic to the React screen
+     * @Test_SR0021 : No "Classic view" switch; the old ?wpuf_settings_ui=legacy override opens the React screen
      * @Test_SR0032 : Section links (#wpuf_ai, #/ai, ?tab=wpuf_payment, ...) open the tab and sub-tab of that section
      **/
 
@@ -208,17 +206,9 @@ test.describe('React Settings Screen Tests', () => {
         await settings.expectPanelTitle('General');
     });
 
-    test('@Test_SR0021 + @Test_SR0023 : Legacy fallback switch + back', async () => {
+    test('@Test_SR0021 : No classic settings screen', async () => {
         await settings.goto();
-        await settings.switchToClassic();
-        await settings.switchToNew();
-        await expect(settings.root).toBeVisible();
-    });
-
-    test('@Test_SR0022 : Legacy emergency URL override', async () => {
-        await settings.gotoLegacyOverride();
-        // Restore the React view for any later runs.
-        await settings.goto();
+        await settings.expectNoClassicScreen();
     });
 });
 

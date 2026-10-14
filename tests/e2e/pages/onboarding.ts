@@ -19,7 +19,7 @@ export class OnboardingPage extends Base {
     readonly toolsUrl = `${Urls.baseUrl}/wp-admin/admin.php?page=wpuf_tools&tab=tools`;
     // Read-backs use the classic settings screen (its field ids); the React
     // screen is the default and has its own spec.
-    readonly settingsUrl = `${Urls.baseUrl}/wp-admin/admin.php?page=wpuf-settings&wpuf_settings_ui=legacy`;
+    readonly settingsUrl = `${Urls.baseUrl}/wp-admin/admin.php?page=wpuf-settings`;
     readonly adminHomeUrl = `${Urls.baseUrl}/wp-admin/index.php`;
 
     constructor(page: Page) {
@@ -548,36 +548,33 @@ export class OnboardingPage extends Base {
     /************************************************/
 
     /**
-     * Read a settings checkbox back on the screen the admin would actually visit,
-     * so a wizard choice is proven where it is meant to show up.
+     * The stored settings value a classic field locator points at (`wpuf_section[key]`
+     * in its id / name), read through the React screen's REST route on the admin page.
      */
-    async settingsCheckboxIsOn( locator: string, tab: string = '' ): Promise<boolean> {
-        const url = tab ? `${this.settingsUrl}#${tab}` : this.settingsUrl;
-        await this.navigateToURL( url );
+    async settingsValueOf( locator: string ): Promise<unknown> {
+        const match = locator.match( /(wpuf_[a-z_]+)\[([a-z0-9_]+)\]/ );
 
-        const box = this.page.locator( locator );
-
-        if ( await box.count() === 0 ) {
-            return false;
+        if ( ! match ) {
+            throw new Error( `No settings field in locator ${ locator }` );
         }
 
-        return await box.isChecked();
+        await this.navigateToURL( this.settingsUrl );
+        await this.page.waitForFunction( () => !! ( window as any ).wp?.apiFetch );
+        const res = await this.page.evaluate( () => ( window as any ).wp.apiFetch( { path: '/wpuf/v1/settings' } ) );
+
+        return ( ( res.data.values || {} )[ match[ 1 ] ] || {} )[ match[ 2 ] ];
     }
 
-    /**
-     * Read a settings dropdown back on the settings screen. Some of what the wizard
-     * writes lands in a yes/no select rather than a checkbox.
-     */
+    /** Whether a settings checkbox / toggle the wizard set is on (stored value). */
+    async settingsCheckboxIsOn( locator: string, tab: string = '' ): Promise<boolean> { // eslint-disable-line @typescript-eslint/no-unused-vars
+        return [ 'on', 'yes', 'true', '1', true ].includes( await this.settingsValueOf( locator ) as any );
+    }
+
+    /** The stored value of a settings select the wizard set. */
     async settingsSelectValue( locator: string ): Promise<string> {
-        await this.navigateToURL( this.settingsUrl );
+        const value = await this.settingsValueOf( locator );
 
-        const select = this.page.locator( locator );
-
-        if ( await select.count() === 0 ) {
-            return '';
-        }
-
-        return await select.inputValue();
+        return null === value || undefined === value ? '' : String( value );
     }
 
     /**************************************************/

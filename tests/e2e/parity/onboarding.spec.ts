@@ -114,18 +114,22 @@ test.describe('Onboarding wizard', () => {
                 expect(parityWp(site, ['eval', `echo get_post_status( ${id} );`]).trim(), `${section}.${key} exists`).toBe('publish');
             }
 
-            // Shapes: a legacy re-save of each section leaves what the wizard wrote untouched.
+            // Shapes: a settings-screen re-save of each section (the React screen's REST
+            // save, same sanitising store) leaves what the wizard wrote untouched.
             const changed: Record<string, string[]> = {};
             for (const name of SECTIONS) {
                 changed[name] = Object.keys(written[name]).filter((key) => JSON.stringify(written[name][key]) !== JSON.stringify(before[name][key]));
             }
-            const legacy = await ParitySitePage.doOpen(browser, site);
+            const screen = await ParitySitePage.doOpen(browser, site);
+            await screen.page.goto('/wp-admin/admin.php?page=wpuf-settings');
+            await screen.page.waitForFunction(() => !!(window as any).wp?.apiFetch);
             for (const name of SECTIONS.filter((section) => changed[section].length)) {
-                await legacy.page.goto('/wp-admin/admin.php?page=wpuf-settings&wpuf_settings_ui=legacy');
-                const form = legacy.page.locator(`form:has([name^="${name}["])`).first();
-                await Promise.all([legacy.page.waitForNavigation(), form.evaluate((el) => HTMLFormElement.prototype.submit.call(el))]);
+                await screen.page.evaluate(async (section) => {
+                    const res = await (window as any).wp.apiFetch({ path: '/wpuf/v1/settings' });
+                    await (window as any).wp.apiFetch({ path: '/wpuf/v1/settings', method: 'POST', data: { settings: { [section]: res.data.values[section] || {} } } });
+                }, name);
             }
-            await legacy.doClose();
+            await screen.doClose();
             // Page and form ids are integers until the first settings save turns them
             // into the posted strings: develop's Admin_Installer::init_pages() has
             // always stored them like that, and every reader casts them. Anything

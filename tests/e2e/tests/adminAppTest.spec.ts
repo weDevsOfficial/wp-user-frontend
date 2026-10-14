@@ -29,7 +29,7 @@ const APP = `${Urls.baseUrl}/wp-admin/admin.php?page=wp-user-frontend`;
  * @TestScenario : [Admin app]
  * @Test_APP0001 : The Settings menu row opens the app's settings route
  * @Test_APP0002 : Old settings URLs (?tab=&sub=, #section) land on that tab inside the app
- * @Test_APP0003 : The classic settings screen (?wpuf_settings_ui=legacy) stays its own page
+ * @Test_APP0003 : There is no classic settings screen: ?wpuf_settings_ui=legacy opens the app's settings route
  * @Test_APP0004 : Unsaved settings ask before leaving the route; Continue stays, Discard leaves
  * @Test_APP0005 : Settings <-> Subscriptions through the menu without a page load; each route has only its own stylesheet on
  * @Test_APP0006 : Subscriptions list -> new form -> back / forward inside the route; a deep link reload opens the form
@@ -103,12 +103,13 @@ test.describe('Admin app', () => {
         await expect(page).toHaveURL(/page=wp-user-frontend#\/settings\?tab=login_registration&sub=wpuf_profile$/);
     });
 
-    test('APP0003 : The classic settings screen stays its own page', { tag: ['@Lite', '@Test_APP0003'] }, async () => {
+    test('APP0003 : The old classic settings URL opens the React settings route', { tag: ['@Lite', '@Test_APP0003'] }, async () => {
         test.skip(!(await appOn()), 'admin app is off');
 
         await page.goto(`${Urls.baseUrl}/wp-admin/admin.php?page=wpuf-settings&wpuf_settings_ui=legacy`);
-        await expect(page).toHaveURL(/page=wpuf-settings&wpuf_settings_ui=legacy/);
-        await expect(page.locator('.wpuf-settings-wrap')).toBeVisible();
+        await expect(page).toHaveURL(/page=wp-user-frontend#\/settings/);
+        await expect(page.locator('.wpuf-settings-wrap')).toHaveCount(0);
+        await expect(page.locator('a:text-is("Classic view")')).toHaveCount(0);
     });
 
     test('APP0004 : Unsaved settings ask before leaving the route', { tag: ['@Lite', '@Test_APP0004'] }, async () => {

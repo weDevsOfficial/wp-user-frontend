@@ -122,10 +122,6 @@ class AdminScreensTest extends WP_UnitTestCase {
         $settings = new WeDevs\Wpuf\Admin\Screens\Settings();
         $this->assertSame( 'wpuf-admin-react', $settings->body_class() );
 
-        $_GET['wpuf_settings_ui'] = 'legacy';
-        $this->assertSame( '', $settings->body_class(), 'classic settings screen keeps the plain body' );
-        unset( $_GET['wpuf_settings_ui'] );
-
         $this->assertSame( 'wpuf-admin-react', ( new Subscriptions() )->body_class() );
         $this->assertSame( '', ( new PostFormsList() )->body_class(), 'screens without the Tailwind 4 sheet add nothing' );
     }

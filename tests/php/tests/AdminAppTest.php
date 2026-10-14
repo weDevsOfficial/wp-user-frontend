@@ -195,14 +195,16 @@ class AdminAppTest extends WP_UnitTestCase {
         unset( $_GET['action'], $_GET['id'] );
     }
 
-    public function test_classic_settings_stay_a_page_and_the_override_travels() {
+    public function test_settings_has_no_classic_screen_any_more() {
         $settings = wpuf()->platform()->get( Registry::class )->get( 'wpuf-settings' );
 
+        // The old per-request switch is ignored: the settings page is the React app.
         $_GET['wpuf_settings_ui'] = 'legacy';
-        $this->assertSame( '', $settings->app_route_for_request(), 'classic request renders the classic screen' );
-
-        $_GET['wpuf_settings_ui'] = 'react';
-        $this->assertSame( [ 'wpuf_settings_ui' => 'react' ], $settings->app_redirect_args() );
+        $this->assertSame( '/settings', $settings->app_route_for_request() );
+        $this->assertSame( [], $settings->app_redirect_args() );
+        $this->assertSame( 'wpuf-admin-react', $settings->body_class() );
         unset( $_GET['wpuf_settings_ui'] );
+
+        $this->assertFalse( function_exists( 'wpuf_settings_use_legacy' ) );
     }
 }

@@ -2259,9 +2259,8 @@ export const Selectors = {
         unsavedModalTitle: 'role=alertdialog[name="Unsaved Changes"]',
         unsavedDiscardButton: 'button:has-text("Discard Changes")',
         unsavedContinueButton: 'button:has-text("Continue Editing")',
-        // Exact text (the notice also has "Open Classic view"); header + footer both link, take the first.
-        classicViewLink: 'a:text-is("Classic view") >> nth=0',
-        switchToNewLink: 'a:has-text("Switch to new settings")',
+        // The classic screen is gone: these must not exist any more (SR0021).
+        classicViewLink: 'a:text-is("Classic view")',
         legacyScreenWrap: '.wpuf-settings-wrap',
         // Colour fields: develop's native colour input, or the shared ColorPicker's swatch button.
         colorPicker: '#wpuf-settings-root input[type="color"], #wpuf-settings-root button:has(> span.rounded-full + span.font-mono)',

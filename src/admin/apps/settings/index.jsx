@@ -7,7 +7,7 @@
  */
 import { createRoot } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { useEffect, useState, useCallback, useRef, createInterpolateElement } from '@wordpress/element';
+import { useEffect, useState, useCallback, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Save } from 'lucide-react';
 
@@ -47,7 +47,6 @@ const SettingsApp = () => {
 
     const boot = window.wpuf_settings || {};
     const [ pendingTab, setPendingTab ] = useState( null );
-    const [ showNewUi, setShowNewUi ] = useState( !! boot.new_ui_notice );
     const classicOnly = Array.isArray( boot.classic_only ) ? boot.classic_only : [];
     const [ activeSub, setActiveSub ] = useState( null );
     const [ justSaved, setJustSaved ] = useState( false );
@@ -226,15 +225,6 @@ const SettingsApp = () => {
             <PageHeader
                 utm="wpuf-settings"
                 supportUrl={ boot.support_url || undefined }
-                extra={ boot.switch_ui_url ? (
-                    <a
-                        href={ boot.switch_ui_url }
-                        title={ __( 'Switch back to the classic settings screen', 'wp-user-frontend' ) }
-                        className="border border-solid border-gray-100 mr-4 text-center rounded-md px-3 py-2 text-sm font-medium text-gray-600 no-underline shadow-xs hover:bg-slate-100 hover:text-gray-600"
-                    >
-                        { __( 'Classic view', 'wp-user-frontend' ) }
-                    </a>
-                ) : null }
             />
 
             { isLoading ? (
@@ -271,38 +261,9 @@ const SettingsApp = () => {
                     data-settings-notice="classic-only"
                     tone="warning"
                     className="mb-6"
-                    title={ __( 'Some settings added by other plugins are only available in Classic view:', 'wp-user-frontend' ) }
-                    action={ boot.classic_url ? (
-                        <a href={ boot.classic_url } className="font-medium text-amber-900 underline hover:text-amber-900">
-                            { __( 'Open Classic view', 'wp-user-frontend' ) }
-                        </a>
-                    ) : null }
+                    title={ __( 'Some settings added by other plugins cannot be edited on this screen:', 'wp-user-frontend' ) }
                 >
                     { classicOnly.join( ', ' ) }
-                </Notice>
-            ) }
-
-            { /* Shown once to each admin of a site that had the classic screen (D12). */ }
-            { showNewUi && (
-                <Notice
-                    role="status"
-                    data-settings-notice="new-ui"
-                    tone="success"
-                    className="mb-6"
-                    action={
-                        <Button variant="link" size="sm" className="text-gray-600" onClick={ () => setShowNewUi( false ) }>
-                            { __( 'Dismiss', 'wp-user-frontend' ) }
-                        </Button>
-                    }
-                >
-                    <p className="m-0">
-                        { boot.switch_ui_url
-                            ? createInterpolateElement(
-                                __( 'This is the new settings screen. Every setting is where it was stored before; you can go back to the <a>Classic view</a> at any time.', 'wp-user-frontend' ),
-                                { a: <a href={ boot.switch_ui_url } className="font-medium text-primary underline" /> } // eslint-disable-line jsx-a11y/anchor-has-content
-                            )
-                            : __( 'This is the new settings screen. Every setting is where it was stored before.', 'wp-user-frontend' ) }
-                    </p>
                 </Notice>
             ) }
 
@@ -413,14 +374,7 @@ const SettingsApp = () => {
             </div>
             ) }
 
-            { /* WordPress's footer is hidden on shared-layer screens (D26): the switch
-                link lives here (D12), at the bottom of the window on short tabs. */ }
-            <PageFooter>
-                { boot.switch_ui_url && createInterpolateElement(
-                    __( 'Prefer the old screen? Switch to the <a>Classic view</a>.', 'wp-user-frontend' ),
-                    { a: <a href={ boot.switch_ui_url } data-settings-switch="footer" className="text-gray-600 underline hover:text-gray-900" /> } // eslint-disable-line jsx-a11y/anchor-has-content
-                ) }
-            </PageFooter>
+            <PageFooter />
 
 
             { pendingTab && (

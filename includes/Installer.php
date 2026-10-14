@@ -23,10 +23,6 @@ class Installer {
         if ( ! $installed ) {
             update_option( 'wpuf_installed', time() );
 
-            // A new site starts on the React settings screen: no "new settings
-            // screen" notice (shown once to sites that upgraded).
-            update_option( 'wpuf_settings_new_ui_notice', 'no', false );
-
             // New sites get the React frontend; upgrades keep the classic render
             // until the owner switches it on (Settings > General > Modern frontend).
             $general                   = (array) get_option( 'wpuf_general', [] );

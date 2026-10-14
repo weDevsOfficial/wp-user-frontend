@@ -26,7 +26,6 @@ async function crawl(browser: import('@playwright/test').Browser, name: 'develop
         'wpuf-profile-forms',
         `wpuf-profile-forms&action=edit&id=${regForm}`,
         'wpuf-settings',
-        'wpuf-settings&wpuf_settings_ui=legacy',
         'wpuf_subscription',
         'wpuf_subscribers',
         'wpuf_tools',

@@ -118,21 +118,13 @@ export class SettingsReactPage extends Base {
         await this.page.locator(this.S.unsavedContinueButton).click();
     }
 
-    // ---- Legacy fallback --------------------------------------------------
+    // ---- No classic screen ------------------------------------------------
 
-    async switchToClassic() {
-        await this.page.locator(this.S.classicViewLink).click();
-        await expect(this.page.locator(this.S.legacyScreenWrap)).toBeVisible();
-    }
-
-    async switchToNew() {
-        await this.page.locator(this.S.switchToNewLink).click();
-        await this.root.waitFor({ state: 'visible' });
-    }
-
-    /** Force the classic screen via the emergency URL override (no DB write). */
-    async gotoLegacyOverride() {
+    /** The settings page has no "Classic view" switch and ignores the old URL override. */
+    async expectNoClassicScreen() {
+        await expect(this.page.locator(this.S.classicViewLink)).toHaveCount(0);
         await this.navigateToURL(this.wpufSettingsPage + '&wpuf_settings_ui=legacy');
-        await expect(this.page.locator(this.S.legacyScreenWrap)).toBeVisible();
+        await this.root.waitFor({ state: 'visible' });
+        await expect(this.page.locator(this.S.legacyScreenWrap)).toHaveCount(0);
     }
 }

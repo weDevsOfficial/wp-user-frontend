@@ -145,7 +145,7 @@ export default function PostForm( { schema: boot, root } ) {
         if ( Object.keys( errors ).length ) {
             setFormError( __( 'Please fix the errors to proceed', 'wp-user-frontend' ) );
             window.setTimeout( () => {
-                const first = root.querySelector( '.has-error input, .has-error select, .has-error textarea, .has-error [tabindex="0"]' );
+                const first = root.querySelector( '.has-error input:not([type="hidden"]), .has-error select:not(.wpuf-select__native), .has-error textarea, .has-error [role="combobox"], .has-error [tabindex="0"]' );
 
                 if ( first ) {
                     first.focus();

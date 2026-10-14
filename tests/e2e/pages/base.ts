@@ -350,6 +350,12 @@ export class Base {
         }
     }
 
+    /** The list button of a React frontend select whose hidden classic <select> the locator found, or null. */
+    async reactSelectButton(element: import('@playwright/test').Locator) {
+        const isProxy = await element.first().evaluate((el) => el.tagName === 'SELECT' && el.classList.contains('wpuf-select__native')).catch(() => false);
+        return isProxy ? element.first().locator('xpath=following-sibling::*[@role="combobox"][1]') : null;
+    }
+
     //SelectOptionWithLabel
     async selectOptionWithLabel(locator: string, label: string) {
         try {
@@ -357,8 +363,13 @@ export class Base {
             const element = this.page.locator(locator);
             await element.waitFor();
             expect(element.isVisible).toBeTruthy();
-            // React screens use a plugin-ui combobox, not a native <select>.
-            if ((await element.first().getAttribute('role')) === 'combobox') {
+            // React screens use a plugin-ui combobox, not a native <select>; the React
+            // frontend forms keep the classic <select> hidden beside their list button.
+            const proxy = await this.reactSelectButton(element);
+            if (proxy) {
+                await proxy.click();
+                await this.page.locator('.wpuf-select.is-open [role="option"]', { hasText: label }).first().click();
+            } else if ((await element.first().getAttribute('role')) === 'combobox') {
                 await element.first().click();
                 await this.page.locator('[role="option"]', { hasText: label }).filter({ visible: true }).first().click();
             } else {
@@ -379,8 +390,13 @@ export class Base {
             const element = this.page.locator(locator);
             await element.waitFor();
             expect(element.isVisible).toBeTruthy();
-            // React screens use a plugin-ui combobox, not a native <select>.
-            if ((await element.first().getAttribute('role')) === 'combobox') {
+            // React screens use a plugin-ui combobox, not a native <select>; the React
+            // frontend forms keep the classic <select> hidden beside their list button.
+            const proxy = await this.reactSelectButton(element);
+            if (proxy) {
+                await proxy.click();
+                await this.page.locator(`.wpuf-select.is-open [role="option"][data-value="${value}"]`).first().click();
+            } else if ((await element.first().getAttribute('role')) === 'combobox') {
                 await element.first().click();
                 await this.page.locator(`xpath=//*[@role="option"][@data-value="${value}"] >> visible=true`).first().click();
             } else {

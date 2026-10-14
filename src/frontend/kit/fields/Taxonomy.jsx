@@ -14,8 +14,11 @@
  *
  * @since WPUF_SINCE
  */
+import { __ } from '@wordpress/i18n';
 import Field from '../components/Field';
+import Select from '../components/Select';
 import SuggestInput from './Suggest';
+import { MultiSelect } from './basic';
 
 const asList = ( value ) => ( Array.isArray( value ) ? value.map( String ) : ( value ? [ String( value ) ] : [] ) ).filter( ( v ) => '' !== v && '-1' !== v && '0' !== v );
 
@@ -93,35 +96,32 @@ export default function TaxonomyField( { field, value, onChange, onBlur, formId,
         );
     } else if ( 'multiselect' === type ) {
         control = (
-            <select
-                id={ id }
-                name={ `${ field.name }[]` }
-                className={ `${ field.name } multiselect wpuf_${ field.name }_${ formId }` }
-                multiple
-                value={ chosen }
-                onChange={ ( event ) => onChange( Array.from( event.target.selectedOptions ).map( ( option ) => option.value ) ) }
-                onBlur={ onBlur }
-            >
-                { options.map( ( term ) => (
-                    <option key={ term.id } className={ `level-${ term.depth }` } value={ String( term.id ) }>{ indent( term.depth ) + term.name }</option>
-                ) ) }
-            </select>
+            <div className={ `${ field.name } multiselect wpuf_${ field.name }_${ formId }` }>
+                <MultiSelect
+                    id={ id }
+                    options={ options.map( ( term ) => ( { value: String( term.id ), label: indent( term.depth ) + term.name } ) ) }
+                    selected={ chosen }
+                    placeholder={ field.first || __( '- Select -', 'wp-user-frontend' ) }
+                    onChange={ onChange }
+                    onBlur={ onBlur }
+                    invalid={ !! error }
+                />
+            </div>
         );
     } else {
         control = (
-            <select
+            <Select
                 id={ id }
                 name={ field.name }
                 className={ selectClass }
-                value={ chosen[ 0 ] || '-1' }
-                onChange={ ( event ) => onChange( '-1' === event.target.value ? [] : [ event.target.value ] ) }
+                value={ chosen[ 0 ] || '' }
+                options={ options.map( ( term ) => ( { value: String( term.id ), label: term.name, depth: term.depth } ) ) }
+                placeholder={ field.first || '--select--' }
+                required={ 'yes' === field.required }
+                invalid={ !! error }
+                onChange={ ( next ) => onChange( next ? [ next ] : [] ) }
                 onBlur={ onBlur }
-            >
-                <option value="-1">{ field.first || '--select--' }</option>
-                { options.map( ( term ) => (
-                    <option key={ term.id } className={ `level-${ term.depth }` } value={ String( term.id ) }>{ indent( term.depth ) + term.name }</option>
-                ) ) }
-            </select>
+            />
         );
     }
 

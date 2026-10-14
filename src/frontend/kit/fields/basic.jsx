@@ -12,6 +12,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import Field, { isReadOnly } from '../components/Field';
 import ServerHtml from '../components/ServerHtml';
 import SuggestInput from './Suggest';
+import Select from '../components/Select';
 import { useOutside, useUid } from '../form/hooks';
 
 const controlId = ( field, formId ) => `${ field.name }_${ formId }`;
@@ -146,22 +147,19 @@ export function SelectField( { field, value, onChange, onBlur, formId, error, se
 
     return (
         <Field field={ field } id={ id } error={ error }>
-            <select
+            <Select
                 id={ id }
                 className={ `${ selectClass } ${ fieldClass( field, formId ) }`.trim() }
                 name={ field.name }
-                value={ '' === ( value ?? '' ) ? '-1' : value }
-                disabled={ isReadOnly( field ) || undefined }
-                aria-required={ 'yes' === field.required || undefined }
-                aria-invalid={ error ? 'true' : undefined }
-                onChange={ ( event ) => onChange( event.target.value ) }
+                value={ value ?? '' }
+                options={ optionsOf( field ) }
+                placeholder={ field.first || '' }
+                disabled={ isReadOnly( field ) }
+                required={ 'yes' === field.required }
+                invalid={ !! error }
+                onChange={ onChange }
                 onBlur={ onBlur }
-            >
-                { field.first && <option value="-1">{ field.first }</option> }
-                { optionsOf( field ).map( ( option ) => (
-                    <option key={ option.value } value={ option.value }>{ option.label }</option>
-                ) ) }
-            </select>
+            />
         </Field>
     );
 }

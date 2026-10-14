@@ -671,11 +671,12 @@ export const Selectors = {
             // Date / Time
             postDateTimeFormsFE: {
                 dateTimeSelect: '//input[@name="date___time"]',
-                selectYear: '//select[@data-handler="selectYear"]',
-                selectMonth: '//select[@data-handler="selectMonth"]',
-                selectDay: '//a[@data-date="20"]',
-                selectHour: '//select[@data-unit="hour"]',
-                selectMinute: '//select[@data-unit="minute"]'
+                // jQuery UI (classic forms) or the React calendar: same data attributes.
+                selectYear: '//*[@data-handler="selectYear"]',
+                selectMonth: '//*[@data-handler="selectMonth"]',
+                selectDay: '//*[@data-date="20"][self::a or self::button]',
+                selectHour: '//*[@data-unit="hour"]',
+                selectMinute: '//*[@data-unit="minute"]'
             },
             // Time Field
             postTimeFieldFormsFE: '//select[@name="time_field"]',

@@ -11,6 +11,7 @@ import { Avatar, Button, Notice, Pill, Skeleton, SkeletonFormRows, SkeletonLines
 import { Card, DetailList, Pagination, RailItem, StatCard } from './components/layout';
 import Field, { FieldLabel, isRequired } from './components/Field';
 import ServerHtml, { loadAssets } from './components/ServerHtml';
+import Select, { SelectModeContext } from './components/Select';
 import confirmDialog, { alertDialog, loginDialog } from './components/confirm';
 import FormRenderer from './form/FormRenderer';
 import useForm, { flatten } from './form/useForm';
@@ -117,6 +118,8 @@ export {
     optionsOf,
     Counter,
     MultiSelect,
+    Select,
+    SelectModeContext,
     useOutside,
     useUid,
     fieldKey,

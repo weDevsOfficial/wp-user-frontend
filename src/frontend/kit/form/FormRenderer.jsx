@@ -15,6 +15,7 @@ import { Fragment, useCallback, useRef, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import Field from '../components/Field';
 import ServerHtml from '../components/ServerHtml';
+import { SelectModeContext } from '../components/Select';
 import { cx } from '../components/primitives';
 import { fieldComponent } from '../fields';
 import { fieldKey } from './conditions';
@@ -162,7 +163,7 @@ export default function FormRenderer( {
         if ( direction > 0 && Object.keys( validate( steps.list[ step ].fields ) ).length ) {
             setStepError( __( 'Please fix the errors to proceed', 'wp-user-frontend' ) );
             window.setTimeout( () => {
-                const first = formRef.current && formRef.current.querySelector( 'fieldset.field-active .has-error input, fieldset.field-active .has-error select, fieldset.field-active .has-error textarea' );
+                const first = formRef.current && formRef.current.querySelector( 'fieldset.field-active .has-error input:not([type="hidden"]), fieldset.field-active .has-error select:not(.wpuf-select__native), fieldset.field-active .has-error textarea, fieldset.field-active .has-error [role="combobox"]' );
 
                 if ( first ) {
                     first.focus();
@@ -319,6 +320,13 @@ export default function FormRenderer( {
         </>
     );
 
+    // "Use Theme CSS" forms keep the browser's selects, which the theme styles.
+    const selectMode = /(^|\s)wpuf-theme-style(\s|$)/.test( styleClass ) ? 'native' : 'custom';
+
     // Pro's profile forms sit in the template card (reg-template-*.css styles it per layout).
-    return layout.card ? <div className={ `wpuf-reg-form-card wpuf-reg-form-card-${ layoutName }` }>{ formMarkup }</div> : formMarkup;
+    return (
+        <SelectModeContext.Provider value={ selectMode }>
+            { layout.card ? <div className={ `wpuf-reg-form-card wpuf-reg-form-card-${ layoutName }` }>{ formMarkup }</div> : formMarkup }
+        </SelectModeContext.Provider>
+    );
 }

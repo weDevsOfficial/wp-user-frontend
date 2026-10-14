@@ -14,7 +14,7 @@
  * @since WPUF_SINCE
  */
 import { useEffect, useRef, useState } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
@@ -26,6 +26,7 @@ import {
     SeparatorHorizontal, Strikethrough, Underline as UnderlineIcon, Undo2, Ellipsis,
 } from 'lucide-react';
 import { LegacyStrike, LegacyUnderline, Marker, RawBlock, RawInline, SimpleMarks, WpufAttrs, readStyle, withStyle } from './extensions';
+import Select from '../../components/Select';
 import { explainRoundTrip, hasForeignComments, load, roundTrips, serialize } from './html';
 
 /** TinyMCE's default text colour map (textcolor plugin). */
@@ -383,14 +384,24 @@ export default function TipTapEditor( { id, field, value, onChange, onBlur, onFa
                 return <span key={ `sep-${ index }` } className="wpuf-tiptap-sep" aria-hidden="true" />;
             case 'formatselect':
                 return (
-                    <select
+                    <Select
                         key={ name }
+                        size="sm"
                         className="wpuf-tiptap-format"
-                        aria-label={ __( 'Paragraph format', 'wp-user-frontend' ) }
+                        label={ __( 'Paragraph format', 'wp-user-frontend' ) }
                         value={ formatOf( editor ) }
-                        onChange={ ( event ) => {
-                            const format = event.target.value;
-
+                        showPlaceholder={ false }
+                        returnFocus={ false }
+                        options={ [
+                            { value: 'p', label: __( 'Paragraph', 'wp-user-frontend' ) },
+                            ...[ 1, 2, 3, 4, 5, 6 ].map( ( level ) => ( {
+                                value: `h${ level }`,
+                                /* translators: %d: heading level */
+                                label: sprintf( __( 'Heading %d', 'wp-user-frontend' ), level ),
+                            } ) ),
+                            { value: 'pre', label: __( 'Preformatted', 'wp-user-frontend' ) },
+                        ] }
+                        onChange={ ( format ) => {
                             if ( 'p' === format ) {
                                 chain().setParagraph().run();
                             } else if ( 'pre' === format ) {
@@ -399,14 +410,7 @@ export default function TipTapEditor( { id, field, value, onChange, onBlur, onFa
                                 chain().setHeading( { level: Number( format.slice( 1 ) ) } ).run();
                             }
                         } }
-                    >
-                        <option value="p">{ __( 'Paragraph', 'wp-user-frontend' ) }</option>
-                        { [ 1, 2, 3, 4, 5, 6 ].map( ( level ) => (
-                            /* translators: %d: heading level */
-                            <option key={ level } value={ `h${ level }` }>{ __( 'Heading', 'wp-user-frontend' ) } { level }</option>
-                        ) ) }
-                        <option value="pre">{ __( 'Preformatted', 'wp-user-frontend' ) }</option>
-                    </select>
+                    />
                 );
             case 'bold':
                 return btn( name, __( 'Bold', 'wp-user-frontend' ), Bold, () => chain().toggleBold().run(), editor.isActive( 'bold' ) );

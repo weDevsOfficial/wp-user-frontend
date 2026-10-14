@@ -460,25 +460,6 @@ class SubscriptionStore implements DataStore {
     }
 
     /**
-     * Save the classic pack editor's fields (already unslashed `$_POST`). The
-     * caller has checked the nonce and the capability.
-     *
-     * @since WPUF_SINCE
-     *
-     * @param int   $subscription_id Pack id
-     * @param array $post_data       Submitted fields
-     *
-     * @return void
-     */
-    public function save_from_classic( $subscription_id, $post_data ) {
-        foreach ( $this->classic_values( $post_data ) as $meta_key => $meta_value ) {
-            update_post_meta( $subscription_id, $meta_key, $meta_value );
-        }
-
-        do_action( 'wpuf_update_subscription_pack', $subscription_id, $post_data );
-    }
-
-    /**
      * Post fields and meta (in write order) the REST save stores.
      *
      * @param array $subscription Payload
@@ -546,82 +527,6 @@ class SubscriptionStore implements DataStore {
                 '_sub_view_allowed_term_ids' => ! empty( $meta_value['_sub_view_allowed_term_ids'] ) ? $this->sanitize_term_ids( $meta_value['_sub_view_allowed_term_ids'] ) : [],
                 'postnum_rollback_on_delete' => $text( 'postnum_rollback_on_delete', '' ),
             ],
-        ];
-    }
-
-    /**
-     * Meta (in write order) the classic pack editor stores.
-     *
-     * @param array $post_data Submitted fields (unslashed)
-     *
-     * @return array
-     */
-    private function classic_values( $post_data ) {
-        $expiration_time    = '';
-        $enable_post_expir  = '';
-        $expire_post_status = '';
-        $post_expire_msg    = '';
-        $settings           = isset( $post_data['post_expiration_settings'] ) ? $post_data['post_expiration_settings'] : null;
-        $field              = function ( $key, $fallback ) use ( $post_data ) {
-            return ! empty( $post_data[ $key ] ) ? sanitize_text_field( wp_unslash( $post_data[ $key ] ) ) : $fallback;
-        };
-        // Missing lists stored '' (array_map() on null); PHP 8 threw instead.
-        $texts = function ( $key ) use ( $post_data ) {
-            return isset( $post_data[ $key ] ) ? array_map( 'sanitize_text_field', (array) $post_data[ $key ] ) : '';
-        };
-
-        if ( isset( $settings ) ) {
-            if ( isset( $settings['expiration_time_value'], $settings['expiration_time_type'] ) ) {
-                // Stored as a strtotime()-readable duration, e.g. "7 day". The separator must be a
-                // single space; anything else makes strtotime() fail and the post expire immediately.
-                $expiration_time = sanitize_text_field( wp_unslash( $settings['expiration_time_value'] ) ) . ' ' . sanitize_text_field( wp_unslash( $settings['expiration_time_type'] ) );
-            }
-
-            if ( isset( $settings['enable_post_expiration'] ) ) {
-                $enable_post_expir = sanitize_text_field( wp_unslash( $settings['enable_post_expiration'] ) );
-            }
-
-            if ( isset( $settings['expired_post_status'] ) ) {
-                $expire_post_status = sanitize_text_field( wp_unslash( $settings['expired_post_status'] ) );
-            }
-
-            if ( isset( $settings['post_expiration_message'] ) ) {
-                $post_expire_msg = sanitize_text_field( wp_unslash( $settings['post_expiration_message'] ) );
-            }
-        }
-
-        $expiration_parts = explode( ' ', $expiration_time );
-        $sort_order       = isset( $post_data['sort_order'] ) ? absint( $post_data['sort_order'] ) : 1;
-
-        if ( $sort_order < 1 ) {
-            $sort_order = 1;
-        }
-
-        return [
-            // Prices keep their decimals, like the REST save.
-            '_billing_amount'            => isset( $post_data['billing_amount'] ) ? floatval( $post_data['billing_amount'] ) : 0,
-            '_expiration_number'         => ! empty( $post_data['expiration_number'] ) ? absint( $post_data['expiration_number'] ) : '',
-            '_expiration_period'         => sanitize_text_field( wp_unslash( isset( $post_data['expiration_period'] ) ? $post_data['expiration_period'] : '' ) ),
-            '_recurring_pay'             => isset( $post_data['recurring_pay'] ) ? sanitize_text_field( wp_unslash( $post_data['recurring_pay'] ) ) : 'no',
-            '_billing_cycle_number'      => $field( 'billing_cycle_number', 0 ),
-            '_cycle_period'              => $field( 'cycle_period', '' ),
-            '_billing_limit'             => $field( 'billing_limit', '' ),
-            '_trial_status'              => isset( $post_data['trial_status'] ) ? sanitize_text_field( wp_unslash( $post_data['trial_status'] ) ) : 'no',
-            '_trial_duration'            => $field( 'trial_duration', '' ),
-            '_trial_duration_type'       => $field( 'trial_duration_type', '' ),
-            '_post_type_name'            => $texts( 'post_type_name' ),
-            'additional_cpt_options'     => $texts( 'additional_cpt_options' ),
-            '_enable_post_expiration'    => $enable_post_expir,
-            '_post_expiration_time'      => $expiration_time,
-            // Same number/period keys the REST save writes.
-            '_post_expiration_number'    => isset( $expiration_parts[1] ) ? (int) $expiration_parts[0] : '',
-            '_post_expiration_period'    => isset( $expiration_parts[1] ) ? $expiration_parts[1] : '',
-            '_sort_order'                => $sort_order,
-            '_expired_post_status'       => $expire_post_status,
-            '_enable_mail_after_expired' => isset( $settings['enable_mail_after_expired'] ) ? $settings['enable_mail_after_expired'] : '',
-            '_post_expiration_message'   => $post_expire_msg,
-            '_total_feature_item'        => isset( $post_data['total_feature_item'] ) ? sanitize_text_field( wp_unslash( $post_data['total_feature_item'] ) ) : '',
-            '_remove_feature_item'       => isset( $post_data['remove_feature_item'] ) ? sanitize_text_field( wp_unslash( $post_data['remove_feature_item'] ) ) : '',
         ];
     }
 }

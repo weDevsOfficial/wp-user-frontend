@@ -8,15 +8,13 @@
 
 namespace WeDevs\Wpuf\Admin\Subscriptions;
 
-use WP_Post;
 use WeDevs\Wpuf\Admin\Subscription;
-use WeDevs\Wpuf\Platform\Stores\Stores;
 
 /**
- * The `wpuf_subscription` post type and its admin edit screen: registration,
- * title placeholder, the classic editor save, scripts, the post types a pack
- * can allow, and the pack chosen on registration (register form field,
- * after-registration redirect).
+ * The `wpuf_subscription` post type: registration, scripts, the post types a
+ * pack can allow, and the pack chosen on registration (register form field,
+ * after-registration redirect). The classic edit screen (title placeholder,
+ * metabox save) is gone: packs are edited in the React subscriptions screen.
  *
  * @since WPUF_SINCE Moved out of Admin\Subscription, which keeps the hooks, the
  * static helpers and the data methods, and delegates.
@@ -85,53 +83,6 @@ class Pack_Post_Type {
                 ],
             ]
         );
-    }
-
-    /**
-     * Post type name placeholder text
-     *
-     * @param string $title
-     *
-     * @return string
-     */
-    public function change_default_title( $title ) {
-        $screen = get_current_screen();
-
-        if ( 'wpuf_subscription' === $screen->post_type ) {
-            $title = __( 'Pack Name', 'wp-user-frontend' );
-        }
-
-        return $title;
-    }
-
-    /**
-     * Save form data
-     *
-     * @param int      $post_ID
-     * @param WP_Post $post
-     *
-     * @return void
-     */
-    public function save_form_meta( $subscription_id, $post ) {
-        $nonce = isset( $_POST['meta_box_nonce'] ) ? sanitize_key( wp_unslash( $_POST['meta_box_nonce'] ) ) : '';
-
-        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'subs_meta_box_nonce' ) ) {
-            return;
-        }
-
-        // Is the user allowed to edit the post or page?
-        if ( ! current_user_can( 'edit_post', $post->ID ) ) {
-            return;
-        }
-
-        // Only packs: the nonce is printed by the pack editor alone.
-        if ( ! Stores::subscriptions()->is_subscription( $subscription_id ) ) {
-            return;
-        }
-
-        // The subscription store writes the pack meta and fires
-        // wpuf_update_subscription_pack, as this method did (task 2.4b).
-        Stores::subscriptions()->save_from_classic( $subscription_id, wp_unslash( $_POST ) );
     }
 
     /**

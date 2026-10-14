@@ -41,31 +41,20 @@ class Admin_Subscription {
      * The constructor
      */
     public function __construct() {
-        add_filter( 'manage_wpuf_subscription_posts_columns', [ $this, 'subscription_columns_head' ] );
-        add_filter( 'post_updated_messages', [ $this, 'form_updated_message' ] );
         add_filter( 'wpuf_subscription_additional_fields', [ $this, 'third_party_cpt_options' ] );
-
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
-        add_action( 'manage_wpuf_subscription_posts_custom_column', [ $this, 'subscription_columns_content' ], 10, 2 );
-
-        // new subscription metabox hooks
-        add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
 
         add_action( 'show_user_profile', [ $this, 'profile_subscription_details' ], 30 );
         add_action( 'edit_user_profile', [ $this, 'profile_subscription_details' ], 30 );
         add_action( 'personal_options_update', [ $this, 'profile_subscription_update' ] );
         add_action( 'edit_user_profile_update', [ $this, 'profile_subscription_update' ] );
 
-        // display help link to docs
-        add_action( 'admin_notices', [ $this, 'add_help_link' ] );
-
-        // new subscription metabox hooks
-        add_action( 'admin_print_styles-post-new.php', [ $this, 'enqueue_scripts' ] );
-        add_action( 'admin_print_styles-post.php', [ $this, 'enqueue_scripts' ] );
+        // The classic post type screens open the React subscriptions screen.
+        add_action( 'load-edit.php', [ $this, 'redirect_classic_screen' ] );
+        add_action( 'load-post.php', [ $this, 'redirect_classic_screen' ] );
+        add_action( 'load-post-new.php', [ $this, 'redirect_classic_screen' ] );
 
         add_action( 'wpuf_load_subscription_page', [ $this, 'remove_notices' ] );
         add_action( 'wpuf_load_subscription_page', [ $this, 'enqueue_admin_scripts' ] );
-        add_action( 'wpuf_load_subscription_page', [ $this, 'modify_admin_footer_text' ] );
 
         add_action( 'admin_init', [ $this, 'set_default_sort_order_for_existing_subscriptions' ] );
     }
@@ -143,69 +132,6 @@ class Admin_Subscription {
     }
 
     /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::subscription_columns_head()
-     *
-     * @since WPUF_SINCE
-     */
-    public function subscription_columns_head( $head ) {
-        return $this->pack_screen()->subscription_columns_head( $head );
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::subscription_columns_content()
-     *
-     * @since WPUF_SINCE
-     */
-    public function subscription_columns_content( $column_name, $post_ID ) {
-        return $this->pack_screen()->subscription_columns_content( $column_name, $post_ID );
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::form_updated_message()
-     *
-     * @since WPUF_SINCE
-     */
-    public function form_updated_message( $messages ) {
-        return $this->pack_screen()->form_updated_message( $messages );
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::add_meta_boxes()
-     *
-     * @since WPUF_SINCE
-     */
-    public function add_meta_boxes() {
-        return $this->pack_screen()->add_meta_boxes();
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::subs_meta_box()
-     *
-     * @since WPUF_SINCE
-     */
-    public function subs_meta_box() {
-        return $this->pack_screen()->subs_meta_box();
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::pack_description_metabox()
-     *
-     * @since WPUF_SINCE
-     */
-    public function pack_description_metabox( $pack_id = null ) {
-        return $this->pack_screen()->pack_description_metabox( $pack_id );
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::enqueue_scripts()
-     *
-     * @since WPUF_SINCE
-     */
-    public function enqueue_scripts() {
-        return $this->pack_screen()->enqueue_scripts();
-    }
-
-    /**
      * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::enqueue_admin_scripts()
      *
      * @since WPUF_SINCE
@@ -215,39 +141,21 @@ class Admin_Subscription {
     }
 
     /**
+     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::redirect_classic_screen()
+     *
+     * @since WPUF_SINCE
+     */
+    public function redirect_classic_screen() {
+        return $this->pack_screen()->redirect_classic_screen();
+    }
+
+    /**
      * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::remove_notices()
      *
      * @since WPUF_SINCE
      */
     public function remove_notices() {
         return $this->pack_screen()->remove_notices();
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::add_help_link()
-     *
-     * @since WPUF_SINCE
-     */
-    public function add_help_link() {
-        return $this->pack_screen()->add_help_link();
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::modify_admin_footer_text()
-     *
-     * @since WPUF_SINCE
-     */
-    public function modify_admin_footer_text() {
-        return $this->pack_screen()->modify_admin_footer_text();
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::admin_footer_text()
-     *
-     * @since WPUF_SINCE
-     */
-    public function admin_footer_text( $footer_text ) {
-        return $this->pack_screen()->admin_footer_text( $footer_text );
     }
 
     /**

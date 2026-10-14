@@ -69,12 +69,7 @@ class Free_Loader extends Pro_Prompt {
         // payment gateway added for previewing
         add_filter( 'wpuf_payment_gateways', [ $this, 'wpuf_payment_gateways' ] );
 
-        // navigation tabs added for previewing in Subscription > Add/Edit Subscription
-        add_action( 'wpuf_admin_subs_nav_tab', [ $this, 'subscription_tabs' ] );
-        add_action( 'wpuf_admin_subs_nav_content', [ $this, 'subscription_tab_contents' ] );
-
         // subscription
-        add_action( 'wpuf_admin_subscription_detail', [ $this, 'wpuf_admin_subscription_detail_runner' ], 10, 4 );
         add_filter( 'wpuf_subscription_section_advanced', [ $this, 'add_taxonomy_restriction_section' ] );
         add_filter( 'wpuf_subscriptions_fields', [ $this, 'add_taxonomy_restriction_fields' ], 11 );
 
@@ -185,7 +180,6 @@ class Free_Loader extends Pro_Prompt {
 
         return false;
     }
-
 
     /**
      * @see \WeDevs\Wpuf\Free\Settings_Preview::pro_sections()
@@ -347,33 +341,6 @@ class Free_Loader extends Pro_Prompt {
      */
     public function wpuf_payment_gateways( $gateways ) {
         return $this->subscription_preview()->wpuf_payment_gateways( $gateways );
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Free\Subscription_Preview::subscription_tabs()
-     *
-     * @since WPUF_SINCE
-     */
-    public function subscription_tabs() {
-        return $this->subscription_preview()->subscription_tabs();
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Free\Subscription_Preview::subscription_tab_contents()
-     *
-     * @since WPUF_SINCE
-     */
-    public function subscription_tab_contents() {
-        return $this->subscription_preview()->subscription_tab_contents();
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Free\Subscription_Preview::wpuf_admin_subscription_detail_runner()
-     *
-     * @since WPUF_SINCE
-     */
-    public function wpuf_admin_subscription_detail_runner( $sub_meta, $hidden_recurring_class, $hidden_trial_class, $obj ) {
-        return $this->subscription_preview()->wpuf_admin_subscription_detail_runner( $sub_meta, $hidden_recurring_class, $hidden_trial_class, $obj );
     }
 
     /**

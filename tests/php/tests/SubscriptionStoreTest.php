@@ -7,7 +7,6 @@
  * @package WP_User_Frontend
  */
 
-use WeDevs\Wpuf\Admin\Subscription as Admin_Subscription;
 use WeDevs\Wpuf\Platform\REST\Controllers\SubscriptionController as Subscription_Api;
 use WeDevs\Wpuf\Platform\Stores\Stores;
 use WeDevs\Wpuf\Platform\Stores\SubscriptionStore;
@@ -261,55 +260,5 @@ class SubscriptionStoreTest extends WP_UnitTestCase {
         $this->same_response( $legacy, $current );
         $this->assertNotNull( get_post( $page ) );
         $this->assertFalse( Stores::subscriptions()->delete( $page ) );
-    }
-
-    public function test_classic_editor_save_matches() {
-        $legacy_id  = self::factory()->post->create( [ 'post_type' => 'wpuf_subscription', 'post_title' => 'Classic', 'post_content' => 'C' ] );
-        $current_id = self::factory()->post->create( [ 'post_type' => 'wpuf_subscription', 'post_title' => 'Classic', 'post_content' => 'C' ] );
-        $admin      = ( new ReflectionClass( Admin_Subscription::class ) )->newInstanceWithoutConstructor();
-        $posts      = [
-            'full'    => [
-                'billing_amount'           => '12.50',
-                'expiration_number'        => '2',
-                'expiration_period'        => 'month',
-                'recurring_pay'            => 'yes',
-                'billing_cycle_number'     => '1',
-                'cycle_period'             => 'month',
-                'trial_status'             => 'no',
-                'post_type_name'           => [ 'post' => '10' ],
-                'additional_cpt_options'   => [ 'product' => '1' ],
-                'post_expiration_settings' => [ 'expiration_time_value' => '7', 'expiration_time_type' => 'day', 'enable_post_expiration' => 'on', 'post_expiration_message' => 'Bye <b>x</b>', 'enable_mail_after_expired' => 'on' ],
-                'sort_order'               => '3',
-                'total_feature_item'       => '2',
-            ],
-            'minimal' => [ 'expiration_period' => 'day', 'post_type_name' => [], 'additional_cpt_options' => [] ],
-        ];
-
-        foreach ( $posts as $name => $fields ) {
-            $_POST = wp_slash( array_merge( $fields, [ 'meta_box_nonce' => wp_create_nonce( 'subs_meta_box_nonce' ) ] ) );
-
-            $this->fired = [];
-            WPUF_Legacy_Subscription_Admin::save_form_meta( $legacy_id, get_post( $legacy_id ) );
-            $legacy_hook = $this->fired;
-            $this->fired = [];
-            $admin->save_form_meta( $current_id, get_post( $current_id ) );
-
-            $this->assertEquals( $this->snapshot( $legacy_id ), $this->snapshot( $current_id ), $name );
-            $this->assertSame( $legacy_hook, $this->fired, $name . ': wpuf_update_subscription_pack with the same data' );
-        }
-    }
-
-    public function test_classic_editor_save_ignores_bad_nonce_and_other_post_types() {
-        $admin = ( new ReflectionClass( Admin_Subscription::class ) )->newInstanceWithoutConstructor();
-        $pack  = self::factory()->post->create( [ 'post_type' => 'wpuf_subscription' ] );
-        $page  = self::factory()->post->create( [ 'post_type' => 'page' ] );
-
-        $_POST = [ 'meta_box_nonce' => 'bad', 'billing_amount' => '5' ];
-        $admin->save_form_meta( $pack, get_post( $pack ) );
-        $this->assertSame( '', get_post_meta( $pack, '_billing_amount', true ) );
-
-        $_POST = [ 'meta_box_nonce' => wp_create_nonce( 'subs_meta_box_nonce' ), 'billing_amount' => '5', 'expiration_period' => 'day' ];
-        $admin->save_form_meta( $page, get_post( $page ) );
-        $this->assertSame( '', get_post_meta( $page, '_billing_amount', true ), 'not a pack: nothing written' );
     }
 }

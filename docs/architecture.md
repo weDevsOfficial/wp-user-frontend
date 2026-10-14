@@ -62,12 +62,12 @@ includes/Admin/               legacy admin services still in use, all built by t
                               admin_menu adapter, every callback renders through Screens\Registry / AppPage), Admin_Tools
                               (handlers through ToolsService), Onboarding facade, Posting (metaboxes through
                               SubmissionStore), Customizer_Options (Customizer bridge), Upgrades, Help_Content,
-                              views/ for Subscribers / Premium / shortcode builder / help content
+                              views/ for Premium / shortcode builder / help content
 includes/Admin/Subscriptions/ the subscription packs admin behind two facades (hooks + delegators, statics stay):
-                              Admin_Subscription -> Pack_Fields (pack editor schema), Pack_Screen (CPT columns, classic
-                              metaboxes, React screen boot, sort order migration through SubscriptionStore), User_Profile
+                              Admin_Subscription -> Pack_Fields (pack editor schema), Pack_Screen (React screen boot,
+                              classic CPT screens redirected to it, sort order migration through SubscriptionStore), User_Profile
                               (a user's pack on the profile screen); Admin\Subscription -> Pack_Post_Type (the CPT,
-                              pack save, registration-form pack flow), Payment_Flow (pending posts, payment received,
+                              registration-form pack flow), Payment_Flow (pending posts, payment received,
                               new subscription, cancel, trial reset; through the Submission / UserPack / Subscriber /
                               Transaction stores), Pack_Display (packs page, pack details, dropdowns, force-pack notices).
                               User_Subscription (includes/) reads and writes a user's pack through the same stores.

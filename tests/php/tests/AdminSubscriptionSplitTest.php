@@ -12,7 +12,7 @@ use WeDevs\Wpuf\Admin\Subscriptions\User_Profile;
 use WeDevs\Wpuf\Platform\Stores\Stores;
 
 /**
- * The facade keeps every hook on itself and hands the facade (not a group) to the hooks; the columns and the sort order migration read and write through the subscription store.
+ * The facade keeps every hook on itself; the classic post type screens redirect to the React screen; the sort order migration writes through the subscription store.
  */
 class AdminSubscriptionSplitTest extends WP_UnitTestCase {
 
@@ -22,23 +22,30 @@ class AdminSubscriptionSplitTest extends WP_UnitTestCase {
      * @var array
      */
     const HOOKS = [
-        [ 'manage_wpuf_subscription_posts_columns', 'subscription_columns_head' ],
-        [ 'post_updated_messages', 'form_updated_message' ],
         [ 'wpuf_subscription_additional_fields', 'third_party_cpt_options' ],
-        [ 'admin_enqueue_scripts', 'enqueue_scripts' ],
-        [ 'manage_wpuf_subscription_posts_custom_column', 'subscription_columns_content' ],
-        [ 'add_meta_boxes', 'add_meta_boxes' ],
         [ 'show_user_profile', 'profile_subscription_details' ],
         [ 'edit_user_profile', 'profile_subscription_details' ],
         [ 'personal_options_update', 'profile_subscription_update' ],
         [ 'edit_user_profile_update', 'profile_subscription_update' ],
-        [ 'admin_notices', 'add_help_link' ],
-        [ 'admin_print_styles-post-new.php', 'enqueue_scripts' ],
-        [ 'admin_print_styles-post.php', 'enqueue_scripts' ],
+        [ 'load-edit.php', 'redirect_classic_screen' ],
+        [ 'load-post.php', 'redirect_classic_screen' ],
+        [ 'load-post-new.php', 'redirect_classic_screen' ],
         [ 'wpuf_load_subscription_page', 'remove_notices' ],
         [ 'wpuf_load_subscription_page', 'enqueue_admin_scripts' ],
-        [ 'wpuf_load_subscription_page', 'modify_admin_footer_text' ],
         [ 'admin_init', 'set_default_sort_order_for_existing_subscriptions' ],
+    ];
+
+    /**
+     * Hooks of the removed classic pack editor, no longer added.
+     *
+     * @var array
+     */
+    const REMOVED_HOOKS = [
+        [ 'manage_wpuf_subscription_posts_columns', 'subscription_columns_head' ],
+        [ 'post_updated_messages', 'form_updated_message' ],
+        [ 'add_meta_boxes', 'add_meta_boxes' ],
+        [ 'admin_notices', 'add_help_link' ],
+        [ 'wpuf_load_subscription_page', 'modify_admin_footer_text' ],
     ];
 
     /**
@@ -50,6 +57,10 @@ class AdminSubscriptionSplitTest extends WP_UnitTestCase {
         foreach ( self::HOOKS as $hook ) {
             $this->assertNotFalse( has_action( $hook[0], [ $admin, $hook[1] ] ), $hook[0] . ' -> ' . $hook[1] );
             remove_action( $hook[0], [ $admin, $hook[1] ] );
+        }
+
+        foreach ( self::REMOVED_HOOKS as $hook ) {
+            $this->assertFalse( method_exists( $admin, $hook[1] ), $hook[1] . ' is gone with the classic editor' );
         }
 
         $groups = [];
@@ -68,58 +79,37 @@ class AdminSubscriptionSplitTest extends WP_UnitTestCase {
             }
         }
 
-        $this->assertCount( 25, $groups, 'the 25 public methods of the old class' );
+        // 25 of the old class, less the 10 classic editor methods, plus the classic screen redirect and its route.
+        $this->assertCount( 17, $groups );
     }
 
     /**
-     * The pack metabox hands the facade to its hooks, so Pro's callbacks keep calling the facade's methods.
+     * The classic post type screens map to the React screen's routes; other requests and post.php actions stay.
      */
-    public function test_metabox_hooks_receive_the_facade() {
-        $admin = ( new ReflectionClass( Admin_Subscription::class ) )->newInstanceWithoutConstructor();
-        $pack  = self::factory()->post->create( [ 'post_type' => 'wpuf_subscription', 'post_title' => 'Pack' ] );
-        $seen  = [];
-        $spy   = function ( $sub_meta, $recurring, $trial, $object ) use ( &$seen ) {
-            $seen[] = $object;
-            echo esc_html( $object->lenght_type_option( 'x' ) );
+    public function test_classic_screens_map_to_the_react_routes() {
+        $screen = new Pack_Screen( ( new ReflectionClass( Admin_Subscription::class ) )->newInstanceWithoutConstructor() );
+        $pack   = self::factory()->post->create( [ 'post_type' => 'wpuf_subscription' ] );
+        $page   = self::factory()->post->create( [ 'post_type' => 'page' ] );
+        $route  = function ( $file, $get ) use ( $screen ) {
+            $_GET = $get;
+
+            return $screen->classic_screen_route( $file );
         };
 
-        add_action( 'wpuf_admin_subscription_detail', $spy, 10, 4 );
-        $GLOBALS['post'] = get_post( $pack ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- the metabox reads the global, as on post.php.
-        ob_start();
-        $admin->subs_meta_box( get_post( $pack ) );
-        $html = ob_get_clean();
-        remove_action( 'wpuf_admin_subscription_detail', $spy, 10 );
+        $this->assertSame( '/subscriptions', $route( 'edit.php', [ 'post_type' => 'wpuf_subscription' ] ) );
+        $this->assertSame( '/subscriptions?post_status=trash', $route( 'edit.php', [ 'post_type' => 'wpuf_subscription', 'post_status' => 'trash' ] ) );
+        $this->assertSame( '/subscriptions', $route( 'edit.php', [ 'post_type' => 'wpuf_subscription', 'post_status' => 'bogus' ] ) );
+        $this->assertSame( '/subscriptions?action=new', $route( 'post-new.php', [ 'post_type' => 'wpuf_subscription' ] ) );
+        $this->assertSame( '/subscriptions?action=edit&id=' . $pack, $route( 'post.php', [ 'post' => (string) $pack, 'action' => 'edit' ] ) );
 
-        $this->assertCount( 1, $seen );
-        $this->assertSame( $admin, $seen[0] );
-        $this->assertStringContainsString( 'wpuf-recuring-pay', $html );
-    }
+        $this->assertNull( $route( 'edit.php', [ 'post_type' => 'wpuf_subscription', 'page' => 'wpuf_subscribers' ] ), 'the Subscribers page has its own redirect' );
+        $this->assertNull( $route( 'edit.php', [ 'post_type' => 'post' ] ) );
+        $this->assertNull( $route( 'edit.php', [] ) );
+        $this->assertNull( $route( 'post.php', [ 'post' => (string) $pack, 'action' => 'trash' ] ), 'post.php actions other than edit run' );
+        $this->assertNull( $route( 'post.php', [ 'post' => (string) $page, 'action' => 'edit' ] ) );
+        $this->assertNull( $route( 'upload.php', [ 'post_type' => 'wpuf_subscription' ] ) );
 
-    /**
-     * The list columns read the pack through the store, as before from its meta.
-     */
-    public function test_columns_read_through_the_store() {
-        $admin = ( new ReflectionClass( Admin_Subscription::class ) )->newInstanceWithoutConstructor();
-        $pack  = self::factory()->post->create( [ 'post_type' => 'wpuf_subscription', 'post_title' => 'Pack' ] );
-        update_post_meta( $pack, '_billing_amount', '12.5' );
-        update_post_meta( $pack, '_recurring_pay', 'yes' );
-        update_post_meta( $pack, '_billing_cycle_number', '2' );
-        update_post_meta( $pack, '_cycle_period', 'week' );
-
-        $column = function ( $name ) use ( $admin, $pack ) {
-            ob_start();
-            $admin->subscription_columns_content( $name, $pack );
-
-            return trim( wp_strip_all_tags( ob_get_clean() ) );
-        };
-
-        $this->assertSame( html_entity_decode( wpuf_format_price( '12.5' ) ), html_entity_decode( $column( 'amount' ) ) );
-        $this->assertSame( 'Yes', $column( 'recurring' ) );
-        $this->assertSame( "2 week's (cycle)", $column( 'duration' ) );
-
-        ob_start();
-        $admin->subscription_columns_content( 'amount', 999999 );
-        $this->assertSame( 'Free', trim( wp_strip_all_tags( ob_get_clean() ) ), 'a post that is not a pack reads as a free pack, no notice' );
+        $_GET = [];
     }
 
     /**

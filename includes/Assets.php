@@ -394,10 +394,6 @@ class Assets {
                 'src'  => WPUF_ASSET_URI . '/js/billing-address.js',
                 'deps' => [ 'jquery' ],
             ],
-            'metabox-tabs'             => [
-                'src'  => WPUF_ASSET_URI . '/js/metabox-tabs.js',
-                'deps' => [ 'jquery' ],
-            ],
             'ajax-script'              => [
                 'src'  => WPUF_ASSET_URI . '/js/billing-address.js',
                 'deps' => [ 'jquery' ],

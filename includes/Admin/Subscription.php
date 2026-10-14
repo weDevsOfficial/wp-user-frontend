@@ -46,8 +46,6 @@ class Subscription {
         add_action( 'wpuf_draft_post_after_insert', [ $this, 'monitor_new_draft_post' ], 10, 3 );
         add_action( 'wpuf_payment_received', [ $this, 'payment_received' ], 10, 2 );
 
-        add_action( 'save_post', [ $this, 'save_form_meta' ], 10, 2 );
-        add_filter( 'enter_title_here', [ $this, 'change_default_title' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'subscription_script' ] );
 
         add_action( 'user_register', [ $this, 'after_registration' ], 10, 1 );
@@ -298,24 +296,6 @@ class Subscription {
      */
     public function register_post_type() {
         return $this->pack_post_type()->register_post_type();
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Post_Type::change_default_title()
-     *
-     * @since WPUF_SINCE
-     */
-    public function change_default_title( $title ) {
-        return $this->pack_post_type()->change_default_title( $title );
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Post_Type::save_form_meta()
-     *
-     * @since WPUF_SINCE
-     */
-    public function save_form_meta( $subscription_id, $post ) {
-        return $this->pack_post_type()->save_form_meta( $subscription_id, $post );
     }
 
     /**

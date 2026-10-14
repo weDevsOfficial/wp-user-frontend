@@ -117,10 +117,13 @@ export default function UploadField( { field, value, onChange, formId, error, sc
 
             const key = `${ file.name }:${ file.size }:${ Date.now() }`;
 
-            setProgress( ( state ) => ( { ...state, [ key ]: 0 } ) );
+            // A local preview of a picked image while it uploads (revoked when done).
+            const preview = /^image\//.test( file.type || '' ) && window.URL && 'function' === typeof window.URL.createObjectURL ? window.URL.createObjectURL( file ) : '';
+
+            setProgress( ( state ) => ( { ...state, [ key ]: { ratio: 0, name: file.name, preview } } ) );
 
             try {
-                const result = await uploadFile( '/uploads', file, { form_id: formId, type: field.name, wpuf_nonce: schema?.nonces?.upload || '' }, ( ratio ) => setProgress( ( state ) => ( { ...state, [ key ]: ratio } ) ) );
+                const result = await uploadFile( '/uploads', file, { form_id: formId, type: field.name, wpuf_nonce: schema?.nonces?.upload || '' }, ( ratio ) => setProgress( ( state ) => ( state[ key ] ? { ...state, [ key ]: { ...state[ key ], ratio } } : state ) ) );
                 const attachId = String( result.attach_id );
 
                 setItems( ( list ) => [ ...list, { id: attachId, url: result.url, thumb: result.thumb, title: result.title, stored: false } ] );
@@ -129,6 +132,10 @@ export default function UploadField( { field, value, onChange, formId, error, sc
             } catch ( e ) {
                 setMessage( e.message );
             } finally {
+                if ( preview ) {
+                    window.URL.revokeObjectURL( preview );
+                }
+
                 setProgress( ( state ) => {
                     const next = { ...state };
                     delete next[ key ];
@@ -250,12 +257,27 @@ export default function UploadField( { field, value, onChange, formId, error, sc
                         { items.map( ( item ) => (
                             <AttachmentRow key={ item.id } item={ item } field={ field } assets={ assets } captions={ captions } setCaption={ setCaption } onRemove={ remove } />
                         ) ) }
-                        { Object.entries( progress ).map( ( [ key, ratio ] ) => (
-                            <li key={ key } className="ui-state-default wpuf-image-wrap thumbnail wpuf-uploading" aria-busy="true">
-                                <span className="wpuf-upload-percent">{ Math.round( ratio * 100 ) }%</span>
-                                <span className="wpuf-upload-progress" style={ { width: `${ Math.round( ratio * 100 ) }%` } } />
-                            </li>
-                        ) ) }
+                        { Object.entries( progress ).map( ( [ key, state ] ) => {
+                            const percent = Math.round( ( state.ratio || 0 ) * 100 );
+
+                            return (
+                                <li key={ key } className={ `ui-state-default wpuf-image-wrap thumbnail wpuf-uploading${ state.preview ? ' has-preview' : '' }` } aria-busy="true">
+                                    { state.preview ? <img className="wpuf-upload-preview" src={ state.preview } alt="" /> : <span className="wpuf-upload-file-icon" aria-hidden="true" /> }
+                                    <span className="wpuf-upload-meta">
+                                        <span className="wpuf-upload-name" title={ state.name }>{ state.name }</span>
+                                        <span className="wpuf-upload-percent" role="status">
+                                            { percent < 100
+                                                /* translators: %d: percent uploaded */
+                                                ? sprintf( __( 'Uploading… %d%%', 'wp-user-frontend' ), percent )
+                                                : __( 'Processing…', 'wp-user-frontend' ) }
+                                        </span>
+                                    </span>
+                                    <span className="wpuf-upload-track" aria-hidden="true">
+                                        <span className="wpuf-upload-progress" style={ { width: `${ percent }%` } } />
+                                    </span>
+                                </li>
+                            );
+                        } ) }
                     </ul>
                 </div>
             </div>

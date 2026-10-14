@@ -3,13 +3,15 @@
  * `suggest()` gives them to the classic tags field and the text / ajax
  * taxonomy field: after 2 characters and 500 ms the last name typed is
  * searched (`/forms/{id}/terms?search=`), `ul.ac_results` opens under the
- * input (appended to `body`, placed at the input like suggest.js), the
- * typed part is wrapped in `span.ac_match`, the arrows move `li.ac_over`,
- * Enter or Tab picks it, Escape closes, a blur closes after 200 ms.
+ * input (inside `span.wpuf-suggest`, so the form's design reaches it; the
+ * classic list was appended to `body`), the typed part is wrapped in
+ * `span.ac_match`, the arrows move `li.ac_over`, Enter or Tab picks it,
+ * Escape closes, a blur closes after 200 ms.
  *
  * @since WPUF_SINCE
  */
-import { createPortal, useEffect, useLayoutEffect, useRef, useState } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 import { searchTerms } from '../api';
 import { useUid } from '../form/hooks';
 
@@ -45,7 +47,7 @@ export default function SuggestInput( { taxonomy, formId, value, onChange, onBlu
     const [ open, setOpen ] = useState( false );
     const [ items, setItems ] = useState( [] );
     const [ active, setActive ] = useState( -1 );
-    const [ place, setPlace ] = useState( null );
+    const [ loading, setLoading ] = useState( false );
     const input = useRef( null );
     const cache = useRef( {} );
     const listId = useUid( 'wpuf-suggest' );
@@ -54,11 +56,13 @@ export default function SuggestInput( { taxonomy, formId, value, onChange, onBlu
     useEffect( () => {
         if ( query.length < 2 ) {
             setOpen( false );
+            setLoading( false );
 
             return undefined;
         }
 
         const show = ( names ) => {
+            setLoading( false );
             setItems( names );
             setActive( -1 );
             setOpen( names.length > 0 && document.activeElement === input.current );
@@ -72,6 +76,13 @@ export default function SuggestInput( { taxonomy, formId, value, onChange, onBlu
 
         // The classic suggest() delay.
         const timer = window.setTimeout( () => {
+            // A "Searching" row while the terms load.
+            if ( document.activeElement === input.current ) {
+                setItems( [] );
+                setLoading( true );
+                setOpen( true );
+            }
+
             searchTerms( formId, taxonomy, query )
                 .then( ( terms ) => {
                     const names = ( terms || [] ).map( ( term ) => term.name );
@@ -79,29 +90,14 @@ export default function SuggestInput( { taxonomy, formId, value, onChange, onBlu
                     cache.current[ query ] = names;
                     show( names );
                 } )
-                .catch( () => setOpen( false ) );
+                .catch( () => {
+                    setLoading( false );
+                    setOpen( false );
+                } );
         }, 500 );
 
         return () => window.clearTimeout( timer );
     }, [ query, formId, taxonomy ] );
-
-    // suggest.js resetPosition(): under the input, at its left edge, in page coordinates.
-    useLayoutEffect( () => {
-        if ( ! open || ! input.current ) {
-            return undefined;
-        }
-
-        const measure = () => {
-            const rect = input.current.getBoundingClientRect();
-
-            setPlace( { top: rect.bottom + window.scrollY, left: rect.left + window.scrollX } );
-        };
-
-        measure();
-        window.addEventListener( 'resize', measure );
-
-        return () => window.removeEventListener( 'resize', measure );
-    }, [ open ] );
 
     const choose = ( name ) => {
         const parts = text.split( SEPARATOR ).map( ( part ) => part.trim() ).filter( Boolean );
@@ -133,7 +129,7 @@ export default function SuggestInput( { taxonomy, formId, value, onChange, onBlu
     };
 
     return (
-        <>
+        <span className="wpuf-suggest">
             <input
                 { ...inputProps }
                 ref={ input }
@@ -143,6 +139,7 @@ export default function SuggestInput( { taxonomy, formId, value, onChange, onBlu
                 role="combobox"
                 aria-autocomplete="list"
                 aria-expanded={ open ? 'true' : 'false' }
+                aria-busy={ loading ? 'true' : undefined }
                 aria-controls={ listId }
                 aria-activedescendant={ open && active >= 0 ? `${ listId }-${ active }` : undefined }
                 onChange={ ( event ) => onChange( event.target.value ) }
@@ -155,8 +152,14 @@ export default function SuggestInput( { taxonomy, formId, value, onChange, onBlu
                     }
                 } }
             />
-            { open && place && createPortal(
-                <ul className="ac_results" id={ listId } role="listbox" style={ { display: 'block', top: `${ place.top }px`, left: `${ place.left }px` } }>
+            { open && (
+                <ul className="ac_results" id={ listId } role="listbox" aria-busy={ loading ? 'true' : undefined }>
+                    { loading && (
+                        <li className="wpuf-suggest-loading" role="presentation">
+                            <span className="wpuf-suggest-spinner" aria-hidden="true" />
+                            <span role="status">{ __( 'Searching…', 'wp-user-frontend' ) }</span>
+                        </li>
+                    ) }
                     { items.map( ( name, index ) => (
                         <li
                             key={ name }
@@ -173,9 +176,8 @@ export default function SuggestInput( { taxonomy, formId, value, onChange, onBlu
                             <Highlight name={ name } query={ query } />
                         </li>
                     ) ) }
-                </ul>,
-                document.body
+                </ul>
             ) }
-        </>
+        </span>
     );
 }

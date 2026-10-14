@@ -29,9 +29,12 @@ function LabelIcon( { field, side } ) {
     const value = String( field.field_icon );
     const image = /^https?:\/\//i.test( value ) || value.startsWith( '/' );
 
-    return image
+    const icon = image
         ? <img src={ value } alt="" className={ `wpuf-field-icon wpuf-field-icon-img wpuf-field-icon-${ side }` } style={ { width: '1em', height: '1em', objectFit: 'contain', verticalAlign: 'middle', display: 'inline-block' } } />
         : <i className={ `${ value } wpuf-field-icon wpuf-field-icon-${ side }` } aria-hidden="true" />;
+
+    // print_label() puts a space between the icon and the label text.
+    return 'left' === side ? <>{ icon }{ ' ' }</> : <>{ ' ' }{ icon }</>;
 }
 
 /**

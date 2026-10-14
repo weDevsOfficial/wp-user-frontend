@@ -77,7 +77,13 @@ function InsertImage( { formId, nonce, onInsert } ) {
                     input.current && input.current.click();
                 } }
             >
-                <span className="wpuf-media-icon" />
+                <span className="wpuf-media-icon" aria-hidden="true">
+                    <svg width="100%" height="100%" viewBox="0 0 20 20" fill="none" focusable="false">
+                        <rect x="2.75" y="3.75" width="14.5" height="12.5" rx="2" stroke="currentColor" strokeWidth="1.5" />
+                        <circle cx="7.25" cy="8" r="1.5" fill="currentColor" />
+                        <path d="M3.5 14.5l4.25-4 3 2.75 2.5-2.25 3.25 3" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                    </svg>
+                </span>
                 { __( 'Insert Photo', 'wp-user-frontend' ) }
             </a>
             { message && <div className="wpuf-error-msg" role="alert">{ message }</div> }

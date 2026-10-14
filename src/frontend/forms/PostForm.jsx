@@ -145,10 +145,16 @@ export default function PostForm( { schema: boot, root } ) {
         if ( Object.keys( errors ).length ) {
             setFormError( __( 'Please fix the errors to proceed', 'wp-user-frontend' ) );
             window.setTimeout( () => {
-                const first = root.querySelector( '.has-error input:not([type="hidden"]), .has-error select:not(.wpuf-select__native), .has-error textarea, .has-error [role="combobox"], .has-error [tabindex="0"]' );
+                const first = root.querySelector( '.has-error input:not([type="hidden"]), .has-error select:not(.wpuf-select__native), .has-error textarea:not([hidden]), .has-error [role="combobox"], .has-error [contenteditable="true"], .has-error [tabindex="0"]' );
 
                 if ( first ) {
-                    first.focus();
+                    // Centred, so a sticky header or the admin bar does not cover it.
+                    first.focus( { preventScroll: true } );
+
+                    const row = first.closest( 'li.wpuf-el' ) || first;
+                    const smooth = ! ( window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches );
+
+                    row.scrollIntoView( { block: 'center', behavior: smooth ? 'smooth' : 'auto' } );
                 }
             }, 0 );
 

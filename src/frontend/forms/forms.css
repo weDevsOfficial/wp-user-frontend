@@ -37,26 +37,94 @@
     display: contents;
 }
 
-/* Upload progress row (the classic form shows plupload's own progress). */
-.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading {
+/* Upload in progress: a tile with the picked image's preview (or a file icon),
+   the file name, "Uploading… n%" and a progress bar (the classic form shows
+   plupload's own progress). */
+.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form.wpuf-form li .wpuf-attachment-list li.wpuf-uploading.wpuf-uploading {
     position: relative;
-    min-width: 80px;
-    min-height: 40px;
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 360px;
+    min-height: 56px;
+    margin: 8px 0 0 !important;
+    padding: 8px 12px 14px !important;
+    overflow: hidden;
+    border: 1px solid var(--wpuf-m-border, #e5e7eb) !important;
+    border-radius: var(--wpuf-m-radius, 8px) !important;
+    background: var(--wpuf-m-input-bg, #ffffff) !important;
+    list-style: none !important;
 }
 
-.wpuf-frontend .wpuf-attachment-list .wpuf-upload-progress {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 4px;
-    background: #0088bb;
-    transition: width 0.2s ease;
+.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading::before {
+    content: none !important;
+}
+
+.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading .wpuf-upload-preview {
+    flex: none;
+    width: 40px !important;
+    height: 40px !important;
+    max-width: none !important;
+    margin: 0 !important;
+    border-radius: 6px;
+    object-fit: cover;
+    opacity: 0.7;
+}
+
+.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading .wpuf-upload-file-icon {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    background: var(--wpuf-m-hover, #f3f4f6) no-repeat center / 20px 20px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%236b7280' stroke-width='1.5'%3E%3Cpath d='M11.5 2.75H6A1.75 1.75 0 0 0 4.25 4.5v11A1.75 1.75 0 0 0 6 17.25h8a1.75 1.75 0 0 0 1.75-1.75V7l-4.25-4.25Z'/%3E%3Cpath d='M11.25 2.75V7.25h4.5'/%3E%3C/svg%3E");
+}
+
+.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading .wpuf-upload-meta {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading .wpuf-upload-name {
+    overflow: hidden;
+    color: var(--wpuf-m-input-text, #111827);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .wpuf-frontend .wpuf-attachment-list .wpuf-upload-percent {
     display: block;
-    padding: 8px;
+    padding: 0;
+    color: var(--wpuf-m-muted, #6b7280);
     font-size: 12px;
+    line-height: 16px;
+}
+
+.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading .wpuf-upload-track {
+    position: absolute;
+    right: 12px;
+    bottom: 6px;
+    left: 12px;
+    height: 4px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--wpuf-m-hover, #f3f4f6);
+}
+
+.wpuf-frontend .wpuf-attachment-list .wpuf-upload-progress {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--wpuf-m-accent, #0088bb);
+    transition: width 0.2s ease;
 }
 
 /* The hidden file input behind the classic "Select Image" button. */
@@ -828,6 +896,183 @@
     font-size: 13px;
 }
 
+/* The custom multiselect matches the single select: muted placeholder, the same chevron, accent pills, the list as a popover. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-placeholder {
+    color: var(--wpuf-m-muted) !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .dropdown-arrow svg {
+    width: 12px;
+    height: auto;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .dropdown-arrow svg path {
+    stroke: var(--wpuf-m-muted);
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .selected-item {
+    border: 0 !important;
+    border-radius: 6px !important;
+    background: var(--wpuf-m-ring) !important;
+    color: var(--wpuf-m-input-text) !important;
+    font-size: 13px !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-dropdown {
+    margin-top: 6px !important;
+    padding: 4px !important;
+    border: 1px solid var(--wpuf-m-border) !important;
+    border-radius: var(--wpuf-m-radius) !important;
+    background: var(--wpuf-m-pop, #ffffff) !important;
+    box-shadow: 0 12px 24px -6px rgba(16, 24, 40, 0.18), 0 4px 8px -4px rgba(16, 24, 40, 0.08) !important;
+    max-height: 264px !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-option {
+    border: 0 !important;
+    border-radius: 6px;
+    color: var(--wpuf-m-input-text) !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-option:hover,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-option:focus {
+    background: var(--wpuf-m-hover, #f3f4f6) !important;
+}
+
+/* Phone with the country list: the number starts after the flag (the underline rule of template 3 zeroed it). */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti.iti--allow-dropdown input[type="tel"],
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti.iti--allow-dropdown input[type="text"] {
+    padding-left: 52px !important;
+}
+
+/* Label icons: a gap to the text, the muted colour. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-label .wpuf-field-icon {
+    color: var(--wpuf-m-muted);
+    font-size: 0.9em;
+}
+
+
+/* Cart total: the table at the form's text size. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-summary {
+    border: 1px solid var(--wpuf-m-border) !important;
+    border-radius: var(--wpuf-m-radius) !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table th,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table td {
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
+    color: var(--wpuf-m-muted) !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table .wpuf-cart-empty td {
+    color: var(--wpuf-m-muted) !important;
+}
+
+/* Term suggestions (tags, text / ajax taxonomy): a popover under the input like the select's list. */
+.wpuf-frontend .wpuf-suggest {
+    position: relative;
+    display: block;
+}
+
+.wpuf-frontend .wpuf-suggest ul.ac_results {
+    display: block !important;
+    position: absolute;
+    z-index: 1000;
+    top: calc(100% + 6px);
+    left: 0;
+    box-sizing: border-box;
+    max-height: 264px;
+    margin: 0 !important;
+    padding: 4px !important;
+    overflow-y: auto;
+    border: 1px solid var(--wpuf-m-border, #e5e7eb);
+    border-radius: var(--wpuf-m-radius, 8px);
+    /* frontend-forms.css forces a white 390px list with !important. */
+    background: var(--wpuf-m-pop, #ffffff) !important;
+    color: var(--wpuf-m-input-text, #111827) !important;
+    width: 100% !important;
+    box-shadow: 0 12px 24px -6px rgba(16, 24, 40, 0.18), 0 4px 8px -4px rgba(16, 24, 40, 0.08);
+    list-style: none !important;
+}
+
+.wpuf-frontend .wpuf-suggest ul.ac_results > li {
+    margin: 0 !important;
+    padding: 8px 12px !important;
+    border: 0 !important;
+    border-radius: 6px;
+    text-align: left;
+    background: transparent;
+    color: var(--wpuf-m-input-text, #111827);
+    font-size: 14px;
+    line-height: 20px;
+    list-style: none !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.wpuf-frontend .wpuf-suggest ul.ac_results > li::before {
+    content: none !important;
+}
+
+.wpuf-frontend .wpuf-suggest ul.ac_results > li.ac_over {
+    background: var(--wpuf-m-hover, #f3f4f6);
+}
+
+.wpuf-frontend .wpuf-suggest ul.ac_results .ac_match {
+    color: var(--wpuf-m-accent, #2563eb);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.wpuf-frontend .wpuf-suggest ul.ac_results > li.wpuf-suggest-loading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--wpuf-m-muted, #6b7280);
+    cursor: default;
+}
+
+.wpuf-frontend .wpuf-suggest .wpuf-suggest-spinner {
+    flex: none;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--wpuf-m-border, #e5e7eb);
+    border-top-color: var(--wpuf-m-accent, #2563eb);
+    border-radius: 50%;
+    animation: wpuf-suggest-spin 0.7s linear infinite;
+}
+
+@keyframes wpuf-suggest-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wpuf-frontend .wpuf-suggest .wpuf-suggest-spinner {
+        animation-duration: 2s;
+    }
+}
+
+/* Doubled class: the layout sheets set every `ul.wpuf-form li` margin / padding with !important. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form.wpuf-form li .wpuf-suggest ul.ac_results.ac_results > li {
+    margin: 0 !important;
+    padding: 8px 12px !important;
+}
+
 /* Upload buttons: a drop-area look. */
 .wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-attachment-upload-filelist a.file-selector {
     display: inline-flex !important;
@@ -837,6 +1082,7 @@
     box-sizing: border-box;
     width: 100%;
     min-height: 44px;
+    padding: 10px 16px !important;
     border: 1px dashed var(--wpuf-m-border) !important;
     border-radius: var(--wpuf-m-radius) !important;
     background-color: var(--wpuf-m-input-bg) !important;
@@ -1880,6 +2126,14 @@
     border-color: var(--wpuf-m-accent) !important;
     color: var(--wpuf-m-accent) !important;
     outline: none;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image .wpuf-media-icon {
+    display: inline-flex !important;
+    flex: none;
+    width: 16px !important;
+    height: 16px !important;
+    background: none !important;
 }
 
 /* Columns: controls fill their column, even gaps. */

@@ -138,11 +138,6 @@ class Form_Schema {
     ];
 
     /**
-     * Field templates that need a library on the page.
-     *
-     * @since WPUF_SINCE
-     */
-    /**
      * TinyMCE toolbar buttons the TipTap editor of the React forms has a
      * control for (or, like `spellchecker`, the browser covers). A toolbar
      * with any other button (a plugin's TinyMCE button) keeps TinyMCE.
@@ -181,6 +176,11 @@ class Form_Schema {
         'wp_help',
     ];
 
+    /**
+     * Field templates that need a library on the page.
+     *
+     * @since WPUF_SINCE
+     */
     const NEEDS = [
         'image_upload'        => 'uploads',
         'featured_image'      => 'uploads',

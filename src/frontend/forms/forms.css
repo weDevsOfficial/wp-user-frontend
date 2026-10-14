@@ -424,8 +424,9 @@
     --wpuf-m-card: none;
 }
 
-/* Rows */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li {
+/* Rows (server-rendered fields sit in `div.wpuf-slot-inline` slots) */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > .wpuf-slot-inline > li {
     margin: 0 0 24px !important;
 }
 
@@ -1360,4 +1361,305 @@
 
 .wpuf-frontend form.wpuf-form-add ul.wpuf-form li .wpuf-tiptap .wpuf-tiptap-content li::marker {
     content: normal !important;
+}
+
+/*
+ * Modern design, field by field (audit 2026-10-14): address, phone,
+ * social prefix, choices, ratings, repeat field, insert photo, columns.
+ * Plugin design only; markup unchanged.
+ */
+
+/* Address: labels above their inputs, city / zip and country / state side by side. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 16px;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .wpuf-address-field {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 6px;
+    min-width: 0;
+    margin: 0 !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .street_address,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .street_address2 {
+    grid-column: 1 / -1;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .wpuf-address-field .wpuf-sub-fields {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .wpuf-form-sub-label {
+    display: block;
+    margin: 0 !important;
+    color: var(--wpuf-m-muted) !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    line-height: 18px;
+}
+
+@media (max-width: 600px) {
+    .wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Phone: full width like the other controls. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti {
+    display: block;
+    width: 100%;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti input[type="tel"],
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti input[type="text"] {
+    width: 100% !important;
+}
+
+/* Social handle prefix ("@") sits inside the input. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-social-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-social-input-wrapper .wpuf-at-prefix {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    z-index: 1;
+    transform: translateY(-50%);
+    color: var(--wpuf-m-muted);
+    font-size: 15px;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-social-input-wrapper input.wpuf-twitter-with-prefix.wpuf-twitter-with-prefix {
+    padding-left: 30px !important;
+}
+
+/* Choices: native controls in the accent colour, label beside them. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label:has(> input[type="radio"]),
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label:has(> input[type="checkbox"]) {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    margin: 0 16px 8px 0 !important;
+    padding: 0 !important;
+    color: var(--wpuf-m-input-text);
+    font-size: 15px;
+    line-height: 22px;
+    cursor: pointer;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-radio-block,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-checkbox-block,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-pricing-radio-item,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-pricing-checkbox-item {
+    display: flex !important;
+    margin: 0 0 8px !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"],
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"] {
+    flex: none;
+    width: 18px !important;
+    height: 18px !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    -webkit-appearance: auto !important;
+    appearance: auto !important;
+    accent-color: var(--wpuf-m-accent);
+    cursor: pointer;
+}
+
+/* Pro's registration templates hide the checkbox and draw a box on the label; the native control replaces it. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-block::before,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-block::after,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-inline::before,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-inline::after {
+    content: none !important;
+    display: none !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"] {
+    position: static !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    clip: auto !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"]::before,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"]::after,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"]::before,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"]::after {
+    content: none !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"]:focus-visible,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--wpuf-m-accent);
+    outline-offset: 2px;
+}
+
+/* Ratings: larger stars, amber when chosen, no dropdown arrow from the hidden select. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields:has(.br-wrapper)::after {
+    content: none !important;
+    display: none !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget {
+    display: inline-flex;
+    gap: 4px;
+    height: auto;
+    padding: 0 !important;
+    border: 0 !important;
+    background: none !important;
+    white-space: nowrap;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a {
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    font-size: 26px;
+    line-height: 28px;
+    text-decoration: none;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a::after {
+    color: var(--wpuf-m-border) !important;
+    font-size: 26px;
+    line-height: 28px;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a.br-active::after,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a.br-selected::after {
+    color: #f59e0b !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget:focus-visible {
+    outline: 2px solid var(--wpuf-m-accent);
+    outline-offset: 4px;
+    border-radius: 6px;
+}
+
+/* Repeat field: each entry a soft card, round add / remove buttons. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container > p {
+    margin: 0 0 4px !important;
+    color: var(--wpuf-m-text);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container > hr {
+    margin: 0 0 12px !important;
+    border: 0 !important;
+    border-top: 1px solid var(--wpuf-m-border) !important;
+    background: none !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-instance {
+    margin: 0 0 12px;
+    padding: 16px 16px 8px;
+    border: 1px solid var(--wpuf-m-border);
+    border-radius: var(--wpuf-m-radius);
+    background: color-mix(in srgb, var(--wpuf-m-input-bg) 60%, transparent);
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-instance > li {
+    margin: 0 0 12px !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls {
+    display: flex;
+    gap: 8px;
+    margin: 0 0 8px;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0 !important;
+    border: 1px solid var(--wpuf-m-border) !important;
+    border-radius: 999px !important;
+    background: var(--wpuf-m-input-bg) !important;
+    box-shadow: none !important;
+    color: var(--wpuf-m-accent) !important;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls button:hover,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls button:focus-visible {
+    border-color: var(--wpuf-m-accent) !important;
+    outline: none;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls .wpuf-remove-repeat {
+    color: #dc2626 !important;
+}
+
+/* Insert Photo: a small ghost button above the editor. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container {
+    margin: 0 0 8px;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 6px 12px !important;
+    border: 1px solid var(--wpuf-m-border) !important;
+    border-radius: 8px !important;
+    background: var(--wpuf-m-input-bg) !important;
+    box-shadow: none !important;
+    color: var(--wpuf-m-text) !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    line-height: 20px !important;
+    text-decoration: none !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image:hover,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image:focus-visible {
+    border-color: var(--wpuf-m-accent) !important;
+    color: var(--wpuf-m-accent) !important;
+    outline: none;
+}
+
+/* Columns: controls fill their column, even gaps. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-inner-fields {
+    box-sizing: border-box;
+    padding-right: 16px !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-inner-fields:last-child {
+    padding-right: 0 !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields > li {
+    margin: 0 !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"])),
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields .wpuf-fields select,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields .wpuf-fields textarea {
+    width: 100% !important;
+}
+
+/* Dark templates: native controls (checkbox, radio, date picker) in their dark look. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 {
+    color-scheme: dark;
 }

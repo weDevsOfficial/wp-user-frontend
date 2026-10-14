@@ -63,7 +63,7 @@ export const PASSIVE_TEMPLATES = [ 'section_break', 'custom_html', 'column_field
  * @return {string} An error message, or ''.
  */
 export function validateField( field, value, context = {} ) {
-    // Server-rendered fields (captcha plugins, map, signature, pricing) keep their classic markup and
+    // Server-rendered fields (captcha plugins, map, signature) keep their classic markup and
     // script: React holds no value for them, so the server and that script check them.
     if ( PASSIVE_TEMPLATES.includes( field.template ) || field.server_rendered ) {
         return '';

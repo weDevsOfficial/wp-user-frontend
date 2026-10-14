@@ -213,40 +213,6 @@ class ToolsTransactionsRestTest extends WP_UnitTestCase {
         $this->assertSame( 2, $gateway['total'] );
     }
 
-    public function test_old_list_table_links_run_through_the_service() {
-        wp_set_current_user( $this->admin );
-        $service = wpuf()->platform()->get( \WeDevs\Wpuf\Platform\Transactions\TransactionService::class );
-        $order   = $this->order( 0 );
-        $row     = $this->transaction();
-
-        // Develop's row link: admin.php?page=wpuf_transaction&action=accept&id=N&_wpnonce=...
-        $this->assertNull( $service->legacy_request( [ 'action' => 'accept', 'id' => $order, '_wpnonce' => 'bad' ] ), 'a wrong nonce does nothing' );
-        $this->assertNull( $service->legacy_request( [ 'action' => 'publish', 'id' => $order, '_wpnonce' => wp_create_nonce( 'wpuf-publish-transaction' ) ] ), 'unknown verbs do nothing' );
-
-        $accept = $service->legacy_request( [ 'action' => 'accept', 'id' => $order, '_wpnonce' => wp_create_nonce( 'wpuf-accept-transaction' ) ] );
-        $this->assertSame( [ 'accept', [ [ 'kind' => 'order', 'id' => $order ] ] ], $accept );
-
-        // Develop's bulk form: action=-1&action2=bulk-delete&bulk-items[]=N&_wpnonce=...
-        $bulk = $service->legacy_request( [ 'action' => '-1', 'action2' => 'bulk-delete', 'bulk-items' => [ $row, '0' ], '_wpnonce' => wp_create_nonce( 'bulk-transactions' ) ] );
-        $this->assertSame( [ 'delete', [ [ 'kind' => 'transaction', 'id' => $row ] ] ], $bulk );
-
-        // The old URL's load step: a non-manager's link does nothing, the manager's accepts.
-        $_REQUEST = [ 'action' => 'accept', 'id' => $order, '_wpnonce' => wp_create_nonce( 'wpuf-accept-transaction' ) ];
-        $screen   = new \WeDevs\Wpuf\Admin\Screens\Transactions();
-
-        wp_set_current_user( self::factory()->user->create( [ 'role' => 'editor' ] ) );
-        $screen->load_before_redirect();
-        $this->assertNotNull( get_post( $order ), 'an editor cannot accept through the old link' );
-
-        wp_set_current_user( $this->admin );
-        $_REQUEST['_wpnonce'] = wp_create_nonce( 'wpuf-accept-transaction' );
-        $screen->load_before_redirect();
-        $_REQUEST = [];
-
-        $this->assertNull( get_post( $order ), 'the order post is gone once accepted' );
-        $this->assertSame( 1, $this->call( 'GET', 'admin/transactions', [ 'search' => 'buyer@' ] )->get_data()['total'], 'the accepted payment is a completed row' );
-    }
-
     public function test_actions_check_the_row_kind() {
         wp_set_current_user( $this->admin );
         $row   = $this->transaction();

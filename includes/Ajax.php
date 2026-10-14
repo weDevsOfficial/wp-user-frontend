@@ -48,7 +48,6 @@ class Ajax {
         $frontend_account = $this->service( Frontend\Frontend_Account::class );
         $this->register_ajax( 'wpuf_account_update_profile', [ $frontend_account, 'update_profile' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_account_change_password', [ $frontend_account, 'change_password' ], $this->logged_in_only );
-        $this->register_ajax( 'wpuf_import_forms', [ $this->admin_service( 'tools', Admin\Admin_Tools::class ), 'import_forms' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_get_child_cat', 'wpuf_get_child_cats' );
         $this->register_ajax( 'wpuf_ajax_address', 'wpuf_ajax_get_states_field' );
         $this->register_ajax( 'wpuf_update_billing_address', 'wpuf_update_billing_address' );

@@ -4,10 +4,6 @@ namespace WeDevs\Wpuf\Admin;
 
 use WeDevs\Wpuf\Platform\Tools\ToolsService;
 
-use WP_Error;
-use WP_Http;
-use WP_Query;
-
 /**
  * Manage Import Export
  *
@@ -16,10 +12,7 @@ use WP_Query;
 class Admin_Tools {
 
     public function __construct() {
-        add_action( 'wpuf_load_tools', [ $this, 'handle_tools_action' ] );
-        add_action( 'wpuf_load_tools', [ $this, 'add_logout_to_menu' ] );
         add_filter( 'upload_mimes', [ $this, 'add_json_mime_type' ] );
-        add_filter( 'wp_handle_upload_prefilter', [ $this, 'enable_json_upload' ] );
     }
 
     /**
@@ -184,140 +177,6 @@ class Admin_Tools {
     }
 
     /**
-     * Handle tools page action
-     *
-     * @return void
-     */
-    public function handle_tools_action() {
-        if ( ! isset( $_GET['wpuf_action'] ) ) {
-            return;
-        }
-        check_admin_referer( 'wpuf-tools-action' );
-        if ( ! current_user_can( 'manage_options' ) ) {
-            return;
-        }
-        $tools   = wpuf()->platform()->get( ToolsService::class );
-        $action  = isset( $_GET['wpuf_action'] ) ? sanitize_text_field( wp_unslash( $_GET['wpuf_action'] ) ) : '';
-        $message = 'del_forms';
-        switch ( $action ) {
-            case 'clear_settings':
-                $tools->reset_settings();
-                $message = 'settings_cleared';
-                break;
-            case 'del_post_forms':
-                $tools->delete_post_type( 'wpuf_forms' );
-                break;
-            case 'del_pro_forms':
-                $tools->delete_post_type( 'wpuf_profile' );
-                break;
-            case 'del_subs':
-                $tools->delete_post_type( 'wpuf_subscription' );
-                break;
-            case 'del_coupon':
-                $tools->delete_post_type( 'wpuf_coupon' );
-                break;
-            case 'clear_transaction':
-                $tools->clear_transactions();
-                $message = 'del_trans';
-                break;
-            default:
-                // code...
-                break;
-        }
-        wp_safe_redirect( add_query_arg( [ 'msg' => $message ], admin_url( 'admin.php?page=wpuf_tools&action=tools' ) ) );
-        exit;
-    }
-
-    /**
-     * Enable json file upload via ajax in tools page
-     *
-     * @since 3.2.0
-     *
-     * @param array $file
-     *
-     * @return array
-     */
-    public function enable_json_upload( $file ) {
-        if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $_POST['action'] ) && 'upload-attachment' === $_POST['action'] && isset( $_POST['type'] ) && 'wpuf-form-uploader' === $_POST['type'] ) {
-            // @see wp_ajax_upload_attachment
-            check_ajax_referer( 'media-form' );
-
-            // Security: Only allow admins to upload JSON files
-            if ( ! current_user_can( 'manage_options' ) ) {
-                $file['error'] = __( 'You do not have permission to upload files here.', 'wp-user-frontend' );
-                return $file;
-            }
-
-            add_filter( 'wp_check_filetype_and_ext', [ $this, 'check_filetype_and_ext' ], 10, 5 );
-        }
-
-        return $file;
-    }
-
-    /**
-     * Ajax handler to import WPUF form
-     *
-     * @since 3.2.0
-     *
-     * @return void
-     */
-    public function import_forms() {
-        check_ajax_referer( 'wpuf_admin_tools' );
-
-        // Security: Check user has proper admin capabilities
-        if ( ! current_user_can( wpuf_admin_role() ) ) {
-            wp_send_json_error(
-                new WP_Error(
-                    'wpuf_ajax_import_forms_error',
-                    __( 'Unauthorized operation', 'wp-user-frontend' )
-                ),
-                WP_Http::FORBIDDEN
-            );
-        }
-
-        if ( ! isset( $_POST['file_id'] ) ) {
-            wp_send_json_error(
-                new WP_Error(
-                    'wpuf_ajax_import_forms_error',
-                    __( 'Missing file_id param', 'wp-user-frontend' )
-                ),
-                WP_Http::BAD_REQUEST
-            );
-        }
-        $file_id = absint( wp_unslash( $_POST['file_id'] ) );
-        $file    = get_attached_file( $file_id );
-        if ( empty( $file ) ) {
-            wp_send_json_error(
-                new WP_Error(
-                    'wpuf_ajax_import_forms_error',
-                    __( 'JSON file not found', 'wp-user-frontend' )
-                ),
-                WP_Http::NOT_FOUND
-            );
-        }
-        $filetype = wp_check_filetype( $file, [ 'json' => 'application/json' ] );
-        if ( ! isset( $filetype['type'] ) || 'application/json' !== $filetype['type'] ) {
-            wp_send_json_error(
-                new WP_Error(
-                    'wpuf_ajax_import_forms_error',
-                    __( 'Provided file is not a JSON file.', 'wp-user-frontend' )
-                ),
-                WP_Http::UNSUPPORTED_MEDIA_TYPE
-            );
-        }
-
-        $imported = self::import_json_file( $file );
-        if ( is_wp_error( $imported ) ) {
-            wp_send_json_error( $imported, WP_Http::UNPROCESSABLE_ENTITY );
-        }
-        wp_send_json_success(
-            [
-                'message' => __( 'Forms imported successfully.', 'wp-user-frontend' ),
-            ]
-        );
-    }
-
-    /**
      * Add json file mime type to upload in WP Media
      *
      * @since 3.2.0
@@ -333,77 +192,6 @@ class Admin_Tools {
     }
 
     /**
-     * Allow json file to upload with async uploader
-     *
-     * @since 3.2.0
-     * @since 4.2.9 Added security validation to prevent arbitrary file uploads
-     *
-     * @param array  $info            File data array with 'ext', 'type', and 'proper_filename' keys
-     * @param string $file            Full path to the file
-     * @param string $filename        The name of the file (may differ from $file due to $file being in a tmp directory)
-     * @param array  $mimes           Array of mime types keyed by their file extension regex
-     * @param string $real_mime       The actual mime type or false if the type cannot be determined
-     *
-     * @return array
-     */
-    public function check_filetype_and_ext( $info, $file, $filename, $mimes, $real_mime ) {
-        // Security: Validate this is actually a JSON file
-
-        // 1. Check the file extension is .json
-        $filetype = wp_check_filetype( $filename, [ 'json' => 'application/json' ] );
-
-        if ( 'json' !== $filetype['ext'] ) {
-            // Not a .json file - reject it
-            return $info;
-        }
-
-        // 2. Verify the file exists and is readable
-        if ( ! file_exists( $file ) || ! is_readable( $file ) ) {
-            return $info;
-        }
-
-        // 3. Check for dangerous file extensions that might be disguised
-        $dangerous_extensions = [ 'php', 'php3', 'php4', 'php5', 'php7', 'phtml', 'phar', 'exe', 'sh', 'bat', 'cmd' ];
-        $file_parts = pathinfo( $filename );
-
-        // Check for double extensions (e.g., shell.php.json)
-        $filename_lower = strtolower( $filename );
-        foreach ( $dangerous_extensions as $ext ) {
-            if ( strpos( $filename_lower, '.' . $ext ) !== false ) {
-                // Dangerous extension found - reject
-                return $info;
-            }
-        }
-
-        // 4. Validate the file content is actually valid JSON
-        $file_content = file_get_contents( $file );
-
-        if ( false === $file_content ) {
-            return $info;
-        }
-
-        // Try to decode the JSON
-        json_decode( $file_content );
-
-        if ( json_last_error() !== JSON_ERROR_NONE ) {
-            // Not valid JSON - reject it
-            return $info;
-        }
-
-        // 5. Additional security: Check file doesn't contain PHP tags
-        if ( preg_match( '/<\?php|<\?=|<script[^>]*>.*?<\/script>/i', $file_content ) ) {
-            // Contains PHP or script tags - reject it
-            return $info;
-        }
-
-        // All validations passed - it's a legitimate JSON file
-        $info['ext']  = 'json';
-        $info['type'] = 'application/json';
-
-        return $info;
-    }
-
-    /**
      * Delete all posts by a post type
      *
      * @param string $post_type
@@ -412,53 +200,5 @@ class Admin_Tools {
      */
     public function delete_post_type( $post_type ) {
         wpuf()->platform()->get( ToolsService::class )->delete_post_type( $post_type );
-    }
-
-    /**
-     * Add logout link to navigation menu
-     *
-     * @since 4.2.10
-     *
-     * @return void
-     */
-    public function add_logout_to_menu() {
-        if ( ! isset( $_POST['wpuf_add_logout_nonce'] ) ) {
-            return;
-        }
-
-        check_admin_referer( 'wpuf-add-logout-to-menu', 'wpuf_add_logout_nonce' );
-
-        if ( ! current_user_can( 'manage_options' ) ) {
-            return;
-        }
-
-        $menu_id    = isset( $_POST['wpuf_menu_id'] ) ? intval( $_POST['wpuf_menu_id'] ) : 0;
-        $menu_label = isset( $_POST['wpuf_logout_label'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_logout_label'] ) ) : __( 'Logout', 'wp-user-frontend' );
-
-        if ( ! $menu_id ) {
-            wp_safe_redirect( add_query_arg( [ 'msg' => 'no_menu_selected' ], admin_url( 'admin.php?page=wpuf_tools&tab=tools' ) ) );
-            exit;
-        }
-
-        $result = wpuf_add_logout_to_menu( $menu_id, $menu_label );
-
-        if ( is_wp_error( $result ) ) {
-            wp_safe_redirect( add_query_arg( [ 'msg' => 'logout_menu_error' ], admin_url( 'admin.php?page=wpuf_tools&tab=tools' ) ) );
-            exit;
-        }
-
-        wp_safe_redirect( add_query_arg( [ 'msg' => 'logout_menu_added' ], admin_url( 'admin.php?page=wpuf_tools&tab=tools' ) ) );
-        exit;
-    }
-
-    /**
-     * Check if current theme is a block theme (FSE)
-     *
-     * @since 4.2.10
-     *
-     * @return bool
-     */
-    public function is_block_theme() {
-        return function_exists( 'wp_is_block_theme' ) && wp_is_block_theme();
     }
 }

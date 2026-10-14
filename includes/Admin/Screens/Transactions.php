@@ -80,30 +80,6 @@ class Transactions extends Screen {
     }
 
     /**
-     * The old URL: an action link of develop's list table (accept, reject,
-     * delete, bulk) runs with its nonce and the site capability, then the app
-     * opens.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    public function load_before_redirect() {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- legacy_request() verifies the nonce of each action.
-        if ( ( empty( $_REQUEST['action'] ) && empty( $_REQUEST['action2'] ) ) || ! Caps::can( Caps::MANAGE_SITE ) ) {
-            return;
-        }
-
-        $service = wpuf()->platform()->get( TransactionService::class );
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- verified in legacy_request().
-        $legacy = $service->legacy_request( wp_unslash( $_REQUEST ) );
-
-        if ( $legacy ) {
-            $service->run( $legacy[0], $legacy[1] );
-        }
-    }
-
-    /**
      * Assets of the app route.
      *
      * @since WPUF_SINCE

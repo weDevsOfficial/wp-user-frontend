@@ -384,54 +384,6 @@ class TransactionService {
     }
 
     /**
-     * The action of an old Transactions list-table link (develop's
-     * `admin.php?page=wpuf_transaction&action=...` row and bulk actions) as
-     * `run()` input, after checking that link's nonce.
-     *
-     * The old table took any post id for reject; here reject and accept only
-     * touch `wpuf_order` posts and delete only payment rows, as the REST route.
-     *
-     * @since WPUF_SINCE
-     *
-     * @param array $request Request values (`$_REQUEST`, unslashed).
-     *
-     * @return array|null `[ action, rows ]`, or null for no (valid) action.
-     */
-    public function legacy_request( $request ) {
-        $action = isset( $request['action'] ) && '-1' !== (string) $request['action'] ? (string) $request['action'] : '';
-        $action = '' === $action && isset( $request['action2'] ) ? (string) $request['action2'] : $action;
-        $bulk   = 0 === strpos( $action, 'bulk-' );
-        $verb   = $bulk ? substr( $action, 5 ) : $action;
-
-        if ( ! in_array( $verb, [ 'accept', 'reject', 'delete' ], true ) ) {
-            return null;
-        }
-
-        $nonce = isset( $request['_wpnonce'] ) ? sanitize_key( (string) $request['_wpnonce'] ) : '';
-
-        if ( ! wp_verify_nonce( $nonce, $bulk ? 'bulk-transactions' : 'wpuf-' . $verb . '-transaction' ) ) {
-            return null;
-        }
-
-        $ids  = $bulk ? ( isset( $request['bulk-items'] ) ? (array) $request['bulk-items'] : [] ) : [ isset( $request['id'] ) ? $request['id'] : 0 ];
-        $kind = 'delete' === $verb ? self::KIND_TRANSACTION : self::KIND_ORDER;
-        $rows = [];
-
-        foreach ( $ids as $id ) {
-            $id = absint( $id );
-
-            if ( $id ) {
-                $rows[] = [
-                    'kind' => $kind,
-                    'id'   => $id,
-                ];
-            }
-        }
-
-        return $rows ? [ $verb, $rows ] : null;
-    }
-
-    /**
      * One action on one row.
      *
      * @param string $action accept, reject or delete

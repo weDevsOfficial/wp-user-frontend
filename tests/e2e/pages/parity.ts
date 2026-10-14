@@ -806,6 +806,21 @@ export class ParitySitePage {
                 await this.page.keyboard.press('Escape');
                 actions.push('fill=#123456');
             }
+            // React date settings (schedule From / To): a picker instead of develop's text input;
+            // pick the date / time develop's run types (2026-12-01 10:00), so both store the same text.
+            const datePickers = row.locator('[data-wpuf-date-setting] [data-slot="popover-trigger"]:visible');
+            for (let d = 0; d < await datePickers.count(); d++) {
+                await datePickers.nth(d).click();
+                const pop = this.page.locator('[data-slot="popover-content"]:visible').last();
+                for (let n = 0; n < 36 && !(await pop.getByText('December 2026').count()); n++) {
+                    await pop.locator('button[aria-label*="next" i]').first().click();
+                }
+                await pop.locator('[role="gridcell"]:not([data-outside]) button, button[name="day"]').filter({ hasText: /^1$/ }).first().click();
+                await pop.locator('[aria-label="Hour"]').click();
+                await this.page.locator('[role="option"][data-value="10"]').first().click();
+                await this.page.keyboard.press('Escape');
+                actions.push('fill=2026-12-01 10:00');
+            }
             // Text-like inputs.
             const inputs = row.locator('input:visible:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([aria-hidden="true"]), textarea:visible')
                 .filter({ hasNot: this.page.locator('xpath=self::*[ancestor::div[contains(@class,"selectize-input")]]') });

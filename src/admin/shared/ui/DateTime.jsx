@@ -1,8 +1,9 @@
 /**
  * Date picker on `YYYY-MM-DD` strings, the same calendar day in every
  * browser and site timezone. With `withTime` it edits `YYYY-MM-DD HH:mm:ss`
- * (the MySQL post date shape): a time field under the calendar, the stored
- * time kept when only the day changes. Without it, a stored time part is
+ * (the MySQL post date shape): hour and minute menus under the calendar
+ * (the browser's own time box looked different in every browser), the
+ * stored time (and its seconds) kept when only the day changes. Without it, a stored time part is
  * dropped only when the user picks a new date.
  *
  * Built from plugin-ui's Popover + Calendar instead of its DatePicker, whose
@@ -10,13 +11,18 @@
  * before) and wraps the trigger in an unstyled button (browser focus
  * outline, nested buttons).
  */
-import { Calendar, Input, Popover, PopoverContent, PopoverTrigger, cn } from '@wedevs/plugin-ui';
+import { Calendar, Popover, PopoverContent, PopoverTrigger, cn } from '@wedevs/plugin-ui';
 import { useState } from '@wordpress/element';
 import { dateI18n, getSettings } from '@wordpress/date';
 import { __ } from '@wordpress/i18n';
 import { ChevronDown } from 'lucide-react';
 
+import Select from './Select';
 import { dateToYmd, ymdToDate } from './values';
+
+const pad = ( n ) => String( n ).padStart( 2, '0' );
+const HOURS = Array.from( { length: 24 }, ( _, h ) => ( { value: pad( h ), label: pad( h ) } ) );
+const MINUTES = Array.from( { length: 60 }, ( _, m ) => ( { value: pad( m ), label: pad( m ) } ) );
 
 /**
  * @param {Object}   props
@@ -66,15 +72,23 @@ export default function DateTime( { value, onChange, placeholder, disabled, cale
                 />
                 { withTime && (
                     <div data-wpuf-ui="" className="flex items-center gap-2 border-t border-gray-200 p-3">
-                        <label htmlFor={ ( id || 'wpuf-date' ) + '-time' } className="text-sm text-gray-600">{ __( 'Time', 'wp-user-frontend' ) }</label>
-                        <Input
-                            id={ ( id || 'wpuf-date' ) + '-time' }
-                            type="time"
-                            step="1"
-                            value={ time }
+                        <span id={ ( id || 'wpuf-date' ) + '-time' } className="me-auto text-sm text-gray-600">{ __( 'Time', 'wp-user-frontend' ) }</span>
+                        <Select
+                            aria-label={ __( 'Hour', 'wp-user-frontend' ) }
+                            value={ ( time || '00:00:00' ).slice( 0, 2 ) }
+                            options={ HOURS }
                             disabled={ disabled || ! ymd }
-                            onChange={ ( event ) => emit( ymd, normalizeTime( event.target.value ) ) }
-                            className="h-[34px] w-auto px-2 text-sm bg-white border border-gray-300 rounded-md shadow-none"
+                            onChange={ ( hour ) => emit( ymd, `${ hour }${ ( time || '00:00:00' ).slice( 2 ) }` ) }
+                            className="w-[72px]"
+                        />
+                        <span aria-hidden="true" className="text-gray-500">:</span>
+                        <Select
+                            aria-label={ __( 'Minute', 'wp-user-frontend' ) }
+                            value={ ( time || '00:00:00' ).slice( 3, 5 ) }
+                            options={ MINUTES }
+                            disabled={ disabled || ! ymd }
+                            onChange={ ( minute ) => emit( ymd, `${ ( time || '00:00:00' ).slice( 0, 3 ) }${ minute }${ ( time || '00:00:00' ).slice( 5 ) }` ) }
+                            className="w-[72px]"
                         />
                     </div>
                 ) }

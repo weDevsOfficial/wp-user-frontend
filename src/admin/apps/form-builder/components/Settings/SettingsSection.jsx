@@ -187,7 +187,7 @@ export default function SettingsSection( { sectionKey, sectionData } ) {
         const exclusion = MUTUAL_EXCLUSIONS[ key ];
         if ( exclusion ) {
             // If turning ON this toggle, turn OFF the other
-            const isOn = value === 'on' || value === 'yes' || value === true;
+            const isOn = value === 'on' || value === 'yes' || value === true || value === 'true';
             if ( isOn ) {
                 updateFormSetting( exclusion, 'off' );
             }

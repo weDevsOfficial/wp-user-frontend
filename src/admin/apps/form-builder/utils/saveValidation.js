@@ -8,10 +8,11 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * Check if a toggle/checkbox value is considered "on".
+ * Check if a toggle/checkbox value is considered "on" (wpuf_is_checkbox_or_toggle_on():
+ * the React toggle's `true` is stored as the string "true").
  */
 export function isOn( val ) {
-    return val === 'on' || val === 'yes' || val === true || val === '1';
+    return val === 'on' || val === 'yes' || val === true || val === 'true' || val === '1';
 }
 
 /**

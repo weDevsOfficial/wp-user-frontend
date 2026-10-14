@@ -125,10 +125,12 @@ const FIELD_DEPENDENCIES = {
 };
 
 /**
- * Check if a checkbox/toggle value is considered "on".
+ * Check if a checkbox/toggle value is considered "on", as the toggle shows it
+ * and wpuf_is_checkbox_or_toggle_on() reads it: the React toggle saves `true`,
+ * which comes back from the stored settings as the string "true".
  */
 function isChecked( val ) {
-    return val === 'on' || val === 'yes' || val === true || val === '1';
+    return val === 'on' || val === 'yes' || val === true || val === 'true' || val === '1';
 }
 
 /**

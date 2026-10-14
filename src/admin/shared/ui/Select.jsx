@@ -18,7 +18,7 @@ import { normalizeOptions, selectShownValue } from './values';
  * @param {string}       [props.id]          Trigger id (for <label for>).
  * @param {boolean}      [props.searchable]  Search box above the options (long lists: pages, currencies).
  */
-export default function Select( { value, options, onChange, placeholder, disabled, id, className, searchable = false, ...props } ) {
+export default function Select( { value, options, onChange, placeholder, disabled, id, className, searchable = false, 'aria-label': ariaLabel, ...props } ) {
     const items = normalizeOptions( options );
     const shown = selectShownValue( value, items );
     const labelOf = ( val ) => items.find( ( item ) => item.value === val )?.label ?? '';
@@ -48,6 +48,7 @@ export default function Select( { value, options, onChange, placeholder, disable
         <PuiSelect value={ shown } onValueChange={ ( next ) => onChange?.( next ) } disabled={ disabled } { ...props }>
             <SelectTrigger
                 id={ id }
+                aria-label={ ariaLabel }
                 className={ cn( 'w-full h-9 data-[size=default]:h-9 ps-3 pe-3 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30 data-[placeholder]:text-gray-400', className ) }
             >
                 <SelectValue placeholder={ placeholder ?? __( '- Select -', 'wp-user-frontend' ) }>

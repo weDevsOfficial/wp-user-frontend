@@ -352,3 +352,97 @@
     box-shadow: none !important;
     opacity: 0 !important;
 }
+
+/*
+ * Validation look of the React forms (owner 2026-10-14: "the react frontend
+ * form validation design should update"). The classic sheets paint the whole
+ * row pink (`.has-error { background: #FFE4E4 }`) and the message as a pink
+ * box; the React form shows the field itself as invalid instead: red border
+ * with a soft ring, a small red message with an icon under it, the summary as
+ * a light alert, a red required mark. Scoped to the React root, so the
+ * classic PHP forms keep their look. `!important` where a layout sheet sets
+ * the same property with it (layouts 3-5 border colours).
+ */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add ul.wpuf-form li.has-error,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add ul.wpuf-form .wpuf-fields.has-error {
+    background: transparent !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add ul.wpuf-form .wpuf-fields.has-error {
+    padding: 0 !important;
+}
+
+/* Invalid controls: red border + soft ring, also while focused (the layout
+   sheets' focus colours would win otherwise). The selector repeats
+   `.wpuf-form-add` to outrank the layout rules. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]),
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error select,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error textarea,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .selectize-input {
+    border-color: #dc2626 !important;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12) !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):focus,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):focus-visible,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error select:focus,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error select:focus-visible,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error textarea:focus,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error textarea:focus-visible {
+    border-color: #dc2626 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.24) !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wp-editor-wrap,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .mce-tinymce,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wp-editor-container,
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .mce-panel {
+    border-color: #dc2626 !important;
+    border-radius: 6px;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12) !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-error-msg {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 6px;
+    margin: 6px 0 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0;
+    background: transparent !important;
+    color: #dc2626 !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    line-height: 18px !important;
+}
+
+/* Circle with "!" (inline SVG, follows the message colour). */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-error-msg::before {
+    content: "";
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+    margin-top: 2px;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Form / step summary ("Please fix the errors to proceed", server errors). */
+.wpuf-frontend.wpuf-form-react .wpuf-errors {
+    margin: 12px 0 !important;
+    padding: 10px 12px !important;
+    border: 1px solid #fecaca !important;
+    border-radius: 8px !important;
+    background: #fef2f2 !important;
+    color: #991b1b !important;
+    font-size: 14px !important;
+    line-height: 20px;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-label .required {
+    color: #dc2626;
+    font-weight: 600;
+}

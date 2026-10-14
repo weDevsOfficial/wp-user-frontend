@@ -202,8 +202,9 @@ class Frontend_Render_Form {
 
         $layout    = 'layout1';
         $use_theme_css = isset( $this->form_settings['use_theme_css'] ) ? $this->form_settings['use_theme_css'] : '';
-        // A toggle: 'on' from the classic settings, 'true' from the React form builder.
-        $theme_css_on  = wpuf_is_checkbox_or_toggle_on( $use_theme_css );
+        // A toggle: 'on' from the classic settings, 'true' from the React form builder
+        // (or the old stored class `wpuf-theme-style`).
+        $theme_css_on  = 'wpuf-theme-style' === wpuf_form_style_class( $use_theme_css );
 
         do_action( 'wpuf_before_form_render', $form_id );
 

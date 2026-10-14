@@ -211,7 +211,9 @@ class Render_Form {
 
         do_action( 'wpuf_before_form_render', $form_id );
 
-        if ( ! empty( $layout ) && 'on' !== $theme_css ) {
+        $style_class     = wpuf_form_style_class( $theme_css );
+
+        if ( ! empty( $layout ) && 'wpuf-theme-style' !== $style_class ) {
             wp_enqueue_style( 'wpuf-' . $layout );
         }
 
@@ -223,7 +225,7 @@ class Render_Form {
 
         if ( $form_vars ) {
             ?>
-            <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?> <?php echo ( $layout == 'layout1' ) ? esc_attr( $theme_css ) : 'wpuf-style'; ?>" action="" method="post">
+            <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?> <?php echo 'layout1' === $layout ? esc_attr( $style_class ) : 'wpuf-style'; ?>" action="" method="post">
 
                 <?php
                 // Display form title if enabled

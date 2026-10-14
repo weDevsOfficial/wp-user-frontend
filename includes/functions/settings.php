@@ -382,3 +382,23 @@ function wpuf_is_option_on( $option ) {
 function wpuf_is_checkbox_or_toggle_on( $value ) {
     return 'on' === $value || 'yes' === $value || 'true' === $value || '1' === $value;
 }
+
+/**
+ * Form style class for a form's "Use Theme CSS" setting: `wpuf-theme-style`
+ * when it is on (the React builder stores the toggle as `true`, the classic
+ * one as `on`; very old forms stored the class itself), `wpuf-style`
+ * otherwise. The layout sheets skip `.wpuf-theme-style` forms.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param mixed $value The stored `use_theme_css` value
+ *
+ * @return string
+ */
+function wpuf_form_style_class( $value ) {
+    if ( true === $value || 'wpuf-theme-style' === $value || ( is_string( $value ) && wpuf_is_checkbox_or_toggle_on( $value ) ) ) {
+        return 'wpuf-theme-style';
+    }
+
+    return 'wpuf-style';
+}

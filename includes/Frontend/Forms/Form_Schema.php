@@ -224,9 +224,9 @@ class Form_Schema {
             'layout'   => [
                 'layout'         => 'wpuf_profile' === $form->data->post_type ? ( isset( $settings['profile_form_layout'] ) ? $settings['profile_form_layout'] : 'layout1' ) : ( ! empty( $settings['form_layout'] ) ? $settings['form_layout'] : 'layout1' ),
                 'label_position' => isset( $settings['label_position'] ) ? $settings['label_position'] : 'left',
-                'use_theme_css'  => ! empty( $settings['use_theme_css'] ) && wpuf_is_checkbox_or_toggle_on( $settings['use_theme_css'] ),
+                'use_theme_css'  => isset( $settings['use_theme_css'] ) && 'wpuf-theme-style' === wpuf_form_style_class( $settings['use_theme_css'] ),
                 // Frontend_Render_Form's class: `wpuf-theme-style` on layout1 with "use theme CSS".
-                'form_class'     => ( empty( $settings['form_layout'] ) || 'layout1' === $settings['form_layout'] ) && isset( $settings['use_theme_css'] ) && wpuf_is_checkbox_or_toggle_on( $settings['use_theme_css'] ) ? 'wpuf-theme-style' : '',
+                'form_class'     => ( empty( $settings['form_layout'] ) || 'layout1' === $settings['form_layout'] ) && isset( $settings['use_theme_css'] ) && 'wpuf-theme-style' === wpuf_form_style_class( $settings['use_theme_css'] ) ? 'wpuf-theme-style' : '',
                 'card'           => false,
                 'show_title'     => isset( $settings['show_form_title'] ) && wpuf_is_checkbox_or_toggle_on( $settings['show_form_title'] ),
                 'description'    => isset( $settings['form_description'] ) ? wp_kses_post( $settings['form_description'] ) : '',
@@ -336,9 +336,9 @@ class Form_Schema {
                 'layout'         => $layout,
                 'template_style' => 'layout1' !== $layout,
                 'label_position' => isset( $settings['label_position'] ) ? $settings['label_position'] : 'left',
-                'use_theme_css'  => ! empty( $settings['use_theme_css'] ) && 'on' === $settings['use_theme_css'],
-                // Profile_Form::profile_edit(): the raw "use theme CSS" value (or `wpuf-style`) on layout1, `wpuf-style` on the others, inside the card.
-                'form_class'     => 'layout1' === $layout ? ( isset( $settings['use_theme_css'] ) && '' !== $settings['use_theme_css'] ? (string) $settings['use_theme_css'] : 'wpuf-style' ) : 'wpuf-style',
+                'use_theme_css'  => isset( $settings['use_theme_css'] ) && 'wpuf-theme-style' === wpuf_form_style_class( $settings['use_theme_css'] ),
+                // Profile_Form::profile_edit(): the theme style class on layout1, `wpuf-style` on the others, inside the card.
+                'form_class'     => 'layout1' === $layout ? wpuf_form_style_class( isset( $settings['use_theme_css'] ) ? $settings['use_theme_css'] : '' ) : 'wpuf-style',
                 'card'           => true,
                 'show_title'     => false,
                 'description'    => '',
@@ -1171,7 +1171,7 @@ class Form_Schema {
         $layout = isset( $this->form_settings['form_layout'] ) ? $this->form_settings['form_layout'] : 'layout1';
         $theme  = isset( $this->form_settings['use_theme_css'] ) ? $this->form_settings['use_theme_css'] : '';
 
-        if ( 'on' !== $theme && in_array( $layout, [ 'layout2', 'layout5' ], true ) ) {
+        if ( 'wpuf-theme-style' !== wpuf_form_style_class( $theme ) && in_array( $layout, [ 'layout2', 'layout5' ], true ) ) {
             $background               = 'layout2' === $layout ? '#222C3C' : '#394141';
             $style                    = sprintf( 'body.mceContentBody { background: %s; color: #ffffff; caret-color: #ffffff; }', $background );
             $tinymce['content_style'] = isset( $tinymce['content_style'] ) ? $tinymce['content_style'] . ' ' . $style : $style;

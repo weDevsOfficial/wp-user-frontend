@@ -76,10 +76,7 @@ class FrontendDateFactsTest extends WP_UnitTestCase {
         wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
         $form_id = $this->form();
 
-        // The React forms are on; only what building the schema enqueues counts.
-        $general                   = (array) get_option( 'wpuf_general', [] );
-        $general['frontend_react'] = 'on';
-        update_option( 'wpuf_general', $general );
+        // Only what building the schema enqueues counts.
         wp_dequeue_script( 'jquery-ui-timepicker' );
         wp_dequeue_script( 'jquery-ui-datepicker' );
 

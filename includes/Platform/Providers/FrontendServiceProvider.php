@@ -12,7 +12,8 @@ use WeDevs\Wpuf\Frontend\Account\Account_Service;
 use WeDevs\Wpuf\Frontend\Forms\Form_Schema;
 use WeDevs\Wpuf\Frontend\Forms\Submission_Service;
 use WeDevs\Wpuf\Frontend\Forms\Upload_Service;
-use WeDevs\Wpuf\Frontend\Renderer_Switch;
+use WeDevs\Wpuf\Frontend\Login\Login_Schema;
+use WeDevs\Wpuf\Frontend\React_Renderer;
 use WeDevs\Wpuf\Platform\REST\Controllers\AccountController;
 use WeDevs\Wpuf\Platform\REST\Controllers\FormsPublicController;
 use WeDevs\Wpuf\Platform\REST\Controllers\UploadsController;
@@ -96,7 +97,7 @@ class FrontendServiceProvider extends ServiceProvider {
      * @return string|null
      */
     /**
-     * The services behind the React post form and account page and their
+     * The services behind the React post form, login screens and account page and their
      * REST controllers (tagged RestRoute, registered by REST\Manager).
      *
      * @since WPUF_SINCE
@@ -105,9 +106,9 @@ class FrontendServiceProvider extends ServiceProvider {
      */
     private function register_react_frontend() {
         $this->container->share(
-            Renderer_Switch::class,
+            React_Renderer::class,
             function () {
-                return new Renderer_Switch();
+                return new React_Renderer();
             }
         );
         $this->container->share(
@@ -135,6 +136,12 @@ class FrontendServiceProvider extends ServiceProvider {
             }
         );
         $this->container->share(
+            Login_Schema::class,
+            function ( $container ) {
+                return new Login_Schema( $container->get( \WeDevs\Wpuf\Free\Simple_Login::class ) );
+            }
+        );
+        $this->container->share(
             Account_Service::class,
             function () {
                 return new Account_Service();
@@ -143,7 +150,7 @@ class FrontendServiceProvider extends ServiceProvider {
         $this->share_tagged(
             FormsPublicController::class,
             function ( $container ) {
-                return new FormsPublicController( $container->get( Form_Schema::class ), $container->get( Submission_Service::class ), $container->get( Rate_Limit::class ) );
+                return new FormsPublicController( $container->get( Form_Schema::class ), $container->get( Submission_Service::class ), $container->get( Rate_Limit::class ), $container->get( React_Renderer::class ) );
             }
         );
         $this->share_tagged(

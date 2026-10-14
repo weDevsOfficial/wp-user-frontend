@@ -652,9 +652,9 @@ function wpuf_get_editor_buttons( $type = 'rich' ) {
 }
 
 /**
- * A form style thumbnail for the active frontend: when the React frontend
- * draws the forms (modern design) and a `modern/` copy of the picture sits
- * next to the classic one, that copy; the classic picture otherwise. Pro
+ * A form style thumbnail for the React forms (modern design): the `modern/`
+ * copy of the picture when one sits next to the classic one, the classic
+ * picture otherwise. Pro
  * passes its own registration template pictures through it too.
  *
  * @since WPUF_SINCE
@@ -667,7 +667,7 @@ function wpuf_get_editor_buttons( $type = 'rich' ) {
 function wpuf_form_layout_image( $url, $path ) {
     $modern = dirname( $path ) . '/modern/' . basename( $path );
 
-    if ( ! file_exists( $modern ) || ! ( new \WeDevs\Wpuf\Frontend\Renderer_Switch() )->enabled() ) {
+    if ( ! file_exists( $modern ) ) {
         return $url;
     }
 

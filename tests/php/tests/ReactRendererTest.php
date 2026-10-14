@@ -1,13 +1,14 @@
 <?php
 /**
- * The React or classic decision of the frontend shortcodes.
+ * The React frontend renderer: React by default, classic for theme
+ * overrides, the block and Elementor, the admin and unbuilt apps.
  *
  * @package WP_User_Frontend
  */
 
-use WeDevs\Wpuf\Frontend\Renderer_Switch;
+use WeDevs\Wpuf\Frontend\React_Renderer;
 
-class RendererSwitchTest extends WP_UnitTestCase {
+class ReactRendererTest extends WP_UnitTestCase {
 
     private $built = [];
 
@@ -35,7 +36,7 @@ class RendererSwitchTest extends WP_UnitTestCase {
     }
 
     private function renderer() {
-        return wpuf()->platform()->get( Renderer_Switch::class );
+        return wpuf()->platform()->get( React_Renderer::class );
     }
 
     /** Pretend the bundles are built (the PHP part ships before the apps). */
@@ -47,7 +48,7 @@ class RendererSwitchTest extends WP_UnitTestCase {
         }
 
         foreach ( array_merge( [ 'runtime' ], $apps ) as $app ) {
-            $file = $dir . '/' . Renderer_Switch::bundle( $app ) . '.js';
+            $file = $dir . '/' . React_Renderer::bundle( $app ) . '.js';
 
             if ( ! file_exists( $file ) ) {
                 file_put_contents( $file, '/* test stub */' );
@@ -56,59 +57,47 @@ class RendererSwitchTest extends WP_UnitTestCase {
         }
     }
 
-    private function enable() {
-        update_option( 'wpuf_general', [ 'frontend_react' => 'on' ] );
-    }
-
-    public function test_classic_by_default_even_with_the_apps_built() {
+    public function test_react_by_default_with_the_apps_built() {
         $this->build( 'forms', 'account' );
 
-        $this->assertFalse( $this->renderer()->enabled() );
-        $this->assertFalse( $this->renderer()->is_react( 'account' ) );
-        $this->assertFalse( $this->renderer()->is_react( 'post_form', 1 ) );
+        $this->assertTrue( $this->renderer()->is_react( 'account' ), 'no setting: React is the default' );
+        $this->assertTrue( $this->renderer()->is_react( 'post_form' ) );
+        $this->assertTrue( $this->renderer()->is_react( 'login' ) );
     }
 
-    public function test_setting_on_but_an_app_not_built_stays_classic() {
-        $this->enable();
-
-        $this->assertTrue( $this->renderer()->enabled() );
+    public function test_an_app_not_built_stays_classic() {
         $this->assertFalse( $this->renderer()->app_built( 'nope' ) );
-        $this->assertSame( 'account-react', Renderer_Switch::bundle( 'account' ) );
-        $this->assertSame( 'forms', Renderer_Switch::bundle( 'forms' ) );
+        $this->assertSame( 'account-react', React_Renderer::bundle( 'account' ) );
+        $this->assertSame( 'forms', React_Renderer::bundle( 'forms' ) );
         $this->assertFalse( $this->renderer()->is_react( 'nope' ) );
     }
 
-    public function test_react_when_on_and_built_except_from_block_elementor_filter_or_override() {
-        $this->enable();
+    public function test_react_when_built_except_from_block_elementor_or_override() {
         $this->build( 'forms', 'account' );
         $renderer = $this->renderer();
 
         $this->assertTrue( $renderer->is_react( 'account' ) );
-        $this->assertTrue( $renderer->is_react( 'post_form', 1 ) );
-        $this->assertTrue( $renderer->is_react( 'edit_form', 1 ) );
+        $this->assertTrue( $renderer->is_react( 'post_form' ) );
+        $this->assertTrue( $renderer->is_react( 'edit_form' ) );
         $this->assertFalse( $renderer->is_react( 'unknown_part' ) );
 
         $this->assertFalse(
-            Renderer_Switch::with_source(
+            React_Renderer::with_source(
                 'block',
                 function () use ( $renderer ) {
-                    return $renderer->is_react( 'post_form', 1 );
+                    return $renderer->is_react( 'post_form' );
                 }
             )
         );
         $this->assertFalse(
-            Renderer_Switch::with_source(
+            React_Renderer::with_source(
                 'elementor',
                 function () use ( $renderer ) {
                     return $renderer->is_react( 'account' );
                 }
             )
         );
-        $this->assertSame( 'shortcode', Renderer_Switch::source(), 'the source is restored' );
-
-        add_filter( 'wpuf_frontend_react_render', '__return_false' );
-        $this->assertFalse( $renderer->is_react( 'account' ) );
-        remove_filter( 'wpuf_frontend_react_render', '__return_false' );
+        $this->assertSame( 'shortcode', React_Renderer::source(), 'the source is restored' );
 
         $override = get_stylesheet_directory() . '/wpuf/account.php';
 
@@ -121,11 +110,10 @@ class RendererSwitchTest extends WP_UnitTestCase {
 
         $this->assertTrue( $renderer->has_template_override( 'account' ) );
         $this->assertFalse( $renderer->is_react( 'account' ), 'a theme override keeps the classic render' );
-        $this->assertTrue( $renderer->is_react( 'post_form', 1 ), 'forms have no overridable templates' );
+        $this->assertTrue( $renderer->is_react( 'post_form' ), 'forms have no overridable templates' );
     }
 
     public function test_account_shortcode_mounts_the_app_and_editprofile_stays_classic() {
-        $this->enable();
         $this->build( 'forms', 'account' );
 
         $account = do_shortcode( '[wpuf_account]' );
@@ -146,7 +134,6 @@ class RendererSwitchTest extends WP_UnitTestCase {
     }
 
     public function test_post_form_shortcode_mounts_the_app_with_the_schema() {
-        $this->enable();
         $this->build( 'forms', 'account' );
         $form_id = wpuf_create_sample_form( 'Switch Form', 'wpuf_forms' );
 
@@ -158,21 +145,23 @@ class RendererSwitchTest extends WP_UnitTestCase {
         $this->assertTrue( wp_script_is( 'wpuf-frontend-forms', 'enqueued' ) );
         $this->assertFalse( wp_script_is( 'wpuf-frontend-form', 'enqueued' ), 'the classic form bundle stays off' );
 
-        add_filter( 'wpuf_frontend_react_render', '__return_false' );
-        $classic = do_shortcode( '[wpuf_form id="' . $form_id . '"]' );
-        remove_filter( 'wpuf_frontend_react_render', '__return_false' );
+        $classic = React_Renderer::with_source(
+            'block',
+            function () use ( $form_id ) {
+                return do_shortcode( '[wpuf_form id="' . $form_id . '"]' );
+            }
+        );
 
         $this->assertStringNotContainsString( 'data-wpuf-react', $classic );
         $this->assertStringContainsString( 'name="form_id" value="' . $form_id . '"', $classic );
-        $this->assertTrue( wp_script_is( 'wpuf-frontend-form', 'enqueued' ), 'a form sent back to classic gets the classic bundle' );
+        $this->assertTrue( wp_script_is( 'wpuf-frontend-form', 'enqueued' ), 'a form that stays classic gets the classic bundle' );
     }
 
     public function test_block_render_keeps_the_classic_form() {
-        $this->enable();
         $this->build( 'forms', 'account' );
         $form_id = wpuf_create_sample_form( 'Block Form', 'wpuf_forms' );
 
-        $html = Renderer_Switch::with_source(
+        $html = React_Renderer::with_source(
             'block',
             function () use ( $form_id ) {
                 return do_shortcode( '[wpuf_form id="' . $form_id . '"]' );

@@ -19,32 +19,61 @@
     display: contents;
 }
 
+/* The button sits over the end of the input, wherever the input ends: the
+   layout sheets give the inputs their width (layouts 1-3 cap it with a
+   max-width), so the button follows the input in a flex row (a negative
+   margin pulls it over the input) rather than the row's far end. */
 .wpuf-frontend#wpuf-login-form .wpuf-login-password {
-    position: relative;
-    display: block;
+    display: flex;
+    align-items: stretch;
 }
 
 .wpuf-frontend#wpuf-login-form .wpuf-login-password input.input {
-    width: 100%;
+    /* The layout sheet's width as is (layouts 5-7 set 653px, wider than the row). */
+    flex: none;
     padding-inline-end: 40px;
     box-sizing: border-box;
 }
 
 .wpuf-frontend#wpuf-login-form .wpuf-login-password__toggle {
-    position: absolute;
-    inset-block: 0;
-    inset-inline-end: 0;
+    position: relative;
     display: inline-flex;
+    flex: 0 0 40px;
     align-items: center;
     justify-content: center;
     width: 40px;
     margin: 0;
+    margin-inline-start: -40px;
     padding: 0;
     color: var(--wpuf-fe-muted);
     background: none;
     border: 0;
     box-shadow: none;
     cursor: pointer;
+}
+
+/* Without a Pro layout (free only) the classic inputs keep the browser's
+   size (size="20"): the password one as wide as the username one, the
+   button (smaller) over its end as in the layouts. */
+.wpuf-frontend#wpuf-login-form:not([class*="wpuf-layout-"]) .wpuf-login-password {
+    display: inline-flex;
+    vertical-align: baseline;
+}
+
+.wpuf-frontend#wpuf-login-form:not([class*="wpuf-layout-"]) .wpuf-login-password input.input {
+    padding-inline-end: revert;
+    box-sizing: revert;
+}
+
+.wpuf-frontend#wpuf-login-form:not([class*="wpuf-layout-"]) .wpuf-login-password__toggle {
+    flex-basis: 26px;
+    width: 26px;
+    margin-inline-start: -26px;
+}
+
+.wpuf-frontend#wpuf-login-form:not([class*="wpuf-layout-"]) .wpuf-login-password__toggle svg {
+    width: 15px;
+    height: 15px;
 }
 
 .wpuf-frontend#wpuf-login-form .wpuf-login-password__toggle:hover,
@@ -112,8 +141,10 @@
     pointer-events: none;
 }
 
-/* The spinner in the button's text colour, before the label. */
-.wpuf-frontend#wpuf-login-form #wp-submit .wpuf-loading {
+/* The spinner in the button's text colour, before the label. Its own class:
+   `.wpuf-loading` is a gif in the classic forms sheet and a mask icon in the
+   account sheet, so on a page with either it showed two spinners. */
+.wpuf-frontend#wpuf-login-form #wp-submit .wpuf-login-spinner {
     display: inline-block;
     width: 14px;
     height: 14px;

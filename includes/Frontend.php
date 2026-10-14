@@ -62,10 +62,10 @@ class Frontend {
      *
      * @since WPUF_SINCE
      *
-     * @return \WeDevs\Wpuf\Frontend\Renderer_Switch
+     * @return \WeDevs\Wpuf\Frontend\React_Renderer
      */
     private function renderer() {
-        return wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Renderer_Switch::class );
+        return wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\React_Renderer::class );
     }
 
     /**
@@ -260,28 +260,27 @@ class Frontend {
      */
     public function enqueue_on_shortcode_render( $output, $tag, $attr = [] ) {
         // This runs before the handler (pre_do_shortcode_tag): a shortcode the
-        // React app is about to render gets its assets from Renderer_Switch,
+        // React app is about to render gets its assets from React_Renderer,
         // not the classic bundle. Same decision, same inputs as the handler.
         $renderer = $this->renderer();
         $atts     = is_array( $attr ) ? $attr : [];
-        $form_id  = isset( $atts['id'] ) ? (int) $atts['id'] : 0;
 
-        if ( 'wpuf_form' === $tag && $renderer->is_react( 'post_form', $form_id, [ 'atts' => $atts ] ) ) {
+        if ( 'wpuf_form' === $tag && $renderer->is_react( 'post_form' ) ) {
             return $output;
         }
 
-        if ( 'wpuf_edit' === $tag && $renderer->is_react( 'edit_form', $form_id, [ 'atts' => $atts ] ) ) {
+        if ( 'wpuf_edit' === $tag && $renderer->is_react( 'edit_form' ) ) {
             return $output;
         }
 
-        if ( 'wpuf_account' === $tag && is_user_logged_in() && $renderer->is_react( 'account', 0, [ 'atts' => $atts ] ) ) {
+        if ( 'wpuf_account' === $tag && is_user_logged_in() && $renderer->is_react( 'account' ) ) {
             return $output;
         }
 
         if ( 'wpuf_profile' === $tag ) {
             $part = isset( $atts['type'] ) && 'profile' === $atts['type'] ? 'profile' : 'registration';
 
-            if ( $renderer->is_react( $part, $form_id, [ 'atts' => $atts ] ) ) {
+            if ( $renderer->is_react( $part ) ) {
                 return $output;
             }
         }

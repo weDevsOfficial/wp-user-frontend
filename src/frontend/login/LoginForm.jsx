@@ -20,32 +20,12 @@
  */
 import { useEffect, useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { ServerHtml, cx, icons } from '@wpuf/frontend-kit';
+import { ServerHtml, cx } from '@wpuf/frontend-kit';
 
-const { AlertCircle, Eye, EyeOff } = icons;
-
-/** Pro's layout and custom texts (Login_Form_Settings localizes them), if any. */
-const proLogin = () => ( 'undefined' !== typeof window && window.wpufLoginForm ) || null;
-
-/** Pro's wrapActionLinks(): action links outside the form sit in `span.wpuf-lost-password-wrapper`. */
-function wrapActionLinks( root ) {
-    root.querySelectorAll( 'a' ).forEach( ( link ) => {
-        if ( link.closest( 'form' ) || link.parentElement.classList.contains( 'wpuf-lost-password-wrapper' ) ) {
-            return;
-        }
-
-        if ( /lostpassword|action=login|\/login\/|register/.test( link.href ) ) {
-            const wrapper = document.createElement( 'span' );
-
-            wrapper.className = 'wpuf-lost-password-wrapper';
-            link.parentNode.insertBefore( wrapper, link );
-            wrapper.appendChild( link );
-        }
-    } );
-}
+import { FieldError, PasswordInput, SubmitButton, proLogin, referer, usePostLock, wrapActionLinks } from './parts';
 
 export default function LoginForm( { data, layout = '' } ) {
-    const pro = proLogin();
+    const pro = proLogin( data );
     // Pro only replaces a text it has a value for (applyCustomTexts()).
     const texts = { ...( data.texts || {} ) };
 
@@ -56,8 +36,7 @@ export default function LoginForm( { data, layout = '' } ) {
     } );
 
     const [ errors, setErrors ] = useState( {} );
-    const [ busy, setBusy ] = useState( false );
-    const [ showPass, setShowPass ] = useState( false );
+    const [ busy, setBusy ] = usePostLock();
     const linksRef = useRef( null );
     const userRef = useRef( null );
     const passRef = useRef( null );
@@ -67,27 +46,6 @@ export default function LoginForm( { data, layout = '' } ) {
             wrapActionLinks( linksRef.current );
         }
     }, [ pro ] );
-
-    // Back from the browser cache (bfcache) after a redirect: unlock.
-    useEffect( () => {
-        const unlock = () => setBusy( false );
-
-        window.addEventListener( 'pageshow', unlock );
-
-        return () => window.removeEventListener( 'pageshow', unlock );
-    }, [] );
-
-    // Still on this page long after posting (the browser stopped or cancelled
-    // the request): unlock, so the form never stays stuck.
-    useEffect( () => {
-        if ( ! busy ) {
-            return undefined;
-        }
-
-        const timer = window.setTimeout( () => setBusy( false ), 20000 );
-
-        return () => window.clearTimeout( timer );
-    }, [ busy ] );
 
     const onSubmit = ( event ) => {
         if ( busy ) {
@@ -122,13 +80,7 @@ export default function LoginForm( { data, layout = '' } ) {
     };
 
     const help = ( text ) => ( 'layout7' === layout && text ? <span className="wpuf-help">{ text }</span> : null );
-    // The React forms' field message (kit Field: div.wpuf-error-msg with the alert icon).
-    const fieldError = ( name ) => errors[ name ] && (
-        <span className="wpuf-error-msg" id={ `wpuf-login-error-${ name }` } role="alert" aria-live="assertive">
-            <AlertCircle aria-hidden="true" />
-            { errors[ name ] }
-        </span>
-    );
+    const fieldError = ( name ) => <FieldError id={ `wpuf-login-error-${ name }` } message={ errors[ name ] } />;
 
     return (
         <>
@@ -168,68 +120,42 @@ export default function LoginForm( { data, layout = '' } ) {
                 </p>
                 <p>
                     <label htmlFor="wpuf-user_pass">{ texts.passwordLabel }</label>
-                    <span className="wpuf-login-password">
-                        <input
-                            ref={ passRef }
-                            type={ showPass ? 'text' : 'password' }
-                            name="pwd"
-                            id="wpuf-user_pass"
-                            className="input"
-                            size="20"
-                            autoComplete="current-password"
-                            placeholder={ texts.passwordPlaceholder || undefined }
-                            readOnly={ busy }
-                            aria-invalid={ errors.pwd ? 'true' : undefined }
-                            aria-describedby={ errors.pwd ? 'wpuf-login-error-pwd' : undefined }
-                            onInput={ () => errors.pwd && setErrors( ( current ) => ( { ...current, pwd: '' } ) ) }
-                        />
-                        <button
-                            type="button"
-                            className="wpuf-login-password__toggle"
-                            aria-label={ showPass ? __( 'Hide password', 'wp-user-frontend' ) : __( 'Show password', 'wp-user-frontend' ) }
-                            aria-pressed={ showPass }
-                            aria-controls="wpuf-user_pass"
-                            onClick={ () => setShowPass( ( shown ) => ! shown ) }
-                        >
-                            { showPass ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" /> }
-                        </button>
-                    </span>
+                    <PasswordInput
+                        inputRef={ passRef }
+                        name="pwd"
+                        id="wpuf-user_pass"
+                        autoComplete="current-password"
+                        placeholder={ texts.passwordPlaceholder }
+                        busy={ busy }
+                        error={ errors.pwd }
+                        errorId="wpuf-login-error-pwd"
+                        onInput={ () => errors.pwd && setErrors( ( current ) => ( { ...current, pwd: '' } ) ) }
+                    />
                     { help( texts.passwordHelp || __( 'Please enter your password', 'wp-user-frontend' ) ) }
                     { fieldError( 'pwd' ) }
                 </p>
 
                 { data.captcha && <ServerHtml html={ data.captcha } slug="login_captcha" className="wpuf-slot-inline" /> }
 
+                { /* The spaces the classic template has between its tags (without a Pro layout
+                     the parts are inline: "Remember Me Lost Password", not run together). */ }
                 <p className="forgetmenot wpuf-remember-forgot-wrapper">
                     <span className="wpuf-remember-me">
-                        <input name="rememberme" type="checkbox" id="wpuf-rememberme" value="forever" />
+                        <input name="rememberme" type="checkbox" id="wpuf-rememberme" value="forever" />{ ' ' }
                         <label htmlFor="wpuf-rememberme">{ texts.rememberMe }</label>
-                    </span>
+                    </span>{ ' ' }
                     <span className="wpuf-lost-password">
                         <a href={ data.lost_password }>{ texts.lostPassword }</a>
                     </span>
                 </p>
 
                 <p className="submit">
-                    { /* A button (Pro's layout sheets style input and button alike; it posts
-                         the same wp-submit field), so the spinner sits inside it next to the
-                         label and the centred button does not move while the page posts. */ }
-                    <button
-                        type="submit"
-                        name="wp-submit"
-                        id="wp-submit"
-                        value={ texts.buttonText }
-                        className={ busy ? 'is-busy' : undefined }
-                        aria-disabled={ busy ? 'true' : undefined }
-                    >
-                        { busy && <span className="wpuf-loading" aria-hidden="true" /> }
-                        { busy ? __( 'Logging in…', 'wp-user-frontend' ) : texts.buttonText }
-                    </button>
+                    <SubmitButton text={ texts.buttonText } busyText={ __( 'Logging in…', 'wp-user-frontend' ) } busy={ busy } />
                     <input type="hidden" name="redirect_to" value={ data.redirect_to || '' } />
                     <input type="hidden" name="wpuf_login" value="true" />
                     <input type="hidden" name="action" value="login" />
                     <input type="hidden" id="wpuf-login-nonce" name="wpuf-login-nonce" value={ data.nonce } />
-                    <input type="hidden" name="_wp_http_referer" value={ window.location.pathname + window.location.search } />
+                    <input type="hidden" name="_wp_http_referer" value={ referer() } />
                 </p>
                 { data.bottom && (
                     <p>

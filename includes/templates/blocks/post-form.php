@@ -308,7 +308,7 @@ $style_output .= $scope . ' .wpuf-el.dropdown select, ' . $scope . ' .wpuf-el.mu
 
     <?php if ( $form_id > 0 ) : ?>
         <?php
-        $shortcode_output = \WeDevs\Wpuf\Frontend\Renderer_Switch::with_source(
+        $shortcode_output = \WeDevs\Wpuf\Frontend\React_Renderer::with_source(
             'block',
             function () use ( $form_id ) {
                 return do_shortcode( '[wpuf_form id="' . intval( $form_id ) . '"]' );

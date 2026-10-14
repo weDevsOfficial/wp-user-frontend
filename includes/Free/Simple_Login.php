@@ -2,7 +2,8 @@
 
 namespace WeDevs\Wpuf\Free;
 
-use WeDevs\Wpuf\Frontend\Renderer_Switch;
+use WeDevs\Wpuf\Frontend\Login\Login_Schema;
+use WeDevs\Wpuf\Frontend\React_Renderer;
 use WeDevs\Wpuf\Render_Form;
 use WeDevs\Wpuf\WPUF_User;
 use WP_Error;
@@ -381,7 +382,7 @@ class Simple_Login {
                     $checkemail = isset( $getdata['checkemail'] ) ? sanitize_text_field( $getdata['checkemail'] ) : '';
 
                     if ( $this->login_errors ) {
-                        wpuf_load_template( 'lost-pass-form.php', $args );
+                        $this->render_lost_password_form( $args );
                         break;
                     }
                     if ( 'confirm' === $checkemail ) {
@@ -392,7 +393,7 @@ class Simple_Login {
                         $this->messages[] = __( 'Please enter your username or email address. You will receive a link to create a new password via email.', 'wp-user-frontend' );
                     }
 
-                    wpuf_load_template( 'lost-pass-form.php', $args );
+                    $this->render_lost_password_form( $args );
                     break;
 
                 case 'rp':
@@ -406,7 +407,7 @@ class Simple_Login {
                     } else {
                         $this->messages[] = __( 'Enter your new password below.', 'wp-user-frontend' );
 
-                        wpuf_load_template( 'reset-pass-form.php', $args );
+                        $this->render_reset_password_form( $args );
                     }
 
                     break;
@@ -435,14 +436,7 @@ class Simple_Login {
     }
 
     /**
-     * Print the login form: the React form when the frontend runs on React
-     * (and no theme overrides login-form.php), else the classic template.
-     *
-     * The React form posts to the same URL with the same field names, so
-     * process_login() handles it exactly as before; what the template prints
-     * through filters and hooks (`login_message`, the notices, reCAPTCHA,
-     * Turnstile, `wpuf_login_form_bottom`, the action links) is captured here
-     * and shown in place.
+     * Print the login form (login-form.php).
      *
      * @since WPUF_SINCE
      *
@@ -451,93 +445,74 @@ class Simple_Login {
      * @return void
      */
     private function render_login_form( array $args ) {
-        $renderer = function_exists( 'wpuf' ) && method_exists( wpuf(), 'platform' ) ? wpuf()->platform()->get( Renderer_Switch::class ) : null;
-
-        if ( ! $renderer || ! $renderer->is_react( 'login' ) ) {
-            wpuf_load_template( 'login-form.php', $args );
-
-            return;
-        }
-
-        echo $renderer->markup( 'login', $this->react_login_data( $args ), '', 'wpuf-login-react' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup() escapes its attributes and JSON-encodes the data.
+        $this->render_screen( 'login', 'login-form.php', 'login', $args );
     }
 
     /**
-     * Boot data of the React login form.
+     * Print the lost password form (lost-pass-form.php, `?action=lostpassword`).
      *
      * @since WPUF_SINCE
      *
      * @param array $args action_url, redirect_to
      *
-     * @return array
+     * @return void
      */
-    private function react_login_data( array $args ) {
-        $capture = function ( callable $print ) {
-            ob_start();
-            $print();
+    private function render_lost_password_form( array $args ) {
+        $this->render_screen( 'lost_password', 'lost-pass-form.php', 'lost_password', $args );
+    }
 
-            return (string) ob_get_clean();
-        };
+    /**
+     * Print the reset password form (reset-pass-form.php, `?action=rp`).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $args action_url, redirect_to
+     *
+     * @return void
+     */
+    private function render_reset_password_form( array $args ) {
+        $this->render_screen( 'reset_password', 'reset-pass-form.php', 'reset_password', $args );
+    }
 
-        $recaptcha = 'on' === wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' );
-        $turnstile = 'on' === wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' );
-        $captcha   = '';
+    /**
+     * Print a `[wpuf-login]` screen: the React form when the frontend runs on
+     * React (and no theme overrides the screen's template), else the classic
+     * template. The React forms post the same fields to the same URLs, so
+     * process_login() / process_reset_password() handle them exactly as
+     * before; Login_Schema builds their boot data.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $part     Renderer part (login, lost_password, reset_password)
+     * @param string $template Classic template
+     * @param string $schema   Login_Schema method building the boot data
+     * @param array  $args     action_url, redirect_to
+     *
+     * @return void
+     */
+    private function render_screen( $part, $template, $schema, array $args ) {
+        $platform = function_exists( 'wpuf' ) && method_exists( wpuf(), 'platform' ) ? wpuf()->platform() : null;
+        $renderer = $platform ? $platform->get( React_Renderer::class ) : null;
 
-        if ( $recaptcha && function_exists( 'recaptcha_get_html' ) ) {
-            $captcha .= '<div class="wpuf-fields">' . recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ) . '</div>';
+        if ( ! $renderer || ! $renderer->is_react( $part ) ) {
+            wpuf_load_template( $template, $args );
+
+            /**
+             * A classic `[wpuf-login]` screen rendered (the scripts written for
+             * its markup are needed on this page).
+             *
+             * @since WPUF_SINCE
+             *
+             * @param string $part login, lost_password or reset_password
+             */
+            do_action( 'wpuf_login_screen_classic', $part );
+
+            return;
         }
 
-        if ( $turnstile ) {
-            $site_key = wpuf_get_option( 'turnstile_site_key', 'wpuf_general', '' );
+        $data = $platform->get( Login_Schema::class )->{$schema}( $args );
 
-            wp_enqueue_script( 'wpuf-turnstile' );
-
-            $captcha .= sprintf(
-                '<div id="wpuf-turnstile" class="wpuf-turnstile" data-sitekey="%1$s" data-callback="javascriptCallback"></div><script>window.onloadTurnstileCallback = function () { turnstile.render("#wpuf-turnstile", { sitekey: "%2$s" }); };</script>',
-                esc_attr( $site_key ),
-                esc_js( $site_key )
-            );
-        }
-
-        $data = [
-            'id'            => 0,
-            'action_url'    => esc_url_raw( $args['action_url'] ),
-            'redirect_to'   => (string) $args['redirect_to'],
-            'nonce'         => wp_create_nonce( 'wpuf_login_action' ),
-            'lost_password' => esc_url_raw( wp_lostpassword_url() ),
-            'message'       => wp_kses_post( apply_filters( 'login_message', '' ) ),
-            'notices'       => $capture(
-                function () {
-                    $this->show_errors();
-                    $this->show_messages();
-                }
-            ),
-            'captcha'       => $captcha,
-            'bottom'        => $capture(
-                function () {
-                    do_action( 'wpuf_login_form_bottom' );
-                }
-            ),
-            'links'         => wp_kses_post( $this->get_action_links( [ 'login' => false, 'lostpassword' => false ] ) ),
-            'texts'         => [
-                'usernameLabel' => __( 'Username or Email', 'wp-user-frontend' ),
-                'passwordLabel' => __( 'Password', 'wp-user-frontend' ),
-                'rememberMe'    => __( 'Remember Me', 'wp-user-frontend' ),
-                'lostPassword'  => __( 'Lost Password', 'wp-user-frontend' ),
-                'buttonText'    => __( 'Log In', 'wp-user-frontend' ),
-            ],
-        ];
-
-        /**
-         * Filters the boot data of the React login form (texts, links, the
-         * captured hook output).
-         *
-         * @since WPUF_SINCE
-         *
-         * @param array $data Boot data
-         * @param array $args action_url, redirect_to
-         */
-        return apply_filters( 'wpuf_login_form_react_data', $data, $args );
+        echo $renderer->markup( $part, $data, '', 'wpuf-login-react' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup() escapes its attributes and JSON-encodes the data.
     }
 
     /**

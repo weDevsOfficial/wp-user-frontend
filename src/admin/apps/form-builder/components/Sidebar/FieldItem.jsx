@@ -102,7 +102,9 @@ export default function FieldItem( { template, onAdd, onProAlert, onValidationAl
                         </p>
                     </div>
                 </div>
-                <div className="absolute top-1/2 -translate-y-1/2 right-2 opacity-0 group-hover/pro-field:opacity-100 wpuf-transition-all">
+                { /* The badge sits on the tile's top-right corner (as the Bulk Add teaser's), so it
+                     never covers the label; also shown on keyboard focus. */ }
+                <div className="absolute -top-2 -right-1.5 z-10 pointer-events-none opacity-0 group-hover/pro-field:opacity-100 group-focus-visible/pro-field:opacity-100 wpuf-transition-all">
                     <img src={ `${ ( window.wpuf_form_builder || {} ).asset_url || '' }/images/pro-badge.svg` } alt="" className="h-4" />
                 </div>
             </div>

@@ -95,7 +95,7 @@ class Frontend_Account {
         extract( shortcode_atts( [], $atts ) );
 
         // [wpuf_editprofile] shares this handler and stays classic; the account shortcode may mount the React app.
-        if ( 'wpuf_account' === $tag && is_user_logged_in() && $this->renderer()->is_react( 'account', 0, [ 'atts' => $atts ] ) ) {
+        if ( 'wpuf_account' === $tag && is_user_logged_in() && $this->renderer()->is_react( 'account' ) ) {
             return $this->react_account();
         }
 
@@ -374,10 +374,10 @@ class Frontend_Account {
      *
      * @since WPUF_SINCE
      *
-     * @return Renderer_Switch
+     * @return React_Renderer
      */
     protected function renderer() {
-        return wpuf()->platform()->get( Renderer_Switch::class );
+        return wpuf()->platform()->get( React_Renderer::class );
     }
 
     /**

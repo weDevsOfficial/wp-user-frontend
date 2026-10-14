@@ -1,6 +1,6 @@
 <?php
 /**
- * Decides whether a frontend shortcode renders the classic PHP markup or mounts the React app
+ * Mounts the React frontend apps for the WPUF shortcodes
  *
  * @package WP_User_Frontend
  * @since WPUF_SINCE
@@ -9,23 +9,20 @@
 namespace WeDevs\Wpuf\Frontend;
 
 /**
- * One decision for the post form, the edit form and the account shortcode
- * (`frontend-react-architecture.md` 4.1). React only when the setting is on,
- * the app is built, the call comes from the shortcode on a page (not the block
- * render callback, not an Elementor widget), no theme overrides the templates
- * that part uses, and the `wpuf_frontend_react_render` filter agrees. Every
- * other case keeps the classic render exactly as before.
+ * The frontend shortcodes (post form, edit form, registration / profile,
+ * login screens, account) render their React app (`frontend-react-architecture.md`
+ * 4.1): this class prints the mount with its boot data and enqueues the app.
+ * The classic PHP render stays only where it must:
+ *
+ * - a theme overrides one of the part's templates (`wpuf/<template>` in the
+ *   child or parent theme), so a site's own markup keeps working;
+ * - the block render callback and the Elementor widgets, which render their
+ *   own way (with_source());
+ * - the admin, and an app whose bundle is not built.
  *
  * @since WPUF_SINCE
  */
-class Renderer_Switch {
-
-    /**
-     * Setting key under `wpuf_general`.
-     *
-     * @since WPUF_SINCE
-     */
-    const OPTION = 'frontend_react';
+class React_Renderer {
 
     /**
      * App per part: part => [ app script name, templates a theme can override ].
@@ -33,12 +30,14 @@ class Renderer_Switch {
      * @since WPUF_SINCE
      */
     const PARTS = [
-        'post_form'    => [ 'forms', [] ],
-        'edit_form'    => [ 'forms', [] ],
-        'registration' => [ 'forms', [] ],
-        'profile'      => [ 'forms', [] ],
-        'login'        => [ 'login', [ 'login-form.php' ] ],
-        'account'   => [ 'account', [ 'account.php', 'unauthorized.php', 'submit-post.php', 'dashboard/dashboard.php', 'dashboard/posts.php', 'dashboard/edit-profile.php', 'dashboard/change-password.php', 'dashboard/billing-address.php', 'dashboard/subscription.php' ] ],
+        'post_form'      => [ 'forms', [] ],
+        'edit_form'      => [ 'forms', [] ],
+        'registration'   => [ 'forms', [] ],
+        'profile'        => [ 'forms', [] ],
+        'login'          => [ 'login', [ 'login-form.php' ] ],
+        'lost_password'  => [ 'login', [ 'lost-pass-form.php' ] ],
+        'reset_password' => [ 'login', [ 'reset-pass-form.php' ] ],
+        'account'        => [ 'account', [ 'account.php', 'unauthorized.php', 'submit-post.php', 'dashboard/dashboard.php', 'dashboard/posts.php', 'dashboard/edit-profile.php', 'dashboard/change-password.php', 'dashboard/billing-address.php', 'dashboard/subscription.php' ] ],
     ];
 
     /**
@@ -62,19 +61,6 @@ class Renderer_Switch {
      * @var string
      */
     private $building = '';
-
-    /**
-     * Whether the owner switched the React frontend on.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return bool
-     */
-    public function enabled() {
-        $on = wpuf_is_checkbox_or_toggle_on( wpuf_get_option( self::OPTION, 'wpuf_general', 'off' ) );
-
-        return (bool) apply_filters( 'wpuf_frontend_react_enabled', $on );
-    }
 
     /**
      * Whether an app bundle exists on disk (the PHP part ships before the apps).
@@ -106,7 +92,8 @@ class Renderer_Switch {
 
     /**
      * Run a shortcode call under a source other than the shortcode itself
-     * (the block render callback, an Elementor widget), which keeps it classic.
+     * (the block render callback, an Elementor widget), which keeps their own
+     * classic render.
      *
      * @since WPUF_SINCE
      *
@@ -165,26 +152,20 @@ class Renderer_Switch {
     }
 
     /**
-     * React or classic for this call.
+     * Whether this call renders the React app of a part (else the classic template).
      *
      * @since WPUF_SINCE
      *
-     * @param string $part    'post_form', 'edit_form' or 'account'
-     * @param int    $form_id Form id (0 for the account)
-     * @param array  $context Extra context for the filter
+     * @param string $part Part (a PARTS key)
      *
      * @return bool
      */
-    public function is_react( $part, $form_id = 0, array $context = [] ) {
-        $context = array_merge( [ 'source' => self::$source ], $context );
-        $react   = isset( self::PARTS[ $part ] )
+    public function is_react( $part ) {
+        return isset( self::PARTS[ $part ] )
             && ! is_admin()
-            && 'shortcode' === $context['source']
-            && $this->enabled()
+            && 'shortcode' === self::$source
             && $this->app_built( self::PARTS[ $part ][0] )
             && ! $this->has_template_override( $part );
-
-        return (bool) apply_filters( 'wpuf_frontend_react_render', $react, $part, (int) $form_id, $context );
     }
 
     /**

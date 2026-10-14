@@ -1507,7 +1507,7 @@ class Widget extends Widget_Base {
         }
 
         $shortcode_str = '[wpuf_form id="' . $form_id . '"]';
-        $output        = \WeDevs\Wpuf\Frontend\Renderer_Switch::with_source(
+        $output        = \WeDevs\Wpuf\Frontend\React_Renderer::with_source(
             'elementor',
             function () use ( $shortcode_str ) {
                 return do_shortcode( $shortcode_str );

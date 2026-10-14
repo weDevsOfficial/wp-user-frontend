@@ -23,12 +23,6 @@ class Installer {
         if ( ! $installed ) {
             update_option( 'wpuf_installed', time() );
 
-            // New sites get the React frontend; upgrades keep the classic render
-            // until the owner switches it on (Settings > General > Modern frontend).
-            $general                   = (array) get_option( 'wpuf_general', [] );
-            $general['frontend_react'] = 'on';
-            update_option( 'wpuf_general', $general );
-
             // Only a site seeing WPUF for the very first time is offered the guided
             // onboarding. Every later activation, including plugin updates and a
             // deactivate/reactivate on a site already in use, leaves this unset so

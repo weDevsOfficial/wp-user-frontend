@@ -10,6 +10,7 @@ namespace WeDevs\Wpuf\Platform\REST\Controllers;
 
 use WeDevs\Wpuf\Frontend\Forms\Form_Schema;
 use WeDevs\Wpuf\Frontend\Forms\Submission_Service;
+use WeDevs\Wpuf\Frontend\React_Renderer;
 use WeDevs\Wpuf\Platform\Http\Admin_Ajax_Context;
 use WeDevs\Wpuf\Platform\REST\Rate_Limit;
 use WeDevs\Wpuf\Platform\REST\RestController;
@@ -57,16 +58,25 @@ class FormsPublicController extends RestController {
     private $limiter;
 
     /**
+     * The React renderer (its build() keeps the classic asset listeners quiet).
+     *
+     * @var React_Renderer|null
+     */
+    private $renderer;
+
+    /**
      * @since WPUF_SINCE
      *
-     * @param Form_Schema        $schema      Schema builder
-     * @param Submission_Service $submissions Submissions
-     * @param Rate_Limit         $limiter     Rate limiter
+     * @param Form_Schema         $schema      Schema builder
+     * @param Submission_Service  $submissions Submissions
+     * @param Rate_Limit          $limiter     Rate limiter
+     * @param React_Renderer|null $renderer    React renderer
      */
-    public function __construct( Form_Schema $schema, Submission_Service $submissions, Rate_Limit $limiter ) {
+    public function __construct( Form_Schema $schema, Submission_Service $submissions, Rate_Limit $limiter, $renderer = null ) {
         $this->form_schema = $schema;
         $this->submissions = $submissions;
         $this->limiter     = $limiter;
+        $this->renderer    = $renderer instanceof React_Renderer ? $renderer : null;
     }
 
     /**
@@ -258,7 +268,13 @@ class FormsPublicController extends RestController {
      * @return \WP_REST_Response|WP_Error
      */
     public function get_schema( WP_REST_Request $request ) {
-        $schema = $this->form_schema->build( (int) $request['id'], (int) $request['post_id'], [ 'page_id' => (int) $request['page_id'] ] );
+        $build = function () use ( $request ) {
+            return $this->form_schema->build( (int) $request['id'], (int) $request['post_id'], [ 'page_id' => (int) $request['page_id'] ] );
+        };
+
+        // As on the page: the hooks the schema runs (`wpuf_before_form_render` ...)
+        // must not enqueue the classic form bundle for a React form.
+        $schema = $this->renderer ? $this->renderer->build( (int) $request['post_id'] ? 'edit_form' : 'post_form', $build ) : $build();
 
         return is_wp_error( $schema ) ? $schema : rest_ensure_response( $schema );
     }

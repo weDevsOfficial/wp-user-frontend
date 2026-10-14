@@ -78,7 +78,7 @@ wp-user-frontend/
 │   └── Abstracts/          # Abstract base classes
 ├── src/                    # React source (no Vue left)
 │   ├── admin/              # React admin: app/ (runtime), apps/<screen>/, shared/
-│   ├── frontend/           # React frontend: kit, forms, account (Modern frontend setting)
+│   ├── frontend/           # React frontend: kit, forms, account, login (React_Renderer)
 │   ├── css/                # Admin + frontend source styles
 │   └── js/                 # Blocks, user directory
 ├── admin/form-builder/views # Legacy builder PHP views still included

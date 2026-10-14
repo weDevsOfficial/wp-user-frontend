@@ -89,7 +89,7 @@ class React_Assets implements Hookable {
         // these as dependencies through the `@wpuf/*` / plugin-ui externals.
         $admin_runtime_asset = $this->react_asset( 'admin-runtime', [ 'wp-api-fetch', 'wp-element', 'wp-hooks', 'wp-url' ] );
 
-        // The frontend apps (Frontend\Renderer_Switch enqueues them, only on a page that mounts one).
+        // The frontend apps (Frontend\React_Renderer enqueues them, only on a page that mounts one).
         $frontend_deps    = [ 'wp-element', 'wp-i18n', 'wp-api-fetch', 'wp-hooks', 'react-jsx-runtime' ];
         $frontend_runtime = $this->frontend_asset( 'runtime', $frontend_deps );
         $frontend_forms   = $this->frontend_asset( 'forms', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
@@ -198,7 +198,7 @@ class React_Assets implements Hookable {
                 'version'   => $ai_form_builder_asset['version'],
                 'in_footer' => true,
             ],
-            // Frontend React runtime and apps (Frontend\Renderer_Switch).
+            // Frontend React runtime and apps (Frontend\React_Renderer).
             'frontend-runtime'          => [
                 'src'       => WPUF_ASSET_URI . '/js/frontend/runtime.js',
                 // wp-api-request prints wpApiSettings (REST root + nonce) for the upload XHR.
@@ -306,7 +306,7 @@ class React_Assets implements Hookable {
                 'version' => $this->css_version( 'css/ai-form-builder-react.css' ),
                 'rtl'     => true,
             ],
-            // Frontend React sheets (Frontend\Renderer_Switch enqueues them with their app).
+            // Frontend React sheets (Frontend\React_Renderer enqueues them with their app).
             'frontend-react-runtime' => [
                 'src'     => WPUF_ASSET_URI . '/css/frontend/runtime.css',
                 'version' => $this->css_version( 'css/frontend/runtime.css' ),

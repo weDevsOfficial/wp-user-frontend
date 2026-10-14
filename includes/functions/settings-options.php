@@ -195,16 +195,6 @@ function wpuf_settings_fields() {
                     ),
                 ],
                 [
-                    'name'    => 'frontend_react',
-                    'label'   => __( 'Modern frontend', 'wp-user-frontend' ),
-                    'desc'    => __(
-                        'Render the post form, the edit form and the account page with the new app. Pages whose templates a theme overrides keep the classic markup.',
-                        'wp-user-frontend'
-                    ),
-                    'type'    => 'checkbox',
-                    'default' => 'off',
-                ],
-                [
                     'name'  => 'custom_css',
                     'label' => __( 'Custom CSS codes', 'wp-user-frontend' ),
                     'desc'  => __(

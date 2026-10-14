@@ -652,6 +652,29 @@ function wpuf_get_editor_buttons( $type = 'rich' ) {
 }
 
 /**
+ * A form style thumbnail for the active frontend: when the React frontend
+ * draws the forms (modern design) and a `modern/` copy of the picture sits
+ * next to the classic one, that copy; the classic picture otherwise. Pro
+ * passes its own registration template pictures through it too.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $url  Classic picture URL
+ * @param string $path Classic picture path on disk
+ *
+ * @return string
+ */
+function wpuf_form_layout_image( $url, $path ) {
+    $modern = dirname( $path ) . '/modern/' . basename( $path );
+
+    if ( ! file_exists( $modern ) || ! ( new \WeDevs\Wpuf\Frontend\Renderer_Switch() )->enabled() ) {
+        return $url;
+    }
+
+    return dirname( $url ) . '/modern/' . basename( $url );
+}
+
+/**
  * Filter editor buttons
  *
  * @param $field_settings
@@ -1289,23 +1312,23 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'options'   => [
                                 'layout1' => [
                                     'label' => __( 'Template 1', 'wp-user-frontend' ),
-                                    'image' => WPUF_ASSET_URI . '/images/forms/layout1.png',
+                                    'image' => wpuf_form_layout_image( WPUF_ASSET_URI . '/images/forms/layout1.png', WPUF_ROOT . '/assets/images/forms/layout1.png' ),
                                 ],
                                 'layout2' => [
                                     'label' => __( 'Template 2', 'wp-user-frontend' ),
-                                    'image' => WPUF_ASSET_URI . '/images/forms/layout2.png',
+                                    'image' => wpuf_form_layout_image( WPUF_ASSET_URI . '/images/forms/layout2.png', WPUF_ROOT . '/assets/images/forms/layout2.png' ),
                                 ],
                                 'layout3' => [
                                     'label' => __( 'Template 3', 'wp-user-frontend' ),
-                                    'image' => WPUF_ASSET_URI . '/images/forms/layout3.png',
+                                    'image' => wpuf_form_layout_image( WPUF_ASSET_URI . '/images/forms/layout3.png', WPUF_ROOT . '/assets/images/forms/layout3.png' ),
                                 ],
                                 'layout4' => [
                                     'label' => __( 'Template 4', 'wp-user-frontend' ),
-                                    'image' => WPUF_ASSET_URI . '/images/forms/layout4.png',
+                                    'image' => wpuf_form_layout_image( WPUF_ASSET_URI . '/images/forms/layout4.png', WPUF_ROOT . '/assets/images/forms/layout4.png' ),
                                 ],
                                 'layout5' => [
                                     'label' => __( 'Template 5', 'wp-user-frontend' ),
-                                    'image' => WPUF_ASSET_URI . '/images/forms/layout5.png',
+                                    'image' => wpuf_form_layout_image( WPUF_ASSET_URI . '/images/forms/layout5.png', WPUF_ROOT . '/assets/images/forms/layout5.png' ),
                                 ],
                             ],
                         ],

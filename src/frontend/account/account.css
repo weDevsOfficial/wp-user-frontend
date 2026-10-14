@@ -518,8 +518,18 @@
     box-shadow: var(--wpuf-fe-focus);
 }
 
-.wpuf-frontend .has-error .wpuf-form-input {
+/* Invalid fields: the React forms' validation look (forms.css): red border,
+   soft ring, also while focused; the row itself stays clear (the classic
+   sheets paint `.has-error` rows pink). */
+.wpuf-frontend .wpuf-form-group.has-error {
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+.wpuf-frontend .has-error .wpuf-form-input,
+.wpuf-frontend .has-error .wpuf-form-input:focus {
     border-color: var(--wpuf-fe-danger);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
 }
 
 .wpuf-frontend .wpuf-form-eye {
@@ -554,9 +564,26 @@
 }
 
 .wpuf-frontend .wpuf-error-msg {
-    display: block;
-    font-size: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
     color: var(--wpuf-fe-danger);
+}
+
+/* Circle with "!" like the form messages. */
+.wpuf-frontend .wpuf-error-msg::before {
+    content: "";
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+    margin-top: 2px;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
 /* ---- Server HTML sections keep the classic Tailwind look of their templates ---- */

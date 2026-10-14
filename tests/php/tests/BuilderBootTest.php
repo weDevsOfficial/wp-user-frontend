@@ -30,9 +30,35 @@ class BuilderBootTest extends WP_UnitTestCase {
         // Another test class may have built the admin layer inside a test, whose
         // hooks were restored away afterwards: make sure the post builder listener
         // is there (restored again after this test).
-        if ( ! has_action( 'wpuf_load_post_forms' ) ) {
+        if ( ! self::has_free_builder_listener() ) {
             add_action( 'wpuf_load_post_forms', [ new \WeDevs\Wpuf\Admin\Forms\Admin_Form(), 'post_forms_builder_init' ] );
         }
+    }
+
+    /**
+     * Whether free's post builder listener is on `wpuf_load_post_forms` (Pro
+     * adds its own listeners there, so has_action() alone says nothing).
+     *
+     * @return bool
+     */
+    private static function has_free_builder_listener() {
+        global $wp_filter;
+
+        if ( empty( $wp_filter['wpuf_load_post_forms'] ) ) {
+            return false;
+        }
+
+        foreach ( $wp_filter['wpuf_load_post_forms']->callbacks as $callbacks ) {
+            foreach ( $callbacks as $callback ) {
+                $function = $callback['function'];
+
+                if ( is_array( $function ) && $function[0] instanceof \WeDevs\Wpuf\Admin\Forms\Admin_Form && 'post_forms_builder_init' === $function[1] ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public function test_boot_returns_the_builder_globals_for_a_post_form() {

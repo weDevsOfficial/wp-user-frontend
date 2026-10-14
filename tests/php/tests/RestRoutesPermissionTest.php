@@ -28,7 +28,9 @@ class RestRoutesPermissionTest extends WP_UnitTestCase {
      * Route prefixes of the frontend apps: scoped to the logged-in user (a
      * subscriber is the intended caller) or public when the form itself is
      * public. Their gates are proved route by route in FrontendFormRestTest,
-     * AccountRestTest and UploadsRestTest, not by this admin-side walk.
+     * AccountRestTest, UploadsRestTest and RegistrationRestTest (Pro's
+     * registration / profile routes and the registration form's username
+     * check), not by this admin-side walk.
      *
      * @var string[]
      */
@@ -36,6 +38,7 @@ class RestRoutesPermissionTest extends WP_UnitTestCase {
         '/wpuf/v1/account',
         '/wpuf/v1/forms/(?P<id>\\d+)',
         '/wpuf/v1/uploads',
+        '/wpuf/v1/registration',
     ];
 
     public function set_up() {

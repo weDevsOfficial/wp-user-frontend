@@ -272,7 +272,7 @@ class SettingsStoreTest extends WP_UnitTestCase {
     /**
      * Without Pro, a Pro preview field or section is display only: develop's
      * legacy screen never posted it, so a save stores nothing for it (4.7,
-     * free-only pass).
+     * free-only pass). A field flagged `is_pro_preview` is never stored.
      */
     public function test_pro_previews_are_not_stored() {
         $store  = Stores::settings();
@@ -286,8 +286,9 @@ class SettingsStoreTest extends WP_UnitTestCase {
         $stored = $store->save_section( 'wpuf_test_preview', [ 'real' => 'a', 'flagged' => 'b', 'badged' => 'c' ], $fields );
         delete_option( 'wpuf_test_preview' );
 
-        $this->assertSame( [ 'real' => 'a' ], $stored );
-        $this->assertTrue( $store->is_pro_preview( [ 'title' => 'SMS <img class="pro-badge">' ], 'title' ) );
+        // With Pro the badge is only a label: the field is real and stored.
+        $this->assertSame( class_exists( 'WP_User_Frontend_Pro' ) ? [ 'real' => 'a', 'badged' => 'c' ] : [ 'real' => 'a' ], $stored );
+        $this->assertSame( ! class_exists( 'WP_User_Frontend_Pro' ), $store->is_pro_preview( [ 'title' => 'SMS <img class="pro-badge">' ], 'title' ) );
         $this->assertFalse( $store->is_pro_preview( [ 'title' => 'General' ], 'title' ) );
     }
 
@@ -318,13 +319,46 @@ class SettingsStoreTest extends WP_UnitTestCase {
 
         list( $legacy, $current, $legacy_options, $current_options ) = $this->both( $payload );
 
-        $this->assertSame( $this->masked( $legacy->get_data() ), $current->get_data() );
+        $expected = $this->masked( $legacy->get_data() );
+
+        if ( isset( $expected['data']['values'] ) && is_array( $expected['data']['values'] ) ) {
+            $expected['data']['values'] = $this->editor_defaults( $expected['data']['values'] );
+        }
+
+        $this->assertSame( $expected, $current->get_data() );
         $this->assertStringNotContainsString( 'stored-secret-value', wp_json_encode( $current->get_data() ), 'the save response never carries a stored secret' );
-        $this->assertSame( $legacy_options, $current_options );
+        $this->assertSame( $this->editor_defaults( $legacy_options ), $current_options );
 
         list( $legacy, $current ) = $this->both( 'not an array' );
         $this->assertSame( $legacy->get_data(), $current->get_data() );
         $this->assertSame( 400, $current->get_status() );
+    }
+
+    /**
+     * Legacy-copy options with the first-save defaults of wysiwyg fields as
+     * the editor posted them (trimmed lines, \r\n): the store does that on
+     * purpose (SettingsStore::save_section(), Normalizers::wysiwyg_default()),
+     * the frozen legacy copy does not. Only Pro turns these fields into
+     * editors, so free-only runs compare the raw values.
+     *
+     * @param array $options Options per section.
+     *
+     * @return array
+     */
+    private function editor_defaults( $options ) {
+        foreach ( Stores::settings()->fields() as $section_id => $fields ) {
+            foreach ( (array) $fields as $field ) {
+                if ( empty( $field['name'] ) || ! isset( $field['type'], $field['default'] ) || 'wysiwyg' !== $field['type'] || ! is_string( $field['default'] ) ) {
+                    continue;
+                }
+
+                if ( isset( $options[ $section_id ][ $field['name'] ] ) && $options[ $section_id ][ $field['name'] ] === $field['default'] ) {
+                    $options[ $section_id ][ $field['name'] ] = \WeDevs\Wpuf\Platform\Stores\Normalizers::wysiwyg_default( $field['default'] );
+                }
+            }
+        }
+
+        return $options;
     }
 
     public function test_get_items_returns_the_same_payload() {

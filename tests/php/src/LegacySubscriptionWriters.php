@@ -600,6 +600,8 @@ class WPUF_Legacy_Subscription_Api extends WP_REST_Controller {
                 'post_modified_gmt' => get_gmt_from_date( $current_time->format( 'Y-m-d H:i:s' ) ),
             ];
 
+            $is_new = empty( $id );
+
             if ( ! empty( $id ) ) {
                 // update mode
                 $post_arr['ID']  = $id; // ID of the post to update
@@ -633,10 +635,12 @@ class WPUF_Legacy_Subscription_Api extends WP_REST_Controller {
                 }
             }
 
-            // The pack GET returns an empty posting restriction for every pack; an
-            // empty list that was never stored stays absent on save.
+            // The pack GET returns an empty posting restriction for every pack; on an
+            // existing pack an empty list that was never stored stays absent on save.
+            // A new pack stores it, as develop's REST save did (G2).
             if (
-                isset( $request_subscription['meta_value'] )
+                ! $is_new
+                && isset( $request_subscription['meta_value'] )
                 && array_key_exists( '_sub_allowed_term_ids', (array) $request_subscription['meta_value'] )
                 && empty( $request_subscription['meta_value']['_sub_allowed_term_ids'] )
                 && ! metadata_exists( 'post', $id, '_sub_allowed_term_ids' )

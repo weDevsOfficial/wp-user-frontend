@@ -223,8 +223,7 @@ export class PostFormPage extends Base {
         console.log(PostForm.title);
         await this.page.waitForTimeout(1000);
         //Enter Post Description
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(PostForm.description = faker.lorem.sentence(1));
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, PostForm.description = faker.lorem.sentence(1));
         console.log(PostForm.description);
         //Enter Excerpt
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, PostForm.excerpt = faker.lorem.sentence(1));
@@ -530,8 +529,7 @@ export class PostFormPage extends Base {
         console.log(PostForm.title);
         await this.page.waitForTimeout(1000);
         //Enter Post Description
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(PostForm.description = faker.lorem.sentence(1));
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, PostForm.description = faker.lorem.sentence(1));
         console.log(PostForm.description);
         //Enter Excerpt
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, PostForm.excerpt = faker.lorem.sentence(1));
@@ -616,8 +614,7 @@ export class PostFormPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productTitleFE, ProductForm.title);
         await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectCategory, ProductForm.category);
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.productFrontendCreate.productDescription1)
-            .locator(Selectors.postForms.productFrontendCreate.productDescription2).fill(ProductForm.description = faker.lorem.sentence(1));
+        await this.fillRichEditor(Selectors.postForms.productFrontendCreate.productDescription1, Selectors.postForms.productFrontendCreate.productDescription2, ProductForm.description = faker.lorem.sentence(1));
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productExcerpt, ProductForm.excerpt = faker.lorem.sentence(1));
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productRegularPrice, ProductForm.regularPrice);
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productSalePrice, ProductForm.salePrice);
@@ -655,8 +652,7 @@ export class PostFormPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsTitleFE, DownloadsForm.title);
         await this.selectOptionWithLabel(Selectors.postForms.downloadsFrontendCreate.downloadCategory, DownloadsForm.category);
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.downloadsFrontendCreate.downloadsDescription1)
-            .locator(Selectors.postForms.downloadsFrontendCreate.downloadsDescription2).fill(DownloadsForm.description = faker.lorem.sentence(1));
+        await this.fillRichEditor(Selectors.postForms.downloadsFrontendCreate.downloadsDescription1, Selectors.postForms.downloadsFrontendCreate.downloadsDescription2, DownloadsForm.description = faker.lorem.sentence(1));
         await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsExcerpt, DownloadsForm.excerpt = faker.lorem.sentence(1));
         await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsRegularPrice, DownloadsForm.regularPrice);
         await this.page.setInputFiles(Selectors.postForms.downloadsFrontendCreate.downloadsImage, DownloadsForm.downloadsImage);

@@ -280,6 +280,9 @@ class Renderer_Switch {
         if ( ! empty( $schema['needs']['editor'] ) ) {
             wp_enqueue_editor();
             wp_enqueue_media();
+        } elseif ( ! empty( $schema['needs']['editor_lite'] ) ) {
+            // TipTap fields only: wp.editor.autop() without TinyMCE.
+            wp_enqueue_script( 'editor' );
         }
 
         $layout   = isset( $schema['layout']['layout'] ) ? $schema['layout']['layout'] : 'layout1';

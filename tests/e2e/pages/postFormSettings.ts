@@ -118,8 +118,7 @@ export class PostFormSettingsPage extends Base {
 
         //Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -220,8 +219,7 @@ export class PostFormSettingsPage extends Base {
 
         //Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -442,8 +440,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -463,8 +460,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -486,8 +482,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -509,8 +504,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -581,8 +575,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -647,8 +640,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -990,8 +982,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -1057,8 +1048,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -1231,8 +1221,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -1256,8 +1245,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -1281,8 +1269,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -1308,8 +1295,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -1405,8 +1391,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -1734,8 +1719,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter post description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -2101,8 +2085,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter post description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -2217,8 +2200,7 @@ export class PostFormSettingsPage extends Base {
             await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
 
             await this.page.waitForTimeout(1000);
-            await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-                .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+            await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
             await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 

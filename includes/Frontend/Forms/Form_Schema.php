@@ -142,6 +142,45 @@ class Form_Schema {
      *
      * @since WPUF_SINCE
      */
+    /**
+     * TinyMCE toolbar buttons the TipTap editor of the React forms has a
+     * control for (or, like `spellchecker`, the browser covers). A toolbar
+     * with any other button (a plugin's TinyMCE button) keeps TinyMCE.
+     *
+     * @since WPUF_SINCE
+     */
+    const TIPTAP_BUTTONS = [
+        '|',
+        'formatselect',
+        'bold',
+        'italic',
+        'underline',
+        'strikethrough',
+        'blockquote',
+        'bullist',
+        'numlist',
+        'alignleft',
+        'aligncenter',
+        'alignright',
+        'alignjustify',
+        'link',
+        'unlink',
+        'undo',
+        'redo',
+        'fullscreen',
+        'hr',
+        'forecolor',
+        'pastetext',
+        'removeformat',
+        'charmap',
+        'outdent',
+        'indent',
+        'wp_more',
+        'spellchecker',
+        'wp_adv',
+        'wp_help',
+    ];
+
     const NEEDS = [
         'image_upload'        => 'uploads',
         'featured_image'      => 'uploads',
@@ -815,6 +854,7 @@ class Form_Schema {
 
             if ( in_array( $field['template'], [ 'post_content', 'textarea_field' ], true ) && isset( $field['rich'] ) && in_array( $field['rich'], [ 'yes', 'teeny' ], true ) ) {
                 $field['editor'] = $this->editor_settings( $field, (int) $form_id );
+                $field['editor']['engine'] = $this->editor_engine( $field );
             }
 
             $field['kind'] = $field['template'];
@@ -1195,6 +1235,49 @@ class Form_Schema {
     }
 
     /**
+     * Which editor a rich field gets in the React form: `tiptap` (the modern
+     * editor) when every toolbar button the editor filters produced has a
+     * TipTap control and the stored content has no HTML comment other than
+     * `<!--more-->` / `<!--nextpage-->` (block editor markup); `tinymce`
+     * (WordPress' editor, as the classic form) otherwise. The client still
+     * checks that the content round-trips through TipTap unchanged and opens
+     * TinyMCE when it does not.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $field Described field (with `editor` and `value`)
+     *
+     * @return string tiptap | tinymce
+     */
+    private function editor_engine( array $field ) {
+        $tinymce = isset( $field['editor']['tinymce'] ) ? (array) $field['editor']['tinymce'] : [];
+        $buttons = [];
+
+        foreach ( [ 'toolbar1', 'toolbar2', 'toolbar3', 'toolbar4' ] as $row ) {
+            if ( ! empty( $tinymce[ $row ] ) && is_string( $tinymce[ $row ] ) ) {
+                $buttons = array_merge( $buttons, array_filter( array_map( 'trim', explode( ',', $tinymce[ $row ] ) ) ) );
+            }
+        }
+
+        $value   = isset( $field['value'] ) && is_string( $field['value'] ) ? $field['value'] : '';
+        $unknown = array_diff( $buttons, self::TIPTAP_BUTTONS );
+        $comment = '' !== $value && preg_match( '/<!--(?!\s*(?:more|nextpage)\b)/i', $value );
+        $engine  = ( $unknown || $comment ) ? 'tinymce' : 'tiptap';
+
+        /**
+         * Filters the editor of a rich field in the React frontend form.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param string $engine `tiptap` or `tinymce`
+         * @param array  $field  Described field
+         */
+        $engine = apply_filters( 'wpuf_frontend_editor_engine', $engine, $field );
+
+        return 'tinymce' === $engine ? 'tinymce' : 'tiptap';
+    }
+
+    /**
      * Which libraries the fields need, with the keys the client must have.
      *
      * @since WPUF_SINCE
@@ -1208,12 +1291,23 @@ class Form_Schema {
 
         $walk = function ( array $list ) use ( &$walk, &$needs ) {
             foreach ( $list as $field ) {
-                if ( isset( self::NEEDS[ $field['template'] ] ) ) {
+                if ( isset( self::NEEDS[ $field['template'] ] ) && 'editor' !== self::NEEDS[ $field['template'] ] ) {
                     $needs[ self::NEEDS[ $field['template'] ] ] = true;
                 }
 
-                if ( 'textarea_field' === $field['template'] && ! empty( $field['rich'] ) && 'no' !== $field['rich'] ) {
-                    $needs['editor'] = true;
+                // Rich fields: TinyMCE for a `tinymce` field, and for a `tiptap` field
+                // with stored content (the client falls back to TinyMCE when that
+                // content does not round-trip); a new, empty TipTap field needs only
+                // WordPress' small `editor` script (wpautop).
+                if ( in_array( $field['template'], [ 'post_content', 'textarea_field' ], true ) && ! empty( $field['editor'] ) ) {
+                    $engine = isset( $field['editor']['engine'] ) ? $field['editor']['engine'] : 'tinymce';
+                    $value  = isset( $field['value'] ) && is_string( $field['value'] ) ? trim( $field['value'] ) : '';
+
+                    if ( 'tinymce' === $engine || '' !== $value ) {
+                        $needs['editor'] = true;
+                    } else {
+                        $needs['editor_lite'] = true;
+                    }
                 }
 
                 if ( 'recaptcha' === $field['template'] ) {

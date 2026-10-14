@@ -454,8 +454,7 @@ export class SubscriptionPage extends Base {
         while (limit <= packData.maxPosts) {
             await this.validateAndClick(Selectors.subscription.newPackPage.featuredItemCheckbox);
             await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, `Test Post title ${limit}`);
-            await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-                .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(`Test Post Description ${limit}`);
+            await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, `Test Post Description ${limit}`);
             await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
             await this.page.waitForTimeout(2000);
             console.log('\x1b[32m%s\x1b[0m', `✅ Post submitted: ${`Test Post title ${limit}`}`);

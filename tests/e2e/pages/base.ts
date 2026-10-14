@@ -228,6 +228,25 @@ export class Base {
     }
 
     // Validate and Fill Strings
+    /**
+     * Fill a frontend rich text field: the React form's TipTap editor when it is
+     * on the page, the TinyMCE iframe (classic form, or a field that opened in
+     * TinyMCE) otherwise.
+     */
+    async fillRichEditor(frameSelector: string, bodySelector: string, value: string) {
+        await this.page.waitForSelector('.wpuf-tiptap-content, iframe[id$="_ifr"]', { timeout: 15000 });
+        const tiptap = this.page.locator('.wpuf-tiptap-content').first();
+
+        if (await tiptap.count()) {
+            await tiptap.click();
+            await this.page.keyboard.press('ControlOrMeta+a');
+            await this.page.keyboard.type(value);
+            return;
+        }
+
+        await this.page.frameLocator(frameSelector).locator(bodySelector).fill(value);
+    }
+
     async validateAndFillStrings(locator: string, value: string) {
         try {
             await this.waitForLoading();

@@ -76,7 +76,9 @@ class FrontendFormRestTest extends WP_UnitTestCase {
         $this->assertSame( [ 'post_title', 'post_content' ], wp_list_pluck( $data['fields'], 'name' ) );
         $this->assertSame( 'post', $data['settings']['post_type'] );
         $this->assertSame( 'Submit', $data['layout']['submit_text'] );
-        $this->assertTrue( $data['needs']['editor'], 'the rich post content field needs the editor' );
+        $this->assertSame( 'tiptap', $data['fields'][1]['editor']['engine'], 'the rich post content field gets the modern editor' );
+        $this->assertTrue( $data['needs']['editor_lite'], 'an empty TipTap field needs only the small editor script' );
+        $this->assertArrayNotHasKey( 'editor', $data['needs'], 'no TinyMCE for a new post' );
         $this->assertSame( 1, wp_verify_nonce( $data['nonces']['submit'], 'wpuf_form_add' ) );
         $this->assertArrayNotHasKey( 'notification', $data['settings'], 'admin-only settings stay server-side' );
     }

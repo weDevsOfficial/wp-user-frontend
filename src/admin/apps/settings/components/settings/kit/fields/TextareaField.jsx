@@ -11,7 +11,7 @@ export default function TextareaField( { field, name, value, onChange } ) {
             <SettingLabel field={ field } htmlFor={ name } />
             <Textarea
                 id={ name }
-                className="w-full px-3.5 py-2.5 text-gray-700"
+                className="w-full"
                 value={ value !== undefined && value !== null ? value : ( field.default || field.value || '' ) }
                 onChange={ ( next ) => onChange( name, next ) }
                 rows={ field.rows || 4 }

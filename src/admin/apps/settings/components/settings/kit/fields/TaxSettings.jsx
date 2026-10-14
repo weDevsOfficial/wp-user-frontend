@@ -95,7 +95,7 @@ function Rates() {
                                 value={ row.rate || 0 }
                                 onChange={ ( next ) => update( i, { rate: next } ) }
                                 aria-label={ __( 'Tax rate', 'wp-user-frontend' ) }
-                                className="wpuf-no-spinner w-full h-9 pl-3 pr-7 text-sm text-gray-700"
+                                className="wpuf-no-spinner w-full h-9 pl-3 pr-7 text-sm"
                             />
                             <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-gray-400">%</span>
                         </div>

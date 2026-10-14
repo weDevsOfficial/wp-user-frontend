@@ -765,11 +765,11 @@ function wpuf_get_single_user_roles( $user_id ) {
 if ( ! function_exists( 'wpuf_field_profile_photo_allowed_extensions' ) ) {
     function wpuf_field_profile_photo_allowed_extensions() {
         $allowed_extensions = [
-            'jpg'  => __( 'JPG', 'wpuf-pro' ),
-            'jpeg' => __( 'JPEG', 'wpuf-pro' ),
-            'jfif' => __( 'JFIF', 'wpuf-pro' ),
-            'png'  => __( 'PNG', 'wpuf-pro' ),
-            'gif'  => __( 'GIF', 'wpuf-pro' ),
+            'jpg'  => __( 'JPG', 'wp-user-frontend' ),
+            'jpeg' => __( 'JPEG', 'wp-user-frontend' ),
+            'jfif' => __( 'JFIF', 'wp-user-frontend' ),
+            'png'  => __( 'PNG', 'wp-user-frontend' ),
+            'gif'  => __( 'GIF', 'wp-user-frontend' ),
         ];
 
         /**

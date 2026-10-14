@@ -71,15 +71,18 @@ export default function FormBuilder() {
                     { /* White card on the gray page (D26 page look, owner 2026-10-04). Same
                          width as before (mx-4 = the old mr-8) and a ring, not a border, so the
                          stage keeps develop's sizes; the inner edge borders stay as transparent. */ }
-                    <div className="flex h-[calc(100vh-132px)] min-h-[480px] bg-white mx-4 mt-3 mb-4 rounded-lg ring-1 ring-gray-200 overflow-hidden">
-                        { /* Three columns (FlyForms builder): field palette, canvas, field options. */ }
-                        <div className="w-[280px] xl:w-[300px] 2xl:w-[320px] shrink-0 h-full overflow-auto border-r border-gray-200 bg-white">
+                    <div className="relative flex h-[calc(100vh-132px)] min-h-[480px] bg-white mx-4 mt-3 mb-4 rounded-lg ring-1 ring-gray-200 overflow-hidden">
+                        { /* Three columns (FlyForms builder): field palette, canvas, field options.
+                             Each scroller is positioned, so the visually hidden inputs of plugin-ui's
+                             radios / checkboxes (position: absolute) stay inside it; unpositioned,
+                             they anchored to the page and stretched its scroll (owner 2026-10-14). */ }
+                        <div className="relative w-[280px] xl:w-[300px] 2xl:w-[320px] shrink-0 h-full overflow-auto border-r border-gray-200 bg-white">
                             <Sidebar panel="fields" />
                         </div>
-                        <div className="min-w-0 flex-1 h-full px-6 py-5 overflow-auto">
+                        <div className="relative min-w-0 flex-1 h-full px-6 py-5 overflow-auto">
                             <BuilderCanvas />
                         </div>
-                        <div className="w-[300px] 2xl:w-[360px] shrink-0 h-full overflow-auto border-l border-gray-200">
+                        <div className="relative w-[300px] 2xl:w-[360px] shrink-0 h-full overflow-auto border-l border-gray-200">
                             <Sidebar panel="options" />
                         </div>
                     </div>

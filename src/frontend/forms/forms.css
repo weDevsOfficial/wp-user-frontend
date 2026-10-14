@@ -1737,3 +1737,159 @@
 .wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 {
     color-scheme: dark;
 }
+
+/*
+ * Multistep (owner 2026-10-14: "update design of multistep form"). React root
+ * only; the classic forms keep their look. The step-by-step header is equal
+ * columns: circle, label centred under it (wraps, never past the form edge),
+ * the connector drawn from the previous circle. Pro's colour settings
+ * (Fields_Manager inline CSS: active background / text, inactive colour) still
+ * paint the circles and lines; only the inactive number and label move from
+ * the inactive colour (light grey by default, unreadable as text) to the kit's
+ * muted text. A done step shows a check.
+ */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar {
+    overflow: visible;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-wizard {
+    display: flex;
+    align-items: flex-start;
+    justify-content: stretch;
+    margin: 8px 0 32px;
+    padding: 0;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item {
+    position: relative;
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+    text-align: center;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-line {
+    position: absolute;
+    top: 17px;
+    right: calc(50% + 24px);
+    left: calc(-50% + 24px);
+    flex: none;
+    min-width: 0;
+    height: 2px;
+    margin: 0;
+    border-radius: 2px;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-circle {
+    position: relative;
+    z-index: 1;
+    flex: 0 0 auto;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item:not(.active-step):not(.completed-step) .wpuf-step-circle {
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item.active-step .wpuf-step-circle {
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06);
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-circle svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 3;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-label {
+    max-width: 100%;
+    margin-top: 8px;
+    padding: 0 4px;
+    color: var(--wpuf-fe-muted);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.35;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item.active-step .wpuf-step-label {
+    color: var(--wpuf-fe-text);
+    font-weight: 600;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item.completed-step .wpuf-step-label {
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend.wpuf-form-react .screen-reader-text {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Actions under the fields, in the flow (the classic sheet pins them absolutely to
+   the fieldset bottom): Previous left, Next right; on the last step Previous sits
+   in the submit row, left of the submit button. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset {
+    padding-bottom: 0;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset .multistep-button-area {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset .multistep-button-area--next-only {
+    justify-content: flex-end;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-nav-btn {
+    position: static !important;
+    margin: 0 !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset li.wpuf-submit.wpuf-submit--with-prev {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset li.wpuf-submit.wpuf-submit--with-prev input.wpuf-submit-button {
+    margin: 0 0 0 auto !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset li.wpuf-submit.wpuf-submit--with-prev > .wpuf-errors {
+    flex-basis: 100%;
+}
+
+/* Previous is the secondary action: outline in the kit's neutral colours (the
+   layout sheets paint it like Next with !important); size and shape stay the layout's. */
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-prev-btn {
+    color: var(--wpuf-fe-text) !important;
+    background: var(--wpuf-fe-surface) !important;
+    border: 1px solid var(--wpuf-fe-border) !important;
+    box-shadow: var(--wpuf-fe-shadow) !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-prev-btn:hover {
+    background: var(--wpuf-fe-hover) !important;
+}
+
+.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-nav-btn:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}

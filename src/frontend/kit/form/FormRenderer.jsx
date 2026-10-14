@@ -11,12 +11,13 @@
  *
  * @since WPUF_SINCE
  */
-import { Fragment, useCallback, useRef, useState } from '@wordpress/element';
+import { useCallback, useRef, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import Field from '../components/Field';
 import ServerHtml from '../components/ServerHtml';
 import { SelectModeContext } from '../components/Select';
 import { cx } from '../components/primitives';
+import { Check } from '../icons';
 import { fieldComponent } from '../fields';
 import { fieldKey } from './conditions';
 
@@ -46,19 +47,29 @@ function Progress( { type, steps, step } ) {
         );
     }
 
+    // Equal columns: each step is its circle with the label centred under it, the
+    // connector drawn from the previous circle (inside the item), so labels never
+    // run past the form edge. Class names stay classic: Pro's colour settings
+    // (Fields_Manager inline CSS) still paint the active / done circles and lines.
     return (
         <div className="wpuf-multistep-progressbar wizard-steps">
-            <div className="wpuf-step-wizard">
-                { steps.map( ( item, index ) => (
-                    <Fragment key={ index }>
-                        <div className={ cx( 'wpuf-step-item', index === step && 'active-step', index < step && 'completed-step' ) } data-step={ index } aria-current={ index === step ? 'step' : undefined }>
-                            <div className="wpuf-step-circle">{ index + 1 }</div>
-                            { /* translators: %d: step number */ }
-                            <div className="wpuf-step-label">{ item.title || sprintf( __( 'Step %d', 'wp-user-frontend' ), index + 1 ) }</div>
+            <div className="wpuf-step-wizard" role="list">
+                { steps.map( ( item, index ) => {
+                    const done = index < step;
+                    /* translators: %d: step number */
+                    const label = item.title || sprintf( __( 'Step %d', 'wp-user-frontend' ), index + 1 );
+
+                    return (
+                        <div key={ index } role="listitem" className={ cx( 'wpuf-step-item', index === step && 'active-step', done && 'completed-step' ) } data-step={ index } aria-current={ index === step ? 'step' : undefined }>
+                            { index > 0 && <div className={ cx( 'wpuf-step-line', index <= step && 'wpuf-step-line-active' ) } data-after-step={ index - 1 } aria-hidden="true" /> }
+                            <div className="wpuf-step-circle">
+                                { done ? <Check aria-hidden="true" /> : index + 1 }
+                                { done && <span className="screen-reader-text">{ __( 'Completed:', 'wp-user-frontend' ) }</span> }
+                            </div>
+                            <div className="wpuf-step-label">{ label }</div>
                         </div>
-                        { index < steps.length - 1 && <div className={ cx( 'wpuf-step-line', index < step && 'wpuf-step-line-active' ) } data-after-step={ index } /> }
-                    </Fragment>
-                ) ) }
+                    );
+                } ) }
             </div>
         </div>
     );
@@ -183,9 +194,12 @@ export default function FormRenderer( {
     // The classic form class, computed by the server (Frontend_Render_Form / Profile_Form::profile_edit).
     const styleClass = layout.form_class || '';
 
-    const submitRow = (
-    <li className="wpuf-submit" style={ submitHidden ? { display: 'none' } : undefined }>
-        { ! profile && <div className="wpuf-label">&nbsp;</div> }
+    // The submit row; on a multistep form's last step it also holds Previous (one
+    // action row: Previous left, submit right, like Previous / Next before it).
+    const renderSubmitRow = ( prev = null ) => (
+    <li className={ cx( 'wpuf-submit', prev && 'wpuf-submit--with-prev' ) } style={ submitHidden ? { display: 'none' } : undefined }>
+        { ! profile && ! prev && <div className="wpuf-label">&nbsp;</div> }
+        { prev }
         { slots.submit && <ServerHtml html={ slots.submit } slug="submit" className="wpuf-slot-inline" /> }
         <input
             type="submit"
@@ -290,29 +304,42 @@ export default function FormRenderer( {
 
                     { ( multistep ? steps.pre : schema.fields || [] ).map( renderField ) }
 
-                    { multistep && steps.list.map( ( item, index ) => (
-                        <fieldset key={ index } className={ cx( 'wpuf-multistep-fieldset', index === step && 'field-active' ) } style={ index === step ? undefined : { display: 'none' } }>
-                            <legend style={ { display: 'none' } }>{ item.title }</legend>
-                            <div className="multistep-button-area">
-                                { index > 0 && (
-                                    <button type="button" className="wpuf-multistep-prev-btn btn wpuf-multistep-nav-btn" onClick={ ( event ) => go( event, -1 ) }>
-                                        { item.prev || __( 'Previous', 'wp-user-frontend' ) }
-                                    </button>
-                                ) }
-                                { index < steps.list.length - 1 && (
-                                    <button type="button" className="wpuf-multistep-next-btn btn wpuf-multistep-nav-btn" onClick={ ( event ) => go( event, 1 ) }>
-                                        { item.next || __( 'Next', 'wp-user-frontend' ) }
-                                    </button>
-                                ) }
-                            </div>
-                            { item.fields.map( renderField ) }
-                            { /* The classic submit row sits in the last fieldset (shown on the last step only). */ }
-                            { index === steps.list.length - 1 && submitRow }
-                            { index === step && stepError && <div className="wpuf-errors">{ stepError }</div> }
-                        </fieldset>
-                    ) ) }
+                    { multistep && steps.list.map( ( item, index ) => {
+                        const last = index === steps.list.length - 1;
+                        const prev = index > 0 && (
+                            <button type="button" className="wpuf-multistep-prev-btn btn wpuf-multistep-nav-btn" onClick={ ( event ) => go( event, -1 ) }>
+                                { item.prev || __( 'Previous', 'wp-user-frontend' ) }
+                            </button>
+                        );
 
-                    { ! multistep && submitRow }
+                        return (
+                            <fieldset key={ index } className={ cx( 'wpuf-multistep-fieldset', index === step && 'field-active' ) } style={ index === step ? undefined : { display: 'none' } }>
+                                <legend style={ { display: 'none' } }>{ item.title }</legend>
+                                { item.fields.map( renderField ) }
+                                { index === step && stepError && <div className="wpuf-errors">{ stepError }</div> }
+                                { /* Actions under the fields: Previous / Next, or on the last step Previous
+                                     in the submit row (the classic submit row sits in the last fieldset). */ }
+                                { last && ( ! submitHidden || ! prev ) && renderSubmitRow( prev || null ) }
+                                { /* Submit hidden by its conditions: Previous keeps its own row. */ }
+                                { last && submitHidden && prev && (
+                                    <>
+                                        <div className="multistep-button-area">{ prev }</div>
+                                        { renderSubmitRow() }
+                                    </>
+                                ) }
+                                { ! last && (
+                                    <div className={ cx( 'multistep-button-area', ! prev && 'multistep-button-area--next-only' ) }>
+                                        { prev }
+                                        <button type="button" className="wpuf-multistep-next-btn btn wpuf-multistep-nav-btn" onClick={ ( event ) => go( event, 1 ) }>
+                                            { item.next || __( 'Next', 'wp-user-frontend' ) }
+                                        </button>
+                                    </div>
+                                ) }
+                            </fieldset>
+                        );
+                    } ) }
+
+                    { ! multistep && renderSubmitRow() }
 
                     { /* Profile_Form::action_links(): always an <li> for a visitor, empty when there are no links. */ }
                     { 'registration' === schema.mode ? <ServerHtml as="li" html={ slots.action_links || '' } slug="action_links" /> : null }

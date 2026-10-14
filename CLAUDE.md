@@ -11,7 +11,7 @@ The `.claude/skills/` directory has procedural HOW-TOs. **Invoke the matching sk
 | When you're about to… | Invoke |
 |---|---|
 | Write or modify PHP | [`wpuf-backend-dev`](.claude/skills/wpuf-backend-dev/SKILL.md) |
-| Write or modify Vue / JS / CSS | [`wpuf-frontend-dev`](.claude/skills/wpuf-frontend-dev/SKILL.md) |
+| Write or modify React / JS / CSS | [`wpuf-frontend-dev`](.claude/skills/wpuf-frontend-dev/SKILL.md) |
 | Review a PR or code change | [`wpuf-code-review`](.claude/skills/wpuf-code-review/SKILL.md) |
 
 ## Deeper Docs (read on demand)
@@ -58,8 +58,8 @@ Every admin screen runs on a FlyHR-style platform (`includes/Platform/`, `includ
 ```
 wp-user-frontend/
 ├── wpuf.php                # Main plugin file & bootstrap class
-├── wpuf-functions.php      # Global utility functions (6,782 lines)
-├── includes/               # PHP backend (166 files)
+├── wpuf-functions.php      # Loads the includes/functions/<domain>.php helpers
+├── includes/               # PHP backend (264 files)
 │   ├── Admin/              # Admin settings, menus, subscription management
 │   ├── Ajax/               # AJAX handlers (forms, uploads, addresses)
 │   ├── AI/                 # AI form builder (config, prompts, REST)
@@ -76,16 +76,12 @@ wp-user-frontend/
 │   ├── Platform/           # Container, providers, REST (Manager + Controllers), stores, Caps, Onboarding services
 │   ├── upgrades/           # Version migration scripts
 │   └── Abstracts/          # Abstract base classes
-├── src/                    # React admin apps and the two remaining Vue apps
+├── src/                    # React source (no Vue left)
 │   ├── admin/              # React admin: app/ (runtime), apps/<screen>/, shared/
-│   ├── components/         # Shared Vue components
-│   ├── css/                # Component styles
-│   ├── js/                 # JavaScript modules
-│   └── router/             # Vue Router config
-├── admin/                  # Legacy admin PHP files & form builder
-│   ├── form-builder/       # Drag-and-drop form builder (PHP + JS)
-│   └── html/               # Admin HTML templates
-├── form-builder/           # Form builder assets
+│   ├── frontend/           # React frontend: kit, forms, account (Modern frontend setting)
+│   ├── css/                # Admin + frontend source styles
+│   └── js/                 # Blocks, user directory
+├── admin/form-builder/views # Legacy builder PHP views still included
 ├── templates/              # Overridable PHP templates
 │   ├── dashboard/          # User dashboard templates
 │   ├── subscriptions/      # Subscription plan templates
@@ -112,7 +108,7 @@ wp-user-frontend/
 ```
 
 ### Key PHP Files
-- `wpuf-functions.php` — Global utility functions (6,782 lines, the largest file)
+- `wpuf-functions.php` — loads the global helpers split by domain under `includes/functions/`
 - `includes/Assets.php` — Script/style registration and enqueuing
 - `includes/Frontend_Render_Form.php` / `includes/Render_Form.php` — Core form rendering engine
 - `includes/User_Subscription.php` — Subscription plan management
@@ -125,15 +121,15 @@ Simple array-based container with magic `__get()`. Services accessed via `wpuf()
 `assets`, `subscription`, `fields`, `customize`, `bank`, `paypal`, `gateway_manager`, `api`, `integrations`, `ai_manager`, `admin`, `frontend`, `ajax`, `setup_wizard`, `pro_upgrades`, `privacy`, `widgets`, `tracker`, `free_loader`, `upgrades`
 
 ### Frontend Architecture
-- **Vue 3** (primary) for modern admin and frontend components, with Pinia state management and Vue Router
-- **jQuery** (legacy) for form builder and older frontend interactions
-- **Vite** builds the two Vue apps that remain (frontend-subscriptions, account); the admin lists, builders, subscriptions, settings and the AI form builder are React apps built with wp-scripts (`webpack.admin.config.js`)
+- **React** for every admin screen (`webpack.admin.config.js`, wp-scripts) and the optional React frontend (`webpack.frontend.config.js`); no Vue is left
+- **jQuery** (legacy) for the classic frontend forms and older frontend interactions
+- **Vite** builds two plain entries (`assets/js/frontend-subscriptions.js`, `assets/js/account.js`), no Vue
 - **Grunt** for legacy build tasks (LESS compilation, Tailwind CSS, release packaging)
 - **Tailwind CSS 3** with DaisyUI component library and scoped preflight
 - **LESS** (legacy) for older stylesheets
 
 ### REST API
-Namespace `wpuf/v1`. Controllers live in `includes/Platform/REST/Controllers/` on the `Platform\REST\RestController` base: the admin routes (`FormsController`, `ToolsController`, `TransactionsController`, `OnboardingController`) and the frozen routes (`FormListController`, `SubscriptionController`, `SettingsController`). The AI form builder keeps its controller with its feature (`includes/AI/RestController.php`); Pro adds its own under `wpuf-pro/includes/Platform/<Feature>/`. `Platform\REST\Manager` registers all of them once on `rest_api_init`; permissions come from `Platform\Caps`.
+Namespace `wpuf/v1`. Controllers live in `includes/Platform/REST/Controllers/` on the `Platform\REST\RestController` base: the admin routes (`FormsController`, `ToolsController`, `TransactionsController`, `SubscribersController`, `OnboardingController`), the frontend routes (`FormsPublicController`, `AccountController`, `UploadsController`) and the frozen routes (`FormListController`, `SubscriptionController`, `SettingsController`). The AI form builder keeps its controller with its feature (`includes/AI/RestController.php`); Pro adds its own under `wpuf-pro/includes/Platform/<Feature>/`. `Platform\REST\Manager` registers all of them once on `rest_api_init`; permissions come from `Platform\Caps`.
 
 ### Payment System
 Payment gateways managed through `Lib/Gateway/`:
@@ -161,7 +157,7 @@ Text, Textarea, Email, URL, Dropdown, MultiDropdown, Checkbox, Radio, Image, Fea
 - **Overridable templates** — themes can override templates from `templates/` directory
 - **Free/Pro split** — `includes/Free/Free_Loader.php` loads free-only features; Pro version detected via `WP_User_Frontend_Pro` class
 - **Form field contract** — all form fields implement `Field_Contract` for consistent rendering
-- **Legacy + modern coexistence** — jQuery form builder alongside Vue 3 components, LESS alongside Tailwind, Grunt alongside Vite
+- **Legacy + modern coexistence** — classic jQuery frontend alongside the React frontend, LESS alongside Tailwind, Grunt alongside Vite and wp-scripts
 - **Third-party integrations** — Dokan, WC Vendors, WC Marketplace, ACF, n8n, Events Calendar
 
 ## Testing

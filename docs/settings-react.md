@@ -1,9 +1,9 @@
 # WPUF Settings: how it works & how to add a setting
 
 The settings screen (`WPUF > Settings`) is a **React app** served entirely over
-the REST API. The legacy `WeDevs_Settings_API` screen still exists as a
-**fallback** (see _Legacy fallback_ below). Both read and write the **same
-options and keys**, so they stay in sync.
+the REST API. It is the only settings screen: the classic `WeDevs_Settings_API`
+screen and its switch were removed. The options and keys are the ones the
+classic screen used (`Lib/WeDevs_Settings_API.php` stays for its storage helpers and older Pro, it is no longer rendered).
 
 > **Golden rule: storage parity.** Never rename, reshape, or drop an existing
 > option key or value shape. Existing users' data must round-trip byte-identical
@@ -25,7 +25,7 @@ options and keys**, so they stay in sync.
    whatever the schema produces, dispatched by field `type` in `FieldRenderer.jsx`.
 
 Because rendering is schema-driven, **a field registered via the filter appears
-in both screens automatically**; no JS change needed for the common cases.
+on the screen automatically**; no JS change needed for the common cases.
 
 ---
 
@@ -43,20 +43,16 @@ $fields['wpuf_general'][] = [
 ];
 ```
 
-That's it: it renders in React **and** the legacy screen, and saves to
+That's it: it renders on the React screen and saves to
 `wpuf_general['my_option']`.
 
-### Supported `type`s (work in both screens)
+### Supported `type`s
 
 `text` · `url` · `password` · `number` · `textarea` · `wysiwyg` · `select` ·
 `checkbox` · `toggle` · `multicheck` · `radio` · `radio_inline` · `color` ·
-`file` · `html` · `gateway_selector` · `hidden`
+`file` · `html` · `gateway_selector` · `hidden` · `multiselect` · `pic-radio`
 
-> **`multiselect` and `pic-radio` render in React but NOT in the legacy screen.**
-> If you use them, also provide a `callback` (the legacy renders the callback;
-> React routes by type/name). A WP_DEBUG guard
-> (`wpuf_settings_legacy_compat_check`) logs a warning for any field the legacy
-> screen can't render; watch your debug log.
+A `callback` on a field is ignored by the React screen (it routes by type or name).
 
 ### Conditional fields
 
@@ -91,7 +87,7 @@ lives in their own option. These are routed in `FieldRenderer.jsx` /
 | `wpuf_base_country_state`, `wpuf_tax_rates` | tax UI | own options |
 | `PROVIDER_SECTIONS` (SMS / Social) | provider cards | per-provider keys |
 
-Each keeps the **legacy callback intact** (so the classic screen still works) and
+Each still carries its old `callback` (unused by React, kept for older Pro) and
 React routes by field name. If you add another own-option feature, mirror the
 existing pattern:
 
@@ -113,24 +109,7 @@ appended as their own tab, so nothing is ever hidden. Filterable via
 
 ---
 
-## Legacy fallback
-
-If the React screen ever misbehaves, switch to the classic screen:
-
-- **Per-request (no DB):** add `?wpuf_settings_ui=legacy` to the settings URL.
-- **Persistent:** the option `wpuf_settings_ui_mode` (`react` default | `legacy`),
-  toggled by the "Classic view" / "Switch to new settings" links (nonce-protected).
-- **Hard override:** `define( 'WPUF_LEGACY_SETTINGS', true );` or the
-  `wpuf_use_legacy_settings` filter.
-
-Both screens share storage, so switching never loses data.
-
-Planned (admin platform, D12): the mode becomes **per user** (user meta), with
-the site option as the default; precedence stays query arg > constant > option.
-
----
-
-## How the React screen saves (matches the legacy screen)
+## How the React screen saves (the classic screen's stored shapes)
 
 - The screen posts **only the fields the user changed** (`stores-react/settings/diff.js`)
   and only the `extra` keys that changed. Untouched values and own-option settings
@@ -167,6 +146,5 @@ the site option as the default; precedence stays query arg > constant > option.
 
 - A no-op save (open a tab, hit Save without editing) must leave every `wpuf_*`
   option byte-identical. Snapshot the options before/after and diff.
-- Check the WP_DEBUG log for the legacy-compat warning.
 - Run `composer phpcs` on changed PHP.
 </content>

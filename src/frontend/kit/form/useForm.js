@@ -1,7 +1,7 @@
 /**
  * The state of one form: values (from the schema's edit values or the
  * fields' defaults), errors, touched, the visible set under conditional
- * logic, and the steps (split on `step_start`).
+ * logic, and the steps (`{ pre, list }`, split on `step_start`).
  *
  * @since WPUF_SINCE
  */
@@ -85,27 +85,30 @@ export default function useForm( schema ) {
     } );
     const [ errors, setErrors ] = useState( {} );
     const [ touched, setTouched ] = useState( {} );
+    const [ step, setStep ] = useState( 0 );
 
     const visible = useMemo( () => visibleNames( schema.fields || [], values ), [ schema.fields, values ] );
 
+    /**
+     * The classic multistep split: fields before the first `step_start` stay
+     * outside the steps (always shown), every `step_start` opens a fieldset
+     * with its label as the legend.
+     */
     const steps = useMemo( () => {
-        const list = [ { title: '', fields: [] } ];
+        const pre = [];
+        const list = [];
 
         ( schema.fields || [] ).forEach( ( field ) => {
             if ( 'step_start' === field.template ) {
-                if ( list[ 0 ].fields.length || list.length > 1 ) {
-                    list.push( { title: field.label || '', fields: [] } );
-                } else {
-                    list[ 0 ].title = field.label || '';
-                }
+                list.push( { title: field.label || '', prev: field.step_start?.prev_button_text || '', next: field.step_start?.next_button_text || '', fields: [] } );
 
                 return;
             }
 
-            list[ list.length - 1 ].fields.push( field );
+            ( list.length ? list[ list.length - 1 ].fields : pre ).push( field );
         } );
 
-        return list;
+        return { pre, list };
     }, [ schema.fields ] );
 
     const setValue = useCallback( ( name, value ) => {
@@ -127,12 +130,15 @@ export default function useForm( schema ) {
     /** Validate the visible fields (of one step when given); returns the errors. */
     const validate = useCallback( ( fields = null ) => {
         const subject = flatten( fields || schema.fields || [] ).filter( ( field ) => field.name && visible.has( field.name ) );
-        const found = validateAll( subject, values );
+        const found = validateAll( subject, values, { schema } );
 
         setErrors( ( current ) => ( fields ? { ...current, ...found } : found ) );
 
         return found;
-    }, [ schema.fields, values, visible ] );
+    }, [ schema, values, visible ] );
 
-    return { all, values, setValue, setValues, errors, setErrors, touched, touch, visible, steps, validate };
+    /** The fields on screen: all of them, or the fields outside the steps plus the current step (multistep). */
+    const onScreen = useCallback( ( multistep ) => ( multistep && steps.list.length ? [ ...steps.pre, ...( steps.list[ step ] ? steps.list[ step ].fields : [] ) ] : schema.fields || [] ), [ steps, step, schema.fields ] );
+
+    return { all, values, setValue, setValues, errors, setErrors, touched, touch, visible, steps, step, setStep, onScreen, validate };
 }

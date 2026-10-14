@@ -157,6 +157,9 @@ class Account_Service {
     public function profile() {
         $user   = wp_get_current_user();
         $avatar = wpuf_get_user_avatar_data( $user, 96 );
+        // The cover photo field (Pro) saves an attachment id here; no cover falls back to the theme band.
+        $cover_id  = (int) get_user_meta( $user->ID, 'wpuf_cover_photo', true );
+        $cover_url = $cover_id ? wp_get_attachment_image_url( $cover_id, 'full' ) : '';
         $roles  = wp_roles()->get_names();
         $role   = ! empty( $user->roles ) ? $user->roles[0] : '';
 
@@ -175,6 +178,9 @@ class Account_Service {
             'avatar'       => [
                 'url'      => $avatar['url'] ? (string) $avatar['url'] : '',
                 'initials' => (string) $avatar['initials'],
+            ],
+            'cover'        => [
+                'url' => $cover_url ? (string) $cover_url : '',
             ],
             'edit_url'     => add_query_arg( [ 'section' => 'edit-profile' ], $this->page_url() ),
             'logout_url'   => wp_logout_url( $this->page_url() ),
@@ -510,10 +516,24 @@ class Account_Service {
             return new WP_Error( 'wpuf_account_unknown_section', __( 'This section is not available.', 'wp-user-frontend' ), [ 'status' => 404 ] );
         }
 
-        // The dashboard templates read the request the way the page would carry it.
+        // The dashboard templates read the request the way the page would carry it,
+        // and build their links (pagination: add_query_arg()) from the page URL,
+        // not from the REST route this may run under.
         $get             = $_GET; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $uri             = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+        $pagenum         = max( 1, (int) $pagenum );
         $_GET['section'] = $slug;
-        $_GET['pagenum'] = max( 1, (int) $pagenum );
+        $_GET['pagenum'] = $pagenum;
+
+        $page_path = wp_parse_url( $this->page_url(), PHP_URL_PATH );
+
+        $_SERVER['REQUEST_URI'] = add_query_arg(
+            [
+                'section' => $slug,
+                'pagenum' => $pagenum,
+            ],
+            $page_path ? $page_path : '/'
+        );
 
         ob_start();
 
@@ -523,9 +543,106 @@ class Account_Service {
         } finally {
             $html = ob_get_clean();
             $_GET = $get;
+
+            if ( null === $uri ) {
+                unset( $_SERVER['REQUEST_URI'] );
+            } else {
+                $_SERVER['REQUEST_URI'] = $uri;
+            }
         }
 
         return (string) $html;
+    }
+
+    /**
+     * The scripts and sheets a section enqueued while it rendered (the
+     * handles not in the queues given), with their dependencies, so the
+     * account app can load what the page lacks before it shows the section
+     * without a page load. Per script: src, localized data, inline before /
+     * after parts and translations; per sheet: src and inline after part.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $scripts Script queue before the section rendered
+     * @param array $styles  Style queue before the section rendered
+     *
+     * @return array{scripts: array, styles: array}
+     */
+    public function assets_since( array $scripts, array $styles ) {
+        return [
+            'scripts' => $this->dependency_assets( wp_scripts(), array_diff( wp_scripts()->queue, $scripts ), true ),
+            'styles'  => $this->dependency_assets( wp_styles(), array_diff( wp_styles()->queue, $styles ), false ),
+        ];
+    }
+
+    /**
+     * Resolve handles with their dependencies in load order and describe each.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param \WP_Dependencies $registry wp_scripts() or wp_styles()
+     * @param array            $handles  Newly enqueued handles
+     * @param bool             $script   Scripts (true) or sheets (false)
+     *
+     * @return array
+     */
+    protected function dependency_assets( $registry, array $handles, $script ) {
+        if ( empty( $handles ) ) {
+            return [];
+        }
+
+        // A copy resolves the order without touching what the request has printed.
+        $resolver        = clone $registry;
+        $resolver->to_do = [];
+        $resolver->done  = [];
+        $resolver->all_deps( array_values( $handles ) );
+
+        $out = [];
+
+        foreach ( $resolver->to_do as $handle ) {
+            $item = isset( $registry->registered[ $handle ] ) ? $registry->registered[ $handle ] : null;
+
+            if ( ! $item ) {
+                continue;
+            }
+
+            $src = '';
+
+            if ( $item->src ) {
+                $src = $item->src;
+
+                if ( ! preg_match( '|^(https?:)?//|', $src ) && ! ( $registry->content_url && 0 === strpos( $src, $registry->content_url ) ) ) {
+                    $src = $registry->base_url . $src;
+                }
+
+                $ver = null === $item->ver ? '' : ( $item->ver ? $item->ver : $registry->default_version );
+
+                if ( '' !== $ver ) {
+                    $src = add_query_arg( 'ver', $ver, $src );
+                }
+            }
+
+            $after = $registry->get_data( $handle, 'after' );
+            $asset = [
+                'handle' => $handle,
+                'src'    => $src ? esc_url_raw( $src ) : '',
+                'after'  => is_array( $after ) ? implode( "\n", array_filter( $after, 'is_string' ) ) : '',
+            ];
+
+            if ( $script ) {
+                $before        = $registry->get_data( $handle, 'before' );
+                $data          = $registry->get_data( $handle, 'data' );
+                $translations  = method_exists( $registry, 'print_translations' ) ? $registry->print_translations( $handle, false ) : '';
+                $asset['data'] = is_string( $data ) ? $data : '';
+
+                $asset['before']       = is_array( $before ) ? implode( "\n", array_filter( $before, 'is_string' ) ) : '';
+                $asset['translations'] = is_string( $translations ) ? $translations : '';
+            }
+
+            $out[] = $asset;
+        }
+
+        return $out;
     }
 
     /**
@@ -538,6 +655,9 @@ class Account_Service {
      * @return true|WP_Error
      */
     public function update_profile( array $input ) {
+        // The admin-side hooks the classic admin-ajax profile update has.
+        wpuf()->boot_submission_hooks();
+
         $current_user     = wp_get_current_user();
         $first_name       = ! empty( $input['first_name'] ) ? sanitize_text_field( $input['first_name'] ) : '';
         $last_name        = ! empty( $input['last_name'] ) ? sanitize_text_field( $input['last_name'] ) : '';

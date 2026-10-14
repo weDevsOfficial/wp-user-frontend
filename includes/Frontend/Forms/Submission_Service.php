@@ -11,6 +11,7 @@ namespace WeDevs\Wpuf\Frontend\Forms;
 use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Ajax\Frontend_Form_Ajax;
 use WeDevs\Wpuf\Platform\Http\Ajax_Abort;
+use WeDevs\Wpuf\Platform\Http\Request_Shim;
 use WeDevs\Wpuf\Platform\Stores\Stores;
 use WeDevs\Wpuf\Traits\FieldableTrait;
 use WP_Error;
@@ -22,17 +23,15 @@ use WP_Error;
  *
  * Compatibility shim: the legacy submit handler and about thirty of its
  * listeners (the WooCommerce product template among them) read `$_POST`
- * directly. `with_input()` therefore fills `$_POST` / `$_REQUEST` from the
- * service input for the duration of the call, slashed the way PHP delivers a
- * form post, and restores them afterwards. The REST payload is never trusted
- * more than a form post was: the same nonce, the same sanitising, the same
- * capability checks run.
+ * directly; `Request_Shim::with_input()` fills the superglobals from the
+ * service input for the duration of the call (see the trait).
  *
  * @since WPUF_SINCE
  */
 class Submission_Service {
 
     use FieldableTrait;
+    use Request_Shim;
 
     /**
      * Settings of the form being handled (the trait reads them).
@@ -79,6 +78,9 @@ class Submission_Service {
      * @return array|WP_Error The AJAX success payload (`redirect_to`, `show_message`, `message`, ...) or the error
      */
     public function submit( array $input, $slashed = false ) {
+        // The admin-side submission hooks a classic (admin-ajax) submit has.
+        wpuf()->boot_submission_hooks();
+
         return $this->with_input(
             $input,
             $slashed,
@@ -107,6 +109,8 @@ class Submission_Service {
      * @return array|WP_Error `post_id`, `url`, `message`, ... or the error
      */
     public function draft( array $input, $slashed = false ) {
+        wpuf()->boot_submission_hooks();
+
         return $this->with_input(
             $input,
             $slashed,
@@ -117,83 +121,6 @@ class Submission_Service {
 
                 return $this->save_draft();
             }
-        );
-    }
-
-    /**
-     * The `wpuf_form_add` nonce of the current input.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return bool
-     */
-    public function nonce_ok() {
-        $nonce = '';
-
-        foreach ( [ '_wpnonce', '_ajax_nonce', 'wpuf_nonce' ] as $key ) {
-            if ( ! empty( $_REQUEST[ $key ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- this is the nonce check.
-                $nonce = sanitize_key( wp_unslash( $_REQUEST[ $key ] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-                break;
-            }
-        }
-
-        return (bool) wp_verify_nonce( $nonce, 'wpuf_form_add' );
-    }
-
-    /**
-     * Run a handler with the service input in place of the request superglobals.
-     *
-     * @since WPUF_SINCE
-     *
-     * @param array    $input   Input
-     * @param bool     $slashed Whether $input is already slashed
-     * @param callable $handler Handler
-     *
-     * @return mixed
-     */
-    private function with_input( array $input, $slashed, callable $handler ) {
-        $post    = $_POST; // phpcs:ignore WordPress.Security.NonceVerification.Missing
-        $request = $_REQUEST; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-        $files   = isset( $_FILES ) ? $_FILES : []; // phpcs:ignore WordPress.Security.NonceVerification.Missing
-
-        $data = $slashed ? $input : wp_slash( $input );
-
-        // REST clients send the form nonce as `wpuf_nonce` because `_wpnonce`
-        // is the REST cookie nonce; the legacy handler reads `_wpnonce`.
-        if ( isset( $data['wpuf_nonce'] ) && ! isset( $data['_wpnonce'] ) ) {
-            $data['_wpnonce'] = $data['wpuf_nonce'];
-        }
-
-        $_POST    = $data;
-        $_REQUEST = array_merge( $request, $data );
-
-        // The legacy handler answers errors through wpuf()->ajax, which the
-        // plugin only builds for admin-ajax requests.
-        if ( ! isset( wpuf()->ajax ) ) {
-            wpuf()->init_ajax();
-        }
-
-        try {
-            return $handler();
-        } finally {
-            $_POST    = $post;
-            $_REQUEST = $request;
-            $_FILES   = $files;
-        }
-    }
-
-    /**
-     * The error for a missing or stale nonce.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return WP_Error
-     */
-    private function expired() {
-        return new WP_Error(
-            'wpuf_submit_expired',
-            __( 'Your session has expired. Please reload the page and try again.', 'wp-user-frontend' ),
-            [ 'status' => 403 ]
         );
     }
 

@@ -14,6 +14,7 @@ import { Button, EmptyState, ErrorState, Pagination, Tabs } from '@wpuf/componen
 import { ArrowLeft, Inbox, MessageSquare, SearchX } from 'lucide-react';
 import { Skeleton } from '@wedevs/plugin-ui';
 import { openRoute } from '../../../app/client';
+import { foldMenu, unfoldMenu } from '../../form-builder/skeleton';
 import SearchBar from './SearchBar';
 import TableSkeleton from './TableSkeleton';
 import { STATUS_BADGE_CLASSES } from '../utils/constants';
@@ -62,6 +63,15 @@ const SubmissionsPage = ( { formId } ) => {
     const [ loading, setLoading ] = useState( true );
     const [ error, setError ] = useState( null );
     const [ attempt, setAttempt ] = useState( 0 );
+
+    // Submissions is the builder's third tab: the WordPress menu folds to its
+    // icon rail like on Form Editor and Settings, and opens again on leave
+    // unless the user had it folded already.
+    useEffect( () => {
+        foldMenu();
+
+        return unfoldMenu;
+    }, [] );
 
     // Search waits for typing to pause, like the forms list.
     useEffect( () => {

@@ -200,7 +200,8 @@ class React_Assets implements Hookable {
             // Frontend React runtime and apps (Frontend\Renderer_Switch).
             'frontend-runtime'          => [
                 'src'       => WPUF_ASSET_URI . '/js/frontend/runtime.js',
-                'deps'      => $frontend_runtime['dependencies'],
+                // wp-api-request prints wpApiSettings (REST root + nonce) for the upload XHR.
+                'deps'      => array_values( array_unique( array_merge( $frontend_runtime['dependencies'], [ 'wp-api-request' ] ) ) ),
                 'version'   => $frontend_runtime['version'],
                 'in_footer' => true,
             ],
@@ -313,6 +314,11 @@ class React_Assets implements Hookable {
                 'src'     => WPUF_ASSET_URI . '/css/frontend/account-react.css',
                 'version' => $this->css_version( 'css/frontend/account-react.css' ),
                 'rtl'     => true,
+            ],
+            // The classic account sheet scoped to the PHP sections of the React account (tools/frontend-css/account-sections.mjs).
+            'frontend-react-account-sections' => [
+                'src'     => WPUF_ASSET_URI . '/css/frontend/account-sections.css',
+                'version' => $this->css_version( 'css/frontend/account-sections.css' ),
             ],
         ];
     }

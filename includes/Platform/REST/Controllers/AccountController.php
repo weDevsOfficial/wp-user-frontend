@@ -198,12 +198,15 @@ class AccountController extends RestController {
      * @return \WP_REST_Response|WP_Error
      */
     public function get_section( WP_REST_Request $request ) {
-        $html = $this->account->section_html( (string) $request['slug'], (int) $request['pagenum'] );
+        $scripts = wp_scripts()->queue;
+        $styles  = wp_styles()->queue;
+        $html    = $this->account->section_html( (string) $request['slug'], (int) $request['pagenum'] );
 
         return is_wp_error( $html ) ? $html : rest_ensure_response(
             [
-                'slug' => sanitize_text_field( (string) $request['slug'] ),
-                'html' => $html,
+                'slug'   => sanitize_text_field( (string) $request['slug'] ),
+                'html'   => $html,
+                'assets' => $this->account->assets_since( $scripts, $styles ),
             ]
         );
     }

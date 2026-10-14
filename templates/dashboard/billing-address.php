@@ -29,13 +29,12 @@ if ( isset( $_POST['update_billing_address'] ) ) {
     ];
     update_user_meta( $user_id, 'wpuf_address_fields', $address_fields );
     echo '<div class="wpuf-bg-green-50 wpuf-border wpuf-border-green-200 wpuf-text-green-800 wpuf-rounded-lg wpuf-p-4 wpuf-mb-6">' . esc_html( __( 'Billing address is updated.', 'wp-user-frontend' ) ) . '</div>';
-} else {
-    if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields' ) ) {
+} elseif ( metadata_exists( 'user', $user_id, 'wpuf_address_fields' ) ) {
         $address_fields = wpuf_get_user_address();
-    } else {
-        $address_fields = array_fill_keys(
-            [ 'add_line_1', 'add_line_2', 'city', 'state', 'zip_code', 'country' ], '' );
-    }
+} else {
+	$address_fields = array_fill_keys(
+        [ 'add_line_1', 'add_line_2', 'city', 'state', 'zip_code', 'country' ], ''
+    );
 }
 ?>
 
@@ -62,34 +61,41 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                 <span class="wpuf-text-red-500">*</span>
             </label>
             <?php
-            echo wp_kses( wpuf_select( [
-                    'options'          => $cs->countries(),
-                    'name'             => 'wpuf_biiling_country',
-                    'selected'         => $selected['country'],
-                    'show_option_all'  => false,
-                    'show_option_none' => false,
-                    'id'               => 'wpuf_biiling_country',
-                    'class'            => 'wpuf_biiling_country wpuf-w-full wpuf-rounded-md wpuf-border-gray-300 focus:wpuf-border-primary focus:wpuf-ring-primary',
-                    'chosen'           => false,
-                    'placeholder'      => __( 'Choose a country', 'wp-user-frontend' ),
-                    'data'             => [ 'required' => 'yes', 'type' => 'select' ],
-                ]
-            ), [
-                'select' => [
-                    'class'            => [],
-                    'name'             => [],
-                    'id'               => [],
-                    'data-placeholder' => [],
-                    'data-required'    => [],
-                    'data-type'        => [],
-                ],
-                'option' => [
-                    'value'    => [],
-                    'class'    => [],
-                    'id'       => [],
-                    'selected' => []
-                ],
-            ] ); ?>
+            echo wp_kses(
+                wpuf_select(
+                    [
+						'options'          => $cs->countries(),
+						'name'             => 'wpuf_biiling_country',
+						'selected'         => $selected['country'],
+						'show_option_all'  => false,
+						'show_option_none' => false,
+						'id'               => 'wpuf_biiling_country',
+						'class'            => 'wpuf_biiling_country wpuf-w-full wpuf-rounded-md wpuf-border wpuf-border-solid wpuf-border-gray-300 wpuf-bg-white wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-leading-5 wpuf-text-gray-900 wpuf-shadow-sm focus:wpuf-border-primary focus:wpuf-ring-primary',
+						'chosen'           => false,
+						'placeholder'      => __( 'Choose a country', 'wp-user-frontend' ),
+						'data'             => [
+							'required' => 'yes',
+							'type' => 'select',
+						],
+					]
+                ), [
+					'select' => [
+						'class'            => [],
+						'name'             => [],
+						'id'               => [],
+						'data-placeholder' => [],
+						'data-required'    => [],
+						'data-type'        => [],
+					],
+					'option' => [
+						'value'    => [],
+						'class'    => [],
+						'id'       => [],
+						'selected' => [],
+					],
+				]
+            );
+            ?>
         </div>
 
         <!-- State -->
@@ -99,34 +105,41 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                 <span class="wpuf-text-red-500">*</span>
             </label>
             <?php
-            echo wp_kses( wpuf_select( [
-                    'options'          => $states,
-                    'name'             => 'wpuf_biiling_state',
-                    'selected'         => $selected['state'],
-                    'show_option_all'  => false,
-                    'show_option_none' => false,
-                    'id'               => 'wpuf_biiling_state',
-                    'class'            => 'wpuf_biiling_state wpuf-w-full wpuf-rounded-md wpuf-border-gray-300 focus:wpuf-border-primary focus:wpuf-ring-primary',
-                    'chosen'           => false,
-                    'placeholder'      => __( 'Choose a state', 'wp-user-frontend' ),
-                    'data'             => [ 'required' => 'yes', 'type' => 'select' ],
-                ]
-            ), [
-                'select' => [
-                    'class'            => [],
-                    'name'             => [],
-                    'id'               => [],
-                    'data-placeholder' => [],
-                    'data-required'    => [],
-                    'data-type'        => [],
-                ],
-                'option' => [
-                    'value'    => [],
-                    'class'    => [],
-                    'id'       => [],
-                    'selected' => []
-                ],
-            ] ); ?>
+            echo wp_kses(
+                wpuf_select(
+                    [
+						'options'          => $states,
+						'name'             => 'wpuf_biiling_state',
+						'selected'         => $selected['state'],
+						'show_option_all'  => false,
+						'show_option_none' => false,
+						'id'               => 'wpuf_biiling_state',
+						'class'            => 'wpuf_biiling_state wpuf-w-full wpuf-rounded-md wpuf-border wpuf-border-solid wpuf-border-gray-300 wpuf-bg-white wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-leading-5 wpuf-text-gray-900 wpuf-shadow-sm focus:wpuf-border-primary focus:wpuf-ring-primary',
+						'chosen'           => false,
+						'placeholder'      => __( 'Choose a state', 'wp-user-frontend' ),
+						'data'             => [
+							'required' => 'yes',
+							'type' => 'select',
+						],
+					]
+                ), [
+					'select' => [
+						'class'            => [],
+						'name'             => [],
+						'id'               => [],
+						'data-placeholder' => [],
+						'data-required'    => [],
+						'data-type'        => [],
+					],
+					'option' => [
+						'value'    => [],
+						'class'    => [],
+						'id'       => [],
+						'selected' => [],
+					],
+				]
+            );
+            ?>
         </div>
     </div>
 
@@ -143,7 +156,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
             name="wpuf_biiling_add_line_1"
             id="wpuf_biiling_add_line_1"
             value="<?php echo esc_attr( $add_line_1 ); ?>"
-            class="wpuf-w-full wpuf-rounded-md wpuf-border-gray-300 focus:wpuf-border-primary focus:wpuf-ring-primary"
+            class="wpuf-w-full wpuf-rounded-md wpuf-border wpuf-border-solid wpuf-border-gray-300 wpuf-bg-white wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-leading-5 wpuf-text-gray-900 wpuf-shadow-sm focus:wpuf-border-primary focus:wpuf-ring-primary"
         />
     </div>
 
@@ -159,7 +172,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
             id="wpuf_biiling_add_line_2"
             data-type="text"
             value="<?php echo esc_attr( $add_line_2 ); ?>"
-            class="wpuf-w-full wpuf-rounded-md wpuf-border-gray-300 focus:wpuf-border-primary focus:wpuf-ring-primary"
+            class="wpuf-w-full wpuf-rounded-md wpuf-border wpuf-border-solid wpuf-border-gray-300 wpuf-bg-white wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-leading-5 wpuf-text-gray-900 wpuf-shadow-sm focus:wpuf-border-primary focus:wpuf-ring-primary"
         />
     </div>
 
@@ -177,7 +190,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                 id="wpuf_biiling_city"
                 data-type="text"
                 value="<?php echo esc_attr( $city ); ?>"
-                class="wpuf-w-full wpuf-rounded-md wpuf-border-gray-300 focus:wpuf-border-primary focus:wpuf-ring-primary"
+                class="wpuf-w-full wpuf-rounded-md wpuf-border wpuf-border-solid wpuf-border-gray-300 wpuf-bg-white wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-leading-5 wpuf-text-gray-900 wpuf-shadow-sm focus:wpuf-border-primary focus:wpuf-ring-primary"
             />
         </div>
 
@@ -194,7 +207,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                 id="wpuf_biiling_zip_code"
                 data-type="text"
                 value="<?php echo esc_attr( $zip_code ); ?>"
-                class="wpuf-w-full wpuf-rounded-md wpuf-border-gray-300 focus:wpuf-border-primary focus:wpuf-ring-primary"
+                class="wpuf-w-full wpuf-rounded-md wpuf-border wpuf-border-solid wpuf-border-gray-300 wpuf-bg-white wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-leading-5 wpuf-text-gray-900 wpuf-shadow-sm focus:wpuf-border-primary focus:wpuf-ring-primary"
             />
         </div>
     </div>

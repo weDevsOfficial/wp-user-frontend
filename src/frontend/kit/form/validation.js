@@ -6,20 +6,50 @@
  *
  * @since WPUF_SINCE
  */
+import { applyFilters } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
+import { LIMIT_ERROR } from '../components/Field';
+import { limitState } from '../fields/basic';
 
 const on = ( value ) => 'yes' === value || 'on' === value || true === value || 'true' === value;
 
-const isEmpty = ( value ) => {
+// The fields whose "- Select -" choice posts "-1" (frontend-form.js: `select` val === '-1').
+const SELECT_TEMPLATES = [ 'dropdown_field', 'taxonomy', 'country_list_field', 'time_field', 'gender_field', 'multiple_select' ];
+
+const isEmpty = ( value, field = {} ) => {
+    const none = ( v ) => '' === String( v ?? '' ).trim() || ( SELECT_TEMPLATES.includes( field.template ) && '-1' === String( v ) );
+
     if ( Array.isArray( value ) ) {
-        return 0 === value.filter( ( v ) => '' !== v && null !== v && undefined !== v ).length;
+        return 0 === value.filter( ( v ) => null !== v && undefined !== v && ! none( v ) ).length;
     }
 
-    return null === value || undefined === value || '' === String( value ).trim();
+    return null === value || undefined === value || none( value );
 };
 
 const words = ( text ) => String( text || '' ).trim().split( /\s+/ ).filter( Boolean ).length;
 const chars = ( text ) => String( text || '' ).trim().length;
+
+// frontend-form.js isValidEmail() / isValidURL(), as they are.
+// eslint-disable-next-line no-control-regex
+const CLASSIC_EMAIL = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i;
+const CLASSIC_URL = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/){1}[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,20}(:[0-9]{1,20})?(\/.*)?$/;
+
+/** The fields the classic form checks as e-mail (`data-type="email"`) and URL (`data-type="url"`). */
+export const EMAIL_TEMPLATES = [ 'email_address', 'secondary_email' ];
+export const URL_TEMPLATES = [ 'website_url' ];
+
+/** frontend-form.js editorContainingShortcode(): the first protected shortcode the content uses. */
+export const protectedShortcode = ( html, shortcodes ) => {
+    const content = String( html || '' ).trim().toLowerCase();
+
+    return ( Array.isArray( shortcodes ) ? shortcodes : [] ).find( ( shortcode ) => {
+        try {
+            return new RegExp( shortcode ).test( content );
+        } catch ( e ) {
+            return false;
+        }
+    } ) || '';
+};
 
 /** Templates whose value is a list of attachment ids. */
 export const UPLOAD_TEMPLATES = [ 'image_upload', 'featured_image', 'file_upload', 'profile_photo', 'cover_photo', 'avatar' ];
@@ -32,71 +62,55 @@ export const PASSIVE_TEMPLATES = [ 'section_break', 'custom_html', 'column_field
  * @param {*}      value Current value.
  * @return {string} An error message, or ''.
  */
-export function validateField( field, value ) {
-    if ( PASSIVE_TEMPLATES.includes( field.template ) ) {
+export function validateField( field, value, context = {} ) {
+    // Server-rendered fields (captcha plugins, map, signature, pricing) keep their classic markup and
+    // script: React holds no value for them, so the server and that script check them.
+    if ( PASSIVE_TEMPLATES.includes( field.template ) || field.server_rendered ) {
         return '';
     }
 
     const required = on( field.required );
 
-    if ( required && isEmpty( value ) ) {
-        return __( 'This field is required.', 'wp-user-frontend' );
+    // The classic messages: "<label> is required" / "<label> is not valid".
+    const label = field.label || __( 'This field', 'wp-user-frontend' );
+
+    if ( required && isEmpty( value, field ) ) {
+        /* translators: %s: field label */
+        return sprintf( __( '%s is required', 'wp-user-frontend' ), label );
     }
 
-    if ( isEmpty( value ) ) {
+    if ( isEmpty( value, field ) ) {
         return '';
     }
 
     const text = Array.isArray( value ) ? value.join( ' ' ) : String( value );
 
-    if ( 'email_address' === field.template && ! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test( text.trim() ) ) {
-        return __( 'Please enter a valid email address.', 'wp-user-frontend' );
+    if ( EMAIL_TEMPLATES.includes( field.template ) && ! CLASSIC_EMAIL.test( text ) ) {
+        /* translators: %s: field label */
+        return sprintf( __( '%s is not valid', 'wp-user-frontend' ), label );
     }
 
-    if ( 'website_url' === field.template && ! /^(https?:\/\/)?[^\s/$.?#].[^\s]*$/i.test( text.trim() ) ) {
-        return __( 'Please enter a valid URL.', 'wp-user-frontend' );
+    if ( URL_TEMPLATES.includes( field.template ) && ! CLASSIC_URL.test( text.trim() ) ) {
+        /* translators: %s: field label */
+        return sprintf( __( '%s is not valid', 'wp-user-frontend' ), label );
     }
 
-    if ( 'numeric_text_field' === field.template ) {
-        const number = Number( text );
+    // Numbers: frontend-form.js has no min / max check; the input's own min / max / step
+    // (type="number") stop the submit in the browser, as on the classic form.
 
-        if ( Number.isNaN( number ) ) {
-            return __( 'Please enter a number.', 'wp-user-frontend' );
-        }
+    // A rich editor using a protected shortcode (classic: "Using [shortcode] is restricted").
+    if ( ( 'post_content' === field.template || ( 'textarea_field' === field.template && field.rich && 'no' !== field.rich ) ) ) {
+        const found = protectedShortcode( text, context.schema?.protected_shortcodes );
 
-        if ( '' !== field.min_value_field && undefined !== field.min_value_field && number < Number( field.min_value_field ) ) {
-            /* translators: %s: minimum */
-            return sprintf( __( 'The value must be at least %s.', 'wp-user-frontend' ), field.min_value_field );
-        }
-
-        if ( '' !== field.max_value_field && undefined !== field.max_value_field && number > Number( field.max_value_field ) ) {
-            /* translators: %s: maximum */
-            return sprintf( __( 'The value must be at most %s.', 'wp-user-frontend' ), field.max_value_field );
+        if ( found ) {
+            /* translators: %shortcode% is the shortcode name */
+            return __( 'Using %shortcode% is restricted', 'wp-user-frontend' ).replace( '%shortcode%', `[${ found }]` );
         }
     }
 
-    const limit = Number( field.content_restriction );
-
-    if ( limit > 0 ) {
-        const by = 'word' === field.restriction_type ? 'word' : 'character';
-        const count = 'word' === by ? words( text ) : chars( text );
-        const to = 'min' === field.restriction_to ? 'min' : 'max';
-
-        if ( 'min' === to && count < limit ) {
-            return 'word' === by
-                /* translators: 1: number, 2: field label */
-                ? sprintf( __( 'Minimum %1$d word is required for %2$s', 'wp-user-frontend' ), limit, field.label )
-                /* translators: 1: number, 2: field label */
-                : sprintf( __( 'Minimum %1$d character is required for %2$s', 'wp-user-frontend' ), limit, field.label );
-        }
-
-        if ( 'max' === to && count > limit ) {
-            return 'word' === by
-                /* translators: 1: number, 2: field label */
-                ? sprintf( __( 'Maximum %1$d word is allowed for %2$s', 'wp-user-frontend' ), limit, field.label )
-                /* translators: 1: number, 2: field label */
-                : sprintf( __( 'Maximum %1$d character is allowed for %2$s', 'wp-user-frontend' ), limit, field.label );
-        }
+        // A broken content limit: the word-limit span shows the classic message, the row only turns red.
+    if ( limitState( field, Array.isArray( value ) ? value.join( ' ' ) : value ).violated ) {
+        return LIMIT_ERROR;
     }
 
     if ( UPLOAD_TEMPLATES.includes( field.template ) && Array.isArray( value ) ) {
@@ -116,13 +130,23 @@ export function validateField( field, value ) {
  *
  * @param {Array}       fields  Fields (flat, visible ones).
  * @param {Object}      values  name => value
+ * @param {Object}      [context] `{ schema }`
  * @return {Object} name => message
  */
-export function validateAll( fields, values ) {
+export function validateAll( fields, values, context = {} ) {
     const errors = {};
 
     fields.forEach( ( field ) => {
-        const error = validateField( field, values[ field.name ] );
+        /**
+         * Filters the message of one field's validation ('' = valid). Pro adds
+         * its own rules here (password length / match, phone format).
+         *
+         * @param {string} message The kit's message.
+         * @param {Object} field   Field settings.
+         * @param {*}      value   Value.
+         * @param {Object} context `{ schema, values }`.
+         */
+        const error = applyFilters( 'wpuf.frontend.form.validateField', validateField( field, values[ field.name ], context ), field, values[ field.name ], { ...context, values } );
 
         if ( error ) {
             errors[ field.name ] = error;

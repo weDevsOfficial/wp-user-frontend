@@ -19,7 +19,7 @@ use WP_REST_Server;
 /**
  * `wpuf/v1/forms/{id}/...` for the React post form. Public only where the
  * form itself is public (guest posting); every write carries the form nonce
- * the schema handed out, guests are rate limited, and the submit runs the
+ * the schema handed out, and the submit runs the
  * same service (and therefore the same validation, hooks and redirects) as
  * the admin-ajax action.
  *
@@ -49,7 +49,7 @@ class FormsPublicController extends RestController {
     private $submissions;
 
     /**
-     * Rate limiter.
+     * Rate limiter (not applied yet: the per-IP limits come back with a later enhancement).
      *
      * @var Rate_Limit
      */
@@ -105,17 +105,43 @@ class FormsPublicController extends RestController {
 					'type'    => 'integer',
 					'default' => 0,
 				],
+				'search'   => [
+					'type'              => 'string',
+					'default'           => '',
+					'sanitize_callback' => 'sanitize_text_field',
+				],
 			]
         );
         $this->route( '/forms/(?P<id>\d+)/embed', WP_REST_Server::CREATABLE, 'get_embed', [ $this, 'can_edit' ], $id );
         $this->route(
-            '/forms/(?P<id>\d+)/states', WP_REST_Server::READABLE, 'get_states', [ $this, 'can_read' ], $id + [
+            '/forms/(?P<id>\d+)/states', WP_REST_Server::READABLE, 'get_states', [ $this, 'can_read_states' ], $id + [
 				'country' => [
 					'type'     => 'string',
 					'required' => true,
 				],
 			]
         );
+    }
+
+    /**
+     * The states list of the address field: public data (the country / state
+     * names). A post form follows `can_read`; a published profile form
+     * (Pro registration / profile) is open to the visitor filling it.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Request
+     *
+     * @return true|WP_Error
+     */
+    public function can_read_states( WP_REST_Request $request ) {
+        $form_id = (int) $request['id'];
+
+        if ( 'wpuf_profile' === get_post_type( $form_id ) && 'publish' === get_post_status( $form_id ) ) {
+            return true;
+        }
+
+        return $this->can_read( $request );
     }
 
     /**
@@ -142,7 +168,7 @@ class FormsPublicController extends RestController {
     }
 
     /**
-     * Submitting: `can_read` plus the rate limit for guests. The form nonce
+     * Submitting: `can_read` (no rate limit, as the classic path; planned later). The form nonce
      * is checked by the service, the captcha by the legacy validator.
      *
      * @since WPUF_SINCE
@@ -156,10 +182,6 @@ class FormsPublicController extends RestController {
 
         if ( true !== $read ) {
             return $read;
-        }
-
-        if ( ! is_user_logged_in() && ! $this->limiter->allow( 'submit', 10, MINUTE_IN_SECONDS ) ) {
-            return $this->error( 'rate_limited', __( 'Too many submissions. Please wait a minute and try again.', 'wp-user-frontend' ), 429 );
         }
 
         return true;
@@ -262,7 +284,9 @@ class FormsPublicController extends RestController {
     }
 
     /**
-     * GET /forms/{id}/terms: the child terms of a taxonomy field (the ajax category picker).
+     * GET /forms/{id}/terms: the child terms of a taxonomy field, or with
+     * `search` the terms whose name matches (the suggestions of the text /
+     * ajax taxonomy input, as `wpuf_ajax_tag_search` gives them; 20 at most).
      *
      * @since WPUF_SINCE
      *
@@ -281,13 +305,20 @@ class FormsPublicController extends RestController {
             return $this->error( 'bad_taxonomy', __( 'Unknown taxonomy.', 'wp-user-frontend' ), 400 );
         }
 
-        $terms = get_terms(
-            [
-                'taxonomy'   => $taxonomy,
-                'parent'     => (int) $request['parent'],
-                'hide_empty' => false,
-            ]
-        );
+        $search = trim( (string) $request['search'] );
+        $args   = [
+            'taxonomy'   => $taxonomy,
+            'hide_empty' => false,
+        ];
+
+        if ( '' !== $search ) {
+            $args['search'] = $search;
+            $args['number'] = 20;
+        } else {
+            $args['parent'] = (int) $request['parent'];
+        }
+
+        $terms = get_terms( $args );
 
         if ( is_wp_error( $terms ) ) {
             return $terms;

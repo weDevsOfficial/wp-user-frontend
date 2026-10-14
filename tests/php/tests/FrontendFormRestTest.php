@@ -303,4 +303,23 @@ class FrontendFormRestTest extends WP_UnitTestCase {
         $this->assertSame( 'Invalid email address.', $error->get_error_message() );
         $this->assertFalse( \WeDevs\Wpuf\Platform\Http\Ajax_Abort::collecting(), 'the collect depth is reset' );
     }
+
+    public function test_submit_builds_the_admin_side_submission_hooks_once() {
+        // A classic submit runs on admin-ajax with the admin layer built; the REST submit
+        // builds its submission hooks (post templates, then add-ons on the action) itself.
+        $user_id = self::factory()->user->create( [ 'role' => 'subscriber' ] );
+        wp_set_current_user( $user_id );
+        $form_id = $this->form();
+
+        $this->assertSame( 0, did_action( 'wpuf_frontend_submission_hooks' ) );
+
+        $this->request( 'POST', '/wpuf/v1/forms/' . $form_id . '/submissions', $this->submission( $form_id ) );
+        $this->request( 'POST', '/wpuf/v1/forms/' . $form_id . '/submissions', $this->submission( $form_id ) );
+
+        $this->assertSame( 1, did_action( 'wpuf_frontend_submission_hooks' ), 'once per request' );
+        $this->assertTrue(
+            wpuf()->platform()->has( \WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Templates::class ),
+            'the post form templates service is built for the submit'
+        );
+    }
 }

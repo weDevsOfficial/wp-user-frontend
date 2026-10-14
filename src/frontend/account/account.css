@@ -1,125 +1,48 @@
 /**
- * The React account page in the FlyHR profile layout: header card, sticky
- * left rail, content column; stats strip and cards from the kit. Every
+ * The React account page: an app frame with the profile hero on top
+ * (cover band, avatar over its edge, name, member pill, @username, role
+ * and Edit Profile), below it the left sidebar (section nav, sign out)
+ * beside the section content. Built on the kit's --wpuf-fe-* tokens. Every
  * rule under `.wpuf-frontend`; the classic container classes stay for CSS
  * written against them.
  */
 
 .wpuf-frontend .wpuf-account-shell {
+    /* One corner scale for the whole account: controls, cards, frame. */
+    --wpuf-fe-radius: 8px;
+    --wpuf-fe-radius-lg: 12px;
+    --wpuf-fe-radius-xl: 16px;
+    --wpuf-fe-cover: linear-gradient(120deg, var(--wpuf-fe-primary) 0%, #374151 55%, #6b7280 100%);
     display: flex;
     flex-direction: column;
-    gap: 24px;
     width: 100%;
     margin: 0;
     padding: 0;
-    background: transparent;
-    /* The layout keys off the container the theme gives us, not the viewport:
-       a 620px content column stacks the rail, a wide one puts it beside. */
+    background: var(--wpuf-fe-surface);
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius-xl);
+    box-shadow: var(--wpuf-fe-shadow);
+    overflow: hidden;
+}
+
+/* The layout keys off the column the theme gives the app root, not the
+   viewport: a narrow column stacks the sidebar, a wide one puts it beside. */
+.wpuf-frontend.wpuf-account-react {
     container-type: inline-size;
     container-name: wpuf-account;
 }
 
-/* ---- Header card ---- */
-.wpuf-frontend .wpuf-profile-header {
-    background: var(--wpuf-surface);
-    border: 1px solid var(--wpuf-border);
-    border-radius: var(--wpuf-radius-lg);
-    box-shadow: var(--wpuf-shadow);
-    padding: 24px;
-    text-align: start;
-}
-
-.wpuf-frontend .wpuf-profile-header__main {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 20px;
-}
-
-.wpuf-frontend .wpuf-profile-header__text {
-    flex: 1;
-    min-width: 200px;
-}
-
-.wpuf-frontend .wpuf-profile-header__name-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 12px;
-}
-
-.wpuf-frontend .wpuf-profile-name {
-    margin: 0;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 1.3;
-    color: var(--wpuf-text);
-}
-
-.wpuf-frontend .wpuf-profile-header__line {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin: 8px 0 0;
-    color: var(--wpuf-muted);
-    overflow-wrap: anywhere;
-}
-
-.wpuf-frontend .wpuf-profile-header__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.wpuf-frontend .wpuf-profile-header__meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 20px -24px 0;
-    padding: 16px 24px 0;
-    border-top: 1px solid var(--wpuf-border);
-}
-
-.wpuf-frontend .wpuf-meta-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    border: 1px solid var(--wpuf-border);
-    border-radius: 999px;
-    background: var(--wpuf-soft);
-    color: var(--wpuf-text);
-    font-size: 12px;
-    text-decoration: none;
-}
-
-.wpuf-frontend a.wpuf-meta-pill:hover {
-    border-color: #d1d5db;
-    color: var(--wpuf-text);
-}
-
-/* ---- Body: rail + content ---- */
-.wpuf-frontend .wpuf-account-body {
+/* ---- Sidebar ---- */
+.wpuf-frontend .wpuf-account-sidebar {
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    align-items: flex-start;
-}
-
-.wpuf-frontend .wpuf-account-sidebar {
+    gap: 8px;
     width: 100%;
     flex: none;
     margin: 0;
-    padding: 0;
-    background: transparent;
-}
-
-.wpuf-frontend .wpuf-account-nav {
-    background: var(--wpuf-surface);
-    border: 1px solid var(--wpuf-border);
-    border-radius: var(--wpuf-radius-lg);
-    box-shadow: var(--wpuf-shadow);
-    padding: 12px;
+    padding: 16px;
+    background: var(--wpuf-fe-surface);
+    border-bottom: 1px solid var(--wpuf-fe-border);
 }
 
 .wpuf-frontend .wpuf-account-nav ul {
@@ -128,7 +51,7 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
 }
 
 .wpuf-frontend .wpuf-account-nav li {
@@ -136,45 +59,199 @@
     padding: 0;
 }
 
+.wpuf-frontend .wpuf-account-nav .wpuf-account-nav-item {
+    color: var(--wpuf-fe-muted);
+    border-radius: var(--wpuf-fe-radius);
+}
+
+.wpuf-frontend .wpuf-account-nav .wpuf-account-nav-item:hover {
+    background: var(--wpuf-fe-soft);
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-account-nav .wpuf-account-nav-item.active {
+    background: var(--wpuf-fe-hover);
+    color: var(--wpuf-fe-text);
+    font-weight: 600;
+}
+
+.wpuf-frontend .wpuf-account-nav .wpuf-account-nav-item.active .wpuf-account-nav-item__icon {
+    color: var(--wpuf-fe-primary);
+}
+
+.wpuf-frontend .wpuf-logout-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--wpuf-fe-radius);
+    color: var(--wpuf-fe-danger);
+    font-size: var(--wpuf-fe-size);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.wpuf-frontend .wpuf-logout-link:hover {
+    background: var(--wpuf-fe-danger-soft);
+    color: var(--wpuf-fe-danger);
+}
+
 .wpuf-frontend .wpuf-account-menu-toggle {
     display: none;
 }
 
+/* ---- Body: sidebar + content ---- */
+.wpuf-frontend .wpuf-account-body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* ---- Profile hero ---- */
+.wpuf-frontend .wpuf-profile-header {
+    padding: 0;
+    text-align: start;
+    background: var(--wpuf-fe-surface);
+}
+
+.wpuf-frontend .wpuf-profile-cover {
+    height: 140px;
+    overflow: hidden;
+    background: var(--wpuf-fe-cover);
+}
+
+.wpuf-frontend .wpuf-profile-cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    object-fit: cover;
+}
+
+.wpuf-frontend .wpuf-profile-header__main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 12px 16px;
+    padding: 0 20px 20px;
+}
+
+.wpuf-frontend .wpuf-profile-header .wpuf-profile-avatar {
+    flex: none;
+    margin-top: -40px;
+    border: 4px solid var(--wpuf-fe-surface);
+    border-radius: 999px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    background-color: var(--wpuf-fe-primary);
+}
+
+.wpuf-frontend .wpuf-profile-header__text {
+    flex: 1;
+    min-width: 200px;
+    padding-top: 12px;
+}
+
+.wpuf-frontend .wpuf-profile-header__name-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+}
+
+.wpuf-frontend .wpuf-profile-name {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-profile-username {
+    margin: 0;
+    color: var(--wpuf-fe-muted);
+    font-size: var(--wpuf-fe-size);
+}
+
+.wpuf-frontend .wpuf-profile-header__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding-top: 12px;
+}
+
+.wpuf-frontend .wpuf-meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: 999px;
+    background: var(--wpuf-fe-surface);
+    color: var(--wpuf-fe-muted);
+    font-size: 12px;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.wpuf-frontend a.wpuf-meta-pill:hover {
+    border-color: #d1d5db;
+    color: var(--wpuf-fe-text);
+}
+
+/* ---- Section content ---- */
 .wpuf-frontend .wpuf-account-content {
     flex: 1;
     min-width: 0;
     width: 100%;
     margin: 0;
-    padding: 0;
-    background: transparent;
+    padding: 20px;
+    background: var(--wpuf-fe-soft);
     display: flex;
     flex-direction: column;
     gap: 24px;
 }
 
-@container wpuf-account (min-width: 860px) {
+@container wpuf-account (min-width: 760px) {
     .wpuf-frontend .wpuf-account-body {
         flex-direction: row;
     }
 
     .wpuf-frontend .wpuf-account-sidebar {
-        width: 240px;
-        position: sticky;
-        top: 88px;
+        width: 230px;
+        padding: 8px 16px 24px;
+        border-bottom: 0;
     }
-}
 
-@container wpuf-account (min-width: 860px) {
-    .wpuf-frontend .wpuf-account-menu-toggle {
-        display: none;
+    .wpuf-frontend .wpuf-account-sidebar .wpuf-logout-link {
+        margin-top: auto;
     }
 
     .wpuf-frontend .wpuf-account-nav {
-        display: block;
+        position: sticky;
+        top: 56px;
+    }
+
+    /* The grey panel's own rounded corner and edge separate it from the
+       hero and the sidebar (no hard T-joint of two lines). */
+    .wpuf-frontend .wpuf-account-content {
+        padding: 28px 32px 32px;
+        border-top: 1px solid var(--wpuf-fe-border);
+        border-inline-start: 1px solid var(--wpuf-fe-border);
+        border-start-start-radius: var(--wpuf-fe-radius-xl);
+    }
+
+    .wpuf-frontend .wpuf-profile-header__main {
+        padding: 0 32px 24px;
+    }
+
+    .wpuf-frontend .wpuf-profile-cover {
+        height: 160px;
     }
 }
 
-@container wpuf-account (max-width: 859.98px) {
+@container wpuf-account (max-width: 759.98px) {
     .wpuf-frontend .wpuf-account-menu-toggle {
         display: flex;
         align-items: center;
@@ -182,10 +259,10 @@
         width: 100%;
         min-height: 44px;
         padding: 10px 14px;
-        border: 1px solid var(--wpuf-border);
-        border-radius: var(--wpuf-radius-lg);
-        background: var(--wpuf-surface);
-        color: var(--wpuf-text);
+        border: 1px solid var(--wpuf-fe-border);
+        border-radius: var(--wpuf-fe-radius-lg);
+        background: var(--wpuf-fe-surface);
+        color: var(--wpuf-fe-text);
         font: inherit;
         font-weight: 600;
         cursor: pointer;
@@ -193,11 +270,18 @@
 
     .wpuf-frontend .wpuf-account-nav {
         display: none;
-        margin-top: 8px;
     }
 
     .wpuf-frontend .wpuf-account-nav.is-open {
         display: block;
+    }
+
+    .wpuf-frontend .wpuf-account-sidebar .wpuf-logout-link {
+        display: none;
+    }
+
+    .wpuf-frontend .wpuf-account-nav.is-open + .wpuf-logout-link {
+        display: flex;
     }
 }
 
@@ -216,11 +300,11 @@
 
 .wpuf-frontend .wpuf-overview__links {
     margin: 0;
-    color: var(--wpuf-muted);
+    color: var(--wpuf-fe-muted);
 }
 
 .wpuf-frontend .wpuf-overview__links a {
-    color: var(--wpuf-text);
+    color: var(--wpuf-fe-text);
     text-decoration: underline;
 }
 
@@ -234,12 +318,12 @@
     font-size: 24px;
     font-weight: 700;
     line-height: 1.3;
-    color: var(--wpuf-text);
+    color: var(--wpuf-fe-text);
 }
 
 .wpuf-frontend .wpuf-section-head__lead {
     margin: 6px 0 0;
-    color: var(--wpuf-muted);
+    color: var(--wpuf-fe-muted);
 }
 
 /* ---- Posts table ---- */
@@ -255,7 +339,7 @@
 .wpuf-frontend .wpuf-posts-card .wpuf-pagination {
     padding: 16px;
     margin: 0;
-    border-top: 1px solid var(--wpuf-border);
+    border-top: 1px solid var(--wpuf-fe-border);
 }
 
 .wpuf-frontend .wpuf-empty {
@@ -280,7 +364,7 @@
     text-align: start;
     vertical-align: middle;
     border: 0;
-    border-bottom: 1px solid var(--wpuf-border);
+    border-bottom: 1px solid var(--wpuf-fe-border);
     background: transparent;
 }
 
@@ -289,8 +373,8 @@
     font-weight: 500;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--wpuf-muted);
-    background: var(--wpuf-soft);
+    color: var(--wpuf-fe-muted);
+    background: var(--wpuf-fe-soft);
 }
 
 .wpuf-frontend .wpuf-table tbody tr:last-child td {
@@ -298,7 +382,7 @@
 }
 
 .wpuf-frontend .wpuf-table tbody tr:hover td {
-    background: var(--wpuf-soft);
+    background: var(--wpuf-fe-soft);
 }
 
 .wpuf-frontend .wpuf-table__title {
@@ -306,7 +390,7 @@
 }
 
 .wpuf-frontend .wpuf-table__title a {
-    color: var(--wpuf-text);
+    color: var(--wpuf-fe-text);
     text-decoration: none;
 }
 
@@ -322,9 +406,9 @@
     display: block;
     width: 56px;
     height: 56px;
-    border-radius: 6px;
+    border-radius: var(--wpuf-fe-radius);
     object-fit: cover;
-    background: var(--wpuf-hover);
+    background: var(--wpuf-fe-hover);
 }
 
 .wpuf-frontend .wpuf-table__actions {
@@ -338,8 +422,8 @@
 }
 
 .wpuf-frontend .wpuf-row-actions__delete:hover:not(:disabled) {
-    color: var(--wpuf-danger);
-    background: var(--wpuf-danger-soft);
+    color: var(--wpuf-fe-danger);
+    background: var(--wpuf-fe-danger-soft);
 }
 
 @media (max-width: 640px) {
@@ -350,7 +434,7 @@
     .wpuf-frontend .wpuf-table tr {
         display: block;
         padding: 8px 0;
-        border-bottom: 1px solid var(--wpuf-border);
+        border-bottom: 1px solid var(--wpuf-fe-border);
     }
 
     .wpuf-frontend .wpuf-table td {
@@ -364,7 +448,7 @@
     .wpuf-frontend .wpuf-table td::before {
         content: attr(data-label);
         font-size: 12px;
-        color: var(--wpuf-muted);
+        color: var(--wpuf-fe-muted);
     }
 
     .wpuf-frontend .wpuf-table__actions {
@@ -401,11 +485,11 @@
 
 .wpuf-frontend .wpuf-form-label {
     font-weight: 600;
-    color: var(--wpuf-text);
+    color: var(--wpuf-fe-text);
 }
 
 .wpuf-frontend .wpuf-form-label .required {
-    color: var(--wpuf-danger);
+    color: var(--wpuf-fe-danger);
 }
 
 .wpuf-frontend .wpuf-form-control {
@@ -417,12 +501,12 @@
     width: 100%;
     min-height: 40px;
     padding: 8px 12px;
-    border: 1px solid var(--wpuf-border);
-    border-radius: var(--wpuf-radius);
-    background: var(--wpuf-surface);
-    color: var(--wpuf-text);
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius);
+    background: var(--wpuf-fe-surface);
+    color: var(--wpuf-fe-text);
     font: inherit;
-    font-size: var(--wpuf-size);
+    font-size: var(--wpuf-fe-size);
     line-height: 1.4;
     box-shadow: none;
     margin: 0;
@@ -430,12 +514,12 @@
 
 .wpuf-frontend .wpuf-form-input:focus {
     outline: none;
-    border-color: var(--wpuf-primary);
-    box-shadow: var(--wpuf-focus);
+    border-color: var(--wpuf-fe-primary);
+    box-shadow: var(--wpuf-fe-focus);
 }
 
 .wpuf-frontend .has-error .wpuf-form-input {
-    border-color: var(--wpuf-danger);
+    border-color: var(--wpuf-fe-danger);
 }
 
 .wpuf-frontend .wpuf-form-eye {
@@ -446,7 +530,7 @@
     background: transparent;
     border: 0;
     padding: 4px;
-    color: var(--wpuf-muted);
+    color: var(--wpuf-fe-muted);
     cursor: pointer;
     display: inline-flex;
 }
@@ -454,14 +538,14 @@
 .wpuf-frontend .wpuf-form-fieldset {
     margin: 8px 0 20px;
     padding: 16px;
-    border: 1px solid var(--wpuf-border);
-    border-radius: var(--wpuf-radius);
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius);
 }
 
 .wpuf-frontend .wpuf-form-fieldset legend {
     padding: 0 6px;
     font-weight: 600;
-    color: var(--wpuf-text);
+    color: var(--wpuf-fe-text);
 }
 
 .wpuf-frontend .wpuf-form-actions {
@@ -472,7 +556,7 @@
 .wpuf-frontend .wpuf-error-msg {
     display: block;
     font-size: 12px;
-    color: var(--wpuf-danger);
+    color: var(--wpuf-fe-danger);
 }
 
 /* ---- Server HTML sections keep the classic Tailwind look of their templates ---- */
@@ -485,8 +569,6 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
-    container-type: inline-size;
-    container-name: wpuf-account;
 }
 
 .wpuf-frontend .wpuf-account-boot .wpuf-skeleton-row {
@@ -495,7 +577,7 @@
     padding: 10px 12px;
 }
 
-@container wpuf-account (min-width: 860px) {
+@container wpuf-account (min-width: 760px) {
     .wpuf-frontend .wpuf-account-boot {
         flex-direction: row;
         align-items: flex-start;
@@ -504,4 +586,343 @@
     .wpuf-frontend .wpuf-account-boot .wpuf-account-sidebar {
         width: 240px;
     }
+}
+
+/* ---- One button look in the account ----
+   The PHP sections (billing Update, invoices, subscription) and the post
+   form inside Submit Post bring their own button styles; they take the kit
+   primary button's size, radius and type so every action matches. */
+.wpuf-frontend .wpuf-account-content .wpuf-account-html button[type="submit"],
+.wpuf-frontend .wpuf-account-content .wpuf-account-html input[type="submit"],
+.wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-btn-primary,
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit input[type="submit"],
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit button[type="submit"],
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit .wpuf-submit-button {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: auto !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 40px !important;
+    padding: 8px 20px !important;
+    border: 1px solid transparent !important;
+    border-radius: var(--wpuf-fe-radius) !important;
+    background: var(--wpuf-fe-primary) !important;
+    color: var(--wpuf-fe-primary-text) !important;
+    font-family: inherit !important;
+    font-size: var(--wpuf-fe-size) !important;
+    font-weight: 500 !important;
+    line-height: 1.25 !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    cursor: pointer;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-account-html button[type="submit"]:hover,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html input[type="submit"]:hover,
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit input[type="submit"]:hover,
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit button[type="submit"]:hover,
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit .wpuf-submit-button:hover {
+    background: var(--wpuf-fe-primary-hover) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-account-html button[type="submit"]:focus-visible,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html input[type="submit"]:focus-visible,
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit input[type="submit"]:focus-visible,
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit .wpuf-submit-button:focus-visible {
+    outline: none;
+    box-shadow: var(--wpuf-fe-focus) !important;
+}
+
+/* ---- Corners of the parts the account hosts ----
+   PHP sections (classic Tailwind rounded-* classes, fields), the post form
+   inside Submit Post and the chat follow the same scale. */
+.wpuf-frontend .wpuf-account-content .wpuf-account-html input:not([type="checkbox"]):not([type="radio"]),
+.wpuf-frontend .wpuf-account-content .wpuf-account-html select,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html textarea,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-rounded,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-rounded-md,
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields select,
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields textarea,
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields .wpuf-file-input-wrapper,
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields .wpuf-button,
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields .wp-editor-wrap {
+    border-radius: var(--wpuf-fe-radius) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-rounded-lg,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-rounded-xl,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-rounded-2xl,
+.wpuf-frontend .wpuf-account-content .wpuf-pm {
+    border-radius: var(--wpuf-fe-radius-lg) !important;
+}
+
+/* The post / profile form box inside a section: the card corner. */
+.wpuf-frontend .wpuf-account-content form.wpuf-form-add.wpuf-form-add {
+    border-radius: var(--wpuf-fe-radius-lg) !important;
+}
+
+/* Select arrows: one chevron, never tiled (the classic preflight resets
+   background-repeat on the layout sheets' arrow image). */
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields select,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html select {
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    padding-inline-end: 36px !important;
+}
+
+/* Focus: the kit ring, not the theme / WordPress blue. */
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields input:not([type="checkbox"]):not([type="radio"]):focus,
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields select:focus,
+.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields textarea:focus,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html input:not([type="checkbox"]):not([type="radio"]):focus,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html select:focus,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html textarea:focus {
+    outline: none !important;
+    border-color: var(--wpuf-fe-primary) !important;
+    box-shadow: var(--wpuf-fe-focus) !important;
+}
+
+/* Rail links: no theme outline box after a click; keyboard focus keeps the ring. */
+.wpuf-frontend .wpuf-account-nav .wpuf-account-nav-item:focus,
+.wpuf-frontend .wpuf-logout-link:focus {
+    outline: none;
+}
+
+.wpuf-frontend .wpuf-account-nav .wpuf-account-nav-item:focus-visible,
+.wpuf-frontend .wpuf-logout-link:focus-visible {
+    box-shadow: var(--wpuf-fe-focus);
+}
+
+/* ---- Invoices (Pro template) in the Posts table look ---- */
+/* Section headers of the classic templates (invoices, subscription, add-ons):
+   a 32px title and an 18px lead become the native section head. */
+.wpuf-frontend .wpuf-account-content .wpuf-account-html h2[class*="wpuf-text-[32px]"] {
+    margin: 0 !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+    letter-spacing: normal !important;
+    color: var(--wpuf-fe-text) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-account-html div:has(> h2[class*="wpuf-text-[32px]"]) {
+    margin-bottom: 4px !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-account-html p[class*="wpuf-text-[18px]"] {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    letter-spacing: normal !important;
+    color: var(--wpuf-fe-muted) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-account-html div:has(> p[class*="wpuf-text-[18px]"]) {
+    margin-bottom: 16px !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices div:has(> .items-table),
+.wpuf-frontend .wpuf-account-content .wpuf-invoices > div:nth-child(3) {
+    max-width: none !important;
+    overflow: hidden;
+    background: var(--wpuf-fe-surface) !important;
+    border: 1px solid var(--wpuf-fe-border) !important;
+    border-radius: var(--wpuf-fe-radius-lg) !important;
+    box-shadow: var(--wpuf-fe-shadow) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table {
+    width: 100%;
+    margin: 0;
+    border: 0;
+    border-collapse: collapse !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table thead,
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table thead tr {
+    background: var(--wpuf-fe-soft) !important;
+    border: 0 !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table th {
+    padding: 14px 16px !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--wpuf-fe-border) !important;
+    background: var(--wpuf-fe-soft) !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase;
+    color: var(--wpuf-fe-muted) !important;
+    text-align: start;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table tbody tr {
+    height: auto !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table td {
+    padding: 14px 16px !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--wpuf-fe-border) !important;
+    background: transparent;
+    font-size: var(--wpuf-fe-size);
+    color: var(--wpuf-fe-text);
+    vertical-align: middle;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table tbody tr:last-child td {
+    border-bottom: 0 !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table tbody tr:hover td {
+    background: var(--wpuf-fe-soft);
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table td a:not(.wpuf-invoice-menu a) {
+    min-height: 32px;
+    padding: 6px 12px !important;
+    border-radius: var(--wpuf-fe-radius) !important;
+    font-size: 13px !important;
+    font-weight: 500;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-invoice-menu-button {
+    width: 32px;
+    height: 32px;
+    padding: 0 !important;
+    border: 0;
+    border-radius: var(--wpuf-fe-radius) !important;
+    background: transparent;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-invoice-menu-button:hover {
+    background: var(--wpuf-fe-hover) !important;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-invoice-menu {
+    border-radius: var(--wpuf-fe-radius) !important;
+    border-color: var(--wpuf-fe-border) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Pagination in the kit look: small boxes, the current one filled. */
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination {
+    margin-top: 16px !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination nav {
+    justify-content: flex-start !important;
+    gap: 6px !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination nav a,
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination nav > span,
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination nav > div > a,
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination nav > div > span {
+    min-width: 32px;
+    height: 32px;
+    justify-content: center;
+    padding: 0 10px !important;
+    border: 1px solid var(--wpuf-fe-border) !important;
+    border-radius: var(--wpuf-fe-radius) !important;
+    background: var(--wpuf-fe-surface);
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: var(--wpuf-fe-text) !important;
+    text-decoration: none !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination nav a:hover {
+    background: var(--wpuf-fe-hover) !important;
+    border-color: var(--wpuf-fe-border) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination [aria-current="page"] {
+    background: var(--wpuf-fe-primary) !important;
+    border-color: var(--wpuf-fe-primary) !important;
+    color: var(--wpuf-fe-primary-text) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination .wpuf-cursor-not-allowed {
+    display: none !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination svg {
+    display: none;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-invoice-menu-button:focus {
+    outline: none;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-invoice-menu-button:focus-visible {
+    box-shadow: var(--wpuf-fe-focus);
+}
+
+/* ---- Subscription section on the account scale ---- */
+.wpuf-frontend .wpuf-account-content .wpuf-subscription-cards {
+    max-width: none !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-subscription-card,
+.wpuf-frontend .wpuf-account-content .wpuf-cancel-subscription-section {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 0 16px !important;
+    padding: 20px 24px !important;
+    background: var(--wpuf-fe-surface) !important;
+    border: 1px solid var(--wpuf-fe-border) !important;
+    border-radius: var(--wpuf-fe-radius-lg) !important;
+    box-shadow: var(--wpuf-fe-shadow) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-subscription-name {
+    margin: 0 !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: var(--wpuf-fe-text) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-subscription-next-payment,
+.wpuf-frontend .wpuf-account-content .wpuf-subscription-expire-date,
+.wpuf-frontend .wpuf-account-content .wpuf-price-period,
+.wpuf-frontend .wpuf-account-content .wpuf-cancel-text {
+    font-size: 13px !important;
+    color: var(--wpuf-fe-muted) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-subscription-price .wpuf-price {
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: var(--wpuf-fe-text) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-show-details-btn,
+.wpuf-frontend .wpuf-account-content .wpuf-show-all-btn {
+    min-height: 32px !important;
+    padding: 6px 12px !important;
+    border: 1px solid var(--wpuf-fe-border) !important;
+    border-radius: var(--wpuf-fe-radius) !important;
+    background: var(--wpuf-fe-surface) !important;
+    color: var(--wpuf-fe-text) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-show-details-btn:hover,
+.wpuf-frontend .wpuf-account-content .wpuf-show-all-btn:hover {
+    background: var(--wpuf-fe-hover) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-show-details-btn:focus,
+.wpuf-frontend .wpuf-account-content .wpuf-show-all-btn:focus {
+    outline: none;
 }

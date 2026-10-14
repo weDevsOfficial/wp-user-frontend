@@ -425,6 +425,47 @@ class Frontend_Account {
         foreach ( $sections as $section ) {
             if ( 'html' === $section['kind'] ) {
                 wpuf()->frontend->enqueue_form_assets();
+                wp_enqueue_style( 'wpuf-frontend-react-account-sections' );
+                break;
+            }
+        }
+
+        $slugs = wp_list_pluck( $sections, 'slug' );
+
+        /**
+         * Filters whether the React account page loads the post form app and
+         * the WordPress editor up front, for sections that show a post form
+         * (the editor prints through footer hooks, so a section loaded later
+         * without a page load cannot bring it).
+         *
+         * @since WPUF_SINCE
+         *
+         * @param bool  $preload Whether to preload
+         * @param array $slugs   Section slugs
+         */
+        if ( apply_filters( 'wpuf_account_react_preload_post_form', in_array( 'submit-post', $slugs, true ), $slugs ) ) {
+            $this->renderer()->enqueue( 'forms' );
+            wp_enqueue_editor();
+            wp_enqueue_media();
+        }
+
+        // A section served as PHP output renders with the page, like the classic
+        // account: the scripts and sheets it enqueues (editor, chat, billing)
+        // reach the page. The app shows it without a REST round trip.
+        $current = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : $boot['settings']['default_tab']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+        foreach ( $sections as $section ) {
+            if ( $current === $section['slug'] && 'html' === $section['kind'] ) {
+                $pagenum = isset( $_GET['pagenum'] ) ? absint( wp_unslash( $_GET['pagenum'] ) ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                $html    = $account->section_html( $current, max( 1, $pagenum ) );
+
+                if ( ! is_wp_error( $html ) ) {
+                    $boot['section_html'] = [
+                        'slug' => $current,
+                        'html' => $html,
+                    ];
+                }
+
                 break;
             }
         }
@@ -440,7 +481,7 @@ class Frontend_Account {
             $items
         );
 
-        return $this->renderer()->markup( 'account', $boot, $skeleton, 'wpuf-account-react' );
+        return $this->renderer()->markup( 'account', $boot, $skeleton, 'wpuf-account-react alignwide' );
     }
 
     /**

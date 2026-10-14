@@ -15,6 +15,16 @@ import UploadField from './Upload';
 import { RecaptchaField, TurnstileField } from './Captcha';
 import ColumnField from './Column';
 
+/** A textarea field: the editor when `rich` is yes / teeny, a plain textarea otherwise. */
+function TextareaOrRich( props ) {
+    const rich = props.field.rich && 'no' !== props.field.rich;
+
+    return rich ? <RichTextField { ...props } /> : <TextareaField { ...props } />;
+}
+
+/** Step markers are read by the form (multistep fieldsets), never rendered as a row. */
+const Nothing = () => null;
+
 const registry = {
     post_title: TextField,
     text_field: TextField,
@@ -22,7 +32,7 @@ const registry = {
     website_url: TextField,
     numeric_text_field: TextField,
     custom_hidden_field: HiddenField,
-    textarea_field: ( props ) => ( props.field.rich && 'no' !== props.field.rich ? RichTextField( props ) : TextareaField( props ) ),
+    textarea_field: TextareaOrRich,
     post_content: RichTextField,
     post_excerpt: TextareaField,
     post_tags: TagsField,
@@ -38,6 +48,7 @@ const registry = {
     featured_image: UploadField,
     recaptcha: RecaptchaField,
     cloudflare_turnstile: TurnstileField,
+    step_start: Nothing,
 };
 
 const warned = new Set();
@@ -49,7 +60,7 @@ function UnknownField( props ) {
         console.warn( `[WPUF] No React field registered for "${ props.field.template }"; rendered as text.` );
     }
 
-    return TextField( props );
+    return <TextField { ...props } />;
 }
 
 export function registerField( template, Component ) {

@@ -20,7 +20,7 @@ jQuery(function($){
         return isValid;
     };
 
-    $( '#wpuf-payment-gateway' ).submit(function (e) {
+    function wpuf_payment_gateway_submit(e) {
         // Stripe intercepts and processes the payment itself via AJAX — skip this handler entirely.
         if ( $( this ).find( "input[name='wpuf_payment_method']:checked" ).val() === 'stripe' ) {
             return;
@@ -50,12 +50,21 @@ jQuery(function($){
                     .val( $( input.id ).val() );
             } );
         }
-    });
+    }
 
-    $('#wpuf-ajax-address-form').submit(function (e) {
-        e.preventDefault();
-        $( '#wpuf-payment-gateway' ).trigger( 'submit' );
-    });
+    // Bound on load and again when the React account inserts a section
+    // (wpuf:frontend:html), so the form it brings in is handled too.
+    function wpuf_bind_billing_forms() {
+        $( '#wpuf-payment-gateway' ).off( 'submit.wpufBilling' ).on( 'submit.wpufBilling', wpuf_payment_gateway_submit );
+
+        $( '#wpuf-ajax-address-form' ).off( 'submit.wpufBilling' ).on( 'submit.wpufBilling', function (e) {
+            e.preventDefault();
+            $( '#wpuf-payment-gateway' ).trigger( 'submit' );
+        });
+    }
+
+    wpuf_bind_billing_forms();
+    $( document ).on( 'wpuf:frontend:html', wpuf_bind_billing_forms );
 
     $( document.body ).on('change', 'select#wpuf_biiling_country', function() {
         var $this = $(this), $tr = $this.closest('tr');
@@ -66,13 +75,33 @@ jQuery(function($){
             _wpnonce: $("#_wpnonce").val()
         };
         $.post(ajax_object.ajaxurl, data, function (response) {
+            var $old = $this.parent().next().find('input,select').first();
+            // The new state field keeps the old one's id, classes and data, so it
+            // looks the same and the next country change still finds it.
+            var keep = function ( $field ) {
+                if ( ! $old.length ) {
+                    return $field;
+                }
+                $.each( [ 'id', 'class', 'data-required', 'data-type' ], function ( i, attr ) {
+                    if ( $old.attr( attr ) !== undefined ) {
+                        $field.attr( attr, $old.attr( attr ) );
+                    }
+                } );
+                $field.removeClass( 'wpuf-select' );
+                if ( $field.is( 'select' ) && $old.is( 'select' ) && $old.hasClass( 'wpuf-select' ) ) {
+                    $field.addClass( 'wpuf-select' );
+                }
+                return $field;
+            };
+
             if( 'nostates' == response ) {
-                var text_field = '<input type="text" name="' + data.field_name + '" value=""/>';
-                $this.parent().next().find('select').replaceWith( text_field );
+                var $text = keep( $( '<input type="text" value=""/>' ).attr( 'name', data.field_name ) );
+                $old.replaceWith( $text );
             } else {
-                $this.parent().next().find('input,select').show();
-                $this.parent().next().find('input,select').replaceWith(response);
-                $this.parent().next().find('input,select').prepend("<option value='' selected='selected'>- select -</option>");
+                var $select = keep( $( response ).filter( 'select' ).add( $( response ).find( 'select' ) ).first() );
+                $select.show();
+                $old.replaceWith( $select );
+                $select.prepend("<option value='' selected='selected'>- select -</option>");
             }
         });
     });

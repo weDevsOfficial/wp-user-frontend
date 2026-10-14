@@ -9,7 +9,7 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { Card, DetailList, StatCard, icons } from '@wpuf/frontend-kit';
 
-const { BadgeDollarSign, CalendarDays, Files, Mail, MapPin, UserRound } = icons;
+const { Activity, AtSign, BadgeCheck, BadgeDollarSign, CalendarClock, CalendarDays, Files, Globe, Mail, MapPin, NotebookText, UserRound } = icons;
 
 const TONES = [ 'gray', 'green', 'violet', 'amber', 'blue' ];
 
@@ -85,12 +85,12 @@ export default function Overview( { profile, stats, sections, go, pageUrl } ) {
                     columns={ 3 }
                     items={ [
                         { label: __( 'Name', 'wp-user-frontend' ), value: [ profile.first_name, profile.last_name ].filter( Boolean ).join( ' ' ) || profile.display_name, icon: <UserRound size={ 14 } /> },
-                        { label: __( 'Username', 'wp-user-frontend' ), value: profile.username },
+                        { label: __( 'Username', 'wp-user-frontend' ), value: profile.username, icon: <AtSign size={ 14 } /> },
                         { label: __( 'Email', 'wp-user-frontend' ), value: profile.email, icon: <Mail size={ 14 } /> },
-                        { label: __( 'Role', 'wp-user-frontend' ), value: profile.role_label },
+                        { label: __( 'Role', 'wp-user-frontend' ), value: profile.role_label, icon: <BadgeCheck size={ 14 } /> },
                         { label: __( 'Member since', 'wp-user-frontend' ), value: since, icon: <CalendarDays size={ 14 } /> },
-                        { label: __( 'Website', 'wp-user-frontend' ), value: profile.website },
-                        { label: __( 'Bio', 'wp-user-frontend' ), value: profile.bio },
+                        { label: __( 'Website', 'wp-user-frontend' ), value: profile.website, icon: <Globe size={ 14 } /> },
+                        { label: __( 'Bio', 'wp-user-frontend' ), value: profile.bio, icon: <NotebookText size={ 14 } /> },
                     ] }
                 />
             </Card>
@@ -101,8 +101,8 @@ export default function Overview( { profile, stats, sections, go, pageUrl } ) {
                         columns={ 3 }
                         items={ [
                             { label: __( 'Pack', 'wp-user-frontend' ), value: subscription.value, icon: <BadgeDollarSign size={ 14 } /> },
-                            { label: __( 'Status', 'wp-user-frontend' ), value: subscription.detail?.status },
-                            { label: __( 'Expires', 'wp-user-frontend' ), value: subscription.detail?.expire },
+                            { label: __( 'Status', 'wp-user-frontend' ), value: subscription.detail?.status, icon: <Activity size={ 14 } /> },
+                            { label: __( 'Expires', 'wp-user-frontend' ), value: subscription.detail?.expire, icon: <CalendarClock size={ 14 } /> },
                         ] }
                     />
                 </Card>

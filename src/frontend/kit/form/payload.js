@@ -36,7 +36,8 @@ export function buildPayload( schema, values, visible, fields, extra = {} ) {
     }
 
     fields.forEach( ( field ) => {
-        if ( ! field.name || PASSIVE_TEMPLATES.includes( field.template ) || ! visible.has( field.name ) ) {
+        // Hidden by conditional logic, passive, or read-only (the classic form disables those inputs, so they post nothing).
+        if ( ! field.name || PASSIVE_TEMPLATES.includes( field.template ) || ! visible.has( field.name ) || 'yes' === field.read_only ) {
             return;
         }
 
@@ -49,10 +50,29 @@ export function buildPayload( schema, values, visible, fields, extra = {} ) {
         }
 
         if ( 'taxonomy' === field.template ) {
-            const list = Array.isArray( value ) ? value : ( value ? [ value ] : [] );
+            // Text / ajax: the comma separated names, as the classic input posts them.
+            if ( 'text' === field.type || 'ajax' === field.type ) {
+                const text = Array.isArray( value ) ? value.join( ', ' ) : String( value || '' );
+
+                if ( text.trim() ) {
+                    body[ field.name ] = text;
+                }
+
+                return;
+            }
+
+            const list = ( Array.isArray( value ) ? value : ( value ? [ value ] : [] ) ).filter( ( v ) => '' !== String( v ) && '-1' !== String( v ) );
+
+            // A single select posts one value (`category=12`, `-1` for "- select -"), as the
+            // classic `<select name="category">` does; woo_attribute() reads it as a string.
+            if ( 'select' === ( field.type || 'select' ) ) {
+                body[ field.name ] = list.length ? String( list[ 0 ] ) : '-1';
+
+                return;
+            }
 
             if ( list.length ) {
-                body[ field.name ] = 'text' === field.type ? list.join( ', ' ) : list;
+                body[ field.name ] = list;
             }
 
             return;
@@ -115,7 +135,6 @@ export function afterSubmit( response, schema, showMessage ) {
         return;
     }
 
-    if ( response.redirect_to ) {
-        window.location.assign( response.redirect_to );
-    }
+    // The classic form sets `window.location = redirect_to`: an empty target reloads the page.
+    window.location.assign( response.redirect_to || window.location.href );
 }

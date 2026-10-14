@@ -95,8 +95,15 @@ class Frontend {
             return false;
         }
 
+        // The Pro registration / profile shortcode renders on React too.
+        $react_tags = [ 'wpuf_form', 'wpuf_edit', 'wpuf_account' ];
+
+        if ( $this->renderer()->is_react( 'registration' ) ) {
+            $react_tags[] = 'wpuf_profile';
+        }
+
         foreach ( $this->get_asset_shortcodes() as $shortcode ) {
-            if ( ! in_array( $shortcode, [ 'wpuf_form', 'wpuf_edit', 'wpuf_account' ], true ) && wpuf_has_shortcode( $shortcode ) ) {
+            if ( ! in_array( $shortcode, $react_tags, true ) && wpuf_has_shortcode( $shortcode ) ) {
                 return false;
             }
         }
@@ -268,6 +275,14 @@ class Frontend {
 
         if ( 'wpuf_account' === $tag && is_user_logged_in() && $renderer->is_react( 'account', 0, [ 'atts' => $atts ] ) ) {
             return $output;
+        }
+
+        if ( 'wpuf_profile' === $tag ) {
+            $part = isset( $atts['type'] ) && 'profile' === $atts['type'] ? 'profile' : 'registration';
+
+            if ( $renderer->is_react( $part, $form_id, [ 'atts' => $atts ] ) ) {
+                return $output;
+            }
         }
 
         if ( in_array( $tag, $this->get_asset_shortcodes(), true ) ) {

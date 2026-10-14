@@ -329,6 +329,34 @@ final class WP_User_Frontend {
     }
 
     /**
+     * The services a classic submission gets from the admin layer (admin-ajax is an admin
+     * request), for the React form routes, which run outside wp-admin: the post form
+     * templates' after-insert / after-update hooks, then `wpuf_frontend_submission_hooks`
+     * for add-ons (Pro builds its user approval, notifications, content filter and
+     * registration templates on it). Once per request; nothing to do in wp-admin.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function boot_submission_hooks() {
+        if ( is_admin() || did_action( 'wpuf_frontend_submission_hooks' ) ) {
+            return;
+        }
+
+        $this->platform_bootstrap()->register();
+        $this->platform()->get( WeDevs\Wpuf\Platform\Providers\AdminServiceProvider::class_of( 'form_template' ) );
+
+        /**
+         * Fires once before a React form route submits, so code that hooks the
+         * submission from the admin layer can build itself, as on admin-ajax.
+         *
+         * @since WPUF_SINCE
+         */
+        do_action( 'wpuf_frontend_submission_hooks' );
+    }
+
+    /**
      * Initialize the ajax class
      *
      * @since 4.1.4

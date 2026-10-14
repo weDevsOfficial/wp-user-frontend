@@ -43,8 +43,15 @@ export const submitForm = ( formId, data ) => send( `/forms/${ formId }/submissi
 export const updateForm = ( formId, postId, data ) => send( `/forms/${ formId }/submissions/${ postId }`, 'PUT', data );
 export const saveDraft = ( formId, data ) => send( `/forms/${ formId }/drafts`, 'POST', data );
 export const getTerms = ( formId, taxonomy, parent = 0 ) => get( `/forms/${ formId }/terms`, { taxonomy, parent } );
+export const searchTerms = ( formId, taxonomy, search ) => get( `/forms/${ formId }/terms`, { taxonomy, search } );
 export const getEmbed = ( formId, url ) => send( `/forms/${ formId }/embed`, 'POST', { url } );
 export const getStates = ( formId, country ) => get( `/forms/${ formId }/states`, { country } );
+// Pro registration / profile forms.
+export const getRegistrationSchema = ( formId, pageId = 0 ) => get( `/registration/${ formId }/schema`, { page_id: pageId || '' } );
+export const submitRegistration = ( formId, data ) => send( `/registration/${ formId }/submissions`, 'POST', data );
+export const updateRegistration = ( formId, data ) => send( `/registration/${ formId }/profile`, 'PUT', data );
+export const checkUsername = ( value ) => get( '/registration/username-check', { value } );
+
 export const deleteUpload = ( attachmentId, nonce = '' ) => send( `/uploads/${ attachmentId }` + query( { wpuf_nonce: nonce } ), 'DELETE' );
 
 // Account.
@@ -79,6 +86,8 @@ export const deleteAvatar = () => send( '/account/avatar', 'DELETE' );
 export const uploadFile = ( path, file, fields = {}, onProgress = null, { signal } = {} ) => new Promise( ( resolve, reject ) => {
     const settings = window.wpApiSettings || {};
     const root = ( settings.root || '/wp-json/' ).replace( /\/$/, '' );
+    // The REST nonce: wpApiSettings, else the one wp-api-fetch was set up with.
+    const nonce = settings.nonce || apiFetch.nonceMiddleware?.nonce || '';
     const xhr = new window.XMLHttpRequest();
     const body = new window.FormData();
 
@@ -88,8 +97,8 @@ export const uploadFile = ( path, file, fields = {}, onProgress = null, { signal
     xhr.open( 'POST', root + BASE + path );
     xhr.withCredentials = true;
 
-    if ( settings.nonce ) {
-        xhr.setRequestHeader( 'X-WP-Nonce', settings.nonce );
+    if ( nonce ) {
+        xhr.setRequestHeader( 'X-WP-Nonce', nonce );
     }
 
     if ( xhr.upload && onProgress ) {

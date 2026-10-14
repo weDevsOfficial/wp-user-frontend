@@ -1,461 +1,267 @@
 /**
- * The React post form: the classic row contract (`li.wpuf-el`, `.wpuf-label`,
- * `.wpuf-fields`) styled with the kit tokens, every rule under
- * `.wpuf-frontend`. Controls keep the theme's font; sizes and radii are ours.
+ * The React forms keep the classic markup, so the classic template sheets
+ * (frontend-forms.css, frontend-form/layout1-5.css, Pro reg-template-*,
+ * custom-multiselect, css-stars, intl-tel-input, ...) style them exactly as
+ * they style the PHP forms: every layout, focus ring, border and colour
+ * the owner picked. This sheet only covers what has no classic markup:
+ * the boot skeleton, upload progress, the inline slots. Every rule stays
+ * under `.wpuf-frontend`.
  */
 
-.wpuf-frontend .wpuf-form-add {
-    margin: 0;
-    padding: 0;
-    background: transparent;
+/* The form root follows the theme like the classic form does (no kit font size or colour). */
+.wpuf-frontend.wpuf-form-react {
+    box-sizing: content-box;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
 }
 
-.wpuf-frontend .wpuf-form-title {
-    margin: 0 0 8px;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 1.3;
-    color: var(--wpuf-text);
-}
-
-.wpuf-frontend .wpuf-form-description {
-    margin: 0 0 20px;
-    color: var(--wpuf-muted);
-}
-
-.wpuf-frontend ul.wpuf-form {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.wpuf-frontend ul.wpuf-form > li.wpuf-el,
-.wpuf-frontend ul.wpuf-form > li.wpuf-submit {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 24px;
-    margin: 0 0 20px;
-    padding: 0;
-    list-style: none;
-}
-
-.wpuf-frontend .form-label-left > li.wpuf-el .wpuf-label {
-    flex: 0 0 180px;
-    max-width: 180px;
-    padding-top: 9px;
-}
-
-.wpuf-frontend .form-label-left > li.wpuf-el .wpuf-fields,
-.wpuf-frontend .form-label-left > li.wpuf-submit .wpuf-submit-button {
-    flex: 1 1 320px;
-    min-width: 0;
-}
-
-.wpuf-frontend .form-label-left > li.wpuf-submit .wpuf-label {
-    flex: 0 0 180px;
-    max-width: 180px;
-}
-
-.wpuf-frontend .form-label-above > li.wpuf-el,
-.wpuf-frontend .form-label-hidden > li.wpuf-el,
-.wpuf-frontend .form-label-right > li.wpuf-el {
-    flex-direction: column;
-}
-
-.wpuf-frontend .form-label-hidden > li.wpuf-el .wpuf-label,
-.wpuf-frontend .form-label-above > li.wpuf-submit .wpuf-label,
-.wpuf-frontend .form-label-hidden > li.wpuf-submit .wpuf-label {
-    display: none;
-}
-
-.wpuf-frontend .form-label-right > li.wpuf-el {
-    flex-direction: column-reverse;
-}
-
-.wpuf-frontend .wpuf-label label {
-    display: block;
-    font-weight: 600;
-    color: var(--wpuf-text);
-    line-height: 1.4;
-}
-
-.wpuf-frontend .wpuf-label .required {
-    color: var(--wpuf-danger);
-}
-
-.wpuf-frontend .wpuf-fields {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    min-width: 0;
-    width: 100%;
-}
-
-.wpuf-frontend .field-size-medium .wpuf-fields {
-    max-width: 480px;
-}
-
-.wpuf-frontend .field-size-small .wpuf-fields {
-    max-width: 240px;
-}
-
-/* ---- Controls (native elements, inside the root only) ---- */
-.wpuf-frontend .wpuf-fields input[type="text"],
-.wpuf-frontend .wpuf-fields input[type="email"],
-.wpuf-frontend .wpuf-fields input[type="url"],
-.wpuf-frontend .wpuf-fields input[type="number"],
-.wpuf-frontend .wpuf-fields input[type="password"],
-.wpuf-frontend .wpuf-fields input[type="tel"],
-.wpuf-frontend .wpuf-fields input[type="date"],
-.wpuf-frontend .wpuf-fields input[type="search"],
-.wpuf-frontend .wpuf-fields select,
-.wpuf-frontend .wpuf-fields textarea {
-    display: block;
-    width: 100%;
-    min-height: 40px;
-    padding: 8px 12px;
-    border: 1px solid var(--wpuf-border);
-    border-radius: var(--wpuf-radius);
-    background: var(--wpuf-surface);
-    color: var(--wpuf-text);
-    font: inherit;
-    font-size: var(--wpuf-size);
-    line-height: 1.4;
-    box-shadow: none;
-    margin: 0;
-}
-
-.wpuf-frontend .wpuf-fields select[multiple] {
-    min-height: 120px;
-    padding: 6px;
-}
-
-.wpuf-frontend .wpuf-fields textarea {
-    min-height: 120px;
-    resize: vertical;
-}
-
-.wpuf-frontend .wpuf-fields input:focus,
-.wpuf-frontend .wpuf-fields select:focus,
-.wpuf-frontend .wpuf-fields textarea:focus {
-    outline: none;
-    border-color: var(--wpuf-primary);
-    box-shadow: var(--wpuf-focus);
-}
-
-.wpuf-frontend .has-error .wpuf-fields input,
-.wpuf-frontend .has-error .wpuf-fields select,
-.wpuf-frontend .has-error .wpuf-fields textarea {
-    border-color: var(--wpuf-danger);
-}
-
-.wpuf-frontend .wpuf-fields input[type="checkbox"],
-.wpuf-frontend .wpuf-fields input[type="radio"] {
-    width: 16px;
-    height: 16px;
-    margin: 0;
-    accent-color: var(--wpuf-primary);
-    flex: none;
-}
-
-.wpuf-frontend .wpuf-fields-choices {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.wpuf-frontend .wpuf-fields-choices--inline {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 8px 20px;
-}
-
-.wpuf-frontend .wpuf-choice {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 400;
-    color: var(--wpuf-text);
-    cursor: pointer;
-}
-
-.wpuf-frontend .wpuf-help,
-.wpuf-frontend .wpuf-wordlimit-message {
-    font-size: 12px;
-    color: var(--wpuf-muted);
-}
-
-.wpuf-frontend .wpuf-wordlimit-message.is-over {
-    color: var(--wpuf-danger);
-}
-
-.wpuf-frontend .wpuf-error-msg {
-    display: block;
-    font-size: 12px;
-    color: var(--wpuf-danger);
-}
-
-/* ---- Section break, HTML ---- */
-.wpuf-frontend .wpuf-section-break {
-    display: block;
-    margin-bottom: 20px;
-}
-
-.wpuf-frontend .wpuf-section-wrap {
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--wpuf-border);
-}
-
-.wpuf-frontend .wpuf-section-title {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--wpuf-text);
-}
-
-.wpuf-frontend .wpuf-section-details {
-    margin-top: 4px;
-    color: var(--wpuf-muted);
-}
-
-/* ---- Columns ---- */
-.wpuf-frontend .wpuf-column-field-inner-columns {
-    display: grid;
-    gap: 16px;
-    width: 100%;
-    grid-template-columns: 1fr;
-}
-
-@media (min-width: 640px) {
-    .wpuf-frontend .wpuf-columns-2 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .wpuf-frontend .wpuf-columns-3 {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-}
-
-.wpuf-frontend .wpuf-column-inner > li.wpuf-el {
-    flex-direction: column;
-    margin-bottom: 16px;
-}
-
-.wpuf-frontend .wpuf-column-inner > li.wpuf-el .wpuf-label {
-    flex: none;
+/*
+ * In a block theme the content width (`.is-layout-constrained > *`) lands on
+ * the classic form itself, so the form's padding sits outside the content
+ * width. The React root is that child now: it hands the constraint down to
+ * its own children so the form keeps the classic width and position.
+ */
+.wpuf-frontend.wpuf-form-react:where(.is-layout-constrained > *) {
     max-width: none;
-    padding-top: 0;
 }
 
-/* ---- Uploads ---- */
-.wpuf-frontend .wpuf-upload {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-}
-
-.wpuf-frontend .wpuf-attachment-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.wpuf-frontend .wpuf-attachment-list:empty {
-    display: none;
-}
-
-.wpuf-frontend .wpuf-attachment {
-    position: relative;
-    width: 96px;
-    height: 96px;
-    border: 1px solid var(--wpuf-border);
-    border-radius: var(--wpuf-radius);
-    overflow: hidden;
-    background: var(--wpuf-soft);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-}
-
-.wpuf-frontend .wpuf-attachment img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.wpuf-frontend .wpuf-attachment__name {
-    font-size: 12px;
-    color: var(--wpuf-muted);
-    padding: 4px;
-    text-align: center;
-    overflow-wrap: anywhere;
-}
-
-.wpuf-frontend .wpuf-attachment__remove {
-    position: absolute;
-    top: 4px;
-    inset-inline-end: 4px;
-    width: 22px;
-    height: 22px;
-    border: 0;
-    border-radius: 50%;
-    background: rgba(17, 24, 39, 0.8);
-    color: #fff;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    padding: 0;
-}
-
-.wpuf-frontend .wpuf-attachment__bar {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 4px;
-    background: var(--wpuf-primary);
-}
-
-.wpuf-frontend .wpuf-upload__zone {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 12px;
-    padding: 16px;
-    border: 1px dashed var(--wpuf-border);
-    border-radius: var(--wpuf-radius);
-    background: var(--wpuf-soft);
-}
-
-.wpuf-frontend .wpuf-upload__hint {
-    font-size: 12px;
-    color: var(--wpuf-muted);
-}
-
-/* ---- Submit row, drafts, steps ---- */
-.wpuf-frontend li.wpuf-submit {
-    align-items: center;
-}
-
-.wpuf-frontend .wpuf-submit-button {
-    flex: none !important;
-    width: auto !important;
-}
-
-.wpuf-frontend .wpuf-draft-saved {
-    display: inline-block;
-    margin-bottom: 12px;
-    color: var(--wpuf-success);
-    font-size: 13px;
+.wpuf-frontend.wpuf-form-react:where(.is-layout-constrained > *) > :not(script) {
+    max-width: var(--wp--style--global--content-size);
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 .wpuf-frontend .wpuf-slot-inline {
     display: contents;
 }
 
-.wpuf-frontend .wpuf-multistep-progressbar {
+/* Upload progress row (the classic form shows plupload's own progress). */
+.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading {
+    position: relative;
+    min-width: 80px;
+    min-height: 40px;
+}
+
+.wpuf-frontend .wpuf-attachment-list .wpuf-upload-progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 4px;
+    background: #0088bb;
+    transition: width 0.2s ease;
+}
+
+.wpuf-frontend .wpuf-attachment-list .wpuf-upload-percent {
+    display: block;
+    padding: 8px;
+    font-size: 12px;
+}
+
+/* The hidden file input behind the classic "Select Image" button. */
+.wpuf-frontend .wpuf-file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* The draft notice after a saved draft. */
+.wpuf-frontend .wpuf-draft-saved {
+    display: inline-block;
+    margin-left: 12px;
+    font-size: 14px;
+}
+
+/* Boot skeleton rows (server-rendered until the app mounts). */
+.wpuf-frontend .wpuf-form-boot .wpuf-skeleton-row {
+    display: block;
     margin: 0 0 24px;
 }
 
-.wpuf-frontend .wpuf-progress-track {
-    height: 24px;
-    border-radius: 999px;
-    background: var(--wpuf-hover);
-    overflow: hidden;
-}
-
-.wpuf-frontend .wpuf-progress-fill {
-    height: 100%;
-    min-width: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--wpuf-primary);
-    color: var(--wpuf-primary-text);
-    font-size: 12px;
-    transition: width 0.3s ease;
-}
-
-.wpuf-frontend .wpuf-step-indicator {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.wpuf-frontend .wpuf-step-indicator li {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 12px;
-    border-radius: 999px;
-    background: var(--wpuf-hover);
-    color: var(--wpuf-muted);
-    font-size: 13px;
-}
-
-.wpuf-frontend .wpuf-step-indicator li.active {
-    background: var(--wpuf-primary);
-    color: var(--wpuf-primary-text);
-}
-
-.wpuf-frontend .wpuf-step-indicator li.done {
-    color: var(--wpuf-text);
-}
-
-.wpuf-frontend .wpuf-step-indicator__number {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.35);
-    font-size: 11px;
-    font-weight: 700;
-}
-
-/* ---- Messages ---- */
-.wpuf-frontend .wpuf-success,
-.wpuf-frontend .wpuf-message,
-.wpuf-frontend .wpuf-info {
-    padding: 14px 16px;
-    border-radius: var(--wpuf-radius);
-    border: 1px solid var(--wpuf-border);
-    background: var(--wpuf-soft);
-    color: var(--wpuf-text);
-}
-
-.wpuf-frontend .wpuf-success {
-    background: var(--wpuf-success-soft);
-    border-color: #a7f3d0;
-    color: #065f46;
-}
-
-/* ---- Boot skeleton rows (server-rendered) ---- */
 .wpuf-frontend .wpuf-form-boot .wpuf-skeleton-row .wpuf-label,
 .wpuf-frontend .wpuf-form-boot .wpuf-skeleton-row .wpuf-fields {
     display: block;
 }
 
-@media (max-width: 640px) {
-    .wpuf-frontend .form-label-left > li.wpuf-el,
-    .wpuf-frontend .form-label-left > li.wpuf-submit {
-        flex-direction: column;
-    }
+.wpuf-frontend .wpuf-form-boot .wpuf-skeleton-label {
+    display: block;
+    width: 140px;
+    height: 16px;
+    margin-bottom: 10px;
+}
 
-    .wpuf-frontend .form-label-left > li.wpuf-el .wpuf-label,
-    .wpuf-frontend .form-label-left > li.wpuf-submit .wpuf-label {
-        flex: none;
-        max-width: none;
-        padding-top: 0;
-    }
+.wpuf-frontend .wpuf-form-boot .wpuf-skeleton-input {
+    display: block;
+    width: 100%;
+    height: 42px;
+}
+
+/* Native date picker opened from the classic text input. */
+.wpuf-frontend .wpuf-date-native {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    border: 0;
+    padding: 0;
+}
+
+.wpuf-frontend .wpuf-date-wrap {
+    position: relative;
+}
+
+/* The custom multiselect (free copy of Pro's custom-multiselect.css, lower specificity:
+   Pro's sheet wins when it is on the page). */
+.wpuf-frontend .custom-multiselect {
+    position: relative;
+    width: 100%;
+}
+
+.wpuf-frontend .multiselect-input {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+}
+
+.wpuf-frontend .multiselect-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.wpuf-frontend .selected-items {
+    display: none;
+}
+
+.wpuf-frontend .selected-items:not(:empty) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    flex: 1;
+}
+
+.wpuf-frontend .selected-item {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    font-size: 14px;
+}
+
+.wpuf-frontend .remove-item {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    padding: 0;
+    margin-left: 4px;
+}
+
+.wpuf-frontend .multiselect-placeholder {
+    font-size: 16px;
+    font-weight: 400;
+    flex: 1;
+    pointer-events: none;
+}
+
+.wpuf-frontend .dropdown-arrow {
+    font-size: 14px;
+    transition: transform 0.2s ease;
+    pointer-events: none;
+    margin-left: 8px;
+}
+
+.wpuf-frontend .multiselect-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 10px;
+    
+    background: #fff;
+    border: 1px solid #E5E7EB;
+    border-radius: 6px;
+}
+
+.wpuf-frontend .multiselect-option {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.wpuf-frontend .multiselect-option:last-child {
+    border-bottom: none;
+}
+
+/* Keyboard focus on an option row (React only: the classic widget has no option focus). */
+.wpuf-frontend .multiselect-option:focus {
+    outline: none;
+}
+
+.wpuf-frontend .multiselect-option:focus-visible {
+    background-color: #f3f4f6;
+}
+
+.wpuf-frontend .multiselect-option input[type="checkbox"] {
+    
+    display: none !important;
+}
+
+.wpuf-frontend .multiselect-option label {
+    cursor: pointer;
+    flex: 1;
+    font-size: 16px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 32px;
+}
+
+.wpuf-frontend .multiselect-option label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 1px solid #E5E7EB;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.wpuf-frontend .multiselect-option input[type="checkbox"]:checked + label::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 9px;
+    height: 7px;
+    background-image: url("data:image/svg+xml,%3Csvg width='9' height='7' viewBox='0 0 9 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.06186 0.278861C8.23568 0.45747 8.33333 0.699683 8.33333 0.952236C8.33333 1.20479 8.23568 1.447 8.06186 1.62561L3.42579 6.3878C3.25191 6.56636 3.01611 6.66667 2.77025 6.66667C2.52438 6.66667 2.28859 6.66636 2.11471 6.3878L0.26028 4.48293C0.0913804 4.3033 -0.00207753 4.06271 3.50511e-05 3.81298C0.00214763 3.56325 0.0996617 3.32437 0.271575 3.14778C0.443488 2.97119 0.676044 2.87102 0.919157 2.86885C1.16227 2.86668 1.39649 2.96268 1.57136 3.13618L2.77025 4.36768L6.75078 0.278861C6.92466 0.100307 7.16045 0 7.40632 0C7.65218 0 7.88798 0.100307 8.06186 0.278861Z' fill='white'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+
+
+.wpuf-frontend .multiselect-option input[type="checkbox"]:checked + label::before {
+    background: #3B82F6;
+    border-color: #3B82F6;
 }

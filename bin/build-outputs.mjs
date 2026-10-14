@@ -9,6 +9,7 @@ export const frontend = [ 'runtime', 'forms', 'account-react' ];
 export const built = [
     ...react.flatMap( ( name ) => [ `assets/js/react/${ name }.js`, `assets/js/react/${ name }.asset.php` ] ),
     ...frontend.flatMap( ( name ) => [ `assets/js/frontend/${ name }.js`, `assets/js/frontend/${ name }.asset.php`, `assets/css/frontend/${ name }.css`, `assets/css/frontend/${ name }-rtl.css` ] ),
+    'assets/css/frontend/account-sections.css',
     'assets/js/account.min.js',
     'assets/js/frontend-form.min.js',
     'assets/js/frontend-subscriptions.min.js',

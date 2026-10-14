@@ -214,33 +214,7 @@ class Frontend_Form extends Frontend_Render_Form {
             return '<div class="wpuf-info">' . wp_kses_post( $schema->get_error_message() ) . '</div>';
         }
 
-        if ( empty( $schema['state']['open'] ) ) {
-            return '<div class="wpuf-message">' . wp_kses_post( $schema['state']['message'] ) . '</div>';
-        }
-
-        wp_enqueue_style( 'wpuf-font-awesome' );
-
-        if ( ! empty( $schema['needs']['editor'] ) ) {
-            wp_enqueue_editor();
-            wp_enqueue_media();
-        }
-
-        $layout   = isset( $schema['layout']['layout'] ) ? $schema['layout']['layout'] : 'layout1';
-        $position = isset( $schema['layout']['label_position'] ) ? $schema['layout']['label_position'] : 'left';
-        $rows     = '';
-
-        foreach ( array_slice( $schema['fields'], 0, 4 ) as $field ) {
-            $rows .= '<li class="wpuf-el wpuf-skeleton-row"><div class="wpuf-label"><span class="wpuf-skeleton wpuf-skeleton-label"></span></div><div class="wpuf-fields"><span class="wpuf-skeleton wpuf-skeleton-input"></span></div></li>';
-        }
-
-        $skeleton = sprintf(
-            '<form class="wpuf-form-add wpuf-form-%1$s wpuf-form-boot" aria-busy="true"><ul class="wpuf-form form-label-%2$s">%3$s<li class="wpuf-submit"><span class="wpuf-skeleton wpuf-skeleton-button"></span></li></ul></form>',
-            esc_attr( $layout ),
-            esc_attr( $position ),
-            $rows
-        );
-
-        return $this->renderer()->markup( $post_id ? 'edit_form' : 'post_form', $schema, $skeleton, 'wpuf-form-react' );
+        return $this->renderer()->form_markup( $schema, $post_id ? 'edit_form' : 'post_form' );
     }
 
     /**

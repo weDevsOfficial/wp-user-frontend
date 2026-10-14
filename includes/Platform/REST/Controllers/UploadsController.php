@@ -41,7 +41,7 @@ class UploadsController extends RestController {
     private $uploads;
 
     /**
-     * Rate limiter.
+     * Rate limiter (not applied yet: the per-IP limits come back with a later enhancement).
      *
      * @var Rate_Limit
      */
@@ -99,7 +99,7 @@ class UploadsController extends RestController {
     }
 
     /**
-     * The form allows this visitor to upload, the upload nonce matches, guests are rate limited.
+     * The form allows this visitor to upload and the upload nonce matches.
      *
      * @since WPUF_SINCE
      *
@@ -116,10 +116,6 @@ class UploadsController extends RestController {
             return is_user_logged_in()
                 ? $this->error( 'forbidden', __( 'You are not allowed to upload files to this form.', 'wp-user-frontend' ), 403 )
                 : new WP_Error( 'wpuf_rest_unauthorized', __( 'You must be logged in.', 'wp-user-frontend' ), [ 'status' => 401 ] );
-        }
-
-        if ( ! is_user_logged_in() && ! $this->limiter->allow( 'upload', 30, MINUTE_IN_SECONDS ) ) {
-            return $this->error( 'rate_limited', __( 'Too many uploads. Please wait a minute and try again.', 'wp-user-frontend' ), 429 );
         }
 
         return true;

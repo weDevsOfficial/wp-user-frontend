@@ -1,129 +1,134 @@
 /**
- * The taxonomy field in its four looks (`type`: select, multiselect,
- * checkbox, text) plus the ajax select that loads child terms level by
- * level (`/forms/{id}/terms`). Terms come from the schema (`choices`,
- * the exclusions of the field applied server-side).
+ * The taxonomy field in the classic markup of Form_Field_Post_Taxonomy
+ * (`div.wpuf-fields.wpuf_<name>_<type>_<id>_<form>`):
+ *
+ * - select: `select.<tax>.wpuf_<name>_<form>` with `level-N` options (wp_dropdown_categories)
+ * - multiselect: the same, `multiple`, class `multiselect`
+ * - checkbox: `ul.wpuf-category-checklist > li[.wpuf-checkbox-inline] > label.selectit > input`
+ *   (WPUF_Walker_Category_Checklist, children nested in `ul.children`)
+ * - text / ajax: `input.textfield` of comma separated names with the term
+ *   suggestions the classic `suggest()` gives (`/forms/{id}/terms?search=`)
+ *
+ * Terms come from the schema (`choices`, the field's exclusions applied
+ * server-side). Value: a list of term ids (names for text / ajax).
  *
  * @since WPUF_SINCE
  */
-import { useEffect, useState } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
 import Field from '../components/Field';
-import { getTerms } from '../api';
+import SuggestInput from './Suggest';
 
-const selected = ( value ) => ( Array.isArray( value ) ? value.map( String ) : ( value ? [ String( value ) ] : [] ) );
+const asList = ( value ) => ( Array.isArray( value ) ? value.map( String ) : ( value ? [ String( value ) ] : [] ) ).filter( ( v ) => '' !== v && '-1' !== v && '0' !== v );
 
-/** Nested options in display order with a depth for indentation. */
-const tree = ( choices, parent = 0, depth = 0 ) => {
-    const out = [];
+/** Nested terms in display order with their depth. */
+const flatTree = ( choices, parent = 0, depth = 0 ) => choices
+    .filter( ( term ) => Number( term.parent || 0 ) === Number( parent ) )
+    .flatMap( ( term ) => [ { ...term, depth }, ...flatTree( choices, term.id, depth + 1 ) ] );
 
-    choices.filter( ( term ) => Number( term.parent || 0 ) === Number( parent ) ).forEach( ( term ) => {
-        out.push( { ...term, depth } );
-        out.push( ...tree( choices, term.id, depth + 1 ) );
+const indent = ( depth ) => '   '.repeat( depth );
+
+/** The checklist rows, children nested like the classic walker prints them. */
+function Checklist( { choices, parent, field, formId, chosen, toggle, onBlur } ) {
+    const rows = choices.filter( ( term ) => Number( term.parent || 0 ) === Number( parent ) );
+
+    if ( ! rows.length ) {
+        return null;
+    }
+
+    return rows.map( ( term ) => {
+        const children = choices.some( ( child ) => Number( child.parent || 0 ) === Number( term.id ) );
+
+        return (
+            <li key={ term.id } className={ 'yes' === field.show_inline ? 'wpuf-checkbox-inline' : '' } id={ `${ field.name }-${ term.id }` } data-label={ field.label }>
+                <label className="selectit">
+                    <input
+                        className={ `wpuf_${ field.name }_${ formId }` }
+                        value={ term.id }
+                        type="checkbox"
+                        name={ `${ field.name }[]` }
+                        id={ `in-${ field.name }-${ term.id }` }
+                        checked={ chosen.includes( String( term.id ) ) }
+                        onChange={ () => toggle( String( term.id ) ) }
+                        onBlur={ onBlur }
+                    />
+                    { ' ' }{ term.name }
+                </label>
+                { children && (
+                    <ul className="children">
+                        <Checklist choices={ choices } parent={ term.id } field={ field } formId={ formId } chosen={ chosen } toggle={ toggle } onBlur={ onBlur } />
+                    </ul>
+                ) }
+            </li>
+        );
     } );
-
-    return out;
-};
-
-function AjaxSelect( { field, value, onChange, formId, id } ) {
-    const chosen = selected( value );
-    const [ levels, setLevels ] = useState( [ ( field.choices || [] ).filter( ( term ) => ! Number( term.parent || 0 ) ) ] );
-
-    const pick = async ( level, termId ) => {
-        const next = chosen.slice( 0, level );
-
-        if ( termId ) {
-            next.push( String( termId ) );
-        }
-
-        onChange( next );
-
-        const kept = levels.slice( 0, level + 1 );
-
-        if ( termId ) {
-            try {
-                const children = await getTerms( formId, field.name, termId );
-
-                if ( children.length ) {
-                    kept.push( children );
-                }
-            } catch ( e ) {
-                // The chosen term stays; no deeper level.
-            }
-        }
-
-        setLevels( kept );
-    };
-
-    useEffect( () => {
-        // Edit mode: open the levels of the stored path.
-        if ( chosen.length > 1 && 1 === levels.length ) {
-            Promise.all( chosen.slice( 0, -1 ).map( ( termId ) => getTerms( formId, field.name, termId ) ) )
-                .then( ( lists ) => setLevels( [ levels[ 0 ], ...lists.filter( ( list ) => list.length ) ] ) )
-                .catch( () => undefined );
-        }
-    }, [] ); // eslint-disable-line react-hooks/exhaustive-deps
-
-    return (
-        <div className="wpuf-category-ajax">
-            { levels.map( ( terms, level ) => (
-                <select key={ level } id={ 0 === level ? id : undefined } name={ field.name + '[]' } className="wpuf-cat-ajax" value={ chosen[ level ] || '' } onChange={ ( event ) => pick( level, event.target.value ) }>
-                    <option value="">{ field.first || __( '- select -', 'wp-user-frontend' ) }</option>
-                    { terms.map( ( term ) => (
-                        <option key={ term.id } value={ term.id }>{ term.name }</option>
-                    ) ) }
-                </select>
-            ) ) }
-        </div>
-    );
 }
 
 export default function TaxonomyField( { field, value, onChange, onBlur, formId, error } ) {
     const id = `${ field.name }_${ formId }`;
-    const choices = tree( field.choices || [] );
-    const chosen = selected( value );
     const type = field.type || 'select';
-    const indent = ( term ) => '  '.repeat( term.depth ) + term.name;
+    const choices = field.choices || [];
+    const options = flatTree( choices );
+    const chosen = asList( value );
+    const fieldsClass = `wpuf_${ field.name }_${ type }_${ field.id || 0 }_${ formId }`;
+    const selectClass = `${ field.name } wpuf_${ field.name }_${ formId }`;
+    const toggle = ( termId ) => onChange( chosen.includes( termId ) ? chosen.filter( ( item ) => item !== termId ) : [ ...chosen, termId ] );
 
     let control;
 
-    if ( 'ajax' === type ) {
-        control = <AjaxSelect field={ field } value={ value } onChange={ onChange } formId={ formId } id={ id } />;
+    if ( 'checkbox' === type ) {
+        control = (
+            <ul className="wpuf-category-checklist">
+                <Checklist choices={ choices } parent={ 0 } field={ field } formId={ formId } chosen={ chosen } toggle={ toggle } onBlur={ onBlur } />
+            </ul>
+        );
+    } else if ( 'text' === type || 'ajax' === type ) {
+        control = (
+            <SuggestInput
+                taxonomy={ field.name }
+                formId={ formId }
+                value={ value }
+                onChange={ onChange }
+                onBlur={ onBlur }
+                inputProps={ { id, name: field.name, className: `textfield wpuf_${ field.name }_${ formId }`, size: 40 } }
+            />
+        );
     } else if ( 'multiselect' === type ) {
         control = (
-            <select id={ id } name={ field.name + '[]' } multiple size={ Math.min( 8, Math.max( 3, choices.length ) ) } value={ chosen } onChange={ ( event ) => onChange( Array.from( event.target.selectedOptions ).map( ( option ) => option.value ) ) } onBlur={ onBlur }>
-                { choices.map( ( term ) => (
-                    <option key={ term.id } value={ term.id }>{ indent( term ) }</option>
+            <select
+                id={ id }
+                name={ `${ field.name }[]` }
+                className={ `${ field.name } multiselect wpuf_${ field.name }_${ formId }` }
+                multiple
+                value={ chosen }
+                onChange={ ( event ) => onChange( Array.from( event.target.selectedOptions ).map( ( option ) => option.value ) ) }
+                onBlur={ onBlur }
+            >
+                { options.map( ( term ) => (
+                    <option key={ term.id } className={ `level-${ term.depth }` } value={ String( term.id ) }>{ indent( term.depth ) + term.name }</option>
                 ) ) }
             </select>
         );
-    } else if ( 'checkbox' === type ) {
-        control = (
-            <div className="wpuf-fields-choices wpuf-category-checklist" role="group">
-                { choices.map( ( term ) => (
-                    <label key={ term.id } className="wpuf-choice" style={ { paddingInlineStart: `${ term.depth * 16 }px` } }>
-                        <input type="checkbox" name={ field.name + '[]' } value={ term.id } checked={ chosen.includes( String( term.id ) ) } onChange={ () => onChange( chosen.includes( String( term.id ) ) ? chosen.filter( ( item ) => item !== String( term.id ) ) : [ ...chosen, String( term.id ) ] ) } onBlur={ onBlur } />
-                        <span>{ term.name }</span>
-                    </label>
-                ) ) }
-            </div>
-        );
-    } else if ( 'text' === type ) {
-        control = <input id={ id } type="text" name={ field.name } className="textfield" value={ chosen.join( ', ' ) } placeholder={ __( 'Comma separated', 'wp-user-frontend' ) } onChange={ ( event ) => onChange( event.target.value.split( ',' ).map( ( item ) => item.trim() ).filter( Boolean ) ) } onBlur={ onBlur } />;
     } else {
         control = (
-            <select id={ id } name={ field.name } value={ chosen[ 0 ] || '' } onChange={ ( event ) => onChange( event.target.value ? [ event.target.value ] : [] ) } onBlur={ onBlur }>
-                <option value="">{ field.first || __( '- select -', 'wp-user-frontend' ) }</option>
-                { choices.map( ( term ) => (
-                    <option key={ term.id } value={ term.id }>{ indent( term ) }</option>
+            <select
+                id={ id }
+                name={ field.name }
+                className={ selectClass }
+                value={ chosen[ 0 ] || '-1' }
+                onChange={ ( event ) => onChange( '-1' === event.target.value ? [] : [ event.target.value ] ) }
+                onBlur={ onBlur }
+            >
+                <option value="-1">{ field.first || '--select--' }</option>
+                { options.map( ( term ) => (
+                    <option key={ term.id } className={ `level-${ term.depth }` } value={ String( term.id ) }>{ indent( term.depth ) + term.name }</option>
                 ) ) }
             </select>
         );
     }
 
     return (
-        <Field field={ field } id={ id } error={ error }>
+        <Field field={ field } id={ id } error={ error } fieldsClass={ fieldsClass } data-type={ 'checkbox' === type ? 'tax-checkbox' : undefined }>
             { control }
+            <span className="wpuf-wordlimit-message wpuf-help" />
         </Field>
     );
 }

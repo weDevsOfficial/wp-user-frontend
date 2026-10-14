@@ -10,8 +10,34 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join( dirname( fileURLToPath( import.meta.url ) ), '..', '..' );
-const sheets = [ 'runtime', 'forms', 'account-react' ].flatMap( ( name ) => [ `assets/css/frontend/${ name }.css`, `assets/css/frontend/${ name }-rtl.css` ] );
+const sheets = [ 'runtime', 'forms', 'account-react', 'account-sections' ].flatMap( ( name ) => [ `assets/css/frontend/${ name }.css`, `assets/css/frontend/${ name }-rtl.css` ] );
 const scope = /^(:where\(\s*)?\.wpuf-frontend(\b|[\s.:#\[>+~)])/;
+/** Split a selector list on its top-level commas (not the ones inside :not() / :is()). */
+const splitTop = ( list ) => {
+    const out = [];
+    let depth = 0;
+    let current = '';
+
+    for ( const char of list ) {
+        if ( '(' === char ) {
+            depth++;
+        } else if ( ')' === char ) {
+            depth--;
+        }
+
+        if ( ',' === char && 0 === depth ) {
+            out.push( current );
+            current = '';
+        } else {
+            current += char;
+        }
+    }
+
+    out.push( current );
+
+    return out;
+};
+
 const problems = [];
 
 for ( const sheet of sheets ) {
@@ -33,7 +59,7 @@ for ( const sheet of sheets ) {
     const body = css.replace( /@keyframes[^{]*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g, '' );
 
     for ( const match of body.matchAll( /(^|\})\s*([^{}@]+?)\s*\{/g ) ) {
-        const selectors = match[ 2 ].split( ',' ).map( ( s ) => s.trim() ).filter( Boolean );
+        const selectors = splitTop( match[ 2 ] ).map( ( s ) => s.trim() ).filter( Boolean );
 
         for ( const selector of selectors ) {
             if ( /^(:root|html|body|\*)/.test( selector ) ) {

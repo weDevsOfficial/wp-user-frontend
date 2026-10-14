@@ -8,7 +8,6 @@
  */
 import { useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import Field from '../components/Field';
 
 const loadScript = ( src, ready ) => new Promise( ( resolve ) => {
     if ( ready() ) {
@@ -32,7 +31,13 @@ const loadScript = ( src, ready ) => new Promise( ( resolve ) => {
     wait();
 } );
 
-export function RecaptchaField( { field, onChange, formId, error, schema } ) {
+/**
+ * reCAPTCHA as Form_Field_reCaptcha prints it: `li.wpuf-el.recaptcha`
+ * (no label and no spacing when invisible), "reCaptcha API key is
+ * missing." without a key, else `div.wpuf-fields.wpuf_<name>_<form> >
+ * div#recaptcha.g-recaptcha` rendered explicitly; the token is the value.
+ */
+export function RecaptchaField( { field, onChange, formId, schema } ) {
     const ref = useRef( null );
     const key = schema?.needs?.recaptcha_key || '';
     const invisible = 'invisible_recaptcha' === field.recaptcha_type;
@@ -46,6 +51,7 @@ export function RecaptchaField( { field, onChange, formId, error, schema } ) {
             if ( ref.current && ! ref.current.dataset.widget ) {
                 ref.current.dataset.widget = String( window.grecaptcha.render( ref.current, {
                     sitekey: key,
+                    theme: field.recaptcha_theme || 'light',
                     size: invisible ? 'invisible' : 'normal',
                     callback: ( token ) => onChange( token ),
                     'expired-callback': () => onChange( '' ),
@@ -59,15 +65,30 @@ export function RecaptchaField( { field, onChange, formId, error, schema } ) {
     }, [ key, invisible ] ); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <Field field={ { ...field, label: field.label || __( 'Verification', 'wp-user-frontend' ) } } error={ error } noLabel={ invisible }>
-            { key ? <div ref={ ref } className="wpuf-recaptcha" data-form={ formId } /> : <span className="wpuf-help">{ __( 'reCAPTCHA is not configured (Settings > General).', 'wp-user-frontend' ) }</span> }
-        </Field>
+        <li className={ `wpuf-el ${ field.name } ${ field.css || '' }`.trim() } data-label={ field.label } style={ invisible ? { margin: 0, padding: 0 } : undefined }>
+            { ! invisible && (
+                <div className="wpuf-label">
+                    <label htmlFor="recaptcha_0">{ field.label }</label>
+                </div>
+            ) }
+            { key ? (
+                <div className={ `wpuf-fields wpuf_${ field.name }_${ formId }` }>
+                    <div id="recaptcha" ref={ ref } className="g-recaptcha" data-theme={ field.recaptcha_theme || 'light' } />
+                </div>
+            ) : __( 'reCaptcha API key is missing.', 'wp-user-frontend' ) }
+        </li>
     );
 }
 
-export function TurnstileField( { field, onChange, error, schema } ) {
+/**
+ * Cloudflare Turnstile as Form_Field_Cloudflare_Turnstile prints it:
+ * nothing without the setting and a key, else `li.wpuf-el >
+ * div#wpuf-turnstile.wpuf-fields.wpuf-turnstile` (hidden when invisible).
+ */
+export function TurnstileField( { field, onChange, schema } ) {
     const ref = useRef( null );
     const key = schema?.needs?.turnstile_key || '';
+    const action = 'non_interactive' === field.turnstile_type ? 'non-interactive' : field.turnstile_type || 'non-interactive';
 
     useEffect( () => {
         if ( ! key || ! ref.current ) {
@@ -87,9 +108,13 @@ export function TurnstileField( { field, onChange, error, schema } ) {
         } );
     }, [ key ] ); // eslint-disable-line react-hooks/exhaustive-deps
 
+    if ( ! key ) {
+        return null;
+    }
+
     return (
-        <Field field={ { ...field, label: field.label || __( 'Verification', 'wp-user-frontend' ) } } error={ error }>
-            { key ? <div ref={ ref } className="wpuf-turnstile" /> : <span className="wpuf-help">{ __( 'Turnstile is not configured (Settings > General).', 'wp-user-frontend' ) }</span> }
-        </Field>
+        <li className={ `wpuf-el ${ field.name } ${ field.css || '' }`.trim() } data-label={ field.label }>
+            <div ref={ ref } id="wpuf-turnstile" className="wpuf-fields wpuf-turnstile" style={ 'invisible' === action ? { display: 'none' } : undefined } />
+        </li>
     );
 }

@@ -21,6 +21,77 @@ const runScripts = ( root ) => {
     } );
 };
 
+const inline = ( id, code ) => {
+    if ( ! code || document.getElementById( id ) ) {
+        return;
+    }
+
+    const script = document.createElement( 'script' );
+
+    script.id = id;
+    script.text = code;
+    document.body.appendChild( script );
+};
+
+/**
+ * Load the scripts and sheets a server section needs and the page lacks
+ * (`assets` of GET /account/sections/{slug}), in order, the way WordPress
+ * prints them: localized data, translations, inline before, the file,
+ * inline after. WordPress' element ids (`{handle}-js`, `{handle}-css`) tell
+ * what is on the page already.
+ *
+ * @param {{scripts?: Array, styles?: Array}} assets
+ *
+ * @return {Promise<void>}
+ */
+export async function loadAssets( assets = {} ) {
+    ( assets.styles || [] ).forEach( ( style ) => {
+        if ( style.src && ! document.getElementById( `${ style.handle }-css` ) ) {
+            const link = document.createElement( 'link' );
+
+            link.id = `${ style.handle }-css`;
+            link.rel = 'stylesheet';
+            link.href = style.src;
+            document.head.appendChild( link );
+        }
+
+        if ( style.after && ! document.getElementById( `${ style.handle }-inline-css` ) ) {
+            const tag = document.createElement( 'style' );
+
+            tag.id = `${ style.handle }-inline-css`;
+            tag.textContent = style.after;
+            document.head.appendChild( tag );
+        }
+    } );
+
+    for ( const script of assets.scripts || [] ) {
+        const id = `${ script.handle }-js`;
+
+        if ( document.getElementById( id ) ) {
+            continue;
+        }
+
+        inline( `${ id }-extra`, script.data );
+        inline( `${ id }-translations`, script.translations );
+        inline( `${ id }-before`, script.before );
+
+        if ( script.src ) {
+            await new Promise( ( resolve ) => {
+                const tag = document.createElement( 'script' );
+
+                tag.id = id;
+                tag.src = script.src;
+                tag.async = false;
+                tag.onload = resolve;
+                tag.onerror = resolve;
+                document.body.appendChild( tag );
+            } );
+        }
+
+        inline( `${ id }-after`, script.after );
+    }
+}
+
 /**
  * @param {Object} props
  * @param {string} props.html      Markup.

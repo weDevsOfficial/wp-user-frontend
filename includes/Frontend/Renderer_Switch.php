@@ -33,8 +33,10 @@ class Renderer_Switch {
      * @since WPUF_SINCE
      */
     const PARTS = [
-        'post_form' => [ 'forms', [] ],
-        'edit_form' => [ 'forms', [] ],
+        'post_form'    => [ 'forms', [] ],
+        'edit_form'    => [ 'forms', [] ],
+        'registration' => [ 'forms', [] ],
+        'profile'      => [ 'forms', [] ],
         'account'   => [ 'account', [ 'account.php', 'unauthorized.php', 'submit-post.php', 'dashboard/dashboard.php', 'dashboard/posts.php', 'dashboard/edit-profile.php', 'dashboard/change-password.php', 'dashboard/billing-address.php', 'dashboard/subscription.php' ] ],
     ];
 
@@ -250,6 +252,62 @@ class Renderer_Switch {
     }
 
     /**
+     * The markup a React form mounts into (post form, edit form, registration,
+     * profile): the classic wrapper classes (so CSS written for them still
+     * applies), the schema as boot data and a skeleton of the first rows. A
+     * closed gate prints the classic notice instead of the app.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array  $schema The form schema (Form_Schema::build())
+     * @param string $part   Part
+     *
+     * @return string
+     */
+    public function form_markup( array $schema, $part ) {
+        if ( empty( $schema['state']['open'] ) ) {
+            return '<div class="wpuf-message">' . wp_kses_post( isset( $schema['state']['message'] ) ? $schema['state']['message'] : '' ) . '</div>';
+        }
+
+        wp_enqueue_style( 'wpuf-font-awesome' );
+
+        if ( ! empty( $schema['needs']['editor'] ) ) {
+            wp_enqueue_editor();
+            wp_enqueue_media();
+        }
+
+        $layout   = isset( $schema['layout']['layout'] ) ? $schema['layout']['layout'] : 'layout1';
+        $position = isset( $schema['layout']['label_position'] ) ? $schema['layout']['label_position'] : 'left';
+        $rows     = '';
+
+        // The classic sheets the PHP form loads (Frontend::enqueue_form_assets,
+        // Frontend_Render_Form): the React form keeps the classic markup, so
+        // the same layout CSS styles it. Profile form templates are Pro's
+        // (Profile_Form::react_profile_form).
+        wp_enqueue_style( 'wpuf-layout1' );
+        wp_enqueue_style( 'wpuf-frontend-forms' );
+        wp_enqueue_style( 'wpuf-sweetalert2' );
+        wp_enqueue_script( 'wpuf-sweetalert2' );
+
+        if ( 'post' === ( isset( $schema['form_type'] ) ? $schema['form_type'] : 'post' ) && empty( $schema['layout']['use_theme_css'] ) && preg_match( '/^layout[1-5]$/', $layout ) ) {
+            wp_enqueue_style( 'wpuf-' . $layout );
+        }
+
+        foreach ( array_slice( isset( $schema['fields'] ) ? $schema['fields'] : [], 0, 4 ) as $field ) {
+            $rows .= '<li class="wpuf-el wpuf-skeleton-row"><div class="wpuf-label"><span class="wpuf-skeleton wpuf-skeleton-label"></span></div><div class="wpuf-fields"><span class="wpuf-skeleton wpuf-skeleton-input"></span></div></li>';
+        }
+
+        $skeleton = sprintf(
+            '<form class="wpuf-form-add wpuf-form-%1$s wpuf-form-boot" aria-busy="true"><ul class="wpuf-form form-label-%2$s">%3$s<li class="wpuf-submit"><span class="wpuf-skeleton wpuf-skeleton-button"></span></li></ul></form>',
+            esc_attr( $layout ),
+            esc_attr( $position ),
+            $rows
+        );
+
+        return $this->markup( $part, $schema, $skeleton, 'wpuf-form-react' );
+    }
+
+    /**
      * Whether a part was rendered as React in this request (the classic
      * assets stay off the page then).
      *
@@ -277,5 +335,15 @@ class Renderer_Switch {
         wp_enqueue_style( 'wpuf-frontend-react-' . $app );
         wp_enqueue_script( 'wpuf-frontend-' . $app );
         wp_set_script_translations( 'wpuf-frontend-' . $app, 'wp-user-frontend', WPUF_ROOT . '/languages' );
+
+        /**
+         * Fires when a frontend React app is enqueued: add-ons enqueue the
+         * bundles that register their field components with the kit.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param string $app 'forms' | 'account'
+         */
+        do_action( 'wpuf_frontend_react_fields', $app );
     }
 }

@@ -160,4 +160,31 @@ class AiFormBuilderTest extends WP_UnitTestCase {
         $this->assertStringContainsString( 'No API key', $result->get_error_message() );
         $this->assertSame( 0, $requests );
     }
+
+    public function test_modify_form_needs_the_form_and_edit_rights_on_it() {
+        $form_id = wpuf_create_sample_form( 'AI target', 'wpuf_forms' );
+        $post_id = self::factory()->post->create();
+        $modify  = function ( $id ) {
+            $request = new WP_REST_Request( 'POST', '/wpuf/v1/ai-form-builder/modify-form' );
+            $request->set_param( 'form_id', $id );
+            $request->set_param( 'modification_data', [ 'action' => 'noop' ] );
+
+            return rest_do_request( $request )->get_status();
+        };
+
+        $this->assertSame( 404, $modify( $post_id ), 'not a form' );
+
+        // An editor may use the AI builder but not edit an admin-only form.
+        wp_set_current_user( self::factory()->user->create( [ 'role' => 'editor' ] ) );
+        $this->assertSame( 403, $modify( $form_id ) );
+
+        wp_set_current_user( self::factory()->user->create( [ 'role' => 'subscriber' ] ) );
+        $this->assertSame( 403, $modify( $form_id ) );
+
+        wp_set_current_user( 0 );
+        $this->assertSame( 401, $modify( $form_id ) );
+
+        wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+        $this->assertNotContains( $modify( $form_id ), [ 401, 403, 404 ], 'an admin reaches the handler' );
+    }
 }

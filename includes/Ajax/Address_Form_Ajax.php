@@ -148,7 +148,7 @@ class Address_Form_Ajax {
         if ( is_user_logged_in() ) {
             $user_id = get_current_user_id();
         } elseif ( isset( $_GET['user_id'] ) ) {
-            $user_id = absint( $_GET['user_id'] );
+            $user_id = absint( wp_unslash( $_GET['user_id'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- only echoed back into the form's hidden field.
         } else {
             return;
         }

@@ -112,7 +112,7 @@ class FormsPublicController extends RestController {
 				],
 			]
         );
-        $this->route( '/forms/(?P<id>\d+)/embed', WP_REST_Server::CREATABLE, 'get_embed', [ $this, 'can_edit' ], $id );
+        $this->route( '/forms/(?P<id>\d+)/embed', WP_REST_Server::CREATABLE, 'get_embed', [ $this, 'can_embed' ], $id );
         $this->route(
             '/forms/(?P<id>\d+)/states', WP_REST_Server::READABLE, 'get_states', [ $this, 'can_read_states' ], $id + [
 				'country' => [
@@ -188,7 +188,7 @@ class FormsPublicController extends RestController {
     }
 
     /**
-     * Editing, drafts and embeds: a logged-in user.
+     * Editing and drafts: a logged-in user.
      *
      * @since WPUF_SINCE
      *
@@ -203,6 +203,30 @@ class FormsPublicController extends RestController {
 
         if ( ! is_user_logged_in() ) {
             return new WP_Error( 'wpuf_rest_unauthorized', __( 'You must be logged in.', 'wp-user-frontend' ), [ 'status' => 401 ] );
+        }
+
+        return true;
+    }
+
+    /**
+     * Embeds: the server fetches the URL (wp_oembed_get()), so only users who
+     * may write posts, as core's own oEmbed proxy (`edit_posts`).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Request
+     *
+     * @return true|WP_Error
+     */
+    public function can_embed( WP_REST_Request $request ) {
+        $allowed = $this->can_edit( $request );
+
+        if ( true !== $allowed ) {
+            return $allowed;
+        }
+
+        if ( ! current_user_can( 'edit_posts' ) ) {
+            return new WP_Error( 'wpuf_rest_forbidden', __( 'Sorry, you are not allowed to embed URLs.', 'wp-user-frontend' ), [ 'status' => 403 ] );
         }
 
         return true;

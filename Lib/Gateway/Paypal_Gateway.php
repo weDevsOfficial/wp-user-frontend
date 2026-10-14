@@ -96,8 +96,8 @@ class Paypal_Gateway extends Payment_Gateway {
         add_action( 'wpuf_paypal_webhook', [ $this, 'process_webhook' ] );
         add_action( 'template_redirect', [ $this, 'handle_webhook_request' ] );
 
-        // Admin hooks
-        add_action( 'admin_notices', [ $this, 'paypal_settings_update_notice' ] );
+        // Admin hooks. The "PayPal Integration Enhanced" notice is no longer shown
+        // (owner request, as in Paypal.php); paypal_settings_update_notice() stays.
         add_action( 'wp_ajax_wpuf_dismiss_paypal_notice', [ $this, 'dismiss_paypal_notice' ] );
         add_action( 'admin_head', [ $this, 'inject_webhook_css' ] );
     }

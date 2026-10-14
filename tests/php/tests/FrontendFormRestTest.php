@@ -322,4 +322,26 @@ class FrontendFormRestTest extends WP_UnitTestCase {
             'the post form templates service is built for the submit'
         );
     }
+
+    public function test_embed_needs_a_user_who_may_write_posts() {
+        $form_id = $this->form();
+        $path    = '/wpuf/v1/forms/' . $form_id . '/embed';
+        $url     = [ 'url' => 'https://example.com/video' ];
+
+        wp_set_current_user( 0 );
+        $this->assertSame( 401, $this->request( 'POST', $path, $url )->get_status() );
+
+        wp_set_current_user( self::factory()->user->create( [ 'role' => 'subscriber' ] ) );
+        $this->assertSame( 403, $this->request( 'POST', $path, $url )->get_status(), 'no server-side fetch for subscribers' );
+
+        add_filter( 'pre_oembed_result', $stub = function () {
+            return '<iframe src="https://example.com/embed"></iframe>';
+        } );
+        wp_set_current_user( self::factory()->user->create( [ 'role' => 'author' ] ) );
+        $response = $this->request( 'POST', $path, $url );
+        remove_filter( 'pre_oembed_result', $stub );
+
+        $this->assertSame( 200, $response->get_status() );
+        $this->assertStringContainsString( 'iframe', $response->get_data()['html'] );
+    }
 }

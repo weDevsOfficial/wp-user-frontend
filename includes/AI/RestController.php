@@ -298,7 +298,7 @@ class RestController extends PlatformRestController implements Hookable {
             $base . '/modify-form',
             WP_REST_Server::CREATABLE,
             'modify_form_from_ai',
-            $use,
+            [ $this, 'can_modify_form' ],
             [
                 'form_id'           => [
                     'required' => true,
@@ -374,6 +374,42 @@ class RestController extends PlatformRestController implements Hookable {
 
         if ( ! $this->check_permission() ) {
             return new WP_Error( 'wpuf_rest_forbidden', __( 'Sorry, you are not allowed to do that.', 'wp-user-frontend' ), [ 'status' => 403 ] );
+        }
+
+        return true;
+    }
+
+    /**
+     * Who may let the AI change a form: an AI builder user who may edit that
+     * form (the form post types map edit_post to wpuf_admin_role()), and only
+     * a WPUF form: 404 otherwise. Editors may use the AI builder for new forms
+     * but no longer rewrite an existing form they cannot edit.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Request
+     *
+     * @return true|WP_Error
+     */
+    public function can_modify_form( $request ) {
+        $allowed = $this->can_use_ai();
+
+        if ( true !== $allowed ) {
+            return $allowed;
+        }
+
+        $form_id = absint( $request['form_id'] );
+
+        if ( ! $form_id || ! in_array( get_post_type( $form_id ), [ 'wpuf_forms', 'wpuf_profile' ], true ) ) {
+            return new WP_Error( 'wpuf_rest_not_found', __( 'Invalid form id', 'wp-user-frontend' ), [ 'status' => 404 ] );
+        }
+
+        // The form post types are registered with the admin layer, which a REST
+        // request may not load: then check the cap their edit_post maps to.
+        $can_edit = post_type_exists( get_post_type( $form_id ) ) ? current_user_can( 'edit_post', $form_id ) : current_user_can( wpuf_admin_role() );
+
+        if ( ! $can_edit ) {
+            return new WP_Error( 'wpuf_rest_forbidden', __( 'Sorry, you are not allowed to edit this form.', 'wp-user-frontend' ), [ 'status' => 403 ] );
         }
 
         return true;

@@ -202,12 +202,14 @@ class Frontend_Render_Form {
 
         $layout    = 'layout1';
         $use_theme_css = isset( $this->form_settings['use_theme_css'] ) ? $this->form_settings['use_theme_css'] : '';
+        // A toggle: 'on' from the classic settings, 'true' from the React form builder.
+        $theme_css_on  = wpuf_is_checkbox_or_toggle_on( $use_theme_css );
 
         do_action( 'wpuf_before_form_render', $form_id );
 
         $form = new Form( $form_id );
 
-        if ( 'wpuf_profile' === $form->data->post_type && 'on' !== $use_theme_css ) {
+        if ( 'wpuf_profile' === $form->data->post_type && ! $theme_css_on ) {
             $layout = isset( $this->form_settings['profile_form_layout'] ) ? $this->form_settings['profile_form_layout'] : 'layout1';
             switch ( $layout ) {
                 case 'layout2':
@@ -233,7 +235,7 @@ class Frontend_Render_Form {
         } else {
             $layout = isset( $this->form_settings['form_layout'] ) ? $this->form_settings['form_layout'] : 'layout1';
 
-            if ( ! empty( $layout ) && 'on' !== $use_theme_css ) {
+            if ( ! empty( $layout ) && ! $theme_css_on ) {
                 // Reuse the shared layout handle so WordPress dedupes it against the
                 // blanket enqueue in Frontend.php and Elementor's dequeue list covers it.
                 wp_enqueue_style( 'wpuf-' . $layout );
@@ -246,7 +248,7 @@ class Frontend_Render_Form {
         // never bleeds onto other editors on the page and never persists after render.
         $wpuf_dark_editor_style = null;
 
-        if ( 'on' !== $use_theme_css && in_array( $layout, [ 'layout2', 'layout5' ], true ) ) {
+        if ( ! $theme_css_on && in_array( $layout, [ 'layout2', 'layout5' ], true ) ) {
             $editor_bg = 'layout2' === $layout ? '#222C3C' : '#394141';
 
             $wpuf_dark_editor_style = function ( $mce_init ) use ( $editor_bg ) {
@@ -287,7 +289,7 @@ class Frontend_Render_Form {
         if ( $this->form_fields ) {
             ?>
 
-            <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?><?php echo ( 'layout1' === $layout && 'on' === $use_theme_css ) ? ' wpuf-theme-style' : ''; ?>" action="" method="post">
+            <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?><?php echo ( 'layout1' === $layout && $theme_css_on ) ? ' wpuf-theme-style' : ''; ?>" action="" method="post">
 
                 <?php
                 // Display form title if enabled

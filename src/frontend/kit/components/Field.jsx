@@ -62,20 +62,21 @@ export function FieldLabel( { field, id } ) {
  * @param {boolean} [props.noLabel]      Rows without a label box (HTML, section break).
  * @param {*}       [props.label]        A label node replacing the classic label box (social fields).
  * @param {string}  [props.className]    Extra row classes.
+ * @param {boolean} [props.plain]        Only the extra classes on the row (rows the classic form prints without `wpuf-el`, e.g. the guest name / email).
  * @param {string}  [props.fieldsClass]  Extra classes on `div.wpuf-fields`.
  * @param {boolean} [props.noHelp]       The component prints the help itself.
  * @param {*}       [props.after]        Rendered after the fields box, inside the row.
  * @param {string}  [props.fieldsBase]   The fields box class (`wpuf-fields`; the address field uses `wpuf-fields-address`).
  * @param {boolean} [props.invalid]      Mark the box `has-error` without a message (the classic content limit).
  */
-export default function Field( { field, id, error, children, noLabel = false, label = null, className = '', fieldsClass = '', noHelp = false, after = null, fieldsBase = 'wpuf-fields', invalid = false, ...rest } ) {
+export default function Field( { field, id, error, children, noLabel = false, label = null, className = '', fieldsClass = '', noHelp = false, after = null, fieldsBase = 'wpuf-fields', invalid = false, plain = false, ...rest } ) {
     // print_list_attributes(): the size class only when the field has a width; `row_class`
     // when the field prints its row under another name (Pro's profile fields: `wpuf_<name>`).
     const size = field.width ? `field-size-${ field.width }` : '';
 
     return (
         <li
-            className={ cx( 'wpuf-el', field.row_class || field.name, size, field.css, isReadOnly( field ) && 'read-only', className ) }
+            className={ plain ? className : cx( 'wpuf-el', field.row_class || field.name, size, field.css, isReadOnly( field ) && 'read-only', className ) }
             data-label={ field.label }
             { ...rest }
         >

@@ -252,6 +252,8 @@ export default function PostForm( { schema: boot, root } ) {
                 busy={ busy }
                 draftBusy={ draftBusy }
                 submitAllowed={ ! ( schema.state && schema.state.locked ) && submitAllowed( schema.settings, form.values ) && captchaSolved }
+                // The submit condition hides the submit row while it fails, as Pro's conditional-logic.js does.
+                submitHidden={ ! submitAllowed( schema.settings, form.values ) }
             />
         </>
     );

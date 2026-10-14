@@ -28,9 +28,9 @@ function Progress( { type, steps, step } ) {
 
     if ( 'progressive' === type ) {
         const percent = Math.round( ( ( step + 1 ) * 100 ) / total );
-        const legend = steps[ step ].title;
+        // frontend-form.js rewrites the header to "Step N of M" on every step (the legend only flashes first).
         /* translators: 1: current step, 2: total steps */
-        const text = legend || sprintf( __( 'Step %1$d of %2$d', 'wp-user-frontend' ), step + 1, total );
+        const text = sprintf( __( 'Step %1$d of %2$d', 'wp-user-frontend' ), step + 1, total );
 
         return (
             <div className="wpuf-multistep-progressbar" role="progressbar" aria-valuemin={ 0 } aria-valuemax={ 100 } aria-valuenow={ percent } aria-label={ text }>
@@ -46,7 +46,7 @@ function Progress( { type, steps, step } ) {
     }
 
     return (
-        <div className="wpuf-multistep-progressbar">
+        <div className="wpuf-multistep-progressbar wizard-steps">
             <div className="wpuf-step-wizard">
                 { steps.map( ( item, index ) => (
                     <Fragment key={ index }>
@@ -79,6 +79,7 @@ export default function FormRenderer( {
     draftBusy,
     formError = '',
     submitAllowed = true,
+    submitHidden = false,
 } ) {
     const { values, setValue, errors, touch, visible, steps, step, setStep, validate } = form;
     const [ stepError, setStepError ] = useState( '' );
@@ -182,7 +183,7 @@ export default function FormRenderer( {
     const styleClass = layout.form_class || '';
 
     const submitRow = (
-    <li className="wpuf-submit">
+    <li className="wpuf-submit" style={ submitHidden ? { display: 'none' } : undefined }>
         { ! profile && <div className="wpuf-label">&nbsp;</div> }
         { slots.submit && <ServerHtml html={ slots.submit } slug="submit" className="wpuf-slot-inline" /> }
         <input
@@ -256,10 +257,10 @@ export default function FormRenderer( {
 
                     { schema.guest?.fields && (
                         <>
-                            <Field field={ { name: 'guest_name', label: schema.guest.name_label, required: 'yes' } } id={ `guest_name_${ schema.id }` } error={ errors.guest_name } className="el-name">
+                            <Field field={ { name: 'guest_name', label: schema.guest.name_label, required: 'yes' } } id={ `guest_name_${ schema.id }` } error={ errors.guest_name } className="el-name" plain>
                                 <input id={ `guest_name_${ schema.id }` } type="text" required data-required="yes" data-type="text" name="guest_name" value={ guest.guest_name || '' } size={ 40 } onChange={ ( event ) => setGuest( { ...guest, guest_name: event.target.value } ) } />
                             </Field>
-                            <Field field={ { name: 'guest_email', label: schema.guest.email_label, required: 'yes' } } id={ `guest_email_${ schema.id }` } error={ errors.guest_email } className="el-email">
+                            <Field field={ { name: 'guest_email', label: schema.guest.email_label, required: 'yes' } } id={ `guest_email_${ schema.id }` } error={ errors.guest_email } className="el-email" plain>
                                 <input id={ `guest_email_${ schema.id }` } type="email" required data-required="yes" data-type="email" name="guest_email" value={ guest.guest_email || '' } size={ 40 } onChange={ ( event ) => setGuest( { ...guest, guest_email: event.target.value } ) } />
                             </Field>
                         </>

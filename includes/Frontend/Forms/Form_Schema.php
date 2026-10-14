@@ -224,9 +224,9 @@ class Form_Schema {
             'layout'   => [
                 'layout'         => 'wpuf_profile' === $form->data->post_type ? ( isset( $settings['profile_form_layout'] ) ? $settings['profile_form_layout'] : 'layout1' ) : ( ! empty( $settings['form_layout'] ) ? $settings['form_layout'] : 'layout1' ),
                 'label_position' => isset( $settings['label_position'] ) ? $settings['label_position'] : 'left',
-                'use_theme_css'  => ! empty( $settings['use_theme_css'] ) && 'on' === $settings['use_theme_css'],
+                'use_theme_css'  => ! empty( $settings['use_theme_css'] ) && wpuf_is_checkbox_or_toggle_on( $settings['use_theme_css'] ),
                 // Frontend_Render_Form's class: `wpuf-theme-style` on layout1 with "use theme CSS".
-                'form_class'     => ( empty( $settings['form_layout'] ) || 'layout1' === $settings['form_layout'] ) && isset( $settings['use_theme_css'] ) && 'on' === $settings['use_theme_css'] ? 'wpuf-theme-style' : '',
+                'form_class'     => ( empty( $settings['form_layout'] ) || 'layout1' === $settings['form_layout'] ) && isset( $settings['use_theme_css'] ) && wpuf_is_checkbox_or_toggle_on( $settings['use_theme_css'] ) ? 'wpuf-theme-style' : '',
                 'card'           => false,
                 'show_title'     => isset( $settings['show_form_title'] ) && wpuf_is_checkbox_or_toggle_on( $settings['show_form_title'] ),
                 'description'    => isset( $settings['form_description'] ) ? wp_kses_post( $settings['form_description'] ) : '',

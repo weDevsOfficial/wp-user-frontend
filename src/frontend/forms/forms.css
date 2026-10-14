@@ -333,3 +333,22 @@
     color: var(--wpuf-fe-success);
     font-weight: 500;
 }
+
+/* The layouts 3-5 style every `.wpuf-fields input`, which showed the hidden file
+   input as a native "Choose File" next to the classic button (the classic form
+   has no such input, plupload adds its own). Hidden in every layout. */
+.wpuf-frontend form.wpuf-form-add ul.wpuf-form li .wpuf-fields input.wpuf-file-input,
+.wpuf-frontend form.wpuf-form-add .wpuf-fields input.wpuf-file-input,
+.wpuf-frontend input.wpuf-file-input[type="file"] {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    min-height: 0 !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    opacity: 0 !important;
+}

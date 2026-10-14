@@ -39,7 +39,7 @@ class Ajax {
         $this->register_ajax( 'wpuf_migrate_acf', [ $this->service( Integrations\WPUF_ACF_Compatibility::class ), 'migrate_cf_data' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_ajax_login', [ $this->service( Login_Widget::class ), 'ajax_login' ], $this->logged_out_only );
         $this->register_ajax( 'wpuf_lost_password', [ $this->service( Login_Widget::class ), 'ajax_reset_pass' ], $this->logged_out_only );
-        $this->register_ajax( 'wpuf_ajax_logout', [ $this->service( Login_Widget::class ), 'ajax_logout' ], $this->logged_out_only );
+        $this->register_ajax( 'wpuf_ajax_logout', [ $this->service( Login_Widget::class ), 'ajax_logout' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_form_preview', [ $this->service( Frontend\Frontend_Form::class ), 'preview_form' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_make_media_embed_code', [ $this->service( Frontend\Frontend_Form::class ), 'make_media_embed_code' ] );
         $this->register_ajax( 'wpuf_draft_post', [ $this->service( Frontend\Frontend_Form::class ), 'draft_post' ] );
@@ -112,7 +112,9 @@ class Ajax {
             'accepted_args' => 1,
         ];
 
-        $args = wp_parse_args( $default, $args );
+        // Caller args override the defaults (they were swapped, so logged_in_only /
+        // logged_out_only were ignored and every action was registered both ways).
+        $args = wp_parse_args( $args, $default );
 
         if ( $args['priv'] ) {
             add_action( 'wp_ajax_' . $action, $callback, $args['priority'], $args['accepted_args'] );

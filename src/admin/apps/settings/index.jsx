@@ -11,7 +11,7 @@ import { useEffect, useState, useCallback, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Save } from 'lucide-react';
 
-import { Button, Notice, PageFooter, PageHeader, PageShell, Tabs, WpufProviders } from '@wpuf/components';
+import { Button, Notice, PageFooter, PageHeader, PageShell, SkeletonBar, Tabs, WpufProviders } from '@wpuf/components';
 import SettingsNav from './components/settings/SettingsNav';
 import SettingsSection, { PROVIDER_SECTIONS } from './components/settings/SettingsSection';
 import { stripTags } from './components/settings/utils';
@@ -229,23 +229,23 @@ const SettingsApp = () => {
 
             { isLoading ? (
                 <div className="pt-6 pb-6">
-                    <div className="flex animate-pulse gap-8 rounded-lg border border-gray-200 bg-white p-8 shadow-xs">
+                    <div role="status" aria-busy="true" className="flex gap-8 rounded-lg border border-gray-200 bg-white p-8 shadow-xs">
                         {/* Left nav skeleton */}
                         <div className="w-[280px] shrink-0 [&>:not([hidden])~:not([hidden])]:mt-3 [&>:not([hidden])~:not([hidden])]:mb-0">
-                            <div className="h-9 rounded-md bg-gray-100" />
+                            <SkeletonBar className="h-9 bg-gray-100" />
                             { Array.from( { length: 8 } ).map( ( _, i ) => (
-                                <div key={ i } className="h-9 rounded-md bg-gray-100" />
+                                <SkeletonBar key={ i } className="h-9 bg-gray-100" />
                             ) ) }
                         </div>
                         {/* Content skeleton */}
                         <div className="min-w-0 flex-1 border-l border-gray-200 pl-8">
-                            <div className="h-7 w-44 rounded-sm bg-gray-200" />
+                            <SkeletonBar className="h-7 w-44 rounded-sm" />
                             <div className="my-8 border-b border-gray-200" />
                             <div className="[&>:not([hidden])~:not([hidden])]:mt-6 [&>:not([hidden])~:not([hidden])]:mb-0">
                                 { Array.from( { length: 5 } ).map( ( _, i ) => (
                                     <div key={ i }>
-                                        <div className="mb-2 h-4 w-32 rounded-sm bg-gray-100" />
-                                        <div className="h-9 w-full rounded-md bg-gray-100" />
+                                        <SkeletonBar className="mb-2 h-4 w-32 rounded-sm bg-gray-100" />
+                                        <SkeletonBar className="h-9 w-full bg-gray-100" />
                                     </div>
                                 ) ) }
                             </div>

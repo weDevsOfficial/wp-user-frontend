@@ -15,9 +15,9 @@
 import { useMemo } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { applyFilters } from '@wordpress/hooks';
-import { ActionMenu, Checkbox } from '@wpuf/components';
+import { ActionMenu, Badge, Checkbox, SortHeader } from '@wpuf/components';
 
-import { STATUS_BADGE_CLASSES } from '../utils/constants';
+import { STATUS_TONES } from '../utils/constants';
 import ShortcodeCopy from './ShortcodeCopy';
 import { openRoute } from '../../../app/client';
 import { adminScript } from '../boot';
@@ -56,12 +56,15 @@ const FormsTable = ( {
     copiedKey,
     onCopyShortcode,
     menuItems,
+    sort,
+    onSort,
 } ) => {
     const indeterminate = selectedForms.length > 0 && selectedForms.length < forms.length;
 
     const defaultColumns = useMemo( () => [
         {
             key: 'form_name',
+            sortable: 'title',
             label: __( 'Form Name', 'wp-user-frontend' ),
             thClassName: TH,
             render: ( form ) => (
@@ -96,14 +99,9 @@ const FormsTable = ( {
             thClassName: TH,
             render: ( form ) => (
                 <td key="post_status" className={ TD + ' whitespace-nowrap' }>
-                    <span
-                        className={
-                            'inline-flex items-center py-[2px] px-[12px] rounded-[5px] text-xs font-medium border ' +
-                            ( STATUS_BADGE_CLASSES[ form.post_status ] || STATUS_BADGE_CLASSES.draft )
-                        }
-                    >
+                    <Badge tone={ STATUS_TONES[ form.post_status ] || 'neutral' }>
                         { statusLabel( form.post_status ) }
-                    </span>
+                    </Badge>
                 </td>
             ),
         },
@@ -132,10 +130,12 @@ const FormsTable = ( {
                                     <button
                                         type="button"
                                         onClick={ () => openSubmissions( form ) }
-                                        className={ 'inline-flex cursor-pointer items-center py-[2px] px-2 rounded-[5px] text-xs font-medium border ' + STATUS_BADGE_CLASSES.pending }
+                                        className="cursor-pointer border-0 bg-transparent p-0"
                                     >
-                                        { /* translators: %d: number of posts waiting for review */ }
-                                        { sprintf( __( '%d pending', 'wp-user-frontend' ), pending ) }
+                                        <Badge tone="warning" className="px-2">
+                                            { /* translators: %d: number of posts waiting for review */ }
+                                            { sprintf( __( '%d pending', 'wp-user-frontend' ), pending ) }
+                                        </Badge>
                                     </button>
                                 ) : null }
                             </span>
@@ -233,15 +233,20 @@ const FormsTable = ( {
                                 className="align-middle"
                             />
                         </th>
-                        { columns.map( ( col ) =>
-                            col.renderHeader
-                                ? col.renderHeader()
-                                : (
-                                    <th key={ col.key } scope="col" className={ col.thClassName || TH }>
-                                        { col.label }
-                                    </th>
-                                )
-                        ) }
+                        { columns.map( ( col ) => {
+                            if ( col.renderHeader ) {
+                                return col.renderHeader();
+                            }
+
+                            // A column sorts when it names the server column (`sortable`).
+                            return col.sortable && onSort ? (
+                                <SortHeader key={ col.key } className={ col.thClassName || TH } column={ col.sortable } label={ col.label } sort={ sort || {} } onSort={ onSort } />
+                            ) : (
+                                <th key={ col.key } scope="col" className={ col.thClassName || TH }>
+                                    { col.label }
+                                </th>
+                            );
+                        } ) }
                     </tr>
                 </thead>
                 <tbody>

@@ -1,7 +1,8 @@
 import { useState, useCallback } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import { ChevronDown, Save } from 'lucide-react';
+import { ChevronDown, Eye, Save } from 'lucide-react';
+import { Button } from '@wpuf/components';
 import { STORE_NAME } from '../../store';
 import useFormSave from '../../hooks/useFormSave';
 import LegacySlot, { getLegacySlots } from '../../common/LegacySlot';
@@ -216,36 +217,27 @@ export default function Header( { activeTab, onTabChange } ) {
                 </div>
                 <div className="flex min-w-0 flex-1 items-center justify-end gap-2">
                     { previewUrl && (
-                        <a
+                        <Button
+                            variant="secondary"
+                            size="lg"
                             href={ `${ previewUrl }?wpuf_preview=1&form_id=${ post.ID }` }
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex h-10 items-center gap-x-2 rounded-md px-5 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 ring-1 ring-inset ring-gray-300 focus:shadow-none focus:border-none leading-none shadow-xs"
                         >
                             { __( 'Preview', 'wp-user-frontend' ) }
-                            <svg width="16" height="11" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1.69947 7.26867C1.6419 7.09594 1.64184 6.90895 1.69931 6.73619C2.85628 3.2581 6.13716 0.75 10.0038 0.75C13.8687 0.75 17.1484 3.25577 18.3068 6.73134C18.3643 6.90406 18.3644 7.09106 18.3069 7.26381C17.15 10.7419 13.8691 13.25 10.0024 13.25C6.1375 13.25 2.85787 10.7442 1.69947 7.26867Z" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M12.5032 7C12.5032 8.38071 11.3839 9.5 10.0032 9.5C8.62246 9.5 7.50317 8.38071 7.50317 7C7.50317 5.61929 8.62246 4.5 10.0032 4.5C11.3839 4.5 12.5032 5.61929 12.5032 7Z" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                        </a>
+                            <Eye size={ 16 } strokeWidth={ 1.5 } className="text-gray-500" aria-hidden="true" />
+                        </Button>
                     ) }
-                    { ! isSaving ? (
-                        <button
-                            onClick={ saveForm }
-                            type="button"
-                            disabled={ ! isDirty }
-                            title={ isDirty ? undefined : __( 'No changes to save', 'wp-user-frontend' ) }
-                            className="wpuf-btn-primary inline-flex h-10 items-center gap-2 leading-5 cursor-pointer px-5! py-0! text-sm! font-medium! shadow-sm disabled:cursor-not-allowed! disabled:opacity-50!"
-                        >
-                            <Save size={ 16 } strokeWidth={ 2 } aria-hidden="true" />
-                            { __( 'Save', 'wp-user-frontend' ) }
-                        </button>
-                    ) : (
-                        <button type="button" className="wpuf-btn-primary inline-flex h-10 items-center gap-2 leading-5 px-5! py-0! text-sm! font-medium! shadow-sm opacity-75 button-ajax-working" disabled>
-                            <span className="loader" />{ ' ' }
-                            { __( 'Saving Form Data', 'wp-user-frontend' ) }
-                        </button>
-                    ) }
+                    <Button
+                        size="lg"
+                        onClick={ saveForm }
+                        busy={ isSaving }
+                        disabled={ ! isDirty }
+                        title={ isDirty || isSaving ? undefined : __( 'No changes to save', 'wp-user-frontend' ) }
+                    >
+                        { ! isSaving && <Save size={ 16 } strokeWidth={ 2 } aria-hidden="true" /> }
+                        { isSaving ? __( 'Saving Form Data', 'wp-user-frontend' ) : __( 'Save', 'wp-user-frontend' ) }
+                    </Button>
                 </div>
             </div>
         </div>

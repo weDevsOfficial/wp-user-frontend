@@ -4,15 +4,13 @@
  * @since WPUF_SINCE
  */
 
-export const STATUS_BADGE_CLASSES = {
-    publish:
-        'bg-emerald-50 border-emerald-200 text-emerald-800',
-    pending:
-        'bg-yellow-100 text-yellow-800',
-    private:
-        'bg-indigo-50 border-indigo-200 text-purple-800',
-    draft:
-        'bg-gray-100 border-gray-200 text-gray-800',
+// Kit Badge tone of each post status (lists, submissions).
+export const STATUS_TONES = {
+    publish: 'success',
+    pending: 'warning',
+    private: 'info',
+    future: 'info',
+    draft: 'neutral',
 };
 
 export const COPY_SVG_PATH =

@@ -91,6 +91,69 @@ abstract class RestController extends WP_REST_Controller implements RestRoute {
     }
 
     /**
+     * The argument schema of a list route, the same on every list endpoint:
+     * `page`, `per_page` (1-100), `orderby` (from the given columns), `order`
+     * (asc / desc) and the search string.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string[] $orderby         Sortable columns
+     * @param string   $default_orderby Column sorted on by default
+     * @param array    $options         order (default 'desc'), per_page (default 20,
+     *                                  null for none), search (the search argument's
+     *                                  name, default 'search', '' for none)
+     *
+     * @return array
+     */
+    protected function collection_args( array $orderby, $default_orderby, array $options = [] ) {
+        $options = array_merge(
+            [
+                'order'    => 'desc',
+                'per_page' => 20,
+                'search'   => 'search',
+            ],
+            $options
+        );
+
+        $args = [
+            'page'     => [
+                'type'    => 'integer',
+                'minimum' => 1,
+                'default' => 1,
+            ],
+            'per_page' => [
+                'type'    => 'integer',
+                'minimum' => 1,
+                'maximum' => 100,
+            ],
+            'orderby'  => [
+                'type'    => 'string',
+                'enum'    => array_values( $orderby ),
+                'default' => $default_orderby,
+            ],
+            'order'    => [
+                'type'    => 'string',
+                'enum'    => [ 'asc', 'desc' ],
+                'default' => $options['order'],
+            ],
+        ];
+
+        if ( null !== $options['per_page'] ) {
+            $args['per_page']['default'] = (int) $options['per_page'];
+        }
+
+        if ( '' !== $options['search'] ) {
+            $args[ $options['search'] ] = [
+                'type'              => 'string',
+                'default'           => '',
+                'sanitize_callback' => 'sanitize_text_field',
+            ];
+        }
+
+        return $args;
+    }
+
+    /**
      * A response with `X-WP-Total` / `X-WP-TotalPages` headers.
      *
      * @since WPUF_SINCE

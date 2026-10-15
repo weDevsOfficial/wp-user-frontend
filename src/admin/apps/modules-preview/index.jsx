@@ -13,19 +13,20 @@ import { createRoot, useEffect, useMemo, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 import {
+    Badge,
     Button,
     EmptyState,
     PageFooter,
     PageHeader,
     PageShell,
+    SearchInput,
     Tabs,
-    TextInput,
     Toggle,
     WpufProviders,
     dialogs,
     notify,
 } from '@wpuf/components';
-import { Boxes, Check, Crown, ExternalLink, Lock, Search } from 'lucide-react';
+import { Boxes, Check, Crown, ExternalLink, Lock } from 'lucide-react';
 
 import { registerScreen } from '../../app/client';
 
@@ -38,25 +39,6 @@ const PERKS = [
     __( 'Stripe, Mailchimp, Zapier and more', 'wp-user-frontend' ),
     __( '14 days refund policy', 'wp-user-frontend' ),
 ];
-
-/**
- * Small rounded status pill (as on Pro's modules screen).
- *
- * @param {Object} props
- * @param {string} props.tone     success|neutral|warning.
- * @param {*}      props.children Text.
- *
- * @return {JSX.Element} Pill.
- */
-function Pill( { tone, children } ) {
-    const tones = {
-        success: 'bg-emerald-50 text-emerald-700',
-        neutral: 'bg-gray-100 text-gray-600',
-        warning: 'bg-amber-100 text-amber-800',
-    };
-
-    return <span className={ `inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${ tones[ tone ] || tones.neutral }` }>{ children }</span>;
-}
 
 /**
  * One module card.
@@ -93,14 +75,14 @@ function ModuleCard( { item, locked, busy, onToggle, onLocked } ) {
 
             <div className="mt-auto flex items-center justify-between gap-3 border-0 border-t border-solid border-gray-200 pt-3">
                 { locked ? (
-                    <Pill tone="warning">
+                    <Badge variant="pill" tone="warning">
                         <Crown size={ 12 } aria-hidden="true" />
                         { __( 'Pro', 'wp-user-frontend' ) }
-                    </Pill>
+                    </Badge>
                 ) : (
-                    <Pill tone={ item.active ? 'success' : 'neutral' }>
+                    <Badge variant="pill" tone={ item.active ? 'success' : 'neutral' }>
                         { item.active ? __( 'Active', 'wp-user-frontend' ) : __( 'Inactive', 'wp-user-frontend' ) }
-                    </Pill>
+                    </Badge>
                 ) }
 
                 { locked ? (
@@ -243,7 +225,7 @@ function ModulesPreview() {
                         </ul>
                     </div>
                     <div className="flex flex-wrap items-center gap-3">
-                        <Pill tone="neutral">{ __( 'Free version', 'wp-user-frontend' ) }</Pill>
+                        <Badge variant="pill" tone="neutral">{ __( 'Free version', 'wp-user-frontend' ) }</Badge>
                         <Button onClick={ openUpgrade }>
                             <Crown size={ 14 } aria-hidden="true" />
                             { __( 'Upgrade to Pro', 'wp-user-frontend' ) }
@@ -255,17 +237,12 @@ function ModulesPreview() {
                 <div className="overflow-hidden rounded-[10px] border border-solid border-gray-200 bg-white shadow-sm">
                     <div className="flex flex-wrap items-center justify-between gap-3 border-0 border-b border-solid border-gray-200 px-4 pt-3 pb-2">
                         <Tabs variant="pill" label={ __( 'Module status', 'wp-user-frontend' ) } value={ filter } onChange={ setFilter } tabs={ tabs } />
-                        <div className="relative w-60">
-                            <Search size={ 16 } aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-gray-400" />
-                            <TextInput
-                                type="search"
-                                className="pl-9!"
-                                value={ search }
-                                onChange={ ( value ) => setSearch( value ) }
-                                placeholder={ __( 'Search', 'wp-user-frontend' ) }
-                                aria-label={ __( 'Search modules', 'wp-user-frontend' ) }
-                            />
-                        </div>
+                        <SearchInput
+                            value={ search }
+                            onChange={ setSearch }
+                            placeholder={ __( 'Search', 'wp-user-frontend' ) }
+                            aria-label={ __( 'Search modules', 'wp-user-frontend' ) }
+                        />
                     </div>
 
                     { ! visible.length && ! ( 'all' === filter && proVisible.length ) && (

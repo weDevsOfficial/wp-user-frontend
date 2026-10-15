@@ -7,8 +7,7 @@
  */
 import { useState } from '@wordpress/element';
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { Progress, ProgressIndicator, ProgressTrack, Spinner } from '@wedevs/plugin-ui';
-import { Button, Modal, Notice, Select, dialogs } from '@wpuf/components';
+import { Badge, Button, Modal, Notice, Progress, Select, Spinner, dialogs } from '@wpuf/components';
 
 import { installPlugin } from './api';
 
@@ -411,26 +410,26 @@ function InstallStatus( { run } ) {
 
     if ( 'installing' === run.state ) {
         return (
-            <span className="wpuf-onboarding-install is-installing inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-0.5 text-xs font-medium text-primary shadow-sm">
-                <Spinner className="size-3.5" />
+            <Badge variant="pill" tone="primary" className="wpuf-onboarding-install is-installing bg-white shadow-sm">
+                <Spinner size="xs" />
                 { __( 'Installing…', 'wp-user-frontend' ) }
-            </span>
+            </Badge>
         );
     }
 
     if ( 'done' === run.state ) {
         return (
-            <span className="wpuf-onboarding-install is-done inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
+            <Badge variant="pill" tone="success" className="wpuf-onboarding-install is-done">
                 <Tick />
                 { __( 'Installed', 'wp-user-frontend' ) }
-            </span>
+            </Badge>
         );
     }
 
     return (
-        <span className="wpuf-onboarding-install is-failed inline-flex rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-700">
+        <Badge variant="pill" tone="danger" className="wpuf-onboarding-install is-failed">
             { __( 'Failed', 'wp-user-frontend' ) }
-        </span>
+        </Badge>
     );
 }
 
@@ -471,7 +470,7 @@ function InstallDialog( { open, items, runs, installing, onClose, onRetry, onSki
                     { 'failed' === state && run.message && <span className="mt-0.5 block text-xs leading-4 text-red-700">{ run.message }</span> }
                 </span>
                 <span className="shrink-0 pt-0.5 text-xs font-medium">
-                    { 'installing' === state && <span className="inline-flex items-center gap-1.5 text-primary"><Spinner className="size-3.5" />{ __( 'Installing…', 'wp-user-frontend' ) }</span> }
+                    { 'installing' === state && <span className="inline-flex items-center gap-1.5 text-primary"><Spinner size="xs" />{ __( 'Installing…', 'wp-user-frontend' ) }</span> }
                     { 'done' === state && <span className="inline-flex items-center gap-1.5 text-emerald-700"><Tick />{ __( 'Installed', 'wp-user-frontend' ) }</span> }
                     { 'failed' === state && <span className="text-red-700">{ __( 'Failed', 'wp-user-frontend' ) }</span> }
                     { 'waiting' === state && <span className="text-gray-400">{ __( 'Waiting', 'wp-user-frontend' ) }</span> }
@@ -493,11 +492,7 @@ function InstallDialog( { open, items, runs, installing, onClose, onRetry, onSki
                     </span>
                     <span className="font-medium text-gray-900">{ total ? Math.round( ( done / total ) * 100 ) : 0 }%</span>
                 </div>
-                <Progress value={ total ? ( done / total ) * 100 : 0 } size="sm" rounded aria-label={ __( 'Plugins installed', 'wp-user-frontend' ) }>
-                    <ProgressTrack>
-                        <ProgressIndicator />
-                    </ProgressTrack>
-                </Progress>
+                <Progress value={ total ? ( done / total ) * 100 : 0 } label={ __( 'Plugins installed', 'wp-user-frontend' ) } />
                 <ul className="m-0 mt-3 list-none p-0">{ items.map( row ) }</ul>
                 { installing && <p className="m-0 mt-3 text-xs text-gray-500">{ __( 'Keep this page open. Large plugins can take a minute.', 'wp-user-frontend' ) }</p> }
             </div>
@@ -612,12 +607,12 @@ export function PluginsStep( { data, nav, save, busy } ) {
                             onChange={ ( on ) => setPicked( ( list ) => toggleIn( list, item.slug, on ) ) }
                         >
                             { body( item ) }
-                            { item.installed && ! runs[ item.slug ] && <span className="wpuf-onboarding-badge mt-3 inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">{ __( 'Will be activated', 'wp-user-frontend' ) }</span> }
+                            { item.installed && ! runs[ item.slug ] && <Badge variant="pill" tone="success" className="wpuf-onboarding-badge mt-3">{ __( 'Will be activated', 'wp-user-frontend' ) }</Badge> }
                         </ChoiceCard>
                     ) : (
                         <div key={ item.slug } data-value={ item.slug } className="wpuf-onboarding-card is-installed flex flex-col items-start rounded-[10px] border border-solid border-gray-200 bg-gray-50 p-5">
                             { body( item ) }
-                            <span className="wpuf-onboarding-badge is-error mt-3 inline-flex rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-700">{ __( 'No permission to install', 'wp-user-frontend' ) }</span>
+                            <Badge variant="pill" tone="danger" className="wpuf-onboarding-badge is-error mt-3">{ __( 'No permission to install', 'wp-user-frontend' ) }</Badge>
                         </div>
                     ) ) ) }
                 </div>

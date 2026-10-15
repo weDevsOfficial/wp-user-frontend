@@ -188,9 +188,9 @@ export function ActionBar( { onPrevious, onSkip, onNext, nextLabel, busy = false
                 </div>
                 <div className="flex items-center gap-4">
                     { onSkip && (
-                        <button type="button" onClick={ onSkip } disabled={ busy } data-action="skip" className="cursor-pointer border-0 bg-transparent p-0 text-sm font-medium text-gray-500 hover:text-primary">
+                        <Button variant="link" onClick={ onSkip } disabled={ busy } data-action="skip" className="text-gray-500 enabled:hover:text-primary enabled:hover:no-underline">
                             { __( 'Skip this step', 'wp-user-frontend' ) }
-                        </button>
+                        </Button>
                     ) }
                     <Button size="lg" onClick={ onNext } busy={ busy } data-action="next">
                         { nextLabel || __( 'Save & Continue', 'wp-user-frontend' ) }

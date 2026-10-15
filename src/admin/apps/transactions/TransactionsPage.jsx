@@ -8,8 +8,8 @@
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useCallback, useEffect, useMemo, useRef, useState } from '@wordpress/element';
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { Button, DateTime, EmptyState, ErrorState, PageFooter, PageHeader, PageShell, Pagination, Select, Tabs, TextInput, dialogs, notify } from '@wpuf/components';
-import { Receipt, Search, SearchX, X } from 'lucide-react';
+import { Button, DateTime, EmptyState, ErrorState, PageFooter, PageHeader, PageShell, Pagination, SearchInput, Select, Tabs, dialogs, notify } from '@wpuf/components';
+import { Receipt, SearchX, X } from 'lucide-react';
 
 import SummaryCards from './SummaryCards';
 import { store } from './store';
@@ -19,7 +19,6 @@ import TransactionsTable from './TransactionsTable';
 
 const data = () => window.wpufTransactions || {};
 
-const DANGER = 'border-red-600 text-red-600 enabled:hover:border-red-600 enabled:hover:bg-red-50 enabled:hover:text-red-600';
 
 const CONFIRM = {
     accept: ( count ) => ( {
@@ -159,11 +158,7 @@ export default function TransactionsPage( { context } ) {
         }
     };
 
-    const sortBy = ( column ) => setQuery( {
-        orderby: column,
-        order: query.orderby === column && 'desc' === query.order ? 'asc' : 'desc',
-        page: 1,
-    } );
+    const sortBy = ( next ) => setQuery( { ...next, page: 1 } );
 
     const clearFilters = () => {
         setSearch( '' );
@@ -229,16 +224,13 @@ export default function TransactionsPage( { context } ) {
                 <div className="mt-6 rounded-[10px] border border-solid border-gray-200 bg-white shadow-sm">
                     <div className="flex flex-wrap items-center justify-between gap-3 border-0 border-b border-solid border-gray-200 px-4 pt-3 pb-2">
                         <Tabs variant="toolbar" tabs={ tabs } value={ query.status } onChange={ ( status ) => setQuery( { status, page: 1 } ) } label={ __( 'Payment status', 'wp-user-frontend' ) } />
-                        <div className="relative">
-                            <Search size={ 16 } className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-gray-400" aria-hidden="true" />
-                            <TextInput
-                                value={ search }
-                                onChange={ setSearch }
-                                placeholder={ __( 'Search payer, email or ID', 'wp-user-frontend' ) }
-                                aria-label={ __( 'Search payments', 'wp-user-frontend' ) }
-                                className="h-9 w-64 ps-9"
-                            />
-                        </div>
+                        <SearchInput
+                            value={ search }
+                            onChange={ setSearch }
+                            placeholder={ __( 'Search payer, email or ID', 'wp-user-frontend' ) }
+                            aria-label={ __( 'Search payments', 'wp-user-frontend' ) }
+                            className="w-64"
+                        />
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3 border-0 border-b border-solid border-gray-200 px-4 py-3">
@@ -276,14 +268,14 @@ export default function TransactionsPage( { context } ) {
                                             { /* translators: %d: number of pending payments */ }
                                             { sprintf( __( 'Accept (%d)', 'wp-user-frontend' ), orders.length ) }
                                         </Button>
-                                        <Button size="sm" variant="secondary" className={ DANGER } disabled={ busy } onClick={ () => act( 'reject', orders ) }>
+                                        <Button size="sm" variant="danger-outline" disabled={ busy } onClick={ () => act( 'reject', orders ) }>
                                             { /* translators: %d: number of pending payments */ }
                                             { sprintf( __( 'Reject (%d)', 'wp-user-frontend' ), orders.length ) }
                                         </Button>
                                     </>
                                 ) }
                                 { records.length > 0 && (
-                                    <Button size="sm" variant="secondary" className={ DANGER } disabled={ busy } onClick={ () => act( 'delete', records ) }>
+                                    <Button size="sm" variant="danger-outline" disabled={ busy } onClick={ () => act( 'delete', records ) }>
                                         { /* translators: %d: number of completed payments */ }
                                         { sprintf( __( 'Delete (%d)', 'wp-user-frontend' ), records.length ) }
                                     </Button>

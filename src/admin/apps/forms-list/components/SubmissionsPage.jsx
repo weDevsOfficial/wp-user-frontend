@@ -10,14 +10,12 @@
 import { useEffect, useState } from '@wordpress/element';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { request, restPath } from '@wpuf/api';
-import { Button, EmptyState, ErrorState, Pagination, Tabs } from '@wpuf/components';
+import { Badge, Button, EmptyState, ErrorState, Pagination, SearchInput, SkeletonBar, SortHeader, Tabs } from '@wpuf/components';
 import { ArrowLeft, Inbox, MessageSquare, SearchX } from 'lucide-react';
-import { Skeleton } from '@wedevs/plugin-ui';
 import { openRoute } from '../../../app/client';
 import { foldMenu, unfoldMenu } from '../../form-builder/skeleton';
-import SearchBar from './SearchBar';
 import TableSkeleton from './TableSkeleton';
-import { STATUS_BADGE_CLASSES } from '../utils/constants';
+import { STATUS_TONES } from '../utils/constants';
 import { adminScript } from '../boot';
 
 const TH = 'px-4 font-normal';
@@ -33,20 +31,8 @@ const STATUS_TABS = () => [
     { id: 'private', label: __( 'Private', 'wp-user-frontend' ) },
 ];
 
-const BADGE = {
-    ...STATUS_BADGE_CLASSES,
-    future: 'bg-blue-50 border-blue-200 text-blue-800',
-};
-
-// Tones of the extra columns' badges (`wpuf_form_submissions_columns`).
-const TONE = {
-    green: 'bg-emerald-50 border-emerald-200 text-emerald-800',
-    yellow: 'bg-yellow-100 border-yellow-200 text-yellow-800',
-    red: 'bg-red-50 border-red-200 text-red-700',
-    blue: 'bg-blue-50 border-blue-200 text-blue-800',
-    orange: 'bg-orange-50 border-orange-200 text-orange-800',
-    gray: 'bg-gray-100 border-gray-200 text-gray-700',
-};
+// Badge tones of the extra columns (`wpuf_form_submissions_columns` tone names).
+const TONE = { green: 'success', yellow: 'warning', red: 'danger', blue: 'info', gray: 'neutral' };
 
 const formsUrl = () => adminScript().admin_url + 'admin.php?page=wpuf-post-forms';
 
@@ -60,6 +46,7 @@ const SubmissionsPage = ( { formId } ) => {
     const [ query, setQuery ] = useState( '' );
     const [ page, setPage ] = useState( 1 );
     const [ perPage, setPerPage ] = useState( 10 );
+    const [ sort, setSort ] = useState( { orderby: 'date', order: 'desc' } );
     const [ data, setData ] = useState( null );
     const [ loading, setLoading ] = useState( true );
     const [ error, setError ] = useState( null );
@@ -89,7 +76,7 @@ const SubmissionsPage = ( { formId } ) => {
 
         setLoading( true );
         setError( null );
-        request( restPath( 'wpuf/v1', `/wpuf_form/${ formId }/submissions`, { page, per_page: perPage, status, s: query } ) )
+        request( restPath( 'wpuf/v1', `/wpuf_form/${ formId }/submissions`, { page, per_page: perPage, status, s: query, orderby: sort.orderby, order: sort.order } ) )
             .then( ( response ) => live && setData( response ) )
             .catch( ( failure ) => live && setError( failure || {} ) )
             .finally( () => live && setLoading( false ) );
@@ -97,7 +84,7 @@ const SubmissionsPage = ( { formId } ) => {
         return () => {
             live = false;
         };
-    }, [ formId, page, perPage, status, query, attempt ] );
+    }, [ formId, page, perPage, status, query, sort, attempt ] );
 
     const counts = ( data && data.counts ) || {};
     // Counts only once known (no "(0)" flash while the first page loads).
@@ -105,6 +92,10 @@ const SubmissionsPage = ( { formId } ) => {
     const form = ( data && data.form ) || null;
     const items = ( data && data.items ) || [];
     const filtered = '' !== query || 'any' !== status;
+    const onSort = ( next ) => {
+        setSort( next );
+        setPage( 1 );
+    };
     const taxColumns = ( data && data.columns ) || [];
     const hasComments = !! ( data && data.comments );
     const extraColumns = ( data && data.extra_columns ) || [];
@@ -163,7 +154,7 @@ const SubmissionsPage = ( { formId } ) => {
                     <table className="w-full text-left border-collapse">
                         <thead className="border-0 border-b border-solid border-gray-200 bg-white">
                             <tr className="h-10 text-xs font-normal uppercase leading-[1.4] text-[#828282]">
-                                <th className={ TH }>{ __( 'Title', 'wp-user-frontend' ) }</th>
+                                <SortHeader className={ TH } column="title" label={ __( 'Title', 'wp-user-frontend' ) } sort={ sort } onSort={ onSort } />
                                 <th className={ TH }>{ __( 'Author', 'wp-user-frontend' ) }</th>
                                 { taxColumns.map( ( column ) => <th key={ column.key } className={ TH }>{ column.label }</th> ) }
                                 { hasComments ? (
@@ -174,7 +165,7 @@ const SubmissionsPage = ( { formId } ) => {
                                 ) : null }
                                 { extraColumns.map( ( column ) => <th key={ column.key } className={ TH }>{ column.label }</th> ) }
                                 <th className={ TH }>{ __( 'Status', 'wp-user-frontend' ) }</th>
-                                <th className={ TH }>{ __( 'Date', 'wp-user-frontend' ) }</th>
+                                <SortHeader className={ TH } column="date" label={ __( 'Date', 'wp-user-frontend' ) } sort={ sort } onSort={ onSort } />
                                 <th className={ TH }><span className="sr-only">{ __( 'Actions', 'wp-user-frontend' ) }</span></th>
                             </tr>
                         </thead>
@@ -203,17 +194,17 @@ const SubmissionsPage = ( { formId } ) => {
                                         return (
                                             <td key={ column.key } className={ TD }>
                                                 { value && value.text ? (
-                                                    <span title={ value.title || '' } className={ 'inline-flex max-w-56 items-center truncate py-[2px] px-2 rounded-[5px] text-xs font-medium border border-solid ' + ( TONE[ value.tone ] || TONE.gray ) }>
+                                                    <Badge title={ value.title || '' } tone={ TONE[ value.tone ] || 'neutral' } className="max-w-56 truncate px-2">
                                                         { value.text }
-                                                    </span>
+                                                    </Badge>
                                                 ) : <span className="text-gray-400" aria-hidden="true">&mdash;</span> }
                                             </td>
                                         );
                                     } ) }
                                     <td className={ TD }>
-                                        <span className={ 'inline-flex items-center py-[2px] px-2 rounded-[5px] text-xs font-medium border border-solid ' + ( BADGE[ item.status ] || BADGE.draft ) }>
+                                        <Badge tone={ STATUS_TONES[ item.status ] || 'neutral' } className="px-2">
                                             { item.status_label }
-                                        </span>
+                                        </Badge>
                                     </td>
                                     <td className={ TD + ' whitespace-nowrap text-gray-500' }>
                                         <span className="block text-gray-900">{ item.date_label }</span>
@@ -260,7 +251,7 @@ const SubmissionsPage = ( { formId } ) => {
                         <img src={ `${ adminScript().asset_url || '' }/images/wpuf-icon-circle.svg` } alt="" className="mr-1.5 size-7 shrink-0" />
                         { form
                             ? <span className="truncate px-2 text-sm font-medium text-gray-900">{ form.title }</span>
-                            : <Skeleton className="mx-2 h-4 w-40 rounded-md bg-gray-200" /> }
+                            : <SkeletonBar className="mx-2 h-4 w-40" /> }
                         { form ? (
                             <span className="ml-3 shrink-0 rounded-md border border-solid border-gray-200 bg-gray-50 px-2.5 py-1.5 text-xs font-medium leading-none text-gray-600">#{ form.id }</span>
                         ) : null }
@@ -292,7 +283,7 @@ const SubmissionsPage = ( { formId } ) => {
                         } }
                         label={ __( 'Submission status', 'wp-user-frontend' ) }
                     />
-                    <SearchBar
+                    <SearchInput
                         value={ search }
                         onChange={ setSearch }
                         placeholder={ __( 'Search submissions', 'wp-user-frontend' ) }

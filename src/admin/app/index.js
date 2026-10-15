@@ -15,6 +15,9 @@
 import { doAction } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 
+import renderNotFound from './not-found';
+import setTitle from './title';
+
 const boot = window.wpufAdmin || {};
 const app = boot.app || { routes: [], globals: {}, pageUrl: window.location.href };
 const screens = {};
@@ -136,11 +139,7 @@ const syncChrome = ( route ) => {
         } );
     }
 
-    if ( route.title ) {
-        const parts = document.title.split( ' ‹ ' );
-
-        document.title = [ route.title, ...parts.slice( 1 ) ].join( ' ‹ ' );
-    }
+    setTitle( route.title );
 };
 
 /**
@@ -338,20 +337,10 @@ const unmountCurrent = () => {
 const showNotFound = () => {
     const root = container();
 
-    if ( ! root ) {
-        return;
+    if ( root ) {
+        renderNotFound( root );
+        setTitle( __( 'Page not found', 'wp-user-frontend' ) );
     }
-
-    const box = document.createElement( 'div' );
-    const text = document.createElement( 'p' );
-    const link = document.createElement( 'a' );
-
-    box.className = 'wpuf-admin-app-not-found';
-    text.textContent = __( 'This page does not exist.', 'wp-user-frontend' );
-    link.href = '#/post-forms';
-    link.textContent = __( 'Go to Post Forms', 'wp-user-frontend' );
-    box.append( text, link );
-    root.append( box );
 };
 
 /**

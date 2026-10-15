@@ -20,7 +20,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { RadioGroup, RadioGroupItem } from '@wedevs/plugin-ui';
 import { ListPlus } from 'lucide-react';
-import { AIConfigModal, AiButton, Checkbox, TextInput, dialogs } from '@wpuf/components';
+import { AIConfigModal, AiButton, Button, Checkbox, Modal, Notice, ProBadge, TextInput, Textarea, dialogs } from '@wpuf/components';
 import SettingHelpText from './SettingHelpText';
 import { BUILDER_SLOTS, BuilderSlot } from '../../../slots';
 import { openRoute } from '../../../../../app/client';
@@ -297,24 +297,22 @@ export default function OptionDataInput( { optionField, field } ) {
                         <BuilderSlot name={ BUILDER_SLOTS.OPTION_DATA_ACTIONS } fillProps={ { field, options, setOptions } } />
                         { /* Bulk Add — pro can replace via filter, free shows teaser */ }
                         { applyFilters( 'wpuf.formBuilder.optionDataBulkAdd', null, options, setOptions, syncValue ) || (
-                            <a
-                                href={ builderData().pro_link || '' }
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="relative inline-block group/pro-button"
-                            >
-                                <button
-                                    type="button"
-                                    className="inline-flex h-7 items-center gap-x-1 whitespace-nowrap rounded-md px-2.5 text-xs font-medium text-gray-700 bg-white border border-solid border-gray-300 hover:border-gray-400 hover:bg-gray-50 cursor-pointer"
+                            <span className="relative inline-block group/pro-button">
+                                <Button
+                                    variant="secondary"
+                                    size="xs"
+                                    href={ builderData().pro_link || '' }
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     title={ __( 'Available in Pro Version', 'wp-user-frontend' ) }
                                 >
                                     <ListPlus className="size-3.5" aria-hidden="true" />
                                     { __( 'Bulk Add', 'wp-user-frontend' ) }
-                                </button>
-                                <div className="absolute top-0 right-0 opacity-0 group-hover/pro-button:opacity-100 wpuf-transition-all pointer-events-none">
-                                    <img src={ `${ builderData().asset_url || '' }/images/pro-badge.svg` } alt="" />
-                                </div>
-                            </a>
+                                </Button>
+                                <span className="absolute top-0 right-0 opacity-0 group-hover/pro-button:opacity-100 wpuf-transition-all pointer-events-none">
+                                    <ProBadge link={ false } />
+                                </span>
+                            </span>
                         ) }
                     </div>
                 </div>
@@ -409,102 +407,83 @@ export default function OptionDataInput( { optionField, field } ) {
 
             { /* Clear selection link for radio/select */ }
             { ! isMultiple && selected && (
-                <a
-                    className="inline-flex items-center gap-x-2 rounded-md px-3 py-2 text-sm text-gray-700 hover:text-gray-700 hover:bg-gray-50 ring-1 ring-inset ring-gray-300 mt-4"
-                    href="#clear"
-                    onClick={ ( e ) => {
-                        e.preventDefault();
-                        clearSelection();
-                    } }
-                >
+                <Button variant="secondary" size="sm" className="mt-4" onClick={ clearSelection }>
                     { __( 'Clear Selection', 'wp-user-frontend' ) }
-                </a>
+                </Button>
             ) }
 
-            { /* AI Generate Options Modal */ }
-            { showAiModal && (
-                <div className="wpuf-ai-modal-overlay" onClick={ closeAiModal }>
-                    <div className="wpuf-ai-modal" onClick={ ( e ) => e.stopPropagation() }>
-                        <div className="wpuf-ai-modal-header">
-                            <h3>{ __( 'AI Generate Options', 'wp-user-frontend' ) }</h3>
-                            <button type="button" onClick={ closeAiModal } className="wpuf-ai-modal-close">&times;</button>
-                        </div>
-                        <div className="wpuf-ai-modal-body">
-                            <label className="block mb-2 text-sm font-medium">
-                                { __( 'Describe the options you need', 'wp-user-frontend' ) }
-                            </label>
-                            <textarea
-                                value={ aiPrompt }
-                                onChange={ ( e ) => setAiPrompt( e.target.value ) }
-                                rows="3"
-                                className="w-full px-3 py-2 border rounded-sm"
-                                placeholder={ __( 'e.g., List of US states, Business categories, Job titles', 'wp-user-frontend' ) }
-                            />
-                            { aiError && (
-                                <div className="mt-2 text-sm text-red-600">{ aiError }</div>
-                            ) }
-                            { aiGeneratedOptions.length > 0 && (
-                                <div className="mt-4">
-                                    <div className="flex justify-between items-center mb-2">
-                                        <span className="text-sm font-medium">
-                                            { __( 'Generated Options', 'wp-user-frontend' ) }
-                                        </span>
-                                        <button type="button" onClick={ toggleAllAi } className="text-sm text-primary hover:underline">
-                                            { allAiSelected
-                                                ? __( 'Deselect All', 'wp-user-frontend' )
-                                                : __( 'Select All', 'wp-user-frontend' ) }
-                                        </button>
+            { /* AI Generate Options Modal (`.wpuf-ai-modal` is what the e2e specs find). */ }
+            <Modal
+                open={ showAiModal }
+                onClose={ closeAiModal }
+                showClose={ ! aiLoading }
+                title={ __( 'AI Generate Options', 'wp-user-frontend' ) }
+                className="wpuf-ai-modal sm:max-w-lg"
+            >
+                <div className="wpuf-ai-modal-body">
+                    <label htmlFor={ `wpuf-ai-prompt-${ field.id }` } className="mb-2 block text-sm font-medium text-gray-900">
+                        { __( 'Describe the options you need', 'wp-user-frontend' ) }
+                    </label>
+                    <Textarea
+                        id={ `wpuf-ai-prompt-${ field.id }` }
+                        value={ aiPrompt }
+                        onChange={ ( value ) => setAiPrompt( value ) }
+                        rows={ 3 }
+                        placeholder={ __( 'e.g., List of US states, Business categories, Job titles', 'wp-user-frontend' ) }
+                    />
+                    { aiError && (
+                        <Notice tone="error" className="mt-3">{ aiError }</Notice>
+                    ) }
+                    { aiGeneratedOptions.length > 0 && (
+                        <div className="mt-4">
+                            <div className="mb-2 flex items-center justify-between">
+                                <span className="text-sm font-medium text-gray-900">
+                                    { __( 'Generated Options', 'wp-user-frontend' ) }
+                                </span>
+                                <Button variant="link" onClick={ toggleAllAi }>
+                                    { allAiSelected
+                                        ? __( 'Deselect All', 'wp-user-frontend' )
+                                        : __( 'Select All', 'wp-user-frontend' ) }
+                                </Button>
+                            </div>
+                            <div className="wpuf-ai-options-list max-h-64 overflow-y-auto rounded-md border border-solid border-gray-200 p-1">
+                                { aiGeneratedOptions.map( ( opt, idx ) => (
+                                    <div key={ idx } className="rounded-sm px-2 py-1 hover:bg-gray-50">
+                                        <Checkbox
+                                            id={ `wpuf-ai-option-${ field.id }-${ idx }` }
+                                            value={ !! opt.selected }
+                                            onChange={ ( on ) => {
+                                                setAiGeneratedOptions( ( prev ) => {
+                                                    const next = [ ...prev ];
+                                                    next[ idx ] = { ...next[ idx ], selected: on };
+                                                    return next;
+                                                } );
+                                            } }
+                                            label={ opt.label }
+                                        />
                                     </div>
-                                    <div className="wpuf-ai-options-list">
-                                        { aiGeneratedOptions.map( ( opt, idx ) => (
-                                            <div key={ idx } className="py-1 hover:bg-gray-50 rounded-sm px-2">
-                                                <Checkbox
-                                                    id={ `wpuf-ai-option-${ field.id }-${ idx }` }
-                                                    value={ !! opt.selected }
-                                                    onChange={ ( on ) => {
-                                                        setAiGeneratedOptions( ( prev ) => {
-                                                            const next = [ ...prev ];
-                                                            next[ idx ] = { ...next[ idx ], selected: on };
-                                                            return next;
-                                                        } );
-                                                    } }
-                                                    label={ opt.label }
-                                                />
-                                            </div>
-                                        ) ) }
-                                    </div>
-                                </div>
-                            ) }
+                                ) ) }
+                            </div>
                         </div>
-                        <div className="wpuf-ai-modal-footer">
-                            <button type="button" onClick={ closeAiModal } className="wpuf-btn wpuf-btn-secondary">
-                                { __( 'Cancel', 'wp-user-frontend' ) }
-                            </button>
-                            { aiGeneratedOptions.length === 0 ? (
-                                <button
-                                    type="button"
-                                    onClick={ generateAiOptions }
-                                    disabled={ aiLoading || ! aiPrompt }
-                                    className="rounded-md text-center bg-gradient-to-r from-purple-600 to-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:from-purple-700 hover:to-blue-700 hover:text-white inline-flex items-center disabled:opacity-50 disabled:cursor-not-allowed border-0"
-                                >
-                                    { aiLoading && <i className="fa fa-spinner fa-spin mr-1" /> }
-                                    { aiLoading
-                                        ? __( 'Generating...', 'wp-user-frontend' )
-                                        : __( 'Generate', 'wp-user-frontend' ) }
-                                </button>
-                            ) : (
-                                <button
-                                    type="button"
-                                    onClick={ importAiOptions }
-                                    className="rounded-md text-center bg-gradient-to-r from-purple-600 to-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:from-purple-700 hover:to-blue-700 hover:text-white inline-flex items-center border-0"
-                                >
-                                    { __( 'Import Selected', 'wp-user-frontend' ) }
-                                </button>
-                            ) }
-                        </div>
-                    </div>
+                    ) }
                 </div>
-            ) }
+                <div className="wpuf-ai-modal-footer mt-6 flex justify-end gap-3">
+                    <Button variant="secondary" size="lg" onClick={ closeAiModal } disabled={ aiLoading }>
+                        { __( 'Cancel', 'wp-user-frontend' ) }
+                    </Button>
+                    { aiGeneratedOptions.length === 0 ? (
+                        <AiButton onClick={ generateAiOptions } disabled={ aiLoading || ! aiPrompt } aria-busy={ aiLoading || undefined }>
+                            { aiLoading
+                                ? __( 'Generating...', 'wp-user-frontend' )
+                                : __( 'Generate', 'wp-user-frontend' ) }
+                        </AiButton>
+                    ) : (
+                        <AiButton onClick={ importAiOptions }>
+                            { __( 'Import Selected', 'wp-user-frontend' ) }
+                        </AiButton>
+                    ) }
+                </div>
+            </Modal>
 
             { /* AI Provider Config Modal */ }
             <AIConfigModal

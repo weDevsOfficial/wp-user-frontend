@@ -86,16 +86,22 @@ export const actions = {
      * @param {string} status   Status tab.
      * @param {string} search   Search term.
      * @param {number} perPage  Rows per page.
+     * @param {Object} [sort]   { orderby, order } (server default: newest first).
      *
      * @return {Function} Thunk.
      */
-    fetchForms( postType, page = 1, status = 'any', search = '', perPage = PER_PAGE ) {
+    fetchForms( postType, page = 1, status = 'any', search = '', perPage = PER_PAGE, sort = null ) {
         return async ( { dispatch } ) => {
             const requestId = ++lastRequest;
             const query = { page, per_page: perPage, status, post_type: postType };
 
             if ( search ) {
                 query.s = search;
+            }
+
+            if ( sort && sort.orderby ) {
+                query.orderby = sort.orderby;
+                query.order = sort.order;
             }
 
             dispatch( { type: 'FETCH_START', postType, requestId } );

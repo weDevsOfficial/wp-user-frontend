@@ -1,4 +1,5 @@
 import { __ } from '@wordpress/i18n';
+import { Button } from '@wpuf/components';
 import { adminUrl, builderData } from '../../utils/boot';
 
 /**
@@ -11,20 +12,21 @@ import { adminUrl, builderData } from '../../utils/boot';
 export default function ModulesEmptyState( { isProActive } ) {
     const data = builderData();
     const proLink = data.pro_link || 'https://wedevs.com/wp-user-frontend-pro/pricing/';
-    const adminUrl = adminUrl() || data.admin_url || '';
+    // (Named apart from the imported adminUrl(): reusing the name threw on render.)
+    const admin = adminUrl() || data.admin_url || '';
 
     return (
         <div className="py-4 border-b border-gray-300 flex items-center justify-evenly flex-col h-[70vh] p-4 relative rounded-sm border border-transparent hover:border-primary border-dashed group/pro-item wpuf-transition-all opacity-50 hover:opacity-100">
             { ! isProActive && (
                 <>
-                    <a
-                        className="wpuf-btn-primary absolute top-[50%] left-[50%] -translate-y-[50%] -translate-x-[50%] z-30 opacity-0 group-hover/pro-item:opacity-100 wpuf-transition-all"
+                    <Button
+                        className="absolute top-[50%] left-[50%] -translate-y-[50%] -translate-x-[50%] z-30 opacity-0 group-hover/pro-item:opacity-100 wpuf-transition-all"
                         target="_blank"
                         rel="noopener noreferrer"
                         href={ proLink }
                     >
                         { __( 'Upgrade to PRO', 'wp-user-frontend' ) }
-                    </a>
+                    </Button>
                     <div className="z-20 absolute top-0 left-0 w-full h-full shadow-xs bg-emerald-50 group-hover/pro-item:opacity-50 opacity-0" />
                 </>
             ) }
@@ -70,14 +72,14 @@ export default function ModulesEmptyState( { isProActive } ) {
                     { __( 'No modules have been activated yet.', 'wp-user-frontend' ) }
                 </p>
                 { isProActive && (
-                    <a
-                        className="wpuf-btn-primary mt-4"
+                    <Button
+                        className="mt-4"
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={ `${ adminUrl }admin.php?page=wpuf-modules` }
+                        href={ `${ admin }admin.php?page=wpuf-modules` }
                     >
                         { __( 'Go To Module Page', 'wp-user-frontend' ) }
-                    </a>
+                    </Button>
                 ) }
             </div>
         </div>

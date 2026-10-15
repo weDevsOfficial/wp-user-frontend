@@ -1,4 +1,4 @@
-import { Toggle } from '@wpuf/components';
+import { ProBadge, Toggle } from '@wpuf/components';
 import SettingLabel from './SettingLabel';
 import { builderData } from '../../../utils/boot';
 
@@ -25,7 +25,7 @@ export default function ToggleField( { field, name, value, onChange } ) {
     return (
         <div className="flex items-center justify-between w-2/5">
             <SettingLabel field={ field } htmlFor={ name }>
-                { showProBadge && <img className="ml-2" src={ ( data.asset_url || '' ) + '/images/pro-badge.svg' } alt="" /> }
+                { showProBadge && <span className="ml-2 inline-flex"><ProBadge link={ false } /></span> }
             </SettingLabel>
             <Toggle
                 id={ name }

@@ -79,28 +79,7 @@ class SubscribersController extends RestController {
                     'enum'    => self::STATUSES,
                     'default' => 'all',
                 ],
-                'orderby'  => [
-                    'type'    => 'string',
-                    'enum'    => [ 'id', 'user_id', 'starts_from', 'expire' ],
-                    'default' => 'id',
-                ],
-                'order'    => [
-                    'type'    => 'string',
-                    'enum'    => [ 'asc', 'desc' ],
-                    'default' => 'desc',
-                ],
-                'page'     => [
-                    'type'    => 'integer',
-                    'default' => 1,
-                    'minimum' => 1,
-                ],
-                'per_page' => [
-                    'type'    => 'integer',
-                    'default' => 20,
-                    'minimum' => 1,
-                    'maximum' => 100,
-                ],
-            ]
+            ] + $this->collection_args( [ 'id', 'user_id', 'starts_from', 'expire' ], 'id', [ 'search' => '' ] )
         );
         $this->route(
             '/admin/users/(?P<user_id>\d+)/pack',

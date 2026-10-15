@@ -7,7 +7,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect, useRef, useState } from '@wordpress/element';
-import { ConfirmDialog } from '@wpuf/components';
+import { Button, ConfirmDialog } from '@wpuf/components';
 import { cn } from '@wedevs/plugin-ui';
 
 import { assetUrl, config } from '../api';
@@ -208,8 +208,6 @@ export default function SuccessStage( { title, initialFields, initialMessages, s
         placeholder = __( 'Please wait while form is being generated...', 'wp-user-frontend' );
     }
 
-    const editButton = 'flex h-10 cursor-pointer items-center gap-2 rounded-md border-0 bg-primary px-5 text-sm font-medium leading-5 text-white shadow-sm transition-colors hover:bg-primaryHover disabled:cursor-not-allowed disabled:opacity-60';
-
     return (
         <div className="wpuf-ai-form-wrapper relative min-h-screen w-full bg-[#f0f0f1] pb-20 font-sans md:pb-16 lg:pb-12">
             <div className="flex min-h-[calc(100vh-5rem)] flex-col">
@@ -223,14 +221,14 @@ export default function SuccessStage( { title, initialFields, initialMessages, s
                             </div>
                         </div>
                         <div className="flex gap-3">
-                            <button type="button" onClick={ () => setRegenerateOpen( true ) } className="wpuf-btn-regenerate flex h-10 cursor-pointer items-center gap-2 rounded-md border border-solid border-gray-300 bg-white px-5 text-sm font-medium leading-5 text-gray-700 shadow-sm transition-all hover:bg-gray-50">
+                            <Button variant="secondary" size="lg" onClick={ () => setRegenerateOpen( true ) } className="wpuf-btn-regenerate">
                                 { __( 'Regenerate', 'wp-user-frontend' ) }
                                 <RegenerateIcon />
-                            </button>
-                            <button type="button" onClick={ editInBuilder } disabled={ saving } className={ `wpuf-btn-edit-builder ${ editButton }` }>
+                            </Button>
+                            <Button size="lg" onClick={ editInBuilder } busy={ saving } className="wpuf-btn-edit-builder">
                                 { __( 'Edit with Builder', 'wp-user-frontend' ) }
-                                <PencilIcon />
-                            </button>
+                                { ! saving && <PencilIcon /> }
+                            </Button>
                         </div>
                     </div>
 
@@ -344,10 +342,10 @@ export default function SuccessStage( { title, initialFields, initialMessages, s
                                 ) }
                             </div>
                             <div className="-mx-4 shrink-0 border-t border-gray-200 px-4 pt-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-                                <button type="button" onClick={ editInBuilder } disabled={ saving } className={ `wpuf-btn-edit-full w-full justify-center ${ editButton }` }>
+                                <Button size="lg" onClick={ editInBuilder } busy={ saving } className="wpuf-btn-edit-full w-full justify-center">
                                     { __( 'Edit with Builder', 'wp-user-frontend' ) }
-                                    <PencilIcon />
-                                </button>
+                                    { ! saving && <PencilIcon /> }
+                                </Button>
                             </div>
                         </div>
                     </div>

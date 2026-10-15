@@ -1,4 +1,4 @@
-import { DateTime } from '@wpuf/components';
+import { Button, DateTime } from '@wpuf/components';
 import { __ } from '@wordpress/i18n';
 import { X } from 'lucide-react';
 import SettingLabel from './SettingLabel';
@@ -27,15 +27,15 @@ export function DateInput( { id, value, onChange, className } ) {
                 className="flex-1"
             />
             { stored && (
-                <button
-                    type="button"
-                    className="inline-flex size-9 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-white text-gray-500 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+                <Button
+                    variant="secondary"
+                    className="size-9 shrink-0 p-0 text-gray-500 enabled:hover:text-gray-900"
                     aria-label={ __( 'Clear date', 'wp-user-frontend' ) }
                     title={ __( 'Clear date', 'wp-user-frontend' ) }
                     onClick={ () => onChange( '' ) }
                 >
                     <X className="size-4" aria-hidden="true" />
-                </button>
+                </Button>
             ) }
         </div>
     );

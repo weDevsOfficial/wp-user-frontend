@@ -16,15 +16,18 @@ export const UPGRADE_URL = 'https://wedevs.com/wp-user-frontend-pro/pricing/';
  * @param {string} [props.upgradeUrl] Override the upgrade URL.
  * @param {boolean} [props.link]      false: the image only (develop subscriptions badge,
  *                                    whose hover tooltip carries the upgrade link).
+ * @param {string}  [props.size]      md (39x22, default) | sm (16px tall: builder tiles).
  */
-export default function ProBadge( { utm = 'wpuf-admin', upgradeUrl, link = true } ) {
+export default function ProBadge( { utm = 'wpuf-admin', upgradeUrl, link = true, size = 'md' } ) {
     const boot = useBoot();
 
     if ( boot.isPro ) {
         return null;
     }
 
-    const image = <img src={ ( boot.assetUrl || '' ) + '/images/pro-badge.svg' } alt={ __( 'Pro', 'wp-user-frontend' ) } width="39" height="22" className="inline-block align-middle w-[39px] h-[22px] max-w-none" />;
+    const image = 'sm' === size
+        ? <img src={ ( boot.assetUrl || '' ) + '/images/pro-badge.svg' } alt={ __( 'Pro', 'wp-user-frontend' ) } className="inline-block align-middle h-4 w-auto max-w-none" />
+        : <img src={ ( boot.assetUrl || '' ) + '/images/pro-badge.svg' } alt={ __( 'Pro', 'wp-user-frontend' ) } width="39" height="22" className="inline-block align-middle w-[39px] h-[22px] max-w-none" />;
 
     if ( ! link ) {
         return <span data-wpuf-ui="" className="inline-block align-middle leading-none">{ image }</span>;

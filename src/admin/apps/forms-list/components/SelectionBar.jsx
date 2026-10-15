@@ -9,8 +9,6 @@
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { Button } from '@wpuf/components';
 
-const DANGER = 'border-red-600 text-red-600 enabled:hover:border-red-600 enabled:hover:bg-red-50 enabled:hover:text-red-600';
-
 const SelectionBar = ( { count, currentTab, onAction, onClear } ) => {
     const actions = 'trash' === currentTab
         ? [
@@ -33,8 +31,7 @@ const SelectionBar = ( { count, currentTab, onAction, onClear } ) => {
                     <Button
                         key={ action.key }
                         size="sm"
-                        variant="secondary"
-                        className={ action.danger ? DANGER : '' }
+                        variant={ action.danger ? 'danger-outline' : 'secondary' }
                         onClick={ () => onAction( action.key ) }
                     >
                         { action.label }

@@ -9,6 +9,7 @@
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
 import { cn } from '@wedevs/plugin-ui';
+import { Button } from '@wpuf/components';
 
 import { LogoBadge, RestoreIcon, TypingDots } from './icons';
 
@@ -94,26 +95,27 @@ export default function ChatMessage( { message, statusVisible, applying, onAccep
                     <div className="m-0 whitespace-pre-line text-sm leading-6 text-gray-700">{ body }</div>
                     { message.showButtons && (
                         <div className="wpuf-message-actions mt-4 flex gap-3">
-                            <button type="button" onClick={ onAccept } disabled={ applying } className="wpuf-btn-accept h-8 cursor-pointer rounded-md border border-solid border-gray-300 bg-white px-3 text-[13px] font-medium text-[#374151] transition-all hover:bg-gray-50">
+                            <Button variant="secondary" size="sm" onClick={ onAccept } disabled={ applying } className="wpuf-btn-accept">
                                 { __( 'Accept', 'wp-user-frontend' ) }
-                            </button>
-                            <button type="button" onClick={ onReject } disabled={ applying } className="wpuf-btn-reject h-8 cursor-pointer rounded-md border border-solid border-gray-300 bg-white px-3 text-[13px] font-medium text-[#374151] transition-all hover:bg-gray-50">
+                            </Button>
+                            <Button variant="secondary" size="sm" onClick={ onReject } disabled={ applying } className="wpuf-btn-reject">
                                 { __( 'Reject', 'wp-user-frontend' ) }
-                            </button>
+                            </Button>
                         </div>
                     ) }
                     { message.acceptedStatus && <div className="wpuf-accepted-status mt-2 text-xs text-green-600">{ message.acceptedStatus }</div> }
                     { message.hasCheckpoint && message.checkpointSaved && (
                         <div className="wpuf-checkpoint-actions mt-2 flex items-center gap-2">
-                            <button
-                                type="button"
+                            <Button
+                                variant="secondary"
+                                size="sm"
                                 onClick={ onRestore }
                                 title={ __( 'Restore form to this checkpoint', 'wp-user-frontend' ) }
-                                className="wpuf-btn-restore inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-md border border-primary bg-white px-3 text-xs font-medium text-primary transition-all hover:bg-primary hover:text-white"
+                                className="wpuf-btn-restore border-primary text-xs text-primary enabled:hover:bg-primary enabled:hover:text-white"
                             >
                                 <RestoreIcon />
                                 { __( 'Restore to this checkpoint', 'wp-user-frontend' ) }
-                            </button>
+                            </Button>
                         </div>
                     ) }
                 </div>

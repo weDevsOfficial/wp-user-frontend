@@ -5,8 +5,8 @@
  * @since WPUF_SINCE
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { ActionMenu, Checkbox } from '@wpuf/components';
-import { ArrowDown, ArrowUp, ArrowUpDown, Check, Eye, Trash2, X } from 'lucide-react';
+import { ActionMenu, Checkbox, SortHeader } from '@wpuf/components';
+import { Check, Eye, Trash2, X } from 'lucide-react';
 
 import StatusBadge from './StatusBadge';
 
@@ -26,36 +26,11 @@ const MaybeLink = ( { url, children } ) => ( url
 
 /**
  * @param {Object}   props
- * @param {string}   props.column  Column key.
- * @param {*}        props.label   Header text.
- * @param {Object}   props.sort    { orderby, order }.
- * @param {Function} props.onSort  ( orderby ) => void
- */
-function SortHeader( { column, label, sort, onSort } ) {
-    const active = sort.orderby === column;
-    let Icon = ArrowUpDown;
-
-    if ( active ) {
-        Icon = 'asc' === sort.order ? ArrowUp : ArrowDown;
-    }
-
-    return (
-        <th scope="col" className={ TH } aria-sort={ active ? ( 'asc' === sort.order ? 'ascending' : 'descending' ) : 'none' }>
-            <button type="button" onClick={ () => onSort( column ) } className="inline-flex cursor-pointer items-center gap-1 border-0 bg-transparent p-0 text-xs uppercase text-[#828282] hover:text-gray-900">
-                { label }
-                <Icon size={ 12 } aria-hidden="true" className={ active ? 'text-gray-900' : '' } />
-            </button>
-        </th>
-    );
-}
-
-/**
- * @param {Object}   props
  * @param {Object[]} props.rows       Rows.
  * @param {string[]} props.selected   Selected row keys.
  * @param {Function} props.onSelect   ( keys ) => void
  * @param {Object}   props.sort       { orderby, order }.
- * @param {Function} props.onSort     ( orderby ) => void
+ * @param {Function} props.onSort     ( { orderby, order } ) => void
  * @param {Function} props.onView     ( row ) => void
  * @param {Function} props.onAction   ( action, rows ) => void
  * @param {boolean}  props.canManage  Accept / reject / delete allowed.
@@ -98,14 +73,14 @@ export default function TransactionsTable( { rows, selected, onSelect, sort, onS
                                 />
                             </th>
                         ) }
-                        <SortHeader column="id" label={ __( 'ID', 'wp-user-frontend' ) } sort={ sort } onSort={ onSort } />
+                        <SortHeader className={ TH } column="id" label={ __( 'ID', 'wp-user-frontend' ) } sort={ sort } onSort={ onSort } />
                         <th scope="col" className={ TH }>{ __( 'Status', 'wp-user-frontend' ) }</th>
                         <th scope="col" className={ TH }>{ __( 'User', 'wp-user-frontend' ) }</th>
                         <th scope="col" className={ TH }>{ __( 'Item', 'wp-user-frontend' ) }</th>
                         <th scope="col" className={ TH }>{ __( 'Amount', 'wp-user-frontend' ) }</th>
                         <th scope="col" className={ TH }>{ __( 'Gateway', 'wp-user-frontend' ) }</th>
                         <th scope="col" className={ TH }>{ __( 'Payer', 'wp-user-frontend' ) }</th>
-                        <SortHeader column="created" label={ __( 'Date', 'wp-user-frontend' ) } sort={ sort } onSort={ onSort } />
+                        <SortHeader className={ TH } column="created" label={ __( 'Date', 'wp-user-frontend' ) } sort={ sort } onSort={ onSort } />
                         <th scope="col" className="w-20 px-4"><span className="sr-only">{ __( 'Actions', 'wp-user-frontend' ) }</span></th>
                     </tr>
                 </thead>

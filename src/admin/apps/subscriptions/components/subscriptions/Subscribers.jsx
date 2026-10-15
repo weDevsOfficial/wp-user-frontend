@@ -11,8 +11,8 @@
  */
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Button, EmptyState, ErrorState, Pagination, Tabs } from '@wpuf/components';
-import { ArrowDown, ArrowLeft, ArrowUp, ArrowUpDown, Users } from 'lucide-react';
+import { Badge, Button, EmptyState, ErrorState, Pagination, SortHeader, Tabs } from '@wpuf/components';
+import { ArrowLeft, Users } from 'lucide-react';
 import TableSkeleton from '../../../forms-list/components/TableSkeleton';
 import { fetchPackSubscribers } from '../../api/subscription';
 import { useSubscriptionNavigation } from '../../hooks';
@@ -27,10 +27,10 @@ const STATUS_TABS = () => [
 	{ id: 'Cancel', label: __( 'Cancel', 'wp-user-frontend' ) },
 ];
 
-// Transactions' StatusBadge look; Cancel in the danger tone.
-const BADGE = {
-	Completed: 'border-emerald-200 bg-emerald-50 text-emerald-700',
-	Cancel: 'border-red-200 bg-red-50 text-red-700',
+// Badge tones (as the payments list); Cancel in the danger tone.
+const TONE = {
+	Completed: 'success',
+	Cancel: 'danger',
 };
 
 const LABEL = {
@@ -73,32 +73,20 @@ const Subscribers = ( { subscriptionId } ) => {
 	const items = ( data && data.items ) || [];
 	const pack = ( data && data.pack ) || null;
 
-	// A header that sorts (Transactions' SortHeader): first click descending,
-	// the next one flips.
-	const sortable = ( key, label, extra = '' ) => {
-		const active = sort.orderby === key;
-		let Icon = ArrowUpDown;
+	// The kit's sortable header; a new sort goes back to page 1.
+	const sortable = ( key, label, extra = '' ) => (
+		<SortHeader
+			className={ TH + extra }
+			column={ key }
+			label={ label }
+			sort={ sort }
+			onSort={ ( next ) => {
+				setSort( next );
+				setPage( 1 );
+			} }
+		/>
+	);
 
-		if ( active ) {
-			Icon = 'asc' === sort.order ? ArrowUp : ArrowDown;
-		}
-
-		return (
-			<th scope="col" className={ TH + extra } aria-sort={ active ? ( 'asc' === sort.order ? 'ascending' : 'descending' ) : 'none' }>
-				<button
-					type="button"
-					className="inline-flex cursor-pointer items-center gap-1 border-0 bg-transparent p-0 text-xs uppercase text-[#828282] hover:text-gray-900"
-					onClick={ () => {
-						setSort( { orderby: key, order: active && 'desc' === sort.order ? 'asc' : 'desc' } );
-						setPage( 1 );
-					} }
-				>
-					{ label }
-					<Icon size={ 12 } aria-hidden="true" className={ active ? 'text-gray-900' : '' } />
-				</button>
-			</th>
-		);
-	};
 
 	const dash = <span className="text-gray-400">–</span>;
 
@@ -162,9 +150,9 @@ const Subscribers = ( { subscriptionId } ) => {
 									<td className={ TD + ' text-gray-500' }>{ item.subscription_id || dash }</td>
 									<td className={ TD + ' whitespace-nowrap' }>
 										{ item.status ? (
-											<span className={ `inline-flex items-center rounded-[5px] border border-solid px-3 py-0.5 text-xs font-medium ${ BADGE[ item.status ] || 'border-gray-200 bg-gray-50 text-gray-600' }` }>
+											<Badge tone={ TONE[ item.status ] || 'neutral' }>
 												{ LABEL[ item.status ] || item.status }
-											</span>
+											</Badge>
 										) : dash }
 									</td>
 									<td className={ TD + ' whitespace-nowrap text-gray-500' }>

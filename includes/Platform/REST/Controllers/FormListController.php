@@ -11,6 +11,24 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 class FormListController extends RestController {
+
+    /**
+     * Sortable columns of the forms lists (REST name => WP_Query orderby).
+     */
+    const FORM_ORDERBY = [
+        'id'    => 'ID',
+        'title' => 'title',
+        'date'  => 'date',
+    ];
+
+    /**
+     * Sortable columns of a form's submissions.
+     */
+    const SUBMISSION_ORDERBY = [
+        'date'  => 'date',
+        'title' => 'title',
+    ];
+
     /**
      * The namespace of this controller's route.
      *
@@ -35,51 +53,61 @@ class FormListController extends RestController {
      * @since 4.1.4
      */
     public function register_routes() {
-        register_rest_route(
-            $this->namespace, '/' . $this->base, [
-                [
-                    'methods'             => WP_REST_Server::READABLE,
-                    'callback'            => [ $this, 'get_items' ],
-                    'permission_callback' => [ $this, 'permission_check' ],
+        // Form lists: newest first by default, sortable by title or date.
+        $this->route(
+            '/' . $this->base,
+            WP_REST_Server::READABLE,
+            'get_items',
+            [ $this, 'permission_check' ],
+            [
+                'post_type' => [
+                    'type'              => 'string',
+                    'default'           => 'wpuf_forms',
+                    'sanitize_callback' => 'sanitize_key',
                 ],
-            ]
+                'status'    => [
+                    'type'              => 'string',
+                    'default'           => 'any',
+                    'sanitize_callback' => 'sanitize_key',
+                ],
+            ] + $this->collection_args( array_keys( self::FORM_ORDERBY ), 'id', [ 'per_page' => 10, 'search' => 's' ] )
         );
 
-        register_rest_route(
-            $this->namespace, '/' . $this->base . '/(?P<id>[\d]+)/submissions', [
-                [
-                    'methods'             => WP_REST_Server::READABLE,
-                    'callback'            => [ $this, 'get_submissions' ],
-                    'permission_callback' => [ $this, 'permission_check' ],
-                    'args'                => [
-                        'id'   => [
-                            'type'              => 'integer',
-                            'sanitize_callback' => 'absint',
-                        ],
-                        'page'     => [
-                            'type'              => 'integer',
-                            'default'           => 1,
-                            'sanitize_callback' => 'absint',
-                        ],
-                        'per_page' => [
-                            'type'              => 'integer',
-                            'default'           => 10,
-                            'sanitize_callback' => 'absint',
-                        ],
-                        'status'   => [
-                            'type'              => 'string',
-                            'default'           => 'any',
-                            'sanitize_callback' => 'sanitize_key',
-                        ],
-                        's'        => [
-                            'type'              => 'string',
-                            'default'           => '',
-                            'sanitize_callback' => 'sanitize_text_field',
-                        ],
-                    ],
+        $this->route(
+            '/' . $this->base . '/(?P<id>[\d]+)/submissions',
+            WP_REST_Server::READABLE,
+            'get_submissions',
+            [ $this, 'permission_check' ],
+            [
+                'id'     => [
+                    'type'              => 'integer',
+                    'sanitize_callback' => 'absint',
                 ],
-            ]
+                'status' => [
+                    'type'              => 'string',
+                    'default'           => 'any',
+                    'sanitize_callback' => 'sanitize_key',
+                ],
+            ] + $this->collection_args( array_keys( self::SUBMISSION_ORDERBY ), 'date', [ 'per_page' => 10, 'search' => 's' ] )
         );
+    }
+
+    /**
+     * WP_Query order of a request: the column from the allowlist, ASC / DESC.
+     *
+     * @param WP_REST_Request $request Request
+     * @param array           $columns REST column => WP_Query orderby
+     * @param string          $default Default REST column
+     *
+     * @return array orderby, order
+     */
+    private function query_order( $request, array $columns, $default ) {
+        $column = isset( $columns[ $request['orderby'] ] ) ? $request['orderby'] : $default;
+
+        return [
+            'orderby' => $columns[ $column ],
+            'order'   => 'asc' === $request['order'] ? 'ASC' : 'DESC',
+        ];
     }
 
     /**
@@ -123,10 +151,8 @@ class FormListController extends RestController {
             'post_status'    => $status,
             'posts_per_page' => $per_page,
             'paged'          => $page,
-            'orderby'        => 'date',
-            'order'          => 'DESC',
             'meta_query'     => $by_form,
-        ];
+        ] + $this->query_order( $request, self::SUBMISSION_ORDERBY, 'date' );
 
         if ( '' !== $search ) {
             $args['s'] = $search;
@@ -297,15 +323,13 @@ class FormListController extends RestController {
             $status = 'any';
         }
 
-        // Base query args: newest form first.
+        // Newest form first unless the list sorts on a column.
         $query_args = [
             'post_type'      => $post_type,
             'post_status'    => $status,
             'posts_per_page' => $per_page,
             'offset'         => $offset,
-            'orderby'        => 'ID',
-            'order'          => 'DESC',
-        ];
+        ] + $this->query_order( $request, self::FORM_ORDERBY, 'id' );
 
         // Add search term if present
         if ( ! empty( $search_term ) ) {

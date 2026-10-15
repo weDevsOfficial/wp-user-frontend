@@ -7,12 +7,11 @@ import { useState, useEffect, useCallback, useMemo, useRef } from '@wordpress/el
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { request, restPath } from '@wpuf/api';
 import { applyFilters } from '@wordpress/hooks';
-import { AIConfigModal, ErrorState, Notice, Pagination, Tabs, notify, useConfirm } from '@wpuf/components';
+import { AIConfigModal, ErrorState, Notice, Pagination, SearchInput, Tabs, notify, useConfirm } from '@wpuf/components';
 
 import useFormsFetch, { PER_PAGE } from '../hooks/useFormsFetch';
 import useClipboard from '../hooks/useClipboard';
 
-import SearchBar from './SearchBar';
 import SelectionBar from './SelectionBar';
 import FormsTable from './FormsTable';
 import TableSkeleton from './TableSkeleton';
@@ -42,7 +41,9 @@ const FormsList = ( {
     // Route base of this list in the admin app (task 5d).
     const routeBase = 'profile' === formType ? '/registration-forms' : '/post-forms';
 
-    const { forms, loading, error, pagination, counts, fetchForms } = useFormsFetch( { postType } );
+    // Newest first until a sortable header is clicked (server default).
+    const [ sort, setSort ] = useState( null );
+    const { forms, loading, error, pagination, counts, fetchForms } = useFormsFetch( { postType, sort } );
     // The page-load counts until the list has answered once, then the live ones.
     const postCounts = counts || initialCounts;
     const { copiedKey, copyToClipboard } = useClipboard();
@@ -59,10 +60,10 @@ const FormsList = ( {
 
     const debounceTimerRef = useRef( null );
 
-    // Fetch on mount and whenever the tab or the page size changes (page 1, current search).
+    // Fetch on mount and whenever the tab, the page size or the sort changes (page 1, current search).
     useEffect( () => {
         fetchForms( 1, currentTab, searchTerm, perPage );
-    }, [ currentTab, perPage ] );
+    }, [ currentTab, perPage, sort ] );
 
     // Debounced search
     const handleSearchChange = useCallback( ( value ) => {
@@ -361,6 +362,8 @@ const FormsList = ( {
                     copiedKey={ copiedKey }
                     onCopyShortcode={ handleCopyShortcode }
                     menuItems={ menuItems }
+                    sort={ sort }
+                    onSort={ setSort }
                 />
 
                 <Pagination
@@ -412,9 +415,11 @@ const FormsList = ( {
                         onChange={ setCurrentTab }
                         label={ __( 'Form status', 'wp-user-frontend' ) }
                     />
-                    <SearchBar
+                    <SearchInput
                         value={ searchTerm }
                         onChange={ handleSearchChange }
+                        placeholder={ __( 'Search Forms', 'wp-user-frontend' ) }
+                        className="wpuf-form-search-box"
                     />
                 </div>
 

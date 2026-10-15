@@ -11,7 +11,7 @@ import ModulesEmptyState from './ModulesEmptyState';
 import useFormSave from '../../hooks/useFormSave';
 import { BuilderSlot, settingsSlotName } from '../../slots';
 import { getRouteQuery, inApp, setRouteQuery } from '../../../../app/client';
-import { Notice } from '@wpuf/components';
+import { Button, Notice } from '@wpuf/components';
 import { adminUrl, builderData } from '../../utils/boot';
 
 /**
@@ -82,25 +82,19 @@ export default function FormSettings() {
                 </h2>
                 { /* Cancel + Save buttons */ }
                 <div className="flex items-center gap-3">
-                    <a
-                        href={ postFormsUrl }
-                        className="inline-flex h-10 items-center gap-x-2 rounded-md bg-white px-5 text-sm font-medium leading-5 text-gray-700 no-underline shadow-sm hover:text-gray-900! hover:bg-gray-50 ring-1 ring-inset ring-gray-300 hover:cursor-pointer"
-                    >
+                    <Button variant="secondary" size="lg" href={ postFormsUrl }>
                         { __( 'Cancel', 'wp-user-frontend' ) }
-                    </a>
-                    <button
-                        type="button"
+                    </Button>
+                    <Button
+                        size="lg"
                         onClick={ saveForm }
-                        disabled={ isSaving || ! isDirty }
-                        title={ isDirty ? undefined : __( 'No changes to save', 'wp-user-frontend' ) }
-                        className="wpuf-btn-primary inline-flex items-center gap-2 leading-5 h-10 px-5! py-0! text-sm! font-medium! shadow-sm disabled:cursor-not-allowed! disabled:opacity-50!"
+                        busy={ isSaving }
+                        disabled={ ! isDirty }
+                        title={ isDirty || isSaving ? undefined : __( 'No changes to save', 'wp-user-frontend' ) }
                     >
-                        <Save size={ 16 } strokeWidth={ 2 } aria-hidden="true" />
-                        { isSaving
-                            ? __( 'Saving…', 'wp-user-frontend' )
-                            : __( 'Save Form', 'wp-user-frontend' )
-                        }
-                    </button>
+                        { ! isSaving && <Save size={ 16 } strokeWidth={ 2 } aria-hidden="true" /> }
+                        { isSaving ? __( 'Saving…', 'wp-user-frontend' ) : __( 'Save Form', 'wp-user-frontend' ) }
+                    </Button>
                 </div>
             </div>
 

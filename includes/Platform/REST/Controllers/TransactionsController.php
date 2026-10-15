@@ -74,52 +74,27 @@ class TransactionsController extends RestController {
                     'callback'            => [ $this, 'get_items' ],
                     'permission_callback' => $this->permission( Caps::MANAGE_SUBSCRIPTIONS ),
                     'args'                => [
-                        'status'   => [
+                        'status'  => [
                             'type'    => 'string',
                             'enum'    => TransactionService::STATUSES,
                             'default' => 'all',
                         ],
-                        'search'   => [
+                        'gateway' => [
                             'type'              => 'string',
                             'default'           => '',
                             'sanitize_callback' => 'sanitize_text_field',
                         ],
-                        'gateway'  => [
-                            'type'              => 'string',
-                            'default'           => '',
-                            'sanitize_callback' => 'sanitize_text_field',
-                        ],
-                        'from'     => [
+                        'from'    => [
                             'type'    => 'string',
                             'default' => '',
                             'pattern' => '^(\d{4}-\d{2}-\d{2})?$',
                         ],
-                        'to'       => [
+                        'to'      => [
                             'type'    => 'string',
                             'default' => '',
                             'pattern' => '^(\d{4}-\d{2}-\d{2})?$',
                         ],
-                        'orderby'  => [
-                            'type'    => 'string',
-                            'enum'    => TransactionService::ORDERBY,
-                            'default' => 'created',
-                        ],
-                        'order'    => [
-                            'type'    => 'string',
-                            'enum'    => [ 'asc', 'desc' ],
-                            'default' => 'desc',
-                        ],
-                        'page'     => [
-                            'type'    => 'integer',
-                            'minimum' => 1,
-                            'default' => 1,
-                        ],
-                        'per_page' => [
-                            'type'    => 'integer',
-                            'minimum' => 1,
-                            'maximum' => 100,
-                        ],
-                    ],
+                    ] + $this->collection_args( TransactionService::ORDERBY, 'created', [ 'per_page' => null ] ),
                 ],
             ]
         );

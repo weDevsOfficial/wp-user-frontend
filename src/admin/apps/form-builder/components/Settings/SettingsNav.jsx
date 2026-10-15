@@ -2,6 +2,7 @@ import { __ } from '@wordpress/i18n';
 import { useMemo } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { applyFilters } from '@wordpress/hooks';
+import { ProBadge } from '@wpuf/components';
 import { STORE_NAME } from '../../store';
 import { builderData } from '../../utils/boot';
 
@@ -77,12 +78,7 @@ export default function SettingsNav( { activeTab, onTabChange } ) {
                                                     <span>{ subItem.label }</span>
                                                 </a>
                                                 { ! isProActive && BADGE_MENUS.includes( subKey ) && (
-                                                    <span>
-                                                        <img
-                                                            src={ `${ data.asset_url || '' }/images/pro-badge.svg` }
-                                                            alt={ __( 'pro icon', 'wp-user-frontend' ) }
-                                                        />
-                                                    </span>
+                                                    <ProBadge link={ false } />
                                                 ) }
                                             </li>
                                         );

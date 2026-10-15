@@ -1,5 +1,6 @@
 import { useSelect } from '@wordpress/data';
 import { useDraggable } from '@dnd-kit/core';
+import { ProBadge } from '@wpuf/components';
 import { STORE_NAME } from '../../store';
 import { isFailedToValidate } from '../../utils/globalHelpers';
 import { getFieldValidators } from '../../extensions/registry';
@@ -106,7 +107,7 @@ export default function FieldItem( { template, onAdd, onProAlert, onValidationAl
                 { /* The badge sits on the tile's top-right corner (as the Bulk Add teaser's), so it
                      never covers the label; also shown on keyboard focus. */ }
                 <div className="absolute -top-2 -right-1.5 z-10 pointer-events-none opacity-0 group-hover/pro-field:opacity-100 group-focus-visible/pro-field:opacity-100 wpuf-transition-all">
-                    <img src={ `${ builderData().asset_url || '' }/images/pro-badge.svg` } alt="" className="h-4" />
+                    <ProBadge link={ false } size="sm" />
                 </div>
             </div>
         );

@@ -14,10 +14,11 @@ export { PER_PAGE };
 /**
  * @param {Object} options
  * @param {string} options.postType Post type slug. Default 'wpuf_forms'.
+ * @param {Object} [options.sort]   { orderby, order }: every fetch sorts so.
  *
  * @return {Object} { forms, loading, error, pagination, counts, fetchForms }
  */
-const useFormsFetch = ( { postType = 'wpuf_forms' } = {} ) => {
+const useFormsFetch = ( { postType = 'wpuf_forms', sort = null } = {} ) => {
     const data = useSelect(
         ( select ) => {
             const list = select( store );
@@ -35,8 +36,8 @@ const useFormsFetch = ( { postType = 'wpuf_forms' } = {} ) => {
     const { fetchForms: load } = useDispatch( store );
 
     const fetchForms = useCallback(
-        ( page = 1, status = 'any', search = '', perPage = PER_PAGE ) => load( postType, page, status, search, perPage ),
-        [ load, postType ]
+        ( page = 1, status = 'any', search = '', perPage = PER_PAGE ) => load( postType, page, status, search, perPage, sort ),
+        [ load, postType, sort ]
     );
 
     return { ...data, fetchForms };

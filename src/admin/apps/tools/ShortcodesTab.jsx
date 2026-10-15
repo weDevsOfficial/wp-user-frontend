@@ -7,7 +7,7 @@
 import { useDispatch, useSelect } from '@wordpress/data';
 import { createInterpolateElement, useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Button, ErrorState, Skeleton } from '@wpuf/components';
+import { Button, ErrorState, ProBadge, Skeleton } from '@wpuf/components';
 import { Check, Copy } from 'lucide-react';
 
 import { copyText } from './api';
@@ -32,9 +32,7 @@ function CopyButton( { text } ) {
     );
 }
 
-const ProTag = () => (
-    <span className="rounded bg-orange-500 px-1.5 py-0.5 text-[10px] font-semibold uppercase leading-none text-white">{ __( 'Pro', 'wp-user-frontend' ) }</span>
-);
+const ProTag = () => <ProBadge link={ false } size="sm" />;
 
 /**
  * @param {Object}  props

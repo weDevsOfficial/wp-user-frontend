@@ -183,12 +183,13 @@ export default function InputStage( { description, promptId, integration, genera
                     </Button>
                     <Button
                         onClick={ generate }
-                        disabled={ ! description.trim() || generating }
+                        disabled={ ! description.trim() }
+                        busy={ generating }
                         size="lg"
                         className="wpuf-ai-generate"
                     >
                         { generating ? __( 'Generating...', 'wp-user-frontend' ) : __( 'Generate Form', 'wp-user-frontend' ) }
-                        { generating ? <span className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent" /> : <SparklesIcon /> }
+                        { ! generating && <SparklesIcon /> }
                     </Button>
                 </div>
             </div>

@@ -7,23 +7,24 @@ import { useEffect, useState } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 import { __, _n, sprintf } from '@wordpress/i18n';
+import { Badge } from '@wpuf/components';
 import { RefreshCw, Users } from 'lucide-react';
 import { fetchSubscribers } from '../../api/subscription';
 import { subscriptionsData } from '../../boot';
 
 const STATUS = {
-	publish: { label: __( 'Published', 'wp-user-frontend' ), className: 'bg-primary/10 text-primary' },
-	draft: { label: __( 'Draft', 'wp-user-frontend' ), className: 'bg-gray-100 text-gray-600' },
-	pending: { label: __( 'Pending', 'wp-user-frontend' ), className: 'bg-amber-50 text-amber-700' },
-	future: { label: __( 'Future', 'wp-user-frontend' ), className: 'bg-sky-50 text-sky-700' },
-	private: { label: __( 'Private', 'wp-user-frontend' ), className: 'bg-orange-50 text-orange-700' },
-	trash: { label: __( 'Trash', 'wp-user-frontend' ), className: 'bg-red-50 text-red-700' },
+	publish: { label: __( 'Published', 'wp-user-frontend' ), tone: 'primary' },
+	draft: { label: __( 'Draft', 'wp-user-frontend' ), tone: 'neutral' },
+	pending: { label: __( 'Pending', 'wp-user-frontend' ), tone: 'warning' },
+	future: { label: __( 'Future', 'wp-user-frontend' ), tone: 'info' },
+	private: { label: __( 'Private', 'wp-user-frontend' ), tone: 'warning' },
+	trash: { label: __( 'Trash', 'wp-user-frontend' ), tone: 'danger' },
 };
 
 // Any other status reads as its own word (capitalised, as the list's pill), never "Draft".
 const statusOf = ( postStatus ) => STATUS[ postStatus ] || {
 	label: postStatus ? postStatus.charAt( 0 ).toUpperCase() + postStatus.slice( 1 ) : __( 'Draft', 'wp-user-frontend' ),
-	className: 'bg-gray-100 text-gray-600',
+	tone: 'neutral',
 };
 
 /**
@@ -62,7 +63,7 @@ const InfoCard = ( { subscription, mode = 'edit' } ) => {
 	const period = ! pick( 'cycle_period' ) ? __( 'day', 'wp-user-frontend' ) : pick( 'cycle_period' );
 	/* translators: 1: number of periods, 2: period (day, week, month, year) */
 	const every = 0 === cycle || 1 === cycle || isNaN( cycle ) ? '/' + period : sprintf( __( '/ %1$s %2$ss', 'wp-user-frontend' ), cycle, period );
-	const status = isEdit ? statusOf( live.post_status ) : { label: __( 'New', 'wp-user-frontend' ), className: 'bg-gray-100 text-gray-600' };
+	const status = isEdit ? statusOf( live.post_status ) : { label: __( 'New', 'wp-user-frontend' ), tone: 'neutral' };
 	const title = live.post_title || __( 'Untitled plan', 'wp-user-frontend' );
 
 	return (
@@ -71,7 +72,7 @@ const InfoCard = ( { subscription, mode = 'edit' } ) => {
 				<div className="min-w-0">
 					<div className="flex flex-wrap items-center gap-2.5">
 						<h4 className="m-0 truncate text-xl font-semibold leading-7 text-gray-900" title={ isEdit ? 'id: ' + subscription.ID : undefined }>{ title }</h4>
-						<span className={ `rounded-full px-2.5 py-0.5 text-xs font-medium ${ status.className }` }>{ status.label }</span>
+						<Badge variant="pill" tone={ status.tone }>{ status.label }</Badge>
 					</div>
 					<p className="m-0 mt-1 text-sm text-gray-500">
 						{ isRecurring ? __( 'Recurring payment', 'wp-user-frontend' ) : __( 'One-time payment', 'wp-user-frontend' ) }

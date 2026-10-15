@@ -49,6 +49,9 @@ class Pack_Post_Type {
             'wpuf_subscription', [
                 'label'           => __( 'Subscription', 'wp-user-frontend' ),
                 'public'          => true,
+                // Packs are managed on the React subscriptions screen only:
+                // no edit.php / post.php screens for this post type.
+                'show_ui'         => false,
                 'show_in_menu'    => false,
                 'show_in_rest'    => true,
                 'query_var'       => false,

@@ -12,7 +12,7 @@ use WeDevs\Wpuf\Admin\Subscriptions\User_Profile;
 use WeDevs\Wpuf\Platform\Stores\Stores;
 
 /**
- * The facade keeps every hook on itself; the classic post type screens redirect to the React screen; the sort order migration writes through the subscription store.
+ * The facade keeps every hook on itself; the pack post type has no WordPress screens; the sort order migration writes through the subscription store.
  */
 class AdminSubscriptionSplitTest extends WP_UnitTestCase {
 
@@ -27,9 +27,6 @@ class AdminSubscriptionSplitTest extends WP_UnitTestCase {
         [ 'edit_user_profile', 'profile_subscription_details' ],
         [ 'personal_options_update', 'profile_subscription_update' ],
         [ 'edit_user_profile_update', 'profile_subscription_update' ],
-        [ 'load-edit.php', 'redirect_legacy_screen' ],
-        [ 'load-post.php', 'redirect_legacy_screen' ],
-        [ 'load-post-new.php', 'redirect_legacy_screen' ],
         [ 'wpuf_load_subscription_page', 'remove_notices' ],
         [ 'wpuf_load_subscription_page', 'enqueue_admin_scripts' ],
         [ 'admin_init', 'set_default_sort_order_for_existing_subscriptions' ],
@@ -79,38 +76,21 @@ class AdminSubscriptionSplitTest extends WP_UnitTestCase {
             }
         }
 
-        // 25 of the old class, less the 10 classic editor methods, plus the classic screen redirect and its route,
-        // plus remove_user_pack() (the REST route admin/users/{id}/pack).
-        $this->assertCount( 18, $groups );
+        // 25 of the old class, less the 10 classic editor methods, plus remove_user_pack()
+        // (the REST route admin/users/{id}/pack).
+        $this->assertCount( 16, $groups );
     }
 
     /**
-     * The classic post type screens map to the React screen's routes; other requests and post.php actions stay.
+     * Packs have no WordPress post screens (edit.php / post.php): the React screen manages them.
      */
-    public function test_classic_screens_map_to_the_routes() {
-        $screen = new Pack_Screen( ( new ReflectionClass( Admin_Subscription::class ) )->newInstanceWithoutConstructor() );
-        $pack   = self::factory()->post->create( [ 'post_type' => 'wpuf_subscription' ] );
-        $page   = self::factory()->post->create( [ 'post_type' => 'page' ] );
-        $route  = function ( $file, $get ) use ( $screen ) {
-            $_GET = $get;
+    public function test_pack_post_type_has_no_wp_screens() {
+        $type = get_post_type_object( 'wpuf_subscription' );
 
-            return $screen->legacy_screen_route( $file );
-        };
-
-        $this->assertSame( '/subscriptions', $route( 'edit.php', [ 'post_type' => 'wpuf_subscription' ] ) );
-        $this->assertSame( '/subscriptions?post_status=trash', $route( 'edit.php', [ 'post_type' => 'wpuf_subscription', 'post_status' => 'trash' ] ) );
-        $this->assertSame( '/subscriptions', $route( 'edit.php', [ 'post_type' => 'wpuf_subscription', 'post_status' => 'bogus' ] ) );
-        $this->assertSame( '/subscriptions?action=new', $route( 'post-new.php', [ 'post_type' => 'wpuf_subscription' ] ) );
-        $this->assertSame( '/subscriptions?action=edit&id=' . $pack, $route( 'post.php', [ 'post' => (string) $pack, 'action' => 'edit' ] ) );
-
-        $this->assertNull( $route( 'edit.php', [ 'post_type' => 'wpuf_subscription', 'page' => 'wpuf_subscribers' ] ), 'the Subscribers page has its own redirect' );
-        $this->assertNull( $route( 'edit.php', [ 'post_type' => 'post' ] ) );
-        $this->assertNull( $route( 'edit.php', [] ) );
-        $this->assertNull( $route( 'post.php', [ 'post' => (string) $pack, 'action' => 'trash' ] ), 'post.php actions other than edit run' );
-        $this->assertNull( $route( 'post.php', [ 'post' => (string) $page, 'action' => 'edit' ] ) );
-        $this->assertNull( $route( 'upload.php', [ 'post_type' => 'wpuf_subscription' ] ) );
-
-        $_GET = [];
+        $this->assertNotNull( $type );
+        $this->assertFalse( $type->show_ui );
+        $this->assertTrue( $type->public );
+        $this->assertTrue( $type->show_in_rest );
     }
 
     /**

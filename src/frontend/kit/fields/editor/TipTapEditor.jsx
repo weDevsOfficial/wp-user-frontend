@@ -268,8 +268,12 @@ export default function TipTapEditor( { id, field, value, onChange, onBlur, onFa
     const initial = useRef( load( value ) );
 
     const editor = useEditor( {
+        // The toolbar reads isActive() while rendering (TipTap 3 no longer re-renders on each change by default).
+        shouldRerenderOnTransaction: true,
         extensions: [
-            StarterKit.configure( { heading: { levels: [ 1, 2, 3, 4, 5, 6 ] }, strike: false } ),
+            // TipTap 3's kit brings underline, link and a trailing paragraph: ours are the
+            // TinyMCE-compatible marks and the configured Link below, and no extra <p> is added.
+            StarterKit.configure( { heading: { levels: [ 1, 2, 3, 4, 5, 6 ] }, strike: false, underline: false, link: false, trailingNode: false } ),
             LegacyUnderline,
             LegacyStrike,
             Link.configure( { openOnClick: false, autolink: false, linkOnPaste: true, HTMLAttributes: { target: null, rel: null, class: null } } ),

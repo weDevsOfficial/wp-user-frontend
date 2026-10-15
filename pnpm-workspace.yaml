@@ -11,3 +11,17 @@ allowBuilds:
   optipng-bin: true
   unrs-resolver: true
   '@wedevs/plugin-ui@https://codeload.github.com/getdokan/plugin-ui/tar.gz/acc2771a07c2e4319a742c422629c252e9911bee': true
+
+overrides:
+  adm-zip@<0.6.1: ^0.6.1
+  esbuild@<=0.24.2: ^0.25.0
+  js-yaml@>=5.0.0 <=5.4.0: ^5.4.1
+  katex@>=0.11.0 <0.18.2: ^0.18.2
+  minimatch@<3.1.4: ^3.1.4
+  postcss-selector-parser@<7.1.6: ^7.1.6
+  postcss@<=8.5.22: ^8.5.23
+  serialize-javascript@<=7.0.2: ^7.0.3
+  serialize-javascript@>=5.0.0 <7.0.5: ^7.0.5
+  smol-toml@<=1.8.0: ^1.9.0
+  uuid@<11.1.1: ^11.1.1
+  vite@<=6.4.2: ^6.4.3

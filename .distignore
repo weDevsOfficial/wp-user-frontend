@@ -41,16 +41,12 @@
 /.eslintrc
 /.eslintrc.js
 /.eslintrc.json
-/.jshintrc
 /.prettierrc
 /.gitignore
 /.gitattributes
 /.distignore
-/.svnignore
 /.nvmrc
 /.travis.yml
-/.php_cs.dist
-/.php_cs
 /.phpunit.result.cache
 /phpcs.xml
 /phpcs.xml.dist
@@ -86,7 +82,6 @@
 /README.md
 /CHANGELOG.md
 /CLAUDE.md
-/docs.md
 /docs
 
 # Match anywhere (safe: none of these is needed at runtime, vendor included)

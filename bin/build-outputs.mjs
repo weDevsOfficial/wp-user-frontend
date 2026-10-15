@@ -35,7 +35,6 @@ export const built = [
     'assets/css/settings-screen-rtl.css',
     'assets/css/subscriptions.css',
     'assets/css/subscriptions-rtl.css',
-    'assets/css/wpuf-form-builder.css',
 ];
 export const release = [ 'languages/wp-user-frontend.pot' ];
 

@@ -32,7 +32,6 @@ jobs:
             'assets/css/admin.css' \
             'assets/css/elementor-frontend-forms.css' \
             'assets/css/frontend-forms.css' \
-            'assets/css/wpuf-form-builder.css' \
             'languages/wp-user-frontend.pot')
           if [ -n "$tracked" ]; then
             echo "::error::Generated assets are tracked — they must stay untracked (CI builds them)."

@@ -367,27 +367,8 @@ async function build( name ) {
     console.log( `admin-css: ${ name } -> ${ relative( plugin, target ) } (${ Math.round( result.length / 1024 ) } KB)` );
 }
 
-// Plain CSS copied as is (no Tailwind): the legacy builder sheet, whose LESS
-// sources were removed in task 5.1b.
-const COPIES = {
-    'legacy-builder': { input: 'src/legacy/wpuf-form-builder.css', output: 'assets/css/wpuf-form-builder.css' },
-};
-
-async function copy( name ) {
-    const entry = COPIES[ name ];
-    const target = join( plugin, entry.output );
-
-    await mkdir( dirname( target ), { recursive: true } );
-    await writeFile( target, await readFile( join( here, entry.input ), 'utf8' ) );
-    console.log( `admin-css: ${ name } -> ${ relative( plugin, target ) } (copied)` );
-}
-
 const names = process.argv.slice( 2 );
 
-for ( const name of names.length ? names : [ ...Object.keys( ENTRIES ), ...Object.keys( COPIES ) ] ) {
-    if ( COPIES[ name ] ) {
-        await copy( name );
-    } else {
-        await build( name );
-    }
+for ( const name of names.length ? names : Object.keys( ENTRIES ) ) {
+    await build( name );
 }

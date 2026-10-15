@@ -263,7 +263,6 @@ class PostFormsList extends Screen {
         'wpuf-frontend-forms',
         'wpuf-font-awesome',
         'wpuf-tooltip',
-        'wpuf-form-builder',
         'wpuf-admin-form-builder',
         'wpuf-admin-form-builder-pro',
     ];

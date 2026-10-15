@@ -133,3 +133,39 @@ body.wpuf-builder-dragging * {
 h2#modules-menu:hover:not(.active_settings_tab) svg.custom-stroke {
     stroke: #111827;
 }
+
+/* Stage rules moved from the removed legacy builder sheet (wpuf-form-builder.css,
+   which Pro's builder sheet pulled in): the registration builder's password
+   preview, label icons and field rows. */
+#form-preview-stage .field-items {
+    position: relative;
+    background-color: #fff;
+}
+
+#form-preview-stage .password-strength-meter {
+    display: block;
+    float: left;
+    width: 200px;
+    margin: 0;
+    padding: 3px 5px;
+    border: 1px solid #ddd;
+    background-color: #eee;
+    text-align: center;
+}
+
+#form-preview-stage ul.wpuf-form li .wpuf-password-field {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#form-preview-stage ul.wpuf-form li .wpuf-password-field::after {
+    display: table;
+    clear: both;
+    content: "";
+}
+
+#form-preview-stage .wpuf-field-label-icon .wpuf-field-icon {
+    margin-right: 6px;
+    color: #059669;
+    font-size: 20px;
+}

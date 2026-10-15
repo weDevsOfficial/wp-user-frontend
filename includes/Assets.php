@@ -295,8 +295,11 @@ class Assets {
                 'src'     => WPUF_ASSET_URI . '/vendor/tooltip/tooltip.css',
                 'version' => '3.3.7',
             ],
+            // The legacy builder sheet is gone (its stage rules live in the React
+            // builder sheet); the handle stays, file-less, for styles that list it
+            // as a dependency.
             'form-builder'        => [
-                'src'  => WPUF_ASSET_URI . '/css/wpuf-form-builder.css',
+                'src'  => false,
                 'deps' => $this->form_builder_css_deps,
             ],
             // React builder sheet (tools/admin-css), under the old handle that

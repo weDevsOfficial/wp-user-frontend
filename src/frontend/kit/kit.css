@@ -552,6 +552,46 @@
     font-size: 24px;
 }
 
+/* Plan includes: a check list, two columns when there is room. */
+.wpuf-frontend .wpuf-plan-status__features h4 {
+    margin: 0 0 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--wpuf-fe-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.wpuf-frontend .wpuf-plan-status__features ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wpuf-frontend .wpuf-plan-status__features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-plan-status__features li svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #059669;
+}
+
+.wpuf-frontend .wpuf-plan-status__more {
+    margin-top: 8px;
+    padding: 0;
+}
+
 /* What is left: a tile per limit, the number first. */
 .wpuf-frontend .wpuf-plan-status__limits ul {
     display: grid;

@@ -128,6 +128,39 @@ export function PlanCard( { card, color = '' } ) {
 }
 
 /**
+ * What the plan includes: the first items, the rest behind "Show all".
+ *
+ * @param {Object}   props
+ * @param {string[]} props.features Feature lines
+ */
+function PlanFeatures( { features } ) {
+    const [ open, setOpen ] = useState( false );
+    const shown = open ? features : features.slice( 0, 4 );
+
+    return (
+        <div className="wpuf-plan-status__features">
+            <h4>{ __( 'Plan includes', 'wp-user-frontend' ) }</h4>
+            <ul>
+                { shown.map( ( feature ) => (
+                    <li key={ feature }>
+                        <Check size={ 16 } aria-hidden="true" />
+                        <span>{ feature }</span>
+                    </li>
+                ) ) }
+            </ul>
+            { features.length > 4 && (
+                <Button variant="link" size="sm" className="wpuf-plan-status__more" aria-expanded={ open } onClick={ () => setOpen( ! open ) }>
+                    { open
+                        ? __( 'Show less', 'wp-user-frontend' )
+                        /* translators: %d: number of plan features */
+                        : sprintf( __( 'Show all (%d)', 'wp-user-frontend' ), features.length ) }
+                </Button>
+            ) }
+        </div>
+    );
+}
+
+/**
  * The user's subscription.
  *
  * @param {Object} props
@@ -172,6 +205,8 @@ export function SubscriptionCard( { info } ) {
                         </div>
                     ) ) }
                 </dl>
+
+                { ( info.features || [] ).length > 0 && <PlanFeatures features={ info.features } /> }
 
                 { ( info.limits || [] ).length > 0 && (
                     <div className="wpuf-plan-status__limits">

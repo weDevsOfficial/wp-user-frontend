@@ -310,6 +310,8 @@ class Subscription_Schema {
             'recurring' => $recurring,
             'dates'     => [],
             'limits'    => [],
+            // What the plan includes (the packs page's feature list).
+            'features'  => function_exists( 'wpuf_subscription_pack_features' ) ? array_values( array_map( 'strval', wpuf_subscription_pack_features( $pack ) ) ) : [],
             'cancel'    => null,
         ];
 
@@ -332,7 +334,8 @@ class Subscription_Schema {
         $facts['dates']  = $this->dates( $user_sub, $recurring );
         $facts['limits'] = $this->limits( $user_sub );
 
-        if ( 'completed' === $user_sub['status'] ) {
+        // As the classic section: a recurring pack can be cancelled (a one-time pack runs out).
+        if ( 'completed' === $user_sub['status'] && isset( $user_sub['recurring'] ) && 'yes' === $user_sub['recurring'] ) {
             $facts['cancel'] = $this->cancel_fields( get_current_user_id() );
         }
 

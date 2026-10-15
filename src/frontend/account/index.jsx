@@ -5,11 +5,17 @@
  *
  * @since WPUF_SINCE
  */
+import { dispatch } from '@wordpress/data';
 import { createRoot } from '@wordpress/element';
+import { applyFilters } from '@wordpress/hooks';
 import { mountAll } from '@wpuf/frontend-kit';
 import App from './App';
+import { store } from './store';
 import './account.css';
 
 mountAll( 'account', ( root, boot ) => {
-    createRoot( root ).render( <App boot={ boot } root={ root } /> );
+    const data = applyFilters( 'wpuf.frontend.account.boot', boot );
+
+    dispatch( store ).init( data );
+    createRoot( root ).render( <App data={ data } root={ root } /> );
 } );

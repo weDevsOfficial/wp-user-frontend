@@ -43,6 +43,7 @@
     "test:ai-form-builder": "jest --config src/admin/apps/ai-form-builder/jest.config.js",
     "test:shared": "jest --config src/admin/shared/jest.config.js",
     "test:stores": "jest --config src/admin/apps/stores.jest.config.js",
+    "test:frontend": "jest --config src/frontend/jest.config.js",
     "clean": "node bin/clean-build.mjs",
     "zip": "node bin/zip.mjs",
     "version:stamp": "node bin/version-replace.mjs",

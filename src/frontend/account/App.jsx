@@ -2,46 +2,28 @@
  * The account shell in the FlyHR profile layout (frontend-react-architecture.md
  * 2.1, 5.4): profile header card, left rail, content by `?section=` (the URL
  * stays the contract; rail links are real links intercepted with
- * pushState). Sections: native (overview, posts, edit profile, change
+ * pushState through router.js; state in the `wpuf/account` store). Sections: native (overview, posts, edit profile, change
  * password) or the PHP output of their hook (everything else).
  *
  * @since WPUF_SINCE
  */
+import { useDispatch, useSelect } from '@wordpress/data';
 import { useCallback, useEffect, useMemo, useState } from '@wordpress/element';
 import { applyFilters, doAction } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
 import { Avatar, Button, Notice, Pill, RailItem, ServerHtml, SkeletonLines, api, icons, loadAssets } from '@wpuf/frontend-kit';
+import { listen, pageOf, urlFor } from './router';
 import Overview from './sections/Overview';
 import Posts from './sections/Posts';
 import { ChangePassword, EditProfile } from './sections/Profile';
+import { store } from './store';
 
 const { CalendarDays, LogOut, Mail, Pencil, iconByName } = icons;
 
-const readSection = ( fallback ) => {
-    const params = new URLSearchParams( window.location.search );
-
-    return params.get( 'section' ) || fallback;
-};
-
-const urlFor = ( pageUrl, section, extra = {} ) => {
-    const url = new URL( pageUrl, window.location.origin );
-
-    url.searchParams.set( 'section', section );
-    Object.entries( extra ).forEach( ( [ key, value ] ) => {
-        if ( value ) {
-            url.searchParams.set( key, value );
-        } else {
-            url.searchParams.delete( key );
-        }
-    } );
-
-    return url.toString();
-};
-
-function HtmlSection( { slug, initial } ) {
+function HtmlSection( { slug, initial, search } ) {
     const preloaded = initial && initial.slug === slug ? initial.html : null;
     const [ state, setState ] = useState( { html: preloaded || '', loading: null === preloaded, error: '' } );
-    const pagenum = Number( new URLSearchParams( window.location.search ).get( 'pagenum' ) || 1 );
+    const pagenum = pageOf( search );
 
     useEffect( () => {
         let cancelled = false;
@@ -74,52 +56,41 @@ function HtmlSection( { slug, initial } ) {
     return <ServerHtml html={ state.html } slug={ slug } className="wpuf-account-html" />;
 }
 
-export default function App( { boot, root } ) {
-    const data = applyFilters( 'wpuf.frontend.account.boot', boot );
-    const { profile, settings, nonces } = data;
+/**
+ * @param {Object}      props
+ * @param {Object}      props.data Boot data, after `wpuf.frontend.account.boot` (index.jsx).
+ * @param {HTMLElement} props.root Mount root.
+ */
+export default function App( { data, root } ) {
+    const { settings, nonces } = data;
     const sections = useMemo( () => applyFilters( 'wpuf.frontend.account.sections', data.sections || [] ), [ data.sections ] );
-    const [ stats, setStats ] = useState( data.stats || [] );
-    const [ current, setCurrent ] = useState( () => readSection( settings.default_tab ) );
-    const [ menuOpen, setMenuOpen ] = useState( false );
-    const [ person, setPerson ] = useState( profile );
     // The query string: a PHP section reloads when it changes (its pagination).
-    const [ search, setSearch ] = useState( () => window.location.search );
+    const { current, search, stats, person } = useSelect( ( select ) => ( {
+        current: select( store ).getSection( settings.default_tab ),
+        search: select( store ).getSearch(),
+        stats: select( store ).getStats(),
+        person: select( store ).getProfile(),
+    } ), [ settings.default_tab ] );
+    const { navigate, setLocation, refreshAccount, setProfile } = useDispatch( store );
+    const [ menuOpen, setMenuOpen ] = useState( false );
     // The section the server rendered with the page belongs to the first URL only.
-    const [ firstSearch ] = useState( () => window.location.search );
+    const [ firstSearch ] = useState( search );
 
     const known = sections.some( ( section ) => section.slug === current );
     const active = known ? current : settings.default_tab;
     const section = sections.find( ( item ) => item.slug === active ) || sections[ 0 ];
 
     const go = useCallback( ( slug, extra = {} ) => {
-        window.history.pushState( {}, '', urlFor( settings.page_url, slug, extra ) );
-        setCurrent( slug );
-        setSearch( window.location.search );
+        navigate( urlFor( settings.page_url, slug, extra ) );
         setMenuOpen( false );
         root.scrollIntoView( { behavior: 'smooth', block: 'start' } );
-    }, [ settings.page_url, root ] );
+    }, [ settings.page_url, root, navigate ] );
 
-    useEffect( () => {
-        const onPop = () => {
-            setCurrent( readSection( settings.default_tab ) );
-            setSearch( window.location.search );
-        };
-
-        window.addEventListener( 'popstate', onPop );
-
-        return () => window.removeEventListener( 'popstate', onPop );
-    }, [ settings.default_tab ] );
+    useEffect( () => listen( setLocation ), [ setLocation ] );
 
     useEffect( () => {
         doAction( 'wpuf.frontend.account.section', active, root );
     }, [ active, root ] );
-
-    const refreshStats = useCallback( () => {
-        api.getAccount().then( ( fresh ) => {
-            setStats( fresh.stats || [] );
-            setPerson( fresh.profile );
-        } ).catch( () => undefined );
-    }, [] );
 
     // Links inside a PHP section to an account section or page (pagination)
     // stay in the app instead of loading the page again.
@@ -151,13 +122,13 @@ export default function App( { boot, root } ) {
     } else if ( 'dashboard' === section.slug && 'native' === section.kind ) {
         body = <Overview profile={ person } stats={ stats } sections={ sections } go={ go } pageUrl={ settings.page_url } />;
     } else if ( 'posts' === section.kind ) {
-        body = <Posts type={ section.post_type } label={ section.label } pageUrl={ settings.page_url } onChanged={ refreshStats } />;
+        body = <Posts type={ section.post_type } label={ section.label } pageUrl={ settings.page_url } />;
     } else if ( 'edit-profile' === section.slug && 'native' === section.kind ) {
-        body = <EditProfile profile={ person } nonce={ nonces.profile } onSaved={ ( fresh ) => { setPerson( fresh ); refreshStats(); } } />;
+        body = <EditProfile profile={ person } nonce={ nonces.profile } onSaved={ ( fresh ) => { setProfile( fresh ); refreshAccount(); } } />;
     } else if ( 'change-password' === section.slug && 'native' === section.kind ) {
         body = <ChangePassword nonce={ nonces.password } />;
     } else {
-        body = <HtmlSection key={ search } slug={ section.slug } initial={ search === firstSearch ? data.section_html : null } />;
+        body = <HtmlSection key={ search } slug={ section.slug } search={ search } initial={ search === firstSearch ? data.section_html : null } />;
     }
 
     return (

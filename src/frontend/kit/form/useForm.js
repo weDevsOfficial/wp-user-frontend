@@ -1,12 +1,16 @@
 /**
  * The state of one form: values (from the schema's edit values or the
  * fields' defaults), errors, touched, the visible set under conditional
- * logic, and the steps (`{ pre, list }`, split on `step_start`).
+ * logic, and the steps (`{ pre, list }`, split on `step_start`). Values,
+ * errors, touched and step live in the `wpuf/frontend-form` store (one
+ * slice per instance, `formKey`); the returned shape is unchanged.
  *
  * @since WPUF_SINCE
  */
-import { useCallback, useMemo, useState } from '@wordpress/element';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { useCallback, useLayoutEffect, useMemo, useState } from '@wordpress/element';
 import { visibleNames } from './conditions';
+import { store } from './store';
 import { validateAll } from './validation';
 
 const MULTI = [ 'multiple_select', 'checkbox_field', 'image_upload', 'featured_image', 'file_upload', 'profile_photo', 'cover_photo', 'avatar' ];
@@ -29,6 +33,10 @@ export function flatten( fields ) {
 
     return out;
 }
+
+const NONE = {};
+
+let instances = 0;
 
 const defaultOf = ( field ) => {
     if ( undefined !== field.value && null !== field.value ) {
@@ -72,20 +80,28 @@ const defaultOf = ( field ) => {
  */
 export default function useForm( schema ) {
     const all = useMemo( () => flatten( schema.fields || [] ), [ schema.fields ] );
-    const [ values, setValues ] = useState( () => {
-        const initial = {};
+    const [ formKey ] = useState( () => 'form-' + ( schema.id || 0 ) + '-' + ( ++instances ) );
+    // The values the form starts with (first schema only, as before).
+    const [ initial ] = useState( () => {
+        const start = {};
 
         all.forEach( ( field ) => {
             if ( field.name ) {
-                initial[ field.name ] = defaultOf( field );
+                start[ field.name ] = defaultOf( field );
             }
         } );
 
-        return initial;
+        return start;
     } );
-    const [ errors, setErrors ] = useState( {} );
-    const [ touched, setTouched ] = useState( {} );
-    const [ step, setStep ] = useState( 0 );
+    const slice = useSelect( ( select ) => select( store ).getForm( formKey ), [ formKey ] );
+    const dispatch = useDispatch( store );
+    const values = slice ? slice.values : initial;
+    const errors = slice ? slice.errors : NONE;
+    const touched = slice ? slice.touched : NONE;
+    const step = slice ? slice.step : 0;
+
+    // Drop the slice with the form.
+    useLayoutEffect( () => () => dispatch.remove( formKey ), [ dispatch, formKey ] );
 
     const visible = useMemo( () => visibleNames( schema.fields || [], values ), [ schema.fields, values ] );
 
@@ -111,21 +127,11 @@ export default function useForm( schema ) {
         return { pre, list };
     }, [ schema.fields ] );
 
-    const setValue = useCallback( ( name, value ) => {
-        setValues( ( current ) => ( { ...current, [ name ]: value } ) );
-        setErrors( ( current ) => {
-            if ( ! current[ name ] ) {
-                return current;
-            }
-
-            const next = { ...current };
-            delete next[ name ];
-
-            return next;
-        } );
-    }, [] );
-
-    const touch = useCallback( ( name ) => setTouched( ( current ) => ( current[ name ] ? current : { ...current, [ name ]: true } ) ), [] );
+    const setValue = useCallback( ( name, value ) => dispatch.setValue( formKey, name, value, initial ), [ dispatch, formKey, initial ] );
+    const setValues = useCallback( ( next ) => dispatch.setValues( formKey, next, initial ), [ dispatch, formKey, initial ] );
+    const setErrors = useCallback( ( next ) => dispatch.setErrors( formKey, next, initial ), [ dispatch, formKey, initial ] );
+    const setStep = useCallback( ( next ) => dispatch.setStep( formKey, next, initial ), [ dispatch, formKey, initial ] );
+    const touch = useCallback( ( name ) => dispatch.touch( formKey, name, initial ), [ dispatch, formKey, initial ] );
 
     /** Validate the visible fields (of one step when given); returns the errors. */
     const validate = useCallback( ( fields = null ) => {
@@ -135,10 +141,10 @@ export default function useForm( schema ) {
         setErrors( ( current ) => ( fields ? { ...current, ...found } : found ) );
 
         return found;
-    }, [ schema, values, visible ] );
+    }, [ schema, values, visible, setErrors ] );
 
     /** The fields on screen: all of them, or the fields outside the steps plus the current step (multistep). */
     const onScreen = useCallback( ( multistep ) => ( multistep && steps.list.length ? [ ...steps.pre, ...( steps.list[ step ] ? steps.list[ step ].fields : [] ) ] : schema.fields || [] ), [ steps, step, schema.fields ] );
 
-    return { all, values, setValue, setValues, errors, setErrors, touched, touch, visible, steps, step, setStep, onScreen, validate };
+    return { formKey, all, values, setValue, setValues, errors, setErrors, touched, touch, visible, steps, step, setStep, onScreen, validate };
 }

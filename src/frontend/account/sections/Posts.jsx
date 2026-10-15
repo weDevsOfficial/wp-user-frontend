@@ -5,9 +5,11 @@
  *
  * @since WPUF_SINCE
  */
+import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
-import { Button, Card, Notice, Pagination, Pill, SkeletonRows, api, confirmDialog, icons } from '@wpuf/frontend-kit';
+import { Button, Card, Notice, Pagination, Pill, SkeletonRows, confirmDialog, icons } from '@wpuf/frontend-kit';
+import { store } from '../store';
 
 const { Eye, Pencil, Trash2 } = icons;
 
@@ -19,24 +21,25 @@ const TONE = {
     private: 'gray',
 };
 
-const readPage = () => Number( new URLSearchParams( window.location.search ).get( 'pagenum' ) || 1 );
-
-export default function Posts( { type, label, pageUrl, onChanged } ) {
-    const [ page, setPage ] = useState( readPage );
-    const [ state, setState ] = useState( { loading: true, error: '', data: null } );
+/**
+ * @param {Object} props
+ * @param {string} props.type    Post type.
+ * @param {string} props.label   Section label.
+ * @param {string} props.pageUrl Account page URL.
+ */
+export default function Posts( { type, label, pageUrl } ) {
+    // `?pagenum=` from the store's location, so back / forward pages too.
+    const { page, state } = useSelect( ( select ) => ( {
+        page: select( store ).getPage(),
+        state: select( store ).getPosts( type ),
+    } ), [ type ] );
+    const { loadPosts, deletePost, navigate, setPostsError } = useDispatch( store );
     const [ notice, setNotice ] = useState( () => ( 'deleted' === new URLSearchParams( window.location.search ).get( 'msg' ) ? __( 'Item Deleted successfully!', 'wp-user-frontend' ) : '' ) );
     const [ deleting, setDeleting ] = useState( 0 );
 
-    const load = ( which ) => {
-        setState( ( current ) => ( { ...current, loading: true, error: '' } ) );
-        api.getAccountPosts( type, which )
-            .then( ( data ) => setState( { loading: false, error: '', data } ) )
-            .catch( ( e ) => setState( { loading: false, error: e.message, data: null } ) );
-    };
-
     useEffect( () => {
-        load( page );
-    }, [ type, page ] ); // eslint-disable-line react-hooks/exhaustive-deps
+        loadPosts( type, page );
+    }, [ type, page, loadPosts ] );
 
     const changePage = ( next ) => {
         const url = new URL( window.location.href );
@@ -49,8 +52,7 @@ export default function Posts( { type, label, pageUrl, onChanged } ) {
             url.searchParams.delete( 'pagenum' );
         }
 
-        window.history.pushState( {}, '', url.toString() );
-        setPage( next );
+        navigate( url.toString() );
     };
 
     const remove = async ( post ) => {
@@ -66,16 +68,11 @@ export default function Posts( { type, label, pageUrl, onChanged } ) {
 
         setDeleting( post.id );
 
-        try {
-            await api.deleteAccountPost( post.id );
+        if ( await deletePost( type, post.id, page ) ) {
             setNotice( __( 'Item Deleted successfully!', 'wp-user-frontend' ) );
-            load( page );
-            onChanged && onChanged();
-        } catch ( e ) {
-            setState( ( current ) => ( { ...current, error: e.message } ) );
-        } finally {
-            setDeleting( 0 );
         }
+
+        setDeleting( 0 );
     };
 
     const data = state.data;
@@ -94,7 +91,7 @@ export default function Posts( { type, label, pageUrl, onChanged } ) {
             </header>
 
             { notice && <Notice kind="success" onClose={ () => setNotice( '' ) }>{ notice }</Notice> }
-            { state.error && <Notice kind="error" onClose={ () => setState( ( current ) => ( { ...current, error: '' } ) ) }>{ state.error }</Notice> }
+            { state.error && <Notice kind="error" onClose={ () => setPostsError( type, '' ) }>{ state.error }</Notice> }
 
             <Card className="wpuf-posts-card">
                 { state.loading && ! data ? (

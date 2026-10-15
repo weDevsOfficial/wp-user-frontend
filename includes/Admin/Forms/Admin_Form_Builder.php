@@ -371,18 +371,6 @@ class Admin_Form_Builder {
     }
 
     /**
-     * Printed the Vue builder's `wpuf_form_builder_mixins()` helper and a
-     * Promise polyfill from a CDN. The React builder needs neither, so it is no
-     * longer hooked and prints nothing; kept for code that calls it.
-     *
-     * @since 2.5
-     * @since WPUF_SINCE Prints nothing.
-     *
-     * @return void
-     */
-    public function admin_print_scripts() {}
-
-    /**
      * Include vue component templates
      *
      * @since 2.5

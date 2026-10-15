@@ -86,12 +86,6 @@ class PostFormsList extends Screen {
      * @return void
      */
     public function render() {
-        if ( wpuf_is_pro_active() && defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1.0', '<' ) ) {
-            require_once WPUF_INCLUDES . '/Admin/views/need-to-update.php';
-
-            return;
-        }
-
         // The list and the builder are app routes (the old URL redirects in the
         // load step). Only add-new gets here, after its load step created the
         // form and sent the Location header to its builder.

@@ -56,9 +56,10 @@ class Promo_Pages extends Pro_Prompt {
             __( 'Registration Forms', 'wp-user-frontend' ),
             $capability,
             'wpuf-profile-forms',
-            [ $this, 'admin_reg_forms_page' ]
+            // The load step opens the admin app route; nothing renders here.
+            '__return_null'
         );
-        $modules        = add_submenu_page( wpuf()->admin->menu->parent_slug, __( 'Modules', 'wp-user-frontend' ), __( 'Modules', 'wp-user-frontend' ), $capability, 'wpuf-modules', [ $this->loader, 'modules_preview_page' ] );
+        $modules        = add_submenu_page( wpuf()->admin->menu->parent_slug, __( 'Modules', 'wp-user-frontend' ), __( 'Modules', 'wp-user-frontend' ), $capability, 'wpuf-modules', '__return_null' );
 
         // add this menu to all menu hooks
         wpuf()->admin->menu->add_submenu_hooks( 'registration_forms', $reg_forms_hook );
@@ -116,17 +117,6 @@ class Promo_Pages extends Pro_Prompt {
             }
         }
     }
-
-    /**
-     * Menu callback of Registration Forms without Pro. Prints nothing: the
-     * page's load step (reg_form_menu_action()) redirects to the React
-     * route (Screens\RegistrationPromo); the classic PHP promo page is gone.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    public function admin_reg_forms_page() {}
 
     public function admin_coupon_page() {
         ?>

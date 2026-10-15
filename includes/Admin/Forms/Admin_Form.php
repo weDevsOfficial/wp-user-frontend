@@ -169,9 +169,6 @@ class Admin_Form {
             add_action( 'wpuf_form_builder_settings_tabs_post', [ $this, 'add_settings_tabs' ] );
             add_filter( 'wpuf_form_fields_section_before', [ $this, 'add_post_field_section' ] );
 
-            add_filter( 'wpuf_form_builder_js_root_mixins', [ $this, 'js_root_mixins' ] );
-            add_filter( 'wpuf_form_builder_js_builder_stage_mixins', [ $this, 'js_builder_stage_mixins' ] );
-            add_filter( 'wpuf_form_builder_js_field_options_mixins', [ $this, 'js_field_options_mixins' ] );
             add_filter( 'wpuf_form_builder_localize_script', [ $this, 'add_to_localize_script' ] );
             add_filter( 'wpuf_form_fields', [ $this, 'add_field_settings' ] );
             add_filter( 'wpuf_form_builder_i18n', [ $this, 'i18n' ] );
@@ -239,51 +236,6 @@ class Admin_Form {
                 'fields' => [],
             ],
         ];
-    }
-
-    /**
-     * Add mixins to root instance
-     *
-     * @since 2.5
-     *
-     * @param array $mixins
-     *
-     * @return array
-     */
-    public function js_root_mixins( $mixins ) {
-        array_push( $mixins, 'wpuf_forms_mixin_root' );
-
-        return $mixins;
-    }
-
-    /**
-     * Add mixins to form builder builder stage component
-     *
-     * @since 2.5
-     *
-     * @param array $mixins
-     *
-     * @return array
-     */
-    public function js_builder_stage_mixins( $mixins ) {
-        array_push( $mixins, 'wpuf_forms_mixin_builder_stage' );
-
-        return $mixins;
-    }
-
-    /**
-     * Add mixins to form builder field options component
-     *
-     * @since 2.5
-     *
-     * @param array $mixins
-     *
-     * @return array
-     */
-    public function js_field_options_mixins( $mixins ) {
-        array_push( $mixins, 'wpuf_forms_mixin_field_options' );
-
-        return $mixins;
     }
 
     /**

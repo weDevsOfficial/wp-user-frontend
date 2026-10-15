@@ -73,7 +73,6 @@ class Free_Loader extends Pro_Prompt {
         add_filter( 'wpuf_subscriptions_fields', [ $this, 'add_taxonomy_restriction_fields' ], 11 );
 
         // field option data actions
-        add_action( 'wpuf_field_option_data_actions', [ $this, 'render_field_option_data_button' ] );
     }
 
     public function includes() {
@@ -208,48 +207,12 @@ class Free_Loader extends Pro_Prompt {
     }
 
     /**
-     * @see \WeDevs\Wpuf\Free\Modules_Preview::modules_preview_page()
-     *
-     * @since WPUF_SINCE
-     */
-    public function modules_preview_page() {
-        return $this->modules_preview()->modules_preview_page();
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Free\Modules_Preview::load_modules_scripts()
-     *
-     * @since WPUF_SINCE
-     */
-    public function load_modules_scripts() {
-        return $this->modules_preview()->load_modules_scripts();
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Free\Modules_Preview::toggle_free_module()
-     *
-     * @since WPUF_SINCE
-     */
-    public function toggle_free_module() {
-        return $this->modules_preview()->toggle_free_module();
-    }
-
-    /**
      * @see \WeDevs\Wpuf\Free\Modules_Preview::pro_modules_info()
      *
      * @since WPUF_SINCE
      */
     public function pro_modules_info() {
         return $this->modules_preview()->pro_modules_info();
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Free\Modules_Preview::modules_page_contents()
-     *
-     * @since WPUF_SINCE
-     */
-    public function modules_page_contents() {
-        return $this->modules_preview()->modules_page_contents();
     }
 
     /**
@@ -307,15 +270,6 @@ class Free_Loader extends Pro_Prompt {
     }
 
     /**
-     * @see \WeDevs\Wpuf\Free\Form_Settings_Preview::render_field_option_data_button()
-     *
-     * @since WPUF_SINCE
-     */
-    public function render_field_option_data_button() {
-        return $this->form_settings_preview()->render_field_option_data_button();
-    }
-
-    /**
      * @see \WeDevs\Wpuf\Free\Form_Settings_Preview::add_taxonomy_restriction_section()
      *
      * @since WPUF_SINCE
@@ -367,15 +321,6 @@ class Free_Loader extends Pro_Prompt {
      */
     public function admin_menu() {
         return $this->promo_pages()->admin_menu();
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Free\Promo_Pages::admin_reg_forms_page()
-     *
-     * @since WPUF_SINCE
-     */
-    public function admin_reg_forms_page() {
-        return $this->promo_pages()->admin_reg_forms_page();
     }
 
     /**

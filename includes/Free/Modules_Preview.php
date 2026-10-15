@@ -56,78 +56,6 @@ class Modules_Preview extends Pro_Prompt {
     }
 
     /**
-     * Menu callback of Modules without Pro. Prints nothing: the page's load
-     * step redirects to the React route (Admin\Screens\ModulesPreview); the
-     * classic PHP page with its upgrade popup and slider is gone.
-     *
-     * @since 3.6.0
-     *
-     * @return void
-     */
-    public function modules_preview_page() {}
-
-    /**
-     * Load required style and js for Modules page
-     *
-     * @since 3.6.0
-     * @deprecated WPUF_SINCE The page is the React route `#/modules`, which loads its own bundle.
-     *
-     * @return void
-     */
-    public function load_modules_scripts() {}
-
-    /**
-     * Handle AJAX request to toggle a free module on/off
-     *
-     * @since 4.3.0
-     * @deprecated WPUF_SINCE The switches call the REST route `wpuf/v1/admin/free-modules/{module}`.
-     *
-     * @return void
-     */
-    public function toggle_free_module() {
-        // Check nonce
-        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'wpuf_toggle_free_module' ) ) {
-            wp_send_json_error( [ 'message' => __( 'Security check failed', 'wp-user-frontend' ) ] );
-        }
-
-        // Check permission
-        if ( ! current_user_can( 'manage_options' ) ) {
-            wp_send_json_error( [ 'message' => __( 'Permission denied', 'wp-user-frontend' ) ] );
-        }
-
-        $module_id = isset( $_POST['module'] ) ? sanitize_text_field( wp_unslash( $_POST['module'] ) ) : '';
-        $status    = isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : '';
-
-        if ( empty( $module_id ) ) {
-            wp_send_json_error( [ 'message' => __( 'Invalid module', 'wp-user-frontend' ) ] );
-        }
-
-        // Check if module exists
-        $modules = wpuf_free_get_modules();
-        if ( ! isset( $modules[ $module_id ] ) ) {
-            wp_send_json_error( [ 'message' => __( 'Module not found', 'wp-user-frontend' ) ] );
-        }
-
-        if ( 'active' === $status ) {
-            $result = wpuf_free_activate_module( $module_id );
-        } else {
-            $result = wpuf_free_deactivate_module( $module_id );
-        }
-
-        if ( is_wp_error( $result ) ) {
-            wp_send_json_error( [ 'message' => $result->get_error_message() ] );
-        }
-
-        wp_send_json_success(
-            [
-				'message' => 'active' === $status
-					? __( 'Module activated successfully', 'wp-user-frontend' )
-					: __( 'Module deactivated successfully', 'wp-user-frontend' ),
-			]
-        );
-    }
-
-    /**
      * Get the info of the pro modules as an array
      *
      * @since 3.6.0
@@ -258,17 +186,4 @@ class Modules_Preview extends Pro_Prompt {
             ],
         ];
     }
-
-    /**
-     * The content of the module page
-     *
-     * @since 3.6.0
-     *
-     * @param array $modules
-     *
-     * @return void
-     */
-    public function modules_page_contents() {
-    }
-
 }

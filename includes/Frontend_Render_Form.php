@@ -37,8 +37,6 @@ class Frontend_Render_Form {
         die();
     }
 
-
-
     /**
      * Render submit button
      *
@@ -112,67 +110,6 @@ class Frontend_Render_Form {
             </div>
         </li>
         <?php
-    }
-
-    /**
-     * Form preview handler
-     *
-     * @return void
-     */
-    public function preview_form() {
-        // Security: Check user has proper admin capabilities
-        if ( ! current_user_can( wpuf_admin_role() ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
-        $form_id = isset( $_GET['form_id'] ) ? intval( wp_unslash( $_GET['form_id'] ) ) : 0;
-
-        if ( $form_id ) {
-            wp_enqueue_script( 'jquery' );
-            wp_register_style( 'wpuf-frontend-forms', plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) );
-            wp_enqueue_style( 'wpuf-frontend-forms' );
-            ?>
-
-            <!doctype html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <title><?php echo esc_html( __( 'Form Preview', 'wp-user-frontend' ) ); ?></title>
-                <?php wp_head(); ?>
-
-                <style type="text/css">
-                    body {
-                        margin: 0;
-                        padding: 0;
-                        background: #eee;
-                    }
-                    .container {
-                        width: 700px;
-                        margin: 0 auto;
-                        margin-top: 20px;
-                        padding: 20px;
-                        background: #fff;
-                        border: 1px solid #DFDFDF;
-                        -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-                        box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-                    }
-                </style>
-
-                <?php wp_enqueue_script( 'jquery' ); ?>
-            </head>
-            <body>
-            <div class="container">
-                <?php $this->render_form( $form_id, null, null, null ); ?>
-            </div>
-            </body>
-            </html>
-
-            <?php
-        } else {
-            wp_die( 'Error generating the form preview' );
-        }
-
-        exit;
     }
 
     /**

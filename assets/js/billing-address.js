@@ -1,5 +1,8 @@
 jQuery(function($){
 
+    // Billing_Address::script_data(): `wpufBillingAddress` (`ajax_object` before WPUF_SINCE).
+    var billingData = window.wpufBillingAddress || window.ajax_object || {};
+
     window.wpuf_validate_address = function(e) {
         var country = $("td.bill_required").find('.wpuf_biiling_country, .input');
         var state   = $("td.bill_required").find('.wpuf_biiling_state, .input');
@@ -72,7 +75,7 @@ jQuery(function($){
             country: $(this).val(),
             field_name: $("#wpuf_biiling_state").attr("name")
         };
-        window.wpufRest.request( ajax_object.rest, 'account/billing-address/states', { data: data } ).then( function ( result ) {
+        window.wpufRest.request( billingData.rest, 'account/billing-address/states', { data: data } ).then( function ( result ) {
             var response = result && result.states ? result.html : 'nostates';
             var $old = $this.parent().next().find('input,select').first();
             // The new state field keeps the old one's id, classes and data, so it
@@ -113,7 +116,8 @@ jQuery(function($){
         wpuf_calculate_tax();
     });
 
-    $(document.body).on('change', 'form#wpuf-ajax-address-form', function () {
+    // The checkout renders the fields in a div (a form inside the payment form is dropped).
+    $(document.body).on('change', '#wpuf-ajax-address-form', function () {
         wpuf_calculate_tax();
     });
 
@@ -149,7 +153,7 @@ jQuery(function($){
 
         var current_ajax_count = ++ajax_tax_count;
 
-        window.wpufRest.request( ajax_object.rest, 'account/billing-address', { method: 'PUT', data: postData } )
+        window.wpufRest.request( billingData.rest, 'account/billing-address', { method: 'PUT', data: postData } )
             .then( function ( tax_response ) {
                 // Only update tax info if this response is the most recent call. This avoids bug with form autocomplete firing multiple calls at the same time
                 if ( ( current_ajax_count === ajax_tax_count ) && tax_response && undefined !== tax_response.tax ) {

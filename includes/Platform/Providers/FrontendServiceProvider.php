@@ -162,6 +162,12 @@ class FrontendServiceProvider extends ServiceProvider {
             }
         );
         $this->container->share(
+            \WeDevs\Wpuf\Frontend\Billing\Billing_Address::class,
+            function () {
+                return new \WeDevs\Wpuf\Frontend\Billing\Billing_Address();
+            }
+        );
+        $this->container->share(
             Login_Schema::class,
             function ( $container ) {
                 return new Login_Schema( $container->get( \WeDevs\Wpuf\Free\Simple_Login::class ) );

@@ -4,7 +4,6 @@ namespace WeDevs\Wpuf\Frontend;
 
 use stdClass;
 use WeDevs\Wpuf\Admin;
-use WeDevs\Wpuf\Ajax;
 use WeDevs\Wpuf\WPUF_User;
 use WP_Post;
 
@@ -96,11 +95,14 @@ class Payment {
         $get_type = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : '';
         $type     = ( $get_type === 'post' ) ? 'post' : 'pack';
         if ( ! is_user_logged_in() && $action === 'wpuf_pay' && $type !== 'post' ) {
+            $this->enqueue_checkout_style();
+            echo '<div class="wpuf-frontend wpuf-form-gate wpuf-checkout-gate"><div class="wpuf-message">';
             printf(
                 /* translators: %s: login url */
                 esc_html__( 'This page is restricted. Please %s to view this page.', 'wp-user-frontend' ),
                 wp_loginout( '', false ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WordPress builds this login link.
             );
+            echo '</div></div>';
 
             return;
         }
@@ -123,15 +125,16 @@ class Payment {
             if ( $pack_id ) {
                 $pack_detail = wpuf()->subscription->get_subscription( $pack_id );
                 if ( ! $pack_detail ) {
+                    $this->enqueue_checkout_style();
                     ?>
-                    <div class="wpuf-info">
+                    <div class="wpuf-frontend wpuf-form-gate wpuf-checkout-gate"><div class="wpuf-info">
                     <?php
                     esc_html_e(
                         'No subscription pack found.',
                         'wp-user-frontend'
                     );
                     ?>
-                                                            </div>
+                    </div></div>
                     <?php
                     return;
                 }
@@ -156,7 +159,9 @@ class Payment {
                 return $content;
             }
 
+            $this->enqueue_checkout_style();
             ob_start();
+            echo '<div class="wpuf-frontend wpuf-checkout">';
             if ( $pack_id && $is_free ) {
                 $wpuf_subscription = wpuf()->subscription;
                 $wpuf_user         = new WPUF_User( $current_user->ID );
@@ -180,7 +185,7 @@ class Payment {
                     );
                 }
                 ?>
-                <div class="wpuf-info"><?php echo esc_html( $message ); ?></div>
+                <div class="wpuf-form-gate"><div class="wpuf-info wpuf-checkout-free"><?php echo esc_html( $message ); ?></div></div>
                 <?php
             } else {
                 ?>
@@ -253,10 +258,7 @@ class Payment {
                                 <h3><?php esc_html_e( 'Billing Address', 'wp-user-frontend' ); ?></h3>
                                 <div class="wpuf-bill_addr-inner">
                                     <?php
-                                    $add_form = wpuf()->platform()->has( Ajax\Address_Form_Ajax::class )
-                                        ? wpuf()->platform()->get( Ajax\Address_Form_Ajax::class )
-                                        : new Ajax\Address_Form_Ajax();
-                                    $add_form->wpuf_ajax_address_form();
+                                    wpuf()->platform()->get( Billing\Billing_Address::class )->form( true );
                                     ?>
                                 </div>
                             </div>
@@ -293,9 +295,20 @@ class Payment {
                                                             <?php checked( $selected_gateway, $gateway_id ); ?>>
                                                 </span>
 
-                                                <div class="wpuf-payment-instruction" style="display: none;">
-                                                    <?php do_action( 'wpuf_gateway_form_' . $gateway_id, $type, $post_id, $pack_id ); ?>
-                                                </div>
+                                                <?php
+                                                // The gateway's own form (Stripe's card field, instructions); no empty box when it prints nothing.
+                                                ob_start();
+                                                do_action( 'wpuf_gateway_form_' . $gateway_id, $type, $post_id, $pack_id );
+                                                $gateway_form = trim( (string) ob_get_clean() );
+
+                                                if ( '' !== $gateway_form ) {
+                                                    ?>
+                                                    <div class="wpuf-payment-instruction" style="display: none;">
+                                                        <?php echo $gateway_form; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the gateway's own markup, printed as before. ?>
+                                                    </div>
+                                                    <?php
+                                                }
+                                                ?>
                                             </label>
                                         </li>
                                     <?php } ?>
@@ -385,16 +398,30 @@ class Payment {
                     <?php
                 } else {
                     ?>
-                    <?php esc_html_e( 'No Payment gateway found', 'wp-user-frontend' ); ?>
+                    <div class="wpuf-form-gate"><div class="wpuf-info"><?php esc_html_e( 'No Payment gateway found', 'wp-user-frontend' ); ?></div></div>
                 <?php } ?>
 
                 <?php
             }
 
+            echo '</div>';
+
             return ob_get_clean();
         }
 
         return $content;
+    }
+
+    /**
+     * The checkout in the frontend apps' look: the kit tokens and font of the
+     * runtime sheet (the classic markup, ids and hooks stay as they are).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    private function enqueue_checkout_style() {
+        wp_enqueue_style( 'wpuf-frontend-runtime-style' );
     }
 
     /**

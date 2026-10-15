@@ -482,15 +482,8 @@ class Frontend {
             )
         );
 
-        wp_localize_script(
-            'wpuf-billing-address',
-            'ajax_object',
-            [
-                'rest'         => wpuf_rest_script_data(),
-                'ajaxurl'     => admin_url( 'admin-ajax.php' ),
-                'fill_notice' => __( 'Some Required Fields are not filled!', 'wp-user-frontend' ),
-            ]
-        );
+        // billing-address.js data (`wpufBillingAddress`, `ajax_object` kept for add-ons).
+        wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Billing\Billing_Address::class )->localize( 'wpuf-billing-address' );
 
         /**
          * Fires right after the WPUF frontend form bundle has been enqueued.

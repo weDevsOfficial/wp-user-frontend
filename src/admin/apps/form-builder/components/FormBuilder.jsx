@@ -76,13 +76,13 @@ export default function FormBuilder() {
                              Each scroller is positioned, so the visually hidden inputs of plugin-ui's
                              radios / checkboxes (position: absolute) stay inside it; unpositioned,
                              they anchored to the page and stretched its scroll (owner 2026-10-14). */ }
-                        <div className="relative w-[280px] xl:w-[300px] 2xl:w-[320px] shrink-0 h-full overflow-auto border-r border-gray-200 bg-white">
+                        <div className="relative w-[300px] xl:w-[320px] 2xl:w-[340px] shrink-0 h-full overflow-auto border-r border-gray-200 bg-white">
                             <Sidebar panel="fields" />
                         </div>
                         <div className="relative min-w-0 flex-1 h-full px-6 py-5 overflow-auto">
                             <BuilderCanvas />
                         </div>
-                        <div className="relative w-[300px] 2xl:w-[360px] shrink-0 h-full overflow-auto border-l border-gray-200">
+                        <div className="relative w-[320px] xl:w-[340px] 2xl:w-[380px] shrink-0 h-full overflow-auto border-l border-gray-200">
                             <Sidebar panel="options" />
                         </div>
                     </div>

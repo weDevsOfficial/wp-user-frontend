@@ -45,6 +45,52 @@ function Input( { id, label, type = 'text', value, onChange, error, required = f
     );
 }
 
+/** WordPress' strength levels (password-strength-meter): class and `pwsL10n` key. */
+const LEVELS = {
+    0: [ 'short', 'short' ],
+    1: [ 'short', 'short' ],
+    2: [ 'bad', 'bad' ],
+    3: [ 'good', 'good' ],
+    4: [ 'strong', 'strong' ],
+    5: [ 'mismatch', 'mismatch' ],
+};
+
+/**
+ * The classic Change Password strength indicator: WordPress' meter
+ * (`wp.passwordStrength`, zxcvbn) and its labels, as a bar and a word.
+ * Nothing when the meter is not on the page or no password is typed.
+ *
+ * @param {Object} props
+ * @param {string} props.pass1 New password.
+ * @param {string} props.pass2 Confirmation.
+ */
+function PasswordStrength( { pass1, pass2 } ) {
+    const meter = window.wp && window.wp.passwordStrength;
+
+    if ( ! pass1 || ! meter || 'function' !== typeof meter.meter ) {
+        return null;
+    }
+
+    const disallowed = 'function' === typeof meter.userInputDisallowedList ? meter.userInputDisallowedList() : [];
+    const score = meter.meter( pass1, disallowed, pass2 );
+    const [ level, key ] = LEVELS[ score ] || LEVELS[ 0 ];
+    const labels = window.pwsL10n || {};
+    const words = {
+        short: __( 'Very weak', 'wp-user-frontend' ),
+        bad: __( 'Weak', 'wp-user-frontend' ),
+        good: __( 'Medium', 'wp-user-frontend' ),
+        strong: __( 'Strong', 'wp-user-frontend' ),
+        mismatch: __( 'Mismatch', 'wp-user-frontend' ),
+    };
+
+    return (
+        <div className={ `wpuf-password-strength is-${ level }` } aria-live="polite">
+            <span className="wpuf-password-strength__bar" aria-hidden="true"><span /></span>
+            <span className="wpuf-password-strength__label">{ labels[ key ] || words[ key ] }</span>
+        </div>
+    );
+}
+
 export function EditProfile( { profile, onSaved } ) {
     const [ values, setValues ] = useState( {
         first_name: profile.first_name || '',
@@ -108,6 +154,7 @@ export function EditProfile( { profile, onSaved } ) {
                             <Input id="pass1" type="password" label={ __( 'New Password', 'wp-user-frontend' ) } value={ values.pass1 } onChange={ set( 'pass1' ) } error={ errors.pass1 } autoComplete="new-password" />
                             <Input id="pass2" type="password" label={ __( 'Confirm New Password', 'wp-user-frontend' ) } value={ values.pass2 } onChange={ set( 'pass2' ) } error={ errors.pass2 } autoComplete="new-password" />
                         </div>
+                        <PasswordStrength pass1={ values.pass1 } pass2={ values.pass2 } />
                     </fieldset>
 
                     <div className="wpuf-form-actions">
@@ -165,6 +212,7 @@ export function ChangePassword() {
                         <Input id="cp_pass1" type="password" label={ __( 'New Password', 'wp-user-frontend' ) } value={ values.pass1 } onChange={ set( 'pass1' ) } error={ errors.pass1 } required autoComplete="new-password" />
                         <Input id="cp_pass2" type="password" label={ __( 'Confirm New Password', 'wp-user-frontend' ) } value={ values.pass2 } onChange={ set( 'pass2' ) } error={ errors.pass2 } required autoComplete="new-password" />
                     </div>
+                    <PasswordStrength pass1={ values.pass1 } pass2={ values.pass2 } />
                     <div className="wpuf-form-actions">
                         <Button type="submit" busy={ busy }>{ __( 'Update Password', 'wp-user-frontend' ) }</Button>
                     </div>

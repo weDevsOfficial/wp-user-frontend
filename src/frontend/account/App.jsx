@@ -111,6 +111,20 @@ export default function App( { data, root } ) {
         doAction( 'wpuf.frontend.account.section', active, root );
     }, [ active, root ] );
 
+    // Back on the dashboard after another section (billing address, subscription,
+    // a post deleted): its cards show fresh facts, not the ones from page load.
+    const [ seen, setSeen ] = useState( active );
+
+    useEffect( () => {
+        if ( active !== seen ) {
+            setSeen( active );
+
+            if ( 'dashboard' === active ) {
+                refreshAccount();
+            }
+        }
+    }, [ active, seen, refreshAccount ] );
+
     // Links inside a PHP section to an account section or page (pagination)
     // stay in the app instead of loading the page again.
     const onContentClick = useCallback( ( event ) => {
@@ -124,7 +138,9 @@ export default function App( { data, root } ) {
         const page = new URL( settings.page_url, window.location.origin );
         const slug = url.searchParams.get( 'section' );
 
-        if ( url.origin !== page.origin || url.pathname !== page.pathname || ! slug || ! sections.some( ( item ) => item.slug === slug ) ) {
+        // A link that does something (`action=del`, `action=edit` of the classic
+        // posts table) is a real request, not a section switch.
+        if ( url.origin !== page.origin || url.pathname !== page.pathname || ! slug || url.searchParams.get( 'action' ) || ! sections.some( ( item ) => item.slug === slug ) ) {
             return;
         }
 
@@ -148,7 +164,7 @@ export default function App( { data, root } ) {
     if ( ! section ) {
         body = <Notice kind="info">{ __( 'There is nothing to show on this page yet.', 'wp-user-frontend' ) }</Notice>;
     } else if ( 'dashboard' === section.slug && 'native' === section.kind ) {
-        body = <Overview profile={ person } stats={ stats } sections={ sections } go={ go } pageUrl={ settings.page_url } />;
+        body = <Overview profile={ person } stats={ stats } sections={ sections } quickLinks={ settings.quick_links } go={ go } pageUrl={ settings.page_url } />;
     } else if ( 'posts' === section.kind ) {
         body = <Posts type={ section.post_type } label={ section.label } pageUrl={ settings.page_url } />;
     } else if ( 'edit-profile' === section.slug && 'native' === section.kind ) {

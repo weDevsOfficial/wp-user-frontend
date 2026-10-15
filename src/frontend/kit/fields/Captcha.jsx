@@ -64,6 +64,38 @@ export function RecaptchaField( { field, onChange, formId, schema } ) {
         } );
     }, [ key, invisible ] ); // eslint-disable-line react-hooks/exhaustive-deps
 
+    // A failed submit used the token (`wpuf:captcha:reset` on the form): clear it,
+    // show a fresh challenge, and for the invisible widget ask for a new token.
+    useEffect( () => {
+        const form = ref.current && ref.current.closest( 'form' );
+
+        if ( ! form ) {
+            return undefined;
+        }
+
+        const reset = () => {
+            const widget = ref.current && ref.current.dataset.widget;
+
+            if ( ! window.grecaptcha || undefined === widget ) {
+                return;
+            }
+
+            onChange( '' );
+
+            try {
+                window.grecaptcha.reset( Number( widget ) );
+
+                if ( invisible ) {
+                    window.grecaptcha.execute( Number( widget ) );
+                }
+            } catch ( e ) {}
+        };
+
+        form.addEventListener( 'wpuf:captcha:reset', reset );
+
+        return () => form.removeEventListener( 'wpuf:captcha:reset', reset );
+    }, [ invisible ] ); // eslint-disable-line react-hooks/exhaustive-deps
+
     return (
         <li className={ `wpuf-el ${ field.name } ${ field.css || '' }`.trim() } data-label={ field.label } style={ invisible ? { margin: 0, padding: 0 } : undefined }>
             { ! invisible && (
@@ -106,6 +138,33 @@ export function TurnstileField( { field, onChange, schema } ) {
                 } );
             }
         } );
+    }, [ key ] ); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // A failed submit used the token: a fresh challenge (Turnstile runs it again itself).
+    useEffect( () => {
+        const form = ref.current && ref.current.closest( 'form' );
+
+        if ( ! form ) {
+            return undefined;
+        }
+
+        const reset = () => {
+            const widget = ref.current && ref.current.dataset.widget;
+
+            if ( ! window.turnstile || ! widget ) {
+                return;
+            }
+
+            onChange( '' );
+
+            try {
+                window.turnstile.reset( widget );
+            } catch ( e ) {}
+        };
+
+        form.addEventListener( 'wpuf:captcha:reset', reset );
+
+        return () => form.removeEventListener( 'wpuf:captcha:reset', reset );
     }, [ key ] ); // eslint-disable-line react-hooks/exhaustive-deps
 
     if ( ! key ) {

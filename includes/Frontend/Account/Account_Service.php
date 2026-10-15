@@ -149,6 +149,12 @@ class Account_Service {
             return 'html';
         }
 
+        // A native section another plugin adds output to is served as its PHP
+        // output, so that output still shows.
+        if ( in_array( $slug, self::NATIVE, true ) && $this->hooked_by_others( 'wpuf_account_content_' . $slug ) ) {
+            return 'html';
+        }
+
         // The Subscription section is the plans app's card unless the classic one is kept
         // (a theme override of dashboard/subscription.php, a filter on the classic markup).
         if ( 'subscription' === $slug ) {
@@ -158,6 +164,75 @@ class Account_Service {
         }
 
         return in_array( $slug, self::NATIVE, true ) ? 'native' : 'html';
+    }
+
+    /**
+     * The dashboard's quick links, as the classic dashboard builds them: the
+     * account sections after `wpuf_my_account_tab_links` (Pro hides Edit
+     * Profile there), without the dashboard itself and without Subscription
+     * when the tab is off.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array[] slug, label, url
+     */
+    public function quick_links() {
+        $tabs = apply_filters( 'wpuf_my_account_tab_links', wpuf_get_account_sections() );
+        $out  = [];
+
+        if ( 'off' === Stores::settings()->get( 'wpuf_my_account', 'show_subscriptions', 'on' ) ) {
+            unset( $tabs['subscription'] );
+        }
+
+        foreach ( (array) $tabs as $section => $label ) {
+            // The classic list also takes [ slug, label ] items.
+            if ( is_array( $label ) ) {
+                $section = isset( $label['slug'] ) ? $label['slug'] : '';
+                $label   = isset( $label['label'] ) ? $label['label'] : '';
+            }
+
+            if ( '' === (string) $section || 'dashboard' === $section ) {
+                continue;
+            }
+
+            $out[] = [
+                'slug'  => (string) $section,
+                'label' => wp_strip_all_tags( (string) $label ),
+                'url'   => add_query_arg( [ 'section' => $section ], $this->page_url() ),
+            ];
+        }
+
+        return $out;
+    }
+
+    /**
+     * Whether a hook has callbacks other than the plugin's own section
+     * renderers (Frontend_Account).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $hook Hook name
+     *
+     * @return bool
+     */
+    private function hooked_by_others( $hook ) {
+        global $wp_filter;
+
+        if ( empty( $wp_filter[ $hook ] ) || ! $wp_filter[ $hook ] instanceof \WP_Hook ) {
+            return false;
+        }
+
+        foreach ( $wp_filter[ $hook ]->callbacks as $callbacks ) {
+            foreach ( $callbacks as $callback ) {
+                $function = $callback['function'];
+
+                if ( ! ( is_array( $function ) && is_object( $function[0] ) && $function[0] instanceof \WeDevs\Wpuf\Frontend\Frontend_Account ) ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -485,6 +560,12 @@ class Account_Service {
 
         $thumb = get_the_post_thumbnail_url( $post, Stores::settings()->get( 'wpuf_dashboard', 'ft_img_size', 'thumbnail' ) );
 
+        // The classic table's "No Image" picture when a site changed it (`wpuf_no_image`);
+        // otherwise the app's own empty tile.
+        if ( ! $thumb && has_filter( 'wpuf_no_image' ) ) {
+            $thumb = apply_filters( 'wpuf_no_image', WPUF_ASSET_URI . '/images/no-image.png' );
+        }
+
         return [
             'id'             => (int) $post->ID,
             'title'          => (string) get_the_title( $post ),
@@ -493,7 +574,7 @@ class Account_Service {
             'date'           => (string) $post->post_date,
             'date_gmt'       => (string) $post->post_date_gmt,
             'permalink'      => $viewable ? (string) get_permalink( $post ) : '',
-            'preview_url'    => $viewable ? '' : (string) add_query_arg( 'preview', 'true', get_permalink( $post ) ),
+            'preview_url'    => $viewable ? '' : (string) get_preview_post_link( $post ),
             'edit_url'       => $edit_url,
             'can_delete'     => $can_delete,
             'featured'       => in_array( (int) $post->ID, (array) Stores::settings()->wp_option( 'sticky_posts' ), true ),
@@ -517,7 +598,8 @@ class Account_Service {
     }
 
     /**
-     * The status label `wpuf_show_post_status()` prints.
+     * The status label `wpuf_show_post_status()` prints, after its
+     * `wpuf_show_post_status` filter (as text: the app draws the pill).
      *
      * @since WPUF_SINCE
      *
@@ -526,15 +608,14 @@ class Account_Service {
      * @return string
      */
     private function status_label( $status ) {
-        $labels = [
-            'publish' => __( 'Live', 'wp-user-frontend' ),
-            'draft'   => __( 'Offline', 'wp-user-frontend' ),
-            'pending' => __( 'Awaiting Approval', 'wp-user-frontend' ),
-            'future'  => __( 'Scheduled', 'wp-user-frontend' ),
-            'private' => __( 'Private', 'wp-user-frontend' ),
-        ];
+        if ( ! in_array( $status, [ 'publish', 'draft', 'pending', 'future', 'private' ], true ) ) {
+            return $status;
+        }
 
-        return isset( $labels[ $status ] ) ? $labels[ $status ] : $status;
+        ob_start();
+        wpuf_show_post_status( $status );
+
+        return trim( wp_strip_all_tags( (string) ob_get_clean() ) );
     }
 
     /**

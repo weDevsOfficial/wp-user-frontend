@@ -115,8 +115,12 @@ export default function PostForm( { schema: boot, root } ) {
             form.setErrors( ( current ) => ( { ...current, ...e.data.errors } ) );
         }
 
-        if ( window.grecaptcha && 'function' === typeof window.grecaptcha.reset && root.querySelector( '.g-recaptcha' ) ) {
-            window.grecaptcha.reset();
+        // The captcha token was used: each captcha field resets itself (the invisible
+        // reCAPTCHA asks for a new token, the checkbox needs solving again).
+        const formEl = root.querySelector( 'form.wpuf-form-add' );
+
+        if ( formEl ) {
+            formEl.dispatchEvent( new window.CustomEvent( 'wpuf:captcha:reset' ) );
         }
 
         alertDialog( { html: e.message || __( 'Something went wrong', 'wp-user-frontend' ) } );

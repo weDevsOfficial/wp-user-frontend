@@ -95,7 +95,9 @@ class Frontend_Account {
         extract( shortcode_atts( [], $atts ) );
 
         // [wpuf_editprofile] shares this handler and stays classic; the account shortcode may mount the React app.
-        if ( 'wpuf_account' === $tag && is_user_logged_in() && $this->renderer()->mounts( 'account' ) ) {
+        // A site filtering the classic template's arguments (`wpuf_account_template_args`)
+        // keeps the classic account, where that filter applies.
+        if ( 'wpuf_account' === $tag && is_user_logged_in() && $this->renderer()->mounts( 'account' ) && ! has_filter( 'wpuf_account_template_args' ) ) {
             return $this->mount_account();
         }
 
@@ -415,12 +417,16 @@ class Frontend_Account {
                 'default_tab' => $account->default_tab(),
                 'per_page'    => (int) wpuf_get_option( 'per_page', 'wpuf_dashboard', 5 ),
                 'post_types'  => $account->allowed_post_types(),
+                'quick_links' => $account->quick_links(),
             ],
             'nonces'   => [
                 'profile'  => wp_create_nonce( 'wpuf-account-update-profile' ),
                 'password' => wp_create_nonce( 'wpuf-account-change-password' ),
             ],
         ];
+
+        // WordPress' strength meter for the React password fields (the classic Change Password had it).
+        wp_enqueue_script( 'password-strength-meter' );
 
         foreach ( $sections as $section ) {
             if ( 'html' === $section['kind'] ) {

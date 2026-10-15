@@ -218,7 +218,8 @@ class FrontendServiceProvider extends ServiceProvider {
         $this->share_tagged(
             AuthController::class,
             function ( $container ) {
-                return new AuthController( new \WeDevs\Wpuf\Widgets\Login_Widget(), $container->get( Rate_Limit::class ) );
+                // The shared widget (HANDLERS), not a second instance registering its hooks again.
+                return new AuthController( $container->get( \WeDevs\Wpuf\Widgets\Login_Widget::class ), $container->get( Rate_Limit::class ) );
             }
         );
         $this->share_tagged(

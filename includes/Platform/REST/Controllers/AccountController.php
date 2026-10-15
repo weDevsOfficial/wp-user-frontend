@@ -205,6 +205,7 @@ class AccountController extends RestController {
                     'default_tab' => $this->account->default_tab(),
                     'per_page'    => (int) Stores::settings()->get( 'wpuf_dashboard', 'per_page', 5 ),
                     'post_types'  => $this->account->allowed_post_types(),
+                    'quick_links' => $this->account->quick_links(),
                 ],
                 'nonces'   => [
                     'profile'  => wp_create_nonce( 'wpuf-account-update-profile' ),

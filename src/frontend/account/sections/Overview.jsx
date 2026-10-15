@@ -13,7 +13,7 @@ const { Activity, AtSign, BadgeCheck, BadgeDollarSign, CalendarClock, CalendarDa
 
 const TONES = [ 'gray', 'green', 'violet', 'amber', 'blue' ];
 
-export default function Overview( { profile, stats, sections, go, pageUrl } ) {
+export default function Overview( { profile, stats, sections, quickLinks, go, pageUrl } ) {
     const subscription = stats.find( ( stat ) => 'subscription' === stat.kind );
     const billing = stats.find( ( stat ) => 'billing' === stat.kind );
     const strip = stats.filter( ( stat ) => 'billing' !== stat.kind );
@@ -60,10 +60,24 @@ export default function Overview( { profile, stats, sections, go, pageUrl } ) {
     };
 
     const since = profile.registered ? new Date( profile.registered.replace( ' ', 'T' ) + 'Z' ).toLocaleDateString( undefined, { year: 'numeric', month: 'long', day: 'numeric' } ) : '';
-    const links = sections.filter( ( section ) => 'dashboard' !== section.slug );
+    // The classic quick links (after `wpuf_my_account_tab_links`), else the sections.
+    const links = Array.isArray( quickLinks ) ? quickLinks : sections.filter( ( section ) => 'dashboard' !== section.slug );
 
     return (
         <div className="wpuf-overview">
+            { /* The classic dashboard's greeting. */ }
+            <p className="wpuf-overview__greeting">
+                { __( 'Hello', 'wp-user-frontend' ) } <strong>{ profile.display_name }</strong>
+                { profile.logout_url && (
+                    <>
+                        { ' (' }
+                        { /* translators: %s: display name */ }
+                        { sprintf( __( 'not %s?', 'wp-user-frontend' ), profile.display_name ) }{ ' ' }
+                        <a href={ profile.logout_url }>{ __( 'Sign out', 'wp-user-frontend' ) }</a>
+                        { ')' }
+                    </>
+                ) }
+            </p>
             { strip.length > 0 && (
                 <div className="wpuf-overview__stats">
                     { strip.map( ( stat, index ) => (
@@ -119,7 +133,18 @@ export default function Overview( { profile, stats, sections, go, pageUrl } ) {
                     { __( 'From your account dashboard you can view your dashboard, manage your', 'wp-user-frontend' ) }{ ' ' }
                     { links.map( ( section, index ) => (
                         <span key={ section.slug }>
-                            <a href={ section.url || `${ pageUrl }?section=${ section.slug }` } onClick={ ( event ) => { event.preventDefault(); go( section.slug ); } }>{ section.label }</a>
+                            <a
+                                href={ section.url || pageUrl }
+                                onClick={ ( event ) => {
+                                    // A link to a section of this page switches in place; any other link loads.
+                                    if ( sections.some( ( item ) => item.slug === section.slug ) ) {
+                                        event.preventDefault();
+                                        go( section.slug );
+                                    }
+                                } }
+                            >
+                                { section.label }
+                            </a>
                             { index < links.length - 1 ? ', ' : '' }
                         </span>
                     ) ) }

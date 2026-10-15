@@ -40,7 +40,7 @@ export default function Plans( { data } ) {
                         </li>
                     ) ) }
                 </ul>
-            ) : (
+            ) : data.pay ? null : (
                 <p className="wpuf-muted wpuf-plans__empty">{ __( 'No subscription packs are available right now.', 'wp-user-frontend' ) }</p>
             ) }
 

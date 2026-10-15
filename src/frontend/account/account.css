@@ -394,6 +394,21 @@
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
+.wpuf-frontend .wpuf-overview__greeting {
+    margin: 0;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-overview__greeting strong {
+    color: var(--wpuf-fe-text);
+    font-weight: 600;
+}
+
+.wpuf-frontend .wpuf-overview__greeting a {
+    color: var(--wpuf-fe-text);
+    text-decoration: underline;
+}
+
 .wpuf-frontend .wpuf-overview__links {
     margin: 0;
     color: var(--wpuf-fe-muted);
@@ -1187,4 +1202,52 @@
 /* Subscription section: header, then the card. */
 .wpuf-frontend .wpuf-account-subscription .wpuf-section-head {
     margin-bottom: 16px;
+}
+
+/* Password strength (WordPress' meter): a bar and the word under the new password. */
+.wpuf-frontend .wpuf-password-strength {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: -4px 0 16px;
+    font-size: 13px;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-password-strength__bar {
+    position: relative;
+    flex: 0 0 160px;
+    height: 6px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--wpuf-fe-border);
+}
+
+.wpuf-frontend .wpuf-password-strength__bar > span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 25%;
+    border-radius: inherit;
+    background: #dc2626;
+    transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+.wpuf-frontend .wpuf-password-strength.is-bad .wpuf-password-strength__bar > span {
+    width: 50%;
+    background: #f97316;
+}
+
+.wpuf-frontend .wpuf-password-strength.is-good .wpuf-password-strength__bar > span {
+    width: 75%;
+    background: #eab308;
+}
+
+.wpuf-frontend .wpuf-password-strength.is-strong .wpuf-password-strength__bar > span {
+    width: 100%;
+    background: #16a34a;
+}
+
+.wpuf-frontend .wpuf-password-strength.is-mismatch .wpuf-password-strength__bar > span {
+    width: 100%;
+    background: #9ca3af;
 }

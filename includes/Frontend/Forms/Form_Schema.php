@@ -708,6 +708,13 @@ class Form_Schema implements Form_Schema_Provider {
             return $closed( 'published', __( "You're not allowed to edit this post.", 'wp-user-frontend' ) );
         }
 
+        // The form's role rule, as the classic render_form() checked it on the edit page too.
+        $form = $this->form_settings;
+
+        if ( ! empty( $form['post_permission'] ) && 'role_base' === $form['post_permission'] && ! empty( $form['roles'] ) && ! wpuf_user_has_roles( $form['roles'] ) ) {
+            return $closed( 'role', __( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ) );
+        }
+
         // The schedule lock applies to edits too; the entry limit does not (classic skips it on edit pages).
         $settings = $this->form_settings;
         unset( $settings['limit_entries'] );

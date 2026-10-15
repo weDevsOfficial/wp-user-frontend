@@ -22,6 +22,24 @@ const TONE = {
 };
 
 /**
+ * A page link of the table that also works with plain permalinks
+ * (`?page_id=12` already in the account page URL).
+ *
+ * @param {string} pageUrl Account page URL.
+ * @param {string} type    Post type (section).
+ * @param {number} n       Page number.
+ * @return {string} URL.
+ */
+const pageHref = ( pageUrl, type, n ) => {
+    const url = new URL( pageUrl, window.location.href );
+
+    url.searchParams.set( 'section', type );
+    url.searchParams.set( 'pagenum', String( n ) );
+
+    return url.toString();
+};
+
+/**
  * @param {Object} props
  * @param {string} props.type    Post type.
  * @param {string} props.label   Section label.
@@ -97,7 +115,10 @@ export default function Posts( { type, label, pageUrl } ) {
                 { state.loading && ! data ? (
                     <SkeletonRows rows={ 5 } cols={ 4 } />
                 ) : ! data || ! data.items.length ? (
-                    <p className="wpuf-muted wpuf-empty">{ __( 'No posts found', 'wp-user-frontend' ) }</p>
+                    <p className="wpuf-muted wpuf-empty">
+                        { /* translators: %s: post type label */ }
+                        { sprintf( __( 'No %s found', 'wp-user-frontend' ), data?.post_type?.label || label ) }
+                    </p>
                 ) : (
                     <div className="wpuf-table-wrap" aria-busy={ state.loading || undefined }>
                         <table className={ `items-table ${ type } wpuf-table` }>
@@ -116,7 +137,10 @@ export default function Posts( { type, label, pageUrl } ) {
                                     <tr key={ post.id }>
                                         { columns.thumbnail && (
                                             <td data-label={ __( 'Featured Image', 'wp-user-frontend' ) }>
-                                                { post.thumbnail ? <img className="wpuf-table__thumb" src={ post.thumbnail } alt="" /> : <span className="wpuf-table__thumb wpuf-table__thumb--empty" /> }
+                                                { /* Linked to the post like the classic table's picture. */ }
+                                                { post.thumbnail && post.permalink ? (
+                                                    <a href={ post.permalink } tabIndex={ -1 } aria-hidden="true"><img className="wpuf-table__thumb" src={ post.thumbnail } alt="" /></a>
+                                                ) : post.thumbnail ? <img className="wpuf-table__thumb" src={ post.thumbnail } alt="" /> : <span className="wpuf-table__thumb wpuf-table__thumb--empty" /> }
                                             </td>
                                         ) }
                                         <td data-label={ __( 'Title', 'wp-user-frontend' ) } className="wpuf-table__title">
@@ -129,10 +153,15 @@ export default function Posts( { type, label, pageUrl } ) {
                                         <td data-label={ __( 'Date', 'wp-user-frontend' ) }>{ post.date.slice( 0, 10 ) }</td>
                                         { columns.payment && (
                                             <td data-label={ __( 'Payment', 'wp-user-frontend' ) }>
-                                                { ! post.payment_status ? '' : post.pay_url ? (
+                                                { /* The classic column: no payment -> Not Applicable, unpaid -> Pay Now, paid -> Completed. */ }
+                                                { ! post.payment_status ? (
+                                                    <span className="wpuf-muted">{ __( 'Not Applicable', 'wp-user-frontend' ) }</span>
+                                                ) : 'completed' === post.payment_status ? (
+                                                    <Pill tone="green">{ __( 'Completed', 'wp-user-frontend' ) }</Pill>
+                                                ) : post.pay_url ? (
                                                     <Button variant="secondary" size="sm" href={ post.pay_url }>{ __( 'Pay Now', 'wp-user-frontend' ) }</Button>
                                                 ) : (
-                                                    <Pill tone="green">{ __( 'Completed', 'wp-user-frontend' ) }</Pill>
+                                                    <Pill tone="amber">{ __( 'Pending', 'wp-user-frontend' ) }</Pill>
                                                 ) }
                                             </td>
                                         ) }
@@ -164,7 +193,7 @@ export default function Posts( { type, label, pageUrl } ) {
                         </table>
                     </div>
                 ) }
-                { data && <Pagination page={ data.page } pages={ data.pages } onChange={ changePage } hrefFor={ ( n ) => `${ pageUrl }?section=${ type }&pagenum=${ n }` } /> }
+                { data && <Pagination page={ data.page } pages={ data.pages } onChange={ changePage } hrefFor={ ( n ) => pageHref( pageUrl, type, n ) } /> }
             </Card>
         </div>
     );

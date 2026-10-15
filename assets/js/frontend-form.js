@@ -30,7 +30,9 @@
             form.on('click', 'img.wpuf-remove-repeat-field', this.removeRepeatField);
             form.on('click', 'a.wpuf-delete-avatar', this.deleteAvatar);
             form.on('click', 'a#wpuf-post-draft', this.draftPost);
-            form.on('click', 'button#wpuf-account-update-profile', this.account_update_profile);
+            // Delegated from the document: the React account page inserts the classic
+            // Edit Profile section after this runs.
+            $(document).off('click.wpufAccountProfile').on('click.wpufAccountProfile', '.wpuf-form button#wpuf-account-update-profile', this.account_update_profile);
 
             $('.wpuf-form-add').on('submit', this.formSubmit);
             $('form#post').on('submit', this.adminPostSubmit);

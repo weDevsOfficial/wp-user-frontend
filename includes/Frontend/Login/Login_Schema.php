@@ -188,8 +188,11 @@ class Login_Schema {
 
             wp_enqueue_script( 'wpuf-turnstile' );
 
+            // The app inserts this after the page loaded, so Turnstile's script may
+            // already be there (its onload fired before the callback existed):
+            // render now in that case, else when it loads. Once per element.
             $captcha .= sprintf(
-                '<div id="wpuf-turnstile" class="wpuf-turnstile" data-sitekey="%1$s" data-callback="javascriptCallback"></div><script>window.onloadTurnstileCallback = function () { turnstile.render("#wpuf-turnstile", { sitekey: "%2$s" }); };</script>',
+                '<div id="wpuf-turnstile" class="wpuf-turnstile" data-sitekey="%1$s" data-callback="javascriptCallback"></div><script>(function () { var draw = function () { var el = document.getElementById("wpuf-turnstile"); if ( window.turnstile && el && ! el.dataset.rendered ) { el.dataset.rendered = "1"; window.turnstile.render( el, { sitekey: "%2$s" } ); } }; if ( window.turnstile && window.turnstile.render ) { draw(); } else { window.onloadTurnstileCallback = draw; } })();</script>',
                 esc_attr( $site_key ),
                 esc_js( $site_key )
             );

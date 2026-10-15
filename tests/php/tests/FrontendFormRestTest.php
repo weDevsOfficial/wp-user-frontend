@@ -286,6 +286,22 @@ class FrontendFormRestTest extends WP_UnitTestCase {
         $this->assertSame( 403, $this->request( 'GET', '/wpuf/v1/forms/' . $form . '/schema', [ 'post_id' => $post_id ] )->get_status() );
     }
 
+    public function test_edit_schema_closes_for_a_role_the_form_does_not_allow() {
+        $owner = self::factory()->user->create( [ 'role' => 'subscriber' ] );
+        $form  = $this->form();
+
+        wp_set_current_user( $owner );
+        $created = $this->request( 'POST', '/wpuf/v1/forms/' . $form . '/submissions', $this->submission( $form ) )->get_data();
+        $post_id = (int) url_to_postid( $created['redirect_to'] );
+
+        update_post_meta( $form, 'wpuf_form_settings', array_merge( (array) wpuf_get_form_settings( $form ), [ 'post_permission' => 'role_base', 'roles' => [ 'editor' ] ] ) );
+
+        $data = $this->request( 'GET', '/wpuf/v1/forms/' . $form . '/schema', [ 'post_id' => $post_id ] )->get_data();
+
+        $this->assertFalse( $data['state']['open'], 'classic render_form() refused the edit page for this role too' );
+        $this->assertSame( 'role', $data['state']['reason'] );
+    }
+
     public function test_the_legacy_ajax_payload_shape_is_unchanged_for_a_guest_email_error() {
         // The two hard exits of wpuf_get_post_user() now go through Ajax_Abort; outside a collect they still answer the client.
         $this->assertFalse( \WeDevs\Wpuf\Platform\Http\Ajax_Abort::collecting() );

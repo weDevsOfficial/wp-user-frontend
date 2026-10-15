@@ -378,7 +378,7 @@ class Post_Form_Handler {
         }
 
         // The browser's checks (required, e-mail, URL, number) again on the server.
-        $error = ( new \WeDevs\Wpuf\Frontend\Forms\Submission_Validator() )->validate( $this->form_fields, wp_unslash( $_POST ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce checked above; values only compared, never stored.
+        $error = ( new \WeDevs\Wpuf\Frontend\Forms\Submission_Validator() )->validate( $this->form_fields, wp_unslash( $_POST ), $form_id ); // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce checked above; values only compared, never stored.
 
         if ( '' !== $error ) {
             wpuf()->ajax->send_error( $error );

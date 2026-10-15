@@ -79,4 +79,28 @@ class SubmissionValidatorTest extends WP_UnitTestCase {
         ];
         $this->assertSame( 'Inner text is required.', $validator->validate( [ $column ], [] ) );
     }
+
+    public function test_fields_hidden_by_visibility_are_not_required() {
+        $validator = new Submission_Validator();
+        $members   = $this->field( 'members_note', 'text_field', [ 'css' => '', 'wpuf_visibility' => [ 'selected' => 'logged_in', 'choices' => [] ] ] );
+
+        wp_set_current_user( 0 );
+        $this->assertSame( '', $validator->validate( [ $members ], [] ), 'a visitor never saw the logged-in-only field' );
+
+        wp_set_current_user( self::factory()->user->create() );
+        $this->assertSame( 'Members note is required.', $validator->validate( [ $members ], [] ) );
+    }
+
+    public function test_render_fields_filter_shapes_the_checked_list() {
+        $validator = new Submission_Validator();
+        $drop      = function ( $fields ) {
+            return array_values( array_filter( $fields, function ( $field ) { return 'extra' !== $field['name']; } ) );
+        };
+
+        add_filter( 'wpuf_render_fields', $drop );
+        $error = $validator->validate( [ $this->field( 'extra', 'text_field' ) ], [], 123 );
+        remove_filter( 'wpuf_render_fields', $drop );
+
+        $this->assertSame( '', $error, 'a field the filter removed from the form is not required' );
+    }
 }

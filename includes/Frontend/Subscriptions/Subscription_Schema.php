@@ -78,6 +78,22 @@ class Subscription_Schema {
         $details_meta = $subscription->get_details_meta_value();
         $user_id      = get_current_user_id();
         $current_pack = Subscription::get_user_pack( $user_id );
+
+        /** This filter is documented in includes/Admin/Subscription.php (the classic list's template args). */
+        $listing      = (array) apply_filters(
+            'wpuf_subscription_listing_args',
+            [
+                'subscription' => $subscription,
+                'args'         => $args,
+                'packs'        => $packs,
+                'pack_order'   => '',
+                'details_meta' => $details_meta,
+                'current_pack' => $current_pack,
+            ]
+        );
+        $packs        = isset( $listing['packs'] ) ? (array) $listing['packs'] : $packs;
+        $details_meta = isset( $listing['details_meta'] ) ? $listing['details_meta'] : $details_meta;
+        $current_pack = isset( $listing['current_pack'] ) ? $listing['current_pack'] : $current_pack;
         $current_id   = isset( $current_pack['pack_id'] ) ? (int) $current_pack['pack_id'] : 0;
 
         // `include` keeps its own order, as the classic list.
@@ -106,6 +122,8 @@ class Subscription_Schema {
             'id'      => 0,
             'view'    => 'packs',
             'cards'   => $cards,
+            // The pay page lists no cards (and so no "no packs" line either).
+            'pay'     => 'wpuf_pay' === $action,
             'notices' => $this->list_notices( $action ),
             'active'  => $this->active_pack( $current_pack, $user_id ),
             'color'   => $button_color ? $button_color : '',
@@ -160,6 +178,21 @@ class Subscription_Schema {
     }
 
     /**
+     * A pack title as plain text for the app (React escapes it): tags
+     * stripped, entities decoded (`&amp;` from get_the_title() or the editor
+     * would show as written).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $value Title
+     *
+     * @return string
+     */
+    private static function text( $value ) {
+        return html_entity_decode( wp_strip_all_tags( (string) $value ), ENT_QUOTES, get_bloginfo( 'charset' ) );
+    }
+
+    /**
      * One card from Pack_Display::pack_view_data().
      *
      * @param array $view View data (after wpuf_subscription_pack_details_args)
@@ -175,7 +208,7 @@ class Subscription_Schema {
 
         return [
             'id'          => (int) $pack->ID,
-            'title'       => wp_strip_all_tags( (string) $pack->post_title ),
+            'title'       => self::text( (string) $pack->post_title ),
             'description' => wp_kses_post( wpautop( (string) $pack->post_content ) ),
             'featured'    => ! empty( $pack->featured ),
             'free'        => $free,
@@ -187,7 +220,8 @@ class Subscription_Schema {
             'url'         => $url ? esc_url_raw( add_query_arg( $args, $url ) ) : '',
             // The classic card disables every button while the user has a completed pack.
             'disabled'    => isset( $view['current_pack_status'] ) && 'completed' === $view['current_pack_status'],
-            'current'     => ! empty( $view['current_pack_id'] ) && (int) $view['current_pack_id'] === (int) $pack->ID,
+            // Only an active (paid) pack is the current one, not a pending order.
+            'current'     => ! empty( $view['current_pack_id'] ) && (int) $view['current_pack_id'] === (int) $pack->ID && isset( $view['current_pack_status'] ) && 'completed' === $view['current_pack_status'],
             'features'    => array_values( array_map( 'strval', wpuf_subscription_pack_features( $pack ) ) ),
         ];
     }
@@ -238,7 +272,7 @@ class Subscription_Schema {
 
         return [
             'pack_id' => (int) $current_pack['pack_id'],
-            'title'   => wp_strip_all_tags( get_the_title( (int) $current_pack['pack_id'] ) ),
+            'title'   => self::text( get_the_title( (int) $current_pack['pack_id'] ) ),
             'cancel'  => $this->cancel_fields( $user_id ),
         ];
     }
@@ -303,7 +337,7 @@ class Subscription_Schema {
             'state'     => is_wp_error( $user_sub ) ? 'expired' : 'active',
             'pack'      => [
                 'id'    => $pack_id,
-                'title' => wp_strip_all_tags( (string) $pack->post_title ),
+                'title' => self::text( (string) $pack->post_title ),
             ],
             'price'     => $amount > 0 ? wpuf_format_price( $amount ) : __( 'Free', 'wp-user-frontend' ),
             'cycle'     => '',
@@ -369,7 +403,7 @@ class Subscription_Schema {
             if ( is_array( $data ) && isset( $data['type'] ) && 'pack' === $data['type'] && ! empty( $data['item_number'] ) ) {
                 return [
                     'id'    => (int) $data['item_number'],
-                    'title' => wp_strip_all_tags( get_the_title( (int) $data['item_number'] ) ),
+                    'title' => self::text( get_the_title( (int) $data['item_number'] ) ),
                 ];
             }
         }

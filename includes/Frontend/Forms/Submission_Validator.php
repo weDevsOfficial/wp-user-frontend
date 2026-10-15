@@ -59,13 +59,24 @@ class Submission_Validator {
      *
      * @since WPUF_SINCE
      *
-     * @param array $fields Form fields (settings arrays, as Form::get_fields())
-     * @param array $posted The posted values (unslashed)
+     * @param array $fields  Form fields (settings arrays, as Form::get_fields())
+     * @param array $posted  The posted values (unslashed)
+     * @param int   $form_id Form id: the fields go through `wpuf_render_fields` as on screen
      *
      * @return string Error message
      */
-    public function validate( array $fields, array $posted ) {
+    public function validate( array $fields, array $posted, $form_id = 0 ) {
+        if ( $form_id ) {
+            /** This filter is documented in includes/Admin/Forms/Field_Manager.php */
+            $fields = (array) apply_filters( 'wpuf_render_fields', $fields, $form_id );
+        }
+
         foreach ( $this->flatten( $fields ) as $field ) {
+            // A field the visitor was not shown (field visibility) cannot be filled in.
+            if ( ! $this->is_shown( $field ) ) {
+                continue;
+            }
+
             $error = $this->check_field( $field, $posted );
 
             if ( '' !== $error ) {
@@ -219,6 +230,20 @@ class Submission_Validator {
         $value = trim( wp_strip_all_tags( (string) $value ) );
 
         return '' === $value || '-1' === $value;
+    }
+
+    /**
+     * Whether the form showed the field to this visitor (Field_Manager's
+     * visibility rules: everyone, logged in roles, subscribers).
+     *
+     * @param array $field Field settings
+     *
+     * @return bool
+     */
+    private function is_shown( array $field ) {
+        $manager = function_exists( 'wpuf' ) ? wpuf()->fields : null;
+
+        return ! is_object( $manager ) || ! method_exists( $manager, 'check_field_visibility' ) || $manager->check_field_visibility( $field );
     }
 
     /**

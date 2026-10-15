@@ -290,5 +290,14 @@ class RegistrationRestTest extends WP_UnitTestCase {
         $this->assertFalse( $this->request( 'GET', '/wpuf/v1/registration/username-check', [ 'value' => $taken->user_email ] )->get_data()['available'] );
         $this->assertTrue( $this->request( 'GET', '/wpuf/v1/registration/username-check', [ 'value' => 'freshuser' ] )->get_data()['available'] );
         $this->assertSame( [ 'available' => true ], $this->request( 'GET', '/wpuf/v1/registration/username-check', [ 'value' => 'fresh@example.com' ] )->get_data() );
+
+        wp_set_current_user( $taken->ID );
+        $this->assertSame( 400, $this->request( 'GET', '/wpuf/v1/registration/username-check', [ 'value' => 'freshuser' ] )->get_status(), 'visitors only' );
+        wp_set_current_user( 0 );
+
+        add_filter( 'wpuf_rate_limit', function () { return 1; } );
+        $this->request( 'GET', '/wpuf/v1/registration/username-check', [ 'value' => 'one' ] );
+        $this->assertSame( 429, $this->request( 'GET', '/wpuf/v1/registration/username-check', [ 'value' => 'two' ] )->get_status(), 'rate limited' );
+        remove_all_filters( 'wpuf_rate_limit' );
     }
 }

@@ -35,6 +35,8 @@ class SubscriptionSchemaTest extends WP_UnitTestCase {
     public function tear_down() {
         remove_all_filters( 'wpuf_subscription_pack_details_args' );
         remove_all_filters( 'wpuf_subscription_packs' );
+        remove_all_filters( 'wpuf_subscription_listing_args' );
+        unset( $_GET['action'] );
         parent::tear_down();
     }
 
@@ -123,5 +125,37 @@ class SubscriptionSchemaTest extends WP_UnitTestCase {
 
         $this->assertSame( 200, $response->get_status() );
         $this->assertSame( 'none', $response->get_data()['state'] );
+    }
+
+    public function test_title_entities_decoded_listing_args_filter_and_pay_page() {
+        wp_update_post( [ 'ID' => $this->pack, 'post_title' => 'Gold & Silver' ] );
+
+        $this->assertSame( 'Gold & Silver', $this->card( $this->schema()->packs() )['title'], 'no &amp; in the app text' );
+
+        add_filter(
+            'wpuf_subscription_listing_args', function ( $args ) {
+                $args['packs'] = [];
+
+                return $args;
+            }
+        );
+        $this->assertSame( [], $this->schema()->packs()['cards'], 'the classic list filter still shapes the packs' );
+        remove_all_filters( 'wpuf_subscription_listing_args' );
+
+        $_GET['action'] = 'wpuf_pay';
+        $data           = $this->schema()->packs();
+        $this->assertTrue( $data['pay'] );
+        $this->assertSame( [], $data['cards'] );
+    }
+
+    public function test_current_pill_only_for_a_paid_pack() {
+        $user = self::factory()->user->create();
+
+        wp_set_current_user( $user );
+        update_user_meta( $user, '_wpuf_subscription_pack', [ 'pack_id' => $this->pack, 'status' => 'pending', 'expire' => '' ] );
+        $this->assertFalse( $this->card( $this->schema()->packs() )['current'], 'a pending order is not the current plan' );
+
+        update_user_meta( $user, '_wpuf_subscription_pack', [ 'pack_id' => $this->pack, 'status' => 'completed', 'expire' => '' ] );
+        $this->assertTrue( $this->card( $this->schema()->packs() )['current'] );
     }
 }

@@ -1,7 +1,7 @@
 import { useState, useCallback } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import { Save } from 'lucide-react';
+import { ChevronDown, Save } from 'lucide-react';
 import { STORE_NAME } from '../../store';
 import useFormSave from '../../hooks/useFormSave';
 import LegacySlot, { getLegacySlots } from '../../common/LegacySlot';
@@ -123,7 +123,7 @@ export default function Header( { activeTab, onTabChange } ) {
                                             onClick={ () => setIsDropdownOpen( ! isDropdownOpen ) }
                                             onBlur={ () => setTimeout( () => setIsDropdownOpen( false ), 150 ) }
                                         >
-                                            <i className={ `font-bold! text-base! leading-none! text-gray-500 ${ isDropdownOpen ? 'fa fa-angle-up' : 'fa fa-angle-down' }` } />
+                                            <ChevronDown className={ `size-4 text-gray-500 transition-transform ${ isDropdownOpen ? 'rotate-180' : '' }` } aria-hidden="true" />
                                         </button>
                                         { isDropdownOpen && (
                                             <ul className="absolute z-10 w-52 bg-white rounded-md shadow-sm mt-1 p-0 list-none">

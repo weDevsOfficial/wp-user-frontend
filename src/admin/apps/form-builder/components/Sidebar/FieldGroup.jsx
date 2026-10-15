@@ -1,4 +1,5 @@
 import { useDispatch } from '@wordpress/data';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 import { STORE_NAME } from '../../store';
 
 export default function FieldGroup( { section, index, children } ) {
@@ -18,7 +19,9 @@ export default function FieldGroup( { section, index, children } ) {
                 onKeyDown={ ( e ) => e.key === 'Enter' && togglePanelSection( index ) }
             >
                 { section.title }
-                <i className={ `text-base leading-none ${ section.show ? 'fa fa-angle-down text-gray-500' : 'fa fa-angle-right text-gray-400' }` } />
+                { section.show
+                    ? <ChevronDown className="size-4 shrink-0 text-gray-500" aria-hidden="true" />
+                    : <ChevronRight className="size-4 shrink-0 text-gray-400" aria-hidden="true" /> }
             </h3>
             { section.show && (
                 <div

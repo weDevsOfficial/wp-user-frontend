@@ -8,6 +8,7 @@
  */
 import { cn } from '@wedevs/plugin-ui';
 import { useId, useState } from '@wordpress/element';
+import { ChevronDown } from 'lucide-react';
 
 /**
  * @param {Object}   props
@@ -50,9 +51,7 @@ export default function Accordion( { title, description, icon, badge, defaultOpe
                                 { description && <span className="mt-0.5 text-[13px] font-normal text-gray-500">{ description }</span> }
                             </span>
                         </span>
-                        <svg className={ cn( 'w-3 h-3 shrink-0 text-gray-400', open ? 'rotate-180' : 'rotate-90' ) } aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5 5 1 1 5" />
-                        </svg>
+                        <ChevronDown className={ cn( 'size-4 shrink-0 text-gray-400 transition-transform', ! open && '-rotate-90' ) } aria-hidden="true" />
                     </button>
                 </h2>
                 { open && <div id={ panelId }>{ children }</div> }
@@ -77,9 +76,7 @@ export default function Accordion( { title, description, icon, badge, defaultOpe
                     </span>
                     { description && <span className="mt-0.5 block text-[13px] text-gray-500">{ description }</span> }
                 </span>
-                <svg className={ cn( 'size-5 shrink-0 text-gray-400 transition-transform', open && 'rotate-180' ) } viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
-                </svg>
+                <ChevronDown className={ cn( 'size-5 shrink-0 text-gray-400 transition-transform', open && 'rotate-180' ) } aria-hidden="true" />
             </button>
             { open && <div id={ panelId } className="pb-4">{ children }</div> }
         </div>

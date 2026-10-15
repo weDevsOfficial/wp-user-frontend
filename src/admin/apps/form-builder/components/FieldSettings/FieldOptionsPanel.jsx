@@ -1,7 +1,7 @@
 import { useState, useMemo } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import { MousePointerClick } from 'lucide-react';
+import { ChevronDown, ChevronRight, MousePointerClick } from 'lucide-react';
 import { STORE_NAME } from '../../store';
 import { filterFieldSettings } from '../../extensions/hooks';
 import SettingInput from './SettingInput';
@@ -25,7 +25,9 @@ function SettingSection( { title, settings, field, defaultOpen, isBasic = false 
                 onKeyDown={ ( e ) => e.key === 'Enter' && setIsOpen( ! isOpen ) }
             >
                 { title }
-                <i className={ isOpen ? 'fa fa-angle-down text-primary' : 'fa fa-angle-right text-gray-500' } />
+                { isOpen
+                    ? <ChevronDown className="size-4 shrink-0 text-primary" aria-hidden="true" />
+                    : <ChevronRight className="size-4 shrink-0 text-gray-500" aria-hidden="true" /> }
             </h3>
             { /* Hidden, not unmounted, when closed (develop's v-show): inputs keep their state. */ }
             <div className="option-field-section-fields" style={ isOpen ? undefined : { display: 'none' } }>

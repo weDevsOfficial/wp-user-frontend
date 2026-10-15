@@ -8,8 +8,22 @@
                 }
                 ?>
                 <th><?php esc_html_e( 'Title', 'wp-user-frontend' ); ?></th>
+
+                <?php if ( isset( $category ) && 'on' === $category ) { ?>
+                    <th><?php esc_html_e( 'Category', 'wp-user-frontend' ); ?></th>
+                <?php } ?>
+
+                <?php foreach ( ( isset( $meta_columns ) ? (array) $meta_columns : [] ) as $meta_label ) { ?>
+                    <th><?php echo esc_html( $meta_label ); ?></th>
+                <?php } ?>
+
+                <?php if ( isset( $excerpt ) && 'on' === $excerpt ) { ?>
+                    <th><?php esc_html_e( 'Excerpt', 'wp-user-frontend' ); ?></th>
+                <?php } ?>
+
                 <th><?php esc_html_e( 'Status', 'wp-user-frontend' ); ?></th>
 
+                <?php do_action( 'wpuf_dashboard_head_col', $args ); ?>
                 <?php do_action( 'wpuf_account_posts_head_col', $args ); ?>
 
                 <?php if ( 'on' === $enable_payment && 'off' !== $payment_column ) { ?>
@@ -70,14 +84,53 @@
                         </span>
                     <?php } ?>
                 </td>
+                <?php if ( isset( $category ) && 'on' === $category ) { ?>
+                    <td data-label="<?php esc_attr_e( 'Category: ', 'wp-user-frontend' ); ?>" class="data-column">
+                        <?php
+                        $post_tax_terms = [];
+
+                        foreach ( get_object_taxonomies( get_post_type(), 'objects' ) as $taxonomy_slug => $tax_object ) {
+                            if ( ! $tax_object->hierarchical ) {
+                                continue;
+                            }
+
+                            foreach ( (array) get_the_terms( $post->ID, $taxonomy_slug ) as $tax_term ) {
+                                if ( $tax_term instanceof WP_Term ) {
+                                    $post_tax_terms[] = sprintf( '<a href="%1$s">%2$s</a>', esc_url( get_term_link( $tax_term ) ), esc_html( $tax_term->name ) );
+                                }
+                            }
+                        }
+
+                        echo wp_kses_post( apply_filters( 'wpuf_dashboard_post_taxonomy', implode( ', ', $post_tax_terms ) ) );
+                        ?>
+                    </td>
+                <?php } ?>
+
+                <?php foreach ( ( isset( $meta_columns ) ? (array) $meta_columns : [] ) as $meta_name => $meta_label ) { ?>
+                    <td data-label="<?php echo esc_attr( $meta_label . ': ' ); ?>" class="data-column">
+                        <?php
+                        $meta_value = get_post_meta( $post->ID, $meta_name, true );
+
+                        echo esc_html( is_array( $meta_value ) ? implode( ', ', array_filter( array_map( 'strval', $meta_value ) ) ) : (string) $meta_value );
+                        ?>
+                    </td>
+                <?php } ?>
+
+                <?php if ( isset( $excerpt ) && 'on' === $excerpt ) { ?>
+                    <td data-label="<?php esc_attr_e( 'Excerpt: ', 'wp-user-frontend' ); ?>" class="data-column">
+                        <?php the_excerpt(); ?>
+                    </td>
+                <?php } ?>
+
                 <td data-label="<?php esc_attr_e( 'Status: ', 'wp-user-frontend' ); ?>" class="data-column">
                     <?php wpuf_show_post_status( $post->post_status ); ?>
                 </td>
 
                 <?php
+                do_action( 'wpuf_dashboard_row_col', $args, $post );
                 do_action( 'wpuf_account_posts_row_col', $args, $post );
 
-                if ( 'on' === $enable_payment && 'off' != $payment_column ) {
+                if ( 'on' === $enable_payment && 'off' !== $payment_column ) {
                     echo '<td data-label="' . esc_attr( 'Payment: ' ) . '" class="data-column">';
 
                     if ( empty( $payment_status ) ) {

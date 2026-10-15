@@ -624,16 +624,17 @@ class Settings_Preview extends Pro_Prompt {
                 'name'           => 'set_color',
                 'label'          => __( 'Set Invoice Color', 'wp-user-frontend' ),
                 'desc'           => __( 'Set color code to be used in invoice', 'wp-user-frontend' ),
-                'type'           => 'text',
-                'default'        => '#e435226',
+                'type'           => 'color',
+                'default'        => '#e43522',
                 'is_pro_preview' => true,
             ],
             [
                 'name'           => 'set_from_address',
                 'label'          => __( 'From Address', 'wp-user-frontend' ),
-                'desc'           => __(
-                    'This sets the provider information of the Invoice. Note: use the <xmp class="wpuf-xmp-tag"><br></xmp> tag to enter line breaks.',
-                    'wp-user-frontend'
+                'desc'           => sprintf(
+                    /* translators: %s: the <br> tag, shown as code */
+                    __( 'This sets the provider information of the Invoice. Note: use the %s tag to enter line breaks.', 'wp-user-frontend' ),
+                    '<code>&lt;br&gt;</code>'
                 ),
                 'type'           => 'textarea',
                 'is_pro_preview' => true,

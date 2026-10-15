@@ -34,6 +34,10 @@ const CARD_SECTIONS = {
     },
 };
 
+// WPUF's own server-rendered sections (they bring their own look); any other
+// section comes from another plugin and gets the standard frame.
+const OWN_SECTIONS = [ 'dashboard', 'subscription', 'edit-profile', 'change-password', 'billing-address', 'submit-post', 'invoices', 'message' ];
+
 function HtmlSection( { slug, initial, search } ) {
     const preloaded = initial && initial.slug === slug ? initial.html : null;
     const [ state, setState ] = useState( { html: preloaded || '', loading: null === preloaded, error: '' } );
@@ -132,6 +136,15 @@ export default function App( { data, root } ) {
 
     let body;
 
+    /**
+     * A React component for a section (add-ons: e.g. Pro's Invoices), or null
+     * for the built-in render (the PHP section for add-on sections).
+     *
+     * @param {Function|null} component Component
+     * @param {Object}        section   The section (slug, label, kind)
+     */
+    const Custom = section ? applyFilters( 'wpuf.frontend.account.section.component', null, section ) : null;
+
     if ( ! section ) {
         body = <Notice kind="info">{ __( 'There is nothing to show on this page yet.', 'wp-user-frontend' ) }</Notice>;
     } else if ( 'dashboard' === section.slug && 'native' === section.kind ) {
@@ -144,6 +157,8 @@ export default function App( { data, root } ) {
         body = <ChangePassword nonce={ nonces.password } />;
     } else if ( 'subscription' === section.kind ) {
         body = <Subscription />;
+    } else if ( Custom ) {
+        body = <Custom section={ section } pageUrl={ settings.page_url } search={ search } go={ go } />;
     } else {
         const html = <HtmlSection key={ search } slug={ section.slug } search={ search } initial={ search === firstSearch ? data.section_html : null } />;
         const card = CARD_SECTIONS[ section.slug ];
@@ -161,6 +176,21 @@ export default function App( { data, root } ) {
                 </section>
             </div>
         ) : html;
+
+        // Another plugin's section (`wpuf_account_sections` + `wpuf_account_content_{slug}`):
+        // its markup as printed, in the section header and card every section uses.
+        if ( ! card && ! section.post_type && ! OWN_SECTIONS.includes( section.slug ) ) {
+            body = (
+                <div className={ `wpuf-account-form-section wpuf-account-custom-section wpuf-account-custom-section--${ section.slug }` }>
+                    <header className="wpuf-section-head">
+                        <h2 className="wpuf-section-head__title">{ section.label }</h2>
+                    </header>
+                    <section className="wpuf-card wpuf-account-form-card">
+                        <div className="wpuf-card__body">{ html }</div>
+                    </section>
+                </div>
+            );
+        }
     }
 
     return (

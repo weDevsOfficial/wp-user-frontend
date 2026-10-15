@@ -1,13 +1,14 @@
 <div class="wpuf-dashboard-container">
 
     <h2 class="page-head">
-        <span class="colour"><?php printf( 
+        <span class="colour"><?php printf(
             // translators: %s is displayname
-            esc_attr( __( "%s's Dashboard", 'wp-user-frontend' ) ), esc_html( $userdata->display_name )); ?></span>
+            esc_attr( __( "%s's Dashboard", 'wp-user-frontend' ) ), esc_html( $userdata->display_name )
+        ); ?></span>
     </h2>
 
-    <?php if ( wpuf_get_option( 'show_post_count', 'wpuf_dashboard', 'on' ) == 'on' ) { ?>
-        <?php if ( !empty( $post_type_obj ) ) { ?>
+    <?php if ( 'on' === wpuf_get_option( 'show_post_count', 'wpuf_dashboard', 'on' ) ) { ?>
+        <?php if ( ! empty( $post_type_obj ) ) { ?>
             <div class="post_count">
                 <?php
                 $labels = [];
@@ -19,9 +20,10 @@
                 }
 
                 printf(
-                    wp_kses_post( 
+                    wp_kses_post(
                         // translators: %1$s is Post and %2$s is labels
-                        __( 'You have created <span>%1$d</span> (%2$s)', 'wp-user-frontend' ) ),
+                        __( 'You have created <span>%1$d</span> (%2$s)', 'wp-user-frontend' )
+                    ),
                     wp_kses_post( $dashboard_query->found_posts ),
                     wp_kses_post( implode( ', ', $labels ) )
                 );
@@ -31,7 +33,7 @@
     <?php } ?>
 
     <?php
-    if ( !empty( $post_type_obj ) ) {
+    if ( ! empty( $post_type_obj ) ) {
         do_action( 'wpuf_dashboard_top', $userdata->ID, $post_type_obj );
     }
 
@@ -41,8 +43,8 @@
     $meta_key   = [];
     $template_args  = [];
 
-    if ( !empty( $meta ) ) {
-        $arr =  explode( ',', $meta );
+    if ( ! empty( $meta ) ) {
+        $arr = explode( ',', $meta );
 
         foreach ( $arr as $mkey ) {
             $meta_key[] = trim( $mkey );
@@ -57,20 +59,17 @@
 
         $query = new WP_Query( $args );
 
-        foreach ( $query->posts as $post ) {
-            $postdata = get_object_vars( $post );
-            unset( $postdata['ID'] );
-
+        foreach ( $query->posts as $form_post ) {
             $data = [
                 'meta_data' => [
-                    'fields'    => wpuf_get_form_fields( $post->ID ),
+                    'fields'    => wpuf_get_form_fields( $form_post->ID ),
                 ],
             ];
 
             foreach ( $data['meta_data']['fields'] as $fields ) {
                 foreach ( $fields as $key => $field_value ) {
-                    if ( $key == 'is_meta' && $field_value == 'yes' ) {
-                        $meta_label[]= $fields['label'];
+                    if ( 'is_meta' === $key && 'yes' === $field_value ) {
+                        $meta_label[] = $fields['label'];
                         $meta_name[] = $fields['name'];
                         $meta_id[]   = $fields['id'];
                     }
@@ -86,10 +85,10 @@
         $featured_img      = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
         $featured_img_size = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
         $enable_payment    = wpuf_get_option( 'enable_payment', 'wpuf_payment' );
-        $current_user      = wpuf_get_user();
-        $user_subscription = new WeDevs\Wpuf\User_Subscription( $current_user );
+        $dashboard_user    = wpuf_get_user();
+        $user_subscription = new WeDevs\Wpuf\User_Subscription( $dashboard_user );
         $user_sub          = $user_subscription->current_pack();
-        $sub_id            = $current_user->subscription()->current_pack_id();
+        $sub_id            = $dashboard_user->subscription()->current_pack_id();
 
         if ( $sub_id ) {
             $subs_expired = $user_subscription->expired();
@@ -97,56 +96,81 @@
             $subs_expired = false;
         }
 
+        // The shortcode's `featured_image` (on / off) wins over the setting; `default` keeps it.
+        if ( isset( $featured_image ) && in_array( $featured_image, [ 'on', 'off' ], true ) ) {
+            $featured_img = $featured_image;
+        }
+
+        // `meta="key1,key2"`: the custom fields marked as meta in a post form, as
+        // columns in the order asked for, labelled as in the form.
+        $meta_columns = [];
+
+        foreach ( $meta_key as $key ) {
+            $index = array_search( $key, $meta_name, true );
+
+            if ( '' !== $key && false !== $index ) {
+                $meta_columns[ $key ] = $meta_label[ $index ];
+            }
+        }
+
         $template_args['post_type']         = $post_type;
         $template_args['featured_img']      = $featured_img;
+        $template_args['category']          = isset( $category ) ? $category : 'off';
+        $template_args['excerpt']           = isset( $excerpt ) ? $excerpt : 'off';
+        $template_args['meta_columns']      = $meta_columns;
         $template_args['featured_img_size'] = $featured_img_size;
         $template_args['enable_payment']    = $enable_payment;
         $template_args['payment_column']    = $payment_column;
         $template_args['args']              = $args;
         $template_args['dashboard_query']   = $dashboard_query;
         $template_args['subs_expired']      = $subs_expired;
-    ?>
+		?>
 
-    <?php wpuf_load_template( 'dashboard/list.php', $template_args ); ?>
+		<?php wpuf_load_template( 'dashboard/list.php', $template_args ); ?>
         <div class="wpuf-pagination">
             <?php
-                $pagination = paginate_links( [
-                    'base'      => add_query_arg( 'pagenum', '%#%' ),
-                    'format'    => '',
-                    'prev_text' => __( '&laquo;', 'wp-user-frontend' ),
-                    'next_text' => __( '&raquo;', 'wp-user-frontend' ),
-                    'total'     => $dashboard_query->max_num_pages,
-                    'current'   => $pagenum,
-                    'add_args'  => false,
-                ] );
+                $pagination = paginate_links(
+                    [
+						'base'      => add_query_arg( 'pagenum', '%#%' ),
+						'format'    => '',
+						'prev_text' => __( '&laquo;', 'wp-user-frontend' ),
+						'next_text' => __( '&raquo;', 'wp-user-frontend' ),
+						'total'     => $dashboard_query->max_num_pages,
+						'current'   => $pagenum,
+						'add_args'  => false,
+					]
+                );
 
-                if ( $pagination ) {
-                    echo wp_kses( $pagination, [
-                        'span' => [
-                            'aria-current' => [],
-                            'class' => [],
-                        ],
-                        'a' => [
-                            'href' => [],
-                            'class' => [],
-                        ]
-                    ] );
-                }
+			if ( $pagination ) {
+				echo wp_kses(
+                    $pagination, [
+						'span' => [
+							'aria-current' => [],
+							'class' => [],
+						],
+						'a' => [
+							'href' => [],
+							'class' => [],
+						],
+					]
+                );
+			}
             ?>
         </div>
-    <?php
-        } else {
-            if ( !empty( $post_type_obj ) && !empty( $labels ) ) {
-                printf( '<div class="wpuf-message">' . wp_kses_post( 
-                    // translators: %s is label
-                    __( 'No %s found', 'wp-user-frontend' ) ) . '</div>', esc_html( implode( ', ', $labels ) ) );
-                do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
-            }
-        }
+		<?php
+	} elseif ( ! empty( $post_type_obj ) && ! empty( $labels ) ) {
+			printf(
+                '<div class="wpuf-message">' . wp_kses_post(
+				// translators: %s is label
+                    __( 'No %s found', 'wp-user-frontend' )
+                ) . '</div>', esc_html( implode( ', ', $labels ) )
+            );
+			do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
+	}
 
-        if ( !empty( $post_type_obj ) ) {
-            do_action( 'wpuf_dashboard_bottom', $userdata->ID, $post_type_obj );
-        }
+	if ( ! empty( $post_type_obj ) ) {
+		do_action( 'wpuf_dashboard_bottom', $userdata->ID, $post_type_obj );
+	}
     ?>
 
 </div>

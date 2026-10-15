@@ -22,6 +22,8 @@ class RestRoutesPermissionTest extends WP_UnitTestCase {
     const PUBLIC = [
         '/wpuf/v1'                       => 'WordPress namespace index, lists routes only',
         '/wpuf/v1/user_directory/search' => 'frontend user directory search for visitors (free module, as on develop)',
+        '/wpuf/v1/terms/suggest'         => 'tag suggest of the classic forms (public term names of viewable taxonomies, as wpuf_ajax_tag_search on develop)',
+        '/wpuf/v1/user-activity/(?P<user_id>\\d+)' => 'Pro user activity of a public User Directory profile (as the profile page showed it); titles of non-public posts are left out',
     ];
 
     /**
@@ -39,6 +41,15 @@ class RestRoutesPermissionTest extends WP_UnitTestCase {
         '/wpuf/v1/forms/(?P<id>\\d+)',
         '/wpuf/v1/uploads',
         '/wpuf/v1/registration',
+        // The Login widget (visitors with the widget nonce; logout for any logged-in user)
+        // and Pro's frontend routes (the avatar field, the pay page coupon box and Stripe,
+        // the QR field, the comments list): ClassicRestRoutesTest / ProClassicRestRoutesTest.
+        '/wpuf/v1/auth',
+        '/wpuf/v1/profile',
+        '/wpuf/v1/coupons',
+        '/wpuf/v1/payments',
+        '/wpuf/v1/qr-code',
+        '/wpuf/v1/comments',
     ];
 
     public function set_up() {

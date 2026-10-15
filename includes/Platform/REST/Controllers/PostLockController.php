@@ -61,11 +61,16 @@ class PostLockController extends RestController {
 
         $post_id = (int) $request['id'];
 
+        // The capability first: whether a post exists is not told to who may not clear locks.
+        if ( ! current_user_can( 'edit_others_posts' ) ) {
+            return $this->error( 'forbidden', __( 'You are not allowed to clear this lock.', 'wp-user-frontend' ), 403 );
+        }
+
         if ( ! get_post( $post_id ) ) {
             return $this->error( 'not_found', __( 'Post not found.', 'wp-user-frontend' ), 404 );
         }
 
-        if ( ! current_user_can( 'edit_others_posts' ) || ! current_user_can( 'edit_post', $post_id ) ) {
+        if ( ! current_user_can( 'edit_post', $post_id ) ) {
             return $this->error( 'forbidden', __( 'You are not allowed to clear this lock.', 'wp-user-frontend' ), 403 );
         }
 

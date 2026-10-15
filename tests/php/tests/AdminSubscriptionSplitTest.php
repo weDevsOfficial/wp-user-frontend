@@ -79,8 +79,9 @@ class AdminSubscriptionSplitTest extends WP_UnitTestCase {
             }
         }
 
-        // 25 of the old class, less the 10 classic editor methods, plus the classic screen redirect and its route.
-        $this->assertCount( 17, $groups );
+        // 25 of the old class, less the 10 classic editor methods, plus the classic screen redirect and its route,
+        // plus remove_user_pack() (the REST route admin/users/{id}/pack).
+        $this->assertCount( 18, $groups );
     }
 
     /**

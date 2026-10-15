@@ -69,6 +69,20 @@ class Frontend {
     }
 
     /**
+     * Whether this request's `[wpuf-login]` screen renders as an app (the
+     * logged-in view and a theme-overridden screen stay classic).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    private function login_renders_app() {
+        $part = \WeDevs\Wpuf\Free\Simple_Login::screen_part();
+
+        return '' !== $part && $this->renderer()->is_react( $part );
+    }
+
+    /**
      * Whether the only reason to load the classic form bundle on this page is
      * a post form the React app will render. Every other trigger (payment
      * page, preview, Dokan, the block, Elementor, the other shortcodes) keeps
@@ -101,6 +115,10 @@ class Frontend {
 
         if ( $this->renderer()->is_react( 'registration' ) ) {
             $react_tags[] = 'wpuf_profile';
+        }
+
+        if ( $this->login_renders_app() ) {
+            $react_tags[] = 'wpuf-login';
         }
 
         foreach ( $this->get_asset_shortcodes() as $shortcode ) {
@@ -274,6 +292,10 @@ class Frontend {
         }
 
         if ( 'wpuf_account' === $tag && is_user_logged_in() && $renderer->is_react( 'account' ) ) {
+            return $output;
+        }
+
+        if ( 'wpuf-login' === $tag && $this->login_renders_app() ) {
             return $output;
         }
 

@@ -283,6 +283,7 @@ class Form_Schema {
             'image_caption' => wpuf_is_checkbox_or_toggle_on( wpuf_get_option( 'image_caption', 'wpuf_frontend_posting', 'off' ) ),
             // The shortcodes a rich editor may not use (the classic wpuf_frontend.protected_shortcodes).
             'protected_shortcodes' => function_exists( 'wpuf_get_protected_shortcodes' ) ? array_values( (array) wpuf_get_protected_shortcodes() ) : [],
+            'messages' => $this->messages(),
             'nonces'   => [
                 'submit' => wp_create_nonce( 'wpuf_form_add' ),
                 'upload' => wp_create_nonce( 'wpuf-upload-nonce' ),
@@ -395,6 +396,7 @@ class Form_Schema {
             'image_caption' => wpuf_is_checkbox_or_toggle_on( wpuf_get_option( 'image_caption', 'wpuf_frontend_posting', 'off' ) ),
             // The shortcodes a rich editor may not use (the classic wpuf_frontend.protected_shortcodes).
             'protected_shortcodes' => function_exists( 'wpuf_get_protected_shortcodes' ) ? array_values( (array) wpuf_get_protected_shortcodes() ) : [],
+            'messages'     => $this->messages(),
             'nonces'       => [
                 'submit' => wp_create_nonce( 'wpuf_form_add' ),
                 'upload' => wp_create_nonce( 'wpuf-upload-nonce' ),
@@ -1351,6 +1353,23 @@ class Form_Schema {
         }
 
         return $needs;
+    }
+
+    /**
+     * The texts the classic form script got from `wpuf_frontend` (Frontend.php)
+     * that field components show: the password strength warnings. Same strings,
+     * same text domain, so the translations stay.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    private function messages() {
+        return [
+            'password_warning_weak'   => __( 'Your password should be at least weak in strength', 'wp-user-frontend' ),
+            'password_warning_medium' => __( 'Your password needs to be medium strength for better protection', 'wp-user-frontend' ),
+            'password_warning_strong' => __( 'Create a strong password for maximum security', 'wp-user-frontend' ),
+        ];
     }
 
     /**

@@ -142,6 +142,7 @@ class ReactRendererTest extends WP_UnitTestCase {
         $this->assertStringContainsString( 'data-wpuf-react="forms"', $html );
         $this->assertStringContainsString( 'wpuf-form-add wpuf-form-layout1 wpuf-form-boot', $html );
         $this->assertStringContainsString( '"name":"post_title"', $html );
+        $this->assertStringContainsString( '"password_warning_weak":', $html, 'free texts the field components show (no window.wpuf_frontend)' );
         $this->assertTrue( wp_script_is( 'wpuf-frontend-forms', 'enqueued' ) );
         $this->assertFalse( wp_script_is( 'wpuf-frontend-form', 'enqueued' ), 'the classic form bundle stays off' );
 

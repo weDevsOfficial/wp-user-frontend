@@ -29,7 +29,7 @@
     "watch:subscriptions": "WPUF_ENTRY=subscriptions wp-scripts start --config webpack.admin.config.js",
     "build:settings-react": "WPUF_ENTRY=settings-react wp-scripts build --config webpack.admin.config.js && pnpm run build:settings-css",
     "dev:settings-react": "WPUF_ENTRY=settings-react wp-scripts start --config webpack.admin.config.js",
-    "build:frontend-react": "wp-scripts build --config webpack.frontend.config.js && node tools/frontend-css/account-sections.mjs && node tools/frontend-css/check.mjs",
+    "build:frontend-react": "wp-scripts build --config webpack.frontend.config.js && node bin/prune-chunks.mjs && node tools/frontend-css/account-sections.mjs && node tools/frontend-css/check.mjs",
     "dev:frontend-react": "wp-scripts start --config webpack.frontend.config.js",
     "build:frontend-check": "node tools/frontend-css/check.mjs",
     "build:admin-css": "node tools/admin-css/build.mjs",

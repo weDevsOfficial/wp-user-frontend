@@ -436,6 +436,38 @@ class Simple_Login {
     }
 
     /**
+     * The `[wpuf-login]` screen this request shows, as a renderer part:
+     * `login`, `lost_password` (`?action=lostpassword`), `reset_password`
+     * (`?action=rp|resetpass`, the login form again once `reset=true`), or ''
+     * for a logged-in visitor (the logged-in view). The same rules as
+     * login_form(), for the code that decides assets before it runs.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string
+     */
+    public static function screen_part() {
+        if ( is_user_logged_in() ) {
+            return '';
+        }
+
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only routing, as login_form().
+        $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : 'login';
+        $reset  = isset( $_GET['reset'] ) ? sanitize_text_field( wp_unslash( $_GET['reset'] ) ) : '';
+        // phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+        if ( 'lostpassword' === $action ) {
+            return 'lost_password';
+        }
+
+        if ( in_array( $action, [ 'rp', 'resetpass' ], true ) && 'true' !== $reset ) {
+            return 'reset_password';
+        }
+
+        return 'login';
+    }
+
+    /**
      * Print the login form (login-form.php).
      *
      * @since WPUF_SINCE

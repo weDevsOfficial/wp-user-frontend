@@ -12,6 +12,7 @@ export.sh
 !/bin/build-outputs.mjs
 !/bin/sanitize-dist.mjs
 !/bin/make-pot.mjs
+!/bin/prune-chunks.mjs
 nbproject
 node_modules
 includes/pro

@@ -45,7 +45,6 @@ class Paypal {
 
         // The "WPUF PayPal Integration Enhanced" notice is no longer shown (owner request);
         // paypal_settings_update_notice() stays for extensions that call it.
-        add_action( 'wp_ajax_wpuf_dismiss_paypal_notice', [ $this, 'dismiss_paypal_notice' ] );
 
         // Add CSS for webhook configuration section
         add_action( 'admin_head', [ $this, 'inject_webhook_css' ] );
@@ -123,19 +122,8 @@ class Paypal {
         <script type="text/javascript">
         jQuery(document).ready(function($) {
             $(document).on('click', '.wpuf-paypal-notice .notice-dismiss', function() {
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'wpuf_dismiss_paypal_notice',
-                        nonce: '<?php echo esc_js( wp_create_nonce( 'wpuf_dismiss_paypal_notice' ) ); ?>'
-                    },
-                    success: function(response) {
-                        // Handle success if needed
-                    },
-                    error: function(xhr, status, error) {
+                <?php echo wpuf_rest_post_js( 'admin/notices/paypal/dismiss' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON-encoded JS. ?>.catch(function(error) {
                     console.error('Failed to dismiss notice:', error);
-                    }
                 });
             });
         });
@@ -175,6 +163,8 @@ class Paypal {
 
     /**
      * Handle dismissal of PayPal settings notice
+     *
+     * @deprecated WPUF_SINCE The notice calls the REST route `wpuf/v1/admin/notices/paypal/dismiss`.
      */
     public function dismiss_paypal_notice() {
         // Verify nonce

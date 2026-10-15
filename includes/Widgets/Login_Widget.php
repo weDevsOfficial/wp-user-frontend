@@ -17,90 +17,157 @@ class Login_Widget extends WP_Widget {
         parent::__construct(
             'Login_Widget',
             __( 'WPUF Ajax Login', 'wp-user-frontend' ),
-            [ 'description' => __( 'Ajax Login widget for WP User Frontend', 'wp-user-frontend' )]
-         );
+            [ 'description' => __( 'Ajax Login widget for WP User Frontend', 'wp-user-frontend' ) ]
+        );
+    }
+
+    /**
+     * Log a visitor in from the widget form (REST `auth/login`).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $input `log`, `pwd`, `rememberme`
+     *
+     * @return array|WP_Error `message`, or the error
+     */
+    public function login( array $input ) {
+        $user_login = isset( $input['log'] ) ? sanitize_text_field( $input['log'] ) : '';
+        $user_pass  = isset( $input['pwd'] ) ? (string) $input['pwd'] : '';
+        $remember   = ! empty( $input['rememberme'] );
+
+        if ( '' === $user_login || '' === $user_pass ) {
+            return new WP_Error( 'wpuf_login_empty', __( 'Please fill all form fields', 'wp-user-frontend' ), [ 'status' => 400 ] );
+        }
+
+        $user = wp_signon(
+            [
+                'user_login'    => $user_login,
+                'user_password' => $user_pass,
+                'remember'      => $remember,
+            ],
+            is_ssl()
+        );
+
+        if ( is_wp_error( $user ) ) {
+            return new WP_Error( 'wpuf_login_failed', $user->get_error_message(), [ 'status' => 403 ] );
+        }
+
+        return [ 'message' => __( 'Login successful!', 'wp-user-frontend' ) ];
+    }
+
+    /**
+     * Log the current user out (REST `auth/logout`).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array `message`
+     */
+    public function logout() {
+        wp_logout();
+
+        return [ 'message' => __( 'Logout successful!', 'wp-user-frontend' ) ];
+    }
+
+    /**
+     * Send the password reset e-mail from the widget form (REST `auth/lost-password`).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $input `user_login`
+     *
+     * @return array|WP_Error `message`, or the error (its message is HTML: one `<p>` per error)
+     */
+    public function lost_password( array $input ) {
+        $username_or_email = isset( $input['user_login'] ) ? sanitize_text_field( $input['user_login'] ) : '';
+
+        if ( '' === $username_or_email ) {
+            return new WP_Error( 'wpuf_lost_password_empty', __( 'Please fill all form fields', 'wp-user-frontend' ), [ 'status' => 400 ] );
+        }
+
+        $username = is_email( $username_or_email ) ? sanitize_email( $username_or_email ) : sanitize_user( $username_or_email );
+        $result   = $this->ajax_lostpassword_retrieve( $username );
+
+        if ( is_wp_error( $result ) ) {
+            $display_errors = '';
+
+            foreach ( $result->errors as $error ) {
+                $display_errors .= '<p>' . $error[0] . '</p>';
+            }
+
+            return new WP_Error( 'wpuf_lost_password_failed', wp_kses_post( $display_errors ), [ 'status' => 400 ] );
+        }
+
+        return [ 'message' => __( 'Password has been reset. Please check your email.', 'wp-user-frontend' ) ];
     }
 
     /**
      * Ajax Login function
      *
+     * @deprecated WPUF_SINCE The widget calls the REST route `wpuf/v1/auth/login` (login()).
+     *
      * @return void
      */
     public function ajax_login() {
-        $user_login     = isset( $_POST['log'] ) ? sanitize_text_field( wp_unslash( $_POST['log'] ) ) : '';
-        $user_pass      = isset( $_POST['pwd'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd'] ) ) : '';
-        $rememberme     = isset( $_POST['rememberme'] ) ? sanitize_text_field( wp_unslash( $_POST['rememberme'] ) ) : false;
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
-
-        if ( empty( $nonce ) || ! wp_verify_nonce( $nonce , 'wpuf_lost_pass' ) ) {
-            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
-        }
-
-        if ( empty( $user_login ) || empty( $user_pass ) ) {
-            wp_send_json_error( [ 'message'=> __( 'Please fill all form fields', 'wp-user-frontend' ) ] );
-        } else {
-            $user = wp_signon( ['user_login' => $user_login, 'user_password' => $user_pass], false );
-
-            if ( is_wp_error( $user ) ) {
-                wp_send_json_error( [ 'message'=> $user->get_error_message() ] );
-            } else {
-                wp_send_json_success( [ 'message'=> __( 'Login successful!', 'wp-user-frontend' ) ] );
-            }
-        }
-        wp_set_auth_cookie( $user->ID, $rememberme );
+        _deprecated_function( __METHOD__, 'WPUF_SINCE', __CLASS__ . '::login()' );
+        $this->send_legacy( 'wpuf_lost_pass', '_wpnonce', [ $this, 'login' ], [ 'log', 'pwd', 'rememberme' ] );
     }
 
     /**
      * Ajax Logout function
      *
+     * @deprecated WPUF_SINCE The widget calls the REST route `wpuf/v1/auth/logout` (logout()).
+     *
      * @return void
      */
     public function ajax_logout() {
-        $nonce = isset( $_REQUEST['nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['nonce'] ) ) : '';
-
-        if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
-            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
-        }
-
-        wp_logout();
-        wp_send_json_success( [ 'message'=> __( 'Logout successful!', 'wp-user-frontend' ) ] );
+        _deprecated_function( __METHOD__, 'WPUF_SINCE', __CLASS__ . '::logout()' );
+        $this->send_legacy( 'wpuf_lost_pass', 'nonce', [ $this, 'logout' ], [] );
     }
 
     /**
      * Ajax password reset function
      *
+     * @deprecated WPUF_SINCE The widget calls the REST route `wpuf/v1/auth/lost-password` (lost_password()).
+     *
      * @return void
      */
     public function ajax_reset_pass() {
-        $username_or_email = isset( $_POST['user_login'] ) ? sanitize_text_field( wp_unslash( $_POST['user_login'] ) ) : '';
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+        _deprecated_function( __METHOD__, 'WPUF_SINCE', __CLASS__ . '::lost_password()' );
+        $this->send_legacy( 'wpuf_lost_pass', '_wpnonce', [ $this, 'lost_password' ], [ 'user_login' ] );
+    }
 
-        if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
+    /**
+     * Answer a legacy admin-ajax call through one of the returning methods.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string   $action Nonce action
+     * @param string   $key    Request key of the nonce
+     * @param callable $method Returning method
+     * @param string[] $fields Posted fields the method reads
+     *
+     * @return void
+     */
+    private function send_legacy( $action, $key, callable $method, array $fields ) {
+        $nonce = isset( $_REQUEST[ $key ] ) ? sanitize_key( wp_unslash( $_REQUEST[ $key ] ) ) : '';
+
+        if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, $action ) ) {
             wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
         }
 
-        // Check if input variables are empty
-        if ( empty( $username_or_email ) ) {
-            wp_send_json_error( [ 'error' => true, 'message'=> __( 'Please fill all form fields', 'wp-user-frontend' ) ] );
-        } else {
-            $username = is_email( $username_or_email ) ? sanitize_email( $username_or_email ) : sanitize_user( $username_or_email );
+        $input = [];
 
-            $user_forgotten = $this->ajax_lostpassword_retrieve( $username );
-
-            if ( is_wp_error( $user_forgotten ) ) {
-                $lostpass_error_messages = $user_forgotten->errors;
-
-                $display_errors = '';
-
-                foreach ( $lostpass_error_messages as $error ) {
-                    $display_errors .= '<p>' . $error[0] . '</p>';
-                }
-
-                wp_send_json_error( [ 'message' => $display_errors ] );
-            } else {
-                wp_send_json_success( [ 'message' => __( 'Password has been reset. Please check your email.', 'wp-user-frontend' ) ] );
-            }
+        foreach ( $fields as $field ) {
+            $input[ $field ] = isset( $_POST[ $field ] ) ? wp_unslash( $_POST[ $field ] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- the method sanitizes.
         }
+
+        $result = $method( $input );
+
+        if ( is_wp_error( $result ) ) {
+            wp_send_json_error( [ 'message' => $result->get_error_message() ] );
+        }
+
+        wp_send_json_success( $result );
     }
 
     /**
@@ -135,7 +202,7 @@ class Login_Widget extends WP_Widget {
             return $errors;
         }
 
-        if ( !$user_data ) {
+        if ( ! $user_data ) {
             $errors->add( 'invalidcombo', __( '<strong>ERROR</strong>: Invalid username or email.', 'wp-user-frontend' ) );
 
             return $errors;
@@ -152,9 +219,10 @@ class Login_Widget extends WP_Widget {
 
         $message = __( 'Someone has requested a password reset for the following account:', 'wp-user-frontend' ) . "\r\n\r\n";
         $message .= network_home_url( '/' ) . "\r\n\r\n";
-        $message .= sprintf( 
+        $message .= sprintf(
             // translators: %s is the user name
-            __( 'Username: %s', 'wp-user-frontend' ), $user_login ) . "\r\n\r\n";
+            __( 'Username: %s', 'wp-user-frontend' ), $user_login
+        ) . "\r\n\r\n";
         $message .= __( 'If this was a mistake, just ignore this email and nothing will happen.', 'wp-user-frontend' ) . "\r\n\r\n";
         $message .= __( 'To reset your password, visit the following address:', 'wp-user-frontend' ) . "\r\n\r\n";
         $message .= '<' . network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'login' ) . ">\r\n";
@@ -163,13 +231,14 @@ class Login_Widget extends WP_Widget {
 
         $title = sprintf(
             // translators: %s is the blogname
-            __( '[%s] Password Reset', 'wp-user-frontend' ), $blogname );
+            __( '[%s] Password Reset', 'wp-user-frontend' ), $blogname
+        );
 
         $title = apply_filters( 'retrieve_password_title', $title, $user_login, $user_data );
 
         $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
 
-        if ( $message && !wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
+        if ( $message && ! wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
             $errors->add( 'mailfailed', __( '<strong>ERROR</strong>: The email could not be sent.Possible reason: your host may have disabled the mail() function.', 'wp-user-frontend' ) );
         }
 
@@ -186,6 +255,8 @@ class Login_Widget extends WP_Widget {
         wp_localize_script(
             'wpuf_ajax_login',
             'wpuf_ajax', [
+                'rest'    => wpuf_rest_script_data(),
+                'nonce'   => wp_create_nonce( 'wpuf_lost_pass' ),
                 'ajaxurl' => admin_url( 'admin-ajax.php' ),
             ]
         );
@@ -201,7 +272,7 @@ class Login_Widget extends WP_Widget {
 
         echo wp_kses_post( $args['before_widget'] );
 
-        if ( !empty( $title ) ) {
+        if ( ! empty( $title ) ) {
             echo wp_kses_post( $args['before_title'] . $title . $args['after_title'] );
         }
 
@@ -219,7 +290,8 @@ class Login_Widget extends WP_Widget {
         ]; ?>
         <div class="login-widget-container">
             <?php
-            if ( !is_user_logged_in() ) { ?>
+            if ( ! is_user_logged_in() ) {
+				?>
 
                 <!-- Login form -->
                 <div class="wpuf-ajax-login-form">
@@ -232,13 +304,16 @@ class Login_Widget extends WP_Widget {
 
                     if ( get_option( 'users_can_register' ) ) {
                         $registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Register', 'wp-user-frontend' ) );
-                        echo wp_kses( $registration_url, [
-                            'a' => [
-                                'href' => []
-                            ]
-                        ] );
+                        echo wp_kses(
+                            $registration_url, [
+								'a' => [
+									'href' => [],
+								],
+							]
+                        );
                         echo esc_html( apply_filters( 'login_link_separator', ' | ' ) );
-                    }?>
+                    }
+                    ?>
                     <a href="#wpuf-ajax-lost-pw-url" id="wpuf-ajax-lost-pw-url"><?php esc_html_e( 'Lost your password?', 'wp-user-frontend' ); ?></a>
                 </div>
 
@@ -254,7 +329,7 @@ class Login_Widget extends WP_Widget {
                         <?php do_action( 'lostpassword_form' ); ?>
 
                         <p class="submit">
-                            <input type="submit" name="wp-submit" id="wp-submit" value="<?php echo esc_attr(  $pass_reset_label ); ?>" />
+                            <input type="submit" name="wp-submit" id="wp-submit" value="<?php echo esc_attr( $pass_reset_label ); ?>" />
                             <input type="hidden" name="redirect_to" value="<?php echo esc_attr( Simple_Login::get_posted_value( 'redirect_to' ) ); ?>" />
                             <input type="hidden" name="wpuf_reset_password" value="true" />
                             <input type="hidden" name="action" value="lost_password" />
@@ -290,14 +365,15 @@ class Login_Widget extends WP_Widget {
      * @return void
      */
     public function form( $instance ) {
-        $title            = isset( $instance[ 'title' ] ) ? $instance[ 'title' ] : __( 'WPUF Login Widget', 'wp-user-frontend' );
-        $log_in_header    = isset( $instance[ 'log_in_header' ] ) ? $instance[ 'log_in_header' ] : __( 'Username or Email Address', 'wp-user-frontend' );
-        $pwd_reset_header = isset( $instance[ 'pwd_reset_header' ] ) ? $instance[ 'pwd_reset_header' ] : __( 'Please enter your username or email address. You will receive a link to create a new password via email', 'wp-user-frontend' );
-        $uname_label      = isset( $instance[ 'uname_label' ] ) ? $instance[ 'uname_label' ] : __( 'Username', 'wp-user-frontend' );
-        $pwd_label        = isset( $instance[ 'pwd_label' ] ) ? $instance[ 'pwd_label' ] : __( 'Password', 'wp-user-frontend' );
-        $remember_label   = isset( $instance[ 'remember_label' ] ) ? $instance[ 'remember_label' ] : __( 'Remember Me', 'wp-user-frontend' );
-        $log_in_label     = isset( $instance[ 'log_in_label' ] ) ? $instance[ 'log_in_label' ] : __( 'Log In', 'wp-user-frontend' );
-        $pass_reset_label = isset( $instance[ 'pass_reset_label' ] ) ? $instance[ 'pass_reset_label' ] : __( 'Reset Password', 'wp-user-frontend' ); ?>
+        $title            = isset( $instance['title'] ) ? $instance['title'] : __( 'WPUF Login Widget', 'wp-user-frontend' );
+        $log_in_header    = isset( $instance['log_in_header'] ) ? $instance['log_in_header'] : __( 'Username or Email Address', 'wp-user-frontend' );
+        $pwd_reset_header = isset( $instance['pwd_reset_header'] ) ? $instance['pwd_reset_header'] : __( 'Please enter your username or email address. You will receive a link to create a new password via email', 'wp-user-frontend' );
+        $uname_label      = isset( $instance['uname_label'] ) ? $instance['uname_label'] : __( 'Username', 'wp-user-frontend' );
+        $pwd_label        = isset( $instance['pwd_label'] ) ? $instance['pwd_label'] : __( 'Password', 'wp-user-frontend' );
+        $remember_label   = isset( $instance['remember_label'] ) ? $instance['remember_label'] : __( 'Remember Me', 'wp-user-frontend' );
+        $log_in_label     = isset( $instance['log_in_label'] ) ? $instance['log_in_label'] : __( 'Log In', 'wp-user-frontend' );
+        $pass_reset_label = isset( $instance['pass_reset_label'] ) ? $instance['pass_reset_label'] : __( 'Reset Password', 'wp-user-frontend' );
+        ?>
 
         <p>
             <label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'wp-user-frontend' ); ?></label>
@@ -340,14 +416,14 @@ class Login_Widget extends WP_Widget {
      */
     public function update( $new_instance, $old_instance ) {
         $instance                     = [];
-        $instance['title']            = ( !empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
-        $instance['log_in_header']    = ( !empty( $new_instance['log_in_header'] ) ) ? wp_strip_all_tags( $new_instance['log_in_header'] ) : '';
-        $instance['pwd_reset_header'] = ( !empty( $new_instance['pwd_reset_header'] ) ) ? wp_strip_all_tags( $new_instance['pwd_reset_header'] ) : '';
-        $instance['uname_label']      = ( !empty( $new_instance['uname_label'] ) ) ? wp_strip_all_tags( $new_instance['uname_label'] ) : '';
-        $instance['pwd_label']        = ( !empty( $new_instance['pwd_label'] ) ) ? wp_strip_all_tags( $new_instance['pwd_label'] ) : '';
-        $instance['remember_label']   = ( !empty( $new_instance['remember_label'] ) ) ? wp_strip_all_tags( $new_instance['remember_label'] ) : '';
-        $instance['log_in_label']     = ( !empty( $new_instance['log_in_label'] ) ) ? wp_strip_all_tags( $new_instance['log_in_label'] ) : '';
-        $instance['pass_reset_label'] = ( !empty( $new_instance['pass_reset_label'] ) ) ? wp_strip_all_tags( $new_instance['pass_reset_label'] ) : '';
+        $instance['title']            = ( ! empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
+        $instance['log_in_header']    = ( ! empty( $new_instance['log_in_header'] ) ) ? wp_strip_all_tags( $new_instance['log_in_header'] ) : '';
+        $instance['pwd_reset_header'] = ( ! empty( $new_instance['pwd_reset_header'] ) ) ? wp_strip_all_tags( $new_instance['pwd_reset_header'] ) : '';
+        $instance['uname_label']      = ( ! empty( $new_instance['uname_label'] ) ) ? wp_strip_all_tags( $new_instance['uname_label'] ) : '';
+        $instance['pwd_label']        = ( ! empty( $new_instance['pwd_label'] ) ) ? wp_strip_all_tags( $new_instance['pwd_label'] ) : '';
+        $instance['remember_label']   = ( ! empty( $new_instance['remember_label'] ) ) ? wp_strip_all_tags( $new_instance['remember_label'] ) : '';
+        $instance['log_in_label']     = ( ! empty( $new_instance['log_in_label'] ) ) ? wp_strip_all_tags( $new_instance['log_in_label'] ) : '';
+        $instance['pass_reset_label'] = ( ! empty( $new_instance['pass_reset_label'] ) ) ? wp_strip_all_tags( $new_instance['pass_reset_label'] ) : '';
 
         return $instance;
     }

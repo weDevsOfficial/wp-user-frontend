@@ -48,7 +48,6 @@ class Free_Loader extends Pro_Prompt {
         add_action( 'wpuf_admin_menu_top', [ $this, 'admin_menu_top' ] );
 
         // Free module toggle AJAX
-        add_action( 'wp_ajax_wpuf_toggle_free_module', [ $this, 'toggle_free_module' ] );
 
         // plugin settings
         add_filter( 'wpuf_settings_sections', [ $this, 'pro_sections' ] );

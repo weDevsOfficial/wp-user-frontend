@@ -8,6 +8,7 @@
 
 namespace WeDevs\Wpuf\Platform\REST\Controllers;
 
+use WeDevs\Wpuf\Admin\Subscriptions\User_Profile;
 use WeDevs\Wpuf\Platform\Caps;
 use WeDevs\Wpuf\Platform\REST\RestController;
 use WeDevs\Wpuf\Platform\Stores\Stores;
@@ -98,6 +99,24 @@ class SubscribersController extends RestController {
                     'default' => 20,
                     'minimum' => 1,
                     'maximum' => 100,
+                ],
+            ]
+        );
+        $this->route(
+            '/admin/users/(?P<user_id>\d+)/pack',
+            WP_REST_Server::DELETABLE,
+            'delete_user_pack',
+            $this->permission( Caps::MANAGE_SUBSCRIPTIONS ),
+            [
+                'user_id' => [
+                    'type'     => 'integer',
+                    'required' => true,
+                    'minimum'  => 1,
+                ],
+                'pack_id' => [
+                    'type'    => 'integer',
+                    'default' => 0,
+                    'minimum' => 0,
                 ],
             ]
         );
@@ -227,5 +246,25 @@ class SubscribersController extends RestController {
         }
 
         return mysql2date( get_option( 'date_format' ), $value );
+    }
+
+    /**
+     * DELETE /admin/users/{user_id}/pack: remove a user's pack (the pack box
+     * on the WP user profile screen).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Request
+     *
+     * @return \WP_REST_Response|\WP_Error
+     */
+    public function delete_user_pack( WP_REST_Request $request ) {
+        $user_id = (int) $request['user_id'];
+
+        if ( ! get_userdata( $user_id ) ) {
+            return $this->error( 'not_found', __( 'User not found.', 'wp-user-frontend' ), 404 );
+        }
+
+        return rest_ensure_response( [ 'deleted' => User_Profile::remove_user_pack( $user_id, (int) $request['pack_id'] ) ] );
     }
 }

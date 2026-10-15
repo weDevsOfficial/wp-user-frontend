@@ -94,6 +94,7 @@ class Pack_Post_Type {
         // wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', [ 'jquery' ], WPUF_VERSION, true );
         wp_localize_script(
             'wpuf-subscriptions', 'wpuf_subs_vars', array(
+                'rest'                           => wpuf_rest_script_data(),
                 'wpuf_subscription_delete_nonce' => wp_create_nonce( 'wpuf-subscription-delete-nonce' ),
             )
         );

@@ -32,33 +32,19 @@
         // Disable the toggle while processing
         $toggle.prop( 'disabled', true );
 
-        $.ajax({
-            url: wpuf_free_modules.ajaxurl,
-            type: 'POST',
-            data: {
-                action: 'wpuf_toggle_free_module',
-                module: moduleId,
-                status: status,
-                nonce: wpuf_free_modules.nonce
-            },
-            success: function( response ) {
-                if ( response.success ) {
-                    // Re-enable the toggle
-                    $toggle.prop( 'disabled', false );
-                } else {
-                    // Revert the toggle state on error
-                    $toggle.prop( 'checked', ! isActive );
-                    $toggle.prop( 'disabled', false );
-                    alert( response.data.message || 'An error occurred' );
-                }
-            },
-            error: function() {
-                // Revert the toggle state on error
-                $toggle.prop( 'checked', ! isActive );
-                $toggle.prop( 'disabled', false );
-                alert( 'An error occurred while toggling the module' );
-            }
-        });
+        // REST POST wpuf/v1/admin/free-modules/{module}.
+        window.wpufRest.request( wpuf_free_modules.rest, 'admin/free-modules/' + encodeURIComponent( moduleId ), {
+            method: 'POST',
+            data: { status: status }
+        } ).then( function() {
+            // Re-enable the toggle
+            $toggle.prop( 'disabled', false );
+        } ).catch( function( error ) {
+            // Revert the toggle state on error
+            $toggle.prop( 'checked', ! isActive );
+            $toggle.prop( 'disabled', false );
+            alert( error && error.message ? error.message : 'An error occurred while toggling the module' );
+        } );
     });
 
     $( '#wpuf-upgrade-popup' ).on( 'click', function( e ) {

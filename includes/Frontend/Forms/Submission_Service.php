@@ -75,6 +75,9 @@ class Submission_Service {
      * @return array|WP_Error The AJAX success payload (`redirect_to`, `show_message`, `message`, ...) or the error
      */
     public function submit( array $input, $slashed = false ) {
+        // Listeners of the submit hooks check the action the classic form posted.
+        $input['action'] = 'wpuf_submit_post';
+
         return Submission_Context::run(
             $input,
             function () {
@@ -95,7 +98,8 @@ class Submission_Service {
      * @return array|WP_Error `post_id`, `url`, `message`, ... or the error
      */
     public function draft( array $input, $slashed = false ) {
-        $values = $slashed ? wp_unslash( $input ) : $input;
+        $input['action'] = 'wpuf_draft_post';
+        $values          = $slashed ? wp_unslash( $input ) : $input;
 
         return Submission_Context::run(
             $input,

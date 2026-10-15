@@ -332,7 +332,7 @@ abstract class Field_Contract {
                 'default'   => 'fas fa-user',
                 'help_text' => __( 'Select an icon to display with this field', 'wp-user-frontend' ),
                 'dependencies' => [
-                    'show_icon' => 'yes'
+                    'show_icon' => 'yes',
                 ],
             ],
 
@@ -349,7 +349,7 @@ abstract class Field_Contract {
                 'default'   => 'left_label',
                 'help_text' => __( 'Choose where to display the icon', 'wp-user-frontend' ),
                 'dependencies' => [
-                    'show_icon' => 'yes'
+                    'show_icon' => 'yes',
                 ],
             ],
 
@@ -1035,12 +1035,14 @@ abstract class Field_Contract {
                 'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
                 'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
                 'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
+                'rest'        => wpuf_rest_script_data(),
+                'upload_nonce' => wp_create_nonce( 'wpuf-upload-nonce' ),
                 'ajaxurl'    => admin_url( 'admin-ajax.php' ),
                 'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
                 'plupload'   => [
                     'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce(
-                            'wpuf-upload-nonce'
-                        ),
+                        'wpuf-upload-nonce'
+                    ),
                     'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
                     'filters'          => [
                         [

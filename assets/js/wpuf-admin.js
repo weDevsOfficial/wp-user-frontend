@@ -4,26 +4,15 @@ jQuery(function($) {
         e.preventDefault();
         var post_id = $(this).attr('data');
 
-        $.ajax({
-            url: wpuf_admin_script.ajaxurl,
-            type: 'POST',
-            data: {
-                'action'    : 'wpuf_clear_schedule_lock',
-                'nonce'     : wpuf_admin_script.nonce,
-                'post_id'   : post_id
-            },
-            success:function(data) {
-                Swal.fire({
-                    icon: 'success',
-                    title: wpuf_admin_script.cleared_schedule_lock,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            },
-            error: function(errorThrown){
-                // Error occurred
-            }
-        });
+        // REST DELETE wpuf/v1/admin/posts/{id}/lock.
+        window.wpufRest.request( wpuf_admin_script.rest, 'admin/posts/' + parseInt( post_id, 10 ) + '/lock', { method: 'DELETE' } ).then( function() {
+            Swal.fire({
+                icon: 'success',
+                title: wpuf_admin_script.cleared_schedule_lock,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } );
         $(this).closest("p").hide();
     });
 

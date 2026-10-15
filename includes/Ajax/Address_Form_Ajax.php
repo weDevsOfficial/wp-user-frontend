@@ -36,6 +36,7 @@ class Address_Form_Ajax {
             'wpuf-ajax-script',
             'ajax_object',
             [
+                'rest'        => wpuf_rest_script_data(),
                 'ajaxurl'     => admin_url( 'admin-ajax.php' ),
                 'fill_notice' => __( 'Some Required Fields are not filled!', 'wp-user-frontend' ),
             ]
@@ -309,6 +310,9 @@ class Address_Form_Ajax {
 
     /**
      * Ajax Form action
+     *
+     * @deprecated WPUF_SINCE No script sends `wpuf_address_ajax_action` any more: the billing
+     *             script saves through the REST route `wpuf/v1/account/billing-address`.
      */
     public function ajax_form_action() {
         check_ajax_referer( 'wpuf_ajax_address' );

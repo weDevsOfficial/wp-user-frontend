@@ -82,6 +82,8 @@ class FormsPublicController extends RestController {
      * {@inheritDoc}
      */
     public function register_routes() {
+        add_filter( 'rest_pre_serve_request', [ $this, 'serve_text' ], 10, 4 );
+
         $id = [
             'id' => [
                 'type'     => 'integer',
@@ -116,6 +118,38 @@ class FormsPublicController extends RestController {
 					'default' => 0,
 				],
 				'search'   => [
+					'type'              => 'string',
+					'default'           => '',
+					'sanitize_callback' => 'sanitize_text_field',
+				],
+			]
+        );
+        $this->route(
+            '/forms/(?P<id>\d+)/child-terms', WP_REST_Server::READABLE, 'get_child_terms', [ $this, 'can_read' ], $id + [
+				'field'  => [
+					'type'              => 'string',
+					'required'          => true,
+					'sanitize_callback' => 'sanitize_text_field',
+				],
+				'parent' => [
+					'type'    => 'integer',
+					'default' => 0,
+				],
+			]
+        );
+        $this->route(
+            '/terms/suggest', WP_REST_Server::READABLE, 'suggest_terms', [ $this, 'can_suggest' ], [
+				'tax'      => [
+					'type'              => 'string',
+					'required'          => true,
+					'sanitize_callback' => 'sanitize_key',
+				],
+				'q'        => [
+					'type'              => 'string',
+					'default'           => '',
+					'sanitize_callback' => 'sanitize_text_field',
+				],
+				'term_ids' => [
 					'type'              => 'string',
 					'default'           => '',
 					'sanitize_callback' => 'sanitize_text_field',
@@ -381,6 +415,133 @@ class FormsPublicController extends RestController {
         }
 
         return rest_ensure_response( $items );
+    }
+
+    /**
+     * A viewable taxonomy, or one the user may assign terms of.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Request
+     *
+     * @return true|WP_Error
+     */
+    public function can_suggest( WP_REST_Request $request ) {
+        $taxonomy = get_taxonomy( (string) $request['tax'] );
+
+        if ( ! $taxonomy || ( ! is_taxonomy_viewable( $taxonomy ) && ! current_user_can( $taxonomy->cap->assign_terms ) ) ) {
+            return $this->error( 'bad_taxonomy', __( 'Unknown taxonomy.', 'wp-user-frontend' ), 400 );
+        }
+
+        return true;
+    }
+
+    /**
+     * GET /terms/suggest: the tag suggest of the classic text taxonomy input
+     * (jQuery `suggest()`, which sends `q`); answers plain text, one name per
+     * line, as `wpuf_ajax_tag_search` did (serve_text()).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Request
+     *
+     * @return \WP_REST_Response
+     */
+    public function suggest_terms( WP_REST_Request $request ) {
+        $names = wpuf_tag_suggestions( (string) $request['tax'], (string) $request['q'], explode( ',', (string) $request['term_ids'] ) );
+
+        return rest_ensure_response( implode( "\n", array_map( 'esc_html', $names ) ) );
+    }
+
+    /**
+     * Serve the `terms/suggest` answer as plain text instead of JSON.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param bool              $served  Whether the request was served already
+     * @param \WP_HTTP_Response $result  Result
+     * @param WP_REST_Request   $request Request
+     * @param \WP_REST_Server   $server  Server
+     *
+     * @return bool
+     */
+    public function serve_text( $served, $result, $request, $server ) {
+        if ( $served || '/wpuf/v1/terms/suggest' !== $request->get_route() || $result->is_error() ) {
+            return $served;
+        }
+
+        $server->send_header( 'Content-Type', 'text/plain; charset=' . get_option( 'blog_charset' ) );
+        echo $result->get_data(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the names are escaped in suggest_terms().
+
+        return true;
+    }
+
+    /**
+     * GET /forms/{id}/child-terms: the next level of a classic "ajax"
+     * taxonomy field (the markup `wpuf_get_child_cats()` printed for the
+     * `wpuf_get_child_cat` AJAX action). The field's settings come from the
+     * stored form, never from the request, so the taxonomy and its exclusions
+     * are the ones the form defines.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Request
+     *
+     * @return \WP_REST_Response|WP_Error
+     */
+    public function get_child_terms( WP_REST_Request $request ) {
+        $form_id = (int) $request['id'];
+        $parent  = (int) $request['parent'];
+        $name    = (string) $request['field'];
+        $field   = null;
+
+        foreach ( wpuf_get_form_fields( $form_id ) as $candidate ) {
+            if ( isset( $candidate['template'], $candidate['name'] ) && 'taxonomy' === $candidate['template'] && $name === $candidate['name'] ) {
+                $field = $candidate;
+                break;
+            }
+        }
+
+        if ( ! $field || ! taxonomy_exists( $field['name'] ) ) {
+            return $this->error( 'bad_taxonomy', __( 'Unknown taxonomy.', 'wp-user-frontend' ), 400 );
+        }
+
+        if ( $parent < 1 || ! get_categories( 'taxonomy=' . $field['name'] . '&child_of=' . $parent . '&hide_empty=0' ) ) {
+            return rest_ensure_response( [ 'html' => '' ] );
+        }
+
+        $field['parent_cat'] = $parent;
+        $field['form_id']    = $form_id;
+
+        return rest_ensure_response( [ 'html' => wp_kses( taxnomy_select( '', $field ), wp_kses_allowed_html( 'post' ) + $this->select_tags() ) ] );
+    }
+
+    /**
+     * The select markup taxnomy_select() prints, for wp_kses().
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    private function select_tags() {
+        $common = [
+            'class'    => true,
+            'id'       => true,
+            'name'     => true,
+            'data-*'   => true,
+            'required' => true,
+        ];
+
+        return [
+            'select' => $common + [ 'multiple' => true ],
+            'option' => [
+                'value'    => true,
+                'selected' => true,
+                'class'    => true,
+            ],
+            'span'   => $common,
+            'div'    => $common,
+        ];
     }
 
     /**

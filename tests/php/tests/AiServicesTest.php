@@ -103,7 +103,7 @@ class AiServicesTest extends WP_UnitTestCase {
     }
 
     /**
-     * The controller comes from the provider on the platform base with the shared services and its AJAX hook.
+     * The controller comes from the provider on the platform base with the shared services (no AJAX hook).
      */
     public function test_controller_is_built_by_the_provider_with_the_shared_services() {
         $platform   = wpuf()->platform();
@@ -116,7 +116,8 @@ class AiServicesTest extends WP_UnitTestCase {
             $this->assertSame( $platform->get( $service ), $platform->get( $service ), $service );
         }
 
-        $this->assertNotFalse( has_action( 'wp_ajax_wpuf_ai_generate_field_options', [ $controller, 'ajax_generate_field_options' ] ) );
+        // The builder calls REST `ai-form-builder/generate-options`: no admin-ajax action.
+        $this->assertFalse( has_action( 'wp_ajax_wpuf_ai_generate_field_options' ) );
     }
 
     /**

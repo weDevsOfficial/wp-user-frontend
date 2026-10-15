@@ -458,6 +458,7 @@ class Modules_Preview extends Pro_Prompt {
         // Localize script for free module toggle
         wp_localize_script(
             'wpuf-module', 'wpuf_free_modules', [
+				'rest'    => wpuf_rest_script_data(),
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'nonce'   => wp_create_nonce( 'wpuf_toggle_free_module' ),
 			]

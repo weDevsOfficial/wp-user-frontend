@@ -340,13 +340,18 @@ class Assets {
                 'in_footer' => true,
                 'version'   => '3.3.7',
             ],
+            // REST client of the classic scripts (wpuf/v1 with the wp_rest nonce, plain fetch).
+            'rest'                     => [
+                'src'  => WPUF_ASSET_URI . '/js/wpuf-rest.js',
+                'deps' => [],
+            ],
             'admin'                    => [
                 'src'  => WPUF_ASSET_URI . '/js/wpuf-admin.js',
-                'deps' => [ 'jquery' ],
+                'deps' => [ 'jquery', 'wpuf-rest' ],
             ],
             'subscriptions'            => [
                 'src'       => WPUF_ASSET_URI . '/js/subscriptions-old.js',
-                'deps'      => [ 'jquery' ],
+                'deps'      => [ 'jquery', 'wpuf-rest' ],
                 'in_footer' => true,
             ],
             // Alias of the React subscriptions script: data localized or inline
@@ -368,7 +373,7 @@ class Assets {
             ],
             'module'                   => [
                 'src'       => WPUF_ASSET_URI . '/js/admin/wpuf-module.js',
-                'deps'      => [ 'wpuf-swiffy-slider', 'wpuf-swiffy-slider-extensions' ],
+                'deps'      => [ 'wpuf-swiffy-slider', 'wpuf-swiffy-slider-extensions', 'wpuf-rest' ],
                 'in_footer' => true,
             ],
             'swiffy-slider'            => [
@@ -389,11 +394,11 @@ class Assets {
             ],
             'billing-address'          => [
                 'src'  => WPUF_ASSET_URI . '/js/billing-address.js',
-                'deps' => [ 'jquery' ],
+                'deps' => [ 'jquery', 'wpuf-rest' ],
             ],
             'ajax-script'              => [
                 'src'  => WPUF_ASSET_URI . '/js/billing-address.js',
-                'deps' => [ 'jquery' ],
+                'deps' => [ 'jquery', 'wpuf-rest' ],
             ],
             'jquery-blockui'           => [
                 'src'     => WPUF_ASSET_URI . '/js/jquery-blockui/jquery.blockUI.min.js',
@@ -402,7 +407,7 @@ class Assets {
             ],
             'frontend-form'            => [
                 'src'  => WPUF_ASSET_URI . '/js/frontend-form' . $this->suffix . '.js',
-                'deps' => [ 'jquery' ],
+                'deps' => [ 'jquery', 'wpuf-rest' ],
             ],
             'account'                  => [
                 'src'       => WPUF_ASSET_URI . '/js/account' . $this->suffix . '.js',
@@ -411,11 +416,11 @@ class Assets {
             ],
             'upload'                   => [
                 'src'  => WPUF_ASSET_URI . '/js/upload' . $this->suffix . '.js',
-                'deps' => [ 'jquery', 'plupload-handlers', 'jquery-ui-sortable' ],
+                'deps' => [ 'jquery', 'plupload-handlers', 'jquery-ui-sortable', 'wpuf-rest' ],
             ],
             'ajax_login'               => [
                 'src'  => WPUF_ASSET_URI . '/js/wpuf-login-widget.js',
-                'deps' => [ 'jquery' ],
+                'deps' => [ 'jquery', 'wpuf-rest' ],
             ],
             'turnstile'                  => [
                 'src'  => 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback',

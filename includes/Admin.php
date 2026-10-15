@@ -127,6 +127,7 @@ class Admin {
         wp_localize_script(
             'wpuf-admin', 'wpuf_admin_script',
             [
+                'rest'                          => wpuf_rest_script_data(),
                 'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
                 'nonce'                        => wp_create_nonce( 'wpuf_nonce' ),
                 'cleared_schedule_lock'        => __( 'Post lock has been cleared', 'wp-user-frontend' ),
@@ -176,6 +177,8 @@ class Admin {
                     'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
                     'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
                     'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
+                    'rest'        => wpuf_rest_script_data(),
+                    'upload_nonce' => wp_create_nonce( 'wpuf-upload-nonce' ),
                     'ajaxurl'    => admin_url( 'admin-ajax.php' ),
                     'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
                     'plupload'   => [

@@ -15,6 +15,7 @@ use WeDevs\Wpuf\Frontend\Forms\Upload_Service;
 use WeDevs\Wpuf\Frontend\Login\Login_Schema;
 use WeDevs\Wpuf\Frontend\Renderer;
 use WeDevs\Wpuf\Platform\REST\Controllers\AccountController;
+use WeDevs\Wpuf\Platform\REST\Controllers\AuthController;
 use WeDevs\Wpuf\Platform\REST\Controllers\FormsPublicController;
 use WeDevs\Wpuf\Platform\REST\Controllers\UploadsController;
 use WeDevs\Wpuf\Platform\REST\Rate_Limit;
@@ -162,6 +163,12 @@ class FrontendServiceProvider extends ServiceProvider {
             AccountController::class,
             function ( $container ) {
                 return new AccountController( $container->get( Account_Service::class ), $container->get( Upload_Service::class ) );
+            }
+        );
+        $this->share_tagged(
+            AuthController::class,
+            function ( $container ) {
+                return new AuthController( new \WeDevs\Wpuf\Widgets\Login_Widget(), $container->get( Rate_Limit::class ) );
             }
         );
     }

@@ -546,81 +546,139 @@ function get_formatted_mail_body( $message, $subject ) {
 }
 
 /**
- * Retrieve a states drop down
+ * The state field of a country: a drop-down of its states, or `nostates`
+ * when it has none (the country select of the billing address).
  *
- * @return void
+ * @since WPUF_SINCE
+ *
+ * @param string $country    Country code
+ * @param string $field_name Name (and id, class) of the state field
+ *
+ * @return string The `<select>` markup, or `nostates`
  */
-function wpuf_ajax_get_states_field() {
-    check_ajax_referer( 'wpuf_ajax_address' );
-
-    $country = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
+function wpuf_get_states_field_html( $country, $field_name ) {
     $cs        = new WeDevs\Wpuf\Data\Country_State();
     $countries = $cs->countries();
     $states    = isset( $countries[ $country ] ) ? $cs->getStates( $countries[ $country ] ) : [];
 
-    if ( ! empty( $states ) ) {
-        $field_name = isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '';
+    if ( empty( $states ) ) {
+        return 'nostates';
+    }
 
-        $args = [
+    return wpuf_select(
+        [
             'name'             => $field_name,
             'id'               => $field_name,
             'class'            => $field_name,
             'options'          => $states,
             'show_option_all'  => false,
             'show_option_none' => false,
-        ];
+        ]
+    );
+}
 
-        $response = wpuf_select( $args );
-    } else {
-        $response = 'nostates';
-    }
+/**
+ * Retrieve a states drop down
+ *
+ * @deprecated WPUF_SINCE The billing script calls the REST route
+ *             `wpuf/v1/account/billing-address/states` (wpuf_get_states_field_html()).
+ *
+ * @return void
+ */
+function wpuf_ajax_get_states_field() {
+    check_ajax_referer( 'wpuf_ajax_address' );
 
-    wp_send_json( $response ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+    $country    = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
+    $field_name = isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '';
+
+    wp_send_json( wpuf_get_states_field_html( $country, $field_name ) ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+}
+
+/**
+ * Save the billing address of a user and work out the tax of the item on the
+ * pay page for it.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param int   $user_id User
+ * @param array $input   billing_add_line1, billing_add_line2, billing_city, billing_state,
+ *                       billing_zip, billing_country, type (pack|post), id (unslashed)
+ *
+ * @return array|null `tax` and `cost` for the pay page, null when no tax applies (or no Pro)
+ */
+function wpuf_save_billing_address( $user_id, array $input ) {
+    $value = function ( $key ) use ( $input ) {
+        return isset( $input[ $key ] ) ? sanitize_text_field( (string) $input[ $key ] ) : '';
+    };
+
+    $address_fields = [
+        'add_line_1' => $value( 'billing_add_line1' ),
+        'add_line_2' => $value( 'billing_add_line2' ),
+        'city'       => $value( 'billing_city' ),
+        'state'      => $value( 'billing_state' ),
+        'zip_code'   => $value( 'billing_zip' ),
+        'country'    => $value( 'billing_country' ),
+    ];
+
+    update_user_meta( $user_id, 'wpuf_address_fields', $address_fields );
+
+    $post_data = [
+        'type'            => $value( 'type' ),
+        'id'              => $value( 'id' ),
+        'billing_country' => $address_fields['country'],
+        'billing_state'   => $address_fields['state'],
+    ];
+
+    /**
+     * Filters the tax of the pay page item for a billing address (Pro answers it).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array|null $response  `tax` (rate) and `cost` (total), or null for no change
+     * @param array      $post_data type, id, billing_country, billing_state
+     */
+    $response = apply_filters( 'wpuf_billing_tax_response', null, $post_data );
+
+    return is_array( $response ) ? $response : null;
 }
 
 /**
  * Performs tax calculations and updates billing address
+ *
+ * @deprecated WPUF_SINCE The billing script calls the REST route
+ *             `wpuf/v1/account/billing-address` (wpuf_save_billing_address()).
  *
  * @return void
  */
 function wpuf_update_billing_address() {
     check_ajax_referer( 'wpuf_ajax_address' );
 
-    ob_start();
+    $fields = [ 'billing_add_line1', 'billing_add_line2', 'billing_city', 'billing_state', 'billing_zip', 'billing_country', 'type', 'id' ];
+    $input  = [];
 
-    $user_id        = get_current_user_id();
-    $add_line_1 = isset( $_POST['billing_add_line1'] ) ? sanitize_text_field( wp_unslash( $_POST['billing_add_line1'] ) ) : '';
-    $add_line_2 = isset( $_POST['billing_add_line2'] ) ? sanitize_text_field( wp_unslash( $_POST['billing_add_line2'] ) ) : '';
-    $city       = isset( $_POST['billing_city'] ) ? sanitize_text_field( wp_unslash( $_POST['billing_city'] ) ) : '';
-    $state      = isset( $_POST['billing_state'] ) ? sanitize_text_field( wp_unslash( $_POST['billing_state'] ) ) : '';
-    $zip        = isset( $_POST['billing_zip'] ) ? sanitize_text_field( wp_unslash( $_POST['billing_zip'] ) ) : '';
-    $country    = isset( $_POST['billing_country'] ) ? sanitize_text_field( wp_unslash( $_POST['billing_country'] ) ) : '';
-    $type       = isset( $_POST['type'] ) ? sanitize_text_field( wp_unslash( $_POST['type'] ) ) : '';
-    $id         = isset( $_POST['id'] ) ? sanitize_text_field( wp_unslash( $_POST['id'] ) ) : '';
+    foreach ( $fields as $field ) {
+        $input[ $field ] = isset( $_POST[ $field ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field ] ) ) : '';
+    }
 
-    $address_fields = [
-        'add_line_1'    => $add_line_1,
-        'add_line_2'    => $add_line_2,
-        'city'          => $city,
-        'state'         => $state,
-        'zip_code'      => $zip,
-        'country'       => $country,
+    $response = wpuf_save_billing_address( get_current_user_id(), $input );
+
+    if ( null !== $response ) {
+        wp_send_json( $response );
+    }
+
+    $post_data = [
+        'type'            => $input['type'],
+        'id'              => $input['id'],
+        'billing_country' => $input['billing_country'],
+        'billing_state'   => $input['billing_state'],
     ];
 
-    update_user_meta( $user_id, 'wpuf_address_fields', $address_fields );
-
-    $post_data['type']            = $type;
-    $post_data['id']              = $id;
-    $post_data['billing_country'] = $country;
-    $post_data['billing_state']   = $state;
-
-    $is_pro = wpuf()->is_pro();
-
-    if ( $is_pro ) {
+    // An older Pro answers through this action (it prints the JSON and exits).
+    if ( wpuf()->is_pro() ) {
         do_action( 'wpuf_calculate_tax', $post_data );
-    } else {
-        die();
     }
+
+    die();
 }
 
 /**

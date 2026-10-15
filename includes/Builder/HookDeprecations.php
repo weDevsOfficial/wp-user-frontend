@@ -96,7 +96,7 @@ class HookDeprecations {
      */
     public function register() {
         add_action( 'admin_notices', [ $this, 'render_notice' ] );
-        add_action( 'wp_ajax_' . self::DISMISS_ACTION, [ $this, 'dismiss_notice' ] );
+        add_action( 'admin_post_' . self::DISMISS_ACTION, [ $this, 'dismiss_notice' ] );
     }
 
     /**
@@ -294,7 +294,7 @@ class HookDeprecations {
             return;
         }
 
-        $dismiss = wp_nonce_url( admin_url( 'admin-ajax.php?action=' . self::DISMISS_ACTION ), self::DISMISS_ACTION );
+        $dismiss = wp_nonce_url( admin_url( 'admin-post.php?action=' . self::DISMISS_ACTION ), self::DISMISS_ACTION );
         ?>
         <div class="notice notice-warning">
             <p><strong><?php esc_html_e( 'WP User Frontend: a plugin uses form builder hooks that were retired with the Vue builder.', 'wp-user-frontend' ); ?></strong></p>
@@ -327,7 +327,7 @@ class HookDeprecations {
      * @return void
      */
     public function dismiss_notice() {
-        check_ajax_referer( self::DISMISS_ACTION );
+        check_admin_referer( self::DISMISS_ACTION );
 
         if ( ! current_user_can( wpuf_admin_role() ) ) {
             wp_die( esc_html__( 'Permission denied', 'wp-user-frontend' ) );

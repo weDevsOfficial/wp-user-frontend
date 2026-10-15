@@ -383,6 +383,8 @@ class Frontend {
                 'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
                 'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
                 'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
+                'rest'        => wpuf_rest_script_data(),
+                'upload_nonce' => wp_create_nonce( 'wpuf-upload-nonce' ),
                 'ajaxurl'    => admin_url( 'admin-ajax.php' ),
                 'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
                 'plupload'   => [
@@ -413,6 +415,7 @@ class Frontend {
             'wpuf-frontend-form', 'wpuf_frontend', apply_filters(
                 'wpuf_frontend_object', [
                     'asset_url'                    => WPUF_ASSET_URI,
+                    'rest'                          => wpuf_rest_script_data(),
                     'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
                     'error_message'                => __( 'Please fix the errors to proceed', 'wp-user-frontend' ),
                     'nonce'                        => wp_create_nonce( 'wpuf_nonce' ),
@@ -480,6 +483,7 @@ class Frontend {
             'wpuf-billing-address',
             'ajax_object',
             [
+                'rest'         => wpuf_rest_script_data(),
                 'ajaxurl'     => admin_url( 'admin-ajax.php' ),
                 'fill_notice' => __( 'Some Required Fields are not filled!', 'wp-user-frontend' ),
             ]

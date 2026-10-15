@@ -44,24 +44,25 @@ class FrontendProviderTest extends WP_UnitTestCase {
      */
     public function test_ajax_uses_shared_handlers() {
         $platform = wpuf()->platform();
-        $form     = $platform->get( \WeDevs\Wpuf\Frontend\Frontend_Form::class );
+        $account  = $platform->get( \WeDevs\Wpuf\Frontend\Frontend_Account::class );
         $ajax     = new \WeDevs\Wpuf\Ajax();
 
         $this->assertInstanceOf( \WeDevs\Wpuf\Ajax::class, $ajax );
-        $this->assertSame( $form, $platform->get( \WeDevs\Wpuf\Frontend\Frontend_Form::class ) );
+        $this->assertSame( $account, $platform->get( \WeDevs\Wpuf\Frontend\Frontend_Account::class ) );
 
-        $callbacks = $GLOBALS['wp_filter']['wp_ajax_wpuf_draft_post']->callbacks;
+        // The classic account templates (theme overrides) still post this action.
+        $callbacks = $GLOBALS['wp_filter']['wp_ajax_wpuf_account_update_profile']->callbacks;
         $found     = false;
 
         foreach ( $callbacks as $priority ) {
             foreach ( $priority as $cb ) {
-                if ( is_array( $cb['function'] ) && $cb['function'][0] === $form && 'draft_post' === $cb['function'][1] ) {
+                if ( is_array( $cb['function'] ) && $cb['function'][0] === $account && 'update_profile' === $cb['function'][1] ) {
                     $found = true;
                 }
             }
         }
 
-        $this->assertTrue( $found, 'wpuf_draft_post is bound to the shared Frontend_Form' );
+        $this->assertTrue( $found, 'wpuf_account_update_profile is bound to the shared Frontend_Account' );
     }
 
     /**

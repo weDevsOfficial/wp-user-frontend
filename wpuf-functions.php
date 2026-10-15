@@ -187,9 +187,6 @@ add_filter( 'the_content', 'wpuf_show_custom_fields' );
     }
 }*/
 
-add_action( 'wp_ajax_wpuf_get_child_cat', 'wpuf_get_child_cats' );
-add_action( 'wp_ajax_nopriv_wpuf_get_child_cat', 'wpuf_get_child_cats' );
-
 /*
  * Generates a random integer for a WPUF form field id (the builder does the same in JS)
  *

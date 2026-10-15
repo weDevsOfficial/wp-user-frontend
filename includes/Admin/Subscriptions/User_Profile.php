@@ -459,20 +459,39 @@ class User_Profile {
             return;
         }
 
-        $userid = isset( $_POST['userid'] ) ? intval( wp_unslash( $_POST['userid'] ) ) : 0;
+        $userid  = isset( $_POST['userid'] ) ? intval( wp_unslash( $_POST['userid'] ) ) : 0;
+        $pack_id = isset( $_POST['packid'] ) ? intval( wp_unslash( $_POST['packid'] ) ) : 0;
 
-        echo esc_html( Stores::user_packs()->delete( $userid ) ? '1' : '' );
+        echo esc_html( self::remove_user_pack( $userid, $pack_id ) ? '1' : '' );
+        exit;
+    }
+
+    /**
+     * Remove the pack of a user (the user profile screen's remove button, REST
+     * `wpuf/v1/admin/users/{id}/pack`): the user pack, the PayPal recurring
+     * profile, the subscriber row. The caller checks the capability.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $user_id User
+     * @param int $pack_id Pack the user had (0: unknown, the subscriber row stays)
+     *
+     * @return bool Whether the user pack was removed
+     */
+    public static function remove_user_pack( $user_id, $pack_id = 0 ) {
+        $deleted = (bool) Stores::user_packs()->delete( $user_id );
+
         // A recurring PayPal pack is cancelled at PayPal too (the old call here
         // named a method that no longer exists and fatalled before subscriber_cancel).
-        if ( Stores::user_packs()->paypal_subscription_id( $userid ) ) {
-            wpuf()->paypal->subscription_cancel( $userid );
+        if ( Stores::user_packs()->paypal_subscription_id( $user_id ) ) {
+            wpuf()->paypal->subscription_cancel( $user_id );
         }
 
-        if ( isset( $_POST['packid'] ) ) {
-            $pack_id = intval( wp_unslash( $_POST['packid'] ) );
-            wpuf()->subscription->subscriber_cancel( $userid, $pack_id );
+        if ( $pack_id ) {
+            wpuf()->subscription->subscriber_cancel( $user_id, $pack_id );
         }
-        exit;
+
+        return $deleted;
     }
 
     /**

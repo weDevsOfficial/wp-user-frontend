@@ -523,3 +523,50 @@ function wpuf_include_once( $file_location ) {
         include_once $file_location;
     }
 }
+
+/**
+ * What a script needs to call the `wpuf/v1` REST routes: the namespace root
+ * and the `wp_rest` nonce (sent as `X-WP-Nonce`). The classic scripts get it
+ * in their localized objects (`rest`), so every request goes through REST.
+ *
+ * @since WPUF_SINCE
+ *
+ * @return array root, nonce
+ */
+function wpuf_rest_script_data() {
+    return [
+        'root'  => esc_url_raw( rest_url( 'wpuf/v1/' ) ),
+        'nonce' => wp_create_nonce( 'wp_rest' ),
+    ];
+}
+
+/**
+ * A JavaScript expression that POSTs to a `wpuf/v1` route with the `wp_rest`
+ * nonce and returns the fetch promise: for the inline scripts of the admin
+ * notices, which print on any admin screen without the `wpuf-rest` script.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $path Route under `wpuf/v1/`, e.g. `admin/notices/review/dismiss`
+ * @param array  $data JSON body
+ *
+ * @return string JavaScript (built from wp_json_encode(), safe to print in a script)
+ */
+function wpuf_rest_post_js( $path, array $data = [] ) {
+    $rest    = wpuf_rest_script_data();
+    $options = [
+        'method'      => 'POST',
+        'credentials' => 'same-origin',
+        'headers'     => [
+            'X-WP-Nonce'   => $rest['nonce'],
+            'Content-Type' => 'application/json',
+        ],
+        'body'        => wp_json_encode( (object) $data ),
+    ];
+
+    return sprintf(
+        'window.fetch(%1$s,%2$s)',
+        wp_json_encode( $rest['root'] . ltrim( $path, '/' ) ),
+        wp_json_encode( $options )
+    );
+}

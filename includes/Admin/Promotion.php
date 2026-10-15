@@ -208,10 +208,7 @@ class Promotion {
                     e.preventDefault();
                     jQuery("#wpuf-review-notice").hide();
 
-                    wp.ajax.post('wpuf_dismiss_review_notice', {
-                        dismissed: true,
-                        _wpnonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_nonce' ) ); ?>'
-                    });
+                    <?php echo wpuf_rest_post_js( 'admin/notices/review/dismiss' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON-encoded JS. ?>;
                 });
             </script>
         <?php
@@ -221,6 +218,7 @@ class Promotion {
      * Dismiss promotion notice
      *
      * @since  2.5
+     * @deprecated WPUF_SINCE The notice calls the REST route `wpuf/v1/admin/notices/promotion/dismiss`.
      *
      * @return void
      */
@@ -292,11 +290,7 @@ class Promotion {
             jQuery('body').on('click', '#wpuf-bfcm-notice .notice-dismiss', function (e) {
                 e.preventDefault();
                 jQuery('#wpuf-bfcm-notice').remove();
-                wp.ajax.post('wpuf_dismiss_promotional_offer_notice', {
-                    dismissed: true,
-                    option_name: '<?php echo esc_html( $option_name ); ?>',
-                    _wpnonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_nonce' ) ); ?>'
-                });
+                <?php echo wpuf_rest_post_js( 'admin/notices/promotion/dismiss', [ 'key' => $option_name ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON-encoded JS. ?>;
             });
         </script>
         <?php
@@ -306,6 +300,7 @@ class Promotion {
      * Dismiss review notice
      *
      * @since  3.1.0
+     * @deprecated WPUF_SINCE The notice calls the REST route `wpuf/v1/admin/notices/review/dismiss`.
      *
      * @return void
      **/

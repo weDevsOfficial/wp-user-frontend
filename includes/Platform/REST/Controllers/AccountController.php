@@ -108,6 +108,54 @@ class AccountController extends RestController {
         $this->route( '/account/password', WP_REST_Server::EDITABLE, 'update_password', $logged_in );
         $this->route( '/account/avatar', WP_REST_Server::CREATABLE, 'update_avatar', $logged_in );
         $this->route( '/account/avatar', WP_REST_Server::DELETABLE, 'delete_avatar', $logged_in );
+        $this->route(
+            '/account/billing-address', WP_REST_Server::EDITABLE, 'update_billing_address', $logged_in, [
+                'billing_country'   => [
+					'type' => 'string',
+					'default' => '',
+				],
+                'billing_state'     => [
+					'type' => 'string',
+					'default' => '',
+				],
+                'billing_add_line1' => [
+					'type' => 'string',
+					'default' => '',
+				],
+                'billing_add_line2' => [
+					'type' => 'string',
+					'default' => '',
+				],
+                'billing_city'      => [
+					'type' => 'string',
+					'default' => '',
+				],
+                'billing_zip'       => [
+					'type' => 'string',
+					'default' => '',
+				],
+                'type'              => [
+					'type' => 'string',
+					'default' => '',
+				],
+                'id'                => [
+					'type' => 'string',
+					'default' => '',
+				],
+            ]
+        );
+        $this->route(
+            '/account/billing-address/states', WP_REST_Server::READABLE, 'get_billing_states', $logged_in, [
+                'country'    => [
+					'type' => 'string',
+					'default' => '',
+				],
+                'field_name' => [
+					'type' => 'string',
+					'default' => '',
+				],
+            ]
+        );
     }
 
     /**
@@ -222,9 +270,9 @@ class AccountController extends RestController {
      * @return \WP_REST_Response|WP_Error
      */
     public function update_profile( WP_REST_Request $request ) {
-        $body   = $this->body( $request );
+        $body = $this->body( $request );
         // The profile hooks see the request the classic account form posted
-        // (the route checked the account nonce already).
+        // (the `wp_rest` cookie nonce is this route's CSRF check).
         $result = Submission_Context::run( $body, fn() => $this->account->update_profile( $body ), [ 'nonce' => false ] );
 
         return is_wp_error( $result ) ? $result : rest_ensure_response(
@@ -332,6 +380,74 @@ class AccountController extends RestController {
         }
 
         return rest_ensure_response( [ 'profile' => $this->account->profile() ] );
+    }
+
+    /**
+     * PUT /account/billing-address: save the billing address; on the pay page
+     * (`type` + `id` of the item) also the tax rate and total for it.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Request
+     *
+     * @return \WP_REST_Response
+     */
+    public function update_billing_address( WP_REST_Request $request ) {
+        $keys  = [ 'billing_add_line1', 'billing_add_line2', 'billing_city', 'billing_state', 'billing_zip', 'billing_country', 'type', 'id' ];
+        $input = [];
+
+        foreach ( $keys as $key ) {
+            $input[ $key ] = (string) $request->get_param( $key );
+        }
+
+        $tax = wpuf_save_billing_address( get_current_user_id(), $input );
+
+        if ( null === $tax && wpuf()->is_pro() ) {
+            // An older Pro answers only through this action: it prints the JSON
+            // response and exits, which is the response of this route then.
+            do_action(
+                'wpuf_calculate_tax',
+                [
+                    'type'            => sanitize_text_field( $input['type'] ),
+                    'id'              => sanitize_text_field( $input['id'] ),
+                    'billing_country' => sanitize_text_field( $input['billing_country'] ),
+                    'billing_state'   => sanitize_text_field( $input['billing_state'] ),
+                ]
+            );
+        }
+
+        return rest_ensure_response(
+            null === $tax ? [ 'saved' => true ] : array_merge( [ 'saved' => true ], $tax )
+        );
+    }
+
+    /**
+     * GET /account/billing-address/states: the state field of a country
+     * (`html`, empty with `states: false` when the country has none).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Request
+     *
+     * @return \WP_REST_Response
+     */
+    public function get_billing_states( WP_REST_Request $request ) {
+        $html = wpuf_get_states_field_html(
+            sanitize_text_field( (string) $request->get_param( 'country' ) ),
+            sanitize_text_field( (string) $request->get_param( 'field_name' ) )
+        );
+
+        return rest_ensure_response(
+            'nostates' === $html
+                ? [
+					'states' => false,
+					'html' => '',
+				]
+                : [
+					'states' => true,
+					'html' => $html,
+				]
+        );
     }
 
     /**

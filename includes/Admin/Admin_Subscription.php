@@ -204,6 +204,20 @@ class Admin_Subscription {
     }
 
     /**
+     * Remove the pack of a user.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $user_id User
+     * @param int $pack_id Pack the user had
+     *
+     * @return bool
+     */
+    public function remove_user_pack( $user_id, $pack_id = 0 ) {
+        return User_Profile::remove_user_pack( $user_id, $pack_id );
+    }
+
+    /**
      * The pack fields group (built on first use).
      *
      * @since WPUF_SINCE

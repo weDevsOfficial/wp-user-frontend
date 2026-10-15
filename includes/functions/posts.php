@@ -885,30 +885,23 @@ function wpuf_get_attachment_id_from_url( $attachment_url = '' ) {
 }
 
 /**
- * Non logged in users tag autocomplete
+ * The term names of a taxonomy matching what a visitor types (the tag
+ * suggest of the classic text taxonomy input): the last comma-separated part
+ * of the input, 2 characters at least.
  *
- * @since 2.1.9
+ * @since WPUF_SINCE
  *
- * @global object $wpdb
+ * @param string $taxonomy Taxonomy
+ * @param string $search   What was typed (all of the input)
+ * @param int[]  $term_ids Only these terms (the field's "child of" setting), empty for all
+ *
+ * @return string[]
  */
-function wpuf_ajax_tag_search() {
-    if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_REQUEST['nonce'] ) ), 'wpuf_ajax_tag_search' ) ) {
-        wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
-    }
-
+function wpuf_tag_suggestions( $taxonomy, $search, array $term_ids = [] ) {
     global $wpdb;
 
-    $taxonomy = isset( $_GET['tax'] ) ? sanitize_text_field( wp_unslash( $_GET['tax'] ) ) : '';
-    $term_ids = ! empty( $_GET['term_ids'] ) ? sanitize_text_field( wp_unslash( $_GET['term_ids'] ) ) : ''; // a comma list of ids, cast below
-    $tax      = get_taxonomy( $taxonomy );
-
-    if ( ! $tax ) {
-        wp_die( 0 );
-    }
-
-    $s = isset( $_GET['q'] ) ? sanitize_text_field( wp_unslash( $_GET['q'] ) ) : '';
-
     $comma = _x( ',', 'tag delimiter', 'wp-user-frontend' );
+    $s     = (string) $search;
 
     if ( ',' !== $comma ) {
         $s = str_replace( $comma, ',', $s );
@@ -921,20 +914,66 @@ function wpuf_ajax_tag_search() {
 
     $s = trim( $s );
 
-    if ( strlen( $s ) < 2 ) {
-        wp_die();
-    } // require 2 chars for matching
+    // require 2 chars for matching
+    if ( strlen( $s ) < 2 || ! get_taxonomy( $taxonomy ) ) {
+        return [];
+    }
 
-    $term_id_list = array_values( array_filter( array_map( 'absint', explode( ',', (string) $term_ids ) ) ) );
+    $term_id_list = array_values( array_filter( array_map( 'absint', $term_ids ) ) );
 
     if ( ! empty( $term_id_list ) ) {
         $placeholders = implode( ',', array_fill( 0, count( $term_id_list ), '%d' ) );
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- placeholders only
-        $results = $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.term_id IN ($placeholders) AND t.name LIKE (%s)", array_merge( [ $taxonomy ], $term_id_list, [ '%' . $wpdb->esc_like( $s ) . '%' ] ) ) );
-    } else {
-        $results = $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.name LIKE (%s)", $taxonomy, '%' . $wpdb->esc_like( $s ) . '%' ) );
+        return (array) $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.term_id IN ($placeholders) AND t.name LIKE (%s)", array_merge( [ $taxonomy ], $term_id_list, [ '%' . $wpdb->esc_like( $s ) . '%' ] ) ) );
     }
-    echo esc_html( join( "\n", $results ) );
+
+    return (array) $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.name LIKE (%s)", $taxonomy, '%' . $wpdb->esc_like( $s ) . '%' ) );
+}
+
+/**
+ * The URL the classic tag suggest (jQuery `suggest()`) reads: the REST route
+ * `wpuf/v1/terms/suggest`, which answers plain text, one name per line.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $taxonomy Taxonomy
+ * @param int[]  $term_ids Only these terms, empty for all
+ *
+ * @return string
+ */
+function wpuf_tag_suggest_url( $taxonomy, array $term_ids = [] ) {
+    $args = [ 'tax' => $taxonomy ];
+
+    if ( $term_ids ) {
+        $args['term_ids'] = implode( ',', array_map( 'absint', $term_ids ) );
+    }
+
+    return esc_url_raw( add_query_arg( $args, rest_url( 'wpuf/v1/terms/suggest' ) ) );
+}
+
+/**
+ * Non logged in users tag autocomplete
+ *
+ * @since 2.1.9
+ * @deprecated WPUF_SINCE The suggest reads the REST route `wpuf/v1/terms/suggest` (wpuf_tag_suggestions()).
+ *
+ * @global object $wpdb
+ */
+function wpuf_ajax_tag_search() {
+    if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_REQUEST['nonce'] ) ), 'wpuf_ajax_tag_search' ) ) {
+        wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+    }
+
+    $taxonomy = isset( $_GET['tax'] ) ? sanitize_text_field( wp_unslash( $_GET['tax'] ) ) : '';
+    $term_ids = ! empty( $_GET['term_ids'] ) ? sanitize_text_field( wp_unslash( $_GET['term_ids'] ) ) : ''; // a comma list of ids, cast below
+
+    if ( ! get_taxonomy( $taxonomy ) ) {
+        wp_die( 0 );
+    }
+
+    $s = isset( $_GET['q'] ) ? sanitize_text_field( wp_unslash( $_GET['q'] ) ) : '';
+
+    echo esc_html( join( "\n", wpuf_tag_suggestions( $taxonomy, $s, explode( ',', (string) $term_ids ) ) ) );
     wp_die();
 }
 

@@ -333,23 +333,17 @@
             var taxonomy = typeof taxonomy !== 'undefined' ? taxonomy : 'category';
             var field_attr = $(dropdown).siblings('span').data('taxonomy');
 
-            $.ajax({
-                type: 'post',
-                url: wpuf_frontend.ajaxurl,
-                data: {
-                    action: 'wpuf_get_child_cat',
-                    catID: cat,
-                    nonce: wpuf_frontend.nonce,
-                    field_attr: field_attr,
-                    form_id: form_id,
-                },
-                beforeSend: function() {
-                    $(dropdown).parent().parent().next('.loading').addClass('wpuf-loading');
-                },
-                complete: function() {
-                    $(dropdown).parent().parent().next('.loading').removeClass('wpuf-loading');
-                },
-                success: function(html) {
+            var $loading = $(dropdown).parent().parent().next('.loading');
+
+            $loading.addClass('wpuf-loading');
+
+            // REST GET wpuf/v1/forms/{id}/child-terms: the field's settings come from the stored form.
+            window.wpufRest.request( wpuf_frontend.rest, 'forms/' + parseInt( form_id, 10 ) + '/child-terms', {
+                data: { field: field_attr && field_attr.name ? field_attr.name : taxonomy, parent: parseInt( cat, 10 ) || 0 }
+            } ).then( function( body ) {
+                    var html = body && body.html ? body.html : '';
+
+                    $loading.removeClass('wpuf-loading');
                     //console.log( html ); return;
                     $(dropdown).parent().nextAll().each(function(){
                         $(this).remove();
@@ -361,8 +355,9 @@
                     }
 
                     $( document ).trigger( 'wpuf-ajax-fetched-child-categories', container_id, level, taxonomy );
-                }
-            });
+            } ).catch( function() {
+                $loading.removeClass('wpuf-loading');
+            } );
         },
 
         cloneField: function(e) {
@@ -469,7 +464,7 @@
 
             var self = $(this),
                 form = $(this).closest('form'),
-                form_data = form.serialize() + '&action=wpuf_draft_post',
+                form_data = form.serialize(),
                 post_id = form.find('input[type="hidden"][name="post_id"]').val();
 
             var rich_texts = [],
@@ -490,7 +485,12 @@
 
 
             self.after(' <span class="wpuf-loading"></span>');
-            $.post(wpuf_frontend.ajaxurl, form_data, function(res) {
+
+            // REST POST wpuf/v1/forms/{id}/drafts.
+            window.wpufRest.request( wpuf_frontend.rest, 'forms/' + parseInt( form.find('input[name="form_id"]').val(), 10 ) + '/drafts', {
+                method: 'POST',
+                data: window.wpufRest.formBody( form_data )
+            } ).then( function( res ) {
                 // console.log(res, post_id);
                 if ( typeof post_id === 'undefined') {
                     var html = '<input type="hidden" name="post_id" value="' + res.post_id +'">';
@@ -507,7 +507,10 @@
                 $('.wpuf-draft-saved').delay(2500).fadeOut('fast', function(){
                     $(this).remove();
                 });
-            })
+            } ).catch( function( error ) {
+                self.next('span.wpuf-loading').remove();
+                Swal.fire( { html: error.message, icon: 'warning', confirmButtonColor: '#d54e21', confirmButtonText: 'OK' } );
+            } );
         },
 
         // Frontend account dashboard update profile
@@ -515,16 +518,66 @@
             e.preventDefault();
             var form = $(this).closest('form');
 
-            $.post(wpuf_frontend.ajaxurl, form.serialize(), function (res) {
-                if (res.success) {
-                    form.find('.wpuf-error').hide();
-                    form.find('.wpuf-success').show();
-                } else {
-                    form.find('.wpuf-success').hide();
-                    form.find('.wpuf-error').show();
-                    form.find('.wpuf-error').text(res.data);
-                }
-            });
+            // REST PUT wpuf/v1/account/profile.
+            window.wpufRest.request( wpuf_frontend.rest, 'account/profile', { method: 'PUT', data: window.wpufRest.formBody( form.serialize() ) } ).then( function () {
+                form.find('.wpuf-error').hide();
+                form.find('.wpuf-success').show();
+            } ).catch( function ( error ) {
+                form.find('.wpuf-success').hide();
+                form.find('.wpuf-error').show();
+                form.find('.wpuf-error').text( error.message );
+            } );
+        },
+
+        /**
+         * Send a form submission to its REST route and answer with the object
+         * the admin-ajax action answered (`{ success, data }`), so the handlers
+         * below and the `wpuf:postform:success` listeners read the same shape:
+         * a post form to `forms/{id}/submissions` (`/{post_id}` on an edit), a
+         * Pro registration form to `registration/{id}/submissions`, a Pro
+         * profile form to `registration/{id}/profile`. A form posting another
+         * action (an add-on) still goes to admin-ajax.
+         *
+         * @param {jQuery} form      The form
+         * @param {string} form_data The serialized form (validateForm())
+         * @return {Promise<Object>} Always resolves with `{ success, data, error, type, redirect_to }`
+         */
+        submitRequest: function( form, form_data ) {
+            var action = form.find('input[name="action"]').val();
+            var formId = parseInt( form.find('input[name="form_id"]').val(), 10 );
+            var postId = parseInt( form.find('input[name="post_id"]').val(), 10 );
+            var route = null;
+            var method = 'POST';
+
+            if ( 'wpuf_submit_post' === action ) {
+                route = 'forms/' + formId + '/submissions' + ( postId ? '/' + postId : '' );
+                method = postId ? 'PUT' : 'POST';
+            } else if ( 'wpuf_submit_register' === action ) {
+                route = 'registration/' + formId + '/submissions';
+            } else if ( 'wpuf_update_profile' === action ) {
+                route = 'registration/' + formId + '/profile';
+                method = 'PUT';
+            }
+
+            if ( ! route ) {
+                return new Promise( function( resolve ) {
+                    $.post( wpuf_frontend.ajaxurl, form_data, resolve );
+                } );
+            }
+
+            return window.wpufRest.request( wpuf_frontend.rest, route, { method: method, data: window.wpufRest.formBody( form_data ) } ).then( function( payload ) {
+                return { success: true, data: payload };
+            }, function( error ) {
+                var data = error && error.data && 'object' === typeof error.data ? error.data : {};
+
+                return {
+                    success: false,
+                    data: data,
+                    error: data.error || error.message,
+                    type: data.type,
+                    redirect_to: data.redirect_to
+                };
+            } );
         },
 
         formStepCheck : function(e,fieldset) {
@@ -551,8 +604,7 @@
                 form.find('li.wpuf-submit').append('<span class="wpuf-loading"></span>');
                 submitButton.attr('disabled', 'disabled').addClass('button-primary-disabled');
 
-                $.post(wpuf_frontend.ajaxurl, form_data, function(res) {
-                    // var res = $.parseJSON(res);
+                WP_User_Frontend.submitRequest( form, form_data ).then( function( res ) {
                     if ( res.success) {
                         // enable external plugins to use events
                         $('body').trigger('wpuf:postform:success', res);
@@ -1100,16 +1152,19 @@
                 browse_button: button,
                 container: container,
                 multipart: true,
+                // REST POST wpuf/v1/uploads (image only).
                 multipart_params: {
-                    action: 'wpuf_insert_image',
-                    form_id: $( '#' + button ).data('form_id')
+                    form_id: $( '#' + button ).data('form_id'),
+                    image_only: 1,
+                    wpuf_nonce: wpuf_upload.upload_nonce
                 },
+                headers: { 'X-WP-Nonce': wpuf_upload.rest.nonce },
                 multiple_queues: false,
                 multi_selection: false,
                 urlstream_upload: true,
                 file_data_name: 'wpuf_file',
                 max_file_size: wpuf_upload.max_filesize,
-                url: wpuf_upload.plupload.url,
+                url: wpuf_upload.rest.root + 'uploads',
                 flash_swf_url: wpuf_upload.flash_swf_url,
                 filters: [{
                     title: 'Allowed Files',
@@ -1152,7 +1207,17 @@
 
                 $('#' + file.id).remove();
 
-                if ( response.response !== 'error' ) {
+                // REST answers JSON: the image markup in `html`, or an error.
+                var uploaded = null;
+
+                try {
+                    uploaded = JSON.parse( response.response );
+                } catch ( e ) {
+                    uploaded = null;
+                }
+
+                if ( uploaded && uploaded.html ) {
+                    response = { response: uploaded.html };
                     var success = false;
 
                     if ( typeof tinyMCE !== 'undefined' ) {
@@ -1186,10 +1251,11 @@
             e.preventDefault();
 
             if ( confirm( $(this).data('confirm') ) ) {
-                $.post(wpuf_frontend.ajaxurl, {action: 'wpuf_delete_avatar', _wpnonce: wpuf_frontend.nonce}, function() {
+                // REST DELETE wpuf/v1/profile/avatar (Pro: the avatar field's `user_avatar`).
+                window.wpufRest.request( wpuf_frontend.rest, 'profile/avatar', { method: 'DELETE' } ).then( function() {
                     $(e.target).parent().remove();
                     $('[id^=wpuf-avatar]').css("display", "");
-                });
+                } );
             }
         },
 
@@ -1489,14 +1555,12 @@
             },
 
             make_media_embed_code: function(content, editor){
-                $.post( ajaxurl, {
-                        action:'wpuf_make_media_embed_code',
-                        content: content
-                    },
-                    function(data){
-                        editor.setContent(editor.getContent() + editor.setContent(data));
-                    }
-                )
+                var formId = parseInt( $( editor.getElement() ).closest('form').find('input[name="form_id"]').val(), 10 );
+
+                // REST POST wpuf/v1/forms/{id}/embed.
+                window.wpufRest.request( wpuf_frontend.rest, 'forms/' + formId + '/embed', { method: 'POST', data: { url: content } } ).then( function( body ) {
+                    editor.setContent( editor.getContent() + editor.setContent( body && body.html ? body.html : '' ) );
+                } );
             }
         },
 

@@ -131,6 +131,8 @@ class Posting {
             'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
             'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
             'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
+            'rest'        => wpuf_rest_script_data(),
+            'upload_nonce' => wp_create_nonce( 'wpuf-upload-nonce' ),
             'ajaxurl'    => admin_url( 'admin-ajax.php' ),
             'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
             'plupload'   => [
@@ -542,17 +544,13 @@ class Posting {
                     deleteAvatar: function(e) {
                         e.preventDefault();
 
-                        var data = {
-                            action: 'wpuf_delete_avatar',
-                            user_id : $('#profile-page').find('#user_id').val(),
-                            // _wpnonce: '<?php // echo wp_create_nonce( 'wpuf_nonce' ); ?>'
-                            _wpnonce: wpuf_admin_script.nonce
-                        };
+                        var userId = parseInt( $('#profile-page').find('#user_id').val(), 10 ) || 0;
 
                         if ( confirm( $(this).data('confirm') ) ) {
-                            $.post(ajaxurl, data, function() {
+                            // REST DELETE wpuf/v1/profile/avatar (Pro).
+                            window.wpufRest.request( wpuf_admin_script.rest, 'profile/avatar', { method: 'DELETE', data: { user_id: userId } } ).then( function() {
                                 window.location.reload();
-                            });
+                            } );
                         }
                     },
 

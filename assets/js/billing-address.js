@@ -69,12 +69,11 @@ jQuery(function($){
     $( document.body ).on('change', 'select#wpuf_biiling_country', function() {
         var $this = $(this), $tr = $this.closest('tr');
         var data = {
-            action: 'wpuf_ajax_address',
             country: $(this).val(),
-            field_name: $("#wpuf_biiling_state").attr("name"),
-            _wpnonce: $("#_wpnonce").val()
+            field_name: $("#wpuf_biiling_state").attr("name")
         };
-        $.post(ajax_object.ajaxurl, data, function (response) {
+        window.wpufRest.request( ajax_object.rest, 'account/billing-address/states', { data: data } ).then( function ( result ) {
+            var response = result && result.states ? result.html : 'nostates';
             var $old = $this.parent().next().find('input,select').first();
             // The new state field keeps the old one's id, classes and data, so it
             // looks the same and the next country change still finds it.
@@ -103,6 +102,10 @@ jQuery(function($){
                 $old.replaceWith( $select );
                 $select.prepend("<option value='' selected='selected'>- select -</option>");
             }
+        }).catch( function ( error ) {
+            if ( window.console && window.console.log ) {
+                console.log( error );
+            }
         });
     });
 
@@ -127,7 +130,6 @@ jQuery(function($){
         }
 
         var postData = {
-            action: 'wpuf_update_billing_address',
             billing_country: $wpuf_cc_address.find('#wpuf_biiling_country').val(),
             billing_state: $wpuf_cc_address.find('#wpuf_biiling_state').val(),
             billing_add_line1: $wpuf_cc_address.find('#wpuf_biiling_add_line_1').val(),
@@ -136,29 +138,29 @@ jQuery(function($){
             billing_zip: $wpuf_cc_address.find('#wpuf_biiling_zip_code').val(),
             type: $payment_form.find('#wpuf_type').html(),
             id: $payment_form.find('#wpuf_id').html(),
-            _wpnonce: $address_form.find('#_wpnonce').val(),
         };
 
+        // The REST body is JSON: drop the fields the page does not have.
+        $.each( postData, function ( key, value ) {
+            if ( undefined === value || null === value ) {
+                delete postData[ key ];
+            }
+        } );
+
         var current_ajax_count = ++ajax_tax_count;
-        jQuery.ajax({
-            type: "POST",
-            data: postData,
-            dataType: "json",
-            url: ajax_object.ajaxurl,
-            success: function (tax_response) {
-                // Only update tax info if this response is the most recent ajax call. This avoids bug with form autocomplete firing multiple ajax calls at the same time
-                if ((current_ajax_count === ajax_tax_count) && tax_response) {
+
+        window.wpufRest.request( ajax_object.rest, 'account/billing-address', { method: 'PUT', data: postData } )
+            .then( function ( tax_response ) {
+                // Only update tax info if this response is the most recent call. This avoids bug with form autocomplete firing multiple calls at the same time
+                if ( ( current_ajax_count === ajax_tax_count ) && tax_response && undefined !== tax_response.tax ) {
                     jQuery('#wpuf_pay_page_tax').html(tax_response.tax);
                     jQuery('#wpuf_pay_page_total').html(tax_response.cost);
-                    var tax_data = new Object();
-                    tax_data.postdata = postData;
-                    tax_data.response = tax_response;
                 }
-            }
-        }).fail(function (data) {
-            if ( window.console && window.console.log ) {
-                console.log( data );
-            }
-        });
+            } )
+            .catch( function ( error ) {
+                if ( window.console && window.console.log ) {
+                    console.log( error );
+                }
+            } );
     }
 });

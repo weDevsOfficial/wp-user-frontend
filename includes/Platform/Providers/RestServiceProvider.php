@@ -11,7 +11,10 @@ namespace WeDevs\Wpuf\Platform\Providers;
 use WeDevs\Wpuf\Builder\FormSave;
 use WeDevs\Wpuf\Platform\REST\Controllers\FormListController;
 use WeDevs\Wpuf\Platform\REST\Controllers\FormsController;
+use WeDevs\Wpuf\Platform\REST\Controllers\FreeModulesController;
+use WeDevs\Wpuf\Platform\REST\Controllers\NoticesController;
 use WeDevs\Wpuf\Platform\REST\Controllers\OnboardingController;
+use WeDevs\Wpuf\Platform\REST\Controllers\PostLockController;
 use WeDevs\Wpuf\Platform\REST\Controllers\SettingsController;
 use WeDevs\Wpuf\Platform\REST\Controllers\SubscribersController;
 use WeDevs\Wpuf\Platform\REST\Controllers\SubscriptionController;
@@ -87,6 +90,30 @@ class RestServiceProvider extends ServiceProvider {
             SubscribersController::class,
             function ( $container ) {
                 return new SubscribersController( $container->get( TransactionService::class ) );
+            }
+        );
+
+        // wpuf/v1/admin/notices/{notice}/dismiss, admin/integrations/acf/{task} (admin notices).
+        $this->share_tagged(
+            NoticesController::class,
+            function () {
+                return new NoticesController();
+            }
+        );
+
+        // wpuf/v1/admin/free-modules/{module} (the free Modules page, Pro off).
+        $this->share_tagged(
+            FreeModulesController::class,
+            function () {
+                return new FreeModulesController();
+            }
+        );
+
+        // wpuf/v1/admin/posts/{id}/lock (the post edit screen's "Clear Lock").
+        $this->share_tagged(
+            PostLockController::class,
+            function () {
+                return new PostLockController();
             }
         );
 

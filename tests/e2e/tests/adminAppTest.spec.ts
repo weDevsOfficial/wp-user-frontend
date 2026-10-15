@@ -210,24 +210,6 @@ test.describe('Admin app', () => {
         expect(await page.evaluate(() => (window as unknown as { wpufNoReload?: boolean }).wpufNoReload), 'no page load between the lists').toBe(true);
     });
 
-    test('APP0008 : A list row action comes back to the list in the app with its notice', { tag: ['@Lite', '@Test_APP0008'] }, async () => {
-        test.skip(!(await appOn()), 'admin app is off');
-        test.skip(!HAS_WP_CLI, 'needs WP-CLI on the site');
-
-        const id = aiWp(['eval', "echo wpuf_create_sample_form( 'APP0008 trash me', 'wpuf_forms' );"], true).trim().split('\n').pop();
-
-        await page.goto(`${APP}#/post-forms`);
-        await expect(page.locator('#wpuf-post-forms-list-table-view').first()).toBeVisible({ timeout: 30000 });
-        const nonce = await page.evaluate(() => (window as unknown as { wpuf_forms_list: { bulk_nonce: string } }).wpuf_forms_list.bulk_nonce);
-
-        // The list's row action: the server's nonce-checked list action, then back.
-        await page.goto(`${Urls.baseUrl}/wp-admin/admin.php?page=wpuf-post-forms&id=${id}&action=trash&_wpnonce=${nonce}`);
-        await expect(page).toHaveURL(/page=wp-user-frontend#\/post-forms/);
-        await expect(page.locator('#wpuf-admin-app-notices')).toContainText('1 form moved to the trash.');
-        expect(aiWp(['post', 'get', String(id), '--field=post_status']).trim()).toBe('trash');
-        aiWp(['post', 'delete', String(id), '--force']);
-    });
-
     /** Builder state from the page: form name, field count, store form id. */
     const builderState = () => page.evaluate(() => {
         const w = window as unknown as { wp: { data: { select: ( name: string ) => { getPost: () => { ID: number; post_title: string }; getFormFields: () => unknown[]; getIsDirty: () => boolean } } }; wpuf: { storeName: string } };

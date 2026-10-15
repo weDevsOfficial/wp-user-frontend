@@ -346,11 +346,29 @@ export class ParitySitePage {
         await this.page.locator(Selectors.parity.fieldOptionsPanel).getByRole('checkbox', { name: label }).check();
     }
 
-    /** Run a forms-list row action (duplicate, delete) through its admin URL, as the list does. */
+    /**
+     * Run a forms-list row action (duplicate, delete) as the list does: develop's
+     * nonce-checked admin URL, or the admin forms REST route where the list has
+     * no classic action any more.
+     */
     async doFormsListAction(page: string, formId: number, action: string) {
         await this.page.goto(`/wp-admin/admin.php?page=${page}`);
-        const nonce = await this.page.evaluate(() => (window as unknown as { wpuf_forms_list: { bulk_nonce: string } }).wpuf_forms_list.bulk_nonce);
-        await this.page.goto(`/wp-admin/admin.php?page=${page}&id=${formId}&action=${action}&_wpnonce=${nonce}`);
+        const list = await this.page.evaluate(() => (window as unknown as { wpuf_forms_list: { bulk_nonce?: string; rest_nonce: string } }).wpuf_forms_list);
+
+        if (list.bulk_nonce) {
+            await this.page.goto(`/wp-admin/admin.php?page=${page}&id=${formId}&action=${action}&_wpnonce=${list.bulk_nonce}`);
+
+            return;
+        }
+
+        const response = await this.page.request.fetch(`/wp-json/wpuf/v1/admin/forms/${formId}${'delete' === action ? '' : `/${action}`}`, {
+            method: 'delete' === action ? 'DELETE' : 'POST',
+            headers: { 'X-WP-Nonce': list.rest_nonce },
+        });
+
+        if (!response.ok()) {
+            throw new Error(`forms list ${action} failed: ${response.status()}`);
+        }
     }
 
     /** In the open builder, go to Settings and follow a path of menu labels (e.g. Modules, Zapier). */

@@ -400,11 +400,6 @@ class Assets {
                 'deps'      => [ 'jquery-ui-datepicker' ],
                 'version'   => '1.2',
             ],
-            'registration-forms'       => [
-                'src'       => WPUF_ASSET_URI . '/js/registration-forms.js',
-                'deps'      => [ 'jquery' ],
-                'in_footer' => true,
-            ],
             'admin-shortcode'          => [
                 'src'  => WPUF_ASSET_URI . '/js/admin-shortcode.js',
                 'deps' => [ 'jquery' ],

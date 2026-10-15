@@ -21,7 +21,7 @@ class Admin {
         // built here in the old order so the constructors add their hooks as before.
         $platform = wpuf()->platform();
 
-        foreach ( [ 'admin_welcome', 'menu', 'dashboard_metabox', 'form_template', 'admin_form', 'admin_form_handler' ] as $key ) {
+        foreach ( [ 'admin_welcome', 'menu', 'dashboard_metabox', 'form_template', 'admin_form' ] as $key ) {
             $this->container[ $key ] = $platform->get( AdminServiceProvider::class_of( $key ) );
         }
 

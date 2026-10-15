@@ -32,7 +32,6 @@ class AdminServiceProvider extends ServiceProvider {
         'dashboard_metabox'     => \WeDevs\Wpuf\Admin\Dashboard_Metabox::class,
         'form_template'         => \WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Templates::class,
         'admin_form'            => \WeDevs\Wpuf\Admin\Forms\Admin_Form::class,
-        'admin_form_handler'    => \WeDevs\Wpuf\Admin\Forms\Admin_Form_Handler::class,
         'admin_subscription'    => \WeDevs\Wpuf\Admin\Admin_Subscription::class,
         'settings'              => \WeDevs\Wpuf\Admin\Admin_Settings::class,
         'forms'                 => \WeDevs\Wpuf\Admin\Forms\Form_Manager::class,

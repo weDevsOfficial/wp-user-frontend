@@ -145,7 +145,7 @@ class BuilderBoot {
     /**
      * Build free's admin layer when this request has none. It is built on
      * admin requests only (is_admin()), and its classes own the builder
-     * listeners (Admin_Form, Admin_Form_Handler, Posting). Pro builds its admin
+     * listeners (Admin_Form, Posting). Pro builds its admin
      * layer for WPUF REST routes the same way (boot_admin_for_wpuf_rest).
      *
      * @return void

@@ -123,10 +123,6 @@ const FormsList = ( {
             action,
         } );
 
-        if ( action !== 'edit' ) {
-            params.append( '_wpnonce', wpuf_forms_list.bulk_nonce );
-        }
-
         return `${ adminScript().admin_url }admin.php?${ params.toString() }`;
     }, [ pageSlug ] );
 

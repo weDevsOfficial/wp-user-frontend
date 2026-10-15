@@ -73,7 +73,6 @@ assets/js/upload.min.js
 assets/css/admin.css
 assets/css/elementor-frontend-forms.css
 assets/css/frontend-forms.css
-assets/css/registration-forms.css
 assets/css/wpuf-form-builder.css
 # vite / tailwind generated CSS (bare .min.css is not caught by *.min.css.*)
 assets/css/frontend-subscriptions.min.css

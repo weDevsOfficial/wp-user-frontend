@@ -120,7 +120,6 @@ class PostFormsList extends Screen {
                 'post_counts'            => wpuf_get_forms_counts_with_status(),
                 'rest_nonce'             => wp_create_nonce( 'wp_rest' ),
                 'rest_url'               => esc_url_raw( rest_url() ),
-                'bulk_nonce'             => wp_create_nonce( 'bulk-post-forms' ),
                 'template_nonce'         => wp_create_nonce( 'wpuf_create_from_template' ),
                 'is_plain_permalink'     => empty( Stores::settings()->wp_option( 'permalink_structure' ) ),
                 'permalink_settings_url' => admin_url( 'options-permalink.php' ),
@@ -251,28 +250,6 @@ class PostFormsList extends Screen {
 
         // add-new: the load step created the form and redirected to its builder.
         return 'add-new' === $this->action() ? '' : '/post-forms';
-    }
-
-    /**
-     * The list action notices (`trashed`, `untrashed`, `deleted`,
-     * `duplicated`) show on the app page, so they travel with the redirect.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return array
-     */
-    public function app_redirect_args() {
-        $args = [];
-
-        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- notice flags set by the list actions' own redirect.
-        foreach ( [ 'trashed', 'untrashed', 'deleted', 'duplicated' ] as $key ) {
-            if ( ! empty( $_GET[ $key ] ) ) {
-                $args[ $key ] = absint( wp_unslash( $_GET[ $key ] ) );
-            }
-        }
-        // phpcs:enable WordPress.Security.NonceVerification.Recommended
-
-        return $args;
     }
 
     /**

@@ -43,7 +43,7 @@ function useLargeScreen() {
 }
 
 /**
- * Regenerate confirmation (develop's 660px modal on the shared dialog).
+ * Regenerate confirmation (the standard admin dialog).
  *
  * @param {Object}   props
  * @param {boolean}  props.open      Open.
@@ -54,20 +54,13 @@ function RegenerateDialog( { open, onConfirm, onCancel } ) {
     return (
         <ConfirmDialog
             open={ open }
-            title={ <span className="mx-auto block max-w-[480px] text-[28px] font-medium leading-[150%] text-[#111827]">{ __( 'Are you sure you want to leave and regenerate the form?', 'wp-user-frontend' ) }</span> }
-            message={ <span className="mx-auto block max-w-[420px] text-sm text-[#6B7280]">{ __( "If you decide to leave and regenerate the form, please be aware that you will lost the information you've currently generated.", 'wp-user-frontend' ) }</span> }
-            media={ (
-                <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <rect width="110" height="110" rx="55" fill="#D1FAE5" />
-                    <path d="M60 51V46C60 44.3431 58.6569 43 57 43L49 43C47.3431 43 46 44.3431 46 46L46 64C46 65.6569 47.3431 67 49 67H57C58.6569 67 60 65.6569 60 64V59M55 51L51 55M51 55L55 59M51 55L68 55" stroke="#0F172A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-            ) }
-            // Develop's order: "Leave & Regenerate" (white) then "Cancel" (green, the safe default).
+            title={ __( 'Are you sure you want to leave and regenerate the form?', 'wp-user-frontend' ) }
+            message={ __( "If you decide to leave and regenerate the form, please be aware that you will lost the information you've currently generated.", 'wp-user-frontend' ) }
+            icon="warning"
+            // Develop's order: "Leave & Regenerate" (outline) then "Cancel" (green, the safe default).
             cancelText={ __( 'Leave & Regenerate', 'wp-user-frontend' ) }
             confirmText={ __( 'Cancel', 'wp-user-frontend' ) }
             tone="primary"
-            width="660px"
-            padding="0 40px 48px"
             className="wpuf-ai-regenerate-dialog"
             onCancel={ onConfirm }
             onConfirm={ onCancel }
@@ -88,19 +81,12 @@ function ProFieldsDialog( { items, onContinue, onClose } ) {
     return (
         <ConfirmDialog
             open={ items.length > 0 }
-            title={ <span className="text-[28px] font-semibold leading-tight text-[#1F2937]">{ __( 'Pro feature detected', 'wp-user-frontend' ) }</span> }
-            message={ <span className="text-base text-[#6B7280]">{ __( 'Your form includes fields that require WPUF Pro version:', 'wp-user-frontend' ) }</span> }
-            media={ (
-                <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <rect width="110" height="110" rx="55" fill="#D1FAE5" />
-                    <path d="M66.0557 51.0931C66.0594 51.1593 66.0545 51.2268 66.0379 51.2937L64.5576 59.0337C64.4829 59.333 64.2155 59.5434 63.9082 59.545L55.0259 59.59H55.0225H46.1402C45.8312 59.59 45.5619 59.3789 45.4873 59.0781L44.0069 51.3156C43.9899 51.2468 43.9849 51.1775 43.9892 51.1096C43.4166 50.9286 43 50.391 43 49.7575C43 48.9759 43.6339 48.34 44.4131 48.34C45.1923 48.34 45.8262 48.9759 45.8262 49.7575C45.8262 50.1977 45.6251 50.5915 45.3103 50.8517L47.1637 52.725C47.6321 53.1985 48.2822 53.4699 48.9472 53.4699C49.7335 53.4699 50.4832 53.0953 50.9553 52.4678L54.0012 48.4192C53.7454 48.1627 53.5869 47.8083 53.5869 47.4175C53.5869 46.6358 54.2208 46 55 46C55.7792 46 56.4131 46.6358 56.4131 47.4175C56.4131 47.7966 56.2631 48.1406 56.0206 48.3953L56.0232 48.3984L59.0471 52.4581C59.519 53.0917 60.2714 53.47 61.0599 53.47C61.731 53.47 62.3621 53.2078 62.8367 52.7317L64.7017 50.8608C64.3803 50.6007 64.1738 50.2031 64.1738 49.7575C64.1738 48.9759 64.8077 48.34 65.5869 48.34C66.3661 48.34 67 48.9759 67 49.7575C67 50.3741 66.6048 50.8985 66.0557 51.0931ZM64.4131 61.705C64.4131 61.3322 64.1118 61.03 63.7402 61.03H46.3346C45.963 61.03 45.6617 61.3322 45.6617 61.705V63.325C45.6617 63.6978 45.963 64 46.3346 64H63.7402C64.1118 64 64.4131 63.6978 64.4131 63.325V61.705Z" fill="#0F172A" />
-                </svg>
-            ) }
+            title={ __( 'Pro feature detected', 'wp-user-frontend' ) }
+            message={ __( 'Your form includes fields that require WPUF Pro version:', 'wp-user-frontend' ) }
+            icon="pro"
             confirmText={ __( 'Upgrade to Pro', 'wp-user-frontend' ) }
             cancelText={ __( 'Continue without Pro', 'wp-user-frontend' ) }
             tone="primary"
-            width="740px"
-            padding="0 40px 40px"
             className="wpuf-ai-pro-fields-dialog"
             onConfirm={ () => {
                 window.open( PRICING_URL, '_blank' );
@@ -109,10 +95,10 @@ function ProFieldsDialog( { items, onContinue, onClose } ) {
             onCancel={ onContinue }
             onDismiss={ onClose }
         >
-            <div className="mx-auto mb-6 mt-5 flex w-full max-w-[494px] flex-col gap-2">
+            <div className="flex w-full flex-col gap-2">
                 { items.map( ( item ) => (
-                    <div key={ item.key } className="wpuf-pro-field-item flex h-14 items-center gap-2 rounded-lg border border-[#E2E8F0] bg-white px-3 py-4 text-sm text-[#374151]">
-                        { item.icon && <img src={ item.icon } alt="" className="size-6 shrink-0" onError={ ( event ) => ( event.currentTarget.style.display = 'none' ) } /> }
+                    <div key={ item.key } className="wpuf-pro-field-item flex h-11 items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700">
+                        { item.icon && <img src={ item.icon } alt="" className="size-5 shrink-0" onError={ ( event ) => ( event.currentTarget.style.display = 'none' ) } /> }
                         <span>{ item.label }</span>
                     </div>
                 ) ) }

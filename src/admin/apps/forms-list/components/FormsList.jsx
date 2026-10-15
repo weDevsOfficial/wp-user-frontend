@@ -204,16 +204,32 @@ const FormsList = ( {
             return;
         }
 
-        if ( 'delete' === action ) {
-            const ok = await confirm( {
+        const name = form.post_title || __( '(no title)', 'wp-user-frontend' );
+        const asks = {
+            delete: {
                 title: __( 'Delete Permanently', 'wp-user-frontend' ),
-                message: __( 'Are you sure you want to delete this form permanently? This action cannot be undone.', 'wp-user-frontend' ),
+                /* translators: %s: form title */
+                message: sprintf( __( 'Delete "%s" permanently? This action cannot be undone.', 'wp-user-frontend' ), name ),
                 confirmText: __( 'Delete Permanently', 'wp-user-frontend' ),
-            } );
+            },
+            trash: {
+                title: __( 'Move to Trash', 'wp-user-frontend' ),
+                /* translators: %s: form title */
+                message: sprintf( __( 'Move "%s" to the trash? You can restore it from the Trash tab.', 'wp-user-frontend' ), name ),
+                confirmText: __( 'Move to Trash', 'wp-user-frontend' ),
+            },
+            duplicate: {
+                title: __( 'Duplicate Form', 'wp-user-frontend' ),
+                /* translators: %s: form title */
+                message: sprintf( __( 'Create a copy of "%s" with all its fields and settings?', 'wp-user-frontend' ), name ),
+                confirmText: __( 'Duplicate', 'wp-user-frontend' ),
+                tone: 'primary',
+                icon: 'info',
+            },
+        };
 
-            if ( ! ok ) {
-                return;
-            }
+        if ( asks[ action ] && ! await confirm( asks[ action ] ) ) {
+            return;
         }
 
         await runAction( action, [ form.ID ] );
@@ -225,16 +241,24 @@ const FormsList = ( {
             return;
         }
 
-        if ( 'delete' === bulkAction ) {
-            const ok = await confirm( {
+        const count = selectedForms.length;
+        const bulkAsks = {
+            delete: {
                 title: __( 'Delete Permanently', 'wp-user-frontend' ),
-                message: __( 'Are you sure you want to delete the selected forms permanently? This action cannot be undone.', 'wp-user-frontend' ),
+                /* translators: %d: number of forms */
+                message: sprintf( _n( 'Delete %d form permanently? This action cannot be undone.', 'Delete %d forms permanently? This action cannot be undone.', count, 'wp-user-frontend' ), count ),
                 confirmText: __( 'Delete Permanently', 'wp-user-frontend' ),
-            } );
+            },
+            trash: {
+                title: __( 'Move to Trash', 'wp-user-frontend' ),
+                /* translators: %d: number of forms */
+                message: sprintf( _n( 'Move %d form to the trash? You can restore it from the Trash tab.', 'Move %d forms to the trash? You can restore them from the Trash tab.', count, 'wp-user-frontend' ), count ),
+                confirmText: __( 'Move to Trash', 'wp-user-frontend' ),
+            },
+        };
 
-            if ( ! ok ) {
-                return;
-            }
+        if ( bulkAsks[ bulkAction ] && ! await confirm( bulkAsks[ bulkAction ] ) ) {
+            return;
         }
 
         await runAction( bulkAction, [ ...selectedForms ] );

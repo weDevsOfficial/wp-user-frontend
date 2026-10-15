@@ -8,7 +8,7 @@
  * - `variant` (alert | panel | card) is kept for callers; every variant uses
  *   the same plugin-ui look ("card" centres the header).
  * - `icon` picks the media: delete (trash, red), warning (amber), oops
- *   (amber), info (primary), none; `media` replaces it.
+ *   (amber), info (primary), pro (crown, primary), none; `media` replaces it.
  * - Content dialogs (upsells, field notices) pass `children`, `hideTitle`,
  *   `extraActions` and a `width` (max width, e.g. "40rem").
  *
@@ -33,7 +33,7 @@ import {
 } from '@wedevs/plugin-ui';
 import { useCallback, useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { CircleAlert, Info, Trash2, TriangleAlert, X } from 'lucide-react';
+import { CircleAlert, Crown, Info, Trash2, TriangleAlert, X } from 'lucide-react';
 
 // Media icon and its tint per `icon`.
 const ICONS = {
@@ -41,6 +41,7 @@ const ICONS = {
     warning: { Icon: TriangleAlert, tint: 'bg-amber-50 text-amber-600' },
     oops: { Icon: CircleAlert, tint: 'bg-amber-50 text-amber-600' },
     info: { Icon: Info, tint: 'bg-emerald-50 text-emerald-600' },
+    pro: { Icon: Crown, tint: 'bg-emerald-50 text-emerald-600' },
 };
 
 /**
@@ -49,7 +50,7 @@ const ICONS = {
  * @param {*}        props.title           Title.
  * @param {*}        [props.message]       Message.
  * @param {string}   [props.variant]       alert|panel|card (card centres the header).
- * @param {string}   [props.icon]          delete|warning|oops|info|none (default by tone).
+ * @param {string}   [props.icon]          delete|warning|oops|info|pro|none (default by tone).
  * @param {*}        [props.media]         Image or icon shown instead of `icon`.
  * @param {*}        [props.children]      Extra content below the message.
  * @param {*}        [props.extraActions]  Extra buttons / links before Cancel.
@@ -135,7 +136,8 @@ export default function ConfirmDialog( {
                     { image && <div className="shrink-0">{ image }</div> }
                     <div className={ cn( 'grid min-w-0 flex-1 gap-1.5', 'card' === variant && 'justify-items-center' ) }>
                         <AlertDialogTitle className={ hideTitle ? 'sr-only' : undefined }>{ title }</AlertDialogTitle>
-                        { message && <AlertDialogDescription>{ message }</AlertDialogDescription> }
+                        { /* Server markup in messages: no WordPress admin paragraph margins or sizes. */ }
+                        { message && <AlertDialogDescription className="[&_p]:m-0 [&_p]:text-[length:inherit] [&_p]:leading-[inherit] [&_p+p]:mt-2">{ message }</AlertDialogDescription> }
                     </div>
                 </AlertDialogHeader>
                 { children }

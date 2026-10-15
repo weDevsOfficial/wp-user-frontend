@@ -8,7 +8,7 @@
 import { __ } from '@wordpress/i18n';
 import { useRef, useState } from '@wordpress/element';
 import { applyFilters } from '@wordpress/hooks';
-import { dialogs } from '@wpuf/components';
+import { Button, dialogs } from '@wpuf/components';
 
 import { config, createForm, generateForm } from './api';
 import { buildSummary, newSessionId } from './lib/chat';
@@ -63,11 +63,12 @@ function showProFieldWarning( message ) {
         tone: 'primary',
         showClose: true,
         className: 'wpuf-ai-pro-warning-dialog',
-        children: message ? <div style={ { margin: '16px 28px 0', padding: 12, borderRadius: 4, background: '#f8f9fa', fontSize: 14, color: '#666' } }>{ message }</div> : null,
+        children: message ? <div style={ { padding: '10px 12px', borderRadius: 8, background: '#f9fafb', border: '1px solid #e5e7eb', fontSize: 13, lineHeight: '20px', color: '#4b5563' } }>{ message }</div> : null,
+        // A plugin-ui outline button beside the action (was a WordPress-blue link button).
         extraActions: (
-            <a href="https://wedevs.com/wp-user-frontend-pro/pricing/" target="_blank" rel="noreferrer" style={ { margin: 5, padding: '10px 17.6px', borderRadius: 4, background: '#0073aa', color: '#fff', textDecoration: 'none', fontSize: 16 } }>
+            <Button variant="secondary" href="https://wedevs.com/wp-user-frontend-pro/pricing/" target="_blank" rel="noreferrer">
                 { i18n.upgradeToPro || __( 'Upgrade to Pro', 'wp-user-frontend' ) }
-            </a>
+            </Button>
         ),
     } );
 }

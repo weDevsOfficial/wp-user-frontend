@@ -41,7 +41,7 @@ const APP = `${Urls.baseUrl}/wp-admin/admin.php?page=wp-user-frontend`;
  * @Test_APP0012 : The new form route creates a form and opens its builder; registration builder (Pro) opens in the app
  * @Test_APP0013 : Add New in the app: the template picker's Blank Form and a template each create a form and open its builder in the app without a page load
  * @Test_APP0014 : AI form builder in the app: list button -> AI route -> generate -> Edit with Builder -> builder route, no page load; old AI URLs (with nonce) land on the route
- * @Test_APP0015 : List row action buttons in the app: Edit (builder route), Duplicate (toast View form), Trash, Restore, Delete Permanently, bulk Move to trash, all without a page load, counts follow; registration Edit (Pro)
+ * @Test_APP0015 : List row action buttons in the app: Edit (builder route), Duplicate (confirm, toast View form), Trash (confirm), Restore, Delete Permanently (confirm), bulk Move to trash (confirm), all without a page load, counts follow; registration Edit (Pro)
  * @Test_APP0016 : Pro without a valid license: Registration Forms stays Pro's preview page (no app route, no way round it); the free routes still run in the app
  * @Test_APP0017 : License (Pro) is the app route #/license: old URL lands there, the key is masked (never in the page), a site without an active key gets the key form
  * @Test_APP0018 : Without Pro, Registration Forms is the app route #/registration-forms on the new components (free shortcode with Copy, Pro features, modules icons) and shows admin notices
@@ -485,6 +485,8 @@ test.describe('Admin app', () => {
 
         // Duplicate: toast with a "View form" action to the copy's builder route.
         await rowAction(title, 'Duplicate');
+        // Duplicate asks first.
+        await page.getByRole('alertdialog').getByRole('button', { name: 'Duplicate' }).click();
         await expect(toast.filter({ hasText: 'Form duplicated successfully.' }).first()).toBeVisible({ timeout: 30000 });
         const viewForm = toast.filter({ hasText: 'Form duplicated successfully.' }).first().getByRole('button', { name: 'View form' });
         await viewForm.click();
@@ -502,6 +504,7 @@ test.describe('Admin app', () => {
         const trashCount = async () => Number(((await trashTab.innerText()).match(/\d+/) || ['0'])[0]);
         const before = await trashCount();
         await rowAction(copyTitle, 'Trash');
+        await page.getByRole('alertdialog').getByRole('button', { name: 'Move to Trash' }).click();
         await expect(toast.filter({ hasText: '1 form moved to the trash.' }).first()).toBeVisible({ timeout: 30000 });
         await expect.poll(trashCount, { message: 'the Trash tab count follows without a reload' }).toBe(before + 1);
         expect(aiWp(['post', 'get', String(copy), '--field=post_status']).trim()).toBe('trash');
@@ -514,6 +517,7 @@ test.describe('Admin app', () => {
         await list.getByText(/^All/).first().click();
         await expect(page.locator(`button[aria-label="Actions for ${copyTitle}"]`).first()).toBeVisible({ timeout: 30000 });
         await rowAction(copyTitle, 'Trash');
+        await page.getByRole('alertdialog').getByRole('button', { name: 'Move to Trash' }).click();
         await expect(toast.filter({ hasText: '1 form moved to the trash.' }).last()).toBeVisible({ timeout: 30000 });
         await list.getByText(/^Trash/).first().click();
         await expect(page.locator(`button[aria-label="Actions for ${copyTitle}"]`).first()).toBeVisible({ timeout: 30000 });
@@ -525,6 +529,7 @@ test.describe('Admin app', () => {
         await list.getByText(/^All/).first().click();
         await page.getByRole('checkbox', { name: `Select ${title}` }).first().check();
         await page.getByRole('button', { name: 'Move to trash' }).first().click();
+        await page.getByRole('alertdialog').getByRole('button', { name: 'Move to Trash' }).click();
         await expect(toast.filter({ hasText: '1 form moved to the trash.' }).last()).toBeVisible({ timeout: 30000 });
         expect(aiWp(['post', 'get', String(id), '--field=post_status']).trim()).toBe('trash');
         expect(await page.evaluate(() => (window as unknown as { wpufNoReload?: boolean }).wpufNoReload), 'row and bulk actions without a page load').toBe(true);

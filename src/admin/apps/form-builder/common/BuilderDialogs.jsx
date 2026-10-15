@@ -15,12 +15,14 @@ import { proMessageText } from '../utils/proMessage';
 const builderData = () => window.wpuf_form_builder || {};
 
 // Inline styles for content inside the dialogs: they render in a body-level
-// portal, where the builder screen's own utility classes do not reach.
+// portal, where the builder screen's own utility classes do not reach. The
+// scale is ConfirmDialog's own (14px gray-500 text, left aligned under the
+// header, 12px between the parts), so these dialogs look like every other
+// admin dialog: the standard 40px icon, no large pictures or 20px text.
 const PRIMARY = '#059669';
-// Same scale as ConfirmDialog's message (16px gray-500, 8px under the title),
-// one even 16px gap between the paragraphs and the screenshots.
-const BODY = { margin: '8px 0 0', display: 'flex', flexDirection: 'column', gap: 16, fontSize: 16, lineHeight: 1.5, color: '#6b7280', textAlign: 'center' };
-const LINK = { border: 0, background: 'none', padding: 0, font: 'inherit', fontWeight: 700, color: PRIMARY, cursor: 'pointer' };
+const BODY = { margin: 0, display: 'flex', flexDirection: 'column', gap: 12, fontSize: 14, lineHeight: '20px', color: '#6b7280', textAlign: 'left' };
+const TEXT = { margin: 0, fontSize: 'inherit', lineHeight: 'inherit', color: 'inherit' };
+const LINK = { border: 0, background: 'none', padding: 0, font: 'inherit', fontWeight: 600, color: PRIMARY, cursor: 'pointer' };
 const IMAGE = { display: 'block', width: '100%', borderRadius: 8, border: '1px solid #e5e7eb', boxSizing: 'border-box' };
 
 const proMessage = () => proMessageText( ( builderData().i18n || {} ).pro_feature_msg );
@@ -68,7 +70,7 @@ export function openCustomFieldTooltip( fieldId ) {
         <ConfirmDialog
             open
             title={ __( 'Do you want to show custom field data inside your post ?', 'wp-user-frontend' ) }
-            media={ <img src={ data.is_pro_active ? data.lock_icon : data.free_icon } alt="" style={ { width: 110, height: 110 } } /> }
+            icon="info"
             cancelText={ __( "Don't show again", 'wp-user-frontend' ) }
             confirmText={ __( 'Okay', 'wp-user-frontend' ) }
             tone="primary"
@@ -77,15 +79,15 @@ export function openCustomFieldTooltip( fieldId ) {
             onDismiss={ () => close() }
         >
             <div style={ BODY }>
-                <p style={ { margin: 0, fontSize: 'inherit', lineHeight: 'inherit', color: 'inherit' } }>
+                <p style={ TEXT }>
                     { __( 'Navigate through', 'wp-user-frontend' ) }{ ' ' }
-                    <a href={ settingsUrl } target="_blank" rel="noreferrer" style={ { fontWeight: 700, color: PRIMARY } }>
+                    <a href={ settingsUrl } target="_blank" rel="noreferrer" style={ { fontWeight: 600, color: PRIMARY } }>
                         { __( 'WP-admin > WPUF > Settings > Frontend Posting', 'wp-user-frontend' ) }
                     </a>{ ' ' }
                     { __( '- there you have to check the checkbox: "Show custom field data in the post content area', 'wp-user-frontend' ) }"
                 </p>
                 <img src={ assetUrl() + '/images/custom-fields/settings.png' } alt="" style={ IMAGE } />
-                <p style={ { margin: 0, fontSize: 'inherit', lineHeight: 'inherit', color: 'inherit' } }>
+                <p style={ TEXT }>
                     { __( 'Edit the custom field inside the post form and on the right side you will see ', 'wp-user-frontend' ) }
                     <button type="button" style={ LINK } onClick={ () => close( { advanced: fieldId } ) }>
                         { __( '"Advanced Options".', 'wp-user-frontend' ) }
@@ -125,13 +127,11 @@ export function openProFieldAlert( title, fieldMsg ) {
                 open
                 title={ <><span style={ { color: PRIMARY } }>{ title }</span> { i18n.is_a_pro_feature || '' }</> }
                 message={ proMessage() }
-                media={ data.lock_icon ? <img src={ data.lock_icon } alt="" style={ { width: 110, height: 110 } } /> : null }
+                icon="pro"
                 showClose
                 cancelText={ false }
                 confirmText={ upgradeText }
                 tone="primary"
-                width="40rem"
-                padding="2rem 3rem"
                 onConfirm={ () => upgrade( close ) }
                 onCancel={ () => close( false ) }
             />
@@ -141,30 +141,21 @@ export function openProFieldAlert( title, fieldMsg ) {
     return dialogs.open( ( { close } ) => (
         <ConfirmDialog
             open
-            title={ title }
-            hideTitle
-            icon="none"
+            title={ <><span style={ { color: PRIMARY } }>{ title }</span> { i18n.is_a_pro_feature || '' }</> }
+            message={ proMessage() }
+            icon="pro"
             showClose
             cancelText={ false }
             confirmText={ upgradeText }
             tone="primary"
-            width="50rem"
-            padding="1.5rem"
+            width="40rem"
             onConfirm={ () => upgrade( close ) }
             onCancel={ () => close( false ) }
         >
-            <div style={ { display: 'flex', width: '100%', gap: 24, textAlign: 'left' } }>
-                <div style={ { width: '50%' } }>
-                    { data.lock_icon && <img src={ data.lock_icon } alt="" /> }
-                    <h2 style={ { margin: '0 0 8px', fontSize: 20, lineHeight: 1.4, fontWeight: 500, color: '#000' } }><span style={ { color: PRIMARY } }>{ title } </span>{ i18n.is_a_pro_feature || '' }</h2>
-                    <p style={ { margin: 0, fontSize: 20, lineHeight: 1.4, fontWeight: 500, color: '#6b7280' } }>{ proMessage() }</p>
-                </div>
-                <div style={ { display: 'flex', width: '50%', alignItems: 'center', justifyContent: 'center' } }>
-                    { 'video' === fieldMsg.asset_type
-                        ? <iframe style={ { width: '100%', aspectRatio: '16 / 9', border: 0 } } src={ fieldMsg.asset_url } title={ title } allowFullScreen />
-                        : <img src={ fieldMsg.asset_url } alt={ title } loading="lazy" style={ { maxWidth: '100%' } } /> }
-                </div>
-            </div>
+            { /* The field's preview (video or picture) under the text. */ }
+            { 'video' === fieldMsg.asset_type
+                ? <iframe style={ { display: 'block', width: '100%', aspectRatio: '16 / 9', border: 0, borderRadius: 8 } } src={ fieldMsg.asset_url } title={ title } allowFullScreen />
+                : <img src={ fieldMsg.asset_url } alt={ title } loading="lazy" style={ IMAGE } /> }
         </ConfirmDialog>
     ) );
 }
@@ -184,12 +175,11 @@ export function openValidationAlert( validator ) {
     return dialogs.alert( {
         title: <Markup html={ validator.msg_title } />,
         message: <Markup html={ validator.msg } />,
-        media: validator.icon ? <img src={ validator.icon } alt="" style={ { width: 110, height: 110 } } /> : null,
-        extraActions: validator.cta ? <Markup html={ validator.cta } style={ { margin: 5, fontSize: 16 } } /> : null,
+        icon: 'warning',
+        // The field's call to action (a link to its settings), as a text link next to OK.
+        extraActions: validator.cta ? <Markup html={ validator.cta } style={ { alignSelf: 'center', marginRight: 8, fontSize: 14, fontWeight: 500 } } /> : null,
         confirmText: i18n.ok || __( 'OK', 'wp-user-frontend' ),
         showClose: true,
-        width: '40rem',
-        padding: '2rem 3rem',
     } );
 }
 
@@ -212,7 +202,7 @@ export function openSaveValidationError( html ) {
 
 /**
  * The form has third-party taxonomy fields that stay hidden without Pro
- * (develop's markup and classes inside the popup).
+ * (standard dialog: Pro icon, the notice, a preview picture).
  *
  * @return {Promise<*>} Settles on close.
  */
@@ -221,26 +211,11 @@ export function openHiddenTaxonomies() {
 
     return dialogs.alert( {
         title: __( 'Pro Fields Hidden', 'wp-user-frontend' ),
-        hideTitle: true,
+        message: __( 'This form includes custom taxonomy fields from third-party plugins. These are Pro-only and are hidden in both the builder and frontend until WPUF Pro is activated.', 'wp-user-frontend' ),
+        icon: 'pro',
         confirmText: __( 'Okay', 'wp-user-frontend' ),
         className: 'wpuf-pro-taxonomy-warning',
-        width: '1038px',
-        padding: '36px',
-        children: (
-            <div className="wpuf-pro-modal-content">
-                <div className="wpuf-pro-modal-left">
-                    <div className="wpuf-pro-modal-icon">
-                        <img src={ url + '/images/free-circle.svg' } alt={ __( 'Pro upgrade notification icon', 'wp-user-frontend' ) } />
-                    </div>
-                    <h2 className="wpuf-pro-modal-title">{ __( 'Pro Fields Hidden', 'wp-user-frontend' ) }</h2>
-                    <p className="wpuf-pro-modal-text">
-                        { __( 'This form includes custom taxonomy fields from third-party plugins. These are Pro-only and are hidden in both the builder and frontend until WPUF Pro is activated.', 'wp-user-frontend' ) }
-                    </p>
-                </div>
-                <div className="wpuf-pro-modal-right">
-                    <img src={ url + '/images/event-pro-field.jpeg' } alt={ __( 'Event Pro Field preview', 'wp-user-frontend' ) } />
-                </div>
-            </div>
-        ),
+        width: '40rem',
+        children: <img src={ url + '/images/event-pro-field.jpeg' } alt={ __( 'Event Pro Field preview', 'wp-user-frontend' ) } style={ IMAGE } />,
     } );
 }

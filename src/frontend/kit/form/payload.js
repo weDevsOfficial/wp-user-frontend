@@ -100,6 +100,13 @@ export function buildPayload( schema, values, visible, fields, extra = {} ) {
             }
         }
 
+        // A server-rendered field (map, signature, QR code, hook output) posts through its own
+        // inputs, which mergeFormInputs() adds as the classic form posted them; a key here
+        // would shadow them.
+        if ( field.server_rendered ) {
+            return;
+        }
+
         const value = values[ field.name ];
 
         if ( UPLOAD_TEMPLATES.includes( field.template ) ) {

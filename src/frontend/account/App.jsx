@@ -20,6 +20,18 @@ import { store } from './store';
 
 const { CalendarDays, LogOut, Mail, Pencil, iconByName } = icons;
 
+// PHP sections shown in the Change Password look (header + card).
+const CARD_SECTIONS = {
+    'edit-profile': {
+        title: __( 'Account details', 'wp-user-frontend' ),
+        lead: __( 'Update your personal information and change your password here.', 'wp-user-frontend' ),
+    },
+    'billing-address': {
+        title: __( 'Billing Address', 'wp-user-frontend' ),
+        lead: __( 'The address used on your invoices and payment receipts.', 'wp-user-frontend' ),
+    },
+};
+
 function HtmlSection( { slug, initial, search } ) {
     const preloaded = initial && initial.slug === slug ? initial.html : null;
     const [ state, setState ] = useState( { html: preloaded || '', loading: null === preloaded, error: '' } );
@@ -128,7 +140,22 @@ export default function App( { data, root } ) {
     } else if ( 'change-password' === section.slug && 'native' === section.kind ) {
         body = <ChangePassword nonce={ nonces.password } />;
     } else {
-        body = <HtmlSection key={ search } slug={ section.slug } search={ search } initial={ search === firstSearch ? data.section_html : null } />;
+        const html = <HtmlSection key={ search } slug={ section.slug } search={ search } initial={ search === firstSearch ? data.section_html : null } />;
+        const card = CARD_SECTIONS[ section.slug ];
+
+        // Edit Profile (a profile form) and Billing Address in the Change Password look:
+        // section header, one card, the form's fields in the kit style (account.css).
+        body = card ? (
+            <div className={ `wpuf-account-form-section wpuf-account-form-section--${ section.slug }` }>
+                <header className="wpuf-section-head">
+                    <h2 className="wpuf-section-head__title">{ card.title }</h2>
+                    <p className="wpuf-section-head__lead">{ card.lead }</p>
+                </header>
+                <section className="wpuf-card wpuf-account-form-card">
+                    <div className="wpuf-card__body">{ html }</div>
+                </section>
+            </div>
+        ) : html;
     }
 
     return (

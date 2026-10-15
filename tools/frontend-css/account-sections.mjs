@@ -11,7 +11,8 @@
  * `.wpuf-account-container` scope renamed to `.wpuf-account-html`, the
  * `:root` / `html` / `*` rules moved onto that scope (Tailwind and daisyUI
  * variables keep working), the dark theme and `::backdrop` rules dropped,
- * the bare container rule (the classic flex shell) dropped.
+ * the bare container rule (the classic flex shell) dropped, and the form
+ * rules dropped (forms keep their own layout look in the account).
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -53,6 +54,13 @@ const splitTop = ( list ) => {
 /** One selector of a rule, scoped; null drops it. */
 const scopeSelector = ( selector ) => {
     if ( '.wpuf-account-container' === selector || /^::backdrop/.test( selector ) ) {
+        return null;
+    }
+
+    // Forms (Submit Post, Edit Profile) render with the forms app and their own
+    // layout sheet (layout1-5, registration templates), exactly as on a page:
+    // the classic account's form look does not apply to them.
+    if ( /\.wpuf-form-add|\.wpuf-form-root|\.wpuf-reg-form-card/.test( selector ) ) {
         return null;
     }
 

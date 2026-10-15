@@ -616,14 +616,12 @@
 }
 
 /* ---- One button look in the account ----
-   The PHP sections (billing Update, invoices, subscription) and the post
-   form inside Submit Post bring their own button styles; they take the kit
-   primary button's size, radius and type so every action matches. */
+   The PHP sections (billing Update, invoices, subscription) bring their own
+   button styles; they take the kit primary button's size, radius and type.
+   The forms (Submit Post, Edit Profile) keep their own layout's look, as on
+   a page. */
 .wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway button[type="submit"],
-.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input[type="submit"],
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit input[type="submit"],
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit button[type="submit"],
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit .wpuf-submit-button {
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input[type="submit"] {
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
@@ -648,35 +646,24 @@
 }
 
 .wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway button[type="submit"]:hover,
-.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input[type="submit"]:hover,
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit input[type="submit"]:hover,
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit button[type="submit"]:hover,
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit .wpuf-submit-button:hover {
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input[type="submit"]:hover {
     background: var(--wpuf-fe-primary-hover) !important;
 }
 
 .wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway button[type="submit"]:focus-visible,
-.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input[type="submit"]:focus-visible,
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit input[type="submit"]:focus-visible,
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form li.wpuf-submit .wpuf-submit-button:focus-visible {
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input[type="submit"]:focus-visible {
     outline: none;
     box-shadow: var(--wpuf-fe-focus) !important;
 }
 
 /* ---- Corners of the parts the account hosts ----
-   PHP sections (classic Tailwind rounded-* classes, fields), the post form
-   inside Submit Post and the chat follow the same scale. */
+   PHP sections (classic Tailwind rounded-* classes, fields) and the chat
+   follow the same scale. */
 .wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input:not([type="checkbox"]):not([type="radio"]),
 .wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway select,
 .wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway textarea,
 .wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-rounded,
-.wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-rounded-md,
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields select,
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields textarea,
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields .wpuf-file-input-wrapper,
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields .wpuf-button,
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields .wp-editor-wrap {
+.wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-rounded-md {
     border-radius: var(--wpuf-fe-radius) !important;
 }
 
@@ -687,14 +674,8 @@
     border-radius: var(--wpuf-fe-radius-lg) !important;
 }
 
-/* The post / profile form box inside a section: the card corner. */
-.wpuf-frontend .wpuf-account-content form.wpuf-form-add.wpuf-form-add {
-    border-radius: var(--wpuf-fe-radius-lg) !important;
-}
-
 /* Select arrows: one chevron, never tiled (the classic preflight resets
    background-repeat on the layout sheets' arrow image). */
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields select,
 .wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway select {
     background-repeat: no-repeat !important;
     background-position: right 12px center !important;
@@ -702,9 +683,6 @@
 }
 
 /* Focus: the kit ring, not the theme / WordPress blue. */
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields input:not([type="checkbox"]):not([type="radio"]):focus,
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields select:focus,
-.wpuf-frontend .wpuf-account-content .wpuf-form-add.wpuf-form-add ul.wpuf-form .wpuf-fields textarea:focus,
 .wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input:not([type="checkbox"]):not([type="radio"]):focus,
 .wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway select:focus,
 .wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway textarea:focus {
@@ -951,4 +929,161 @@
 .wpuf-frontend .wpuf-account-content .wpuf-show-details-btn:focus,
 .wpuf-frontend .wpuf-account-content .wpuf-show-all-btn:focus {
     outline: none;
+}
+
+/* ---- Edit Profile (profile form) and Billing Address: the Change Password look ----
+   Header + one card (App.jsx); inside it the form drops its own card and takes
+   the account form style: labels on top, kit inputs, the primary button on
+   the right, no divider. The scope carries an id-level boost
+   (`:not(#…)`): the forms sheet, the layout sheets and the registration
+   templates style these fields with !important and long class chains. */
+.wpuf-frontend .wpuf-account-form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) .wpuf-reg-form-card,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) form.wpuf-form-add.wpuf-form-add,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form > li.wpuf-el {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    margin: 0 0 20px !important;
+    padding: 0 !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form > li .wpuf-label {
+    width: auto !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: start !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form > li .wpuf-label label,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway label {
+    margin: 0 !important;
+    font-size: var(--wpuf-fe-size) !important;
+    font-weight: 600 !important;
+    color: var(--wpuf-fe-text) !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form > li .wpuf-fields {
+    width: 100% !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="file"]),
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields select,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields textarea,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway select {
+    width: 100% !important;
+    min-height: 40px !important;
+    padding: 8px 12px !important;
+    border: 1px solid var(--wpuf-fe-border) !important;
+    border-radius: var(--wpuf-fe-radius) !important;
+    background-color: var(--wpuf-fe-surface) !important;
+    color: var(--wpuf-fe-text) !important;
+    font: inherit !important;
+    font-size: var(--wpuf-fe-size) !important;
+    line-height: 1.4 !important;
+    box-shadow: none !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields select,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway select {
+    appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 16px 16px !important;
+    padding-inline-end: 36px !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields input:focus,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields select:focus,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields textarea:focus,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway input:focus,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway select:focus {
+    outline: none !important;
+    border-color: var(--wpuf-fe-primary) !important;
+    box-shadow: var(--wpuf-fe-focus) !important;
+}
+
+/* Single-line controls at the kit height (the forms sheet fixes 44px). */
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="file"]),
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields select,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway select {
+    height: 40px !important;
+}
+
+/* The action row: no divider, the button on the right. */
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form > li.wpuf-submit,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway .wpuf-border-t {
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    text-align: end !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway .wpuf-border-t {
+    margin-top: 20px !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form > li.wpuf-submit .wpuf-label {
+    display: none !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form li.wpuf-submit input[type="submit"],
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form li.wpuf-submit button[type="submit"],
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form li.wpuf-submit .wpuf-submit-button.wpuf-submit-button,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway button[type="submit"],
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway input[type="submit"] {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: auto !important;
+    min-height: 40px !important;
+    margin: 0 !important;
+    padding: 8px 20px !important;
+    border: 1px solid transparent !important;
+    border-radius: var(--wpuf-fe-radius) !important;
+    background: var(--wpuf-fe-primary) !important;
+    color: var(--wpuf-fe-primary-text) !important;
+    font-family: inherit !important;
+    font-size: var(--wpuf-fe-size) !important;
+    font-weight: 500 !important;
+    line-height: 1.25 !important;
+    text-transform: none !important;
+    box-shadow: none !important;
+    cursor: pointer;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form li.wpuf-submit input[type="submit"]:hover,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form li.wpuf-submit button[type="submit"]:hover,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form li.wpuf-submit .wpuf-submit-button.wpuf-submit-button:hover,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway button[type="submit"]:hover {
+    background: var(--wpuf-fe-primary-hover) !important;
 }

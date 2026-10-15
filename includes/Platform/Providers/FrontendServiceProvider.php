@@ -184,6 +184,12 @@ class FrontendServiceProvider extends ServiceProvider {
                 return new Account_Service();
             }
         );
+        $this->container->share(
+            \WeDevs\Wpuf\Frontend\Checkout\Checkout_Service::class,
+            function ( $container ) {
+                return new \WeDevs\Wpuf\Frontend\Checkout\Checkout_Service( $container->get( Renderer::class ) );
+            }
+        );
         $this->share_tagged(
             FormsPublicController::class,
             function ( $container ) {

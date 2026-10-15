@@ -40,6 +40,8 @@ class Renderer implements App_Renderer {
         'lost_password'  => [ 'login', [ 'lost-pass-form.php' ] ],
         'reset_password' => [ 'login', [ 'reset-pass-form.php' ] ],
         'plans'          => [ 'plans', [ 'subscriptions/listing.php', 'subscriptions/pack-details.php' ] ],
+        // The pay page (Payment::payment_page(), Checkout_Service): no template to override.
+        'checkout'       => [ 'checkout', [] ],
         'plan_info'      => [ 'plans', [ 'dashboard/subscription.php' ] ],
         'account'        => [ 'account', [ 'account.php', 'unauthorized.php', 'submit-post.php', 'dashboard/dashboard.php', 'dashboard/posts.php', 'dashboard/edit-profile.php', 'dashboard/change-password.php', 'dashboard/billing-address.php', 'dashboard/subscription.php' ] ],
     ];

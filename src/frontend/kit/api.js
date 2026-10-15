@@ -52,6 +52,13 @@ export const submitRegistration = ( formId, data ) => send( `/registration/${ fo
 export const updateRegistration = ( formId, data ) => send( `/registration/${ formId }/profile`, 'PUT', data );
 export const checkUsername = ( value ) => get( '/registration/username-check', { value } );
 
+// Checkout (the pay page): the billing address with the item's tax, the
+// states of a country, and Pro's coupons (the page's `wpuf_nonce`).
+export const saveBillingAddress = ( data ) => send( '/account/billing-address', 'PUT', data );
+export const getBillingStates = ( country ) => get( '/account/billing-address/states', { country } );
+export const applyCoupon = ( packId, coupon, nonce ) => send( '/coupons/apply', 'POST', { pack_id: packId, coupon, wpuf_nonce: nonce } );
+export const cancelCoupon = ( packId, nonce ) => send( '/coupons/cancel', 'POST', { pack_id: packId, wpuf_nonce: nonce } );
+
 export const deleteUpload = ( attachmentId, nonce = '' ) => send( `/uploads/${ attachmentId }` + query( { wpuf_nonce: nonce } ), 'DELETE' );
 
 // Account.

@@ -69,6 +69,21 @@ class Frontend {
     }
 
     /**
+     * Whether this request is the pay page's React checkout.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param \WP_Post|null $post The queried page
+     *
+     * @return bool
+     */
+    private function react_checkout( $post ) {
+        $checkout = wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Checkout\Checkout_Service::class );
+
+        return $checkout->is_checkout( $post ) && $checkout->renders_react( $post );
+    }
+
+    /**
      * Whether this request's `[wpuf-login]` screen renders as an app (the
      * logged-in view and a theme-overridden screen stay classic).
      *
@@ -102,7 +117,9 @@ class Frontend {
 
         $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
 
-        if ( ( isset( $post->ID ) && $pay_page === (int) $post->ID )
+        // The pay page's checkout is the React app (Checkout_Service); it stays
+        // classic on a pay page built with Elementor or when the page has no checkout.
+        if ( ( isset( $post->ID ) && $pay_page === (int) $post->ID && ! $this->react_checkout( $post ) )
             || isset( $_GET['wpuf_preview'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             || $this->dokan_is_seller_dashboard()
             || ( isset( $post->post_content ) && has_block( 'wpuf/post-form', $post ) )

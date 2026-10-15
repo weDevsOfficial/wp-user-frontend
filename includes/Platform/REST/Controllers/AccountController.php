@@ -452,7 +452,8 @@ class AccountController extends RestController {
 
     /**
      * GET /account/billing-address/states: the state field of a country
-     * (`html`, empty with `states: false` when the country has none).
+     * (`html`, empty with `states: false` when the country has none) and the
+     * states as options (`list`).
      *
      * @since WPUF_SINCE
      *
@@ -461,21 +462,35 @@ class AccountController extends RestController {
      * @return \WP_REST_Response
      */
     public function get_billing_states( WP_REST_Request $request ) {
-        $html = wpuf_get_states_field_html(
-            sanitize_text_field( (string) $request->get_param( 'country' ) ),
-            sanitize_text_field( (string) $request->get_param( 'field_name' ) )
-        );
+        $country = sanitize_text_field( (string) $request->get_param( 'country' ) );
+        $html    = wpuf_get_states_field_html( $country, sanitize_text_field( (string) $request->get_param( 'field_name' ) ) );
+
+        if ( 'nostates' === $html ) {
+            return rest_ensure_response(
+                [
+                    'states' => false,
+                    'html'   => '',
+                    'list'   => [],
+                ]
+            );
+        }
+
+        $list = [];
+
+        // The same states as plain options (the React checkout's select).
+        foreach ( (array) ( new \WeDevs\Wpuf\Data\Country_State() )->getStates( $country ) as $value => $label ) {
+            $list[] = [
+                'value' => (string) $value,
+                'label' => html_entity_decode( (string) $label, ENT_QUOTES, 'UTF-8' ),
+            ];
+        }
 
         return rest_ensure_response(
-            'nostates' === $html
-                ? [
-					'states' => false,
-					'html' => '',
-				]
-                : [
-					'states' => true,
-					'html' => $html,
-				]
+            [
+                'states' => true,
+                'html'   => $html,
+                'list'   => $list,
+            ]
         );
     }
 

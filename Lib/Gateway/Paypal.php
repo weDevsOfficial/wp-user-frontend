@@ -1802,7 +1802,9 @@ class Paypal {
                 exit();
             }
         } catch ( \Exception $e ) {
-            wp_die( esc_html( $e->getMessage() ) );
+            // The reason is for the site owner (credentials, PayPal's answer): logged,
+            // the customer goes back to the checkout with a caution.
+            wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Checkout\Checkout_Service::class )->return_with_error( 'paypal', $e->getMessage() );
         }
     }
 

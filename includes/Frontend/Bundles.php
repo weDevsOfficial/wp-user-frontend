@@ -60,6 +60,7 @@ class Bundles {
         $frontend_account = $this->asset( 'account-page', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
         $frontend_login   = $this->asset( 'login', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
         $frontend_plans   = $this->asset( 'plans', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
+        $frontend_pay     = $this->asset( 'checkout', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
 
         return [
             'frontend-runtime'          => [
@@ -93,6 +94,14 @@ class Bundles {
                 'src'       => WPUF_ASSET_URI . '/js/frontend/plans.js',
                 'deps'      => array_values( array_unique( array_merge( [ 'wpuf-frontend-runtime' ], $frontend_plans['dependencies'] ) ) ),
                 'version'   => $frontend_plans['version'],
+                'in_footer' => true,
+            ],
+            // The pay page's checkout. jQuery and wpuf-rest load with it for the
+            // gateways' own scripts (Pro Stripe), as the classic bundle loaded them.
+            'frontend-checkout'         => [
+                'src'       => WPUF_ASSET_URI . '/js/frontend/checkout.js',
+                'deps'      => array_values( array_unique( array_merge( [ 'wpuf-frontend-runtime', 'jquery', 'wpuf-rest' ], $frontend_pay['dependencies'] ) ) ),
+                'version'   => $frontend_pay['version'],
                 'in_footer' => true,
             ],
         ];
@@ -160,6 +169,11 @@ class Bundles {
             'frontend-plans-style'   => [
                 'src'     => WPUF_ASSET_URI . '/css/frontend/plans.css',
                 'version' => $this->css_version( 'css/frontend/plans.css' ),
+                'rtl'     => true,
+            ],
+            'frontend-checkout-style' => [
+                'src'     => WPUF_ASSET_URI . '/css/frontend/checkout.css',
+                'version' => $this->css_version( 'css/frontend/checkout.css' ),
                 'rtl'     => true,
             ],
             // The classic account sheet scoped to the PHP sections of the React account (tools/frontend-css/account-sections.mjs).

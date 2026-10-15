@@ -4,7 +4,6 @@ namespace WeDevs\Wpuf\Frontend;
 
 use stdClass;
 use WeDevs\Wpuf\Admin;
-use WeDevs\Wpuf\WPUF_User;
 use WP_Post;
 
 /**
@@ -56,26 +55,12 @@ class Payment {
      * @return array
      */
     public function get_active_gateways() {
-        $all_gateways    = wpuf_get_gateways( 'checkout' );
-        $active_gateways = wpuf_get_option( 'active_gateways', 'wpuf_payment' );
-        $active_gateways = is_array( $active_gateways ) ? $active_gateways : [];
-        $gateways        = [];
-        foreach ( $all_gateways as $id => $label ) {
-            // Skip pro-preview gateways — they are upsell placeholders for the
-            // admin settings UI and must never appear on the checkout page.
-            if ( ! empty( $label['is_pro_preview'] ) ) {
-                continue;
-            }
-            if ( array_key_exists( $id, $active_gateways ) ) {
-                $gateways [ $id ] = $label;
-            }
-        }
-
-        return $gateways;
+        return $this->checkout()->gateways();
     }
 
     /**
-     * Show the payment page
+     * Show the payment page: the React checkout app on the pay page, the
+     * classic markup where page builders render it (Checkout_Service).
      *
      * @param string $content
      *
@@ -88,166 +73,85 @@ class Payment {
             return $content;
         }
 
-        $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
+        $checkout = $this->checkout();
+        $resolved = $checkout->resolve( $post );
 
-        $billing_amount = 0;
-        $action   = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
-        $get_type = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : '';
-        $type     = ( $get_type === 'post' ) ? 'post' : 'pack';
-        if ( ! is_user_logged_in() && $action === 'wpuf_pay' && $type !== 'post' ) {
-            $this->enqueue_checkout_style();
-            echo '<div class="wpuf-frontend wpuf-form-gate wpuf-checkout-gate"><div class="wpuf-message">';
-            printf(
-                /* translators: %s: login url */
-                esc_html__( 'This page is restricted. Please %s to view this page.', 'wp-user-frontend' ),
-                wp_loginout( '', false ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WordPress builds this login link.
-            );
-            echo '</div></div>';
+        switch ( $resolved['status'] ) {
+            case 'skip':
+                return $content;
 
-            return;
+            case 'login':
+                $this->enqueue_checkout_style();
+                echo '<div class="wpuf-frontend wpuf-form-gate wpuf-checkout-gate"><div class="wpuf-message">';
+                printf(
+                    /* translators: %s: login url */
+                    esc_html__( 'This page is restricted. Please %s to view this page.', 'wp-user-frontend' ),
+                    wp_loginout( '', false ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WordPress builds this login link.
+                );
+                echo '</div></div>';
+
+                return;
+
+            case 'no_page':
+                esc_html_e( 'Please select your payment page from admin panel', 'wp-user-frontend' );
+
+                return;
+
+            case 'no_pack':
+                $this->enqueue_checkout_style();
+                echo '<div class="wpuf-frontend wpuf-form-gate wpuf-checkout-gate"><div class="wpuf-info">' . esc_html__( 'No subscription pack found.', 'wp-user-frontend' ) . '</div></div>';
+
+                return;
         }
-        if ( $action === 'wpuf_pay' && 0 === intval( $pay_page ) ) {
-            esc_html_e( 'Please select your payment page from admin panel', 'wp-user-frontend' );
 
-            return;
+        $this->enqueue_checkout_style();
+
+        if ( 'free' === $resolved['status'] ) {
+            return '<div class="wpuf-frontend wpuf-checkout"><div class="wpuf-form-gate"><div class="wpuf-info wpuf-checkout-free">' . esc_html( $resolved['message'] ) . '</div></div></div>';
         }
-        if ( $post->ID === $pay_page && 'wpuf_pay' === $action ) {
-            $post_id = isset( $_REQUEST['post_id'] ) ? intval( wp_unslash( $_REQUEST['post_id'] ) ) : 0;
-            $pack_id = isset( $_REQUEST['pack_id'] ) ? intval( wp_unslash( $_REQUEST['pack_id'] ) ) : 0;
 
-            // Validate that both post_id and pack_id are not set simultaneously
-            // Payment should be for either a pack OR a post, not both
-            if ( $post_id > 0 && $pack_id > 0 ) {
-                return $content;
-            }
+        if ( 'no_gateways' === $resolved['status'] ) {
+            return '<div class="wpuf-frontend wpuf-checkout"><div class="wpuf-form-gate"><div class="wpuf-info">' . esc_html__( 'No Payment gateway found', 'wp-user-frontend' ) . '</div></div></div>';
+        }
 
-            $is_free = false;
-            if ( $pack_id ) {
-                $pack_detail = wpuf()->subscription->get_subscription( $pack_id );
-                if ( ! $pack_detail ) {
-                    $this->enqueue_checkout_style();
-                    ?>
-                    <div class="wpuf-frontend wpuf-form-gate wpuf-checkout-gate"><div class="wpuf-info">
-                    <?php
-                    esc_html_e(
-                        'No subscription pack found.',
-                        'wp-user-frontend'
-                    );
-                    ?>
-                    </div></div>
-                    <?php
-                    return;
-                }
-                $recurring_pay = isset( $pack_detail->meta_value['recurring_pay'] ) ? $pack_detail->meta_value['recurring_pay'] : 'no';
-                if ( empty( $pack_detail->meta_value['billing_amount'] ) || $pack_detail->meta_value['billing_amount'] <= 0 ) {
-                    $is_free = true;
-                }
-            }
-            $gateways = $this->get_active_gateways();
-            if ( isset( $_REQUEST['wpuf_payment_submit'] ) ) {
-                $selected_gateway = isset( $_REQUEST['wpuf_payment_method'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['wpuf_payment_method'] ) ) : '';
-            } else {
-                $selected_gateway = 'paypal';
-            }
-            if ( ! is_user_logged_in() ) {
-                return $content;
-            }
+        if ( $checkout->renders_react( $post ) ) {
+            return $checkout->react_markup( $resolved );
+        }
 
-            $current_user  = wp_get_current_user();
-            $user_id_param = isset( $_GET['user_id'] ) ? intval( wp_unslash( $_GET['user_id'] ) ) : 0;
-            if ( $user_id_param > 0 && $user_id_param !== get_current_user_id() ) {
-                return $content;
-            }
+        return $this->classic_checkout( $resolved );
+    }
 
-            $this->enqueue_checkout_style();
-            ob_start();
-            echo '<div class="wpuf-frontend wpuf-checkout">';
-            if ( $pack_id && $is_free ) {
-                $wpuf_subscription = wpuf()->subscription;
-                $wpuf_user         = new WPUF_User( $current_user->ID );
-                if ( ! $wpuf_user->subscription()->used_free_pack( $pack_id ) ) {
-                    wpuf_get_user( $current_user->ID )->subscription()->add_pack( $pack_id, null, false, 'Free' );
-                    $wpuf_user->subscription()->add_free_pack( $current_user->ID, $pack_id );
-                    $message = apply_filters(
-                        'wpuf_fp_activated_msg',
-                        __(
-                            'Your Free package has been activated. Enjoy!',
-                            'wp-user-frontend'
-                        )
-                    );
-                } else {
-                    $message = apply_filters(
-                        'wpuf_fp_activated_error',
-                        __(
-                            'You already have activated a Free package previously.',
-                            'wp-user-frontend'
-                        )
-                    );
-                }
-                ?>
-                <div class="wpuf-form-gate"><div class="wpuf-info wpuf-checkout-free"><?php echo esc_html( $message ); ?></div></div>
-                <?php
-            } else {
-                ?>
-                <?php
-                if ( count( $gateways ) ) {
-                    // Prepare order summary data before rendering
-                    $order_title  = '';
-                    $billing_data = [];
-                    if ( $pack_id ) {
-                        $pack         = wpuf()->subscription->get_subscription( $pack_id );
-                        $details_meta = wpuf()->subscription->get_details_meta_value();
-                        $currency     = wpuf_get_currency( 'symbol' );
+    /**
+     * The classic checkout markup (a pay page built with Elementor, an
+     * unbuilt app): the form posts to send_to_gateway().
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $resolved Checkout_Service::resolve() with status `open`
+     *
+     * @return string
+     */
+    private function classic_checkout( array $resolved ) {
+        $checkout         = $this->checkout();
+        $request          = $resolved['request'];
+        $gateways         = $resolved['gateways'];
+        $type             = $request['type'];
+        $post_id          = $request['post_id'];
+        $pack_id          = $request['pack_id'];
+        $selected_gateway = $request['gateway'];
+        $current_user     = wp_get_current_user();
+        $recurring_pay    = $resolved['pack'] ? $checkout->recurring_pay( $resolved['pack'] ) : 'no';
+        $billing_data     = $checkout->billing_data( $request, $resolved['pack'] );
 
-                        $pack_cost      = $pack->meta_value['billing_amount'];
-                        $billing_amount = apply_filters( 'wpuf_payment_amount', $pack->meta_value['billing_amount'] );
+        $notice = $checkout->notice();
 
-                        $order_title = $pack->post_title;
+        ob_start();
+        echo '<div class="wpuf-frontend wpuf-checkout">';
 
-                        $billing_data = apply_filters(
-                            'wpuf_billing_data', [
-                                'type'           => 'pack',
-                                'id'             => $pack_id,
-                                'title'          => $order_title,
-                                'subtotal'       => $pack_cost,
-                                'billing_amount' => $billing_amount,
-                                'recurring_pay'  => isset( $pack->meta_value['recurring_pay'] ) ? $pack->meta_value['recurring_pay'] : 'no',
-                            ]
-                        );
-                    } elseif ( $post_id ) {
-                        $form              = new Admin\Forms\Form(
-                            get_post_meta( $post_id, '_wpuf_form_id', true )
-                        );
-                        $force_pack        = $form->is_enabled_force_pack();
-                        $pay_per_post      = $form->is_enabled_pay_per_post();
-                        $fallback_enabled  = $form->is_enabled_fallback_cost();
-                        $fallback_cost     = (float) $form->get_subs_fallback_cost();
-                        $pay_per_post_cost = (float) $form->get_pay_per_post_cost();
-                        $current_user      = wpuf_get_user();
-                        $current_pack      = $current_user->subscription()->current_pack();
-
-                        if ( $force_pack && ! is_wp_error( $current_pack ) && $fallback_enabled ) {
-                            $post_cost      = $fallback_cost;
-                            $billing_amount = apply_filters( 'wpuf_payment_amount', $fallback_cost, $post_id );
-                        } else {
-                            $post_cost      = $pay_per_post_cost;
-                            $billing_amount = apply_filters( 'wpuf_payment_amount', $pay_per_post_cost, $post_id );
-                        }
-
-                        $post_obj    = get_post( $post_id );
-                        $order_title = $post_obj ? $post_obj->post_title : __( 'Post Submission', 'wp-user-frontend' );
-
-                        $billing_data = apply_filters(
-                            'wpuf_billing_data', [
-                                'type'           => 'post',
-                                'id'             => $post_id,
-                                'title'          => $order_title,
-                                'subtotal'       => $post_cost,
-                                'billing_amount' => $billing_amount,
-                            ]
-                        );
-                    }
-                    ?>
+        if ( $notice ) {
+            echo '<div class="wpuf-errors wpuf-checkout-notice" role="alert">' . esc_html( $notice['message'] ) . ( $notice['detail'] ? '<br><small>' . esc_html( $notice['detail'] ) . '</small>' : '' ) . '</div>';
+        }
+        ?>
                     <form id="wpuf-payment-gateway" action="" method="POST">
                     <div class="wpuf-checkout-wrap">
                         <?php
@@ -395,21 +299,19 @@ class Payment {
                         </div>
                     </div>
                     </form>
-                    <?php
-                } else {
-                    ?>
-                    <div class="wpuf-form-gate"><div class="wpuf-info"><?php esc_html_e( 'No Payment gateway found', 'wp-user-frontend' ); ?></div></div>
-                <?php } ?>
+        <?php
+        echo '</div>';
 
-                <?php
-            }
+        return ob_get_clean();
+    }
 
-            echo '</div>';
-
-            return ob_get_clean();
-        }
-
-        return $content;
+    /**
+     * The checkout service.
+     *
+     * @return \WeDevs\Wpuf\Frontend\Checkout\Checkout_Service
+     */
+    private function checkout() {
+        return wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Checkout\Checkout_Service::class );
     }
 
     /**

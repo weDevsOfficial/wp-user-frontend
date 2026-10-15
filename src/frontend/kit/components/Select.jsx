@@ -16,10 +16,14 @@
  * "Use Theme CSS" forms keep the browser's select: the theme styles it
  * (SelectModeContext, set by FormRenderer).
  *
+ * `multiple`: the same box and list for a list of values. The box shows a
+ * pill per picked option (× removes it), a pick toggles the option and the
+ * list stays open, picked options carry the check.
+ *
  * @since WPUF_SINCE
  */
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useOutside, useUid } from '../form/hooks';
 
 /** 'custom' (the list) or 'native' (the browser's select, "Use Theme CSS" forms). */
@@ -40,6 +44,12 @@ const CHECK = (
     </svg>
 );
 
+const REMOVE = (
+    <svg width="12" height="12" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+        <path d="M6 6l8 8M14 6l-8 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+);
+
 const fold = ( text ) => String( text || '' ).toLocaleLowerCase().normalize( 'NFD' ).replace( /[̀-ͯ]/g, '' ).trim();
 
 /**
@@ -47,7 +57,8 @@ const fold = ( text ) => String( text || '' ).toLocaleLowerCase().normalize( 'NF
  * @param {string}   [props.id]          Id of the button (the row label points to it).
  * @param {string}   [props.name]        Name of the hidden select (what the classic form posts).
  * @param {string}   [props.className]   Classes of the hidden select (the classic field classes).
- * @param {string}   props.value         Selected value ('' or the placeholder value: none).
+ * @param {string|Array} props.value     Selected value ('' or the placeholder value: none); a list with `multiple`.
+ * @param {boolean}  [props.multiple]    Pick several options (value and onChange use a list).
  * @param {Array}    props.options       { value, label, disabled?, depth? } list.
  * @param {string}   [props.placeholder] Label of the "nothing picked" option.
  * @param {string}   [props.placeholderValue] Its value (classic: -1).
@@ -80,6 +91,7 @@ export default function Select( {
     size,
     data = {},
     returnFocus = true,
+    multiple = false,
 } ) {
     const mode = useContext( SelectModeContext );
     const uid = useUid( 'wpuf-select' );
@@ -94,13 +106,15 @@ export default function Select( {
     const [ active, setActive ] = useState( -1 );
     const [ above, setAbove ] = useState( false );
 
-    const current = String( value ?? '' );
-    const empty = '' === current || placeholderValue === current;
+    const values = multiple ? ( Array.isArray( value ) ? value.map( String ) : [] ) : [];
+    const current = multiple ? '' : String( value ?? '' );
+    const empty = multiple ? ! values.length : '' === current || placeholderValue === current;
     const all = useMemo( () => {
         const rows = ( options || [] ).map( ( option ) => ( { ...option, value: String( option.value ), label: String( option.label ?? option.value ) } ) );
 
-        return showPlaceholder && placeholder ? [ { value: placeholderValue, label: placeholder, placeholder: true }, ...rows ] : rows;
-    }, [ options, placeholder, placeholderValue, showPlaceholder ] );
+        return ! multiple && showPlaceholder && placeholder ? [ { value: placeholderValue, label: placeholder, placeholder: true }, ...rows ] : rows;
+    }, [ options, placeholder, placeholderValue, showPlaceholder, multiple ] );
+    const isPicked = ( option ) => ( multiple ? values.includes( option.value ) : option.value === current && ! ( option.placeholder && ! empty ) );
     const searchable = all.length > SEARCH_FROM;
     const shown = useMemo( () => {
         const needle = fold( query );
@@ -120,8 +134,21 @@ export default function Select( {
         }
     };
 
+    // `multiple`: in the options' order, as the classic select posts its selected options.
+    const toggle = ( picked ) => {
+        const next = values.includes( picked ) ? values.filter( ( v ) => v !== picked ) : [ ...values, picked ];
+
+        onChange( all.map( ( option ) => option.value ).filter( ( v ) => next.includes( v ) ) );
+    };
+
     const pick = ( option ) => {
         if ( ! option || option.disabled ) {
+            return;
+        }
+
+        if ( multiple ) {
+            toggle( option.value );
+
             return;
         }
 
@@ -153,7 +180,7 @@ export default function Select( {
             setAbove( window.innerHeight - rect.bottom < 300 && rect.top > window.innerHeight - rect.bottom );
         }
 
-        const index = all.findIndex( ( option ) => option.value === current );
+        const index = all.findIndex( ( option ) => ( multiple ? values.includes( option.value ) : option.value === current ) );
 
         setActive( 'first' === at ? firstEnabled( 0, 1 ) : ( 'last' === at ? firstEnabled( all.length - 1, -1 ) : ( index >= 0 ? index : firstEnabled( 0, 1 ) ) ) );
         setOpen( true );
@@ -209,7 +236,7 @@ export default function Select( {
 
         if ( open ) {
             setActive( hit );
-        } else {
+        } else if ( ! multiple ) {
             onChange( all[ hit ].value );
         }
     };
@@ -251,8 +278,8 @@ export default function Select( {
         }
 
         if ( 'Tab' === event.key ) {
-            // The APG pattern: Tab keeps the active option and moves on.
-            if ( shown[ active ] && ! shown[ active ].disabled && shown[ active ].value !== current ) {
+            // The APG pattern: Tab keeps the active option and moves on (a list keeps its picks).
+            if ( ! multiple && shown[ active ] && ! shown[ active ].disabled && shown[ active ].value !== current ) {
                 onChange( shown[ active ].placeholder ? '' : shown[ active ].value );
             }
 
@@ -301,18 +328,21 @@ export default function Select( {
             className={ `${ className } ${ 'native' === mode ? '' : 'wpuf-select__native' }`.trim() }
             id={ 'native' === mode ? id : undefined }
             name={ name }
-            value={ empty && showPlaceholder && placeholder ? placeholderValue : current }
+            multiple={ multiple || undefined }
+            value={ multiple ? values : ( empty && showPlaceholder && placeholder ? placeholderValue : current ) }
             disabled={ disabled || undefined }
             aria-hidden={ 'native' === mode ? undefined : 'true' }
             aria-invalid={ 'native' === mode && invalid ? 'true' : undefined }
             aria-required={ 'native' === mode && required ? 'true' : undefined }
             aria-label={ 'native' === mode && label ? label : undefined }
             tabIndex={ 'native' === mode ? undefined : -1 }
-            onChange={ ( event ) => onChange( placeholderValue === event.target.value ? '' : event.target.value ) }
+            onChange={ ( event ) => onChange( multiple
+                ? Array.from( event.target.selectedOptions, ( option ) => option.value )
+                : ( placeholderValue === event.target.value ? '' : event.target.value ) ) }
             onBlur={ 'native' === mode ? onBlur : undefined }
             { ...( 'native' === mode ? data : {} ) }
         >
-            { showPlaceholder && placeholder && <option value={ placeholderValue }>{ placeholder }</option> }
+            { ! multiple && showPlaceholder && placeholder && <option value={ placeholderValue }>{ placeholder }</option> }
             { ( options || [] ).map( ( option ) => (
                 <option key={ String( option.value ) } value={ String( option.value ) } disabled={ option.disabled || undefined }>
                     { `${ '   '.repeat( option.depth || 0 ) }${ option.label ?? option.value }` }
@@ -325,36 +355,77 @@ export default function Select( {
         return native;
     }
 
+    const triggerProps = {
+        ref: button,
+        id,
+        className: `wpuf-select__trigger${ empty ? ' is-placeholder' : '' }${ multiple ? ' wpuf-select__trigger--multiple' : '' }`,
+        role: 'combobox',
+        'aria-haspopup': 'listbox',
+        'aria-expanded': open ? 'true' : 'false',
+        'aria-controls': listId,
+        'aria-activedescendant': open && ! searchable && active >= 0 ? optionId( active ) : undefined,
+        'aria-invalid': invalid ? 'true' : undefined,
+        'aria-required': required ? 'true' : undefined,
+        'aria-label': label || undefined,
+        'data-value': multiple ? values.join( ',' ) : current,
+        onKeyDown: onButtonKeyDown,
+        onBlur: ( event ) => {
+            if ( ! open && onBlur && ! ( wrap.current && wrap.current.contains( event.relatedTarget ) ) ) {
+                onBlur();
+            }
+        },
+        ...data,
+    };
+
     return (
         <div ref={ wrap } className={ `wpuf-select${ open ? ' is-open' : '' }${ disabled ? ' is-disabled' : '' }${ size ? ` wpuf-select--${ size }` : '' }` }>
             { native }
-            <button
-                ref={ button }
-                type="button"
-                id={ id }
-                className={ `wpuf-select__trigger${ empty ? ' is-placeholder' : '' }` }
-                role="combobox"
-                aria-haspopup="listbox"
-                aria-expanded={ open ? 'true' : 'false' }
-                aria-controls={ listId }
-                aria-activedescendant={ open && ! searchable && active >= 0 ? optionId( active ) : undefined }
-                aria-invalid={ invalid ? 'true' : undefined }
-                aria-required={ required ? 'true' : undefined }
-                aria-label={ label || undefined }
-                disabled={ disabled || undefined }
-                data-value={ current }
-                onClick={ () => ( open ? close() : openList() ) }
-                onKeyDown={ onButtonKeyDown }
-                onBlur={ ( event ) => {
-                    if ( ! open && onBlur && ! ( wrap.current && wrap.current.contains( event.relatedTarget ) ) ) {
-                        onBlur();
-                    }
-                } }
-                { ...data }
-            >
-                <span className="wpuf-select__value">{ shownLabel || ' ' }</span>
-                { CHEVRON }
-            </button>
+            { multiple ? (
+                <div
+                    { ...triggerProps }
+                    tabIndex={ disabled ? -1 : 0 }
+                    aria-disabled={ disabled ? 'true' : undefined }
+                    onClick={ () => ! disabled && ( open ? close() : openList() ) }
+                >
+                    { empty ? (
+                        <span className="wpuf-select__value">{ placeholder || ' ' }</span>
+                    ) : (
+                        <span className="wpuf-select__chips">
+                            { all.filter( isPicked ).map( ( option ) => (
+                                <span key={ option.value } className="wpuf-select__chip" data-value={ option.value }>
+                                    <span className="wpuf-select__chip-label">{ option.label }</span>
+                                    <button
+                                        type="button"
+                                        className="wpuf-select__chip-remove"
+                                        tabIndex={ -1 }
+                                        disabled={ disabled || undefined }
+                                        /* translators: %s: option label */
+                                        aria-label={ sprintf( __( 'Remove %s', 'wp-user-frontend' ), option.label ) }
+                                        onMouseDown={ ( event ) => event.preventDefault() }
+                                        onClick={ ( event ) => {
+                                            event.stopPropagation();
+                                            toggle( option.value );
+                                        } }
+                                    >
+                                        { REMOVE }
+                                    </button>
+                                </span>
+                            ) ) }
+                        </span>
+                    ) }
+                    { CHEVRON }
+                </div>
+            ) : (
+                <button
+                    { ...triggerProps }
+                    type="button"
+                    disabled={ disabled || undefined }
+                    onClick={ () => ( open ? close() : openList() ) }
+                >
+                    <span className="wpuf-select__value">{ shownLabel || ' ' }</span>
+                    { CHEVRON }
+                </button>
+            ) }
             { open && (
                 <div className={ `wpuf-select__popover${ above ? ' is-above' : '' }` }>
                     { searchable && (
@@ -375,14 +446,14 @@ export default function Select( {
                             onKeyDown={ move }
                         />
                     ) }
-                    <ul ref={ list } id={ listId } className="wpuf-select__list" role="listbox" aria-labelledby={ id } tabIndex={ -1 }>
+                    <ul ref={ list } id={ listId } className="wpuf-select__list" role="listbox" aria-labelledby={ id } aria-multiselectable={ multiple ? 'true' : undefined } tabIndex={ -1 }>
                         { shown.map( ( option, index ) => (
                             <li
                                 key={ `${ option.placeholder ? 'ph' : 'o' }-${ option.value }` }
                                 id={ optionId( index ) }
                                 role="option"
                                 data-value={ option.value }
-                                aria-selected={ option.value === current && ! ( option.placeholder && ! empty ) ? 'true' : 'false' }
+                                aria-selected={ isPicked( option ) ? 'true' : 'false' }
                                 aria-disabled={ option.disabled ? 'true' : undefined }
                                 className={ `wpuf-select__option${ index === active ? ' is-active' : '' }${ option.placeholder ? ' is-placeholder' : '' }` }
                                 style={ option.depth ? { '--wpuf-select-depth': option.depth } : undefined }
@@ -391,7 +462,7 @@ export default function Select( {
                                 onClick={ () => pick( option ) }
                             >
                                 <span className="wpuf-select__option-label">{ option.label }</span>
-                                { option.value === current && ! option.placeholder && CHECK }
+                                { isPicked( option ) && ! option.placeholder && CHECK }
                             </li>
                         ) ) }
                         { ! shown.length && <li className="wpuf-select__empty" role="presentation">{ __( 'No matches', 'wp-user-frontend' ) }</li> }

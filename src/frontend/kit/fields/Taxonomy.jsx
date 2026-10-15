@@ -27,7 +27,6 @@ const flatTree = ( choices, parent = 0, depth = 0 ) => choices
     .filter( ( term ) => Number( term.parent || 0 ) === Number( parent ) )
     .flatMap( ( term ) => [ { ...term, depth }, ...flatTree( choices, term.id, depth + 1 ) ] );
 
-const indent = ( depth ) => '   '.repeat( depth );
 
 /** The checklist rows, children nested like the classic walker prints them. */
 function Checklist( { choices, parent, field, formId, chosen, toggle, onBlur } ) {
@@ -99,7 +98,7 @@ export default function TaxonomyField( { field, value, onChange, onBlur, formId,
             <div className={ `${ field.name } multiselect wpuf_${ field.name }_${ formId }` }>
                 <MultiSelect
                     id={ id }
-                    options={ options.map( ( term ) => ( { value: String( term.id ), label: indent( term.depth ) + term.name } ) ) }
+                    options={ options.map( ( term ) => ( { value: String( term.id ), label: term.name, depth: term.depth } ) ) }
                     selected={ chosen }
                     placeholder={ field.first || __( '- Select -', 'wp-user-frontend' ) }
                     onChange={ onChange }

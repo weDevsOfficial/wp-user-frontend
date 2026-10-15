@@ -426,7 +426,7 @@ export class Base {
                 const option = field.locator(`[role="option"][data-value="${value}"]`).or(field.locator('[role="option"]', { hasText: value })).first();
                 await option.click();
                 await this.page.keyboard.press('Escape');
-                await expect(field.locator('.selected-items')).toContainText(value);
+                await expect(field.locator('.wpuf-select__chips')).toContainText(value);
                 console.log('\x1b[33m%s\x1b[0m', `✅ Multiselected ${name} (React) with ${value}`);
                 return;
             }

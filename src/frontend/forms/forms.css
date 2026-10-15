@@ -185,155 +185,6 @@
     position: relative;
 }
 
-/* The custom multiselect (free copy of Pro's custom-multiselect.css, lower specificity:
-   Pro's sheet wins when it is on the page). */
-.wpuf-frontend .custom-multiselect {
-    position: relative;
-    width: 100%;
-}
-
-.wpuf-frontend .multiselect-input {
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    transition: all 0.2s ease;
-}
-
-.wpuf-frontend .multiselect-input:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.wpuf-frontend .selected-items {
-    display: none;
-}
-
-.wpuf-frontend .selected-items:not(:empty) {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    flex: 1;
-}
-
-.wpuf-frontend .selected-item {
-    display: flex;
-    align-items: flex-end;
-    gap: 4px;
-    font-size: 14px;
-}
-
-.wpuf-frontend .remove-item {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    line-height: 1;
-    padding: 0;
-    margin-left: 4px;
-}
-
-.wpuf-frontend .multiselect-placeholder {
-    font-size: 16px;
-    font-weight: 400;
-    flex: 1;
-    pointer-events: none;
-}
-
-.wpuf-frontend .dropdown-arrow {
-    font-size: 14px;
-    transition: transform 0.2s ease;
-    pointer-events: none;
-    margin-left: 8px;
-}
-
-.wpuf-frontend .multiselect-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    z-index: 1000;
-    display: none;
-    max-height: 200px;
-    overflow-y: auto;
-    margin-top: 10px;
-    
-    background: #fff;
-    border: 1px solid #E5E7EB;
-    border-radius: 6px;
-}
-
-.wpuf-frontend .multiselect-option {
-    display: flex;
-    align-items: center;
-    padding: 12px 16px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.wpuf-frontend .multiselect-option:last-child {
-    border-bottom: none;
-}
-
-/* Keyboard focus on an option row (React only: the classic widget has no option focus). */
-.wpuf-frontend .multiselect-option:focus {
-    outline: none;
-}
-
-.wpuf-frontend .multiselect-option:focus-visible {
-    background-color: #f3f4f6;
-}
-
-.wpuf-frontend .multiselect-option input[type="checkbox"] {
-    
-    display: none !important;
-}
-
-.wpuf-frontend .multiselect-option label {
-    cursor: pointer;
-    flex: 1;
-    font-size: 16px;
-    font-weight: 400;
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding-left: 32px;
-}
-
-.wpuf-frontend .multiselect-option label::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    border: 1px solid #E5E7EB;
-    border-radius: 50%;
-    transition: all 0.2s ease;
-}
-
-.wpuf-frontend .multiselect-option input[type="checkbox"]:checked + label::after {
-    content: '';
-    position: absolute;
-    left: 7px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 9px;
-    height: 7px;
-    background-image: url("data:image/svg+xml,%3Csvg width='9' height='7' viewBox='0 0 9 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.06186 0.278861C8.23568 0.45747 8.33333 0.699683 8.33333 0.952236C8.33333 1.20479 8.23568 1.447 8.06186 1.62561L3.42579 6.3878C3.25191 6.56636 3.01611 6.66667 2.77025 6.66667C2.52438 6.66667 2.28859 6.66636 2.11471 6.3878L0.26028 4.48293C0.0913804 4.3033 -0.00207753 4.06271 3.50511e-05 3.81298C0.00214763 3.56325 0.0996617 3.32437 0.271575 3.14778C0.443488 2.97119 0.676044 2.87102 0.919157 2.86885C1.16227 2.86668 1.39649 2.96268 1.57136 3.13618L2.77025 4.36768L6.75078 0.278861C6.92466 0.100307 7.16045 0 7.40632 0C7.65218 0 7.88798 0.100307 8.06186 0.278861Z' fill='white'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-}
-
-
-
-.wpuf-frontend .multiselect-option input[type="checkbox"]:checked + label::before {
-    background: #3B82F6;
-    border-color: #3B82F6;
-}
-
 /* Select arrow: one chevron in every layout (a reset elsewhere on the page
    must not let the layout sheets' arrow image tile). */
 .wpuf-frontend form.wpuf-form-add select:not([multiple]) {
@@ -653,28 +504,8 @@
     border-color: transparent !important;
 }
 
-/* The custom multiselect's trigger looks like the other controls. */
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .custom-multiselect .multiselect-input {
-    box-sizing: border-box;
-    min-height: 44px;
-    align-items: center;
-    padding: 10px 14px !important;
-    border: 1px solid var(--wpuf-m-border) !important;
-    border-radius: var(--wpuf-m-radius) !important;
-    background-color: var(--wpuf-m-input-bg) !important;
-    box-shadow: var(--wpuf-m-shadow) !important;
-    color: var(--wpuf-m-input-text) !important;
-    font-size: 15px !important;
-}
-
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .custom-multiselect .multiselect-input:focus,
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .custom-multiselect.open .multiselect-input {
-    border-color: var(--wpuf-m-accent) !important;
-    box-shadow: 0 0 0 3px var(--wpuf-m-ring) !important;
-}
-
 /*
- * The single select (kit/components/Select.jsx): a button in the controls'
+ * The select (kit/components/Select.jsx, single and multiple): a box in the controls'
  * look and a list in place of the browser's dropdown. The classic select
  * stays in the DOM, visually hidden.
  */
@@ -754,6 +585,67 @@
 
 .wpuf-frontend .wpuf-select .wpuf-select__trigger.is-placeholder .wpuf-select__value {
     color: var(--wpuf-m-muted, #6b7280);
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__trigger--multiple {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__trigger--multiple[aria-disabled="true"] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__chips {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-width: 0;
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    max-width: 100%;
+    padding: 2px 4px 2px 10px;
+    border: 1px solid var(--wpuf-m-border, #e5e7eb);
+    border-radius: 999px;
+    background: var(--wpuf-m-hover, #f3f4f6);
+    color: var(--wpuf-m-input-text, #111827);
+    font-size: 13px;
+    line-height: 20px;
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__chip-label {
+    overflow: hidden;
+    min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.wpuf-frontend .wpuf-select button.wpuf-select__chip-remove.wpuf-select__chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    box-shadow: none;
+    color: var(--wpuf-m-muted, #6b7280);
+    cursor: pointer;
+}
+
+.wpuf-frontend .wpuf-select button.wpuf-select__chip-remove.wpuf-select__chip-remove:hover {
+    background: var(--wpuf-m-border, #e5e7eb);
+    color: var(--wpuf-m-input-text, #111827);
 }
 
 .wpuf-frontend .wpuf-select .wpuf-select__chevron {
@@ -906,51 +798,6 @@
 .wpuf-frontend .wpuf-select.wpuf-select--sm ul.wpuf-select__list li.wpuf-select__option.wpuf-select__option {
     padding: 6px 8px 6px calc(10px + var(--wpuf-select-depth, 0) * 16px) !important;
     font-size: 13px;
-}
-
-/* The custom multiselect matches the single select: muted placeholder, the same chevron, accent pills, the list as a popover. */
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-placeholder {
-    color: var(--wpuf-m-muted) !important;
-    font-size: 15px !important;
-    font-weight: 400 !important;
-}
-
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .dropdown-arrow svg {
-    width: 12px;
-    height: auto;
-}
-
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .dropdown-arrow svg path {
-    stroke: var(--wpuf-m-muted);
-}
-
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .selected-item {
-    border: 0 !important;
-    border-radius: 6px !important;
-    background: var(--wpuf-m-ring) !important;
-    color: var(--wpuf-m-input-text) !important;
-    font-size: 13px !important;
-}
-
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-dropdown {
-    margin-top: 6px !important;
-    padding: 4px !important;
-    border: 1px solid var(--wpuf-m-border) !important;
-    border-radius: var(--wpuf-m-radius) !important;
-    background: var(--wpuf-m-pop, #ffffff) !important;
-    box-shadow: 0 12px 24px -6px rgba(16, 24, 40, 0.18), 0 4px 8px -4px rgba(16, 24, 40, 0.08) !important;
-    max-height: 264px !important;
-}
-
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-option {
-    border: 0 !important;
-    border-radius: 6px;
-    color: var(--wpuf-m-input-text) !important;
-}
-
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-option:hover,
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-option:focus {
-    background: var(--wpuf-m-hover, #f3f4f6) !important;
 }
 
 /* Phone with the country list: the number starts after the flag (the underline rule of template 3 zeroed it). */

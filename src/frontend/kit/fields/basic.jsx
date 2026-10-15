@@ -7,13 +7,11 @@
  *
  * @since WPUF_SINCE
  */
-import { useRef, useState } from '@wordpress/element';
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import Field, { isReadOnly } from '../components/Field';
 import ServerHtml from '../components/ServerHtml';
 import SuggestInput from './Suggest';
 import Select from '../components/Select';
-import { useOutside, useUid } from '../form/hooks';
 
 const controlId = ( field, formId ) => `${ field.name }_${ formId }`;
 const fieldClass = ( field, formId ) => `wpuf_${ field.name }_${ formId }`;
@@ -164,143 +162,36 @@ export function SelectField( { field, value, onChange, onBlur, formId, error, se
     );
 }
 
-const ARROW = (
-    <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M13.25 0.750001L7 7L0.75 0.750001" stroke="#4B5563" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-);
-
 /**
- * The multiselect as Pro's custom-multiselect.js builds it
- * (`div.custom-multiselect > div.multiselect-input[role=combobox]` with
- * pills, placeholder and arrow, `div.multiselect-dropdown[role=listbox]`
- * with a checkbox per option): click or Enter / Space toggles it, Escape
- * and an outside click close it, a pill's × removes its value. On top of
- * the classic keys, ArrowDown opens it on the first option and the arrows
- * (Home / End) move between the options; Escape there goes back to the box.
+ * The multiselect: the forms' select (components/Select) with `multiple`,
+ * so it has the dropdown's box, list and check. Kept as its own export for
+ * the fields that use it (multiselect, Pro pricing multiselect).
  *
- * @param {Object} props
- * @param {Array}  props.options  { value, label } list.
- * @param {Array}  props.selected Selected values.
- * @param {string} props.placeholder
+ * @param {Object}   props
+ * @param {Array}    props.options  { value, label } list.
+ * @param {Array}    props.selected Selected values.
+ * @param {string}   props.placeholder
  * @param {Function} props.onChange Called with the new list.
  * @param {Function} [props.onBlur]
- * @param {string} [props.id]      Id for the combobox (the row label points to it).
- * @param {boolean} [props.invalid]
+ * @param {string}   [props.id]      Id for the combobox (the row label points to it).
+ * @param {boolean}  [props.invalid]
+ * @param {string}   [props.name]    Name of the hidden select.
+ * @param {boolean}  [props.disabled]
  */
-export function MultiSelect( { options, selected, placeholder, onChange, onBlur, id, invalid = false } ) {
-    const [ open, setOpen ] = useState( false );
-    const wrap = useRef( null );
-    const uid = useUid( 'wpuf-ms' );
-    const listId = `${ uid }-list`;
-
-    useOutside( wrap, open, () => {
-        setOpen( false );
-        onBlur && onBlur();
-    } );
-
-    // In the options' order, as the classic select serializes its selected options.
-    const toggle = ( value ) => {
-        const next = selected.includes( value ) ? selected.filter( ( v ) => v !== value ) : [ ...selected, value ];
-
-        onChange( options.map( ( option ) => option.value ).filter( ( v ) => next.includes( v ) ) );
-    };
-    const labelOf = ( value ) => ( options.find( ( option ) => option.value === value ) || { label: value } ).label;
-
-    // The template sheets hide the option checkboxes, so the option rows take the keyboard focus.
-    const boxes = () => ( wrap.current ? Array.from( wrap.current.querySelectorAll( '.multiselect-option' ) ) : [] );
-    const focusOption = ( index ) => {
-        const list = boxes();
-
-        if ( list.length ) {
-            list[ Math.max( 0, Math.min( list.length - 1, index ) ) ].focus();
-        }
-    };
-
-    const onKeyDown = ( event ) => {
-        if ( event.target !== event.currentTarget ) {
-            return;
-        }
-
-        if ( 'Enter' === event.key || ' ' === event.key ) {
-            event.preventDefault();
-            setOpen( ( current ) => ! current );
-        } else if ( 'ArrowDown' === event.key || 'ArrowUp' === event.key ) {
-            event.preventDefault();
-            setOpen( true );
-            // The list renders open first, then the option takes the focus.
-            window.setTimeout( () => focusOption( 'ArrowDown' === event.key ? 0 : boxes().length - 1 ), 0 );
-        } else if ( 'Escape' === event.key ) {
-            setOpen( false );
-        }
-    };
-
-    const onListKeyDown = ( event ) => {
-        const list = boxes();
-        const at = list.indexOf( event.target );
-
-        if ( at < 0 ) {
-            return;
-        }
-
-        if ( 'ArrowDown' === event.key || 'ArrowUp' === event.key || 'Home' === event.key || 'End' === event.key ) {
-            event.preventDefault();
-            focusOption( { ArrowDown: at + 1, ArrowUp: at - 1, Home: 0, End: list.length - 1 }[ event.key ] );
-        } else if ( 'Enter' === event.key || ' ' === event.key ) {
-            event.preventDefault();
-            toggle( list[ at ].getAttribute( 'data-value' ) );
-        } else if ( 'Escape' === event.key ) {
-            event.preventDefault();
-            setOpen( false );
-            wrap.current.querySelector( '.multiselect-input' ).focus();
-        }
-    };
-
+export function MultiSelect( { options, selected, placeholder, onChange, onBlur, id, invalid = false, name, disabled = false } ) {
     return (
-        <div className="custom-multiselect" ref={ wrap }>
-            <div
-                id={ id }
-                className="multiselect-input"
-                tabIndex={ 0 }
-                role="combobox"
-                aria-expanded={ open ? 'true' : 'false' }
-                aria-haspopup="listbox"
-                aria-controls={ listId }
-                aria-invalid={ invalid ? 'true' : undefined }
-                onClick={ () => setOpen( ( current ) => ! current ) }
-                onKeyDown={ onKeyDown }
-            >
-                <div className="selected-items">
-                    { selected.map( ( value ) => (
-                        <div key={ value } className="selected-item" data-value={ value }>
-                            <span>{ labelOf( value ) }</span>
-                            <button
-                                type="button"
-                                className="remove-item"
-                                /* translators: %s: option label */
-                                aria-label={ sprintf( __( 'Remove %s', 'wp-user-frontend' ), labelOf( value ) ) }
-                                onClick={ ( event ) => {
-                                    event.stopPropagation();
-                                    toggle( value );
-                                } }
-                            >
-                                ×
-                            </button>
-                        </div>
-                    ) ) }
-                </div>
-                <span className="multiselect-placeholder" style={ { display: selected.length ? 'none' : 'block' } }>{ placeholder }</span>
-                <span className="dropdown-arrow" style={ { transform: open ? 'rotate(180deg)' : 'rotate(0deg)' } }>{ ARROW }</span>
-            </div>
-            <div className="multiselect-dropdown" role="listbox" id={ listId } aria-multiselectable="true" style={ { display: open ? 'block' : 'none' } } onKeyDown={ onListKeyDown }>
-                { options.map( ( option, index ) => (
-                    <div key={ option.value } className="multiselect-option" role="option" tabIndex={ -1 } aria-selected={ selected.includes( option.value ) } data-value={ option.value }>
-                        <input type="checkbox" id={ `${ uid }-${ index }` } checked={ selected.includes( option.value ) } onChange={ () => toggle( option.value ) } />
-                        <label htmlFor={ `${ uid }-${ index }` }>{ option.label }</label>
-                    </div>
-                ) ) }
-            </div>
-        </div>
+        <Select
+            multiple
+            id={ id }
+            name={ name }
+            value={ selected }
+            options={ options }
+            placeholder={ placeholder }
+            onChange={ onChange }
+            onBlur={ onBlur }
+            invalid={ invalid }
+            disabled={ disabled }
+        />
     );
 }
 

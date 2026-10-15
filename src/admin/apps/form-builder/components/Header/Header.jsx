@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Input, cn } from '@wedevs/plugin-ui';
-import { Check, ChevronDown, Eye, Pencil, Save, Search } from 'lucide-react';
+import { Check, ChevronDown, Eye, Save, Search } from 'lucide-react';
 import { Button } from '@wpuf/components';
 import { STORE_NAME } from '../../store';
 import useFormSave from '../../hooks/useFormSave';
@@ -168,7 +168,7 @@ export default function Header( { activeTab, onTabChange } ) {
                     />
                     { /* The form name (plugin-ui Input, edited in place; saved with the form) and the form switcher. */ }
                     <div className="flex min-w-0 items-center gap-0.5">
-                        <div className="group/title relative flex min-w-0 items-center">
+                        <div className="relative flex min-w-0 items-center">
                             <Input
                                 value={ title }
                                 onChange={ handleTitleChange }
@@ -183,7 +183,7 @@ export default function Header( { activeTab, onTabChange } ) {
                                     isTitleEditing ? 'pr-8' : 'border-transparent bg-transparent hover:border-gray-200'
                                 ) }
                             />
-                            { isTitleEditing ? (
+                            { isTitleEditing && (
                                 <button
                                     type="button"
                                     onMouseDown={ ( event ) => event.preventDefault() }
@@ -196,9 +196,6 @@ export default function Header( { activeTab, onTabChange } ) {
                                 >
                                     <Check className="size-4" aria-hidden="true" />
                                 </button>
-                            ) : (
-                                // Beside the name, not over it.
-                                <Pencil className="pointer-events-none ml-1 size-3.5 shrink-0 text-gray-400 opacity-0 transition-opacity group-hover/title:opacity-100" aria-hidden="true" />
                             ) }
                         </div>
                         { ! isTitleEditing && forms.length > 1 && <FormSwitcher forms={ forms } current={ post.ID } formType={ formType } /> }

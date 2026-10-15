@@ -692,31 +692,4 @@ class Pack_Fields {
 
         return $additional_options;
     }
-
-    /**
-     * Option fields for date type
-     *
-     * @param string $selected
-     *
-     * @return void
-     */
-    public function option_field( $selected ) {
-        ?>
-        <option value="day" <?php selected( $selected, 'day' ); ?>><?php esc_html_e( 'Day(s)', 'wp-user-frontend' ); ?></option>
-        <option value="week" <?php selected( $selected, 'week' ); ?>><?php esc_html_e( 'Week(s)', 'wp-user-frontend' ); ?>
-        </option>
-        <option value="month" <?php selected( $selected, 'month' ); ?>><?php esc_html_e( 'Month(s)', 'wp-user-frontend' ); ?>
-        </option>
-        <option value="year" <?php selected( $selected, 'year' ); ?>><?php esc_html_e( 'Year(s)', 'wp-user-frontend' ); ?>
-        </option>
-        <?php
-    }
-
-    public function lenght_type_option( $selected ) {
-        for ( $i = 1; $i <= 30; $i++ ) {
-            ?>
-            <option value="<?php echo esc_attr( $i ); ?>" <?php selected( $i, $selected ); ?>><?php echo esc_html( $i ); ?></option>
-            <?php
-        }
-    }
 }

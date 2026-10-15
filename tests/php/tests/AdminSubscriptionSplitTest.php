@@ -76,9 +76,9 @@ class AdminSubscriptionSplitTest extends WP_UnitTestCase {
             }
         }
 
-        // 25 of the old class, less the 10 classic editor methods, plus remove_user_pack()
-        // (the REST route admin/users/{id}/pack).
-        $this->assertCount( 16, $groups );
+        // 25 of the old class, less the 10 classic editor methods, the two classic editor option
+        // helpers and the admin-ajax delete_user_package(), plus remove_user_pack() (REST admin/users/{id}/pack).
+        $this->assertCount( 13, $groups );
     }
 
     /**

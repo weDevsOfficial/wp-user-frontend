@@ -14,7 +14,7 @@ use WeDevs\Wpuf\Platform\Stores\Stores;
 
 /**
  * A user's subscription pack on the profile screen: the details section, its
- * save, the pack dropdown and the AJAX pack removal (`wpuf_delete_user_package`).
+ * save, the pack dropdown and the pack removal (`remove_user_pack()`, REST `admin/users/{id}/pack`).
  *
  * @since WPUF_SINCE Moved out of Admin_Subscription, which keeps the hooks and delegates.
  */
@@ -441,29 +441,6 @@ class User_Profile {
                 <?php echo esc_attr( $pack->post_title ); ?></option>
             <?php
         }
-    }
-
-    /**
-     * Ajax function. Delete user package
-     *
-     * @since 2.2.7
-     */
-    public function delete_user_package() {
-        $nonce = isset( $_REQUEST['wpuf_subscription_delete_nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf_subscription_delete_nonce'] ) ) : '';
-
-        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-subscription-delete-nonce' ) ) {
-            return;
-        }
-
-        if ( ! current_user_can( wpuf_admin_role() ) ) {
-            return;
-        }
-
-        $userid  = isset( $_POST['userid'] ) ? intval( wp_unslash( $_POST['userid'] ) ) : 0;
-        $pack_id = isset( $_POST['packid'] ) ? intval( wp_unslash( $_POST['packid'] ) ) : 0;
-
-        echo esc_html( self::remove_user_pack( $userid, $pack_id ) ? '1' : '' );
-        exit;
     }
 
     /**

@@ -109,24 +109,6 @@ class Admin_Subscription {
     }
 
     /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Fields::option_field()
-     *
-     * @since WPUF_SINCE
-     */
-    public function option_field( $selected ) {
-        return $this->pack_fields()->option_field( $selected );
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Fields::lenght_type_option()
-     *
-     * @since WPUF_SINCE
-     */
-    public function lenght_type_option( $selected ) {
-        return $this->pack_fields()->lenght_type_option( $selected );
-    }
-
-    /**
      * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::enqueue_admin_scripts()
      *
      * @since WPUF_SINCE
@@ -178,15 +160,6 @@ class Admin_Subscription {
      */
     public function packdropdown_without_recurring( $packs, $selected = '' ) {
         return $this->user_profile()->packdropdown_without_recurring( $packs, $selected );
-    }
-
-    /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\User_Profile::delete_user_package()
-     *
-     * @since WPUF_SINCE
-     */
-    public function delete_user_package() {
-        return $this->user_profile()->delete_user_package();
     }
 
     /**

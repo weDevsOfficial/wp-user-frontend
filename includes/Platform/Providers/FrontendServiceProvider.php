@@ -13,7 +13,7 @@ use WeDevs\Wpuf\Frontend\Forms\Form_Schema;
 use WeDevs\Wpuf\Frontend\Forms\Submission_Service;
 use WeDevs\Wpuf\Frontend\Forms\Upload_Service;
 use WeDevs\Wpuf\Frontend\Login\Login_Schema;
-use WeDevs\Wpuf\Frontend\React_Renderer;
+use WeDevs\Wpuf\Frontend\Renderer;
 use WeDevs\Wpuf\Platform\REST\Controllers\AccountController;
 use WeDevs\Wpuf\Platform\REST\Controllers\FormsPublicController;
 use WeDevs\Wpuf\Platform\REST\Controllers\UploadsController;
@@ -84,7 +84,7 @@ class FrontendServiceProvider extends ServiceProvider {
             );
         }
 
-        $this->register_react_frontend();
+        $this->register_frontend();
     }
 
     /**
@@ -104,11 +104,11 @@ class FrontendServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    private function register_react_frontend() {
+    private function register_frontend() {
         $this->container->share(
-            React_Renderer::class,
+            Renderer::class,
             function () {
-                return new React_Renderer();
+                return new Renderer();
             }
         );
         $this->container->share(
@@ -150,7 +150,7 @@ class FrontendServiceProvider extends ServiceProvider {
         $this->share_tagged(
             FormsPublicController::class,
             function ( $container ) {
-                return new FormsPublicController( $container->get( Form_Schema::class ), $container->get( Submission_Service::class ), $container->get( Rate_Limit::class ), $container->get( React_Renderer::class ) );
+                return new FormsPublicController( $container->get( Form_Schema::class ), $container->get( Submission_Service::class ), $container->get( Rate_Limit::class ), $container->get( Renderer::class ) );
             }
         );
         $this->share_tagged(

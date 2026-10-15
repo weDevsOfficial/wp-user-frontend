@@ -5,7 +5,7 @@
  * tailwindcss@4). Per screen it writes one stylesheet that looks exactly like
  * the Tailwind 3 one it replaces:
  * - utilities are plain classes (no prefix, like FlyHR) scoped to the screen's
- *   body class with zero specificity (`:where(.wpuf-admin-react) .flex`), so
+ *   body class with zero specificity (`:where(.wpuf-admin-screen) .flex`), so
  *   they never reach other screens or plugins and keep Tailwind 3 strength;
  * - everything else comes from the screen's former Tailwind 3 stylesheet
  *   (src/base-v3/<screen>.pre.css: scoped preflight, forms base, components;
@@ -34,9 +34,9 @@ const ENTRIES = {
         input: 'src/settings.css',
         pre: 'src/base-v3/settings.pre.css',
         post: 'src/base-v3/settings.post.css',
-        scope: '.wpuf-admin-react',
-        output: 'assets/css/settings-react.css',
-        // settings-react-rtl.css for RTL sites, like the other screens.
+        scope: '.wpuf-admin-screen',
+        output: 'assets/css/settings-screen.css',
+        // settings-screen-rtl.css for RTL sites, like the other screens.
         rtl: true,
         // Settings on the shared wrappers since 4.6a (plugin-ui part).
         pui: true,
@@ -45,7 +45,7 @@ const ENTRIES = {
         input: 'src/subscriptions.css',
         pre: 'src/base-v3/subscriptions.pre.css',
         post: 'src/base-v3/subscriptions.post.css',
-        scope: '.wpuf-admin-react',
+        scope: '.wpuf-admin-screen',
         output: 'assets/css/subscriptions.css',
         rtl: true,
         // Shared wrappers since 4.1a (plugin-ui part, page background).
@@ -55,8 +55,8 @@ const ENTRIES = {
         input: 'src/forms.css',
         pre: 'src/base-v3/forms.pre.css',
         post: 'src/base-v3/forms.post.css',
-        scope: '.wpuf-admin-react',
-        output: 'assets/css/admin/forms-react.css',
+        scope: '.wpuf-admin-screen',
+        output: 'assets/css/admin/forms-screen.css',
         rtl: true,
         // Builders on the shared wrappers since 4.4c (field settings inputs).
         pui: true,
@@ -68,8 +68,8 @@ const ENTRIES = {
         input: 'src/forms-list.css',
         pre: 'src/base-v3/forms.pre.css',
         post: 'src/base-v3/forms.post.css',
-        scope: '.wpuf-admin-react',
-        output: 'assets/css/admin/forms-list-react.css',
+        scope: '.wpuf-admin-screen',
+        output: 'assets/css/admin/forms-list-screen.css',
         rtl: true,
         pui: true,
     },
@@ -79,8 +79,8 @@ const ENTRIES = {
         input: 'src/onboarding.css',
         pre: 'src/base-v3/settings.pre.css',
         post: 'src/base-v3/settings.post.css',
-        scope: '.wpuf-admin-react',
-        output: 'assets/css/admin/onboarding-react.css',
+        scope: '.wpuf-admin-screen',
+        output: 'assets/css/admin/onboarding-screen.css',
         rtl: true,
         pui: true,
     },
@@ -91,8 +91,8 @@ const ENTRIES = {
         input: 'src/pages.css',
         pre: 'src/base-v3/settings.pre.css',
         post: 'src/base-v3/settings.post.css',
-        scope: '.wpuf-admin-react',
-        output: 'assets/css/admin/pages-react.css',
+        scope: '.wpuf-admin-screen',
+        output: 'assets/css/admin/pages-screen.css',
         rtl: true,
         pui: true,
     },
@@ -103,8 +103,8 @@ const ENTRIES = {
         input: 'src/ai-form-builder.css',
         pre: 'src/base-v3/subscriptions.pre.css',
         post: 'src/base-v3/subscriptions.post.css',
-        scope: '.wpuf-admin-react',
-        output: 'assets/css/ai-form-builder-react.css',
+        scope: '.wpuf-admin-screen',
+        output: 'assets/css/ai-form-builder-screen.css',
         rtl: true,
         pui: true,
     },

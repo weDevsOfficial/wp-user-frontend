@@ -39,9 +39,9 @@
 }
 
 /* The forms keep the theme's box model, like the classic forms (the template sheets assume it). */
-.wpuf-frontend:not(.wpuf-form-react) :not(.wpuf-form-react, .wpuf-form-react *),
-.wpuf-frontend:not(.wpuf-form-react) :not(.wpuf-form-react, .wpuf-form-react *)::before,
-.wpuf-frontend:not(.wpuf-form-react) :not(.wpuf-form-react, .wpuf-form-react *)::after {
+.wpuf-frontend:not(.wpuf-form-root) :not(.wpuf-form-root, .wpuf-form-root *),
+.wpuf-frontend:not(.wpuf-form-root) :not(.wpuf-form-root, .wpuf-form-root *)::before,
+.wpuf-frontend:not(.wpuf-form-root) :not(.wpuf-form-root, .wpuf-form-root *)::after {
     box-sizing: inherit;
 }
 

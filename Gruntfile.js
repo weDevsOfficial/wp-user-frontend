@@ -90,16 +90,16 @@ module.exports = function( grunt) {
                 tasks: ['less:front', 'less:admin']
             },
 
-            reactFormBuilder: {
+            formBuilder: {
                 files: [
                     'src/admin/apps/form-builder/**/*.{js,jsx}',
                 ],
                 tasks: [
-                    'shell:npm_build_form_builder_react'
+                    'shell:npm_build_form_builder'
                 ]
             },
 
-            aiFormBuilderReact: {
+            aiFormBuilder: {
                 files: [
                     'src/admin/apps/ai-form-builder/**/*.{js,jsx}',
                     'tools/admin-css/src/ai-form-builder.css',
@@ -216,7 +216,7 @@ module.exports = function( grunt) {
         // is to run NPM commands through Grunt
         shell: {
             // POT with the React strings (WP-CLI make-pot over src/admin and the
-            // assets/js/react bundles); grunt-wp-i18n reads PHP only.
+            // assets/js/screens bundles); grunt-wp-i18n reads PHP only.
             makepot: {
                 command: 'node bin/make-pot.mjs',
             },
@@ -226,7 +226,7 @@ module.exports = function( grunt) {
             npm_build_ai_form_builder: {
                 command: 'pnpm run build:ai-form-builder',
             },
-            npm_build_form_builder_react: {
+            npm_build_form_builder: {
                 command: 'pnpm run build:form-builder',
             },
             npm_build_user_directory: {

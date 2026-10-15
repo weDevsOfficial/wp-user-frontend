@@ -4,7 +4,7 @@
  * wpuf-forms-list (lists; forms-list.css adds the list background).
  *
  * Plain Tailwind classes (no prefix, like FlyHR) for the React sources.
- * build.mjs scopes them to body.wpuf-admin-react and adds the Tailwind 3 part
+ * build.mjs scopes them to body.wpuf-admin-screen and adds the Tailwind 3 part
  * of the old sheet (src/base-v3/forms.pre.css: scoped preflight, daisyUI and
  * custom components, and the wpuf- utilities that PHP views, modals and legacy
  * slots still use; forms.post.css: the custom rules).

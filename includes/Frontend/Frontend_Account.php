@@ -95,8 +95,8 @@ class Frontend_Account {
         extract( shortcode_atts( [], $atts ) );
 
         // [wpuf_editprofile] shares this handler and stays classic; the account shortcode may mount the React app.
-        if ( 'wpuf_account' === $tag && is_user_logged_in() && $this->renderer()->is_react( 'account' ) ) {
-            return $this->react_account();
+        if ( 'wpuf_account' === $tag && is_user_logged_in() && $this->renderer()->mounts( 'account' ) ) {
+            return $this->mount_account();
         }
 
         ob_start();
@@ -374,10 +374,10 @@ class Frontend_Account {
      *
      * @since WPUF_SINCE
      *
-     * @return React_Renderer
+     * @return Renderer
      */
     protected function renderer() {
-        return wpuf()->platform()->get( React_Renderer::class );
+        return wpuf()->platform()->get( Renderer::class );
     }
 
     /**
@@ -402,7 +402,7 @@ class Frontend_Account {
      *
      * @return string
      */
-    protected function react_account() {
+    protected function mount_account() {
         $account  = $this->account();
         $sections = $account->sections();
         $boot     = [
@@ -425,7 +425,7 @@ class Frontend_Account {
         foreach ( $sections as $section ) {
             if ( 'html' === $section['kind'] ) {
                 wpuf()->frontend->enqueue_form_assets();
-                wp_enqueue_style( 'wpuf-frontend-react-account-sections' );
+                wp_enqueue_style( 'wpuf-frontend-account-sections-style' );
                 break;
             }
         }
@@ -443,7 +443,7 @@ class Frontend_Account {
          * @param bool  $preload Whether to preload
          * @param array $slugs   Section slugs
          */
-        if ( apply_filters( 'wpuf_account_react_preload_post_form', in_array( 'submit-post', $slugs, true ), $slugs ) ) {
+        if ( apply_filters( 'wpuf_account_preload_post_form', in_array( 'submit-post', $slugs, true ), $slugs ) ) {
             $this->renderer()->enqueue( 'forms' );
             wp_enqueue_editor();
             wp_enqueue_media();
@@ -481,7 +481,7 @@ class Frontend_Account {
             $items
         );
 
-        return $this->renderer()->markup( 'account', $boot, $skeleton, 'wpuf-account-react alignwide' );
+        return $this->renderer()->markup( 'account', $boot, $skeleton, 'wpuf-account-root alignwide' );
     }
 
     /**

@@ -23,7 +23,7 @@ The `.claude/skills/` directory has procedural HOW-TOs. **Invoke the matching sk
 | Build & test commands | [`docs/build-and-test.md`](docs/build-and-test.md) | Before running lint/build/tests |
 | Hooks (PHP rules, generated index, JS hooks, Vue -> React migration) | [`docs/hooks/`](docs/hooks/php.md) | Before adding, moving or retiring a hook |
 | Slots on admin React screens | [`docs/slots/README.md`](docs/slots/README.md) | Before injecting UI into an admin React screen |
-| Settings React | [`docs/settings-react.md`](docs/settings-react.md) | Before adding or changing a setting |
+| Settings React | [`docs/settings-screen.md`](docs/settings-screen.md) | Before adding or changing a setting |
 
 Per-directory `CLAUDE.md` files auto-load when Claude works in that path:
 - [`includes/Fields/CLAUDE.md`](includes/Fields/CLAUDE.md) — form field contract & conventions
@@ -78,7 +78,7 @@ wp-user-frontend/
 │   └── Abstracts/          # Abstract base classes
 ├── src/                    # React source (no Vue left)
 │   ├── admin/              # React admin: app/ (runtime), apps/<screen>/, shared/
-│   ├── frontend/           # React frontend: kit, forms, account, login (React_Renderer)
+│   ├── frontend/           # React frontend: kit, forms, account, login (Renderer)
 │   ├── css/                # Admin + frontend source styles
 │   └── js/                 # Blocks, user directory
 ├── admin/form-builder/views # Legacy builder PHP views still included

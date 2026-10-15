@@ -38,7 +38,7 @@ All WPUF JS hooks use the global `wp.hooks` (`import { applyFilters, doAction } 
 A filter that pro listens to but free never applies is a bug: free must apply it (B21, fixed in task 1.6).
 
 ## Registries on `window.wpuf` (kept)
-`registerFieldPreview`, `registerFieldSettingInput`, `registerFieldValidator`, `storeName` and the other flat members stay. Target runtime adds `{ ui, components, utilities, reactHooks, stores, api, version }`.
+`registerFieldPreview`, `registerFieldSettingInput`, `registerFieldValidator`, `storeName` and the other flat members stay. Target runtime adds `{ ui, components, utilities, hooks, stores, api, version }`.
 
 ## Retired Vue builder hooks
 See `docs/hooks/migration-vue-to-react.md`. `window.wpuf_mixins` stays defined as an empty map and `wpuf_form_builder.event_hub` forwards `$on/$emit/$off` to actions `wpuf.formBuilder.event.<name>`, both with a one-time `@wordpress/deprecated` warning.

@@ -570,7 +570,7 @@ class SettingsStore {
         $this->schema_loaded = true;
 
         wpuf_require_once( WPUF_INCLUDES . '/functions/settings-options.php' );
-        wpuf_require_once( WPUF_INCLUDES . '/functions/settings-react.php' );
+        wpuf_require_once( WPUF_INCLUDES . '/functions/settings-screen.php' );
 
         // The settings schema (and Pro role filters) call get_editable_roles(),
         // which lives in wp-admin and is not loaded during REST requests.

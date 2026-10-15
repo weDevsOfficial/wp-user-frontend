@@ -46,7 +46,7 @@ function HtmlSection( { slug, initial } ) {
     useEffect( () => {
         let cancelled = false;
 
-        // Rendered with the page (Frontend_Account::react_account()).
+        // Rendered with the page (Frontend_Account::mount_account()).
         if ( null !== preloaded ) {
             return undefined;
         }

@@ -91,18 +91,18 @@ openspec/
 
 # React admin bundles (webpack.admin.config.js) and the settings stylesheet:
 # generated, produced fresh in the release workflow.
-assets/js/react/
-assets/css/settings-react.css
-assets/css/ai-form-builder-react.css
-assets/css/ai-form-builder-react-rtl.css
+assets/js/screens/
+assets/css/settings-screen.css
+assets/css/ai-form-builder-screen.css
+assets/css/ai-form-builder-screen-rtl.css
 .phpunit.result.cache
 
-# Frontend React apps (built by `pnpm build:frontend-react`, see Frontend\Renderer_Switch)
+# Frontend React apps (built by `pnpm build:frontend`, see Frontend\Renderer)
 /assets/js/frontend/
 /assets/css/frontend/runtime.css
 /assets/css/frontend/runtime-rtl.css
 /assets/css/frontend/forms.css
 /assets/css/frontend/forms-rtl.css
-/assets/css/frontend/account-react.css
-/assets/css/frontend/account-react-rtl.css
+/assets/css/frontend/account-page.css
+/assets/css/frontend/account-page-rtl.css
 /assets/css/frontend/account-sections.css

@@ -521,9 +521,9 @@ export const Selectors = {
 
             // prompt1
             // "Don't show again" of the custom field tooltip (develop: Swal confirm; React: the dialog's cancel slot).
-            prompt1PopUpModalClose: '//div[@class="swal2-loader"]/following-sibling::button[1] | //*[@data-wpuf-vue-dialog]//*[@data-slot="alert-dialog-cancel"]',
+            prompt1PopUpModalClose: '//div[@class="swal2-loader"]/following-sibling::button[1] | //*[@data-wpuf-dialog]//*[@data-slot="alert-dialog-cancel"]',
             // prompt2
-            prompt2PopUpModalOk: '//button[@class="swal2-deny swal2-styled"]/following-sibling::button[1] | //*[@data-wpuf-vue-dialog]//*[@data-slot="alert-dialog-action"]',
+            prompt2PopUpModalOk: '//button[@class="swal2-deny swal2-styled"]/following-sibling::button[1] | //*[@data-wpuf-dialog]//*[@data-slot="alert-dialog-action"]',
             // Pro Check Pop Up
             checkProPopUp: '//button[text()="Get the Pro version"]',
             checkProPopUpCloseButton: '//button[@aria-label="Close this dialog"]',
@@ -2246,8 +2246,8 @@ export const Selectors = {
 
     // React settings screen (WPUF > Settings). Selectors are text/role/structure
     // based since the React app uses Tailwind classes (no test ids). The POM
-    // (pages/settingsReact.ts) builds dynamic tab/sub-tab/field locators on top.
-    settingsReact: {
+    // (pages/settingsScreen.ts) builds dynamic tab/sub-tab/field locators on top.
+    settingsScreen: {
         root: '#wpuf-settings-root',
         loadingSkeleton: '#wpuf-settings-root .wpuf-animate-pulse, #wpuf-settings-root .animate-pulse',
         nav: '#wpuf-settings-root nav.wpuf-space-y-1, #wpuf-settings-root nav',
@@ -2421,8 +2421,8 @@ export const Selectors = {
         // Fields on the builder stage
         stageFields: 'li[class*="form-field-"]',
         // Builder alert (develop: SweetAlert; branch: shared dialogs) and its confirm button
-        alertPopup: '.swal2-container .swal2-popup, [data-wpuf-vue-dialog]',
-        alertConfirm: '.swal2-container .swal2-confirm, [data-wpuf-vue-dialog] [data-slot="alert-dialog-action"]',
+        alertPopup: '.swal2-container .swal2-popup, [data-wpuf-dialog]',
+        alertConfirm: '.swal2-container .swal2-confirm, [data-wpuf-dialog] [data-slot="alert-dialog-action"]',
         // Field settings panel (same classes on the Vue and the React builder)
         stageFieldEdit: 'Edit',
         fieldOptionsPanel: '.wpuf-form-builder-field-options',
@@ -2445,7 +2445,7 @@ export const Selectors = {
         root: '#wpuf-ai-form-builder',
         // Forms list entry points
         listButton: 'button:has-text("AI Form Builder")',
-        configModal: '[data-wpuf-vue-dialog="card"]',
+        configModal: '[data-wpuf-dialog="card"]',
         // Stage 1
         inputHeading: 'h2:has-text("Create Form with AI")',
         description: 'textarea[aria-label="Describe your form"]',
@@ -2473,9 +2473,9 @@ export const Selectors = {
         regenerateButton: '.wpuf-btn-regenerate',
         editInBuilderButton: '.wpuf-btn-edit-builder',
         // Dialogs (shared ConfirmDialog)
-        dialog: '[data-wpuf-vue-dialog]',
-        dialogAction: '[data-wpuf-vue-dialog] [data-slot="alert-dialog-action"]',
-        dialogCancel: '[data-wpuf-vue-dialog] [data-slot="alert-dialog-cancel"]',
+        dialog: '[data-wpuf-dialog]',
+        dialogAction: '[data-wpuf-dialog] [data-slot="alert-dialog-action"]',
+        dialogCancel: '[data-wpuf-dialog] [data-slot="alert-dialog-cancel"]',
         regenerateDialog: '.wpuf-ai-regenerate-dialog',
         proFieldsDialog: '.wpuf-ai-pro-fields-dialog',
         proFieldItems: '.wpuf-ai-pro-fields-dialog .wpuf-pro-field-item',

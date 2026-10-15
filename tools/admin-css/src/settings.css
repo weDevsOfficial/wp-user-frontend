@@ -3,7 +3,7 @@
  * src/css/settings.css + tailwind.settings.config.js build).
  *
  * Plain Tailwind classes (no prefix, like FlyHR). Only the settings sources
- * are scanned. build.mjs scopes the utilities to body.wpuf-admin-react and
+ * are scanned. build.mjs scopes the utilities to body.wpuf-admin-screen and
  * adds the Tailwind 3 base of this screen (src/base-v3/settings.css: scoped
  * preflight + @tailwindcss/forms `base` rules).
  */

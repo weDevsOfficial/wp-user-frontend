@@ -13,7 +13,7 @@ const { AlertCircle, Eye, EyeOff } = icons;
 
 /**
  * Pro's layout and custom texts, if any: in the boot data (`pro`, Pro's
- * Login_Form_Settings::add_react_data()), or from an older Pro the
+ * Login_Form_Settings::add_boot_data()), or from an older Pro the
  * `wpufLoginForm` its jQuery script localizes.
  *
  * @param {Object} data Boot data.

@@ -1,7 +1,7 @@
 import { useSelect } from '@wordpress/data';
 import { ColorPicker } from '@wpuf/components';
 import SettingLabel from './SettingLabel';
-import { STORE_NAME } from '../../../../stores-react/settings/constants';
+import { STORE_NAME } from '../../../../stores/settings/constants';
 
 /**
  * Color setting on the shared ColorPicker (4.6a): label left, picker right in

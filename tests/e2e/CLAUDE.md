@@ -242,7 +242,7 @@ per-page screens (they were removed). App tests: `adminAppTest.spec.ts`
   resolves (`page.textContent()` and `locator.waitFor()` wait without limit);
   check the last action in the trace.
 - Builder / settings / subscriptions dialogs are the shared React ConfirmDialog
-  (`[data-wpuf-vue-dialog]`, buttons `[data-slot="alert-dialog-action"]` /
+  (`[data-wpuf-dialog]`, buttons `[data-slot="alert-dialog-action"]` /
   `[data-slot="alert-dialog-cancel"]`), no SweetAlert. They open one render after
   the click: wait for them (`dismissPromptIfShown()` in `pages/fieldAdd.ts`), never
   a one-shot `isVisible()`. The custom field tooltip's "Don't show again" is the

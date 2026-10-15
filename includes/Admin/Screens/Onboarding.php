@@ -126,9 +126,9 @@ class Onboarding extends Screen {
      * @return void
      */
     public function load_in_app() {
-        wp_enqueue_style( 'wpuf-onboarding-react' );
-        wp_enqueue_script( 'wpuf-onboarding-react' );
-        wp_set_script_translations( 'wpuf-onboarding-react', 'wp-user-frontend', WPUF_ROOT . '/languages' );
+        wp_enqueue_style( 'wpuf-onboarding-screen' );
+        wp_enqueue_script( 'wpuf-onboarding-screen' );
+        wp_set_script_translations( 'wpuf-onboarding-screen', 'wp-user-frontend', WPUF_ROOT . '/languages' );
     }
 
     /**

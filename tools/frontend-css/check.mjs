@@ -10,7 +10,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join( dirname( fileURLToPath( import.meta.url ) ), '..', '..' );
-const sheets = [ 'runtime', 'forms', 'account-react', 'account-sections' ].flatMap( ( name ) => [ `assets/css/frontend/${ name }.css`, `assets/css/frontend/${ name }-rtl.css` ] );
+const sheets = [ 'runtime', 'forms', 'account-page', 'account-sections' ].flatMap( ( name ) => [ `assets/css/frontend/${ name }.css`, `assets/css/frontend/${ name }-rtl.css` ] );
 const scope = /^(:where\(\s*)?\.wpuf-frontend(\b|[\s.:#\[>+~)])/;
 /** Split a selector list on its top-level commas (not the ones inside :not() / :is()). */
 const splitTop = ( list ) => {

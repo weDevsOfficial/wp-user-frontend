@@ -94,7 +94,7 @@ class AiFormBuilder extends Screen {
      * @return string
      */
     public function body_class() {
-        return 'wpuf-admin-react wpuf-ai-form-builder-page';
+        return 'wpuf-admin-screen wpuf-ai-form-builder-page';
     }
 
     /**

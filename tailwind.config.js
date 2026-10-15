@@ -11,7 +11,7 @@ module.exports = {
         // on stale files left on disk.
         './assets/**/*.js',
         '!./assets/js/**/*.min.js',
-        '!./assets/js/react/**',
+        '!./assets/js/screens/**',
         '!./assets/js/blocks/**',
         '!./assets/js/wpuf-user-directory-free.js',
         '!./assets/vendor/**',

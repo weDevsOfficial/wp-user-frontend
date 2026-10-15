@@ -2,11 +2,11 @@
 /**
  * The [wpuf-login] screens (login, lost password, reset password) on the
  * React frontend: the mount with its boot data, the classic template where
- * the call renders classic (React_Renderer); same post fields.
+ * the call renders classic (Renderer); same post fields.
  *
  * @package WP_User_Frontend
  */
-class LoginFormReactTest extends WP_UnitTestCase {
+class LoginScreensTest extends WP_UnitTestCase {
 
     public function set_up() {
         parent::set_up();
@@ -29,10 +29,10 @@ class LoginFormReactTest extends WP_UnitTestCase {
     }
 
     /**
-     * Render the shortcode the classic way (a call React_Renderer keeps classic).
+     * Render the shortcode the classic way (a call Renderer keeps classic).
      */
     private function classic() {
-        return \WeDevs\Wpuf\Frontend\React_Renderer::with_source(
+        return \WeDevs\Wpuf\Frontend\Renderer::with_source(
             'block',
             function () {
                 return wpuf()->frontend->simple_login->login_form();
@@ -46,13 +46,13 @@ class LoginFormReactTest extends WP_UnitTestCase {
         return json_decode( $m[1], true );
     }
 
-    public function test_renders_the_react_mount_with_the_template_data() {
+    public function test_renders_the_mount_with_the_template_data() {
         add_filter( 'login_message', function ( $message ) { return $message . '<p class="qa-msg">Hi</p>'; } );
         add_action( 'wpuf_login_form_bottom', function () { echo '<span class="qa-bottom">bottom</span>'; } );
 
         $html = wpuf()->frontend->simple_login->login_form();
 
-        $this->assertStringContainsString( 'data-wpuf-react="login"', $html );
+        $this->assertStringContainsString( 'data-wpuf-mount="login"', $html );
         $this->assertStringNotContainsString( 'name="loginform"', $html, 'no classic form' );
 
         $data = $this->boot( $html );
@@ -70,20 +70,20 @@ class LoginFormReactTest extends WP_UnitTestCase {
         $html = $this->classic();
 
         $this->assertStringContainsString( 'name="loginform"', $html );
-        $this->assertStringNotContainsString( 'data-wpuf-react="login"', $html );
+        $this->assertStringNotContainsString( 'data-wpuf-mount="login"', $html );
 
         foreach ( [ 'name="log"', 'name="pwd"', 'name="rememberme"', 'name="wpuf_login"', 'name="wpuf-login-nonce"', 'name="redirect_to"' ] as $field ) {
             $this->assertStringContainsString( $field, $html );
         }
     }
 
-    public function test_lost_password_screen_renders_the_react_mount_with_the_template_data() {
+    public function test_lost_password_screen_renders_the_mount_with_the_template_data() {
         add_action( 'lostpassword_form', function () { echo '<span class="qa-lost">extra</span>'; } );
         $_GET['action'] = 'lostpassword';
 
         $html = wpuf()->frontend->simple_login->login_form();
 
-        $this->assertStringContainsString( 'data-wpuf-react="login"', $html );
+        $this->assertStringContainsString( 'data-wpuf-mount="login"', $html );
         $this->assertStringNotContainsString( 'name="lostpasswordform"', $html, 'no classic form' );
 
         $data = $this->boot( $html );
@@ -96,7 +96,7 @@ class LoginFormReactTest extends WP_UnitTestCase {
         $this->assertSame( 'Get New Password', $data['texts']['buttonText'] );
     }
 
-    public function test_reset_password_screen_renders_the_react_mount_with_the_key() {
+    public function test_reset_password_screen_renders_the_mount_with_the_key() {
         add_action( 'resetpassword_form', function () { echo '<span class="qa-reset">extra</span>'; } );
         $_GET['action']    = 'rp';
         $_REQUEST['key']   = 'abc123';

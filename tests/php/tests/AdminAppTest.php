@@ -62,7 +62,7 @@ class AdminAppTest extends WP_UnitTestCase {
         $this->assertStringNotContainsString( '#', $url );
     }
 
-    public function test_routes_list_every_react_screen_with_its_mode() {
+    public function test_routes_list_every_screen_with_its_mode() {
         $routes = wp_list_pluck( $this->app()->routes(), 'mode', 'id' );
 
         foreach ( [ 'post-forms', 'post-form-new', 'post-form-edit', 'post-forms-ai', 'subscriptions', 'settings' ] as $id ) {
@@ -202,7 +202,7 @@ class AdminAppTest extends WP_UnitTestCase {
         $_GET['wpuf_settings_ui'] = 'legacy';
         $this->assertSame( '/settings', $settings->app_route_for_request() );
         $this->assertSame( [], $settings->app_redirect_args() );
-        $this->assertSame( 'wpuf-admin-react', $settings->body_class() );
+        $this->assertSame( 'wpuf-admin-screen', $settings->body_class() );
         unset( $_GET['wpuf_settings_ui'] );
 
         $this->assertFalse( function_exists( 'wpuf_settings_use_legacy' ) );

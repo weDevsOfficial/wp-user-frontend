@@ -515,7 +515,7 @@ class AppPage {
      * @return string
      */
     public function body_class( $classes ) {
-        return trim( $classes . ' wpuf-admin-react wpuf-admin-app' );
+        return trim( $classes . ' wpuf-admin-screen wpuf-admin-app' );
     }
 
     /**

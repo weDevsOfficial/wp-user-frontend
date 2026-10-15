@@ -86,7 +86,7 @@ class AdminSubscriptionSplitTest extends WP_UnitTestCase {
     /**
      * The classic post type screens map to the React screen's routes; other requests and post.php actions stay.
      */
-    public function test_classic_screens_map_to_the_react_routes() {
+    public function test_classic_screens_map_to_the_routes() {
         $screen = new Pack_Screen( ( new ReflectionClass( Admin_Subscription::class ) )->newInstanceWithoutConstructor() );
         $pack   = self::factory()->post->create( [ 'post_type' => 'wpuf_subscription' ] );
         $page   = self::factory()->post->create( [ 'post_type' => 'page' ] );

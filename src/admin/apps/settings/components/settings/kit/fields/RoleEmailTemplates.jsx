@@ -1,6 +1,6 @@
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import { STORE_NAME } from '../../../../stores-react/settings/constants';
+import { STORE_NAME } from '../../../../stores/settings/constants';
 import { Button } from '@wpuf/components';
 import MultiSelectChips from './MultiSelectChips';
 import TextField from './TextField';

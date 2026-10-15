@@ -146,14 +146,14 @@ class SettingsController extends RestController {
         $data = [
             'sections'     => array_values( $sections ),
             'fields'       => $fields,
-            'ia'           => wpuf_settings_react_ia(),
+            'ia'           => wpuf_settings_ia(),
             'values'       => $values,
             'pro_sections' => $pro_sections,
             'caps'         => [
                 'is_pro'     => class_exists( 'WP_User_Frontend_Pro' ),
                 'can_manage' => current_user_can( wpuf_admin_role() ),
             ],
-            'modules'      => wpuf_settings_react_modules(),
+            'modules'      => wpuf_settings_modules(),
             // Output of `wsa_form_top_{section}` / `wsa_form_bottom_{section}`.
             'section_html' => $section_html,
             // Side-channel for settings that live in their OWN option (not a

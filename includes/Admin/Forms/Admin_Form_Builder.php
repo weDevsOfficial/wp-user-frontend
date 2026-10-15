@@ -97,19 +97,19 @@ class Admin_Form_Builder {
         $this->enqueue_builder_assets();
 
         // React form builder bundle, registered in the shared Assets registry (task 2.5b).
-        wp_enqueue_script( 'wpuf-form-builder-react' );
-        wp_set_script_translations( 'wpuf-form-builder-react', 'wp-user-frontend', WPUF_ROOT . '/languages' );
-        wpuf()->platform()->get( BootPayload::class )->attach( 'form_builder', 'wpuf-form-builder-react' );
+        wp_enqueue_script( 'wpuf-form-builder-screen' );
+        wp_set_script_translations( 'wpuf-form-builder-screen', 'wp-user-frontend', WPUF_ROOT . '/languages' );
+        wpuf()->platform()->get( BootPayload::class )->attach( 'form_builder', 'wpuf-form-builder-screen' );
 
         $data = $this->localize_data();
 
-        wp_localize_script( 'wpuf-form-builder-react', 'wpuf_form_builder', $data['wpuf_form_builder'] );
+        wp_localize_script( 'wpuf-form-builder-screen', 'wpuf_form_builder', $data['wpuf_form_builder'] );
         // Develop printed the single-instance field list as its own global; scripts
         // that read window.wpuf_single_objects keep working.
-        wp_localize_script( 'wpuf-form-builder-react', 'wpuf_single_objects', $data['wpuf_single_objects'] );
+        wp_localize_script( 'wpuf-form-builder-screen', 'wpuf_single_objects', $data['wpuf_single_objects'] );
         // Retired Vue mixin filters still fire (deprecated when an outside plugin
         // listens) and window.wpuf_mixins stays defined (4.4g).
-        wp_localize_script( 'wpuf-form-builder-react', 'wpuf_mixins', $data['wpuf_mixins'] );
+        wp_localize_script( 'wpuf-form-builder-screen', 'wpuf_mixins', $data['wpuf_mixins'] );
     }
 
     /**
@@ -184,8 +184,8 @@ class Admin_Form_Builder {
             $before = wp_styles()->queue;
 
             self::enqueue_libraries();
-            wp_enqueue_script( 'wpuf-form-builder-react' );
-            wp_set_script_translations( 'wpuf-form-builder-react', 'wp-user-frontend', WPUF_ROOT . '/languages' );
+            wp_enqueue_script( 'wpuf-form-builder-screen' );
+            wp_set_script_translations( 'wpuf-form-builder-screen', 'wp-user-frontend', WPUF_ROOT . '/languages' );
             add_action( 'admin_footer', [ __CLASS__, 'custom_dequeue' ] );
             add_action( 'admin_footer', [ __CLASS__, 'retired_footer' ] );
 

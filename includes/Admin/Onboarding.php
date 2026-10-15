@@ -154,22 +154,6 @@ class Onboarding {
     }
 
     /**
-     * A link to a WPUF admin screen: its admin app route (no redirect hop
-     * through the old page).
-     *
-     * @since WPUF_SINCE
-     *
-     * @param string $route   App route path, e.g. `/settings`.
-     * @param array  $args    Route query, e.g. `[ 'tab' => 'wpuf_payment' ]`.
-     * @param string $classic Unused since the classic screens were removed; kept for callers.
-     *
-     * @return string
-     */
-    public function app_or_classic_url( $route, $args, $classic ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- kept for callers.
-        return wpuf_admin_app_url( $route, $args );
-    }
-
-    /**
      * Tools: the admin app route (no redirect hop through the old page).
      *
      * @since WPUF_SINCE
@@ -734,8 +718,8 @@ class Onboarding {
             'urls'     => [
                 'exit'     => $this->tools_url(),
                 'tools'    => $this->tools_url(),
-                'settings' => $this->app_or_classic_url( '/settings', [], 'admin.php?page=wpuf-settings' ),
-                'payment'  => $this->app_or_classic_url( '/settings', [ 'tab' => 'wpuf_payment' ], 'admin.php?page=wpuf-settings#wpuf_payment' ),
+                'settings' => wpuf_admin_app_url( '/settings', [] ),
+                'payment'  => wpuf_admin_app_url( '/settings', [ 'tab' => 'wpuf_payment' ] ),
                 'pro'      => \WeDevs\Wpuf\Free\Pro_Prompt::get_pro_url(),
             ],
             'images'   => [
@@ -817,7 +801,7 @@ class Onboarding {
             'selected'         => $selected,
             'existing'         => $existing ? [
                 'title' => wp_strip_all_tags( get_the_title( $existing ) ),
-                'url'   => $this->app_or_classic_url( '/post-forms/' . absint( $existing ) . '/edit', [], 'admin.php?page=wpuf-post-forms&action=edit&id=' . $existing ),
+                'url'   => wpuf_admin_app_url( '/post-forms/' . absint( $existing ) . '/edit', [] ),
             ] : null,
             'enable_post_edit' => wpuf_is_checkbox_or_toggle_on( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) ),
             'enable_post_del'  => wpuf_is_checkbox_or_toggle_on( wpuf_get_option( 'enable_post_del', 'wpuf_dashboard', 'yes' ) ),
@@ -976,15 +960,15 @@ class Onboarding {
         $share      = $revisiting ? wpuf_get_option( 'share_wpuf_essentials', 'wpuf_general', 'off' ) : 'on';
 
         if ( $this->wants( 'post_form' ) ) {
-            $cta = [ $this->app_or_classic_url( '/post-forms', [], 'admin.php?page=wpuf-post-forms' ), __( 'Open my post forms', 'wp-user-frontend' ) ];
+            $cta = [ wpuf_admin_app_url( '/post-forms', [] ), __( 'Open my post forms', 'wp-user-frontend' ) ];
         } elseif ( $this->wants( 'registration' ) && wpuf_is_pro_active() ) {
-            $cta = [ $this->app_or_classic_url( '/registration-forms', [], 'admin.php?page=wpuf-profile-forms' ), __( 'Open my registration forms', 'wp-user-frontend' ) ];
+            $cta = [ wpuf_admin_app_url( '/registration-forms', [] ), __( 'Open my registration forms', 'wp-user-frontend' ) ];
         } elseif ( $this->wants( 'registration' ) ) {
-            $cta = [ $this->app_or_classic_url( '/settings', [ 'tab' => 'wpuf_profile' ], 'admin.php?page=wpuf-settings#wpuf_profile' ), __( 'Open login & registration settings', 'wp-user-frontend' ) ];
+            $cta = [ wpuf_admin_app_url( '/settings', [ 'tab' => 'wpuf_profile' ] ), __( 'Open login & registration settings', 'wp-user-frontend' ) ];
         } elseif ( $this->wants( 'user_directory' ) ) {
             $cta = [ admin_url( 'admin.php?page=wpuf_userlisting' ), __( 'Open my user directories', 'wp-user-frontend' ) ];
         } else {
-            $cta = [ $this->app_or_classic_url( '/post-forms', [], 'admin.php?page=wp-user-frontend' ), __( 'Go to User Frontend', 'wp-user-frontend' ) ];
+            $cta = [ wpuf_admin_app_url( '/post-forms', [] ), __( 'Go to User Frontend', 'wp-user-frontend' ) ];
         }
 
         $checklist = [];
@@ -1539,7 +1523,7 @@ class Onboarding {
             $checklist[] = [
                 'label' => __( 'Post form ready', 'wp-user-frontend' ),
                 'done'  => ! empty( $frontend_posting['default_post_form'] ),
-                'url'   => $this->app_or_classic_url( '/post-forms', [], 'admin.php?page=wpuf-post-forms' ),
+                'url'   => wpuf_admin_app_url( '/post-forms', [] ),
                 'link'  => __( 'Post Forms', 'wp-user-frontend' ),
             ];
         }
@@ -1548,7 +1532,7 @@ class Onboarding {
             $checklist[] = [
                 'label' => __( 'Sign up and login pages set', 'wp-user-frontend' ),
                 'done'  => ! empty( $profile['login_page'] ),
-                'url'   => $this->app_or_classic_url( '/settings', [ 'tab' => 'wpuf_profile' ], 'admin.php?page=wpuf-settings#wpuf_profile' ),
+                'url'   => wpuf_admin_app_url( '/settings', [ 'tab' => 'wpuf_profile' ] ),
                 'link'  => __( 'Login / Registration', 'wp-user-frontend' ),
             ];
         }
@@ -1568,7 +1552,7 @@ class Onboarding {
                 'done'  => ! empty( $payment['enable_payment'] )
                     && wpuf_is_checkbox_or_toggle_on( $payment['enable_payment'] )
                     && ! empty( $payment['active_gateways'] ),
-                'url'   => $this->app_or_classic_url( '/settings', [ 'tab' => 'wpuf_payment' ], 'admin.php?page=wpuf-settings#wpuf_payment' ),
+                'url'   => wpuf_admin_app_url( '/settings', [ 'tab' => 'wpuf_payment' ] ),
                 'link'  => __( 'Payments', 'wp-user-frontend' ),
             ];
         }

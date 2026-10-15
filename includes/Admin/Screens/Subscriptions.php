@@ -35,7 +35,7 @@ class Subscriptions extends Screen {
      * @return string
      */
     public function body_class() {
-        return 'wpuf-admin-react';
+        return 'wpuf-admin-screen';
     }
 
     /**

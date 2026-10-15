@@ -48,9 +48,9 @@ class Pack_Screen {
      */
     public function enqueue_admin_scripts() {
         // Registered in the shared Assets registry (task 2.5b).
-        wp_enqueue_script( 'wpuf-admin-subscriptions-react' );
-        wp_enqueue_style( 'wpuf-subscriptions-react' );
-        $script_handle = 'wpuf-admin-subscriptions-react';
+        wp_enqueue_script( 'wpuf-subscriptions-screen' );
+        wp_enqueue_style( 'wpuf-subscriptions-screen' );
+        $script_handle = 'wpuf-subscriptions-screen';
         wp_set_script_translations( $script_handle, 'wp-user-frontend', WPUF_ROOT . '/languages' );
         wpuf()->platform()->get( BootPayload::class )->attach( 'subscriptions', $script_handle );
 
@@ -82,13 +82,13 @@ class Pack_Screen {
         /**
          * Fires after the subscription React scripts are enqueued.
          * Pro and third-party plugins should use this hook to enqueue their own
-         * scripts with 'wpuf-admin-subscriptions-react' as a dependency.
+         * scripts with 'wpuf-subscriptions-screen' as a dependency.
          *
          * @since WPUF_SINCE
          *
          * @param string $script_handle The handle of the subscription React script
          */
-        do_action( 'wpuf_subscription_react_scripts_enqueued', $script_handle );
+        do_action( 'wpuf_subscription_scripts_enqueued', $script_handle );
 
         // The pre-React handle stays enqueued as an alias of the React script.
         wp_enqueue_script( 'wpuf-admin-subscriptions' );

@@ -2,7 +2,7 @@
  * WPUF setup wizard (#/onboarding) and welcome page (#/welcome): Tailwind
  * CSS 4 entry, plus FlyHR's motion (text and panel reveals, the floating
  * logo, drifting glows). build.mjs scopes the utilities to
- * body.wpuf-admin-react and adds the settings screen's Tailwind 3 base.
+ * body.wpuf-admin-screen and adds the settings screen's Tailwind 3 base.
  */
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities) source(none);

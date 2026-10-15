@@ -53,7 +53,7 @@ test.describe('Branch admin health', () => {
     test('HLT0003 : old subscriptions script handle still prints data localized on it (B24)', { tag: ['@Parity', '@Test_HLT0003'] }, () => {
         const out = parityWp(paritySite('branch'), [
             'eval',
-            'wp_set_current_user( 1 ); do_action( "wpuf_load_subscription_page" ); wp_localize_script( "wpuf-admin-subscriptions", "WPUF_HLT0003", [ "ok" => 1 ] ); ob_start(); wp_print_scripts(); $o = ob_get_clean(); echo wp_json_encode( [ substr_count( $o, "js/react/subscriptions.js" ), false !== strpos( $o, "WPUF_HLT0003" ) ] );',
+            'wp_set_current_user( 1 ); do_action( "wpuf_load_subscription_page" ); wp_localize_script( "wpuf-admin-subscriptions", "WPUF_HLT0003", [ "ok" => 1 ] ); ob_start(); wp_print_scripts(); $o = ob_get_clean(); echo wp_json_encode( [ substr_count( $o, "js/screens/subscriptions.js" ), false !== strpos( $o, "WPUF_HLT0003" ) ] );',
             '--exec=define("WP_ADMIN",true);',
         ]);
 

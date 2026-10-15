@@ -51,8 +51,8 @@ Bridge rules: output of third-party listeners is captured and shown inside the m
 | `wpuf_subscription_single_row_fields` | filter | `Api/Subscription` | fields a single-row edit may change |
 | `wpuf_before_update_subscription_pack` | action | `Api/Subscription` | now fires **once**, after a successful insert, with the saved pack id (was twice: old id, new id) |
 | `wpuf_update_subscription_pack` | action | `Admin/Subscription` (classic) and now `Api/Subscription` (REST) | REST fires it once after `wpuf_after_update_subscription_pack_meta`, args `( $id, $pack_data )` with classic field names (meta keys without the leading `_`) |
-| `wpuf-admin-subscriptions` | script handle | `Assets.php` | no-file alias of `wpuf-admin-subscriptions-react`, enqueued with it, so data localized on the old handle still prints |
-| `window.wpuf_single_objects` | JS global | builder (`wpuf-form-builder-react`) | printed again as on develop (also under `wpuf_form_builder`) |
+| `wpuf-admin-subscriptions` | script handle | `Assets.php` | no-file alias of `wpuf-subscriptions-screen`, enqueued with it, so data localized on the old handle still prints |
+| `window.wpuf_single_objects` | JS global | builder (`wpuf-form-builder-screen`) | printed again as on develop (also under `wpuf_form_builder`) |
 | `wpuf_tec_form_fields` | filter | Events Calendar template constructor | runs wherever the template registry is built (forms list, create from template, onboarding), not on the builder page |
 | handles whose file is gone | script/style | `Assets::existing_src()` | registered with `src` false, so dependents and localizations still work |
 

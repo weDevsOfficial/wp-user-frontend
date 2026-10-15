@@ -50,7 +50,7 @@ class Settings extends Screen {
      * @return string
      */
     public function body_class() {
-        return 'wpuf-admin-react';
+        return 'wpuf-admin-screen';
     }
 
     /**
@@ -73,9 +73,9 @@ class Settings extends Screen {
         add_filter( 'update_footer', '__return_empty_string', 99 );
 
         // Registered in the shared Assets registry (task 2.5b).
-        wp_enqueue_style( 'wpuf-settings-react' );
+        wp_enqueue_style( 'wpuf-settings-screen' );
 
-        $handle = 'wpuf-settings-react';
+        $handle = 'wpuf-settings-screen';
 
         wp_enqueue_script( $handle );
         wp_set_script_translations( $handle, 'wp-user-frontend', WPUF_ROOT . '/languages' );

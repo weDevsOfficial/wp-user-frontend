@@ -19,12 +19,12 @@ import Notices from './components/subscriptions/Notices';
 import Subscribers from './components/subscriptions/Subscribers';
 
 // Import stores to register them
-import './stores-react/subscription';
-import './stores-react/fieldDependency';
-import './stores-react/notice';
-import './stores-react/component';
-import './stores-react/quickEdit';
-import './stores-react/router';
+import './stores/subscription';
+import './stores/fieldDependency';
+import './stores/notice';
+import './stores/component';
+import './stores/quickEdit';
+import './stores/router';
 import { addRouteGuard, getRouteQuery, onRouteQuery, registerScreen } from '../../app/client';
 
 // Import styles

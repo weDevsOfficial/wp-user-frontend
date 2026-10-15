@@ -1,7 +1,7 @@
 /**
  * WPUF Help, Tools, Transactions (and the free coupon promo) screens of the
  * admin app: Tailwind CSS 4 entry. build.mjs scopes the utilities to
- * body.wpuf-admin-react and adds the settings screen's Tailwind 3 base and
+ * body.wpuf-admin-screen and adds the settings screen's Tailwind 3 base and
  * the plugin-ui part.
  */
 @import "tailwindcss/theme.css" layer(theme);

@@ -2,7 +2,7 @@
  * One wp-scripts config for the React admin apps (builder, forms list,
  * subscriptions, settings, AI form builder).
  *
- * Sources live in src/admin/apps/<app> (task 3.5). Output: assets/js/react/<name>.js + .asset.php
+ * Sources live in src/admin/apps/<app> (task 3.5). Output: assets/js/screens/<name>.js + .asset.php
  * (minified, but not named .min.js: translate.wordpress.org and `wp i18n make-pot` skip
  * *.min.js, so the strings would never be extracted and the JSON translations, keyed
  * by the enqueued file's path, would not match) and assets/css/<name>.css + -rtl.css.
@@ -17,9 +17,9 @@ const wpufExternals = require( './webpack.wpuf-externals' );
 
 const entries = {
     'form-builder': './src/admin/apps/form-builder/index.jsx',
-    'forms-list-react': './src/admin/apps/forms-list/index.jsx',
+    'forms-list-screen': './src/admin/apps/forms-list/index.jsx',
     subscriptions: './src/admin/apps/subscriptions/index.jsx',
-    'settings-react': './src/admin/apps/settings/index.jsx',
+    'settings-screen': './src/admin/apps/settings/index.jsx',
     'ai-form-builder': './src/admin/apps/ai-form-builder/index.jsx',
     // Shell of the single React admin app (task 5d).
     'admin-app': './src/admin/app/index.js',
@@ -74,9 +74,9 @@ const config = ( group, withWpufExternals ) => ( {
     ...defaultConfig,
     entry: group,
     output: {
-        filename: 'js/react/[name].js',
+        filename: 'js/screens/[name].js',
         // Lazy chunks (the rich text editor), next to the bundle that loads them.
-        chunkFilename: 'js/react/[name].[contenthash:8].chunk.js',
+        chunkFilename: 'js/screens/[name].[contenthash:8].chunk.js',
         publicPath: 'auto',
         // Each group has its own webpack runtime on the page: separate chunk registries.
         uniqueName: withWpufExternals ? 'wpuf-admin-screens' : 'wpuf-admin-shared',
@@ -102,7 +102,7 @@ const config = ( group, withWpufExternals ) => ( {
         ...defaultConfig.resolve,
         alias: {
             ...defaultConfig.resolve.alias,
-            'postcss-config$': path.resolve( __dirname, 'postcss.config.react.js' ),
+            'postcss-config$': path.resolve( __dirname, 'postcss.config.admin.js' ),
         },
     },
     watchOptions: {

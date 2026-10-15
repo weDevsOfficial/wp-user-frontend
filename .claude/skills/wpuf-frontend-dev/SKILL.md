@@ -129,10 +129,10 @@ These are **not** built via Vite/Webpack — they live directly in `assets/js/`.
 Builders, forms lists, subscriptions and settings (free `src/admin/apps/{form-builder,forms-list,subscriptions,settings}` since 3.5, shared layer `src/admin/shared`; Pro `admin/form-builder/src`, `admin/forms-list/src`) use **plain Tailwind 4 classes** (`flex`, `text-sm`, `shadow-xs`), never `wpuf-` and never `wpuf:`.
 
 -   Built by `tools/admin-css` (own tailwindcss@4): `pnpm run build:admin-css` (free), `npm run build:admin-css` (Pro). One entry: `node tools/admin-css/build.mjs <settings|subscriptions|forms>`.
--   Utilities are scoped `:where(.wpuf-admin-react) .x`; the body class comes from `Screen::body_class()` / `Assets::react_forms_body_class()`.
+-   Utilities are scoped `:where(.wpuf-admin-screen) .x`; the body class comes from `Screen::body_class()` / `Assets::forms_body_class()`.
 -   Base + components (daisyUI, `wpuf-` component classes) are frozen Tailwind 3 output in `tools/admin-css/src/base-v3/` (regenerate with `gen-v3-base.cjs`, needs the root tailwindcss@3). Keep component class names (`wpuf-btn`, ...) as they are.
 -   A class that never had CSS in Tailwind 3 must not start working: block it with `@source not inline(...)` in `src/<screen>.css`.
--   Pro's utilities sheet prints before Free's `forms-react.css` (Free wins shared names).
+-   Pro's utilities sheet prints before Free's `forms-screen.css` (Free wins shared names).
 
 Everything below (prefix `wpuf-`, Tailwind 3) is for the frontend, the Vue apps and legacy CSS.
 

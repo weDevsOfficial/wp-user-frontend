@@ -20,8 +20,8 @@ import MessageModal from './components/settings/MessageModal';
 import ErrorBoundary from './components/settings/ErrorBoundary';
 
 // Register the store.
-import './stores-react/settings';
-import { STORE_NAME } from './stores-react/settings/constants';
+import './stores/settings';
+import { STORE_NAME } from './stores/settings/constants';
 import { addRouteGuard, getRouteQuery, inApp, registerScreen, setRouteQuery } from '../../app/client';
 
 // REST calls go through `@wpuf/api` (api/settings.js), which wraps core's
@@ -221,7 +221,7 @@ const SettingsApp = () => {
     } );
 
     return (
-        <PageShell className="wpuf-settings-react">
+        <PageShell className="wpuf-settings-screen">
             <PageHeader
                 utm="wpuf-settings"
                 supportUrl={ boot.support_url || undefined }

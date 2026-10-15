@@ -1,5 +1,5 @@
 /**
- * The frontend post form app: mounts on every `[data-wpuf-react="forms"]`
+ * The frontend post form app: mounts on every `[data-wpuf-mount="forms"]`
  * root the shortcode rendered (several forms per page allowed), with the
  * schema the server put in the root's boot script.
  *

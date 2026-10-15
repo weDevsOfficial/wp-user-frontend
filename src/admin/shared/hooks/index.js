@@ -1,5 +1,5 @@
 /**
- * React hooks shared by the WPUF admin screens (window.wpuf.reactHooks).
+ * React hooks shared by the WPUF admin screens (window.wpuf.hooks).
  */
 import { useEffect } from '@wordpress/element';
 

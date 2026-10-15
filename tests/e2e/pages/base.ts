@@ -351,7 +351,7 @@ export class Base {
     }
 
     /** The list button of a React frontend select whose hidden classic <select> the locator found, or null. */
-    async reactSelectButton(element: import('@playwright/test').Locator) {
+    async selectProxyButton(element: import('@playwright/test').Locator) {
         const isProxy = await element.first().evaluate((el) => el.tagName === 'SELECT' && el.classList.contains('wpuf-select__native')).catch(() => false);
         return isProxy ? element.first().locator('xpath=following-sibling::*[@role="combobox"][1]') : null;
     }
@@ -365,7 +365,7 @@ export class Base {
             expect(element.isVisible).toBeTruthy();
             // React screens use a plugin-ui combobox, not a native <select>; the React
             // frontend forms keep the classic <select> hidden beside their list button.
-            const proxy = await this.reactSelectButton(element);
+            const proxy = await this.selectProxyButton(element);
             if (proxy) {
                 await proxy.click();
                 await this.page.locator('.wpuf-select.is-open [role="option"]', { hasText: label }).first().click();
@@ -392,7 +392,7 @@ export class Base {
             expect(element.isVisible).toBeTruthy();
             // React screens use a plugin-ui combobox, not a native <select>; the React
             // frontend forms keep the classic <select> hidden beside their list button.
-            const proxy = await this.reactSelectButton(element);
+            const proxy = await this.selectProxyButton(element);
             if (proxy) {
                 await proxy.click();
                 await this.page.locator(`.wpuf-select.is-open [role="option"][data-value="${value}"]`).first().click();

@@ -153,9 +153,9 @@ class Frontend_Form extends Frontend_Render_Form {
             echo wp_kses_post( '</div>' );
         }
 
-        if ( $this->renderer()->is_react( 'edit_form' ) ) {
+        if ( $this->renderer()->mounts( 'edit_form' ) ) {
             // What printed above (the "post updated" notice) stays before the app.
-            return ob_get_clean() . $this->react_form( (int) $form_id, (int) $post_id, $atts );
+            return ob_get_clean() . $this->mount_form( (int) $form_id, (int) $post_id, $atts );
         }
 
         $this->render_form( $form_id, $post_id, $atts, $form );
@@ -172,10 +172,10 @@ class Frontend_Form extends Frontend_Render_Form {
      *
      * @since WPUF_SINCE
      *
-     * @return React_Renderer
+     * @return Renderer
      */
     protected function renderer() {
-        return wpuf()->platform()->get( React_Renderer::class );
+        return wpuf()->platform()->get( Renderer::class );
     }
 
     /**
@@ -202,7 +202,7 @@ class Frontend_Form extends Frontend_Render_Form {
      *
      * @return string
      */
-    protected function react_form( $form_id, $post_id, $atts ) {
+    protected function mount_form( $form_id, $post_id, $atts ) {
         $schema = $this->renderer()->build(
             $post_id ? 'edit_form' : 'post_form',
             function () use ( $form_id, $post_id ) {
@@ -293,10 +293,10 @@ class Frontend_Form extends Frontend_Render_Form {
         $this->form_fields            = $form->get_fields();
         $this->form_settings          = $form->get_settings();
 
-        if ( $this->renderer()->is_react( 'post_form' ) ) {
+        if ( $this->renderer()->mounts( 'post_form' ) ) {
             ob_end_clean();
 
-            return $this->react_form( (int) $id, 0, $atts );
+            return $this->mount_form( (int) $id, 0, $atts );
         }
         $this->generate_auth_link(); // Translate tag %login% %registration% to login registartion url
         [ $user_can_post, $info ]     = $form->is_submission_open( $form, $this->form_settings );

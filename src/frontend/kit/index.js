@@ -34,7 +34,7 @@ import UploadField from './fields/Upload';
  */
 export function mountAll( app, render ) {
     const mount = () => {
-        document.querySelectorAll( `[data-wpuf-react="${ app }"]` ).forEach( ( root ) => {
+        document.querySelectorAll( `[data-wpuf-mount="${ app }"]` ).forEach( ( root ) => {
             if ( root.dataset.mounted ) {
                 return;
             }

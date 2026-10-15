@@ -3,7 +3,7 @@
  * src/css/subscriptions.css import compiled with the shared Tailwind 3 config).
  *
  * Plain Tailwind classes (no prefix, like FlyHR). Only the subscriptions
- * sources are scanned. build.mjs scopes the utilities to body.wpuf-admin-react
+ * sources are scanned. build.mjs scopes the utilities to body.wpuf-admin-screen
  * and adds the screen's Tailwind 3 base + daisyUI components
  * (src/base-v3/subscriptions.pre.css).
  */

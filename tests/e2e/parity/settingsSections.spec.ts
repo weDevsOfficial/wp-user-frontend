@@ -122,7 +122,7 @@ async function findRow(page: Page, section: Locator, name: string): Promise<Loca
 }
 
 /** Enter one planned value through the React control of its row. */
-async function editReact(page: Page, row: Locator, item: Plan): Promise<string | null> {
+async function editBranch(page: Page, row: Locator, item: Plan): Promise<string | null> {
     const { type, value, labels, field } = item;
     // Centered: the sticky Save card covers the bottom of the window.
     await row.evaluate((el) => el.scrollIntoView({ block: 'center' }));
@@ -374,7 +374,7 @@ test.describe('Parity settings sections', () => {
                         skipped[field.name] = 'Pro preview (display only)';
                         continue;
                     }
-                    const problem = await editReact(page, row, item);
+                    const problem = await editBranch(page, row, item);
                     if (problem) {
                         skipped[field.name] = `react: ${problem}`;
                         continue;

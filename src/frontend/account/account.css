@@ -27,7 +27,7 @@
 
 /* The layout keys off the column the theme gives the app root, not the
    viewport: a narrow column stacks the sidebar, a wide one puts it beside. */
-.wpuf-frontend.wpuf-account-react {
+.wpuf-frontend.wpuf-account-root {
     container-type: inline-size;
     container-name: wpuf-account;
 }

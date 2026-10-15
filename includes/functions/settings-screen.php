@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-if ( ! function_exists( 'wpuf_settings_react_ia' ) ) {
+if ( ! function_exists( 'wpuf_settings_ia' ) ) {
     /**
      * Information architecture map for the redesigned settings screen.
      *
@@ -28,7 +28,7 @@ if ( ! function_exists( 'wpuf_settings_react_ia' ) ) {
      *
      * @return array
      */
-    function wpuf_settings_react_ia() {
+    function wpuf_settings_ia() {
         // The redesigned (Figma) tabs that consolidate several legacy sections.
         $ia = [
             [
@@ -126,7 +126,7 @@ if ( ! function_exists( 'wpuf_settings_react_ia' ) ) {
          *
          * @param array $excluded Section ids to exclude from the settings tabs.
          */
-        $excluded = apply_filters( 'wpuf_settings_react_excluded_sections', [ 'user_directory' ] );
+        $excluded = apply_filters( 'wpuf_settings_excluded_sections', [ 'user_directory' ] );
 
         foreach ( wpuf_settings_sections() as $section ) {
             $sid = $section['id'];
@@ -153,11 +153,11 @@ if ( ! function_exists( 'wpuf_settings_react_ia' ) ) {
          *
          * @param array $ia Tab definitions.
          */
-        return apply_filters( 'wpuf_settings_react_ia', $ia );
+        return apply_filters( 'wpuf_settings_ia', $ia );
     }
 }
 
-if ( ! function_exists( 'wpuf_settings_react_modules' ) ) {
+if ( ! function_exists( 'wpuf_settings_modules' ) ) {
     /**
      * Active optional-module flags exposed to the React settings screen.
      *
@@ -170,7 +170,7 @@ if ( ! function_exists( 'wpuf_settings_react_modules' ) ) {
      *
      * @return array
      */
-    function wpuf_settings_react_modules() {
+    function wpuf_settings_modules() {
         $modules = [
             'is_pro'              => class_exists( 'WP_User_Frontend_Pro' ),
             'sms'                 => false,
@@ -188,7 +188,7 @@ if ( ! function_exists( 'wpuf_settings_react_modules' ) ) {
          *
          * @param array $modules Module flags.
          */
-        return apply_filters( 'wpuf_settings_react_modules', $modules );
+        return apply_filters( 'wpuf_settings_modules', $modules );
     }
 }
 
@@ -247,7 +247,7 @@ function wpuf_settings_is_masked_secret( $incoming, $stored, $visible = 2 ) {
  *
  * @return array
  */
-function wpuf_ai_react_inject_data( $data ) {
+function wpuf_ai_inject_data( $data ) {
     if ( ! class_exists( '\WeDevs\Wpuf\AI\Config' ) ) {
         return $data;
     }
@@ -291,7 +291,7 @@ function wpuf_ai_react_inject_data( $data ) {
 
     return $data;
 }
-add_filter( 'wpuf_settings_rest_data', 'wpuf_ai_react_inject_data' );
+add_filter( 'wpuf_settings_rest_data', 'wpuf_ai_inject_data' );
 
 /**
  * Persist every provider's AI key from the React panel's `extra.ai.keys` so
@@ -305,7 +305,7 @@ add_filter( 'wpuf_settings_rest_data', 'wpuf_ai_react_inject_data' );
  *
  * @return void
  */
-function wpuf_ai_react_persist_keys( $saved, $incoming, $extra ) {
+function wpuf_ai_persist_keys( $saved, $incoming, $extra ) {
     if ( ! is_array( $extra ) || empty( $extra['ai']['keys'] ) || ! is_array( $extra['ai']['keys'] ) ) {
         return;
     }
@@ -332,7 +332,7 @@ function wpuf_ai_react_persist_keys( $saved, $incoming, $extra ) {
 
     update_option( 'wpuf_ai', $ai );
 }
-add_action( 'wpuf_settings_saved', 'wpuf_ai_react_persist_keys', 10, 3 );
+add_action( 'wpuf_settings_saved', 'wpuf_ai_persist_keys', 10, 3 );
 
 /**
  * Profile Forms for User Roles: feed the React role→form mapping table.
@@ -348,7 +348,7 @@ add_action( 'wpuf_settings_saved', 'wpuf_ai_react_persist_keys', 10, 3 );
  *
  * @return array
  */
-function wpuf_profile_roles_react_inject( $data ) {
+function wpuf_profile_roles_inject( $data ) {
     $roles = apply_filters( 'wpuf_settings_user_roles', wpuf_get_user_roles() );
 
     $forms     = get_posts( [ 'numberposts' => -1, 'post_type' => 'wpuf_profile' ] );
@@ -372,7 +372,7 @@ function wpuf_profile_roles_react_inject( $data ) {
 
     return $data;
 }
-add_filter( 'wpuf_settings_rest_data', 'wpuf_profile_roles_react_inject' );
+add_filter( 'wpuf_settings_rest_data', 'wpuf_profile_roles_inject' );
 
 /**
  * Persist the Profile-Forms-for-Roles map edited through the React screen.
@@ -385,7 +385,7 @@ add_filter( 'wpuf_settings_rest_data', 'wpuf_profile_roles_react_inject' );
  *
  * @return void
  */
-function wpuf_profile_roles_react_save( $saved, $incoming, $extra ) {
+function wpuf_profile_roles_save( $saved, $incoming, $extra ) {
     if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
         return;
     }
@@ -415,7 +415,7 @@ function wpuf_profile_roles_react_save( $saved, $incoming, $extra ) {
 
     update_option( 'wpuf_profile', $val );
 }
-add_action( 'wpuf_settings_saved', 'wpuf_profile_roles_react_save', 10, 3 );
+add_action( 'wpuf_settings_saved', 'wpuf_profile_roles_save', 10, 3 );
 
 /**
  * Settings other plugins added that the React screen cannot show: fields

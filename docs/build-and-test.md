@@ -8,8 +8,8 @@ Read when setting up the dev loop or before running CI-equivalent checks locally
 ```bash
 pnpm build                           # Production build (all entry points), ends with bin/verify-build.mjs
 pnpm run build:admin                # React admin apps in one wp-scripts build (webpack.admin.config.js)
-WPUF_ENTRY=form-builder pnpm run build:admin  # one app (form-builder | forms-list-react | subscriptions | settings-react | ai-form-builder | admin-app = the app shell)
-pnpm run build:forms-list-react     # Build forms list module (alias of WPUF_ENTRY=forms-list-react)
+WPUF_ENTRY=form-builder pnpm run build:admin  # one app (form-builder | forms-list-screen | subscriptions | settings-screen | ai-form-builder | admin-app = the app shell)
+pnpm run build:forms-list-screen     # Build forms list module (alias of WPUF_ENTRY=forms-list-screen)
 pnpm run build:subscriptions         # Build admin subscriptions module
 pnpm run build:frontend-subscriptions # Build frontend subscriptions module
 pnpm run build:ai-form-builder       # React AI form builder: wp-scripts entry + Tailwind 4 sheet
@@ -67,7 +67,7 @@ import). Tailwind scans sources only, so a full build is deterministic (no CSS d
 `modules/user-directory` keeps npm (`build:user-directory` runs `npm ci` there).
 
 ## Translations (React admin)
-- The React admin bundles build to `assets/js/react/<name>.js` (+ `.asset.php`),
+- The React admin bundles build to `assets/js/screens/<name>.js` (+ `.asset.php`),
   minified but **not** named `.min.js`: `wp i18n make-pot` and translate.wordpress.org
   skip `*.min.js`, and WordPress loads a script's JSON translations by the md5 of the
   enqueued file's path, so the bundle must be both extracted and enqueued under that name.

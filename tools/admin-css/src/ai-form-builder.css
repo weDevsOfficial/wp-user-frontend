@@ -3,7 +3,7 @@
  * app's src/css/ai-form-builder.css (Tailwind 3, `wpuf-` prefix).
  *
  * Plain Tailwind classes (no prefix, like FlyHR). Only the AI builder sources
- * are scanned. build.mjs scopes the utilities to body.wpuf-admin-react and
+ * are scanned. build.mjs scopes the utilities to body.wpuf-admin-screen and
  * adds the shared Tailwind 3 base (scoped preflight on #wpuf-ai-form-builder).
  */
 @import "tailwindcss/theme.css" layer(theme);

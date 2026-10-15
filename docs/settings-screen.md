@@ -95,23 +95,23 @@ existing pattern:
 2. Persist it on `wpuf_settings_saved` (reads `$extra`).
 3. Render it with a component routed by field name in `FieldRenderer`.
 
-See `includes/functions/settings-react.php` (profile roles, AI keys) and Pro
+See `includes/functions/settings-screen.php` (profile roles, AI keys) and Pro
 `includes/Tax.php` / `modules/email-templates/email-templates.php` for examples.
 
 ---
 
 ## Tab layout (IA)
 
-`wpuf_settings_react_ia()` maps sections onto the redesigned tabs/sub-tabs. Tabs
+`wpuf_settings_ia()` maps sections onto the redesigned tabs/sub-tabs. Tabs
 auto-drop sections that aren't registered. Sections not claimed by a tab are
 appended as their own tab, so nothing is ever hidden. Filterable via
-`wpuf_settings_react_ia`.
+`wpuf_settings_ia`.
 
 ---
 
 ## How the React screen saves (the classic screen's stored shapes)
 
-- The screen posts **only the fields the user changed** (`stores-react/settings/diff.js`)
+- The screen posts **only the fields the user changed** (`stores/settings/diff.js`)
   and only the `extra` keys that changed. Untouched values and own-option settings
   (tax, AI keys, role templates, profile roles) are never rewritten.
 - Stored shapes as the legacy form posted them: multicheck `{ key: key }` or `''` when

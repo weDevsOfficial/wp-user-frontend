@@ -2,7 +2,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 import { request } from '@wpuf/api';
 import { __ } from '@wordpress/i18n';
-import { STORE_NAME } from '../../../../stores-react/settings/constants';
+import { STORE_NAME } from '../../../../stores/settings/constants';
 import { stripTags } from '../../utils';
 import { Button } from '@wpuf/components';
 import RadioCardsField from './RadioCardsField';
@@ -20,7 +20,7 @@ import HtmlField from './HtmlField';
  * Per-provider model lists + keys arrive in `extra.ai`
  * ({ models_by_provider, keys }). Provider/model/temperature save as normal
  * `wpuf_ai` fields; each provider's key persists from `extra.ai.keys` via
- * `wpuf_ai_react_persist_keys` — so switching providers never drops another
+ * `wpuf_ai_persist_keys` — so switching providers never drops another
  * provider's saved key.
  */
 

@@ -12,7 +12,7 @@ use WeDevs\Wpuf\Platform\Onboarding\State;
 
 use WeDevs\Wpuf\Admin\Admin_Installer;
 
-use WeDevs\Wpuf\Admin\React_Assets;
+use WeDevs\Wpuf\Admin\Bundles;
 use WeDevs\Wpuf\Admin\App\AppPage;
 use WeDevs\Wpuf\Admin\BootPayload;
 use WeDevs\Wpuf\Admin\Screens\Registry;
@@ -105,9 +105,9 @@ class CoreServiceProvider extends ServiceProvider {
 
         // React admin bundles (handles, deps from *.asset.php), stylesheet switch, body classes.
         $this->share_tagged(
-            React_Assets::class,
+            Bundles::class,
             function () {
-                return new React_Assets();
+                return new Bundles();
             }
         );
 

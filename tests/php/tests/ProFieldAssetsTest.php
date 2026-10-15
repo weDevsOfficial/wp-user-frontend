@@ -33,7 +33,7 @@ class ProFieldAssetsTest extends WP_UnitTestCase {
         $GLOBALS['post'] = get_post( self::factory()->post->create( [ 'post_type' => 'page', 'post_content' => '[wpuf_account]' ] ) );
     }
 
-    public function test_react_account_submit_section_loads_no_classic_field_scripts() {
+    public function test_account_submit_section_loads_no_classic_field_scripts() {
         $this->account_page();
         $_GET['section'] = 'submit-post';
 

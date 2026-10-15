@@ -15,6 +15,6 @@ publish( {
     runtimeVersion: '1.0',
     filters: { HOOKS, SLOTS, applyWpufFilters, doWpufAction },
     api: { request, restPath, normalizeError, parseJsonBody },
-    reactHooks: { useBoot, useCan, useUnsavedGuard },
+    hooks: { useBoot, useCan, useUnsavedGuard },
     utilities: { tokens: wpufTokens, extraTokens: wpufExtraTokens },
 } );

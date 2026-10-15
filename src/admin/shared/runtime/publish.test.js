@@ -6,13 +6,13 @@ beforeEach( () => {
 
 test( 'adds members and keeps the ones already there', () => {
     const existing = () => 'builder';
-    window.wpuf = { registerFieldPreview: existing, reactHooks: { useFieldThing: 1 } };
+    window.wpuf = { registerFieldPreview: existing, hooks: { useFieldThing: 1 } };
 
-    publish( { registerFieldPreview: () => 'other', api: { request: 1 }, reactHooks: { useBoot: 2, useFieldThing: 9 } } );
+    publish( { registerFieldPreview: () => 'other', api: { request: 1 }, hooks: { useBoot: 2, useFieldThing: 9 } } );
 
     expect( window.wpuf.registerFieldPreview ).toBe( existing );
     expect( window.wpuf.api ).toEqual( { request: 1 } );
-    expect( window.wpuf.reactHooks ).toEqual( { useFieldThing: 1, useBoot: 2 } );
+    expect( window.wpuf.hooks ).toEqual( { useFieldThing: 1, useBoot: 2 } );
 } );
 
 test( 'creates window.wpuf when missing', () => {

@@ -60,7 +60,7 @@ class FrontendPricingFactsTest extends WP_UnitTestCase {
         return $out;
     }
 
-    public function test_pricing_and_math_captcha_are_drawn_by_react_with_their_defaults() {
+    public function test_pricing_and_math_captcha_are_drawn_with_their_defaults() {
         wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
         $fields = $this->fields( $this->form() );
 

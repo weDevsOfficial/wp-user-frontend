@@ -44,56 +44,56 @@ class Assets {
             ]
         );
         add_action( 'init', [ $this, 'register_all_scripts' ] );
-        // The React stylesheet switch and body classes are hooked by Admin\React_Assets.
+        // The React stylesheet switch and body classes are hooked by Admin\Bundles.
     }
 
     /**
-     * React admin assets (Admin\React_Assets).
+     * React admin assets (Admin\Bundles).
      *
      * @since WPUF_SINCE
      *
-     * @return \WeDevs\Wpuf\Admin\React_Assets
+     * @return \WeDevs\Wpuf\Admin\Bundles
      */
     protected function react() {
-        return wpuf()->platform()->get( \WeDevs\Wpuf\Admin\React_Assets::class );
+        return wpuf()->platform()->get( \WeDevs\Wpuf\Admin\Bundles::class );
     }
 
     /**
      * Whether the current admin page is a React forms list or builder.
      *
-     * @since WPUF_SINCE Forwards to Admin\React_Assets.
+     * @since WPUF_SINCE Forwards to Admin\Bundles.
      *
      * @return bool
      */
-    protected function is_react_forms_page() {
-        return $this->react()->is_react_forms_page();
+    protected function is_forms_page() {
+        return $this->react()->is_forms_page();
     }
 
     /**
      * Serve the React forms stylesheet under the old handles.
      *
-     * @since WPUF_SINCE Forwards to Admin\React_Assets (which hooks it).
+     * @since WPUF_SINCE Forwards to Admin\Bundles (which hooks it).
      *
      * @param string $src    Stylesheet URL
      * @param string $handle Handle
      *
      * @return string|false
      */
-    public function use_react_forms_styles( $src, $handle = '' ) {
-        return $this->react()->use_react_forms_styles( $src, $handle );
+    public function use_forms_styles( $src, $handle = '' ) {
+        return $this->react()->use_forms_styles( $src, $handle );
     }
 
     /**
      * Body classes of the React forms list and builder.
      *
-     * @since WPUF_SINCE Forwards to Admin\React_Assets (which hooks it).
+     * @since WPUF_SINCE Forwards to Admin\Bundles (which hooks it).
      *
      * @param string $classes Admin body classes
      *
      * @return string
      */
-    public function react_forms_body_class( $classes ) {
-        return $this->react()->react_forms_body_class( $classes );
+    public function forms_body_class( $classes ) {
+        return $this->react()->forms_body_class( $classes );
     }
 
     /**
@@ -214,7 +214,7 @@ class Assets {
             ],
         ];
 
-        // React screen stylesheets (Admin\React_Assets), at their old place in the list.
+        // React screen stylesheets (Admin\Bundles), at their old place in the list.
         $styles = array_merge( $styles, $this->react()->styles() );
 
         $styles += [
@@ -269,7 +269,7 @@ class Assets {
             // React builder sheet (tools/admin-css), under the old handle that
             // Pro and modules depend on.
             'admin-form-builder'  => [
-                'src'  => WPUF_ASSET_URI . '/css/admin/forms-react.css',
+                'src'  => WPUF_ASSET_URI . '/css/admin/forms-screen.css',
                 'deps' => $this->form_builder_css_deps,
                 'rtl'  => true,
             ],
@@ -285,7 +285,7 @@ class Assets {
             ],
             // React forms list sheet (tools/admin-css), under the old handle.
             'forms-list'           => [
-                'src' => WPUF_ASSET_URI . '/css/admin/forms-list-react.css',
+                'src' => WPUF_ASSET_URI . '/css/admin/forms-list-screen.css',
                 'rtl' => true,
             ],
             'account'              => [
@@ -307,8 +307,8 @@ class Assets {
      *
      * @return array { dependencies, version }
      */
-    protected function react_asset( $name, $dependencies ) {
-        return $this->react()->react_asset( $name, $dependencies );
+    protected function bundle_asset( $name, $dependencies ) {
+        return $this->react()->bundle_asset( $name, $dependencies );
     }
 
     /**
@@ -353,7 +353,7 @@ class Assets {
             // scripts added on this old handle still print on the page.
             'admin-subscriptions'      => [
                 'src'       => false,
-                'deps'      => [ 'wpuf-admin-subscriptions-react' ],
+                'deps'      => [ 'wpuf-subscriptions-screen' ],
                 'in_footer' => true,
             ],
             'timepicker'               => [
@@ -426,7 +426,7 @@ class Assets {
             ],
         ];
 
-        // React admin bundles (Admin\React_Assets), at their old place in the list, so
+        // React admin bundles (Admin\Bundles), at their old place in the list, so
         // every screen enqueues by handle and Pro can depend on them.
         $scripts = array_merge( $scripts, $this->react()->scripts() );
 

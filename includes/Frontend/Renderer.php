@@ -22,7 +22,7 @@ namespace WeDevs\Wpuf\Frontend;
  *
  * @since WPUF_SINCE
  */
-class React_Renderer {
+class Renderer {
 
     /**
      * App per part: part => [ app script name, templates a theme can override ].
@@ -77,7 +77,7 @@ class React_Renderer {
     }
 
     /**
-     * The bundle name of an app (the account bundle is `account-react`, so its
+     * The bundle name of an app (the account bundle is `account-page`, so its
      * sheet does not collide with the classic account.css).
      *
      * @since WPUF_SINCE
@@ -87,7 +87,7 @@ class React_Renderer {
      * @return string
      */
     public static function bundle( $app ) {
-        return 'account' === $app ? 'account-react' : $app;
+        return 'account' === $app ? 'account-page' : $app;
     }
 
     /**
@@ -160,7 +160,7 @@ class React_Renderer {
      *
      * @return bool
      */
-    public function is_react( $part ) {
+    public function mounts( $part ) {
         return isset( self::PARTS[ $part ] )
             && ! is_admin()
             && 'shortcode' === self::$source
@@ -191,7 +191,7 @@ class React_Renderer {
         $id = 'wpuf-' . str_replace( '_', '-', $part ) . '-' . ( isset( $data['id'] ) ? (int) $data['id'] : 0 ) . '-' . wp_unique_id();
 
         return sprintf(
-            '<div id="%1$s" class="wpuf-frontend %2$s" data-wpuf-react="%3$s"><script type="application/json" class="wpuf-boot">%4$s</script>%5$s</div>',
+            '<div id="%1$s" class="wpuf-frontend %2$s" data-wpuf-mount="%3$s"><script type="application/json" class="wpuf-boot">%4$s</script>%5$s</div>',
             esc_attr( $id ),
             esc_attr( trim( $classes ) ),
             esc_attr( $app ),
@@ -274,7 +274,7 @@ class React_Renderer {
         // The classic sheets the PHP form loads (Frontend::enqueue_form_assets,
         // Frontend_Render_Form): the React form keeps the classic markup, so
         // the same layout CSS styles it. Profile form templates are Pro's
-        // (Profile_Form::react_profile_form).
+        // (Profile_Form::mount_profile_form).
         wp_enqueue_style( 'wpuf-layout1' );
         wp_enqueue_style( 'wpuf-frontend-forms' );
         wp_enqueue_style( 'wpuf-sweetalert2' );
@@ -295,7 +295,7 @@ class React_Renderer {
             $rows
         );
 
-        return $this->markup( $part, $schema, $skeleton, 'wpuf-form-react' );
+        return $this->markup( $part, $schema, $skeleton, 'wpuf-form-root' );
     }
 
     /**
@@ -322,8 +322,8 @@ class React_Renderer {
      * @return void
      */
     public function enqueue( $app ) {
-        wp_enqueue_style( 'wpuf-frontend-react-runtime' );
-        wp_enqueue_style( 'wpuf-frontend-react-' . $app );
+        wp_enqueue_style( 'wpuf-frontend-runtime-style' );
+        wp_enqueue_style( 'wpuf-frontend-' . $app . '-style' );
         wp_enqueue_script( 'wpuf-frontend-' . $app );
         wp_set_script_translations( 'wpuf-frontend-' . $app, 'wp-user-frontend', WPUF_ROOT . '/languages' );
 
@@ -335,6 +335,6 @@ class React_Renderer {
          *
          * @param string $app 'forms' | 'account'
          */
-        do_action( 'wpuf_frontend_react_fields', $app );
+        do_action( 'wpuf_frontend_fields', $app );
     }
 }

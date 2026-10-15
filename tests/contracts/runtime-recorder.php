@@ -277,7 +277,7 @@ add_action(
                     $last,
                     [
                         'scripts' => [
-                            'wpuf-form-builder-react' => [
+                            'wpuf-form-builder-screen' => [
                                 'src'      => '',
                                 'deps'     => [],
                                 'enqueued' => true,

@@ -3,7 +3,7 @@ import { join } from 'path';
 import { Browser, BrowserContext, Page, test, expect, chromium } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 import { BasicLoginPage } from '../pages/basicLogin';
-import { SettingsReactPage } from '../pages/settingsReact';
+import { SettingsScreenPage } from '../pages/settingsScreen';
 import { aiWp, AiFormBuilderPage } from '../pages/aiFormBuilder';
 
 /** WP-CLI reachable: a local WordPress root (WPUF_E2E_WP_PATH) or a wp-env project (WPUF_E2E_WP_ENV_DIR, e.g. the QA sites). */
@@ -17,7 +17,7 @@ import { builderFormId } from '../utils/builderUrl';
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
-let settings: SettingsReactPage;
+let settings: SettingsScreenPage;
 
 const APP = `${Urls.baseUrl}/wp-admin/admin.php?page=wp-user-frontend`;
 
@@ -63,7 +63,7 @@ test.beforeAll(async () => {
     context = await browser.newContext({ ignoreHTTPSErrors: true });
     page = await context.newPage();
     await new BasicLoginPage(page).basicLogin(Users.adminUsername, Users.adminPassword);
-    settings = new SettingsReactPage(page);
+    settings = new SettingsScreenPage(page);
 });
 
 test.afterAll(async () => {
@@ -147,19 +147,19 @@ test.describe('Admin app', () => {
         await page.goto(`${APP}#/settings`);
         await expect(page.locator('#wpuf-settings-root nav button').first()).toBeVisible({ timeout: 30000 });
         await page.evaluate(() => { (window as unknown as { wpufNoReload: boolean }).wpufNoReload = true; });
-        expect(await sheetOn('wpuf-settings-react-css')).toBe(true);
+        expect(await sheetOn('wpuf-settings-screen-css')).toBe(true);
 
         await page.locator('#toplevel_page_wp-user-frontend a', { hasText: 'Subscriptions' }).first().click();
         await expect(page).toHaveURL(/#\/subscriptions/);
         await expect(page.locator('#wpuf-subscription-page button', { hasText: 'Add Subscription' }).first()).toBeVisible({ timeout: 30000 });
-        expect(await sheetOn('wpuf-subscriptions-react-css')).toBe(true);
-        expect(await sheetOn('wpuf-settings-react-css')).toBe(false);
+        expect(await sheetOn('wpuf-subscriptions-screen-css')).toBe(true);
+        expect(await sheetOn('wpuf-settings-screen-css')).toBe(false);
         await expect(page.locator('#toplevel_page_wp-user-frontend li.current a')).toHaveText('Subscriptions');
 
         await page.locator('#toplevel_page_wp-user-frontend a', { hasText: 'Settings' }).first().click();
         await expect(page.locator('#wpuf-settings-root nav button').first()).toBeVisible({ timeout: 30000 });
-        expect(await sheetOn('wpuf-settings-react-css')).toBe(true);
-        expect(await sheetOn('wpuf-subscriptions-react-css')).toBe(false);
+        expect(await sheetOn('wpuf-settings-screen-css')).toBe(true);
+        expect(await sheetOn('wpuf-subscriptions-screen-css')).toBe(false);
         expect(await page.evaluate(() => (window as unknown as { wpufNoReload?: boolean }).wpufNoReload), 'no page load between routes').toBe(true);
     });
 

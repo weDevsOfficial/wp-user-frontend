@@ -88,7 +88,7 @@ class RegistrationPromo extends Screen {
     public function load_in_app() {
         // Shared components' styles come with the React settings sheet.
         wp_enqueue_style( 'wpuf-admin' );
-        wp_enqueue_style( 'wpuf-settings-react' );
+        wp_enqueue_style( 'wpuf-settings-screen' );
         wp_enqueue_script( 'wpuf-registration-promo' );
         wp_set_script_translations( 'wpuf-registration-promo', 'wp-user-frontend', WPUF_ROOT . '/languages' );
 

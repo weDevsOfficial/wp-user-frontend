@@ -47,12 +47,12 @@ class Frontend {
      * @return void
      */
     public function enqueue_scripts() {
-        if ( $this->should_load_form_assets() && ! $this->react_renders_the_forms() ) {
+        if ( $this->should_load_form_assets() && ! $this->mounts_the_forms() ) {
             $this->enqueue_form_assets();
         }
 
         // Enqueue account page Tailwind CSS and JS
-        if ( wpuf_has_shortcode( 'wpuf_editprofile' ) || ( wpuf_has_shortcode( 'wpuf_account' ) && ! $this->renderer()->is_react( 'account' ) ) ) {
+        if ( wpuf_has_shortcode( 'wpuf_editprofile' ) || ( wpuf_has_shortcode( 'wpuf_account' ) && ! $this->renderer()->mounts( 'account' ) ) ) {
             $this->enqueue_account_assets();
         }
     }
@@ -62,10 +62,10 @@ class Frontend {
      *
      * @since WPUF_SINCE
      *
-     * @return \WeDevs\Wpuf\Frontend\React_Renderer
+     * @return \WeDevs\Wpuf\Frontend\Renderer
      */
     private function renderer() {
-        return wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\React_Renderer::class );
+        return wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Renderer::class );
     }
 
     /**
@@ -79,7 +79,7 @@ class Frontend {
     private function login_renders_app() {
         $part = \WeDevs\Wpuf\Free\Simple_Login::screen_part();
 
-        return '' !== $part && $this->renderer()->is_react( $part );
+        return '' !== $part && $this->renderer()->mounts( $part );
     }
 
     /**
@@ -93,10 +93,10 @@ class Frontend {
      *
      * @return bool
      */
-    private function react_renders_the_forms() {
+    private function mounts_the_forms() {
         global $post;
 
-        if ( ! $this->renderer()->is_react( 'post_form' ) ) {
+        if ( ! $this->renderer()->mounts( 'post_form' ) ) {
             return false;
         }
 
@@ -111,18 +111,18 @@ class Frontend {
         }
 
         // The Pro registration / profile shortcode renders on React too.
-        $react_tags = [ 'wpuf_form', 'wpuf_edit', 'wpuf_account' ];
+        $mount_tags = [ 'wpuf_form', 'wpuf_edit', 'wpuf_account' ];
 
-        if ( $this->renderer()->is_react( 'registration' ) ) {
-            $react_tags[] = 'wpuf_profile';
+        if ( $this->renderer()->mounts( 'registration' ) ) {
+            $mount_tags[] = 'wpuf_profile';
         }
 
         if ( $this->login_renders_app() ) {
-            $react_tags[] = 'wpuf-login';
+            $mount_tags[] = 'wpuf-login';
         }
 
         foreach ( $this->get_asset_shortcodes() as $shortcode ) {
-            if ( ! in_array( $shortcode, $react_tags, true ) && wpuf_has_shortcode( $shortcode ) ) {
+            if ( ! in_array( $shortcode, $mount_tags, true ) && wpuf_has_shortcode( $shortcode ) ) {
                 return false;
             }
         }
@@ -278,20 +278,20 @@ class Frontend {
      */
     public function enqueue_on_shortcode_render( $output, $tag, $attr = [] ) {
         // This runs before the handler (pre_do_shortcode_tag): a shortcode the
-        // React app is about to render gets its assets from React_Renderer,
+        // React app is about to render gets its assets from Renderer,
         // not the classic bundle. Same decision, same inputs as the handler.
         $renderer = $this->renderer();
         $atts     = is_array( $attr ) ? $attr : [];
 
-        if ( 'wpuf_form' === $tag && $renderer->is_react( 'post_form' ) ) {
+        if ( 'wpuf_form' === $tag && $renderer->mounts( 'post_form' ) ) {
             return $output;
         }
 
-        if ( 'wpuf_edit' === $tag && $renderer->is_react( 'edit_form' ) ) {
+        if ( 'wpuf_edit' === $tag && $renderer->mounts( 'edit_form' ) ) {
             return $output;
         }
 
-        if ( 'wpuf_account' === $tag && is_user_logged_in() && $renderer->is_react( 'account' ) ) {
+        if ( 'wpuf_account' === $tag && is_user_logged_in() && $renderer->mounts( 'account' ) ) {
             return $output;
         }
 
@@ -302,7 +302,7 @@ class Frontend {
         if ( 'wpuf_profile' === $tag ) {
             $part = isset( $atts['type'] ) && 'profile' === $atts['type'] ? 'profile' : 'registration';
 
-            if ( $renderer->is_react( $part ) ) {
+            if ( $renderer->mounts( $part ) ) {
                 return $output;
             }
         }

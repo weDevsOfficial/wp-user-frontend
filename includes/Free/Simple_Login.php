@@ -3,7 +3,7 @@
 namespace WeDevs\Wpuf\Free;
 
 use WeDevs\Wpuf\Frontend\Login\Login_Schema;
-use WeDevs\Wpuf\Frontend\React_Renderer;
+use WeDevs\Wpuf\Frontend\Renderer;
 use WeDevs\Wpuf\Render_Form;
 use WeDevs\Wpuf\WPUF_User;
 use WP_Error;
@@ -524,9 +524,9 @@ class Simple_Login {
      */
     private function render_screen( $part, $template, $schema, array $args ) {
         $platform = function_exists( 'wpuf' ) && method_exists( wpuf(), 'platform' ) ? wpuf()->platform() : null;
-        $renderer = $platform ? $platform->get( React_Renderer::class ) : null;
+        $renderer = $platform ? $platform->get( Renderer::class ) : null;
 
-        if ( ! $renderer || ! $renderer->is_react( $part ) ) {
+        if ( ! $renderer || ! $renderer->mounts( $part ) ) {
             wpuf_load_template( $template, $args );
 
             /**
@@ -537,14 +537,14 @@ class Simple_Login {
              *
              * @param string $part login, lost_password or reset_password
              */
-            do_action( 'wpuf_login_screen_classic', $part );
+            do_action( 'wpuf_login_screen_template', $part );
 
             return;
         }
 
         $data = $platform->get( Login_Schema::class )->{$schema}( $args );
 
-        echo $renderer->markup( $part, $data, '', 'wpuf-login-react' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup() escapes its attributes and JSON-encodes the data.
+        echo $renderer->markup( $part, $data, '', 'wpuf-login-root' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup() escapes its attributes and JSON-encodes the data.
     }
 
     /**

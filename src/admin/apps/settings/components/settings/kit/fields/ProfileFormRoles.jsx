@@ -1,6 +1,6 @@
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import { STORE_NAME } from '../../../../stores-react/settings/constants';
+import { STORE_NAME } from '../../../../stores/settings/constants';
 import SelectDropdown from './SelectDropdown';
 import QuickLinks from './QuickLinks';
 

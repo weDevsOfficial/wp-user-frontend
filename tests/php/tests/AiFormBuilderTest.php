@@ -70,7 +70,7 @@ class AiFormBuilderTest extends WP_UnitTestCase {
         $this->assertSame( 'Contact', $data['formTitle'] );
     }
 
-    public function test_enqueue_prints_the_react_bundle_and_applies_the_filter_once() {
+    public function test_enqueue_prints_the_bundle_and_applies_the_filter_once() {
         $calls = 0;
         add_filter(
             'wpuf_ai_form_builder_localize_data',
@@ -85,16 +85,16 @@ class AiFormBuilderTest extends WP_UnitTestCase {
         wpuf()->assets->register_all_scripts();
         wpuf()->platform()->get( AiFormBuilder::class )->enqueue( 'post' );
 
-        $registry = wpuf()->platform()->get( WeDevs\Wpuf\Admin\React_Assets::class );
+        $registry = wpuf()->platform()->get( WeDevs\Wpuf\Admin\Bundles::class );
         $script   = wp_scripts()->registered[ AiFormBuilder::HANDLE ];
         $this->assertSame( 1, $calls );
-        $this->assertStringEndsWith( '/assets/js/react/ai-form-builder.js', $registry->scripts()['ai-form-builder']['src'] );
-        $this->assertStringEndsWith( '/assets/css/ai-form-builder-react.css', $registry->styles()['ai-form-builder']['src'] );
+        $this->assertStringEndsWith( '/assets/js/screens/ai-form-builder.js', $registry->scripts()['ai-form-builder']['src'] );
+        $this->assertStringEndsWith( '/assets/css/ai-form-builder-screen.css', $registry->styles()['ai-form-builder']['src'] );
         $this->assertContains( 'wpuf-admin-ui', $script->deps );
         $this->assertSame( 'wp-user-frontend', $script->textdomain );
         $this->assertStringContainsString( '"provider":"anthropic"', $script->extra['data'] );
         set_current_screen( 'dashboard' ); // Core's site health body-class callback needs a screen.
-        $this->assertStringContainsString( 'wpuf-admin-react', apply_filters( 'admin_body_class', '' ) );
+        $this->assertStringContainsString( 'wpuf-admin-screen', apply_filters( 'admin_body_class', '' ) );
     }
 
     public function test_admin_listener_forwards_to_the_screen() {

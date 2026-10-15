@@ -84,7 +84,7 @@ class Login_Schema {
          * @param array $data Boot data
          * @param array $args action_url, redirect_to
          */
-        return apply_filters( 'wpuf_login_form_react_data', $data, $args );
+        return apply_filters( 'wpuf_login_form_data', $data, $args );
     }
 
     /**
@@ -123,7 +123,7 @@ class Login_Schema {
          * @param array $data Boot data
          * @param array $args action_url, redirect_to
          */
-        return apply_filters( 'wpuf_lost_password_form_react_data', $data, $args );
+        return apply_filters( 'wpuf_lost_password_form_data', $data, $args );
     }
 
     /**
@@ -163,7 +163,7 @@ class Login_Schema {
          * @param array $data Boot data
          * @param array $args action_url, redirect_to
          */
-        return apply_filters( 'wpuf_reset_password_form_react_data', $data, $args );
+        return apply_filters( 'wpuf_reset_password_form_data', $data, $args );
     }
 
     /**

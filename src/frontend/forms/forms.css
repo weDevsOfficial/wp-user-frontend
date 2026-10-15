@@ -9,7 +9,7 @@
  */
 
 /* The form root follows the theme like the classic form does (no kit font size or colour). */
-.wpuf-frontend.wpuf-form-react {
+.wpuf-frontend.wpuf-form-root {
     box-sizing: content-box;
     color: inherit;
     font-family: inherit;
@@ -23,11 +23,11 @@
  * width. The React root is that child now: it hands the constraint down to
  * its own children so the form keeps the classic width and position.
  */
-.wpuf-frontend.wpuf-form-react:where(.is-layout-constrained > *) {
+.wpuf-frontend.wpuf-form-root:where(.is-layout-constrained > *) {
     max-width: none;
 }
 
-.wpuf-frontend.wpuf-form-react:where(.is-layout-constrained > *) > :not(script) {
+.wpuf-frontend.wpuf-form-root:where(.is-layout-constrained > *) > :not(script) {
     max-width: var(--wp--style--global--content-size);
     margin-left: auto !important;
     margin-right: auto !important;
@@ -41,7 +41,7 @@
    the file name, "Uploading… n%" and a progress bar (the classic form shows
    plupload's own progress). */
 .wpuf-frontend .wpuf-attachment-list li.wpuf-uploading,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form.wpuf-form li .wpuf-attachment-list li.wpuf-uploading.wpuf-uploading {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form.wpuf-form li .wpuf-attachment-list li.wpuf-uploading.wpuf-uploading {
     position: relative;
     display: flex !important;
     align-items: center;
@@ -445,7 +445,7 @@
  * the validation look keeps winning; `!important` where the layout sheets
  * set the same property with it.
  */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) {
     --wpuf-m-text: #374151;
     --wpuf-m-muted: #6b7280;
     --wpuf-m-input-bg: #ffffff;
@@ -462,7 +462,7 @@
     box-shadow: var(--wpuf-m-card);
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 {
     --wpuf-m-text: #c7d2e3;
     --wpuf-m-muted: #8d9bb3;
     --wpuf-m-input-bg: #222c3c;
@@ -476,7 +476,7 @@
     --wpuf-m-hover: #2d3a4f;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 {
     --wpuf-m-text: #1e002b;
     --wpuf-m-muted: #7b6a84;
     --wpuf-m-input-bg: transparent;
@@ -486,7 +486,7 @@
     --wpuf-m-ring: rgba(135, 38, 211, 0.18);
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout4 {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout4 {
     --wpuf-m-text: #1f7a86;
     --wpuf-m-muted: #5f7f84;
     --wpuf-m-input-bg: #fafafa;
@@ -495,7 +495,7 @@
     --wpuf-m-ring: rgba(60, 166, 180, 0.22);
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 {
     --wpuf-m-text: #ffffff;
     --wpuf-m-muted: #b5bec3;
     --wpuf-m-input-bg: #394141;
@@ -511,22 +511,22 @@
 }
 
 /* Rows (server-rendered fields sit in `div.wpuf-slot-inline` slots) */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > .wpuf-slot-inline > li {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > .wpuf-slot-inline > li {
     margin: 0 0 24px !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li.wpuf-submit {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li.wpuf-submit {
     margin: 8px 0 0 !important;
 }
 
 /* Labels */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label {
     margin-bottom: 6px !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label label,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label > span {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label label,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label > span {
     color: var(--wpuf-m-text) !important;
     font-size: 14px !important;
     font-weight: 500 !important;
@@ -534,9 +534,9 @@
 }
 
 /* Controls */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"])),
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields select,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields textarea {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"])),
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields select,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields textarea {
     box-sizing: border-box;
     min-height: 44px;
     padding: 10px 14px !important;
@@ -550,49 +550,49 @@
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"])),
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields select {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"])),
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields select {
     height: 44px !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields select {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields select {
     padding-right: 36px !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields textarea {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields textarea {
     min-height: 120px;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"]))::placeholder,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields textarea::placeholder {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"]))::placeholder,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields textarea::placeholder {
     color: var(--wpuf-m-muted) !important;
     opacity: 0.8;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"])):focus,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields select:focus,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields textarea:focus {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"])):focus,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields select:focus,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields textarea:focus {
     border-color: var(--wpuf-m-accent) !important;
     outline: none !important;
     box-shadow: 0 0 0 3px var(--wpuf-m-ring) !important;
 }
 
 /* Template 3 keeps its underline fields. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"])),
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 ul.wpuf-form.wpuf-form li .wpuf-fields select {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"])),
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 ul.wpuf-form.wpuf-form li .wpuf-fields select {
     padding-left: 0 !important;
     border-width: 0 0 1px !important;
     border-radius: 0 !important;
     box-shadow: none !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"])):focus,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 ul.wpuf-form.wpuf-form li .wpuf-fields select:focus {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"])):focus,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 ul.wpuf-form.wpuf-form li .wpuf-fields select:focus {
     box-shadow: 0 1px 0 0 var(--wpuf-m-accent) !important;
 }
 
 /* Help text */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-help {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-help {
     margin-top: 6px !important;
     color: var(--wpuf-m-muted) !important;
     font-size: 13px !important;
@@ -601,60 +601,60 @@
 }
 
 /* Label row: no extra height from the layout sheets' line-height. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label {
     min-height: 0 !important;
     line-height: 20px !important;
 }
 
 /* Rich editor (TinyMCE's container): one rounded border. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce {
     overflow: hidden;
     border: 1px solid var(--wpuf-m-border) !important;
     border-radius: var(--wpuf-m-radius) !important;
     box-shadow: var(--wpuf-m-shadow) !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce .mce-panel,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce .mce-edit-area,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce .mce-statusbar {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce .mce-panel,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce .mce-edit-area,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce .mce-statusbar {
     border-color: var(--wpuf-m-border) !important;
     box-shadow: none !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce > .mce-container-body > .mce-panel:first-child,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce .mce-top-part::before {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce > .mce-container-body > .mce-panel:first-child,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce .mce-top-part::before {
     box-shadow: none !important;
 }
 
 /* Dark templates (2, 5): light eye icon and editor bars. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .wpuf-eye,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .wpuf-eye {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .wpuf-eye,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .wpuf-eye {
     filter: invert(1);
     opacity: 0.75;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .mce-tinymce .mce-panel,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .mce-tinymce .mce-panel {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .mce-tinymce .mce-panel,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .mce-tinymce .mce-panel {
     background: var(--wpuf-m-input-bg) !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .mce-tinymce .mce-ico,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .mce-tinymce .mce-ico,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .mce-tinymce .mce-path-item,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .mce-tinymce .mce-path-item {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .mce-tinymce .mce-ico,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .mce-tinymce .mce-ico,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .mce-tinymce .mce-path-item,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .mce-tinymce .mce-path-item {
     color: var(--wpuf-m-text) !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .mce-tinymce .mce-btn:hover,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .mce-tinymce .mce-btn:hover,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .mce-tinymce .mce-btn.mce-active,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .mce-tinymce .mce-btn.mce-active {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .mce-tinymce .mce-btn:hover,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .mce-tinymce .mce-btn:hover,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .mce-tinymce .mce-btn.mce-active,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .mce-tinymce .mce-btn.mce-active {
     background: rgba(255, 255, 255, 0.08) !important;
     border-color: transparent !important;
 }
 
 /* The custom multiselect's trigger looks like the other controls. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .custom-multiselect .multiselect-input {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .custom-multiselect .multiselect-input {
     box-sizing: border-box;
     min-height: 44px;
     align-items: center;
@@ -667,8 +667,8 @@
     font-size: 15px !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .custom-multiselect .multiselect-input:focus,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .custom-multiselect.open .multiselect-input {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .custom-multiselect .multiselect-input:focus,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .custom-multiselect.open .multiselect-input {
     border-color: var(--wpuf-m-accent) !important;
     box-shadow: 0 0 0 3px var(--wpuf-m-ring) !important;
 }
@@ -679,7 +679,7 @@
  * stays in the DOM, visually hidden.
  */
 .wpuf-frontend select.wpuf-select__native.wpuf-select__native,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields select.wpuf-select__native.wpuf-select__native {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields select.wpuf-select__native.wpuf-select__native {
     position: absolute !important;
     width: 1px !important;
     height: 1px !important;
@@ -787,7 +787,7 @@
 }
 
 .wpuf-frontend .wpuf-select input.wpuf-select__search,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-select input.wpuf-select__search {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-select input.wpuf-select__search {
     display: block;
     box-sizing: border-box;
     width: 100% !important;
@@ -870,15 +870,15 @@
 }
 
 /* Template 3 keeps its underline fields. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 .wpuf-select:not(.wpuf-select--sm) .wpuf-select__trigger {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 .wpuf-select:not(.wpuf-select--sm) .wpuf-select__trigger {
     padding-left: 0;
     border-width: 0 0 1px;
     border-radius: 0;
     box-shadow: none;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 .wpuf-select:not(.wpuf-select--sm) .wpuf-select__trigger:focus-visible,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 .wpuf-select.is-open:not(.wpuf-select--sm) .wpuf-select__trigger {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 .wpuf-select:not(.wpuf-select--sm) .wpuf-select__trigger:focus-visible,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 .wpuf-select.is-open:not(.wpuf-select--sm) .wpuf-select__trigger {
     box-shadow: 0 1px 0 0 var(--wpuf-m-accent);
 }
 
@@ -909,22 +909,22 @@
 }
 
 /* The custom multiselect matches the single select: muted placeholder, the same chevron, accent pills, the list as a popover. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-placeholder {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-placeholder {
     color: var(--wpuf-m-muted) !important;
     font-size: 15px !important;
     font-weight: 400 !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .dropdown-arrow svg {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .dropdown-arrow svg {
     width: 12px;
     height: auto;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .dropdown-arrow svg path {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .dropdown-arrow svg path {
     stroke: var(--wpuf-m-muted);
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .selected-item {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .selected-item {
     border: 0 !important;
     border-radius: 6px !important;
     background: var(--wpuf-m-ring) !important;
@@ -932,7 +932,7 @@
     font-size: 13px !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-dropdown {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-dropdown {
     margin-top: 6px !important;
     padding: 4px !important;
     border: 1px solid var(--wpuf-m-border) !important;
@@ -942,44 +942,44 @@
     max-height: 264px !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-option {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-option {
     border: 0 !important;
     border-radius: 6px;
     color: var(--wpuf-m-input-text) !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-option:hover,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-option:focus {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-option:hover,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .custom-multiselect .multiselect-option:focus {
     background: var(--wpuf-m-hover, #f3f4f6) !important;
 }
 
 /* Phone with the country list: the number starts after the flag (the underline rule of template 3 zeroed it). */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti.iti--allow-dropdown input[type="tel"],
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti.iti--allow-dropdown input[type="text"] {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti.iti--allow-dropdown input[type="tel"],
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti.iti--allow-dropdown input[type="text"] {
     padding-left: 52px !important;
 }
 
 /* Label icons: a gap to the text, the muted colour. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-label .wpuf-field-icon {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-label .wpuf-field-icon {
     color: var(--wpuf-m-muted);
     font-size: 0.9em;
 }
 
 
 /* Cart total: the table at the form's text size. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-summary {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-summary {
     border: 1px solid var(--wpuf-m-border) !important;
     border-radius: var(--wpuf-m-radius) !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table th,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table td {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table th,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table td {
     padding: 8px 12px !important;
     font-size: 14px !important;
     line-height: 20px !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
     color: var(--wpuf-m-muted) !important;
     font-size: 12px !important;
     font-weight: 600 !important;
@@ -987,7 +987,7 @@
     text-transform: uppercase;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table .wpuf-cart-empty td {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table .wpuf-cart-empty td {
     color: var(--wpuf-m-muted) !important;
 }
 
@@ -1080,13 +1080,13 @@
 }
 
 /* Doubled class: the layout sheets set every `ul.wpuf-form li` margin / padding with !important. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form.wpuf-form li .wpuf-suggest ul.ac_results.ac_results > li {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form.wpuf-form li .wpuf-suggest ul.ac_results.ac_results > li {
     margin: 0 !important;
     padding: 8px 12px !important;
 }
 
 /* Upload buttons: a drop-area look. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-attachment-upload-filelist a.file-selector {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-attachment-upload-filelist a.file-selector {
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
@@ -1105,26 +1105,26 @@
     transition: border-color 0.15s ease, color 0.15s ease;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-attachment-upload-filelist a.file-selector:hover,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-attachment-upload-filelist a.file-selector:focus-visible {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-attachment-upload-filelist a.file-selector:hover,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-attachment-upload-filelist a.file-selector:focus-visible {
     border-color: var(--wpuf-m-accent) !important;
     color: var(--wpuf-m-accent) !important;
     outline: none;
 }
 
 /* Choices follow the accent. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li input[type="checkbox"],
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li input[type="radio"] {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li input[type="checkbox"],
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li input[type="radio"] {
     accent-color: var(--wpuf-m-accent);
 }
 
 /* Section break */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-section-wrap {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-section-wrap {
     padding-bottom: 12px !important;
     border-bottom: 1px solid var(--wpuf-m-border) !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-section-wrap .wpuf-section-title {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-section-wrap .wpuf-section-title {
     margin: 0 0 4px !important;
     color: var(--wpuf-m-text) !important;
     font-size: 18px !important;
@@ -1132,15 +1132,15 @@
     line-height: 26px !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-section-wrap .wpuf-section-details {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-section-wrap .wpuf-section-details {
     color: var(--wpuf-m-muted) !important;
     font-size: 14px !important;
     line-height: 20px !important;
 }
 
 /* Submit */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit .wpuf-submit-button,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit input[type="submit"] {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit .wpuf-submit-button,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit input[type="submit"] {
     min-height: 44px;
     height: auto !important;
     padding: 11px 24px !important;
@@ -1156,28 +1156,28 @@
     transition: filter 0.15s ease, box-shadow 0.15s ease;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit .wpuf-submit-button:hover {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit .wpuf-submit-button:hover {
     filter: brightness(0.94);
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit .wpuf-submit-button:focus-visible {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit .wpuf-submit-button:focus-visible {
     outline: none !important;
     box-shadow: 0 0 0 3px var(--wpuf-m-ring) !important;
 }
 
 /* Registration "Already have an account? Login" line */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit {
     color: var(--wpuf-m-muted);
     font-size: 14px;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit > a {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit > a {
     color: var(--wpuf-m-accent) !important;
     font-weight: 500;
 }
 
 @media (max-width: 600px) {
-    .wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) {
+    .wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) {
         padding: 24px !important;
     }
 }
@@ -1192,50 +1192,50 @@
  * classic PHP forms keep their look. `!important` where a layout sheet sets
  * the same property with it (layouts 3-5 border colours).
  */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add ul.wpuf-form li.has-error,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add ul.wpuf-form .wpuf-fields.has-error {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add ul.wpuf-form li.has-error,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add ul.wpuf-form .wpuf-fields.has-error {
     background: transparent !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add ul.wpuf-form .wpuf-fields.has-error {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add ul.wpuf-form .wpuf-fields.has-error {
     padding: 0 !important;
 }
 
 /* Invalid controls: red border + soft ring, also while focused (the layout
    sheets' focus colours would win otherwise). The selector repeats
    `.wpuf-form-add` to outrank the layout rules. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]),
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error select,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error textarea,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .selectize-input,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wpuf-select:not(.wpuf-select--sm) .wpuf-select__trigger {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]),
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error select,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error textarea,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .selectize-input,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wpuf-select:not(.wpuf-select--sm) .wpuf-select__trigger {
     border-color: #dc2626 !important;
     box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12) !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):focus,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):focus-visible,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error select:focus,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error select:focus-visible,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error textarea:focus,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error textarea:focus-visible,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wpuf-select:not(.wpuf-select--sm) .wpuf-select__trigger:focus-visible,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wpuf-select.is-open:not(.wpuf-select--sm) .wpuf-select__trigger {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):focus,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):focus-visible,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error select:focus,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error select:focus-visible,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error textarea:focus,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error textarea:focus-visible,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wpuf-select:not(.wpuf-select--sm) .wpuf-select__trigger:focus-visible,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wpuf-select.is-open:not(.wpuf-select--sm) .wpuf-select__trigger {
     border-color: #dc2626 !important;
     outline: none !important;
     box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.24) !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wp-editor-wrap,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .mce-tinymce,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wp-editor-container,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .mce-panel {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wp-editor-wrap,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .mce-tinymce,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wp-editor-container,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .mce-panel {
     border-color: #dc2626 !important;
     border-radius: 6px;
     box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12) !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-error-msg {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-error-msg {
     display: flex !important;
     align-items: flex-start;
     gap: 6px;
@@ -1251,7 +1251,7 @@
 }
 
 /* Circle with "!" (inline SVG, follows the message colour). */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-error-msg::before {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-error-msg::before {
     content: "";
     flex: 0 0 14px;
     width: 14px;
@@ -1263,7 +1263,7 @@
 }
 
 /* Form / step summary ("Please fix the errors to proceed", server errors). */
-.wpuf-frontend.wpuf-form-react .wpuf-errors {
+.wpuf-frontend.wpuf-form-root .wpuf-errors {
     margin: 12px 0 !important;
     padding: 10px 12px !important;
     border: 1px solid #fecaca !important;
@@ -1274,7 +1274,7 @@
     line-height: 20px;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-label .required {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-label .required {
     color: #dc2626;
     font-weight: 600;
 }
@@ -1288,7 +1288,7 @@
  * the theme keeps styling it. Same markup and state classes, so the meter
  * script and theme overrides keep working.
  */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result {
     --wpuf-pw-fill: 0%;
     --wpuf-pw-color: #6b7280;
     --wpuf-pw-track: #e5e7eb;
@@ -1309,7 +1309,7 @@
     text-align: left !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result::before {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result::before {
     content: "";
     display: block;
     height: 6px;
@@ -1321,56 +1321,56 @@
     transition: background-size 0.2s ease;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.short {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.short {
     --wpuf-pw-fill: 25%;
     --wpuf-pw-color: #dc2626;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.bad {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.bad {
     --wpuf-pw-fill: 50%;
     --wpuf-pw-color: #ea580c;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.good {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.good {
     --wpuf-pw-fill: 75%;
     --wpuf-pw-color: #ca8a04;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.strong {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.strong {
     --wpuf-pw-fill: 100%;
     --wpuf-pw-color: #16a34a;
 }
 
 /* Dark layouts (2, 5): light track and colours. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-layout2:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-layout5:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout2:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout5:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result {
     --wpuf-pw-color: #9ca3af;
     --wpuf-pw-track: rgba(255, 255, 255, 0.16);
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-layout2:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.short,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-layout5:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.short {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout2:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.short,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout5:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.short {
     --wpuf-pw-color: #f87171;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-layout2:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.bad,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-layout5:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.bad {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout2:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.bad,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout5:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.bad {
     --wpuf-pw-color: #fb923c;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-layout2:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.good,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-layout5:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.good {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout2:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.good,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout5:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.good {
     --wpuf-pw-color: #facc15;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-layout2:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.strong,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-layout5:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.strong {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout2:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.strong,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout5:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.strong {
     --wpuf-pw-color: #4ade80;
 }
 
 /* Confirm password match line: the field message look (13px, icon). */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-password-match-message.wpuf-password-matched,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-password-match-message.wpuf-password-mismatch {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-matched,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-mismatch {
     display: flex;
     align-items: flex-start;
     gap: 6px;
@@ -1381,16 +1381,16 @@
     line-height: 18px;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-password-match-message.wpuf-password-matched {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-matched {
     color: #16a34a;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-password-match-message.wpuf-password-mismatch {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-mismatch {
     color: #dc2626;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-password-match-message.wpuf-password-matched::before,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-password-match-message.wpuf-password-mismatch::before {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-matched::before,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-mismatch::before {
     content: "";
     flex: 0 0 14px;
     width: 14px;
@@ -1399,33 +1399,33 @@
     background-color: currentColor;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-password-match-message.wpuf-password-matched::before {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-matched::before {
     -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpolyline points='8 12.5 11 15.5 16 9.5'/%3E%3C/svg%3E") center / contain no-repeat;
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpolyline points='8 12.5 11 15.5 16 9.5'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-password-match-message.wpuf-password-mismatch::before {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-mismatch::before {
     -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
 /* Requirement checklist: the message size and colours. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-password-requirements {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-requirements {
     margin-top: 8px;
     font-size: 13px;
     line-height: 18px;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-password-req-item {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-req-item {
     margin-bottom: 4px;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-password-req-item .wpuf-req-icon.wpuf-req-unmet {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-req-item .wpuf-req-icon.wpuf-req-unmet {
     color: #dc2626;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-password-req-item .wpuf-req-icon.wpuf-req-met,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-password-req-item .wpuf-req-icon.wpuf-req-met + .wpuf-req-text {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-req-item .wpuf-req-icon.wpuf-req-met,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-req-item .wpuf-req-icon.wpuf-req-met + .wpuf-req-text {
     color: #16a34a;
 }
 
@@ -1436,13 +1436,13 @@
  */
 
 /* Address: labels above their inputs, city / zip and country / state side by side. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px 16px;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .wpuf-address-field {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .wpuf-address-field {
     display: flex;
     flex-direction: column-reverse;
     gap: 6px;
@@ -1450,17 +1450,17 @@
     margin: 0 !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .street_address,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .street_address2 {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .street_address,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .street_address2 {
     grid-column: 1 / -1;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .wpuf-address-field .wpuf-sub-fields {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .wpuf-address-field .wpuf-sub-fields {
     width: 100% !important;
     margin: 0 !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .wpuf-form-sub-label {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .wpuf-form-sub-label {
     display: block;
     margin: 0 !important;
     color: var(--wpuf-m-muted) !important;
@@ -1470,29 +1470,29 @@
 }
 
 @media (max-width: 600px) {
-    .wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address {
+    .wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address {
         grid-template-columns: minmax(0, 1fr);
     }
 }
 
 /* Phone: full width like the other controls. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti {
     display: block;
     width: 100%;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti input[type="tel"],
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti input[type="text"] {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti input[type="tel"],
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti input[type="text"] {
     width: 100% !important;
 }
 
 /* Social handle prefix ("@") sits inside the input. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-social-input-wrapper {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-social-input-wrapper {
     position: relative;
     width: 100%;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-social-input-wrapper .wpuf-at-prefix {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-social-input-wrapper .wpuf-at-prefix {
     position: absolute;
     top: 50%;
     left: 14px;
@@ -1504,13 +1504,13 @@
     pointer-events: none;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-social-input-wrapper input.wpuf-twitter-with-prefix.wpuf-twitter-with-prefix {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-social-input-wrapper input.wpuf-twitter-with-prefix.wpuf-twitter-with-prefix {
     padding-left: 30px !important;
 }
 
 /* Choices: native controls in the accent colour, label beside them. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label:has(> input[type="radio"]),
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label:has(> input[type="checkbox"]) {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label:has(> input[type="radio"]),
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label:has(> input[type="checkbox"]) {
     display: inline-flex !important;
     align-items: center;
     gap: 8px;
@@ -1522,16 +1522,16 @@
     cursor: pointer;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-radio-block,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-checkbox-block,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-pricing-radio-item,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-pricing-checkbox-item {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-radio-block,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-checkbox-block,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-pricing-radio-item,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-pricing-checkbox-item {
     display: flex !important;
     margin: 0 0 8px !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"],
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"] {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"],
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"] {
     flex: none;
     width: 18px !important;
     height: 18px !important;
@@ -1544,41 +1544,41 @@
 }
 
 /* Pro's registration templates hide the checkbox and draw a box on the label; the native control replaces it. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-block::before,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-block::after,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-inline::before,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-inline::after {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-block::before,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-block::after,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-inline::before,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-inline::after {
     content: none !important;
     display: none !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"] {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"] {
     position: static !important;
     opacity: 1 !important;
     pointer-events: auto !important;
     clip: auto !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"]::before,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"]::after,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"]::before,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"]::after {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"]::before,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"]::after,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"]::before,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"]::after {
     content: none !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"]:focus-visible,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"]:focus-visible {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"]:focus-visible,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"]:focus-visible {
     outline: 2px solid var(--wpuf-m-accent);
     outline-offset: 2px;
 }
 
 /* Ratings: larger stars, amber when chosen, no dropdown arrow from the hidden select. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields:has(.br-wrapper)::after {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields:has(.br-wrapper)::after {
     content: none !important;
     display: none !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget {
     display: inline-flex;
     gap: 4px;
     height: auto;
@@ -1588,7 +1588,7 @@
     white-space: nowrap;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a {
     width: 28px;
     height: 28px;
     margin: 0;
@@ -1597,39 +1597,39 @@
     text-decoration: none;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a::after {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a::after {
     color: var(--wpuf-m-border) !important;
     font-size: 26px;
     line-height: 28px;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a.br-active::after,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a.br-selected::after {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a.br-active::after,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a.br-selected::after {
     color: #f59e0b !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget:focus-visible {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget:focus-visible {
     outline: 2px solid var(--wpuf-m-accent);
     outline-offset: 4px;
     border-radius: 6px;
 }
 
 /* Repeat field: each entry a soft card, round add / remove buttons. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container > p {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container > p {
     margin: 0 0 4px !important;
     color: var(--wpuf-m-text);
     font-size: 15px;
     font-weight: 600;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container > hr {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container > hr {
     margin: 0 0 12px !important;
     border: 0 !important;
     border-top: 1px solid var(--wpuf-m-border) !important;
     background: none !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-instance {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-instance {
     margin: 0 0 12px;
     padding: 16px 16px 8px;
     border: 1px solid var(--wpuf-m-border);
@@ -1637,17 +1637,17 @@
     background: color-mix(in srgb, var(--wpuf-m-input-bg) 60%, transparent);
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-instance > li {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-instance > li {
     margin: 0 0 12px !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls {
     display: flex;
     gap: 8px;
     margin: 0 0 8px;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls button {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1665,22 +1665,22 @@
     cursor: pointer;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls button:hover,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls button:focus-visible {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls button:hover,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls button:focus-visible {
     border-color: var(--wpuf-m-accent) !important;
     outline: none;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls .wpuf-remove-repeat {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls .wpuf-remove-repeat {
     color: #dc2626 !important;
 }
 
 /* Insert Photo: a small ghost button above the editor. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container {
     margin: 0 0 8px;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     display: inline-flex !important;
     align-items: center;
     gap: 6px;
@@ -1697,14 +1697,14 @@
     text-decoration: none !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image:hover,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image:focus-visible {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image:hover,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image:focus-visible {
     border-color: var(--wpuf-m-accent) !important;
     color: var(--wpuf-m-accent) !important;
     outline: none;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image .wpuf-media-icon {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image .wpuf-media-icon {
     display: inline-flex !important;
     flex: none;
     width: 16px !important;
@@ -1713,28 +1713,28 @@
 }
 
 /* Columns: controls fill their column, even gaps. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-inner-fields {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-inner-fields {
     box-sizing: border-box;
     padding-right: 16px !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-inner-fields:last-child {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-inner-fields:last-child {
     padding-right: 0 !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields > li {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields > li {
     margin: 0 !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"])),
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields .wpuf-fields select,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields .wpuf-fields textarea {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"])),
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields .wpuf-fields select,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields .wpuf-fields textarea {
     width: 100% !important;
 }
 
 /* Dark templates: native controls (checkbox, radio, date picker) in their dark look. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2,
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 {
     color-scheme: dark;
 }
 
@@ -1748,11 +1748,11 @@
  * the inactive colour (light grey by default, unreadable as text) to the kit's
  * muted text. A done step shows a check.
  */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar {
     overflow: visible;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-wizard {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-wizard {
     display: flex;
     align-items: flex-start;
     justify-content: stretch;
@@ -1760,7 +1760,7 @@
     padding: 0;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item {
     position: relative;
     display: flex;
     flex: 1 1 0;
@@ -1770,7 +1770,7 @@
     text-align: center;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-line {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-line {
     position: absolute;
     top: 17px;
     right: calc(50% + 24px);
@@ -1782,27 +1782,27 @@
     border-radius: 2px;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-circle {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-circle {
     position: relative;
     z-index: 1;
     flex: 0 0 auto;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item:not(.active-step):not(.completed-step) .wpuf-step-circle {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item:not(.active-step):not(.completed-step) .wpuf-step-circle {
     color: var(--wpuf-fe-muted);
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item.active-step .wpuf-step-circle {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item.active-step .wpuf-step-circle {
     box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06);
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-circle svg {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-circle svg {
     width: 16px;
     height: 16px;
     stroke-width: 3;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-label {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-label {
     max-width: 100%;
     margin-top: 8px;
     padding: 0 4px;
@@ -1814,16 +1814,16 @@
     overflow-wrap: anywhere;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item.active-step .wpuf-step-label {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item.active-step .wpuf-step-label {
     color: var(--wpuf-fe-text);
     font-weight: 600;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item.completed-step .wpuf-step-label {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item.completed-step .wpuf-step-label {
     color: var(--wpuf-fe-text);
 }
 
-.wpuf-frontend.wpuf-form-react .screen-reader-text {
+.wpuf-frontend.wpuf-form-root .screen-reader-text {
     position: absolute !important;
     width: 1px;
     height: 1px;
@@ -1838,11 +1838,11 @@
 /* Actions under the fields, in the flow (the classic sheet pins them absolutely to
    the fieldset bottom): Previous left, Next right; on the last step Previous sits
    in the submit row, left of the submit button. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset {
     padding-bottom: 0;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset .multistep-button-area {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset .multistep-button-area {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -1851,16 +1851,16 @@
     margin-top: 24px;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset .multistep-button-area--next-only {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset .multistep-button-area--next-only {
     justify-content: flex-end;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-nav-btn {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-nav-btn {
     position: static !important;
     margin: 0 !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset li.wpuf-submit.wpuf-submit--with-prev {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset li.wpuf-submit.wpuf-submit--with-prev {
     display: flex !important;
     flex-wrap: wrap;
     align-items: center;
@@ -1868,28 +1868,28 @@
     gap: 12px;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset li.wpuf-submit.wpuf-submit--with-prev input.wpuf-submit-button {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset li.wpuf-submit.wpuf-submit--with-prev input.wpuf-submit-button {
     margin: 0 0 0 auto !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset li.wpuf-submit.wpuf-submit--with-prev > .wpuf-errors {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset li.wpuf-submit.wpuf-submit--with-prev > .wpuf-errors {
     flex-basis: 100%;
 }
 
 /* Previous is the secondary action: outline in the kit's neutral colours (the
    layout sheets paint it like Next with !important); size and shape stay the layout's. */
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-prev-btn {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-prev-btn {
     color: var(--wpuf-fe-text) !important;
     background: var(--wpuf-fe-surface) !important;
     border: 1px solid var(--wpuf-fe-border) !important;
     box-shadow: var(--wpuf-fe-shadow) !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-prev-btn:hover {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-prev-btn:hover {
     background: var(--wpuf-fe-hover) !important;
 }
 
-.wpuf-frontend.wpuf-form-react form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-nav-btn:focus-visible {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-nav-btn:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 2px;
 }

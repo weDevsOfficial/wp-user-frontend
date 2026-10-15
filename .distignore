@@ -59,7 +59,7 @@ modules/user-directory/node_modules
 /tailwind.config.js
 /postcss.config.js
 /postcss.user-directory.config.js
-/postcss.config.react.js
+/postcss.config.admin.js
 /postcss.config.frontend.js
 /package.json
 /package-lock.json

@@ -199,7 +199,7 @@ export default function ConfirmDialog( {
     return (
         <AlertDialog open={ open } onOpenChange={ ( next ) => ( next || busy ? undefined : dismiss?.() ) }>
             <AlertDialogContent
-                data-wpuf-vue-dialog={ variant }
+                data-wpuf-dialog={ variant }
                 style={ 'alert' === variant ? { '--wpuf-dialog-w': width || '512px', '--wpuf-dialog-p': padding || '0 0 20px' } : undefined }
                 className={ cn( look.content, className ) }
             >

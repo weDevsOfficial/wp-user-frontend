@@ -69,7 +69,7 @@ abstract class Screen {
 
     /**
      * Class added to the admin `<body>` while this screen is viewed. React
-     * screens return `wpuf-admin-react`: their Tailwind stylesheet scopes its
+     * screens return `wpuf-admin-screen`: their Tailwind stylesheet scopes its
      * utilities to it, so they style the screen (and its portals) only.
      *
      * @since WPUF_SINCE

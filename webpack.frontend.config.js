@@ -2,7 +2,7 @@
  * One wp-scripts config for the frontend React apps (frontend-react-architecture.md 7).
  *
  * Entries: `runtime` (the kit, published on window.wpuf.frontend together with
- * lucide-react), `forms` (post form, edit form) and `account-react` (the account
+ * lucide-react), `forms` (post form, edit form) and `account-page` (the account
  * shortcode), `login` (the `[wpuf-login]` form). Output: assets/js/frontend/<name>.js + .asset.php (not .min.js:
  * `wp i18n make-pot` skips *.min.js), assets/css/frontend/<name>.css + -rtl.css
  * from the CSS each entry imports. Build one with `WPUF_ENTRY=<name>`.
@@ -15,7 +15,7 @@ const wpufExternals = require( './webpack.wpuf-externals' );
 
 const apps = {
     forms: './src/frontend/forms/index.jsx',
-    'account-react': './src/frontend/account/index.jsx',
+    'account-page': './src/frontend/account/index.jsx',
     login: './src/frontend/login/index.jsx',
 };
 

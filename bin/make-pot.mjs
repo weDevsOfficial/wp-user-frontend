@@ -4,14 +4,14 @@
  *
  * WordPress loads a script's JSON translations by the md5 of the enqueued
  * file's path, and `wp i18n make-json` names each JSON after the JS files the
- * PO references. The React bundles are built to assets/js/react/<name>.js (not
+ * PO references. The React bundles are built to assets/js/screens/<name>.js (not
  * .min.js, which extraction skips), so extracting from them gives references
  * to exactly the files that are enqueued; src/admin is extracted too so
  * translators also see the source location. translate.wordpress.org runs the
  * same extraction on the released files (which carry the bundles, not src/),
  * so its language packs get JSON for the React screens as well.
  *
- * Needs WP-CLI (`wp`, or the path in $WP_CLI) and a built assets/js/react/.
+ * Needs WP-CLI (`wp`, or the path in $WP_CLI) and a built assets/js/screens/.
  *
  * Usage: node bin/make-pot.mjs
  */
@@ -24,8 +24,8 @@ const root = join( dirname( fileURLToPath( import.meta.url ) ), '..' );
 const out = join( root, 'languages', 'wp-user-frontend.pot' );
 const wp = process.env.WP_CLI || 'wp';
 
-if ( ! existsSync( join( root, 'assets/js/react/form-builder.js' ) ) ) {
-    console.error( 'make-pot: assets/js/react/ is not built; run the build first (pnpm build).' );
+if ( ! existsSync( join( root, 'assets/js/screens/form-builder.js' ) ) ) {
+    console.error( 'make-pot: assets/js/screens/ is not built; run the build first (pnpm build).' );
     process.exit( 1 );
 }
 
@@ -54,4 +54,4 @@ if ( ! react ) {
     process.exit( 1 );
 }
 
-console.log( `make-pot: ${ strings } strings, ${ react } references to assets/js/react bundles.` );
+console.log( `make-pot: ${ strings } strings, ${ react } references to assets/js/screens bundles.` );

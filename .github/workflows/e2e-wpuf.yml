@@ -67,7 +67,7 @@ jobs:
           # settings, welcome) and the Pro QR field: their own runner so the
           # other groups do not get slower as the app tests grow.
           - group: admin-app
-            files: tests/adminAppTest.spec.ts tests/settingsReactTest.spec.ts tests/welcomeTest.spec.ts tests/postFormDefaultsTest.spec.ts tests/qrCodeFieldTestPro.spec.ts tests/moduleScreensTest.spec.ts
+            files: tests/adminAppTest.spec.ts tests/settingsScreenTest.spec.ts tests/welcomeTest.spec.ts tests/postFormDefaultsTest.spec.ts tests/qrCodeFieldTestPro.spec.ts tests/moduleScreensTest.spec.ts
           # Onboarding reruns the setup wizard (pages, settings): alone, so it
           # cannot change what another group's specs expect.
           - group: onboarding

@@ -1,7 +1,7 @@
 /**
- * The frontend login form app: mounts on every `[data-wpuf-react="login"]`
+ * The frontend login form app: mounts on every `[data-wpuf-mount="login"]`
  * root the `[wpuf-login]` shortcode rendered, with the data the server put
- * in the root's boot script (Simple_Login::react_login_data()). The boot
+ * in the root's boot script (Simple_Login::login_schema()). The boot
  * data's `view` picks the screen: the login form, the lost password form
  * (`?action=lostpassword`) or the reset password form (`?action=rp`).
  *

@@ -10,7 +10,7 @@ namespace WeDevs\Wpuf\Platform\REST\Controllers;
 
 use WeDevs\Wpuf\Frontend\Forms\Form_Schema;
 use WeDevs\Wpuf\Frontend\Forms\Submission_Service;
-use WeDevs\Wpuf\Frontend\React_Renderer;
+use WeDevs\Wpuf\Frontend\Renderer;
 use WeDevs\Wpuf\Platform\Http\Admin_Ajax_Context;
 use WeDevs\Wpuf\Platform\REST\Rate_Limit;
 use WeDevs\Wpuf\Platform\REST\RestController;
@@ -60,7 +60,7 @@ class FormsPublicController extends RestController {
     /**
      * The React renderer (its build() keeps the classic asset listeners quiet).
      *
-     * @var React_Renderer|null
+     * @var Renderer|null
      */
     private $renderer;
 
@@ -70,13 +70,13 @@ class FormsPublicController extends RestController {
      * @param Form_Schema         $schema      Schema builder
      * @param Submission_Service  $submissions Submissions
      * @param Rate_Limit          $limiter     Rate limiter
-     * @param React_Renderer|null $renderer    React renderer
+     * @param Renderer|null $renderer    React renderer
      */
     public function __construct( Form_Schema $schema, Submission_Service $submissions, Rate_Limit $limiter, $renderer = null ) {
         $this->form_schema = $schema;
         $this->submissions = $submissions;
         $this->limiter     = $limiter;
-        $this->renderer    = $renderer instanceof React_Renderer ? $renderer : null;
+        $this->renderer    = $renderer instanceof Renderer ? $renderer : null;
     }
 
     /**

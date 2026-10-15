@@ -112,7 +112,7 @@ test.describe('Release smoke: React admin screens', () => {
     test('RS0002 : New post form opens the React builder', { tag: ['@Lite', '@Test_RS0002'] }, async () => {
         await visit('admin.php?page=wpuf-post-forms&action=add-new');
         await expect(page).toHaveURL(BUILDER_URL);
-        await expect(page.locator('body.wpuf-admin-react')).toHaveCount(1);
+        await expect(page.locator('body.wpuf-admin-screen')).toHaveCount(1);
         await expect(page.getByRole('tab', { name: 'Form Editor' }).first()).toBeVisible({ timeout: 30000 });
         await expectClean('post form builder');
         // The new form route creates an empty "Sample Form" (develop's add-new did too): delete it, or
@@ -123,7 +123,7 @@ test.describe('Release smoke: React admin screens', () => {
 
     test('RS0003 : Subscriptions screen mounts', { tag: ['@Lite', '@Test_RS0003'] }, async () => {
         await visit('admin.php?page=wpuf_subscription');
-        await expect(page.locator('body.wpuf-admin-react')).toHaveCount(1);
+        await expect(page.locator('body.wpuf-admin-screen')).toHaveCount(1);
         await expect(page.getByText('Subscriptions', { exact: false }).first()).toBeVisible({ timeout: 30000 });
         await expectClean('subscriptions');
     });

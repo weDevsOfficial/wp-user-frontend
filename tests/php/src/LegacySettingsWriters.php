@@ -47,7 +47,7 @@ class WPUF_Legacy_Settings_Api extends WP_REST_Controller {
      */
     public function __construct() {
         wpuf_require_once( WPUF_INCLUDES . '/functions/settings-options.php' );
-        wpuf_require_once( WPUF_INCLUDES . '/functions/settings-react.php' );
+        wpuf_require_once( WPUF_INCLUDES . '/functions/settings-screen.php' );
 
         // The settings schema (and Pro role filters) call get_editable_roles(),
         // which lives in wp-admin and is not loaded during REST requests.
@@ -155,14 +155,14 @@ class WPUF_Legacy_Settings_Api extends WP_REST_Controller {
         $data = [
             'sections'     => array_values( $sections ),
             'fields'       => $fields,
-            'ia'           => wpuf_settings_react_ia(),
+            'ia'           => wpuf_settings_ia(),
             'values'       => $values,
             'pro_sections' => $pro_sections,
             'caps'         => [
                 'is_pro'     => class_exists( 'WP_User_Frontend_Pro' ),
                 'can_manage' => current_user_can( wpuf_admin_role() ),
             ],
-            'modules'      => wpuf_settings_react_modules(),
+            'modules'      => wpuf_settings_modules(),
             // Output of `wsa_form_top_{section}` / `wsa_form_bottom_{section}`.
             'section_html' => $section_html,
             // Side-channel for settings that live in their OWN option (not a

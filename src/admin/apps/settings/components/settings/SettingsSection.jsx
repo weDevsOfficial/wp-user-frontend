@@ -12,7 +12,7 @@ import PaymentGateways from './kit/PaymentGateways';
 import GeneralSettings from './kit/GeneralSettings';
 import AISettings from './kit/fields/AISettings';
 import EmailIcon from './kit/email-icons';
-import { STORE_NAME } from '../../stores-react/settings/constants';
+import { STORE_NAME } from '../../stores/settings/constants';
 import { stripTags } from './utils';
 
 // Sections whose fields are grouped by provider (Figma gateway/provider cards).

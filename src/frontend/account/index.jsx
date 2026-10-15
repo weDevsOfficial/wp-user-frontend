@@ -1,5 +1,5 @@
 /**
- * The account app: mounts on the `[data-wpuf-react="account"]` root the
+ * The account app: mounts on the `[data-wpuf-mount="account"]` root the
  * `[wpuf_account]` shortcode rendered, with the profile, sections and
  * stats the server put in the boot script.
  *

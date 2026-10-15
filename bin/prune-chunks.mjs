@@ -8,7 +8,7 @@
  * file behind. A chunk is kept while one of the entry files names its content
  * hash (webpack's chunk map); the rest are stale.
  *
- * Usage: node bin/prune-chunks.mjs  (run by build:frontend-react)
+ * Usage: node bin/prune-chunks.mjs  (run by build:frontend)
  */
 import { existsSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';

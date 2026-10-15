@@ -101,14 +101,14 @@
    (admin color), dialogs included (they render outside #wpbody-content).
    No ring on a mouse click; keyboard focus gets the primary
    green outline (owner 2026-10-04: "no blue, only green"). */
-body.wpuf-admin-react #wpbody-content a:focus,
-body.wpuf-admin-react [role="dialog"] a:focus {
+body.wpuf-admin-screen #wpbody-content a:focus,
+body.wpuf-admin-screen [role="dialog"] a:focus {
     box-shadow: none;
     outline: 2px solid transparent;
 }
 
-body.wpuf-admin-react #wpbody-content a:focus-visible,
-body.wpuf-admin-react [role="dialog"] a:focus-visible {
+body.wpuf-admin-screen #wpbody-content a:focus-visible,
+body.wpuf-admin-screen [role="dialog"] a:focus-visible {
     outline: 2px solid #059669;
     outline-offset: 2px;
     border-radius: 2px;
@@ -119,27 +119,27 @@ body.wpuf-admin-react [role="dialog"] a:focus-visible {
    printed after ours with the same specificity, so every gray-600 text of
    the React screens turned bold and black. Put the utility back, with the
    weight of a `font-*` class next to it. */
-body.wpuf-admin-react .text-gray-600 {
+body.wpuf-admin-screen .text-gray-600 {
     color: var(--color-gray-600, #4b5563);
 }
 
-body.wpuf-admin-react .text-gray-600:not([class*="font-"]) {
+body.wpuf-admin-screen .text-gray-600:not([class*="font-"]) {
     font-weight: inherit;
 }
 
-body.wpuf-admin-react .text-gray-600.font-normal {
+body.wpuf-admin-screen .text-gray-600.font-normal {
     font-weight: 400;
 }
 
-body.wpuf-admin-react .text-gray-600.font-medium {
+body.wpuf-admin-screen .text-gray-600.font-medium {
     font-weight: 500;
 }
 
-body.wpuf-admin-react .text-gray-600.font-semibold {
+body.wpuf-admin-screen .text-gray-600.font-semibold {
     font-weight: 600;
 }
 
-body.wpuf-admin-react .text-gray-600.font-bold {
+body.wpuf-admin-screen .text-gray-600.font-bold {
     font-weight: 700;
 }
 
@@ -151,20 +151,20 @@ body.wpuf-admin-react .text-gray-600.font-bold {
    Set once here, so each screen that adopts the shared layer gets it; the
    builders (body.wpuf-builder-screen) keep their own layout (no gutter rule)
    but share the footer rules and get the gray page below. */
-body.wpuf-admin-react:not(.wpuf-builder-screen),
-body.wpuf-admin-react:not(.wpuf-builder-screen) #wpcontent {
+body.wpuf-admin-screen:not(.wpuf-builder-screen),
+body.wpuf-admin-screen:not(.wpuf-builder-screen) #wpcontent {
     background-color: #f0f0f1;
 }
 
-body.wpuf-admin-react:not(.wpuf-builder-screen) #wpcontent {
+body.wpuf-admin-screen:not(.wpuf-builder-screen) #wpcontent {
     padding-left: 0;
 }
 
-body.wpuf-admin-react #wpbody-content {
+body.wpuf-admin-screen #wpbody-content {
     padding-bottom: 0;
 }
 
-body.wpuf-admin-react #wpfooter {
+body.wpuf-admin-screen #wpfooter {
     display: none;
 }
 
@@ -186,17 +186,17 @@ body.wpuf-builder-screen form#wpuf-form-builder {
 
 /* Develop's popup backdrops behind the shared ConfirmDialog: SweetAlert's 40%
    black (variant alert) and Popup.vue's gray-500 at 75% (variant panel), no blur. */
-.pui-root:has(> [data-wpuf-vue-dialog="alert"]) > [data-slot="alert-dialog-overlay"] {
+.pui-root:has(> [data-wpuf-dialog="alert"]) > [data-slot="alert-dialog-overlay"] {
     background-color: rgba(0, 0, 0, 0.4) !important;
     backdrop-filter: none !important;
 }
 
-.pui-root:has(> [data-wpuf-vue-dialog="panel"]) > [data-slot="alert-dialog-overlay"] {
+.pui-root:has(> [data-wpuf-dialog="panel"]) > [data-slot="alert-dialog-overlay"] {
     background-color: rgba(107, 114, 128, 0.75) !important;
     backdrop-filter: none !important;
 }
 
-.pui-root:has(> [data-wpuf-vue-dialog="card"]) > [data-slot="alert-dialog-overlay"] {
+.pui-root:has(> [data-wpuf-dialog="card"]) > [data-slot="alert-dialog-overlay"] {
     background-color: rgba(0, 0, 0, 0.5) !important;
     backdrop-filter: none !important;
 }
@@ -245,11 +245,11 @@ body.wpuf-builder-screen form#wpuf-form-builder {
 }
 
 /* Attribute selectors: build.mjs rewrites `.pui-root` selectors (host roots excluded). */
-body.wpuf-admin-react #wpbody-content,
+body.wpuf-admin-screen #wpbody-content,
 body.wpuf-admin-app #wpbody-content,
-body.wpuf-admin-react [class~="pui-root"],
-body.wpuf-admin-react [class~="wpuf-onboarding"],
-body.wpuf-admin-react #wpbody-content .wpuf-help {
+body.wpuf-admin-screen [class~="pui-root"],
+body.wpuf-admin-screen [class~="wpuf-onboarding"],
+body.wpuf-admin-screen #wpbody-content .wpuf-help {
     /* Literal, like FlyHR: ahead of any --font-sans printed inline. */
     font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }

@@ -8,7 +8,7 @@
  */
 /* The root is the classic form box: the theme's font, size and colour, as the
    classic div had (the kit sets its own on .wpuf-frontend). */
-.wpuf-frontend.wpuf-login-react {
+.wpuf-frontend.wpuf-login-root {
     color: inherit;
     font-family: inherit;
     font-size: inherit;

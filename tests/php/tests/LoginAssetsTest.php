@@ -9,7 +9,7 @@
  */
 
 use WeDevs\Wpuf\Free\Simple_Login;
-use WeDevs\Wpuf\Frontend\React_Renderer;
+use WeDevs\Wpuf\Frontend\Renderer;
 
 class LoginAssetsTest extends WP_UnitTestCase {
 
@@ -59,7 +59,7 @@ class LoginAssetsTest extends WP_UnitTestCase {
     public function test_app_screen_loads_the_login_app_without_the_classic_bundle() {
         $html = do_shortcode( '[wpuf-login]' );
 
-        $this->assertStringContainsString( 'data-wpuf-react="login"', $html );
+        $this->assertStringContainsString( 'data-wpuf-mount="login"', $html );
         $this->assertTrue( wp_script_is( 'wpuf-frontend-login', 'enqueued' ) );
         $this->assertFalse( wp_script_is( 'wpuf-frontend-form', 'enqueued' ), 'no classic form bundle' );
         $this->assertFalse( wp_script_is( 'wpuf-login-form', 'enqueued' ), 'no Pro jQuery layout script' );
@@ -75,7 +75,7 @@ class LoginAssetsTest extends WP_UnitTestCase {
     }
 
     public function test_template_screen_keeps_the_classic_bundle_and_pro_script() {
-        $html = React_Renderer::with_source(
+        $html = Renderer::with_source(
             'block',
             function () {
                 return do_shortcode( '[wpuf-login]' );

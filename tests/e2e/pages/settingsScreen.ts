@@ -11,13 +11,13 @@ import { Selectors } from './selectors';
  * accessible name/text (the app uses Tailwind classes, no test ids). Storage
  * parity is the key contract — `save()` + `reloadAndAssert*` cover round-trips.
  */
-export class SettingsReactPage extends Base {
+export class SettingsScreenPage extends Base {
     constructor(page: Page) {
         super(page);
     }
 
     private get S() {
-        return Selectors.settingsReact;
+        return Selectors.settingsScreen;
     }
 
     get root(): Locator {

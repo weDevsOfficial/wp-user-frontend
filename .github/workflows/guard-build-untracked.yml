@@ -20,14 +20,14 @@ jobs:
         run: |
           tracked=$(git ls-files \
             'assets/js/account.min.js' \
-            'assets/css/ai-form-builder-react.css' \
-            'assets/css/ai-form-builder-react-rtl.css' \
+            'assets/css/ai-form-builder-screen.css' \
+            'assets/css/ai-form-builder-screen-rtl.css' \
             'assets/js/forms-list.min.js' \
             'assets/js/forms-list.min.js.map' \
             'assets/js/frontend-form.min.js' \
             'assets/js/frontend-subscriptions.min.js' \
             'assets/js/subscriptions.min.js' \
-            'assets/js/react/' \
+            'assets/js/screens/' \
             'assets/js/upload.min.js' \
             'assets/css/admin.css' \
             'assets/css/elementor-frontend-forms.css' \

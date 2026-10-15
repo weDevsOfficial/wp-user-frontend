@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, Page, test, expect, chromium } from "@playwright/test";
 import { faker } from '@faker-js/faker';
-import { SettingsReactPage } from '../pages/settingsReact';
+import { SettingsScreenPage } from '../pages/settingsScreen';
 import { Selectors } from '../pages/selectors';
 import { BasicLoginPage } from '../pages/basicLogin';
 import { Users } from '../utils/testData';
@@ -9,7 +9,7 @@ import { configureSpecFailFast } from '../utils/specFailFast';
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
-let settings: SettingsReactPage;
+let settings: SettingsScreenPage;
 
 test.beforeAll(async () => {
     // HEADED=1 shows the browser (this spec launches its own).
@@ -20,7 +20,7 @@ test.beforeAll(async () => {
     const login = new BasicLoginPage(page);
     await login.basicLogin(Users.adminUsername, Users.adminPassword);
 
-    settings = new SettingsReactPage(page);
+    settings = new SettingsScreenPage(page);
 });
 
 test.afterAll(async () => {
@@ -66,7 +66,7 @@ test.describe('React Settings Screen Tests', () => {
     test('@Test_SR0002 : All top-level tabs present', async () => {
         await settings.goto();
         for (const tab of ['General', 'Frontend Posting', 'Login & Registration', 'Email', 'Advanced']) {
-            await expect(page.locator(Selectors.settingsReact.nav).first().locator('button', { hasText: tab }).first()).toBeVisible();
+            await expect(page.locator(Selectors.settingsScreen.nav).first().locator('button', { hasText: tab }).first()).toBeVisible();
         }
     });
 
@@ -270,14 +270,14 @@ test.describe('React Settings Screen — Pro Tests', () => {
 
     test('@Test_SR0027 : SMS provider cards', async () => {
         await settings.goto();
-        await gateOnPro( page.locator(Selectors.settingsReact.nav).first().getByText('SMS', { exact: false }), 'SMS module inactive' );
+        await gateOnPro( page.locator(Selectors.settingsScreen.nav).first().getByText('SMS', { exact: false }), 'SMS module inactive' );
         await settings.openTab('SMS');
         await expect(page.getByText('Twilio', { exact: false }).first()).toBeVisible();
     });
 
     test('@Test_SR0028 : AI Settings provider cards + model', async () => {
         await settings.goto();
-        await gateOnPro( page.locator(Selectors.settingsReact.nav).first().getByText('Integrations', { exact: false }), 'Integrations/AI inactive' );
+        await gateOnPro( page.locator(Selectors.settingsScreen.nav).first().getByText('Integrations', { exact: false }), 'Integrations/AI inactive' );
         await settings.openTab('Integrations');
         await expect(page.getByText('OpenAI', { exact: false }).first()).toBeVisible();
         await expect(page.getByText('AI Model', { exact: false }).first()).toBeVisible();
@@ -323,7 +323,7 @@ test.describe('React Settings Screen — Pro Tests', () => {
         await page.locator('#wpuf-settings-root').getByText('Login Form Colors', { exact: false }).first().click();
         await expect(page.getByText('Form Background Color', { exact: false }).first()).toBeVisible();
         await expect(page.getByText('Button Text Color', { exact: false }).first()).toBeVisible();
-        await expect(page.locator(Selectors.settingsReact.colorPicker).first()).toBeVisible();
+        await expect(page.locator(Selectors.settingsScreen.colorPicker).first()).toBeVisible();
     });
 
     test('@Test_SR0032 : Section links open the tab and sub-tab of that section', async () => {

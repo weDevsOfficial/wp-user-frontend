@@ -325,7 +325,7 @@ class Payment {
                                     // Coupon UI. Rendered here rather than by Pro so the
                                     // field keeps working on any Pro version, since Pro
                                     // only supplies the Ajax handlers.
-                                    if ( $pack_id && class_exists( 'WeDevs\Wpuf\Pro\Coupons' ) ) {
+                                    if ( $pack_id && wpuf_is_pro_active() && class_exists( 'WeDevs\Wpuf\Pro\Coupons' ) ) {
                                         ?>
                                         <a href="#" class="wpuf-coupon-show"><?php esc_html_e( 'Have a discount code?', 'wp-user-frontend' ); ?></a>
 
@@ -452,7 +452,7 @@ class Payment {
      * @return void
      */
     private function render_tax_row() {
-        if ( ! class_exists( 'WeDevs\Wpuf\Pro\Coupons' ) || ! function_exists( 'wpuf_pro' ) ) {
+        if ( ! wpuf_is_pro_active() || ! class_exists( 'WeDevs\Wpuf\Pro\Coupons' ) || ! function_exists( 'wpuf_pro' ) ) {
             return;
         }
 
@@ -712,7 +712,7 @@ class Payment {
 
         // Check if Pro is available and invoices are enabled
         $enable_invoices = wpuf_get_option( 'enable_invoices', 'wpuf_payment_invoices', 'off' );
-        $pro_available = class_exists( 'WeDevs\Wpuf\Pro\Admin\Invoice' );
+        $pro_available = wpuf_is_pro_active() && class_exists( 'WeDevs\Wpuf\Pro\Admin\Invoice' );
 
         if ( $pro_available && wpuf_is_checkbox_or_toggle_on( $enable_invoices ) ) {
             // Pro is available and invoices are enabled - send invoice email only

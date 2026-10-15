@@ -6,6 +6,7 @@
  */
 
 use WeDevs\Wpuf\Builder\FormSave;
+use WeDevs\Wpuf\Platform\Stores\Stores;
 use WeDevs\Wpuf\Platform\REST\Controllers\FormsController;
 use WeDevs\Wpuf\Platform\REST\RestController;
 
@@ -277,6 +278,20 @@ class FormsRestTest extends WP_UnitTestCase {
             $this->assertInstanceOf( WP_Error::class, $result, "pay per post cost '{$cost}'" );
             $this->assertSame( 'wpuf_form_ppp_cost_required', $result->get_error_code() );
         }
+
+        // Missing fields or settings, or broken JSON, never wipe the stored form.
+        $fields_before = Stores::forms()->read_meta( $form_id, 'wpuf_form_settings' );
+        foreach ( [ 'form_fields', 'settings' ] as $key ) {
+            $payload = $this->payload( $form_id );
+            parse_str( $payload['form_data'], $form_data );
+            unset( $payload[ $key ] );
+            $this->assertSame( 'wpuf_form_invalid_payload', $saver->save( $payload, $form_data )->get_error_code(), "without {$key}" );
+
+            $payload         = $this->payload( $form_id );
+            $payload[ $key ] = '{broken';
+            $this->assertSame( 'wpuf_form_invalid_payload', $saver->save( $payload, $form_data )->get_error_code(), "broken {$key}" );
+        }
+        $this->assertSame( $fields_before, Stores::forms()->read_meta( $form_id, 'wpuf_form_settings' ) );
 
         $payload = $this->payload( $form_id, [ 'payment_options' => 'true', 'choose_payment_option' => 'enable_pay_per_post', 'pay_per_post_cost' => '2.5' ] );
         parse_str( $payload['form_data'], $form_data );

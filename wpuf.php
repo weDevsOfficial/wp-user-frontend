@@ -183,6 +183,8 @@ final class WP_User_Frontend {
      * @return void
      */
     public function init_hooks() {
+        // Stop an older Pro before any plugin's plugins_loaded boot (also when its folder loads before free's).
+        add_action( 'plugins_loaded', [ \WeDevs\Wpuf\Platform\VersionGuard::class, 'stop_outdated_pro' ], 1 );
         add_action( 'plugins_loaded', [ $this, 'init_insights' ], 8 );
         add_action( 'plugins_loaded', [ $this, 'wpuf_loader' ] );
         add_action( 'plugins_loaded', [ $this, 'process_wpuf_pro_version' ] );

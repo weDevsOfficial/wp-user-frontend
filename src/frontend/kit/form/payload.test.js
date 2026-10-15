@@ -20,4 +20,20 @@ describe( 'buildPayload', () => {
 
         expect( body.map ).toBe( '23.8, 90.4' );
     } );
+
+    test( 'a read-only field posts its value (the classic form serialized it too)', () => {
+        const fields = [ { name: 'member_code', template: 'text_field', read_only: 'yes' } ];
+        const body = buildPayload( schema, { member_code: 'A-17' }, new Set( [ 'member_code' ] ), fields );
+
+        expect( body.member_code ).toBe( 'A-17' );
+    } );
+
+    test( 'a new post form says wpuf_form_status=new; an edit or a profile form does not', () => {
+        const fields = [ { name: 'post_title', template: 'post_title' } ];
+        const visible = new Set( [ 'post_title' ] );
+
+        expect( buildPayload( { ...schema, mode: 'create', form_type: 'post' }, { post_title: 'A' }, visible, fields ).wpuf_form_status ).toBe( 'new' );
+        expect( buildPayload( { ...schema, mode: 'edit', form_type: 'post', post: { id: 9 } }, { post_title: 'A' }, visible, fields ).wpuf_form_status ).toBeUndefined();
+        expect( buildPayload( { ...schema, mode: 'create', form_type: 'registration' }, { post_title: 'A' }, visible, fields ).wpuf_form_status ).toBeUndefined();
+    } );
 } );

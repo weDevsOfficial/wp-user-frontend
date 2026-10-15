@@ -477,7 +477,7 @@ class Posting {
                     if ( isset( $field['template'] ) && $field['template'] === 'repeat_field' &&
                          isset( $field['input_type'] ) && $field['input_type'] === 'repeat' ) {
                         // Use special admin metabox rendering for repeat fields
-                        if ( class_exists( 'WeDevs\Wpuf\Pro\Fields\Field_Repeat' ) ) {
+                        if ( wpuf_is_pro_active() && class_exists( 'WeDevs\Wpuf\Pro\Fields\Field_Repeat' ) ) {
                             $repeat_field_obj = new \WeDevs\Wpuf\Pro\Fields\Field_Repeat();
                             $repeat_field_obj->render_admin_metabox( $field, $form_id, 'post', $post->ID );
                         }

@@ -1479,7 +1479,7 @@ class Paypal {
             // Handle coupon if present. Coupons are a Pro feature, so only run when Pro is
             // available to avoid a fatal on wpuf_pro() in free-only installs.
             $coupon_discount = 0;
-            if ( function_exists( 'wpuf_pro' ) && wpuf_pro() &&
+            if ( wpuf_is_pro_active() && function_exists( 'wpuf_pro' ) && wpuf_pro() && ! empty( wpuf_pro()->coupon ) &&
                 isset( $_POST['coupon_id'] ) && ! empty( $_POST['coupon_id'] ) &&
                 isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_payment_gateway' ) &&
                 is_numeric( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) ) ) {

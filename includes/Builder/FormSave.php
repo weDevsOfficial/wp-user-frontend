@@ -81,8 +81,14 @@ class FormSave {
         $integrations = null;
 
         if ( isset( $post_data['settings'] ) ) {
+            $posted_settings = json_decode( (string) $post_data['settings'], true );
+
+            if ( ! is_array( $posted_settings ) ) {
+                return new WP_Error( 'wpuf_form_invalid_payload', __( 'The form could not be saved: its fields or settings are missing.', 'wp-user-frontend' ), [ 'status' => 400 ] );
+            }
+
             // Develop posted these as a form: keep its CRLF line breaks.
-            $settings = Normalizers::form_post_newlines( json_decode( $post_data['settings'], true ), Stores::forms()->read_meta( $form_id, $form_settings_key ) );
+            $settings = Normalizers::form_post_newlines( $posted_settings, Stores::forms()->read_meta( $form_id, $form_settings_key ) );
         } else {
             $settings = isset( $form_data['wpuf_settings'] ) ? $form_data['wpuf_settings'] : [];
         }
@@ -109,6 +115,12 @@ class FormSave {
 
         $form_fields   = json_decode( $form_fields, true );
         $notifications = json_decode( $notifications, true );
+
+        // A save without the fields or settings (or with broken JSON) would store an
+        // empty form over the real one: refuse it (the builder always sends both).
+        if ( ! is_array( $form_fields ) || ! is_array( $settings ) || ( ! isset( $post_data['settings'] ) && ! isset( $form_data['wpuf_settings'] ) ) ) {
+            return new WP_Error( 'wpuf_form_invalid_payload', __( 'The form could not be saved: its fields or settings are missing.', 'wp-user-frontend' ), [ 'status' => 400 ] );
+        }
 
         // Edited save (the builder was changed): the values the screen shows while
         // nothing is stored are stored, as develop's form post did. An untouched

@@ -91,7 +91,7 @@ class Bank {
         $coupon_id = isset( $_POST['coupon_id'] ) ? absint( wp_unslash( $_POST['coupon_id'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the payment form nonce is verified by Payment::send_to_gateway() before this runs
 
         // Coupons are a Pro feature; only run when Pro is active to avoid a fatal in free-only installs.
-        if ( $coupon_id > 0 && class_exists( Coupons::class ) ) {
+        if ( $coupon_id > 0 && wpuf_is_pro_active() && class_exists( Coupons::class ) ) {
             $discounted_price  = floatval( ( new Coupons() )->discount( $data['price'], $coupon_id, $data['item_number'] ) );
             $data['discount']  = $original_price - $discounted_price;
             $data['coupon_id'] = $coupon_id;
@@ -142,7 +142,7 @@ class Bank {
      */
     public function order_notify_user( $transaction, $order_id ) {
         // If Pro is active, do not send this email (invoice email will be sent)
-        if ( class_exists( 'WeDevs\Wpuf\Pro\Admin\Invoice' ) ) {
+        if ( wpuf_is_pro_active() && class_exists( 'WeDevs\Wpuf\Pro\Admin\Invoice' ) ) {
             wp_delete_post( $order_id, true );
             return;
         }

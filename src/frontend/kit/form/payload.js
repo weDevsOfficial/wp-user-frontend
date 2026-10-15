@@ -69,6 +69,12 @@ export function buildPayload( schema, values, visible, fields, extra = {} ) {
         delete_attachments: extra.delete_attachments || [],
     };
 
+    // A new post (also one finished after Save Draft, which then carries post_id) is
+    // added, not updated: the classic form's hidden wpuf_form_status=new.
+    if ( 'edit' !== schema.mode && 'post' === ( schema.form_type || 'post' ) ) {
+        body.wpuf_form_status = 'new';
+    }
+
     if ( 'edit' === schema.mode && schema.post ) {
         body.post_id = schema.post.id;
         body.post_date = schema.post.date;
@@ -77,8 +83,10 @@ export function buildPayload( schema, values, visible, fields, extra = {} ) {
     }
 
     fields.forEach( ( field ) => {
-        // Passive or read-only: the classic form disables those inputs, so they post nothing.
-        if ( ! field.name || PASSIVE_TEMPLATES.includes( field.template ) || 'yes' === field.read_only ) {
+        // Passive fields post nothing. Read-only ones post their value: the classic
+        // form disables those inputs but turns them back on to serialize the submit
+        // (frontend-form.js validateForm), and the server stores '' for a missing key.
+        if ( ! field.name || PASSIVE_TEMPLATES.includes( field.template ) ) {
             return;
         }
 

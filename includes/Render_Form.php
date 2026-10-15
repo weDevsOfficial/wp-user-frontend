@@ -3,7 +3,7 @@
 namespace WeDevs\Wpuf;
 
 use Invisible_Recaptcha;
-use WeDevs\Wpuf\Ajax\Upload_Ajax;
+use WeDevs\Wpuf\Frontend\Forms\Upload_Handler;
 use WeDevs\Wpuf\Traits\FieldableTrait;
 use WPUF_ReCaptcha;
 
@@ -1507,7 +1507,7 @@ class Render_Form {
 
 				if ( $thumb_id ) {
 					$has_featured_image = true;
-					$featured_image     = Upload_Ajax::attach_html( $thumb_id, 'featured_image' );
+					$featured_image     = Upload_Handler::attach_html( $thumb_id, 'featured_image' );
 				}
 			} else {
 				// it must be a user avatar
@@ -1541,7 +1541,7 @@ class Render_Form {
 
 						if ( $has_images ) {
 							foreach ( $images as $attach_id ) {
-								echo esc_attr( Upload_Ajax::attach_html( $attach_id, $attr['name'] ) );
+								echo esc_attr( Upload_Handler::attach_html( $attach_id, $attr['name'] ) );
 							}
 						}
 						?>

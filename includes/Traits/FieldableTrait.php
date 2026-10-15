@@ -424,7 +424,7 @@ trait FieldableTrait {
 
     /**
      * Stop the submission with a captcha error: the class's own send_error()
-     * when it has one, otherwise the AJAX handler's (Frontend_Form_Ajax has none).
+     * when it has one, otherwise the request handler's (Post_Form_Handler has none).
      *
      * @since WPUF_SINCE
      *

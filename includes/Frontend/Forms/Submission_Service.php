@@ -9,7 +9,6 @@
 namespace WeDevs\Wpuf\Frontend\Forms;
 
 use WeDevs\Wpuf\Admin\Forms\Form;
-use WeDevs\Wpuf\Ajax\Frontend_Form_Ajax;
 use WeDevs\Wpuf\Platform\Http\Submission_Context;
 use WeDevs\Wpuf\Platform\Stores\Stores;
 use WeDevs\Wpuf\Traits\FieldableTrait;
@@ -47,16 +46,16 @@ class Submission_Service {
     /**
      * The legacy submit handler.
      *
-     * @var Frontend_Form_Ajax
+     * @var Post_Form_Handler
      */
     private $ajax;
 
     /**
      * @since WPUF_SINCE
      *
-     * @param Frontend_Form_Ajax $ajax The legacy submit handler
+     * @param Post_Form_Handler $ajax The legacy submit handler
      */
-    public function __construct( Frontend_Form_Ajax $ajax ) {
+    public function __construct( Post_Form_Handler $ajax ) {
         $this->ajax = $ajax;
     }
 

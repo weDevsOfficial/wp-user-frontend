@@ -60,9 +60,9 @@ class FrontendServiceProvider extends ServiceProvider {
      * @since WPUF_SINCE
      */
     const HANDLERS = [
-        \WeDevs\Wpuf\Ajax\Frontend_Form_Ajax::class,
-        \WeDevs\Wpuf\Ajax\Upload_Ajax::class,
-        \WeDevs\Wpuf\Ajax\Address_Form_Ajax::class,
+        \WeDevs\Wpuf\Frontend\Forms\Post_Form_Handler::class,
+        \WeDevs\Wpuf\Frontend\Forms\Upload_Handler::class,
+        \WeDevs\Wpuf\Frontend\Billing\Billing_Address::class,
         \WeDevs\Wpuf\Integrations\WPUF_ACF_Compatibility::class,
         \WeDevs\Wpuf\Widgets\Login_Widget::class,
     ];
@@ -128,8 +128,12 @@ class FrontendServiceProvider extends ServiceProvider {
             }
         );
 
-        // The contracts Pro and add-ons resolve: the same shared objects.
+        // The contracts Pro and add-ons resolve, and the handlers' old "Ajax" class
+        // names (the requests are REST now): the same shared objects.
         $aliases = [
+            \WeDevs\Wpuf\Ajax\Frontend_Form_Ajax::class => \WeDevs\Wpuf\Frontend\Forms\Post_Form_Handler::class,
+            \WeDevs\Wpuf\Ajax\Upload_Ajax::class        => \WeDevs\Wpuf\Frontend\Forms\Upload_Handler::class,
+            \WeDevs\Wpuf\Ajax\Address_Form_Ajax::class  => \WeDevs\Wpuf\Frontend\Billing\Billing_Address::class,
             App_Renderer::class         => Renderer::class,
             Rate_Limiter::class         => Rate_Limit::class,
             Form_Schema_Provider::class => Form_Schema::class,
@@ -146,25 +150,19 @@ class FrontendServiceProvider extends ServiceProvider {
         $this->container->share(
             Submission_Service::class,
             function ( $container ) {
-                return new Submission_Service( $container->get( \WeDevs\Wpuf\Ajax\Frontend_Form_Ajax::class ) );
+                return new Submission_Service( $container->get( \WeDevs\Wpuf\Frontend\Forms\Post_Form_Handler::class ) );
             }
         );
         $this->container->share(
             Upload_Service::class,
             function ( $container ) {
-                return new Upload_Service( $container->get( \WeDevs\Wpuf\Ajax\Upload_Ajax::class ) );
+                return new Upload_Service( $container->get( \WeDevs\Wpuf\Frontend\Forms\Upload_Handler::class ) );
             }
         );
         $this->container->share(
             \WeDevs\Wpuf\Frontend\Subscriptions\Subscription_Schema::class,
             function ( $container ) {
                 return new \WeDevs\Wpuf\Frontend\Subscriptions\Subscription_Schema( $container->get( \WeDevs\Wpuf\Frontend\Frontend_Account::class ) );
-            }
-        );
-        $this->container->share(
-            \WeDevs\Wpuf\Frontend\Billing\Billing_Address::class,
-            function () {
-                return new \WeDevs\Wpuf\Frontend\Billing\Billing_Address();
             }
         );
         $this->container->share(

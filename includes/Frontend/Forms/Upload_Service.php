@@ -8,7 +8,6 @@
 
 namespace WeDevs\Wpuf\Frontend\Forms;
 
-use WeDevs\Wpuf\Ajax\Upload_Ajax;
 use WeDevs\Wpuf\Platform\Stores\Stores;
 use WP_Error;
 
@@ -25,16 +24,16 @@ class Upload_Service {
     /**
      * The legacy upload handler (keeps `handle_upload()` and `attach_html()`).
      *
-     * @var Upload_Ajax
+     * @var Upload_Handler
      */
     private $ajax;
 
     /**
      * @since WPUF_SINCE
      *
-     * @param Upload_Ajax $ajax The legacy upload handler
+     * @param Upload_Handler $ajax The legacy upload handler
      */
-    public function __construct( Upload_Ajax $ajax ) {
+    public function __construct( Upload_Handler $ajax ) {
         $this->ajax = $ajax;
     }
 
@@ -147,16 +146,16 @@ class Upload_Service {
             $image_size = Stores::settings()->get( 'wpuf_frontend_posting', 'insert_photo_size', 'thumbnail' );
             $image_type = Stores::settings()->get( 'wpuf_frontend_posting', 'insert_photo_type', 'link' );
 
-            /** This filter is documented in includes/Ajax/Upload_Ajax.php */
+            /** This filter is documented in includes/Frontend/Forms/Upload_Handler.php */
             $image_size = apply_filters( 'wpuf_upload_response_image_size', $image_size, $form_id, $field_type );
-            /** This filter is documented in includes/Ajax/Upload_Ajax.php */
+            /** This filter is documented in includes/Frontend/Forms/Upload_Handler.php */
             $image_type = apply_filters( 'wpuf_upload_response_image_type', $image_type, $form_id, $field_type );
 
             $html = 'link' === $image_type
                 ? wp_get_attachment_link( $attach_id, $image_size )
                 : wp_get_attachment_image( $attach_id, $image_size );
         } else {
-            $html = Upload_Ajax::attach_html( $attach_id, $field_type, $form_id );
+            $html = Upload_Handler::attach_html( $attach_id, $field_type, $form_id );
         }
 
         $thumb = wp_get_attachment_image_src( $attach_id, 'thumbnail' );

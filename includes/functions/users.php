@@ -442,7 +442,7 @@ function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_
     }
 
     $default_body     = 'Hey There, <br> <br> We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process. <br> <br> Please click the link below to verify: <br> <br> <a href="' . esc_url( $encoded_guest_url ) . '">Publish Post</a> <br> <br> Regards, <br> <br>' . bloginfo( 'name' );
-    $to               = isset( $_POST['guest_email'] ) ? sanitize_email( wp_unslash( $_POST['guest_email'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the submit handler (Frontend_Form_Ajax) verified the form nonce before calling.
+    $to               = isset( $_POST['guest_email'] ) ? sanitize_email( wp_unslash( $_POST['guest_email'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the submit handler (Post_Form_Handler) verified the form nonce before calling.
     $guest_email_sub  = wpuf_get_option( 'guest_email_subject', 'wpuf_mails', 'Please Confirm Your Email to Get the Post Published!' );
     $subject          = $guest_email_sub;
     $guest_email_body = wpuf_get_option( 'guest_email_body', 'wpuf_mails', $default_body );

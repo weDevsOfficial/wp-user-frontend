@@ -72,6 +72,10 @@ jobs:
           # cannot change what another group's specs expect.
           - group: onboarding
             files: tests/onboardingTest.spec.ts
+          # The Post Form block (classic render, its styles, the block editor)
+          # next to the React shortcode: seeds and removes its own form and pages.
+          - group: blocks
+            files: tests/blockFormTest.spec.ts
 
     steps:
       # Setup PHP

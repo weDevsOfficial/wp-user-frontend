@@ -249,6 +249,7 @@ class Form_Schema implements Form_Schema_Provider {
 
         $fields = apply_filters( 'wpuf_render_fields', $this->form_fields, $form_id );
         $fields = $this->describe_fields( (array) $fields, $post_id, 'post', $form_id );
+        $state  = $this->empty_form_state( $state, $fields, $form_id, '/post-forms/' );
 
         $schema = [
             'id'        => $form_id,
@@ -345,6 +346,7 @@ class Form_Schema implements Form_Schema_Provider {
 
         $fields = apply_filters( 'wpuf_render_fields', $this->form_fields, $form_id );
         $fields = $this->describe_fields( (array) $fields, $user_id, 'user', $form_id );
+        $state  = $this->empty_form_state( $state, $fields, $form_id, '/registration-forms/' );
 
         // A registration started from a subscription pack carries the pack along (Profile_Form::submit_button()).
         $type    = isset( $_GET['type'] ) ? sanitize_text_field( wp_unslash( $_GET['type'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -503,6 +505,43 @@ class Form_Schema implements Form_Schema_Provider {
         }
 
         return $form_id;
+    }
+
+    /**
+     * A form without fields has nothing to submit: instead of a lone submit
+     * button, a notice (with a builder button for those who may edit forms).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array  $state   Gate state
+     * @param array  $fields  Described fields
+     * @param int    $form_id Form id
+     * @param string $route   Admin app route of the form list
+     *
+     * @return array open, reason, title, message, action (label, url)
+     */
+    private function empty_form_state( array $state, array $fields, $form_id, $route ) {
+        if ( empty( $state['open'] ) || ! empty( $fields ) ) {
+            return $state;
+        }
+
+        $state = [
+            'open'    => false,
+            'reason'  => 'empty',
+            'title'   => __( 'This form is not available yet', 'wp-user-frontend' ),
+            'message' => __( 'Please check back later.', 'wp-user-frontend' ),
+        ];
+
+        if ( current_user_can( wpuf_admin_role() ) ) {
+            $state['title']   = __( 'This form has no fields yet', 'wp-user-frontend' );
+            $state['message'] = __( 'Add fields in the form builder and they show up here.', 'wp-user-frontend' );
+            $state['action']  = [
+                'label' => __( 'Open form builder', 'wp-user-frontend' ),
+                'url'   => esc_url_raw( wpuf_admin_app_url( $route . absint( $form_id ) . '/edit' ) ),
+            ];
+        }
+
+        return $state;
     }
 
     /**

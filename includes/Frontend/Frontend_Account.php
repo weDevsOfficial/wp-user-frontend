@@ -481,7 +481,19 @@ class Frontend_Account {
             $items
         );
 
-        return $this->renderer()->markup( 'account', $boot, $skeleton, 'wpuf-account-root alignwide' );
+        /**
+         * Whether the account page uses the theme's wide alignment. Block themes
+         * cap `alignwide` at their wide size; classic themes turn it into
+         * negative side margins that run past the screen (Hello Elementor,
+         * Neve on phones), so there it stays in the content column.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param bool $align_wide Whether to add `alignwide`
+         */
+        $align_wide = (bool) apply_filters( 'wpuf_account_align_wide', function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() );
+
+        return $this->renderer()->markup( 'account', $boot, $skeleton, 'wpuf-account-root' . ( $align_wide ? ' alignwide' : '' ) );
     }
 
     /**

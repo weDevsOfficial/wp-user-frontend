@@ -236,6 +236,32 @@ class Renderer implements App_Renderer {
     }
 
     /**
+     * A form that cannot be filled in yet (no fields): a centred card with an
+     * icon, a title, the message and, for those who may edit forms, a button
+     * to the builder. Same markup as the kit's StateCard.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $state Schema state: title, message, action (label, url)
+     *
+     * @return string
+     */
+    private function state_card( array $state ) {
+        $action = '';
+
+        if ( ! empty( $state['action']['url'] ) ) {
+            $action = sprintf( '<a class="wpuf-btn wpuf-btn--primary" href="%1$s">%2$s</a>', esc_url( $state['action']['url'] ), esc_html( isset( $state['action']['label'] ) ? $state['action']['label'] : '' ) );
+        }
+
+        return sprintf(
+            '<div class="wpuf-frontend wpuf-form-gate"><div class="wpuf-state-card wpuf-state-card--empty" role="status"><span class="wpuf-state-card__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg></span><h3 class="wpuf-state-card__title">%1$s</h3><p class="wpuf-state-card__text">%2$s</p>%3$s</div></div>',
+            esc_html( isset( $state['title'] ) ? $state['title'] : '' ),
+            esc_html( isset( $state['message'] ) ? wp_strip_all_tags( $state['message'] ) : '' ),
+            $action // Escaped above.
+        );
+    }
+
+    /**
      * The markup a React form mounts into (post form, edit form, registration,
      * profile): the classic wrapper classes (so CSS written for them still
      * applies), the schema as boot data and a skeleton of the first rows. A
@@ -256,7 +282,14 @@ class Renderer implements App_Renderer {
             $post   = 'post' === ( isset( $schema['form_type'] ) ? $schema['form_type'] : 'post' );
             $class  = $post && ! in_array( $reason, [ 'login', 'role', '' ], true ) ? 'wpuf-info' : 'wpuf-message';
 
-            return '<div class="' . esc_attr( $class ) . '">' . wp_kses_post( isset( $schema['state']['message'] ) ? $schema['state']['message'] : '' ) . '</div>';
+            wp_enqueue_style( 'wpuf-frontend-runtime-style' );
+
+            if ( 'empty' === $reason ) {
+                return $this->state_card( $schema['state'] );
+            }
+
+            // The classic box (its class is what themes and scripts look for) in the kit's notice look.
+            return '<div class="wpuf-frontend wpuf-form-gate"><div class="' . esc_attr( $class ) . '">' . wp_kses_post( isset( $schema['state']['message'] ) ? $schema['state']['message'] : '' ) . '</div></div>';
         }
 
         wp_enqueue_style( 'wpuf-font-awesome' );

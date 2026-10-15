@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from '@wordpress/element';
 import useDokanShopUrl from './useDokanShopUrl';
 import { applyFilters, doAction } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
-import { FormRenderer, ServerHtml, afterSubmit, alertDialog, api, buildPayload, loginDialog, mergeFormInputs, submitAllowed, useForm } from '@wpuf/frontend-kit';
+import { FormRenderer, ServerHtml, StateCard, afterSubmit, alertDialog, api, buildPayload, loginDialog, mergeFormInputs, submitAllowed, useForm } from '@wpuf/frontend-kit';
 
 export default function PostForm( { schema: boot, root } ) {
     const schema = applyFilters( 'wpuf.frontend.form.schema', boot );
@@ -236,7 +236,7 @@ export default function PostForm( { schema: boot, root } ) {
     }
 
     if ( ! schema.state?.open ) {
-        return <ServerHtml html={ schema.state?.message || '' } className="wpuf-message" />;
+        return <StateCard state={ schema.state || {} } />;
     }
 
     return (

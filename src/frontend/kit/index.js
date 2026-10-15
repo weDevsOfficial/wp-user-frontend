@@ -8,7 +8,7 @@
 import * as api from './api';
 import * as icons from './icons';
 import { Avatar, Button, Notice, Pill, Skeleton, SkeletonFormRows, SkeletonLines, SkeletonRows, Spinner, cx } from './components/primitives';
-import { Card, DetailList, Pagination, RailItem, StatCard } from './components/layout';
+import { Card, DetailList, Pagination, RailItem, StatCard, StateCard } from './components/layout';
 import Field, { FieldLabel, isRequired } from './components/Field';
 import ServerHtml, { loadAssets } from './components/ServerHtml';
 import Select, { SelectModeContext } from './components/Select';
@@ -82,6 +82,7 @@ export {
     Pagination,
     RailItem,
     StatCard,
+    StateCard,
     Field,
     FieldLabel,
     isRequired,

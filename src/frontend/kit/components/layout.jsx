@@ -8,6 +8,8 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { cx } from './primitives';
+import ServerHtml from './ServerHtml';
+import { ClipboardList, Lock } from '../icons';
 
 export function Card( { title, actions, children, className = '', as: Tag = 'section', ...rest } ) {
     return (
@@ -126,5 +128,28 @@ export function Pagination( { page, pages, onChange, hrefFor } ) {
             { numbers.map( ( n ) => link( n, String( n ) ) ) }
             { page < pages && link( page + 1, __( 'Next', 'wp-user-frontend' ), 'wpuf-pagination__next' ) }
         </nav>
+    );
+}
+
+/**
+ * A form that cannot be filled in right now (no fields yet, closed, login
+ * needed, limit reached): a centred card with a tinted icon, a title, the
+ * server's message and an optional button, instead of a bare notice.
+ *
+ * @param {Object} props
+ * @param {Object} props.state Schema state: reason, title, message (HTML from the server), action { label, url }
+ */
+export function StateCard( { state = {} } ) {
+    const Icon = 'empty' === state.reason ? ClipboardList : Lock;
+
+    return (
+        <div className={ cx( 'wpuf-state-card', state.reason && `wpuf-state-card--${ state.reason }` ) } role="status">
+            <span className="wpuf-state-card__icon" aria-hidden="true"><Icon size={ 22 } /></span>
+            { state.title && <h3 className="wpuf-state-card__title">{ state.title }</h3> }
+            { state.message && <ServerHtml html={ state.message } className="wpuf-state-card__text" /> }
+            { state.action?.url && (
+                <a className="wpuf-btn wpuf-btn--primary" href={ state.action.url }>{ state.action.label }</a>
+            ) }
+        </div>
     );
 }

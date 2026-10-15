@@ -1404,6 +1404,7 @@ export const Selectors = {
         wpufInfo: '//div[@class="wpuf-info"]',
         successMessage: '//div[@class="wpuf-success"]',
         wpufMessage: '//div[@class="wpuf-message"]',
+        accountGuestText: '.wpuf-account-guest .wpuf-state-card__text',
         wpLoginErrorMessage: '//div[@id="login_error"]',
 
         regSettingsSection: {

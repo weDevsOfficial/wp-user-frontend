@@ -151,8 +151,9 @@ export class RegFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.regFormSettings.successMessage);
 
         await this.navigateToURL(this.accountPage);
-        const restrictionMessage = await this.page.innerText(Selectors.regFormSettings.wpufMessage);
-        expect.soft(restrictionMessage).toBe('This page is restricted. Please Log in to view this page.');
+        // Logged out, the account page shows the guest card (unauthorized.php).
+        const restrictionMessage = await this.page.innerText(Selectors.regFormSettings.accountGuestText);
+        expect.soft(restrictionMessage).toBe('This page is restricted. Please log in to view this page.');
     }
 
     async validateLoginDenied(userEmail: string, userPassword: string) {

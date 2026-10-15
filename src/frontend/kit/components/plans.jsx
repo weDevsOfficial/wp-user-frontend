@@ -99,7 +99,7 @@ export function PlanCard( { card, color = '' } ) {
                 { card.disabled || ! card.url ? (
                     <span className="wpuf-btn wpuf-btn--secondary wpuf-plan-card__button is-disabled" aria-disabled="true">{ card.button }</span>
                 ) : (
-                    <a className="wpuf-btn wpuf-btn--primary wpuf-plan-card__button wpuf-subscription-buy-btn" href={ card.url }>{ card.button }</a>
+                    <Button href={ card.url } className="wpuf-plan-card__button wpuf-subscription-buy-btn">{ card.button }</Button>
                 ) }
             </div>
 
@@ -135,7 +135,7 @@ export function PlanCard( { card, color = '' } ) {
  */
 export function SubscriptionCard( { info } ) {
     const browse = info.packs_url && (
-        <a className="wpuf-btn wpuf-btn--primary" href={ info.packs_url }>{ __( 'Browse plans', 'wp-user-frontend' ) }</a>
+        <Button href={ info.packs_url }>{ __( 'Browse plans', 'wp-user-frontend' ) }</Button>
     );
     let body;
 
@@ -188,9 +188,9 @@ export function SubscriptionCard( { info } ) {
 
                 <footer className="wpuf-plan-status__actions">
                     { info.packs_url && (
-                        <a className={ cx( 'wpuf-btn', expired ? 'wpuf-btn--primary' : 'wpuf-btn--secondary' ) } href={ info.packs_url }>
+                        <Button variant={ expired ? 'primary' : 'secondary' } href={ info.packs_url }>
                             { expired ? __( 'Renew subscription', 'wp-user-frontend' ) : __( 'Change plan', 'wp-user-frontend' ) }
-                        </a>
+                        </Button>
                     ) }
                     { ! expired && <CancelPlanForm fields={ info.cancel } /> }
                 </footer>

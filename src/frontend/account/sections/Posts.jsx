@@ -130,7 +130,7 @@ export default function Posts( { type, label, pageUrl } ) {
                                         { columns.payment && (
                                             <td data-label={ __( 'Payment', 'wp-user-frontend' ) }>
                                                 { ! post.payment_status ? '' : post.pay_url ? (
-                                                    <a className="wpuf-btn wpuf-btn--secondary wpuf-btn--sm" href={ post.pay_url }>{ __( 'Pay Now', 'wp-user-frontend' ) }</a>
+                                                    <Button variant="secondary" size="sm" href={ post.pay_url }>{ __( 'Pay Now', 'wp-user-frontend' ) }</Button>
                                                 ) : (
                                                     <Pill tone="green">{ __( 'Completed', 'wp-user-frontend' ) }</Pill>
                                                 ) }
@@ -139,16 +139,16 @@ export default function Posts( { type, label, pageUrl } ) {
                                         <td data-label={ __( 'Options', 'wp-user-frontend' ) } className="wpuf-table__actions">
                                             <div className="wpuf-row-actions">
                                                 { ( post.permalink || post.preview_url ) && (
-                                                    <a className="wpuf-btn wpuf-btn--ghost wpuf-btn--sm" href={ post.permalink || post.preview_url } target="_blank" rel="noopener noreferrer" title={ __( 'View', 'wp-user-frontend' ) }>
+                                                    <Button variant="ghost" size="sm" href={ post.permalink || post.preview_url } target="_blank" rel="noopener noreferrer" title={ __( 'View', 'wp-user-frontend' ) }>
                                                         <Eye size={ 16 } aria-hidden="true" />
                                                         <span className="wpuf-sr-only">{ __( 'View', 'wp-user-frontend' ) }</span>
-                                                    </a>
+                                                    </Button>
                                                 ) }
                                                 { post.edit_url && (
-                                                    <a className="wpuf-btn wpuf-btn--ghost wpuf-btn--sm" href={ post.edit_url } title={ __( 'Edit', 'wp-user-frontend' ) }>
+                                                    <Button variant="ghost" size="sm" href={ post.edit_url } title={ __( 'Edit', 'wp-user-frontend' ) }>
                                                         <Pencil size={ 16 } aria-hidden="true" />
                                                         <span className="wpuf-sr-only">{ __( 'Edit', 'wp-user-frontend' ) }</span>
-                                                    </a>
+                                                    </Button>
                                                 ) }
                                                 { post.can_delete && (
                                                     <Button variant="ghost" size="sm" className="wpuf-row-actions__delete" busy={ deleting === post.id } onClick={ () => remove( post ) } title={ __( 'Delete', 'wp-user-frontend' ) }>

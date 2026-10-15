@@ -17,13 +17,25 @@ export { cx };
  * @param {string} [props.variant] primary | secondary | danger | ghost | link
  * @param {string} [props.size]    md | sm
  * @param {boolean} [props.busy]   Shows the spinner and disables the button.
+ * @param {string}  [props.href]   Renders a link with the button look.
  */
-export const Button = forwardRef( function Button( { variant = 'primary', size = 'md', busy = false, className = '', children, type = 'button', disabled, ...rest }, ref ) {
+export const Button = forwardRef( function Button( { variant = 'primary', size = 'md', busy = false, className = '', children, type = 'button', disabled, href, ...rest }, ref ) {
+    const classes = cx( 'wpuf-btn', `wpuf-btn--${ variant }`, 'sm' === size && 'wpuf-btn--sm', busy && 'is-busy', className );
+
+    // A link with the button look (Pay Now, Browse plans); a disabled or busy one is a button.
+    if ( href && ! disabled && ! busy ) {
+        return (
+            <a ref={ ref } href={ href } className={ classes } { ...rest }>
+                { children }
+            </a>
+        );
+    }
+
     return (
         <button
             ref={ ref }
             type={ type }
-            className={ cx( 'wpuf-btn', `wpuf-btn--${ variant }`, 'sm' === size && 'wpuf-btn--sm', busy && 'is-busy', className ) }
+            className={ classes }
             disabled={ disabled || busy }
             aria-busy={ busy || undefined }
             { ...rest }

@@ -4,9 +4,18 @@
  * from lucide-react directly, so no second copy lands on the page). Named
  * imports only: a namespace import would bundle the whole icon set.
  *
+ * Pro's frontend bundles (comments, user activity) map lucide-react here too,
+ * so every icon they import must be listed.
+ *
  * @since WPUF_SINCE
  */
 import {
+    EllipsisVertical,
+    ExternalLink,
+    MessageSquare,
+    RotateCcw,
+    Send,
+    ShieldAlert,
     Activity,
     AlertCircle,
     ArrowLeft,
@@ -49,6 +58,12 @@ import {
 } from 'lucide-react';
 
 export {
+    EllipsisVertical,
+    ExternalLink,
+    MessageSquare,
+    RotateCcw,
+    Send,
+    ShieldAlert,
     Activity,
     AlertCircle,
     ArrowLeft,

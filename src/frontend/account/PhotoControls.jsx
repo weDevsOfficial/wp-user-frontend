@@ -10,7 +10,7 @@
 import { useDispatch } from '@wordpress/data';
 import { useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { alertDialog, api, confirmDialog, icons } from '@wpuf/frontend-kit';
+import { Button, alertDialog, api, confirmDialog, icons } from '@wpuf/frontend-kit';
 import { store } from './store';
 
 const { Camera, ImageUp, Trash2 } = icons;
@@ -147,14 +147,14 @@ export function CoverPhotoActions( { person } ) {
 
     return (
         <div className={ 'wpuf-profile-cover__actions' + ( photo.busy ? ' is-busy' : '' ) }>
-            <button type="button" className="wpuf-btn wpuf-btn--secondary wpuf-btn--sm" onClick={ photo.pick } disabled={ photo.busy }>
+            <Button variant="secondary" size="sm" onClick={ photo.pick } disabled={ photo.busy }>
                 <ImageUp size={ 14 } aria-hidden="true" />
                 { photo.busy ? `${ Math.round( photo.progress * 100 ) }%` : ( person.cover?.url ? __( 'Change cover', 'wp-user-frontend' ) : __( 'Add cover', 'wp-user-frontend' ) ) }
-            </button>
+            </Button>
             { person.cover?.url && ! photo.busy && (
-                <button type="button" className="wpuf-btn wpuf-btn--secondary wpuf-btn--sm" onClick={ photo.remove } aria-label={ __( 'Remove cover photo', 'wp-user-frontend' ) } title={ __( 'Remove cover photo', 'wp-user-frontend' ) }>
+                <Button variant="secondary" size="sm" onClick={ photo.remove } aria-label={ __( 'Remove cover photo', 'wp-user-frontend' ) } title={ __( 'Remove cover photo', 'wp-user-frontend' ) }>
                     <Trash2 size={ 14 } aria-hidden="true" />
-                </button>
+                </Button>
             ) }
             <FileInput kind="cover" photo={ photo } label={ __( 'Cover photo', 'wp-user-frontend' ) } />
         </div>

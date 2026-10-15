@@ -7,7 +7,7 @@
  * @since WPUF_SINCE
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { cx } from './primitives';
+import { Button, cx } from './primitives';
 import ServerHtml from './ServerHtml';
 import { ClipboardList, Lock } from '../icons';
 
@@ -148,7 +148,7 @@ export function StateCard( { state = {} } ) {
             { state.title && <h3 className="wpuf-state-card__title">{ state.title }</h3> }
             { state.message && <ServerHtml html={ state.message } className="wpuf-state-card__text" /> }
             { state.action?.url && (
-                <a className="wpuf-btn wpuf-btn--primary" href={ state.action.url }>{ state.action.label }</a>
+                <Button href={ state.action.url }>{ state.action.label }</Button>
             ) }
         </div>
     );

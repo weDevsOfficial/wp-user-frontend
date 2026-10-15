@@ -1,4 +1,5 @@
 import { __ } from '@wordpress/i18n';
+import { adminUrl, builderData } from '../../utils/boot';
 
 /**
  * Modules tab empty state — mirrors post-form-settings.php lines 234-305.
@@ -8,9 +9,9 @@ import { __ } from '@wordpress/i18n';
  * When Pro is active, shows a "Go To Module Page" button.
  */
 export default function ModulesEmptyState( { isProActive } ) {
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
     const proLink = data.pro_link || 'https://wedevs.com/wp-user-frontend-pro/pricing/';
-    const adminUrl = window.wpuf_admin_url || data.admin_url || '';
+    const adminUrl = adminUrl() || data.admin_url || '';
 
     return (
         <div className="py-4 border-b border-gray-300 flex items-center justify-evenly flex-col h-[70vh] p-4 relative rounded-sm border border-transparent hover:border-primary border-dashed group/pro-item wpuf-transition-all opacity-50 hover:opacity-100">

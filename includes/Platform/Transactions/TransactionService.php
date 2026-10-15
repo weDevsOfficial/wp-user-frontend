@@ -9,6 +9,7 @@
 namespace WeDevs\Wpuf\Platform\Transactions;
 
 use WeDevs\Wpuf\Frontend\Payment;
+use WeDevs\Wpuf\Platform\Stores\Stores;
 use WeDevs\Wpuf\Platform\Stores\TransactionStore;
 use WP_Error;
 
@@ -234,7 +235,7 @@ class TransactionService {
             'tax'      => $this->money( $row['tax'] ),
             'cost'     => $this->money( $row['cost'] ),
         ];
-        $row['date']     = $row['created'] ? mysql2date( get_option( 'date_format' ), $row['created'] ) : '';
+        $row['date']     = $row['created'] ? mysql2date( Stores::settings()->wp_option( 'date_format' ), $row['created'] ) : '';
         $row['gateway_logo'] = $this->gateway_logo( (string) $row['gateway'] );
 
         return $row;
@@ -463,7 +464,7 @@ class TransactionService {
             'pack_id'          => 'pack' === $info['type'] ? $item : 0,
             'payer_first_name' => isset( $info['user_info']['first_name'] ) ? $info['user_info']['first_name'] : '',
             'payer_last_name'  => isset( $info['user_info']['last_name'] ) ? $info['user_info']['last_name'] : '',
-            'payer_address'    => wpuf_get_option( 'show_address', 'wpuf_address_options', false ) ? wpuf_get_user_address() : '',
+            'payer_address'    => Stores::settings()->get( 'wpuf_address_options', 'show_address', false ) ? wpuf_get_user_address() : '',
             'payer_email'      => isset( $info['user_info']['email'] ) ? $info['user_info']['email'] : '',
             'payment_type'     => self::BANK_LABEL,
             'transaction_id'   => $order_id,
@@ -511,7 +512,7 @@ class TransactionService {
 
         if ( $per_page !== $this->per_page() ) {
             // Where WordPress keeps the classic page's screen option.
-            update_user_meta( get_current_user_id(), 'transactions_per_page', $per_page );
+            Stores::users()->set_meta( get_current_user_id(), 'transactions_per_page', $per_page );
         }
     }
 }

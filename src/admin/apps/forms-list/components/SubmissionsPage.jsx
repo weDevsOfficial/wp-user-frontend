@@ -18,6 +18,7 @@ import { foldMenu, unfoldMenu } from '../../form-builder/skeleton';
 import SearchBar from './SearchBar';
 import TableSkeleton from './TableSkeleton';
 import { STATUS_BADGE_CLASSES } from '../utils/constants';
+import { adminScript } from '../boot';
 
 const TH = 'px-4 font-normal';
 const TD = 'px-4 py-2.5 align-middle text-[13px]';
@@ -47,7 +48,7 @@ const TONE = {
     gray: 'bg-gray-100 border-gray-200 text-gray-700',
 };
 
-const formsUrl = () => ( window.wpuf_admin_script || {} ).admin_url + 'admin.php?page=wpuf-post-forms';
+const formsUrl = () => adminScript().admin_url + 'admin.php?page=wpuf-post-forms';
 
 /**
  * @param {Object} props
@@ -256,7 +257,7 @@ const SubmissionsPage = ( { formId } ) => {
                         <a href="#/post-forms" onClick={ back } className="mr-2 inline-flex size-7 shrink-0 items-center justify-center rounded-md text-gray-500 no-underline hover:bg-gray-100 hover:text-gray-900 focus:text-gray-900" aria-label={ __( 'Back to forms', 'wp-user-frontend' ) } title={ __( 'Back to forms', 'wp-user-frontend' ) }>
                             <ArrowLeft className="size-4" aria-hidden="true" />
                         </a>
-                        <img src={ `${ ( window.wpuf_admin_script || {} ).asset_url || '' }/images/wpuf-icon-circle.svg` } alt="" className="mr-1.5 size-7 shrink-0" />
+                        <img src={ `${ adminScript().asset_url || '' }/images/wpuf-icon-circle.svg` } alt="" className="mr-1.5 size-7 shrink-0" />
                         { form
                             ? <span className="truncate px-2 text-sm font-medium text-gray-900">{ form.title }</span>
                             : <Skeleton className="mx-2 h-4 w-40 rounded-md bg-gray-200" /> }

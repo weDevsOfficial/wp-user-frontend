@@ -1,5 +1,6 @@
 import { Toggle } from '@wpuf/components';
 import SettingLabel from './SettingLabel';
+import { builderData } from '../../../utils/boot';
 
 /**
  * Fields that show a Pro badge icon next to their label when Pro is not active.
@@ -17,7 +18,7 @@ const isOn = ( value ) => true === value || [ 'on', 'yes', 'true', '1' ].include
  * toggle has none, so off leaves the key out (modules check isset).
  */
 export default function ToggleField( { field, name, value, onChange } ) {
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
     const offValue = data.form_type === 'wpuf_profile' ? undefined : 'off';
     const showProBadge = ! data.is_pro_active && BADGE_FIELDS.includes( name );
 

@@ -7,6 +7,7 @@ import { CalendarClock, CreditCard, Eye, FileText, Gauge, Layers, Palette, Setti
 import SubscriptionField from './SubscriptionField';
 import ProTooltip from './ProTooltip';
 import { SubscriptionAfterSubsection } from '../../slots';
+import { subscriptionsData } from '../../boot';
 
 // develop: the first subsection of each tab starts open.
 const OPEN_BY_DEFAULT = [ 'overview', 'content_limit', 'payment_details' ];
@@ -24,7 +25,7 @@ const ICONS = {
 };
 
 const SubscriptionSubsection = ( { subSection, fields, subscription, onFieldChange } ) => {
-	const wpufSubscriptions = window.wpufSubscriptions || {};
+	const wpufSubscriptions = subscriptionsData();
 
 	return (
 		<Accordion

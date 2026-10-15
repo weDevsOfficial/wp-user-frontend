@@ -20,10 +20,11 @@ import { ActionMenu, Checkbox } from '@wpuf/components';
 import { STATUS_BADGE_CLASSES } from '../utils/constants';
 import ShortcodeCopy from './ShortcodeCopy';
 import { openRoute } from '../../../app/client';
+import { adminScript } from '../boot';
 
 const openSubmissions = ( form ) => openRoute(
     `/post-forms/${ form.ID }/submissions`,
-    `${ window.wpuf_admin_script.admin_url }admin.php?page=wp-user-frontend#/post-forms/${ form.ID }/submissions`
+    `${ adminScript().admin_url }admin.php?page=wp-user-frontend#/post-forms/${ form.ID }/submissions`
 );
 
 // FlyHR list-table cells: header text comes from the row (uppercase 12px gray).

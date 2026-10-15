@@ -11,6 +11,7 @@ namespace WeDevs\Wpuf\Platform\REST\Controllers;
 use WeDevs\Wpuf\Admin\Promotion;
 use WeDevs\Wpuf\Integrations\WPUF_ACF_Compatibility;
 use WeDevs\Wpuf\Platform\REST\RestController;
+use WeDevs\Wpuf\Platform\Stores\Stores;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Server;
@@ -98,7 +99,7 @@ class NoticesController extends RestController {
     public function dismiss( WP_REST_Request $request ) {
         switch ( $request['notice'] ) {
             case 'review':
-                update_option( 'wpuf_review_notice_dismiss', 'yes' );
+                Stores::settings()->set_wp_option( 'wpuf_review_notice_dismiss', 'yes' );
                 break;
 
             case 'promotion':
@@ -109,11 +110,11 @@ class NoticesController extends RestController {
                     return $this->error( 'bad_key', __( 'Unknown notice.', 'wp-user-frontend' ), 400 );
                 }
 
-                update_option( $key, 'hide' );
+                Stores::settings()->set_wp_option( $key, 'hide' );
                 break;
 
             case 'paypal':
-                update_option( 'wpuf_paypal_settings_notice_dismissed', true );
+                Stores::settings()->set_wp_option( 'wpuf_paypal_settings_notice_dismissed', true );
                 break;
 
             case 'acf':

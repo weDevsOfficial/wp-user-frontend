@@ -1,4 +1,5 @@
 import { __ } from '@wordpress/i18n';
+import { settingsData } from '../../../../boot';
 
 /**
  * Read-only placeholder for fields that are Pro-only or rendered by a custom PHP
@@ -7,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  * left exactly as the legacy screen / Pro manages it.
  */
 export default function ProNote( { field } ) {
-    const isPro = !! ( window.wpuf_settings || {} ).is_pro;
+    const isPro = !! settingsData().is_pro;
 
     // When Pro is active these fields are either handled by a dedicated React
     // component or are non-functional section headers — never show the

@@ -20,6 +20,7 @@ import EmptyState from './EmptyState';
 import CreateButtons from './CreateButtons';
 import TemplatePicker from './TemplatePicker';
 import { inApp, openRoute } from '../../../app/client';
+import { adminScript, formTemplates } from '../boot';
 
 const FormsList = ( {
     postType = 'wpuf_forms',
@@ -37,7 +38,7 @@ const FormsList = ( {
     const aiSettingsUrl = wpuf_forms_list.ai_settings_url || '';
     const initialCounts = wpuf_forms_list.post_counts || {};
 
-    const newFormUrl = window.wpuf_admin_script.admin_url + 'admin.php?page=wpuf-' + formType + '-forms&action=add-new';
+    const newFormUrl = adminScript().admin_url + 'admin.php?page=wpuf-' + formType + '-forms&action=add-new';
     // Route base of this list in the admin app (task 5d).
     const routeBase = 'profile' === formType ? '/registration-forms' : '/post-forms';
 
@@ -54,7 +55,7 @@ const FormsList = ( {
     const [ showAIConfigModal, setShowAIConfigModal ] = useState( false );
     const [ showTemplates, setShowTemplates ] = useState( false );
     // Admin\Forms\Template_Picker; missing with an older Pro (it prints the PHP modal).
-    const templateData = window.wpuf_form_templates || null;
+    const templateData = formTemplates() || null;
 
     const debounceTimerRef = useRef( null );
 
@@ -125,7 +126,7 @@ const FormsList = ( {
             params.append( '_wpnonce', wpuf_forms_list.bulk_nonce );
         }
 
-        return `${ window.wpuf_admin_script.admin_url }admin.php?${ params.toString() }`;
+        return `${ adminScript().admin_url }admin.php?${ params.toString() }`;
     }, [ pageSlug ] );
 
     // In the admin app the builder is a route of the same page.
@@ -271,7 +272,7 @@ const FormsList = ( {
             _wpnonce: wpuf_forms_list.template_nonce,
         } );
 
-        openRoute( `${ routeBase }/ai`, window.wpuf_admin_script.admin_url + 'admin.php?' + params.toString() );
+        openRoute( `${ routeBase }/ai`, adminScript().admin_url + 'admin.php?' + params.toString() );
     }, [ aiConfigured, formType, routeBase ] );
 
     // Shortcode getter with Pro filter

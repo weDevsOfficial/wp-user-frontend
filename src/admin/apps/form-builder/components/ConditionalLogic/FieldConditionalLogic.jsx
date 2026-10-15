@@ -6,6 +6,7 @@ import { STORE_NAME } from '../../store';
 import { showOops } from '../Dnd/usePaletteDrop';
 import ConditionRow from './ConditionRow';
 import { RULE_OPTIONS, buildCondArrays, condRowsFromStored, condDependencies, hierarchicalTaxonomies } from './conditionalUtils';
+import { builderData } from '../../utils/boot';
 
 /**
  * Field option "Conditional Logic" (setting type `conditional-logic`, added
@@ -47,7 +48,7 @@ function ConditionalLogicPanel( { optionField, field, value: stored, onChange } 
     );
     const i18n = useSelect( ( select ) => select( STORE_NAME ).getI18n?.() || {}, [] );
 
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
     const wpPostTypes = data.wp_post_types || {};
     const taxonomies = useMemo( () => hierarchicalTaxonomies( wpPostTypes ), [ wpPostTypes ] );
     const supported = useMemo( () => [ ...( data.wpuf_cond_supported_fields || [] ), ...taxonomies ], [ data.wpuf_cond_supported_fields, taxonomies ] );

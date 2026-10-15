@@ -7,6 +7,7 @@ import { useState, useEffect } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { Button, DateTime, Modal, TextInput, notify } from '@wpuf/components';
 import UpdateButton from './UpdateButton';
+import { subscriptionsData } from '../../boot';
 
 const QuickEdit = () => {
 	const [ title, setTitle ] = useState( '' );
@@ -69,7 +70,7 @@ const QuickEdit = () => {
 				close();
 				// develop updated the card in place; reload this list page (no page reload).
 				const status = params.post_status || 'all';
-				const perPage = parseInt( ( window.wpufSubscriptions || {} ).perPage || 10, 10 );
+				const perPage = parseInt( subscriptionsData().perPage || 10, 10 );
 				const page = Math.max( 1, parseInt( params.p, 10 ) || 1 );
 				fetchItems( status, ( page - 1 ) * perPage );
 				fetchCounts();

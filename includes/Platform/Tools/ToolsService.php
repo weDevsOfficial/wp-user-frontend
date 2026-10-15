@@ -293,7 +293,7 @@ class ToolsService {
         }
 
         return [
-            'filename' => strtolower( str_replace( ' ', '-', get_option( 'blogname' ) ) ) . '-wpuf-' . $post_type . '-' . gmdate( 'Y-m-d' ) . '.json',
+            'filename' => strtolower( str_replace( ' ', '-', Stores::settings()->wp_option( 'blogname' ) ) ) . '-wpuf-' . $post_type . '-' . gmdate( 'Y-m-d' ) . '.json',
             'forms'    => $forms,
         ];
     }

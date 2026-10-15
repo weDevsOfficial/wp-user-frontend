@@ -13,6 +13,7 @@ import UpdateButton from './UpdateButton';
 import { SubscriptionFormFooter } from '../../slots';
 import { useSubscriptionData, useSubscriptionActions, useSubscriptionNavigation } from '../../hooks';
 import { fetchSubscription } from '../../api/subscription';
+import { subscriptionsData } from '../../boot';
 
 // Loading: the form's shape (title, tabs, two sections), no layout jump.
 const FormSkeleton = () => (
@@ -30,7 +31,7 @@ const FormSkeleton = () => (
 // Tab of the first field with a validation error (develop jumps nowhere; the
 // error would stay hidden on another tab).
 const tabOfField = ( errorKey ) => {
-	const fields = ( window.wpufSubscriptions || {} ).fields || {};
+	const fields = subscriptionsData().fields || {};
 
 	for ( const tab in fields ) {
 		for ( const sub in fields[ tab ] ) {

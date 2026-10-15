@@ -1,8 +1,9 @@
 import { __ } from '@wordpress/i18n';
 import { hasRecaptchaApiKeys } from '../../utils/globalHelpers';
+import { builderData } from '../../utils/boot';
 
 export default function RecaptchaPreview( { field } ) {
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
     const assetUrl = data.asset_url || '';
 
     if ( ! hasRecaptchaApiKeys() ) {

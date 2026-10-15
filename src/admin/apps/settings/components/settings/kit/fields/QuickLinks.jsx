@@ -6,6 +6,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { inApp } from '../../../../../../app/client';
+import { settingsData } from '../../../../boot';
 
 // Setting name => what its value points at.
 export const QUICK_LINKS = {
@@ -32,7 +33,7 @@ const API_KEY_URLS = {
  *
  * @return {string} Admin URL with a trailing slash.
  */
-export const adminUrl = () => ( window.wpuf_settings || {} ).admin_url || ( window.ajaxurl || '' ).replace( 'admin-ajax.php', '' );
+export const adminUrl = () => settingsData().admin_url || ( window.ajaxurl || '' ).replace( 'admin-ajax.php', '' );
 
 /**
  * A form's links: in the admin app its builder routes (the editor, the

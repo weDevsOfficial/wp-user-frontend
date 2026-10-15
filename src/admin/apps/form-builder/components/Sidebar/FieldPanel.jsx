@@ -8,6 +8,7 @@ import useAddField from '../../hooks/useAddField';
 import FieldSearch from './FieldSearch';
 import FieldGroup from './FieldGroup';
 import FieldItem from './FieldItem';
+import { builderData } from '../../utils/boot';
 
 export default function FieldPanel() {
     const { panelSections, fieldSettings } = useSelect( ( select ) => {
@@ -20,7 +21,7 @@ export default function FieldPanel() {
 
     const [ searchTerm, setSearchTerm ] = useState( '' );
 
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
 
     // Filter sections by search term
     const filteredSections = useMemo( () => {

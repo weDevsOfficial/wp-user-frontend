@@ -43,6 +43,14 @@ class SubmissionStore implements DataStore {
     const LOCK_TIME = '_wpuf_lock_user_editing_post_time';
 
     /**
+     * Meta key: a draft saved before the first real submission (cleared
+     * when it is submitted, so the submission counts as new).
+     *
+     * @since WPUF_SINCE
+     */
+    const DRAFT_PENDING = '_wpuf_draft_pending';
+
+    /**
      * Whether a post was submitted through a form.
      *
      * @since WPUF_SINCE
@@ -404,5 +412,18 @@ class SubmissionStore implements DataStore {
         }
 
         return $counts;
+    }
+
+    /**
+     * Mark a post as a draft saved before its first submission.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $post_id Post id
+     *
+     * @return void
+     */
+    public function set_draft_pending( $post_id ) {
+        update_post_meta( $post_id, self::DRAFT_PENDING, 1 );
     }
 }

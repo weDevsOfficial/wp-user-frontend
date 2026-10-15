@@ -24,6 +24,7 @@ import { AIConfigModal, AiButton, Checkbox, TextInput, dialogs } from '@wpuf/com
 import SettingHelpText from './SettingHelpText';
 import { BUILDER_SLOTS, BuilderSlot } from '../../../slots';
 import { openRoute } from '../../../../../app/client';
+import { builderData } from '../../../utils/boot';
 
 /**
  * Generate a random ID for option rows.
@@ -181,7 +182,7 @@ export default function OptionDataInput( { optionField, field } ) {
 
     // AI methods
     const openAiModal = useCallback( () => {
-        if ( window.wpuf_form_builder && ! window.wpuf_form_builder.ai_configured ) {
+        if ( ! builderData().ai_configured ) {
             setShowAiConfigModal( true );
             return;
         }
@@ -297,7 +298,7 @@ export default function OptionDataInput( { optionField, field } ) {
                         { /* Bulk Add — pro can replace via filter, free shows teaser */ }
                         { applyFilters( 'wpuf.formBuilder.optionDataBulkAdd', null, options, setOptions, syncValue ) || (
                             <a
-                                href={ ( window.wpuf_form_builder || {} ).pro_link || '' }
+                                href={ builderData().pro_link || '' }
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="relative inline-block group/pro-button"
@@ -311,7 +312,7 @@ export default function OptionDataInput( { optionField, field } ) {
                                     { __( 'Bulk Add', 'wp-user-frontend' ) }
                                 </button>
                                 <div className="absolute top-0 right-0 opacity-0 group-hover/pro-button:opacity-100 wpuf-transition-all pointer-events-none">
-                                    <img src={ `${ ( window.wpuf_form_builder || {} ).asset_url || '' }/images/pro-badge.svg` } alt="" />
+                                    <img src={ `${ builderData().asset_url || '' }/images/pro-badge.svg` } alt="" />
                                 </div>
                             </a>
                         ) }
@@ -511,7 +512,7 @@ export default function OptionDataInput( { optionField, field } ) {
                 onClose={ () => setShowAiConfigModal( false ) }
                 onGoToSettings={ () => {
                     // In the admin app: the AI settings section (the leave guard still asks about unsaved edits).
-                    openRoute( '/settings?tab=wpuf_ai', window.wpuf_form_builder?.ai_settings_url || '' );
+                    openRoute( '/settings?tab=wpuf_ai', builderData().ai_settings_url || '' );
                 } }
             />
         </div>

@@ -7,6 +7,7 @@ import { orderedOptions } from './fields/settingOptions';
 import ProPreviewWrapper from './ProPreviewWrapper';
 import { useFieldVisibility, MUTUAL_EXCLUSIONS } from './useFieldDependencies';
 import { shownFirstOption } from './shownFirstOptions';
+import { builderData } from '../../utils/boot';
 
 
 /**
@@ -179,7 +180,7 @@ export default function SettingsSection( { sectionKey, sectionData } ) {
 
         // Develop's hidden `wpuf_user_status` followed this toggle (pending when
         // approval is required, else approved); written on a change only (Q6).
-        if ( 'user_status' === key && 'wpuf_profile' === ( window.wpuf_form_builder || {} ).form_type ) {
+        if ( 'user_status' === key && 'wpuf_profile' === builderData().form_type ) {
             updateFormSetting( 'wpuf_user_status', 'on' === value ? 'pending' : 'approved' );
         }
 

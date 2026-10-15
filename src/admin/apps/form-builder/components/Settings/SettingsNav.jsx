@@ -3,6 +3,7 @@ import { useMemo } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { applyFilters } from '@wordpress/hooks';
 import { STORE_NAME } from '../../store';
+import { builderData } from '../../utils/boot';
 
 /**
  * Settings sidebar navigation — mirrors the Vue template in post-form-settings.php.
@@ -13,7 +14,7 @@ import { STORE_NAME } from '../../store';
 const BADGE_MENUS = [ 'post_expiration' ];
 
 export default function SettingsNav( { activeTab, onTabChange } ) {
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
     const isProActive = useSelect( ( select ) => select( STORE_NAME ).getIsProActive(), [] );
 
     const settingsTitles = useMemo( () => {

@@ -1,4 +1,5 @@
 import { __ } from '@wordpress/i18n';
+import { settingsData } from '../../../boot';
 
 /**
  * Wraps a Pro-only field (when Pro is inactive) in a disabled preview with an
@@ -6,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * ProPreviewWrapper design (dashed border, dimmed, emerald hover overlay).
  */
 export default function ProPreviewWrapper( { children } ) {
-    const wpuf = window.wpuf_settings || {};
+    const wpuf = settingsData();
     const proLink = wpuf.upgrade_url || 'https://wedevs.com/wp-user-frontend-pro/pricing/';
 
     return (

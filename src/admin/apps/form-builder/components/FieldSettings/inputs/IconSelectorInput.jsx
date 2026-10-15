@@ -4,6 +4,7 @@ import { __ } from '@wordpress/i18n';
 import { STORE_NAME } from '../../../store';
 import { TextInput } from '@wpuf/components';
 import SettingHelpText from './SettingHelpText';
+import { builderData } from '../../../utils/boot';
 
 /**
  * Icon selector input for field settings.
@@ -31,8 +32,8 @@ export default function IconSelectorInput( { optionField, field, value, onChange
     const [ activeTab, setActiveTab ] = useState( 'icon' );
     const wrapperRef = useRef( null );
 
-    const icons = useMemo( () => window.wpuf_form_builder?.icons || [], [] );
-    const i18n = window.wpuf_form_builder?.i18n || {};
+    const icons = useMemo( () => builderData().icons || [], [] );
+    const i18n = builderData().i18n || {};
 
     const isImageValue = useMemo( () => {
         if ( ! value ) {

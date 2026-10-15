@@ -9,6 +9,7 @@ import { applyFilters } from '@wordpress/hooks';
 import { Minus, Plus } from 'lucide-react';
 import { DateTime, HelpTip, MultiSelect, NumberInput, ProBadge, Select, TextInput, Textarea, Toggle } from '@wpuf/components';
 import ProTooltip from './ProTooltip';
+import { subscriptionsData } from '../../boot';
 
 const has = ( object, key ) => !! object && Object.prototype.hasOwnProperty.call( object, key );
 
@@ -52,7 +53,7 @@ function readFieldValue( field, subscription ) {
 const asText = ( value ) => ( 'number' === typeof value ? String( value ) : value );
 
 const SubscriptionField = ( { field, fieldId, subscription, onFieldChange } ) => {
-	const wpufSubscriptions = window.wpufSubscriptions || {};
+	const wpufSubscriptions = subscriptionsData();
 
 	// Get hidden fields from store
 	const hiddenFields = useSelect(

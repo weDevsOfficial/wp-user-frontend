@@ -1,11 +1,12 @@
 import { __ } from '@wordpress/i18n';
+import { builderData } from '../../../utils/boot';
 
 /**
  * A Pro-only option shown as a teaser row with the Pro badge (e.g. Conditional
  * Logic while Pro is off). Replaces Vue field-option-pro-feature-alert.
  */
 export default function ProFeatureAlert( { optionField } ) {
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
 
     return (
         <div className="panel-field-opt panel-field-opt-pro-feature flex items-center text-sm text-gray-700 font-medium">

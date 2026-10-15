@@ -245,7 +245,7 @@ class SubscribersController extends RestController {
             return $value;
         }
 
-        return mysql2date( get_option( 'date_format' ), $value );
+        return mysql2date( Stores::settings()->wp_option( 'date_format' ), $value );
     }
 
     /**

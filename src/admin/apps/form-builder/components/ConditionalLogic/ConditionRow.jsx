@@ -8,6 +8,7 @@ import {
     conditionInputType,
     conditionFieldType,
 } from './conditionalUtils';
+import { builderData } from '../../utils/boot';
 
 /**
  * One condition rule: field, operator and value stacked full width, then the
@@ -46,7 +47,7 @@ export default function ConditionRow( {
     onRemove,
     canRemove = true,
 } ) {
-    const assetUrl = ( window.wpuf_form_builder || {} ).asset_url || '';
+    const assetUrl = builderData().asset_url || '';
     const optionsOf = ( name ) => getFieldOptions( availableFields.find( ( item ) => item.name === name ), wpPostTypes, taxonomies );
     const operators = getOperatorsForType( condition.input_type );
     const fieldOptions = isDropdownType( condition.input_type ) ? optionsOf( condition.name ) : [];

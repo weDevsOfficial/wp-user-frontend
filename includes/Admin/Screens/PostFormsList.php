@@ -12,6 +12,7 @@ use WeDevs\Wpuf\AI\Services\Provider_Settings;
 use WeDevs\Wpuf\Admin\BootPayload;
 use WeDevs\Wpuf\Admin\Forms\Admin_Form_Builder;
 use WeDevs\Wpuf\Admin\Forms\Template_Picker;
+use WeDevs\Wpuf\Platform\Stores\Stores;
 
 /**
  * User Frontend > Post Forms: the React forms list, or the form builder for
@@ -128,7 +129,7 @@ class PostFormsList extends Screen {
                 'rest_url'               => esc_url_raw( rest_url() ),
                 'bulk_nonce'             => wp_create_nonce( 'bulk-post-forms' ),
                 'template_nonce'         => wp_create_nonce( 'wpuf_create_from_template' ),
-                'is_plain_permalink'     => empty( get_option( 'permalink_structure' ) ),
+                'is_plain_permalink'     => empty( Stores::settings()->wp_option( 'permalink_structure' ) ),
                 'permalink_settings_url' => admin_url( 'options-permalink.php' ),
                 'ai_configured'          => $ai_configured,
                 // In the admin app: the settings route (no page load).

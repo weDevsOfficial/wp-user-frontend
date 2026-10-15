@@ -12,6 +12,7 @@ use WeDevs\Wpuf\Frontend\Account\Account_Service;
 use WeDevs\Wpuf\Frontend\Forms\Upload_Service;
 use WeDevs\Wpuf\Platform\Http\Submission_Context;
 use WeDevs\Wpuf\Platform\REST\RestController;
+use WeDevs\Wpuf\Platform\Stores\Stores;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Server;
@@ -188,8 +189,8 @@ class AccountController extends RestController {
                 'stats'    => $this->account->stats(),
                 'settings' => [
                     'page_url'    => $this->account->page_url(),
-                    'default_tab' => wpuf_get_option( 'account_page_active_tab', 'wpuf_my_account', 'dashboard' ),
-                    'per_page'    => (int) wpuf_get_option( 'per_page', 'wpuf_dashboard', 5 ),
+                    'default_tab' => Stores::settings()->get( 'wpuf_my_account', 'account_page_active_tab', 'dashboard' ),
+                    'per_page'    => (int) Stores::settings()->get( 'wpuf_dashboard', 'per_page', 5 ),
                     'post_types'  => $this->account->allowed_post_types(),
                 ],
                 'nonces'   => [
@@ -338,16 +339,16 @@ class AccountController extends RestController {
         }
 
         $user_id = get_current_user_id();
-        $form_id = (int) wpuf_get_option( 'edit_profile_form', 'wpuf_my_account', 0 );
+        $form_id = (int) Stores::settings()->get( 'wpuf_my_account', 'edit_profile_form', 0 );
         $result  = $this->uploads->upload( $file, $form_id ? $form_id : $this->any_form_id(), 'profile_photo' );
 
         if ( is_wp_error( $result ) ) {
             return $result;
         }
 
-        $previous = (int) get_user_meta( $user_id, 'wpuf_profile_photo', true );
+        $previous = Stores::users()->profile_photo_id( $user_id );
 
-        update_user_meta( $user_id, 'wpuf_profile_photo', (int) $result['attach_id'] );
+        Stores::users()->set_profile_photo( $user_id, (int) $result['attach_id'] );
         wp_update_post(
             [
                 'ID'          => (int) $result['attach_id'],
@@ -371,9 +372,9 @@ class AccountController extends RestController {
      */
     public function delete_avatar() {
         $user_id  = get_current_user_id();
-        $previous = (int) get_user_meta( $user_id, 'wpuf_profile_photo', true );
+        $previous = Stores::users()->profile_photo_id( $user_id );
 
-        delete_user_meta( $user_id, 'wpuf_profile_photo' );
+        Stores::users()->set_profile_photo( $user_id, 0 );
 
         if ( $previous && (int) get_post_field( 'post_author', $previous ) === $user_id ) {
             wp_delete_attachment( $previous, true );

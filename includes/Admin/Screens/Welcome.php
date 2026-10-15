@@ -10,6 +10,7 @@ namespace WeDevs\Wpuf\Admin\Screens;
 
 use WeDevs\Wpuf\Free\Pro_Prompt;
 use WeDevs\Wpuf\Platform\Caps;
+use WeDevs\Wpuf\Platform\Stores\Stores;
 
 /**
  * Welcome to WP User Frontend (`index.php?page=wpuf-welcome`, Admin_Welcome)
@@ -268,7 +269,7 @@ class Welcome extends Screen {
     private function take_intro() {
         $user_id = get_current_user_id();
 
-        if ( ! $user_id || get_user_meta( $user_id, self::SEEN_META, true ) ) {
+        if ( ! $user_id || Stores::users()->meta( $user_id, self::SEEN_META ) ) {
             return false;
         }
 
@@ -284,7 +285,7 @@ class Welcome extends Screen {
             return false;
         }
 
-        update_user_meta( $user_id, self::SEEN_META, 1 );
+        Stores::users()->set_meta( $user_id, self::SEEN_META, 1 );
 
         return true;
     }

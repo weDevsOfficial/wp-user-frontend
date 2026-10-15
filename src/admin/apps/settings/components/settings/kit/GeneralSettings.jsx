@@ -20,6 +20,7 @@
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import ProBadge from './ProBadge';
+import { settingsData } from '../../../boot';
 
 const SECURITY = [ 'recaptcha_public', 'recaptcha_private', 'enable_turnstile', 'turnstile_site_key', 'turnstile_secret_key' ];
 const GEO = [ 'ipstack_key' ];
@@ -94,7 +95,7 @@ const OptionLabel = ( { children } ) => (
 );
 
 export default function GeneralSettings( { fields, renderField, values = {}, onField } ) {
-    const wpuf = window.wpuf_settings || {};
+    const wpuf = settingsData();
     const assetUrl = wpuf.asset_url || '';
     const isPro = !! wpuf.is_pro;
     const [ securityView, setSecurityView ] = useState( 'recaptcha' );

@@ -229,7 +229,7 @@ class Submission_Service {
         if ( $post_id ) {
             self::update_post_meta( $meta_vars, $post_id );
             Stores::submissions()->set_form_id( $post_id, $form_id );
-            update_post_meta( $post_id, '_wpuf_draft_pending', 1 );
+            Stores::submissions()->set_draft_pending( $post_id );
 
             if ( isset( $this->form_settings['post_format'] ) && '0' !== $this->form_settings['post_format'] && post_type_supports( $this->form_settings['post_type'], 'post-formats' ) ) {
                 set_post_format( $post_id, $this->form_settings['post_format'] );
@@ -251,7 +251,7 @@ class Submission_Service {
             'action'         => $action,
             'date'           => current_time( 'mysql' ),
             'post_author'    => $current_user_id,
-            'comment_status' => get_option( 'default_comment_status' ),
+            'comment_status' => Stores::settings()->wp_option( 'default_comment_status' ),
             'url'            => add_query_arg( 'preview', 'true', get_permalink( $post_id ) ),
             'message'        => __( 'Post Saved', 'wp-user-frontend' ),
         ];

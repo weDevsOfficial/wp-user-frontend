@@ -1,6 +1,7 @@
 import { useMemo } from '@wordpress/element';
 import { MultiSelect } from '@wpuf/components';
 import SettingHelpText from './SettingHelpText';
+import { builderData } from '../../../utils/boot';
 
 /**
  * Multi-select input for field settings.
@@ -19,7 +20,7 @@ export default function MultiSelectInput( { optionField, field, value, onChange 
             field.input_type === 'taxonomy' &&
             field.name
         ) {
-            const wpPostTypes = window.wpuf_form_builder?.wp_post_types;
+            const wpPostTypes = builderData().wp_post_types;
 
             if ( wpPostTypes ) {
                 for ( const postType in wpPostTypes ) {

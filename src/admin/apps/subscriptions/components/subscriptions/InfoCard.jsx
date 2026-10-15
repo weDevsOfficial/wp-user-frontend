@@ -9,6 +9,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { RefreshCw, Users } from 'lucide-react';
 import { fetchSubscribers } from '../../api/subscription';
+import { subscriptionsData } from '../../boot';
 
 const STATUS = {
 	publish: { label: __( 'Published', 'wp-user-frontend' ), className: 'bg-primary/10 text-primary' },
@@ -42,7 +43,7 @@ const InfoCard = ( { subscription, mode = 'edit' } ) => {
 	const pick = ( key ) => ( undefined !== meta[ '_' + key ] ? meta[ '_' + key ] : meta[ key ] );
 	const recurringValue = pick( 'recurring_pay' );
 	const isRecurring = 'on' === recurringValue || 'yes' === recurringValue || true === recurringValue;
-	const symbol = decodeEntities( ( window.wpufSubscriptions || {} ).currencySymbol || '$' );
+	const symbol = decodeEntities( subscriptionsData().currencySymbol || '$' );
 	const isEdit = 'edit' === mode && subscription.ID;
 
 	useEffect( () => {

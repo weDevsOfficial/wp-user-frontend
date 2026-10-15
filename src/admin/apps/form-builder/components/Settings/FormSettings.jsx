@@ -12,12 +12,13 @@ import useFormSave from '../../hooks/useFormSave';
 import { BuilderSlot, settingsSlotName } from '../../slots';
 import { getRouteQuery, inApp, setRouteQuery } from '../../../../app/client';
 import { Notice } from '@wpuf/components';
+import { adminUrl, builderData } from '../../utils/boot';
 
 /**
  * Main form settings component — mirrors post-form-settings.php Vue template.
  */
 export default function FormSettings() {
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
     const isProActive = useSelect( ( select ) => select( STORE_NAME ).getIsProActive(), [] );
     const settings = useSelect( ( select ) => select( STORE_NAME ).getSettings(), [] );
     const { updateFormSetting } = useDispatch( STORE_NAME );
@@ -65,10 +66,10 @@ export default function FormSettings() {
     }, [ settingsItems, activeTab ] );
 
     // Cancel URL (in the admin app: the list route, no page load)
-    const isProfileForm = window.wpuf_form_builder?.post?.post_type === 'wpuf_profile';
+    const isProfileForm = builderData().post?.post_type === 'wpuf_profile';
     const postFormsUrl = inApp()
         ? `#${ isProfileForm ? '/registration-forms' : '/post-forms' }`
-        : ( window.wpuf_admin_url || '' ) + ( isProfileForm ? 'admin.php?page=wpuf-profile-forms' : 'admin.php?page=wpuf-post-forms' );
+        : adminUrl() + ( isProfileForm ? 'admin.php?page=wpuf-profile-forms' : 'admin.php?page=wpuf-post-forms' );
 
     return (
         <div className="wpuf-settings-container mx-auto mt-3 mb-6 box-border w-full max-w-[1400px] px-4">

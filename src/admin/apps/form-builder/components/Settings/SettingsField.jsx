@@ -22,6 +22,7 @@ import copyMailTag from '../../utils/copyMailTag';
 import TaxonomyDefaults from './fields/TaxonomyDefaults';
 import SettingInfo from './fields/SettingInfo';
 import { Notice } from '@wpuf/components';
+import { builderData } from '../../utils/boot';
 
 const FIELD_MAP = {
     toggle: ToggleField,
@@ -57,7 +58,7 @@ const decodeLabel = ( text ) => {
  * @return {Array} [ { integrationName, settingsPath, label } ].
  */
 function integrationConditionsAfter( slotKey ) {
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
 
     if ( 'wpuf_profile' !== data.form_type || ! data.is_pro_active ) {
         return [];
@@ -88,7 +89,7 @@ export default function SettingsField( { slotKey, hideControl = false, ...props 
     // Pro's submit-button conditions follow the Limit Form Entries row on post
     // forms, shown even while the limit is off (develop printed them on the
     // after-limit_message hook, outside the row's hidden container).
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
     const submitConditions = 'limit_message' === slotKey && data.is_pro_active && 'wpuf_profile' !== data.form_type;
     const integrations = integrationConditionsAfter( slotKey );
 

@@ -134,4 +134,64 @@ class UserStore implements DataStore {
     public function cover_id( $user_id ) {
         return (int) $this->meta( $user_id, self::COVER_PHOTO );
     }
+
+    /**
+     * Store one user meta value.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int    $user_id User id
+     * @param string $key     Meta key
+     * @param mixed  $value   Value
+     *
+     * @return int|bool
+     */
+    public function set_meta( $user_id, $key, $value ) {
+        return update_user_meta( $user_id, $key, $value );
+    }
+
+    /**
+     * Remove one user meta value.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int    $user_id User id
+     * @param string $key     Meta key
+     *
+     * @return bool
+     */
+    public function delete_meta( $user_id, $key ) {
+        return delete_user_meta( $user_id, $key );
+    }
+
+    /**
+     * The profile photo attachment id (0 when none).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $user_id User id
+     *
+     * @return int
+     */
+    public function profile_photo_id( $user_id ) {
+        return (int) $this->meta( $user_id, self::PROFILE_PHOTO );
+    }
+
+    /**
+     * Set or clear (0) the profile photo.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $user_id       User id
+     * @param int $attachment_id Attachment id, 0 to remove
+     *
+     * @return void
+     */
+    public function set_profile_photo( $user_id, $attachment_id ) {
+        if ( $attachment_id ) {
+            $this->set_meta( $user_id, self::PROFILE_PHOTO, (int) $attachment_id );
+        } else {
+            $this->delete_meta( $user_id, self::PROFILE_PHOTO );
+        }
+    }
 }

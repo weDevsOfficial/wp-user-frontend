@@ -9,6 +9,7 @@ import { Tabs } from '@wpuf/components';
 import SubscriptionSubsection from './SubscriptionSubsection';
 import { SubscriptionTabContent } from '../../slots';
 import { CreditCard, FileText, Settings2 } from 'lucide-react';
+import { subscriptionsData } from '../../boot';
 
 // Section tab icons (FlyHR page tab bar).
 const TAB_ICONS = {
@@ -18,7 +19,7 @@ const TAB_ICONS = {
 };
 
 const SubscriptionDetails = ( { subscription, onFieldChange, currentTab: externalCurrentTab, onTabChange: externalOnTabChange } ) => {
-	const wpufSubscriptions = window.wpufSubscriptions || {};
+	const wpufSubscriptions = subscriptionsData();
 	const sections = wpufSubscriptions.sections || [];
 	const subSections = wpufSubscriptions.subSections || {};
 	const fields = wpufSubscriptions.fields || {};

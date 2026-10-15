@@ -4,6 +4,7 @@ import { STORE_NAME } from '../../store/constants';
 import { __ } from '@wordpress/i18n';
 import { useFieldClasses } from '../../hooks/useFieldClasses';
 import HelpText from './HelpText';
+import { builderData } from '../../utils/boot';
 
 /**
  * Terms of the field's taxonomy from the localized post types, as develop's
@@ -13,7 +14,7 @@ import HelpText from './HelpText';
  * @return {Array}
  */
 function getTerms( taxonomy ) {
-    const postTypes = ( window.wpuf_form_builder || {} ).wp_post_types || {};
+    const postTypes = builderData().wp_post_types || {};
 
     for ( const postType of Object.keys( postTypes ) ) {
         const taxonomies = postTypes[ postType ] || {};

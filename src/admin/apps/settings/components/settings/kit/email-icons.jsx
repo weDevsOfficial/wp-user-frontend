@@ -3,6 +3,7 @@
  * Redesign Figma (Email tab). Each SVG already carries the emerald (#059669)
  * glyph on its own light rounded square, so it is rendered as-is (no wrapper).
  */
+import { settingsData } from '../../../boot';
 
 const ICONS = {
     guest: 'email/guest.svg',
@@ -41,7 +42,7 @@ const pick = ( title = '' ) => {
 };
 
 export default function EmailIcon( { title } ) {
-    const assetUrl = ( window.wpuf_settings || {} ).asset_url || '';
+    const assetUrl = settingsData().asset_url || '';
     return (
         <img
             src={ `${ assetUrl }/images/${ pick( title ) }` }

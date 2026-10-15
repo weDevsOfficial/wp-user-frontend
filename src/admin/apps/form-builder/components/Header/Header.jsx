@@ -6,6 +6,7 @@ import { STORE_NAME } from '../../store';
 import useFormSave from '../../hooks/useFormSave';
 import LegacySlot, { getLegacySlots } from '../../common/LegacySlot';
 import { getRouteQuery, inApp, openRoute } from '../../../../app/client';
+import { builderData } from '../../utils/boot';
 
 /**
  * Builder URL of another form of the same type: its app route in the admin
@@ -48,7 +49,7 @@ export default function Header( { activeTab, onTabChange } ) {
     const [ isDropdownOpen, setIsDropdownOpen ] = useState( false );
     const [ copiedShortcode, setCopiedShortcode ] = useState( null );
 
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
     const previewUrl = data.preview_url || '';
     const forms = data.forms || [];
     const shortcodes = data.shortcodes || [];

@@ -1,6 +1,7 @@
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import ProBadge from './ProBadge';
+import { settingsData } from '../../../boot';
 
 /**
  * Provider selector cards + the selected provider's fields. Used for the SMS
@@ -10,9 +11,9 @@ import ProBadge from './ProBadge';
  * Fields are grouped by name prefix. Fields that match no provider prefix
  * (e.g. the social "enabled" toggle) render above the cards as standalone.
  */
-const ASSET = ( window.wpuf_settings || {} ).asset_url || '';
+const ASSET = settingsData().asset_url || '';
 const UPGRADE_URL =
-    ( ( window.wpuf_settings || {} ).upgrade_url || 'https://wedevs.com/wp-user-frontend-pro/pricing/' ) +
+    ( settingsData().upgrade_url || 'https://wedevs.com/wp-user-frontend-pro/pricing/' ) +
     '?utm_source=wpuf-settings&utm_medium=provider-card';
 
 // Logos keep their native aspect ratio, capped to a consistent box (max 36px

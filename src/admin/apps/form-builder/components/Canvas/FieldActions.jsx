@@ -8,6 +8,7 @@ import { isFailedToValidate } from '../../utils/globalHelpers';
 import { getRandomId } from '../../utils/globalHelpers';
 import { getFieldValidators } from '../../extensions/registry';
 import { showOops } from '../Dnd/usePaletteDrop';
+import { builderData } from '../../utils/boot';
 
 const ACTION_CLASSES = 'inline-flex h-7 items-center gap-1 px-2 text-xs font-medium leading-none hover:cursor-pointer hover:text-white';
 
@@ -79,7 +80,7 @@ export default function FieldActions( { field, index, container = { type: 'top' 
     const isProPreview = ! isProActive && !! fieldSettings[ field.template ]?.pro_feature;
     const failedValidation = isFailedToValidate( field.template, fieldSettings, getFieldValidators() );
 
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
     const i18n = data.i18n || {};
     const singleObjects = data.wpuf_single_objects || [];
 

@@ -5,6 +5,7 @@ import { Radio, Select, TextInput } from '@wpuf/components';
 import { STORE_NAME } from '../../store';
 import { HelpTextIcon } from '@wpuf/components';
 import { OPERATORS, RULE_OPTIONS, isEmptyOperator } from './conditionalUtils';
+import { builderData } from '../../utils/boot';
 
 // Develop's submit-button-conditional-logic: fields a rule can use (top level).
 const ALLOWED_TEMPLATES = [ 'radio_field', 'checkbox_field', 'dropdown_field', 'text_field', 'textarea_field', 'email_address', 'numeric_text_field' ];
@@ -107,7 +108,7 @@ export default function SubmitConditionalLogic( { label } ) {
         } );
     };
 
-    const assetUrl = ( window.wpuf_form_builder || {} ).asset_url || '';
+    const assetUrl = builderData().asset_url || '';
 
     return (
         <div className="wpuf-submit-button-conditional-logic-container">

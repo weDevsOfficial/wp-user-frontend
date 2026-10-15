@@ -1,5 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import SettingsField from './SettingsField';
+import { builderData } from '../../utils/boot';
 
 /**
  * Renders pro_preview fields inside a disabled overlay with "Upgrade to PRO" button.
@@ -15,7 +16,7 @@ export default function ProPreviewWrapper( { proPreview, settings } ) {
         return null;
     }
 
-    const proLink = window.wpuf_form_builder?.pro_link || 'https://wedevs.com/wp-user-frontend-pro/pricing/';
+    const proLink = builderData().pro_link || 'https://wedevs.com/wp-user-frontend-pro/pricing/';
 
     return (
         <div className="p-4 relative rounded-sm border border-transparent hover:border-primary border-dashed group/pro-item wpuf-transition-all opacity-50 hover:opacity-100">

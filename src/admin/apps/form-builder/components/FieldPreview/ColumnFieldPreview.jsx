@@ -2,6 +2,7 @@ import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { STORE_NAME } from '../../store';
 import { getFieldPreview } from '../../extensions/registry';
+import { builderData } from '../../utils/boot';
 
 export default function ColumnFieldPreview( { field } ) {
     const { fieldSettings, isProActive } = useSelect( ( select ) => {
@@ -20,7 +21,7 @@ export default function ColumnFieldPreview( { field } ) {
     }
 
     const innerFields = field.inner_fields || {};
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
     const proLink = data.pro_link || '';
 
     const isFullWidth = ( template ) => {

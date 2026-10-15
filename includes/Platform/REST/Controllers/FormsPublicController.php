@@ -13,6 +13,7 @@ use WeDevs\Wpuf\Frontend\Forms\Submission_Service;
 use WeDevs\Wpuf\Frontend\Renderer;
 use WeDevs\Wpuf\Platform\REST\Rate_Limit;
 use WeDevs\Wpuf\Platform\REST\RestController;
+use WeDevs\Wpuf\Platform\Stores\Stores;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Server;
@@ -470,7 +471,7 @@ class FormsPublicController extends RestController {
             return $served;
         }
 
-        $server->send_header( 'Content-Type', 'text/plain; charset=' . get_option( 'blog_charset' ) );
+        $server->send_header( 'Content-Type', 'text/plain; charset=' . Stores::settings()->wp_option( 'blog_charset' ) );
         echo $result->get_data(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the names are escaped in suggest_terms().
 
         return true;

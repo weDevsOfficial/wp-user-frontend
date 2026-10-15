@@ -274,6 +274,21 @@ class SettingsStore {
     }
 
     /**
+     * Write a plain option (notice dismissals and other flags kept as their
+     * own option, not in a settings section).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $name  Option name
+     * @param mixed  $value Value
+     *
+     * @return bool
+     */
+    public function set_wp_option( $name, $value ) {
+        return update_option( $name, $value );
+    }
+
+    /**
      * Set one key of a section option (wpuf_update_option()).
      *
      * @since WPUF_SINCE

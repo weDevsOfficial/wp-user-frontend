@@ -14,6 +14,7 @@ import useAddField from '../../hooks/useAddField';
 import { createField, isFieldSingleInstance, containsField } from '../../utils/fieldUtils';
 import { canDrop, parseContainer } from '../../utils/dndTree';
 import { showOops } from '../../common/BuilderDialogs';
+import { builderData } from '../../utils/boot';
 
 // Develop's "Oops..." alert, kept importable from here.
 export { showOops };
@@ -50,7 +51,7 @@ export default function usePaletteDrop() {
         }
 
         if ( 'column' === list.type ) {
-            const singleObjects = ( window.wpuf_form_builder || {} ).wpuf_single_objects || [];
+            const singleObjects = builderData().wpuf_single_objects || [];
 
             if ( isFieldSingleInstance( template, singleObjects ) && containsField( formFields, template ) ) {
                 showOops( __( 'You already have this field in the form', 'wp-user-frontend' ) );

@@ -1,10 +1,11 @@
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import ProBadge from './ProBadge';
+import { settingsData } from '../../../boot';
 
-const IS_PRO = ( window.wpuf_settings || {} ).is_pro;
+const IS_PRO = settingsData().is_pro;
 const UPGRADE_URL =
-    ( ( window.wpuf_settings || {} ).upgrade_url || 'https://wedevs.com/wp-user-frontend-pro/pricing/' ) +
+    ( settingsData().upgrade_url || 'https://wedevs.com/wp-user-frontend-pro/pricing/' ) +
     '?utm_source=wpuf-settings&utm_medium=gateway-card';
 
 // Fields that have no gateway id in their name but belong to one (legacy map).

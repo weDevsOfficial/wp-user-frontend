@@ -511,7 +511,7 @@ class SubscriptionController extends RestController {
     public function get_subscription_settings( $request ) {
         $settings = [
             // Empty string means use Tailwind's wpuf-bg-primary class
-            'button_color' => wpuf_get_option( 'button_color', 'wpuf_subscription_settings', '' ),
+            'button_color' => Stores::settings()->get( 'wpuf_subscription_settings', 'button_color', '' ),
         ];
 
         return rest_ensure_response( $settings );

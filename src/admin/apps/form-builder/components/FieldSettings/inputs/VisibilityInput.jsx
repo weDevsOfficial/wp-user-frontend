@@ -2,6 +2,7 @@ import { useCallback, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Checkbox, Radio } from '@wpuf/components';
 import SettingHelpText from './SettingHelpText';
+import { builderData } from '../../../utils/boot';
 
 /**
  * Visibility input for field settings.
@@ -9,7 +10,7 @@ import SettingHelpText from './SettingHelpText';
  *
  * Value is an object: { selected: 'everyone'|'logged_in'|'subscribed_users', choices: [] }
  *
- * Roles and subscriptions are read from window.wpuf_form_builder.
+ * Roles and subscriptions are read from builderData().
  * On the shared Radio / Checkbox wrappers (4.4c).
  */
 export default function VisibilityInput( { optionField, field, value, onChange } ) {
@@ -20,8 +21,8 @@ export default function VisibilityInput( { optionField, field, value, onChange }
     const choices = value?.choices || [];
 
     // Roles and subscriptions from localized data
-    const roles = useMemo( () => window.wpuf_form_builder?.roles || {}, [] );
-    const subscriptions = useMemo( () => window.wpuf_form_builder?.subscriptions || [], [] );
+    const roles = useMemo( () => builderData().roles || {}, [] );
+    const subscriptions = useMemo( () => builderData().subscriptions || [], [] );
 
     const handleSelectedChange = useCallback( ( key ) => {
         onChange( { selected: key, choices: [] } );

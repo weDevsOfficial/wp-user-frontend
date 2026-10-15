@@ -1,7 +1,8 @@
 import { __ } from '@wordpress/i18n';
+import { builderData } from '../../utils/boot';
 
 export default function EmptyState() {
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
     const assetUrl = data.asset_url || '';
 
     return (

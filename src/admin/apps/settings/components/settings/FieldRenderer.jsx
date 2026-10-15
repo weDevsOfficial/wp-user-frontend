@@ -30,6 +30,7 @@ import QuickLinks, { QUICK_LINKS } from './kit/fields/QuickLinks';
 import { RawHTML } from '@wordpress/element';
 import { applyFilters } from '@wordpress/hooks';
 import { stripTags } from './utils';
+import { settingsData } from '../../boot';
 
 /**
  * Normalize a legacy field definition to the kit field shape.
@@ -196,7 +197,7 @@ export default function FieldRenderer( { sectionId, field, value, onChange, forc
      */
     Component = applyFilters( `wpuf.settings.field.${ type }`, Component, field, sectionId ) || Component;
 
-    const isProInactive = isPro && ! ( window.wpuf_settings || {} ).is_pro;
+    const isProInactive = isPro && ! settingsData().is_pro;
 
     // Adapt the kit's onChange( name, value ) to the section-scoped store setter.
     // A Pro preview is display only: its changes go nowhere.

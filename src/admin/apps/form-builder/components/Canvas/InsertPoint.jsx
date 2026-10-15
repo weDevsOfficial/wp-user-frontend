@@ -29,6 +29,7 @@ import { openProFieldAlert, openValidationAlert } from '../../common/BuilderDial
 import useAddField from '../../hooks/useAddField';
 import usePaletteDrop from '../Dnd/usePaletteDrop';
 import { canDrop } from '../../utils/dndTree';
+import { builderData } from '../../utils/boot';
 
 // Inline styles: the list renders in a body portal, outside the builder's
 // scoped utility classes.
@@ -59,7 +60,7 @@ const iconUrl = ( config, isProActive ) => {
         return '';
     }
 
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
 
     return ( isProActive && config.pro_feature ? data.pro_asset_url : data.asset_url ) + '/images/' + config.icon + '.svg';
 };
@@ -113,7 +114,7 @@ export default function InsertPoint( { index, container = '', variant = 'seam' }
 
     const pick = ( template ) => {
         const config = fieldSettings[ template ] || {};
-        const data = window.wpuf_form_builder || {};
+        const data = builderData();
 
         setOpen( false );
         setTerm( '' );
@@ -209,7 +210,7 @@ export default function InsertPoint( { index, container = '', variant = 'seam' }
                                             >
                                                 { url ? <img src={ url } alt="" style={ S.icon } /> : <span style={ S.icon } /> }
                                                 <span>{ config.title || template }</span>
-                                                { locked ? <img src={ `${ ( window.wpuf_form_builder || {} ).asset_url || '' }/images/pro-badge.svg` } alt="" style={ S.badge } /> : null }
+                                                { locked ? <img src={ `${ builderData().asset_url || '' }/images/pro-badge.svg` } alt="" style={ S.badge } /> : null }
                                             </button>
                                         );
                                     } ) }

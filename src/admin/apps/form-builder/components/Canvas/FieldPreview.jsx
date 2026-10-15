@@ -3,6 +3,7 @@ import { __ } from '@wordpress/i18n';
 import { STORE_NAME } from '../../store';
 import { getFieldPreview } from '../../extensions/registry';
 import { hasHiddenCssClass } from '../../utils/canvasHelpers';
+import { builderData } from '../../utils/boot';
 
 /**
  * Previews keep their inputs uncontrolled (defaultValue), so remount one when a
@@ -40,7 +41,7 @@ export default function FieldPreview( { field, variant = 'top' } ) {
     const isInvisible = field.recaptcha_type && field.recaptcha_type === 'invisible_recaptcha';
     const isEditing = parseInt( editingFieldId ) === parseInt( field.id );
 
-    const data = window.wpuf_form_builder || {};
+    const data = builderData();
     const proLink = data.pro_link || '';
 
     // Try to get a registered preview component

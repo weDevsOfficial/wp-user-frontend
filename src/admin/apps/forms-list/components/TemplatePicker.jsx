@@ -4,7 +4,7 @@
  *
  * Replaces the PHP + jQuery modal (includes/Admin/template-parts/modal-v4.2.php):
  * same templates, links, search and categories, from
- * `window.wpuf_form_templates` (Admin\Forms\Template_Picker). A category's
+ * `formTemplates()` (Admin\Forms\Template_Picker). A category's
  * count is the number of cards it shows (Blank and AI Forms included; the PHP
  * modal left them out of the category count). Each card shows
  * the top of a screenshot of the created form; hovering or focusing a card
@@ -18,6 +18,7 @@ import { Loader2 } from 'lucide-react';
 import { Button, ProBadge, TextInput, notify } from '@wpuf/components';
 import { request, restPath } from '@wpuf/api';
 import { inApp, openRoute } from '../../../app/client';
+import { formTemplates } from '../boot';
 
 const PREVIEW_WIDTH = 460;
 const PREVIEW_GAP = 12;
@@ -287,7 +288,7 @@ function TemplateCard( { item, onPreview, onKeyDown, previewed, onCreate, creati
  * @param {Object}        props
  * @param {boolean}       props.open    Shown.
  * @param {Function}      props.onClose Close the picker.
- * @param {Object}        props.data    `window.wpuf_form_templates`.
+ * @param {Object}        props.data    `formTemplates()`.
  * @param {Function|null} props.onAI    Start the AI builder (null hides the card).
  */
 export default function TemplatePicker( { open, onClose, data, onAI } ) {

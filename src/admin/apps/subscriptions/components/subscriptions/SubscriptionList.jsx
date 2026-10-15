@@ -12,6 +12,7 @@ import SubscriptionBox from './SubscriptionBox';
 import ListHeader from './ListHeader';
 import { SubscriptionListActions } from '../../slots';
 import { useSubscriptionNavigation } from '../../hooks';
+import { subscriptionsData } from '../../boot';
 
 // Loading: the card grid's shape (ux-states.md "card grid skeleton"), no layout jump.
 const CardSkeleton = () => (
@@ -48,7 +49,7 @@ const SubscriptionList = () => {
 	const { goToNew, goToEdit, goToPage } = useSubscriptionNavigation();
 
 	// eslint-disable-next-line no-undef
-	const wpufSubscriptions = window.wpufSubscriptions || {};
+	const wpufSubscriptions = subscriptionsData();
 	const perPage = parseInt( wpufSubscriptions.perPage || 10, 10 );
 	const count = ( allCount && allCount[ currentSubscriptionStatus ] ) ? allCount[ currentSubscriptionStatus ] : 0;
 

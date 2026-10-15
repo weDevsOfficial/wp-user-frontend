@@ -1,5 +1,6 @@
 import { sprintf, __ } from '@wordpress/i18n';
 import { MultiSelect } from '@wpuf/components';
+import { builderData } from '../../../utils/boot';
 
 /**
  * Default terms per hierarchical taxonomy of the selected post type
@@ -14,7 +15,7 @@ import { MultiSelect } from '@wpuf/components';
  * @param {Function} props.onChange ( name, value ) => void
  */
 export default function TaxonomyDefaults( { settings, onChange } ) {
-    const postTypes = ( window.wpuf_form_builder || {} ).wp_post_types || {};
+    const postTypes = builderData().wp_post_types || {};
     const taxonomies = Object.entries( postTypes[ settings.post_type || 'post' ] || {} ).filter( ( [ , tax ] ) => tax && tax.hierarchical );
 
     return taxonomies.map( ( [ taxonomy, tax ] ) => {

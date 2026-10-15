@@ -9,6 +9,7 @@
 namespace WeDevs\Wpuf\Frontend\Forms;
 
 use WeDevs\Wpuf\Ajax\Upload_Ajax;
+use WeDevs\Wpuf\Platform\Stores\Stores;
 use WP_Error;
 
 /**
@@ -143,8 +144,8 @@ class Upload_Service {
         $attach_id = (int) $attach['attach_id'];
 
         if ( $image_only ) {
-            $image_size = wpuf_get_option( 'insert_photo_size', 'wpuf_frontend_posting', 'thumbnail' );
-            $image_type = wpuf_get_option( 'insert_photo_type', 'wpuf_frontend_posting', 'link' );
+            $image_size = Stores::settings()->get( 'wpuf_frontend_posting', 'insert_photo_size', 'thumbnail' );
+            $image_type = Stores::settings()->get( 'wpuf_frontend_posting', 'insert_photo_type', 'link' );
 
             /** This filter is documented in includes/Ajax/Upload_Ajax.php */
             $image_size = apply_filters( 'wpuf_upload_response_image_size', $image_size, $form_id, $field_type );

@@ -5,6 +5,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { ConfirmDialog } from '@wpuf/components';
+import { settingsData } from '../../boot';
 
 const UnsavedChanges = ( { onDiscard, onContinue } ) => (
     <ConfirmDialog
@@ -15,7 +16,7 @@ const UnsavedChanges = ( { onDiscard, onContinue } ) => (
         confirmText={ __( 'Discard Changes', 'wp-user-frontend' ) }
         tone="danger"
         focusCancel
-        media={ <img src={ `${ ( window.wpuf_settings || {} ).asset_url || '' }/images/modal/unsaved-changes.svg` } alt="" className="size-[100px]" /> }
+        media={ <img src={ `${ settingsData().asset_url || '' }/images/modal/unsaved-changes.svg` } alt="" className="size-[100px]" /> }
         onConfirm={ onDiscard }
         onCancel={ onContinue }
     />

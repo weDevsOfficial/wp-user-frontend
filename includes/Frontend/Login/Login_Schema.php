@@ -9,6 +9,7 @@
 namespace WeDevs\Wpuf\Frontend\Login;
 
 use WeDevs\Wpuf\Free\Simple_Login;
+use WeDevs\Wpuf\Platform\Stores\Stores;
 
 /**
  * What `templates/login-form.php`, `lost-pass-form.php` and
@@ -174,16 +175,16 @@ class Login_Schema {
      * @return string
      */
     private function captcha() {
-        $recaptcha = 'on' === wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' );
-        $turnstile = 'on' === wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' );
+        $recaptcha = 'on' === Stores::settings()->get( 'wpuf_profile', 'login_form_recaptcha', 'off' );
+        $turnstile = 'on' === Stores::settings()->get( 'wpuf_profile', 'login_form_turnstile', 'off' );
         $captcha   = '';
 
         if ( $recaptcha && function_exists( 'recaptcha_get_html' ) ) {
-            $captcha .= '<div class="wpuf-fields">' . recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ) . '</div>';
+            $captcha .= '<div class="wpuf-fields">' . recaptcha_get_html( Stores::settings()->get( 'wpuf_general', 'recaptcha_public' ), true, null, is_ssl() ) . '</div>';
         }
 
         if ( $turnstile ) {
-            $site_key = wpuf_get_option( 'turnstile_site_key', 'wpuf_general', '' );
+            $site_key = Stores::settings()->get( 'wpuf_general', 'turnstile_site_key', '' );
 
             wp_enqueue_script( 'wpuf-turnstile' );
 

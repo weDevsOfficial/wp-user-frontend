@@ -6,12 +6,14 @@
  *
  * @since WPUF_SINCE
  */
+import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Button, Notice, dialogs, notify } from '@wpuf/components';
 import { FilePlus2, Rocket } from 'lucide-react';
 
-import { getOnboarding, runTool } from './api';
+import { runTool } from './api';
+import { store } from './store';
 import LogoutMenuTool from './LogoutMenuTool';
 import ToolCard from './ToolCard';
 
@@ -84,13 +86,14 @@ export default function ToolsTab( { tools } ) {
     const [ busy, setBusy ] = useState( '' );
     // Page-load data first, then the current state: onboarding's Exit setup
     // comes here without a reload, so the globals can be a run behind.
-    const [ entry, setEntry ] = useState( tools.onboarding );
+    const entry = useSelect( ( select ) => select( store ).getOnboarding(), [] ) || tools.onboarding;
+    const { loadOnboarding } = useDispatch( store );
 
     useEffect( () => {
         if ( tools.canManageSite ) {
-            getOnboarding().then( setEntry ).catch( () => {} );
+            loadOnboarding();
         }
-    }, [ tools.canManageSite ] );
+    }, [ tools.canManageSite, loadOnboarding ] );
 
     const run = async ( key, route, data, confirm ) => {
         if ( confirm && ! ( await dialogs.confirm( confirm ) ) ) {

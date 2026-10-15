@@ -4,12 +4,14 @@
  *
  * @since WPUF_SINCE
  */
+import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Button, EmptyState, MultiSelect, Radio, Skeleton, notify } from '@wpuf/components';
 import { Download, FileText, UserPlus } from 'lucide-react';
 
-import { exportForms, getForms } from './api';
+import { exportForms } from './api';
+import { store } from './store';
 import ToolCard from './ToolCard';
 
 const SECTIONS = [
@@ -40,17 +42,15 @@ const download = ( filename, content ) => {
  * @param {Object} props.section One of SECTIONS.
  */
 function ExportSection( { section } ) {
-    const [ forms, setForms ] = useState( null );
+    const forms = useSelect( ( select ) => select( store ).getForms( section.type ), [ section.type ] );
+    const { loadForms } = useDispatch( store );
     const [ mode, setMode ] = useState( 'all' );
     const [ picked, setPicked ] = useState( [] );
     const [ busy, setBusy ] = useState( false );
 
     useEffect( () => {
-        getForms( section.type ).then( setForms ).catch( ( error ) => {
-            setForms( [] );
-            notify( error.message, 'error' );
-        } );
-    }, [ section.type ] );
+        loadForms( section.type ).then( ( error ) => error && notify( error.message, 'error' ) );
+    }, [ section.type, loadForms ] );
 
     const run = async () => {
         if ( 'selected' === mode && ! picked.length ) {

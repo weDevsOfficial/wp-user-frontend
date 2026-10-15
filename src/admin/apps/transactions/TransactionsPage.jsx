@@ -5,13 +5,14 @@
  *
  * @since WPUF_SINCE
  */
+import { useDispatch, useSelect } from '@wordpress/data';
 import { useCallback, useEffect, useMemo, useRef, useState } from '@wordpress/element';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { Button, DateTime, EmptyState, ErrorState, PageFooter, PageHeader, PageShell, Pagination, Select, Tabs, TextInput, dialogs, notify } from '@wpuf/components';
 import { Receipt, Search, SearchX, X } from 'lucide-react';
 
-import { getTransactions, runAction } from './api';
 import SummaryCards from './SummaryCards';
+import { store } from './store';
 import TableSkeleton from './TableSkeleton';
 import TransactionDetails from './TransactionDetails';
 import TransactionsTable from './TransactionsTable';
@@ -67,9 +68,12 @@ export default function TransactionsPage( { context } ) {
     } );
     const [ search, setSearch ] = useState( query.search );
     const [ perPage, setPerPage ] = useState( boot.perPage || 20 );
-    const [ result, setResult ] = useState( null );
-    const [ error, setError ] = useState( null );
-    const [ loading, setLoading ] = useState( true );
+    const { result, error, loading } = useSelect( ( select ) => ( {
+        result: select( store ).getResult(),
+        error: select( store ).getError(),
+        loading: select( store ).isLoading(),
+    } ), [] );
+    const { fetchTransactions, runAction } = useDispatch( store );
     const [ selected, setSelected ] = useState( [] );
     const [ viewing, setViewing ] = useState( null );
     const [ busy, setBusy ] = useState( false );
@@ -93,23 +97,14 @@ export default function TransactionsPage( { context } ) {
     }, [ context ] );
 
     const load = useCallback( ( signal ) => {
-        setLoading( true );
-        setError( null );
-
         const params = { ...query, per_page: perPageSent.current ? perPage : undefined };
 
-        return getTransactions( params, signal )
-            .then( ( response ) => {
-                setResult( response );
+        return fetchTransactions( params, signal ).then( ( response ) => {
+            if ( response ) {
                 setPerPage( response.per_page );
-            } )
-            .catch( ( failure ) => {
-                if ( 'timeout' !== failure.code || ! signal?.aborted ) {
-                    setError( failure );
-                }
-            } )
-            .finally( () => setLoading( false ) );
-    }, [ query, perPage ] );
+            }
+        } );
+    }, [ query, perPage, fetchTransactions ] );
 
     useEffect( () => {
         const controller = new window.AbortController();

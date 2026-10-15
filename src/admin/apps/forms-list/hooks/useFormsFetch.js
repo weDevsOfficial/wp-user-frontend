@@ -1,97 +1,45 @@
 /**
- * Custom hook for fetching forms from the REST API.
+ * The forms list's data for a post type, from the `wpuf/forms-list` store.
+ * Kept as the screen's hook (same return shape as before the store).
  *
  * @since WPUF_SINCE
  */
-import { useState, useCallback, useRef } from '@wordpress/element';
-import { request, restPath } from '@wpuf/api';
+import { useCallback } from '@wordpress/element';
+import { useDispatch, useSelect } from '@wordpress/data';
 
-export const PER_PAGE = 10;
+import { PER_PAGE, store } from '../store';
+
+export { PER_PAGE };
 
 /**
- * Hook to fetch and manage forms list data.
- *
- * Requests go through the shared request layer (`@wpuf/api`: WordPress REST
- * root and nonce, timeout, GET retry on a 5xx, and a body parser that still
- * loads when PHP notices sit in front of the JSON, as develop did).
- * Only the latest request writes the list: a slower, older answer (search
- * typing, tab switches) is dropped.
- *
  * @param {Object} options
  * @param {string} options.postType Post type slug. Default 'wpuf_forms'.
  *
  * @return {Object} { forms, loading, error, pagination, counts, fetchForms }
  */
 const useFormsFetch = ( { postType = 'wpuf_forms' } = {} ) => {
-    const [ forms, setForms ] = useState( [] );
-    const [ loading, setLoading ] = useState( true );
-    const [ pagination, setPagination ] = useState( {
-        total_items: 0,
-        total_pages: 0,
-        current_page: 1,
-        per_page: PER_PAGE,
-    } );
-    const [ error, setError ] = useState( null );
-    // Status tab counts from the last list answer (null until one arrives).
-    const [ counts, setCounts ] = useState( null );
-    const latest = useRef( 0 );
+    const data = useSelect(
+        ( select ) => {
+            const list = select( store );
 
-    const fetchForms = useCallback( async ( page = 1, status = 'any', search = '', perPage = PER_PAGE ) => {
-        const requestId = ++latest.current;
+            return {
+                forms: list.getForms( postType ),
+                loading: list.isLoading( postType ),
+                error: list.getError( postType ),
+                pagination: list.getPagination( postType ),
+                counts: list.getCounts( postType ),
+            };
+        },
+        [ postType ]
+    );
+    const { fetchForms: load } = useDispatch( store );
 
-        setLoading( true );
-        setError( null );
+    const fetchForms = useCallback(
+        ( page = 1, status = 'any', search = '', perPage = PER_PAGE ) => load( postType, page, status, search, perPage ),
+        [ load, postType ]
+    );
 
-        const query = {
-            page,
-            per_page: perPage,
-            status,
-            post_type: postType,
-        };
-
-        if ( search ) {
-            query.s = search;
-        }
-
-        try {
-            const data = await request( restPath( 'wpuf/v1', '/wpuf_form' ), { query } );
-
-            if ( requestId !== latest.current ) {
-                return;
-            }
-
-            if ( data.counts && 'object' === typeof data.counts ) {
-                setCounts( data.counts );
-            }
-
-            if ( data.success && data.result ) {
-                setForms( data.result );
-                setPagination( {
-                    total_items: parseInt( data.pagination?.total_items, 10 ) || 0,
-                    total_pages: data.pagination?.total_pages || 0,
-                    current_page: page,
-                    per_page: perPage,
-                } );
-            } else {
-                setForms( [] );
-                setPagination( { total_items: 0, total_pages: 0, current_page: 1, per_page: perPage } );
-            }
-        } catch ( err ) {
-            if ( requestId !== latest.current ) {
-                return;
-            }
-
-            setError( err );
-            setForms( [] );
-            setPagination( { total_items: 0, total_pages: 0, current_page: 1, per_page: perPage } );
-        } finally {
-            if ( requestId === latest.current ) {
-                setLoading( false );
-            }
-        }
-    }, [ postType ] );
-
-    return { forms, loading, pagination, error, counts, fetchForms };
+    return { ...data, fetchForms };
 };
 
 export default useFormsFetch;

@@ -4,12 +4,14 @@
  *
  * @since WPUF_SINCE
  */
+import { useDispatch, useSelect } from '@wordpress/data';
 import { createInterpolateElement, useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Button, ErrorState, Skeleton } from '@wpuf/components';
 import { Check, Copy } from 'lucide-react';
 
-import { copyText, getShortcodes } from './api';
+import { copyText } from './api';
+import { store } from './store';
 
 /**
  * @param {Object} props
@@ -40,12 +42,15 @@ const ProTag = () => (
  * @param {string}  props.upgradeUrl Upgrade link.
  */
 export default function ShortcodesTab( { isPro, upgradeUrl } ) {
-    const [ categories, setCategories ] = useState( null );
-    const [ error, setError ] = useState( null );
+    const { categories, error } = useSelect( ( select ) => ( {
+        categories: select( store ).getShortcodes(),
+        error: select( store ).getShortcodesError(),
+    } ), [] );
+    const { loadShortcodes } = useDispatch( store );
 
     useEffect( () => {
-        getShortcodes().then( setCategories ).catch( setError );
-    }, [] );
+        loadShortcodes();
+    }, [ loadShortcodes ] );
 
     if ( error ) {
         return <ErrorState message={ error.message } />;

@@ -2,7 +2,7 @@
  * DESCRIPTION: Custom router store for WordPress admin navigation
  * DESCRIPTION: Enables URL-based navigation for the subscriptions app
  */
-import { registerStore, dispatch } from '@wordpress/data';
+import { createReduxStore, register, dispatch } from '@wordpress/data';
 import { getRouteQuery, inApp, setRouteQuery } from '../../../../app/client';
 
 /**
@@ -151,7 +151,9 @@ const storeConfig = {
 
 const STORE_NAME = 'wpuf/subscriptions-router';
 
-registerStore(STORE_NAME, storeConfig);
+export const store = createReduxStore(STORE_NAME, storeConfig);
+
+register(store);
 
 // Browser back/forward on the screen's own page. In the admin app the shell
 // reports query changes of the route instead (index.jsx, onRouteQuery).

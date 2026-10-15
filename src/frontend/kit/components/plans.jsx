@@ -153,22 +153,25 @@ export function SubscriptionCard( { info } ) {
                     <Pill tone={ expired ? 'red' : 'green' }>{ expired ? __( 'Expired', 'wp-user-frontend' ) : __( 'Active', 'wp-user-frontend' ) }</Pill>
                 </header>
 
-                <div className="wpuf-plan-status__price">
-                    <span className="wpuf-plan-card__amount">{ info.price }</span>
-                    { info.cycle && <span className="wpuf-plan-card__cycle">{ info.cycle }</span> }
-                </div>
-
-                { ( info.dates || [] ).length > 0 && (
-                    <ul className="wpuf-plan-status__dates">
-                        { info.dates.map( ( date ) => (
-                            <li key={ date.label }>
-                                <CalendarClock size={ 16 } aria-hidden="true" />
-                                <span className="wpuf-muted">{ date.label }</span>
-                                <strong>{ date.value }</strong>
-                            </li>
-                        ) ) }
-                    </ul>
-                ) }
+                { /* Price and dates side by side: a label over each value (no wrapping next to a label). */ }
+                <dl className="wpuf-plan-status__facts">
+                    <div className="wpuf-plan-fact wpuf-plan-fact--price">
+                        <dt className="wpuf-plan-fact__label">{ __( 'Price', 'wp-user-frontend' ) }</dt>
+                        <dd className="wpuf-plan-fact__value">
+                            <span className="wpuf-plan-card__amount">{ info.price }</span>
+                            { info.cycle && <span className="wpuf-plan-card__cycle">{ info.cycle }</span> }
+                        </dd>
+                    </div>
+                    { ( info.dates || [] ).map( ( date ) => (
+                        <div className="wpuf-plan-fact" key={ date.label }>
+                            <dt className="wpuf-plan-fact__label">
+                                <CalendarClock size={ 14 } aria-hidden="true" />
+                                { date.label }
+                            </dt>
+                            <dd className="wpuf-plan-fact__value">{ date.value }</dd>
+                        </div>
+                    ) ) }
+                </dl>
 
                 { ( info.limits || [] ).length > 0 && (
                     <div className="wpuf-plan-status__limits">
@@ -176,8 +179,8 @@ export function SubscriptionCard( { info } ) {
                         <ul>
                             { info.limits.map( ( limit ) => (
                                 <li key={ limit.label }>
-                                    <span className="wpuf-muted">{ limit.label }</span>
                                     <strong>{ limit.value }</strong>
+                                    <span className="wpuf-muted">{ limit.label }</span>
                                 </li>
                             ) ) }
                         </ul>

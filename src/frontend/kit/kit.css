@@ -355,8 +355,7 @@
     margin: 0 0 6px;
 }
 
-.wpuf-frontend .wpuf-plan-card__price,
-.wpuf-frontend .wpuf-plan-status__price {
+.wpuf-frontend .wpuf-plan-card__price {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
@@ -502,31 +501,70 @@
     color: var(--wpuf-fe-text);
 }
 
-.wpuf-frontend .wpuf-plan-status__dates,
+/* Price and dates: one strip of facts, a label over each value. */
+.wpuf-frontend .wpuf-plan-status__facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 1px;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius-lg);
+    background: var(--wpuf-fe-border);
+}
+
+.wpuf-frontend .wpuf-plan-fact {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    min-width: 0;
+    padding: 14px 16px;
+    background: var(--wpuf-fe-soft);
+}
+
+.wpuf-frontend .wpuf-plan-fact__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-plan-fact__value {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-plan-fact--price .wpuf-plan-card__amount {
+    font-size: 24px;
+}
+
+/* What is left: a tile per limit, the number first. */
 .wpuf-frontend .wpuf-plan-status__limits ul {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 8px;
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-.wpuf-frontend .wpuf-plan-status__dates li {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0;
-    font-size: 14px;
-}
-
-.wpuf-frontend .wpuf-plan-status__dates li svg {
-    color: var(--wpuf-fe-muted);
-}
-
 .wpuf-frontend .wpuf-plan-status__limits h4 {
     margin: 0 0 8px;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     color: var(--wpuf-fe-muted);
     text-transform: uppercase;
@@ -535,14 +573,22 @@
 
 .wpuf-frontend .wpuf-plan-status__limits li {
     display: flex;
-    justify-content: space-between;
-    gap: 8px;
+    flex-direction: column;
+    gap: 2px;
     margin: 0;
-    padding: 10px 12px;
+    padding: 12px 14px;
     border: 1px solid var(--wpuf-fe-border);
     border-radius: var(--wpuf-fe-radius);
-    background: var(--wpuf-fe-soft);
-    font-size: 14px;
+    background: #ffffff;
+    font-size: 13px;
+}
+
+.wpuf-frontend .wpuf-plan-status__limits li strong {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--wpuf-fe-text);
+    font-variant-numeric: tabular-nums;
 }
 
 .wpuf-frontend .wpuf-plan-status__note {
@@ -566,6 +612,18 @@
 
 .wpuf-frontend .wpuf-plan-cancel {
     margin: 0;
+}
+
+/* Cancelling is the secondary action of the card: outlined, red on hover. */
+.wpuf-frontend .wpuf-plan-status__actions .wpuf-plan-cancel .wpuf-btn--danger {
+    border: 1px solid #fecaca;
+    background: #ffffff;
+    color: #b91c1c;
+}
+
+.wpuf-frontend .wpuf-plan-status__actions .wpuf-plan-cancel .wpuf-btn--danger:hover:not(:disabled) {
+    border-color: #fca5a5;
+    background: var(--wpuf-fe-danger-soft);
 }
 
 .wpuf-frontend .wpuf-plan-extra {

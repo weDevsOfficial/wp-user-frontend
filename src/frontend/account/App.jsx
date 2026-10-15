@@ -12,6 +12,7 @@ import { useCallback, useEffect, useMemo, useState } from '@wordpress/element';
 import { applyFilters, doAction } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
 import { Avatar, Button, Notice, Pill, RailItem, ServerHtml, SkeletonLines, api, icons, loadAssets } from '@wpuf/frontend-kit';
+import { AvatarPhoto, CoverPhotoActions } from './PhotoControls';
 import { listen, pageOf, urlFor } from './router';
 import Overview from './sections/Overview';
 import Posts from './sections/Posts';
@@ -164,8 +165,11 @@ export default function App( { data, root } ) {
                 <div className={ 'wpuf-profile-cover' + ( person.cover?.url ? ' has-image' : '' ) } aria-hidden="true">
                     { person.cover?.url && <img src={ person.cover.url } alt="" /> }
                 </div>
+                <CoverPhotoActions person={ person } />
                 <div className="wpuf-profile-header__main">
-                    <Avatar url={ person.avatar?.url } initials={ person.avatar?.initials } alt={ person.display_name } size={ 96 } className="wpuf-profile-avatar" />
+                    <AvatarPhoto person={ person }>
+                        <Avatar url={ person.avatar?.url } initials={ person.avatar?.initials } alt={ person.display_name } size={ 96 } className="wpuf-profile-avatar" />
+                    </AvatarPhoto>
                     <div className="wpuf-profile-header__text">
                         <div className="wpuf-profile-header__name-row">
                             <h1 className="wpuf-profile-name">{ person.display_name }</h1>

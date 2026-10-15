@@ -143,6 +143,11 @@ class FormSave {
             return new WP_Error( 'wpuf_form_ppp_cost_required', __( 'Cost for each additional post after pack limit is reached is required when Pay-per-post billing when limit exceeds is enabled.', 'wp-user-frontend' ) );
         }
 
+        // Server-side validation for the pay-per-post charge (the builder checks it too)
+        if ( $this->pay_per_post_cost_missing( $settings ) ) {
+            return new WP_Error( 'wpuf_form_ppp_cost_required', __( 'Charge for each post is required when Pay as you post is selected.', 'wp-user-frontend' ) );
+        }
+
         $data = [
             'form_id'           => $form_id,
             'post_title'        => sanitize_text_field( isset( $form_data['post_title'] ) ? $form_data['post_title'] : '' ),
@@ -266,5 +271,26 @@ class FormSave {
         }
 
         return false;
+    }
+
+    /**
+     * Whether the pay-per-post charge is required but empty (or 0)
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $settings Form settings
+     *
+     * @return bool True if the charge is required but empty
+     */
+    private function pay_per_post_cost_missing( $settings ) {
+        if ( empty( $settings['payment_options'] ) || ! wpuf_is_checkbox_or_toggle_on( $settings['payment_options'] ) ) {
+            return false;
+        }
+
+        if ( empty( $settings['choose_payment_option'] ) || 'enable_pay_per_post' !== $settings['choose_payment_option'] ) {
+            return false;
+        }
+
+        return empty( $settings['pay_per_post_cost'] ) || floatval( $settings['pay_per_post_cost'] ) <= 0;
     }
 }

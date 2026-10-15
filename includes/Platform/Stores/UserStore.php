@@ -194,4 +194,22 @@ class UserStore implements DataStore {
             $this->delete_meta( $user_id, self::PROFILE_PHOTO );
         }
     }
+
+    /**
+     * Set or clear (0) the cover photo.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $user_id       User id
+     * @param int $attachment_id Attachment id, 0 to remove
+     *
+     * @return void
+     */
+    public function set_cover_photo( $user_id, $attachment_id ) {
+        if ( $attachment_id ) {
+            $this->set_meta( $user_id, self::COVER_PHOTO, (int) $attachment_id );
+        } else {
+            $this->delete_meta( $user_id, self::COVER_PHOTO );
+        }
+    }
 }

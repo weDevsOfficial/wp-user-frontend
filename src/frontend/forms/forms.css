@@ -1893,3 +1893,42 @@
     outline: 2px solid currentColor;
     outline-offset: 2px;
 }
+
+/* Classic notices printed by hooks into the React form (pay per post charge,
+   subscription messages, `wpuf_add_post_form_top`): the kit notice look. */
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-info,
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-message,
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-success,
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-error,
+.wpuf-frontend.wpuf-form-root > .wpuf-info,
+.wpuf-frontend.wpuf-form-root > .wpuf-message {
+    display: block !important;
+    margin: 0 0 20px !important;
+    padding: 12px 16px !important;
+    border: 1px solid #bfdbfe !important;
+    border-radius: var(--wpuf-fe-radius, 8px) !important;
+    background: var(--wpuf-fe-info-soft, #eff6ff) !important;
+    color: #1e40af !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    text-align: start !important;
+    box-shadow: none !important;
+}
+
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-success {
+    border-color: #a7f3d0 !important;
+    background: var(--wpuf-fe-success-soft, #ecfdf5) !important;
+    color: #065f46 !important;
+}
+
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-error {
+    border-color: #fecaca !important;
+    background: var(--wpuf-fe-danger-soft, #fef2f2) !important;
+    color: #991b1b !important;
+}
+
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-info strong,
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-message strong {
+    font-weight: 600;
+    color: inherit;
+}

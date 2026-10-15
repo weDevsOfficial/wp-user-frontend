@@ -72,6 +72,7 @@ export const getSection = ( slug, pagenum = 1 ) => get( `/account/sections/${ en
 export const updateProfile = ( data ) => send( '/account/profile', 'PUT', data );
 export const updatePassword = ( data ) => send( '/account/password', 'PUT', data );
 export const deleteAvatar = () => send( '/account/avatar', 'DELETE' );
+export const deleteCover = () => send( '/account/cover', 'DELETE' );
 
 /**
  * Upload one file with progress (apiFetch has no progress events).

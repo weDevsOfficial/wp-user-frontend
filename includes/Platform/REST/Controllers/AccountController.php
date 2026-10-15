@@ -8,8 +8,8 @@
 
 namespace WeDevs\Wpuf\Platform\REST\Controllers;
 
+use WeDevs\Wpuf\Frontend\Account\Account_Photos;
 use WeDevs\Wpuf\Frontend\Account\Account_Service;
-use WeDevs\Wpuf\Frontend\Forms\Upload_Service;
 use WeDevs\Wpuf\Platform\Http\Submission_Context;
 use WeDevs\Wpuf\Platform\REST\RestController;
 use WeDevs\Wpuf\Platform\Stores\Stores;
@@ -40,21 +40,21 @@ class AccountController extends RestController {
     private $account;
 
     /**
-     * Uploads (the profile photo).
+     * The profile and cover photo.
      *
-     * @var Upload_Service
+     * @var Account_Photos
      */
-    private $uploads;
+    private $photos;
 
     /**
      * @since WPUF_SINCE
      *
      * @param Account_Service $account Account service
-     * @param Upload_Service  $uploads Uploads
+     * @param Account_Photos  $photos  Account photos
      */
-    public function __construct( Account_Service $account, Upload_Service $uploads ) {
+    public function __construct( Account_Service $account, Account_Photos $photos ) {
         $this->account = $account;
-        $this->uploads = $uploads;
+        $this->photos  = $photos;
     }
 
     /**
@@ -109,6 +109,8 @@ class AccountController extends RestController {
         $this->route( '/account/password', WP_REST_Server::EDITABLE, 'update_password', $logged_in );
         $this->route( '/account/avatar', WP_REST_Server::CREATABLE, 'update_avatar', $logged_in );
         $this->route( '/account/avatar', WP_REST_Server::DELETABLE, 'delete_avatar', $logged_in );
+        $this->route( '/account/cover', WP_REST_Server::CREATABLE, 'update_cover', $logged_in );
+        $this->route( '/account/cover', WP_REST_Server::DELETABLE, 'delete_cover', $logged_in );
         $this->route(
             '/account/billing-address', WP_REST_Server::EDITABLE, 'update_billing_address', $logged_in, [
                 'billing_country'   => [
@@ -305,7 +307,7 @@ class AccountController extends RestController {
     }
 
     /**
-     * POST /account/avatar (multipart `wpuf_file`): the profile photo.
+     * POST /account/avatar (multipart `wpuf_file`): the profile photo (Pro).
      *
      * @since WPUF_SINCE
      *
@@ -314,71 +316,72 @@ class AccountController extends RestController {
      * @return \WP_REST_Response|WP_Error
      */
     public function update_avatar( WP_REST_Request $request ) {
-        $files = $request->get_file_params();
-        $file  = isset( $files['wpuf_file'] ) ? (array) $files['wpuf_file'] : [];
-
-        if ( ! $file ) {
-            return $this->error( 'no_file', __( 'No file was uploaded.', 'wp-user-frontend' ), 400 );
-        }
-
-        /** This filter is documented in includes/functions/users.php */
-        $extensions = apply_filters( 'wpuf_field_profile_photo_allowed_extensions', [ 'jpg', 'jpeg', 'png', 'gif', 'webp' ] );
-        $extension  = strtolower( pathinfo( (string) $file['name'], PATHINFO_EXTENSION ) );
-
-        if ( ! in_array( $extension, (array) $extensions, true ) ) {
-            return $this->error( 'bad_type', __( 'This file type is not allowed for a profile photo.', 'wp-user-frontend' ), 400 );
-        }
-
-        $limit   = function () {
-            return 2 * MB_IN_BYTES;
-        };
-        $size_ok = (int) $file['size'] <= (int) apply_filters( 'wpuf_profile_photo_max_size', $limit() );
-
-        if ( ! $size_ok ) {
-            return $this->error( 'too_large', __( 'The profile photo must be 2 MB or smaller.', 'wp-user-frontend' ), 400 );
-        }
-
-        $user_id = get_current_user_id();
-        $form_id = (int) Stores::settings()->get( 'wpuf_my_account', 'edit_profile_form', 0 );
-        $result  = $this->uploads->upload( $file, $form_id ? $form_id : $this->any_form_id(), 'profile_photo' );
-
-        if ( is_wp_error( $result ) ) {
-            return $result;
-        }
-
-        $previous = Stores::users()->profile_photo_id( $user_id );
-
-        Stores::users()->set_profile_photo( $user_id, (int) $result['attach_id'] );
-        wp_update_post(
-            [
-                'ID'          => (int) $result['attach_id'],
-                'post_author' => $user_id,
-            ]
-        );
-
-        if ( $previous && $previous !== (int) $result['attach_id'] && (int) get_post_field( 'post_author', $previous ) === $user_id ) {
-            wp_delete_attachment( $previous, true );
-        }
-
-        return rest_ensure_response( [ 'profile' => $this->account->profile() ] );
+        return $this->store_photo( $request, Account_Photos::PROFILE );
     }
 
     /**
-     * DELETE /account/avatar: back to Gravatar or initials.
+     * DELETE /account/avatar: back to Gravatar or initials (Pro).
      *
      * @since WPUF_SINCE
      *
-     * @return \WP_REST_Response
+     * @return \WP_REST_Response|WP_Error
      */
     public function delete_avatar() {
-        $user_id  = get_current_user_id();
-        $previous = Stores::users()->profile_photo_id( $user_id );
+        return $this->remove_photo( Account_Photos::PROFILE );
+    }
 
-        Stores::users()->set_profile_photo( $user_id, 0 );
+    /**
+     * POST /account/cover (multipart `wpuf_file`): the header cover photo (Pro).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Request
+     *
+     * @return \WP_REST_Response|WP_Error
+     */
+    public function update_cover( WP_REST_Request $request ) {
+        return $this->store_photo( $request, Account_Photos::COVER );
+    }
 
-        if ( $previous && (int) get_post_field( 'post_author', $previous ) === $user_id ) {
-            wp_delete_attachment( $previous, true );
+    /**
+     * DELETE /account/cover: back to the plain header band (Pro).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return \WP_REST_Response|WP_Error
+     */
+    public function delete_cover() {
+        return $this->remove_photo( Account_Photos::COVER );
+    }
+
+    /**
+     * @param WP_REST_Request $request Request
+     * @param string          $kind    Account_Photos::PROFILE|COVER
+     *
+     * @return \WP_REST_Response|WP_Error
+     */
+    private function store_photo( WP_REST_Request $request, $kind ) {
+        if ( ! $this->account->photos_editable() ) {
+            return $this->error( 'pro_required', __( 'Changing the profile and cover photo needs WP User Frontend Pro.', 'wp-user-frontend' ), 403 );
         }
+
+        $files  = $request->get_file_params();
+        $result = $this->photos->store( isset( $files['wpuf_file'] ) ? (array) $files['wpuf_file'] : [], $kind );
+
+        return is_wp_error( $result ) ? $result : rest_ensure_response( [ 'profile' => $this->account->profile() ] );
+    }
+
+    /**
+     * @param string $kind Account_Photos::PROFILE|COVER
+     *
+     * @return \WP_REST_Response|WP_Error
+     */
+    private function remove_photo( $kind ) {
+        if ( ! $this->account->photos_editable() ) {
+            return $this->error( 'pro_required', __( 'Changing the profile and cover photo needs WP User Frontend Pro.', 'wp-user-frontend' ), 403 );
+        }
+
+        $this->photos->remove( $kind );
 
         return rest_ensure_response( [ 'profile' => $this->account->profile() ] );
     }
@@ -449,27 +452,6 @@ class AccountController extends RestController {
 					'html' => $html,
 				]
         );
-    }
-
-    /**
-     * A form id the upload service accepts when no profile form is set
-     * (the upload rules only need an existing form for a logged-in user).
-     *
-     * @since WPUF_SINCE
-     *
-     * @return int
-     */
-    private function any_form_id() {
-        $forms = get_posts(
-            [
-                'post_type'      => 'wpuf_forms',
-                'post_status'    => 'publish',
-                'posts_per_page' => 1,
-                'fields'         => 'ids',
-            ]
-        );
-
-        return $forms ? (int) $forms[0] : 0;
     }
 
     /**

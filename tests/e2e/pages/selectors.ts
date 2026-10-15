@@ -721,9 +721,10 @@ export const Selectors = {
             postRatingStarsFormsFE: '//a[@data-rating-value="5"]',
             // Math Captcha
             postMathCaptchaFormsFE: {
-                operand1: '//span[@id="operand_one"]',
-                operand2: '//span[@id="operand_two"]',
-                operator: '//span[@id="operator"]',
+                // Classic ids, or the React field's `p.captcha-number` spans (a, operator, b).
+                operand1: '//span[@id="operand_one"] | (//p[contains(@class,"captcha-number")]/span)[1]',
+                operand2: '//span[@id="operand_two"] | (//p[contains(@class,"captcha-number")]/span)[3]',
+                operator: '//span[@id="operator"] | (//p[contains(@class,"captcha-number")]/span)[2]',
                 mathCaptcha: '(//label[contains(.,"Math Captcha *")]/following::input)[1]',
                 // Error container the WPUF submit handler fills when the captcha is
                 // unanswered/wrong (jQuery `.wpuf-captcha-error`). Used to prove enforcement.

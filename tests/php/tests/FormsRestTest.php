@@ -269,6 +269,47 @@ class FormsRestTest extends WP_UnitTestCase {
         $payload = $this->payload( $form_id, [ 'payment_options' => 'on', 'choose_payment_option' => 'force_pack_purchase', 'fallback_ppp_enable' => 'on', 'fallback_ppp_cost' => '' ] );
         parse_str( $payload['form_data'], $form_data );
         $this->assertSame( 'wpuf_form_ppp_cost_required', $saver->save( $payload, $form_data )->get_error_code() );
+
+        foreach ( [ '', '0', '0.00', '-1', 'abc' ] as $cost ) {
+            $payload = $this->payload( $form_id, [ 'payment_options' => 'true', 'choose_payment_option' => 'enable_pay_per_post', 'pay_per_post_cost' => $cost ] );
+            parse_str( $payload['form_data'], $form_data );
+            $result = $saver->save( $payload, $form_data );
+            $this->assertInstanceOf( WP_Error::class, $result, "pay per post cost '{$cost}'" );
+            $this->assertSame( 'wpuf_form_ppp_cost_required', $result->get_error_code() );
+        }
+
+        $payload = $this->payload( $form_id, [ 'payment_options' => 'true', 'choose_payment_option' => 'enable_pay_per_post', 'pay_per_post_cost' => '2.5' ] );
+        parse_str( $payload['form_data'], $form_data );
+        $this->assertNotInstanceOf( WP_Error::class, $saver->save( $payload, $form_data ) );
+    }
+
+    public function test_pay_per_post_with_no_cost_charges_nothing() {
+        $form_id = $this->make_form();
+        $charge  = function ( $settings ) use ( $form_id ) {
+            update_post_meta( $form_id, 'wpuf_form_settings', $settings );
+
+            return ( new \WeDevs\Wpuf\Admin\Forms\Form( $form_id ) )->is_charging_enabled();
+        };
+
+        foreach ( [ null, '', '0', '0.00', '-3' ] as $cost ) {
+            $settings = [ 'payment_options' => 'true', 'choose_payment_option' => 'enable_pay_per_post' ];
+
+            if ( null !== $cost ) {
+                $settings['pay_per_post_cost'] = $cost;
+            }
+
+            $this->assertFalse( $charge( $settings ), 'pay per post cost ' . var_export( $cost, true ) );
+        }
+
+        $this->assertTrue( $charge( [ 'payment_options' => 'true', 'choose_payment_option' => 'enable_pay_per_post', 'pay_per_post_cost' => '5' ] ) );
+        $this->assertTrue( $charge( [ 'payment_options' => 'true', 'choose_payment_option' => 'force_pack_purchase' ] ) );
+        $this->assertFalse( $charge( [ 'payment_options' => 'false', 'choose_payment_option' => 'enable_pay_per_post', 'pay_per_post_cost' => '5' ] ) );
+
+        // A guest can still post on a pay per post form that costs nothing.
+        wp_set_current_user( 0 );
+        update_post_meta( $form_id, 'wpuf_form_settings', [ 'payment_options' => 'true', 'choose_payment_option' => 'enable_pay_per_post', 'pay_per_post_cost' => '0', 'post_permission' => 'guest_post' ] );
+        $form = new \WeDevs\Wpuf\Admin\Forms\Form( $form_id );
+        $this->assertSame( 'yes', $form->is_submission_open( $form, $form->get_settings() )[0] );
     }
 
     public function test_list_actions_duplicate_trash_restore_delete() {

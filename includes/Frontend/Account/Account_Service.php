@@ -148,6 +148,25 @@ class Account_Service {
     }
 
     /**
+     * Whether the current user may change the profile and cover photo from the
+     * account header: a Pro feature (the profile and cover photo fields).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    public function photos_editable() {
+        /**
+         * Filters whether the account header offers to change the profile and cover photo.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param bool $editable Pro is active
+         */
+        return (bool) apply_filters( 'wpuf_account_photos_editable', wpuf_is_pro_active() && is_user_logged_in() );
+    }
+
+    /**
      * The current user as the profile header and overview show them.
      *
      * @since WPUF_SINCE
@@ -159,6 +178,7 @@ class Account_Service {
         $avatar = wpuf_get_user_avatar_data( $user, 96 );
         // The cover photo field (Pro) saves an attachment id here; no cover falls back to the theme band.
         $cover_id  = Stores::users()->cover_id( $user->ID );
+        $photo_id  = Stores::users()->profile_photo_id( $user->ID );
         $cover_url = $cover_id ? wp_get_attachment_image_url( $cover_id, 'full' ) : '';
         $roles  = wp_roles()->get_names();
         $role   = ! empty( $user->roles ) ? $user->roles[0] : '';
@@ -178,7 +198,12 @@ class Account_Service {
             'avatar'       => [
                 'url'      => $avatar['url'] ? (string) $avatar['url'] : '',
                 'initials' => (string) $avatar['initials'],
+                // A photo the user uploaded that still exists (Gravatar and initials are not
+                // removable). Display fallback as the User Directory: photo, real Gravatar, initials.
+                'custom'   => $photo_id > 0 && (bool) wp_get_attachment_url( $photo_id ),
             ],
+            // Changing the photos is a Pro feature (the profile / cover photo fields).
+            'photos_editable' => $this->photos_editable(),
             'cover'        => [
                 'url' => $cover_url ? (string) $cover_url : '',
             ],

@@ -274,9 +274,13 @@ class Pack_Display {
 
         // $price_with_tax = $this->wpuf_prices_include_tax();
 
+        // A charge of 0 is no charge: no "There is a $0.00 charge" notice.
         if (
-            ( Subscription::has_user_error( $form_settings ) && ! ( $force_pack && $form->is_enabled_fallback_cost() ) )
-            || ( $payment_enabled && $pay_per_post && ! $force_pack )
+            0 < (float) apply_filters( 'wpuf_payment_amount', $pay_per_post_cost )
+            && (
+                ( Subscription::has_user_error( $form_settings ) && ! ( $force_pack && $form->is_enabled_fallback_cost() ) )
+                || ( $payment_enabled && $pay_per_post && ! $force_pack )
+            )
         ) {
             ?>
             <div class="wpuf-info">
@@ -293,7 +297,7 @@ class Pack_Display {
                 ?>
             </div>
             <?php
-        } elseif ( $payment_enabled && $force_pack && $form->is_enabled_fallback_cost() && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+        } elseif ( $payment_enabled && $force_pack && $form->is_enabled_fallback_cost() && 0 < (float) $form->get_subs_fallback_cost() && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
             ?>
             <div class="wpuf-info">
                 <?php

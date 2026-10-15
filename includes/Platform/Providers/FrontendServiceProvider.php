@@ -8,6 +8,7 @@
 
 namespace WeDevs\Wpuf\Platform\Providers;
 
+use WeDevs\Wpuf\Frontend\Account\Account_Photos;
 use WeDevs\Wpuf\Frontend\Account\Account_Service;
 use WeDevs\Wpuf\Frontend\Forms\Form_Schema;
 use WeDevs\Wpuf\Frontend\Forms\Submission_Service;
@@ -185,10 +186,16 @@ class FrontendServiceProvider extends ServiceProvider {
                 return new UploadsController( $container->get( Upload_Service::class ), $container->get( Rate_Limit::class ) );
             }
         );
+        $this->container->share(
+            Account_Photos::class,
+            function ( $container ) {
+                return new Account_Photos( $container->get( Upload_Service::class ) );
+            }
+        );
         $this->share_tagged(
             AccountController::class,
             function ( $container ) {
-                return new AccountController( $container->get( Account_Service::class ), $container->get( Upload_Service::class ) );
+                return new AccountController( $container->get( Account_Service::class ), $container->get( Account_Photos::class ) );
             }
         );
         $this->share_tagged(

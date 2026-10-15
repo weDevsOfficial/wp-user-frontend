@@ -43,7 +43,7 @@ class RestRoutesPermissionTest extends WP_UnitTestCase {
         '/wpuf/v1/registration',
         // The Login widget (visitors with the widget nonce; logout for any logged-in user)
         // and Pro's frontend routes (the avatar field, the pay page coupon box and Stripe,
-        // the QR field, the comments list): ClassicRestRoutesTest / ProClassicRestRoutesTest.
+        // the QR field, the comments list): LegacyScriptRestRoutesTest / ProLegacyScriptRestRoutesTest.
         '/wpuf/v1/auth',
         '/wpuf/v1/profile',
         '/wpuf/v1/coupons',

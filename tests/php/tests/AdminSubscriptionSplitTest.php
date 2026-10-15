@@ -27,9 +27,9 @@ class AdminSubscriptionSplitTest extends WP_UnitTestCase {
         [ 'edit_user_profile', 'profile_subscription_details' ],
         [ 'personal_options_update', 'profile_subscription_update' ],
         [ 'edit_user_profile_update', 'profile_subscription_update' ],
-        [ 'load-edit.php', 'redirect_classic_screen' ],
-        [ 'load-post.php', 'redirect_classic_screen' ],
-        [ 'load-post-new.php', 'redirect_classic_screen' ],
+        [ 'load-edit.php', 'redirect_legacy_screen' ],
+        [ 'load-post.php', 'redirect_legacy_screen' ],
+        [ 'load-post-new.php', 'redirect_legacy_screen' ],
         [ 'wpuf_load_subscription_page', 'remove_notices' ],
         [ 'wpuf_load_subscription_page', 'enqueue_admin_scripts' ],
         [ 'admin_init', 'set_default_sort_order_for_existing_subscriptions' ],
@@ -94,7 +94,7 @@ class AdminSubscriptionSplitTest extends WP_UnitTestCase {
         $route  = function ( $file, $get ) use ( $screen ) {
             $_GET = $get;
 
-            return $screen->classic_screen_route( $file );
+            return $screen->legacy_screen_route( $file );
         };
 
         $this->assertSame( '/subscriptions', $route( 'edit.php', [ 'post_type' => 'wpuf_subscription' ] ) );

@@ -49,9 +49,9 @@ class Admin_Subscription {
         add_action( 'edit_user_profile_update', [ $this, 'profile_subscription_update' ] );
 
         // The classic post type screens open the React subscriptions screen.
-        add_action( 'load-edit.php', [ $this, 'redirect_classic_screen' ] );
-        add_action( 'load-post.php', [ $this, 'redirect_classic_screen' ] );
-        add_action( 'load-post-new.php', [ $this, 'redirect_classic_screen' ] );
+        add_action( 'load-edit.php', [ $this, 'redirect_legacy_screen' ] );
+        add_action( 'load-post.php', [ $this, 'redirect_legacy_screen' ] );
+        add_action( 'load-post-new.php', [ $this, 'redirect_legacy_screen' ] );
 
         add_action( 'wpuf_load_subscription_page', [ $this, 'remove_notices' ] );
         add_action( 'wpuf_load_subscription_page', [ $this, 'enqueue_admin_scripts' ] );
@@ -141,12 +141,12 @@ class Admin_Subscription {
     }
 
     /**
-     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::redirect_classic_screen()
+     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Screen::redirect_legacy_screen()
      *
      * @since WPUF_SINCE
      */
-    public function redirect_classic_screen() {
-        return $this->pack_screen()->redirect_classic_screen();
+    public function redirect_legacy_screen() {
+        return $this->pack_screen()->redirect_legacy_screen();
     }
 
     /**

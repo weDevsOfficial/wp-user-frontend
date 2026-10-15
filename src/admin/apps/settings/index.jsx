@@ -47,7 +47,7 @@ const SettingsApp = () => {
 
     const boot = window.wpuf_settings || {};
     const [ pendingTab, setPendingTab ] = useState( null );
-    const classicOnly = Array.isArray( boot.classic_only ) ? boot.classic_only : [];
+    const legacyOnly = Array.isArray( boot.legacy_only ) ? boot.legacy_only : [];
     const [ activeSub, setActiveSub ] = useState( null );
     const [ justSaved, setJustSaved ] = useState( false );
     const savedTimer = useRef( null );
@@ -255,7 +255,7 @@ const SettingsApp = () => {
             ) : (
             <div className="pt-6 pb-6">
             { /* Settings of other plugins the React screen cannot show (D12). */ }
-            { classicOnly.length > 0 && (
+            { legacyOnly.length > 0 && (
                 <Notice
                     role="status"
                     data-settings-notice="classic-only"
@@ -263,7 +263,7 @@ const SettingsApp = () => {
                     className="mb-6"
                     title={ __( 'Some settings added by other plugins cannot be edited on this screen:', 'wp-user-frontend' ) }
                 >
-                    { classicOnly.join( ', ' ) }
+                    { legacyOnly.join( ', ' ) }
                 </Notice>
             ) }
 

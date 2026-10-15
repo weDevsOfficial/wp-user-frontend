@@ -116,10 +116,10 @@ class Pack_Screen {
      *
      * @return void
      */
-    public function redirect_classic_screen() {
+    public function redirect_legacy_screen() {
         global $pagenow;
 
-        $route = $this->classic_screen_route( (string) $pagenow );
+        $route = $this->legacy_screen_route( (string) $pagenow );
 
         if ( null === $route ) {
             return;
@@ -140,7 +140,7 @@ class Pack_Screen {
      *
      * @return string|null
      */
-    public function classic_screen_route( $page ) {
+    public function legacy_screen_route( $page ) {
         // phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only routing.
         if ( 'edit.php' === $page || 'post-new.php' === $page ) {
             $post_type = isset( $_GET['post_type'] ) ? sanitize_key( wp_unslash( $_GET['post_type'] ) ) : '';

@@ -9,7 +9,7 @@
  * @package WP_User_Frontend
  */
 
-class ClassicRestRoutesTest extends WP_UnitTestCase {
+class LegacyScriptRestRoutesTest extends WP_UnitTestCase {
 
     public function set_up() {
         parent::set_up();

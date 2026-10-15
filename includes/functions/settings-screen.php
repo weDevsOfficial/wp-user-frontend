@@ -429,7 +429,7 @@ add_action( 'wpuf_settings_saved', 'wpuf_profile_roles_save', 10, 3 );
  *
  * @return string[] Readable names, e.g. "Field label (plugin-folder)".
  */
-function wpuf_settings_classic_only_items() {
+function wpuf_settings_legacy_only_items() {
     global $wp_filter;
 
     $items = [];

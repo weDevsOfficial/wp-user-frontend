@@ -107,7 +107,7 @@ class Settings extends Screen {
                 'upgrade_url'   => 'https://wedevs.com/wp-user-frontend-pro/pricing/',
                 'support_url'   => 'https://wedevs.com/docs/wp-user-frontend-pro/',
                 // Settings of other plugins the React screen cannot show.
-                'classic_only'  => function_exists( 'wpuf_settings_classic_only_items' ) ? wpuf_settings_classic_only_items() : [],
+                'legacy_only'  => function_exists( 'wpuf_settings_legacy_only_items' ) ? wpuf_settings_legacy_only_items() : [],
             ]
         );
     }

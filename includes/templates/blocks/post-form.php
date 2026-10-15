@@ -20,7 +20,7 @@ $is_editor_preview = defined( 'REST_REQUEST' ) && REST_REQUEST;
 
 // Shared selector keys referenced by both the main rules array and label_position overrides.
 // Scoped via .wpuf-form to beat theme specificity on the radio/checkbox option labels.
-$label_selector = "{$scope} .wpuf-label, {$scope} .wpuf-label label, {$scope} .wpuf-label > span, {$scope} .wpuf-form label.wpuf-checkbox-block, {$scope} .wpuf-form label.wpuf-radio-block";
+$label_selector = "{$scope} .wpuf-label, {$scope} .wpuf-form label.wpuf-checkbox-block, {$scope} .wpuf-form label.wpuf-radio-block";
 
 // Build per-selector CSS rules from block_config
 $css_rules = [
@@ -71,7 +71,7 @@ $css_rules = [
         'font-style'       => $block_config['field_font_style'],
         'box-shadow'       => 'none',
     ],
-    "{$scope} .wpuf-form select:not(.wpuf-select__native), {$scope} .wpuf-form .wpuf-select__trigger" => [
+    "{$scope} .wpuf-form select" => [
         'border-top-width'     => $block_config['field_border']['top']['width'],
         'border-top-style'     => $block_config['field_border']['top']['style'],
         'border-top-color'     => $block_config['field_border']['top']['color'],
@@ -93,24 +93,6 @@ $css_rules = [
         'font-style'       => $block_config['field_font_style'],
         'box-shadow'       => 'none',
     ],
-    // The React form's rich text editor box (the classic editor kept the theme's look).
-    "{$scope} .wpuf-form .wpuf-tiptap" => [
-        'border-top-width'    => $block_config['field_border']['top']['width'],
-        'border-top-style'    => $block_config['field_border']['top']['style'],
-        'border-top-color'    => $block_config['field_border']['top']['color'],
-        'border-right-width'  => $block_config['field_border']['right']['width'],
-        'border-right-style'  => $block_config['field_border']['right']['style'],
-        'border-right-color'  => $block_config['field_border']['right']['color'],
-        'border-bottom-width' => $block_config['field_border']['bottom']['width'],
-        'border-bottom-style' => $block_config['field_border']['bottom']['style'],
-        'border-bottom-color' => $block_config['field_border']['bottom']['color'],
-        'border-left-width'   => $block_config['field_border']['left']['width'],
-        'border-left-style'   => $block_config['field_border']['left']['style'],
-        'border-left-color'   => $block_config['field_border']['left']['color'],
-        'border-radius'       => $block_config['field_border_radius'],
-        'background-color'    => $block_config['field_background_color'],
-        'color'               => $block_config['field_text_color'],
-    ],
     "{$scope} .wpuf-form input::placeholder,
      {$scope} .wpuf-form textarea::placeholder" => [
         'color' => $block_config['field_placeholder_color'],
@@ -121,12 +103,11 @@ $css_rules = [
     ],
     "{$scope} .wpuf-form input:focus,
      {$scope} .wpuf-form select:focus,
-     {$scope} .wpuf-form textarea:focus,
-     {$scope} .wpuf-form .wpuf-select__trigger:focus" => [
+     {$scope} .wpuf-form textarea:focus" => [
         'border-color' => $block_config['field_focus_border_color'],
         'outline'      => 'none',
     ],
-    "{$scope} ul.wpuf-form > li" => [
+    "{$scope} .wpuf-form li" => [
         'margin-bottom' => $block_config['field_margin_bottom'],
     ],
     "{$scope} .wpuf-form input[type='submit'],
@@ -162,6 +143,8 @@ $css_rules = [
         'text-shadow'      => 'none !important',
         'text-decoration'  => 'none',
         'cursor'           => 'pointer',
+        'display'          => 'block',
+        'width'            => '93.5%',
     ],
     "{$scope} .wpuf-el.featured_image a.file-selector,
      {$scope} .wpuf-el.image_upload a.file-selector" => [
@@ -176,8 +159,8 @@ $css_rules = [
 // Label position overrides
 switch ( $label_position ) {
     case 'left':
-        $css_rules[ "{$scope} ul.wpuf-form > li" ] = array_merge(
-            $css_rules[ "{$scope} ul.wpuf-form > li" ],
+        $css_rules[ "{$scope} .wpuf-form li" ] = array_merge(
+            $css_rules[ "{$scope} .wpuf-form li" ],
             [
                 'display'               => 'grid',
                 'grid-template-columns' => '30% 1fr',
@@ -187,8 +170,8 @@ switch ( $label_position ) {
         );
         break;
     case 'right':
-        $css_rules[ "{$scope} ul.wpuf-form > li" ] = array_merge(
-            $css_rules[ "{$scope} ul.wpuf-form > li" ],
+        $css_rules[ "{$scope} .wpuf-form li" ] = array_merge(
+            $css_rules[ "{$scope} .wpuf-form li" ],
             [
                 'display'               => 'grid',
                 'grid-template-columns' => '1fr 30%',
@@ -300,9 +283,6 @@ foreach ( $css_rules as $selector => $properties ) {
     $declarations = '';
     foreach ( $properties as $prop => $value ) {
         if ( '' !== $value && null !== $value ) {
-            // The form's own sheets (layout sheets, the React form design) set most
-            // of these with !important: a setting chosen on the block must win.
-            $value         = false === strpos( (string) $value, '!important' ) ? $value . ' !important' : $value;
             $declarations .= esc_attr( $prop ) . ':' . esc_attr( $value ) . ';';
         }
     }
@@ -316,12 +296,8 @@ $upload_icon_url   = 'data:image/svg+xml;utf8,' . rawurlencode( $upload_icon_svg
 $upload_btn_scope  = $scope . ' .wpuf-el.featured_image a.file-selector, ' . $scope . ' .wpuf-el.image_upload a.file-selector';
 
 $style_output .= $upload_btn_scope . '{padding-left:34px;background-image:url("' . $upload_icon_url . '");background-repeat:no-repeat;background-position:10px center;background-size:18px 18px;}';
-// Width fixes for the classic markup only (editor preview, classic fallback);
-// the React form (top element .wpuf-form-root) sizes these itself.
-$classic_scope = $scope . ' > :not(.wpuf-form-root)';
-$style_output .= $classic_scope . ' .wpuf-form a.file-selector{display:block;width:93.5%;}';
-$style_output .= $classic_scope . ' .wpuf-el.post_content .wp-editor-wrap{width:96.5%;}';
-$style_output .= $classic_scope . ' .wpuf-el.dropdown select, ' . $classic_scope . ' .wpuf-el.multi_select select{width:96.5%;}';
+$style_output .= $scope . ' .wpuf-el.post_content .wp-editor-wrap{width:96.5%;}';
+$style_output .= $scope . ' .wpuf-el.dropdown select, ' . $scope . ' .wpuf-el.multi_select select{width:96.5%;}';
 ?>
 
 <?php if ( $style_output ) : ?>
@@ -332,10 +308,8 @@ $style_output .= $classic_scope . ' .wpuf-el.dropdown select, ' . $classic_scope
 
     <?php if ( $form_id > 0 ) : ?>
         <?php
-        // The page renders the React form; the editor preview (server-rendered,
-        // scripts stripped) keeps the classic markup.
         $shortcode_output = \WeDevs\Wpuf\Frontend\Renderer::with_source(
-            $is_editor_preview ? 'block-preview' : 'block',
+            'block',
             function () use ( $form_id ) {
                 return do_shortcode( '[wpuf_form id="' . intval( $form_id ) . '"]' );
             }

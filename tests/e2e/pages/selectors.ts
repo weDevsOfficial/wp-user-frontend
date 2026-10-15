@@ -1161,7 +1161,8 @@ export const Selectors = {
         removeStepStart: '//div[@class="step-start-indicator"]/../../../..//span[4]',
         confirmDelete: '//button[normalize-space()="Yes, delete it"]',
         threeDotButton: '(//div[contains(@class,"wpuf-relative wpuf-inline-block")]//button)[1]',
-        editPostButton: '(//td[@data-label="Options: "]//a)[1]',
+        // React account Posts list: the row's Edit link (no options menu any more).
+        editPostButton: '(//div[contains(@class,"wpuf-row-actions")]//a[@title="Edit"] | //td[@data-label="Options: "]//a)[1]',
         quickEditButtonContainer: '//tbody[@id="the-list"]//tr[1]',
         quickEditButton: '(//button[@class="button-link editinline"])[1]',
         statusDropdown: '(//select[@name="_status"])[1]',
@@ -1395,7 +1396,8 @@ export const Selectors = {
         saveDraftButton: '//a[normalize-space(text())="Save Draft"]',
         draftSavedAlert: '//span[@class="wpuf-draft-saved"]',
         confirmDelete: '//button[normalize-space()="Yes, delete it"]',
-        editPostButton: '(//td[@data-label="Options: "]//a)[1]',
+        // React account Posts list: the row's Edit link (no options menu any more).
+        editPostButton: '(//div[contains(@class,"wpuf-row-actions")]//a[@title="Edit"] | //td[@data-label="Options: "]//a)[1]',
         quickEditButtonContainer: '//tbody[@id="the-list"]//tr[1]',
         quickEditButton: '(//button[@class="button-link editinline"])[1]',
         wpufInfo: '//div[@class="wpuf-info"]',

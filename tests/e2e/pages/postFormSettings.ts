@@ -961,7 +961,6 @@ export class PostFormSettingsPage extends Base {
         if (flag == false) {
             await this.navigateToURL(this.wpufPostPage);
 
-            await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
             await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -973,7 +972,6 @@ export class PostFormSettingsPage extends Base {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
 
-        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -1039,7 +1037,6 @@ export class PostFormSettingsPage extends Base {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
 
-        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -1211,7 +1208,6 @@ export class PostFormSettingsPage extends Base {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
 
-        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -1236,7 +1232,6 @@ export class PostFormSettingsPage extends Base {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
 
-        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -1260,7 +1255,6 @@ export class PostFormSettingsPage extends Base {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
 
-        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -1285,7 +1279,6 @@ export class PostFormSettingsPage extends Base {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
 
-        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -2075,7 +2068,6 @@ export class PostFormSettingsPage extends Base {
         // Go to frontend post submission page
         await this.navigateToURL(this.wpufPostPage);
 
-        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 

@@ -1,7 +1,8 @@
-import { useState, useCallback } from '@wordpress/element';
+import { useState, useCallback, useMemo } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import { ChevronDown, Eye, Save } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Input, cn } from '@wedevs/plugin-ui';
+import { Check, ChevronDown, Eye, Pencil, Save, Search } from 'lucide-react';
 import { Button } from '@wpuf/components';
 import { STORE_NAME } from '../../store';
 import useFormSave from '../../hooks/useFormSave';
@@ -32,6 +33,76 @@ const formEditUrl = ( formType, id ) => {
     return `admin.php?page=wpuf-${ profile ? 'profile' : 'post' }-forms&action=edit&id=${ id }${ keep ? `&${ keep }` : '' }`;
 };
 
+/**
+ * The builder's form switcher: plugin-ui's DropdownMenu with the forms of the
+ * same type, the open one checked; a search box once the list is long.
+ *
+ * @param {Object} props
+ * @param {Array}  props.forms    [{ id, title }].
+ * @param {number} props.current  Open form id.
+ * @param {string} props.formType Form post type.
+ */
+function FormSwitcher( { forms, current, formType } ) {
+    const [ search, setSearch ] = useState( '' );
+    const shown = useMemo( () => {
+        const term = search.trim().toLowerCase();
+
+        return term ? forms.filter( ( form ) => String( form.title || '' ).toLowerCase().includes( term ) ) : forms;
+    }, [ forms, search ] );
+
+    return (
+        <DropdownMenu onOpenChange={ ( open ) => ! open && setSearch( '' ) }>
+            <DropdownMenuTrigger
+                aria-label={ __( 'Switch form', 'wp-user-frontend' ) }
+                className="inline-flex size-8 shrink-0 items-center justify-center rounded-md border-0 bg-transparent p-0 text-gray-500 cursor-pointer hover:bg-gray-100 hover:text-gray-700 focus-visible:ring-2 focus-visible:ring-primary/30 data-popup-open:bg-gray-100 [&[data-popup-open]>svg]:rotate-180"
+            >
+                <ChevronDown className="size-4 transition-transform" aria-hidden="true" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-72 max-w-[calc(100vw-2rem)] p-1 bg-white rounded-lg shadow-lg ring-1 ring-black/5 border-0">
+                { forms.length > 8 && (
+                    <div
+                        className="relative mb-1 p-1"
+                        // Typing goes to the box, not the menu's type-ahead; Escape / Tab / arrows still reach the menu.
+                        onKeyDown={ ( event ) => ! [ 'Escape', 'Tab', 'ArrowDown', 'ArrowUp' ].includes( event.key ) && event.stopPropagation() }
+                    >
+                        <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-gray-400" aria-hidden="true" />
+                        <Input
+                            type="search"
+                            value={ search }
+                            onChange={ ( event ) => setSearch( event.target.value ) }
+                            placeholder={ __( 'Search forms…', 'wp-user-frontend' ) }
+                            aria-label={ __( 'Search forms', 'wp-user-frontend' ) }
+                            className="h-8 pl-8 text-sm"
+                        />
+                    </div>
+                ) }
+                <div className="max-h-80 overflow-y-auto">
+                    { shown.map( ( form ) => {
+                        const active = Number( form.id ) === Number( current );
+
+                        return (
+                            <DropdownMenuItem
+                                key={ form.id }
+                                onClick={ () => {
+                                    if ( ! active ) {
+                                        window.location.assign( formEditUrl( formType, form.id ) );
+                                    }
+                                } }
+                                className={ cn( 'flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm cursor-pointer data-highlighted:bg-gray-100 data-highlighted:text-gray-900', active ? 'font-medium text-gray-900' : 'text-gray-700' ) }
+                            >
+                                <span className="min-w-0 flex-1 truncate">{ form.title || __( '(no title)', 'wp-user-frontend' ) }</span>
+                                <span className="shrink-0 text-xs text-gray-400">#{ form.id }</span>
+                                { active && <Check className="size-4 shrink-0 text-primary" aria-hidden="true" /> }
+                            </DropdownMenuItem>
+                        );
+                    } ) }
+                    { ! shown.length && <p className="m-0 px-2 py-3 text-center text-sm text-gray-500">{ __( 'No forms found', 'wp-user-frontend' ) }</p> }
+                </div>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    );
+}
+
 export default function Header( { activeTab, onTabChange } ) {
     const { post, formType } = useSelect( ( select ) => {
         const store = select( STORE_NAME );
@@ -47,7 +118,6 @@ export default function Header( { activeTab, onTabChange } ) {
 
     const [ isTitleEditing, setIsTitleEditing ] = useState( false );
     const [ title, setTitle ] = useState( post.post_title || '' );
-    const [ isDropdownOpen, setIsDropdownOpen ] = useState( false );
     const [ copiedShortcode, setCopiedShortcode ] = useState( null );
 
     const data = builderData();
@@ -96,55 +166,43 @@ export default function Header( { activeTab, onTabChange } ) {
                         alt={ __( 'WPUF Icon', 'wp-user-frontend' ) }
                         className="mr-1.5 size-7 shrink-0"
                     />
-                    <nav className="flex items-center" aria-label={ __( 'Tabs', 'wp-user-frontend' ) }>
-                        <div className="relative flex">
-                            <div className="flex items-center">
-                                <input
-                                    onClick={ () => setIsTitleEditing( ! isTitleEditing ) }
-                                    value={ title }
-                                    onChange={ handleTitleChange }
-                                    type="text"
-                                    name="post_title"
-                                    className={ `text-gray-900 text-sm! font-medium min-h-8! py-1! px-2! wpuf-field-sizing-content focus:ring-primary! focus:border-transparent! focus:shadow-none! ${ isTitleEditing ? '' : 'border-transparent!' }` }
-                                />
-                                { isTitleEditing && (
-                                    <i
-                                        onClick={ handleTitleConfirm }
-                                        className="fa fa-check leading-none! hover:cursor-pointer ml-1 text-sm text-gray-500"
-                                        role="button"
-                                        tabIndex={ 0 }
-                                        onKeyDown={ ( e ) => e.key === 'Enter' && handleTitleConfirm() }
-                                    />
+                    { /* The form name (plugin-ui Input, edited in place; saved with the form) and the form switcher. */ }
+                    <div className="flex min-w-0 items-center gap-0.5">
+                        <div className="group/title relative flex min-w-0 items-center">
+                            <Input
+                                value={ title }
+                                onChange={ handleTitleChange }
+                                onFocus={ () => setIsTitleEditing( true ) }
+                                onBlur={ handleTitleBlur }
+                                onKeyDown={ ( event ) => 'Enter' === event.key && event.currentTarget.blur() }
+                                type="text"
+                                name="post_title"
+                                aria-label={ __( 'Form name', 'wp-user-frontend' ) }
+                                className={ cn(
+                                    'h-8 min-w-24 max-w-[22rem] wpuf-field-sizing-content px-2 text-sm font-medium text-gray-900 shadow-none',
+                                    isTitleEditing ? 'pr-8' : 'border-transparent bg-transparent hover:border-gray-200'
                                 ) }
-                                { ! isTitleEditing && forms.length > 1 && (
-                                    <div className="relative ml-1">
-                                        <button
-                                            type="button"
-                                            className="wpuf-btn m-1 h-min min-h-min border-0 ring-0 shadow-none p-0"
-                                            onClick={ () => setIsDropdownOpen( ! isDropdownOpen ) }
-                                            onBlur={ () => setTimeout( () => setIsDropdownOpen( false ), 150 ) }
-                                        >
-                                            <ChevronDown className={ `size-4 text-gray-500 transition-transform ${ isDropdownOpen ? 'rotate-180' : '' }` } aria-hidden="true" />
-                                        </button>
-                                        { isDropdownOpen && (
-                                            <ul className="absolute z-10 w-52 bg-white rounded-md shadow-sm mt-1 p-0 list-none">
-                                                { forms.map( ( form ) => (
-                                                    <li key={ form.id }>
-                                                        <a
-                                                            className="block rounded-none font-medium text-left px-4 py-2 text-sm! text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:shadow-none focus:outline-hidden"
-                                                            href={ formEditUrl( formType, form.id ) }
-                                                        >
-                                                            { form.title }
-                                                        </a>
-                                                    </li>
-                                                ) ) }
-                                            </ul>
-                                        ) }
-                                    </div>
-                                ) }
-                            </div>
+                            />
+                            { isTitleEditing ? (
+                                <button
+                                    type="button"
+                                    onMouseDown={ ( event ) => event.preventDefault() }
+                                    onClick={ ( event ) => {
+                                        handleTitleConfirm();
+                                        event.currentTarget.previousElementSibling?.blur();
+                                    } }
+                                    aria-label={ __( 'Done', 'wp-user-frontend' ) }
+                                    className="absolute right-1 inline-flex size-6 items-center justify-center rounded border-0 bg-transparent p-0 text-gray-500 cursor-pointer hover:bg-gray-100 hover:text-primary"
+                                >
+                                    <Check className="size-4" aria-hidden="true" />
+                                </button>
+                            ) : (
+                                // Beside the name, not over it.
+                                <Pencil className="pointer-events-none ml-1 size-3.5 shrink-0 text-gray-400 opacity-0 transition-opacity group-hover/title:opacity-100" aria-hidden="true" />
+                            ) }
                         </div>
-                    </nav>
+                        { ! isTitleEditing && forms.length > 1 && <FormSwitcher forms={ forms } current={ post.ID } formType={ formType } /> }
+                    </div>
 
                     { /* Shortcode copy badges */ }
                     { shortcodes.map( ( sc, i ) => {

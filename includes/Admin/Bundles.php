@@ -13,8 +13,9 @@ use WeDevs\Wpuf\Platform\Contracts\Hookable;
 /**
  * Registry of the React admin bundles: the shared layer (`wpuf-admin-runtime`,
  * `wpuf-admin-ui`) and the screen bundles (forms list, builder, settings,
- * subscriptions), with dependencies and versions from their generated
- * `*.asset.php`, plus the React screens' stylesheet switch and body classes.
+ * subscriptions, the admin app routes), with dependencies and versions from
+ * their generated `*.asset.php`, plus the React screens' stylesheet switch and
+ * body classes. The frontend apps have their own registry (Frontend\Bundles).
  *
  * The legacy `WeDevs\Wpuf\Assets` registry still registers every handle (one
  * list, the `wpuf_scripts_to_register` / `wpuf_styles_to_register` filters,
@@ -90,12 +91,6 @@ class Bundles implements Hookable {
         // these as dependencies through the `@wpuf/*` / plugin-ui externals.
         $admin_runtime_asset = $this->bundle_asset( 'admin-runtime', [ 'wp-api-fetch', 'wp-element', 'wp-hooks', 'wp-url' ] );
 
-        // The frontend apps (Frontend\Renderer enqueues them, only on a page that mounts one).
-        $frontend_deps    = [ 'wp-element', 'wp-i18n', 'wp-api-fetch', 'wp-hooks', 'react-jsx-runtime' ];
-        $frontend_runtime = $this->frontend_asset( 'runtime', $frontend_deps );
-        $frontend_forms   = $this->frontend_asset( 'forms', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
-        $frontend_account = $this->frontend_asset( 'account-page', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
-        $frontend_login   = $this->frontend_asset( 'login', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
         $admin_ui_asset      = $this->bundle_asset( 'admin-ui', [ 'react', 'react-dom', 'react-jsx-runtime', 'wp-components', 'wp-element', 'wp-i18n', 'wp-plugins' ] );
 
         return [
@@ -206,56 +201,7 @@ class Bundles implements Hookable {
                 'version'   => $ai_form_builder_asset['version'],
                 'in_footer' => true,
             ],
-            // Frontend React runtime and apps (Frontend\Renderer).
-            'frontend-runtime'          => [
-                'src'       => WPUF_ASSET_URI . '/js/frontend/runtime.js',
-                // wp-api-request prints wpApiSettings (REST root + nonce) for the upload XHR;
-                // wpuf-dialog is the kit's confirm / alert.
-                'deps'      => array_values( array_unique( array_merge( $frontend_runtime['dependencies'], [ 'wp-api-request', 'wpuf-dialog' ] ) ) ),
-                'version'   => $frontend_runtime['version'],
-                'in_footer' => true,
-            ],
-            'frontend-forms'            => [
-                'src'       => WPUF_ASSET_URI . '/js/frontend/forms.js',
-                'deps'      => array_values( array_unique( array_merge( [ 'wpuf-frontend-runtime' ], $frontend_forms['dependencies'] ) ) ),
-                'version'   => $frontend_forms['version'],
-                'in_footer' => true,
-            ],
-            'frontend-account'          => [
-                'src'       => WPUF_ASSET_URI . '/js/frontend/account-page.js',
-                'deps'      => array_values( array_unique( array_merge( [ 'wpuf-frontend-runtime' ], $frontend_account['dependencies'] ) ) ),
-                'version'   => $frontend_account['version'],
-                'in_footer' => true,
-            ],
-            'frontend-login'            => [
-                'src'       => WPUF_ASSET_URI . '/js/frontend/login.js',
-                'deps'      => array_values( array_unique( array_merge( [ 'wpuf-frontend-runtime' ], $frontend_login['dependencies'] ) ) ),
-                'version'   => $frontend_login['version'],
-                'in_footer' => true,
-            ],
         ];
-    }
-
-    /**
-     * The `.asset.php` of a frontend bundle (assets/js/frontend/<name>.asset.php),
-     * or the given dependencies when the bundle is not built.
-     *
-     * @since WPUF_SINCE
-     *
-     * @param string $name         Bundle name
-     * @param array  $dependencies Fallback dependencies
-     *
-     * @return array
-     */
-    public function frontend_asset( $name, $dependencies ) {
-        $file = WPUF_ROOT . '/assets/js/frontend/' . $name . '.asset.php';
-
-        return file_exists( $file )
-            ? require $file
-            : [
-                'dependencies' => $dependencies,
-                'version'      => WPUF_VERSION,
-            ];
     }
 
     /**
@@ -314,32 +260,6 @@ class Bundles implements Hookable {
                 'src'     => WPUF_ASSET_URI . '/css/ai-form-builder-screen.css',
                 'version' => $this->css_version( 'css/ai-form-builder-screen.css' ),
                 'rtl'     => true,
-            ],
-            // Frontend React sheets (Frontend\Renderer enqueues them with their app).
-            'frontend-runtime-style' => [
-                'src'     => WPUF_ASSET_URI . '/css/frontend/runtime.css',
-                'version' => $this->css_version( 'css/frontend/runtime.css' ),
-                'rtl'     => true,
-            ],
-            'frontend-forms-style'   => [
-                'src'     => WPUF_ASSET_URI . '/css/frontend/forms.css',
-                'version' => $this->css_version( 'css/frontend/forms.css' ),
-                'rtl'     => true,
-            ],
-            'frontend-account-style' => [
-                'src'     => WPUF_ASSET_URI . '/css/frontend/account-page.css',
-                'version' => $this->css_version( 'css/frontend/account-page.css' ),
-                'rtl'     => true,
-            ],
-            'frontend-login-style'   => [
-                'src'     => WPUF_ASSET_URI . '/css/frontend/login.css',
-                'version' => $this->css_version( 'css/frontend/login.css' ),
-                'rtl'     => true,
-            ],
-            // The classic account sheet scoped to the PHP sections of the React account (tools/frontend-css/account-sections.mjs).
-            'frontend-account-sections-style' => [
-                'src'     => WPUF_ASSET_URI . '/css/frontend/account-sections.css',
-                'version' => $this->css_version( 'css/frontend/account-sections.css' ),
             ],
         ];
     }

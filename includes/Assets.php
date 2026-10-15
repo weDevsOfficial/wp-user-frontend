@@ -59,6 +59,17 @@ class Assets {
     }
 
     /**
+     * Frontend apps assets (Frontend\Bundles).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return \WeDevs\Wpuf\Frontend\Bundles
+     */
+    protected function frontend_bundles() {
+        return wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Bundles::class );
+    }
+
+    /**
      * Whether the current admin page is a React forms list or builder.
      *
      * @since WPUF_SINCE Forwards to Admin\Bundles.
@@ -224,8 +235,9 @@ class Assets {
             ],
         ];
 
-        // React screen stylesheets (Admin\Bundles), at their old place in the list.
-        $styles = array_merge( $styles, $this->react()->styles() );
+        // React screen stylesheets (Admin\Bundles) and the frontend apps' sheets
+        // (Frontend\Bundles), at their old place in the list.
+        $styles = array_merge( $styles, $this->react()->styles(), $this->frontend_bundles()->styles() );
 
         $styles += [
             'elementor-frontend-forms'      => [
@@ -431,7 +443,7 @@ class Assets {
 
         // React admin bundles (Admin\Bundles), at their old place in the list, so
         // every screen enqueues by handle and Pro can depend on them.
-        $scripts = array_merge( $scripts, $this->react()->scripts() );
+        $scripts = array_merge( $scripts, $this->react()->scripts(), $this->frontend_bundles()->scripts() );
 
         $scripts += [
             'frontend-subscriptions' => [

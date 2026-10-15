@@ -141,6 +141,13 @@ class FrontendServiceProvider extends ServiceProvider {
                 return new Login_Schema( $container->get( \WeDevs\Wpuf\Free\Simple_Login::class ) );
             }
         );
+        // The frontend apps' scripts and sheets (the legacy Assets registry merges them in).
+        $this->container->share(
+            \WeDevs\Wpuf\Frontend\Bundles::class,
+            function () {
+                return new \WeDevs\Wpuf\Frontend\Bundles();
+            }
+        );
         $this->container->share(
             Account_Service::class,
             function () {

@@ -15,7 +15,8 @@ export const Selectors = {
             // Login-2
             loginEmailField2: '//input[@id="wpuf-user_login"]',
             loginPasswordField2: '//input[@id="wpuf-user_pass"]',
-            loginButton2: '//input[@type="submit"]',
+            // React [wpuf-login] submits with a button; theme-override forms keep the input.
+            loginButton2: '(//button[@type="submit" and @name="wp-submit"] | //input[@type="submit"])[1]',
         },
 
         // Validate Basic Login
@@ -132,19 +133,20 @@ export const Selectors = {
         },
 
         accountPageTabs: {
-            dashboardTab: '//span[normalize-space()="Dashboard"]',
+            // React account: rail links (the Dashboard stat cards repeat some labels).
+            dashboardTab: '//nav[contains(@class,"wpuf-account-nav")]//a[normalize-space()="Dashboard"]',
             viewDashboardPara: '//p[contains(text(),"From your account dashboard you can view your dash")]',
-            postsTab: '//span[normalize-space()="Posts"]',
+            postsTab: '//nav[contains(@class,"wpuf-account-nav")]//a[normalize-space()="Posts"]',
             postsTableHeader: '//thead//tr[1]//th[text()="Title"]',
-            editProfileTab: '//a[@class="wpuf-account-nav-item"]//span[contains(text(),"Edit Profile")]',
+            editProfileTab: '//nav[contains(@class,"wpuf-account-nav")]//a[normalize-space()="Edit Profile"]',
             updateProfileButton: '//input[@value="Update Profile"]',
-            subscriptionTab: '//span[normalize-space()="Subscription"]',
+            subscriptionTab: '//nav[contains(@class,"wpuf-account-nav")]//a[normalize-space()="Subscription"]',
             noSubscriptionPara: '//p[normalize-space()="You have not subscribed to any package yet."]',
-            billingAddessTab: '//span[normalize-space()="Billing Address"]',
+            billingAddessTab: '//nav[contains(@class,"wpuf-account-nav")]//a[normalize-space()="Billing Address"]',
             updateBillingAddressButton: '//button[@id="wpuf-account-update-billing_address"]',
-            submitPostTab: '//span[normalize-space()="Submit Post"]',
-            submitPostButton: '//input[@value="wpuf_submit_post"]/following-sibling::input[1]',
-            invoiceTab: '//span[normalize-space()="Invoices"]',
+            submitPostTab: '//nav[contains(@class,"wpuf-account-nav")]//a[normalize-space()="Submit Post"]',
+            submitPostButton: '//div[contains(@class,"wpuf-account-content")]//input[contains(@class,"wpuf-submit-button")]',
+            invoiceTab: '//nav[contains(@class,"wpuf-account-nav")]//a[normalize-space()="Invoices"]',
             invoiceTableHeader: '//h2[normalize-space()="My Invoices"]'
         },
 
@@ -974,7 +976,7 @@ export const Selectors = {
             clickBlankForm: '//a[contains(normalize-space(.), "Create Form") and (@title="Blank Form" or ancestor::div[contains(@class,"wpuf-template-card")]//span[normalize-space()="Blank Form"])]',
             useField: (field: string) => `//p[normalize-space()="${field}"]`,
             // OK of the "Oops... You already have this field in the form" alert (SweetAlert on develop).
-            alreadyAddedOk: '.swal2-container .swal2-confirm, [data-slot="alert-dialog-action"]',
+            alreadyAddedOk: '.swal2-container .swal2-confirm, [data-slot="alert-dialog-action"], .wpuf-dialog__footer .wpuf-dialog__btn:last-child',
             clickAddFieldButton: '//a[contains(text(),"Add Field")]',
             validateField: (field: string) => `(//label[@for="${field}" or @for="wpuf-${field}"]/../..//div[@class="wpuf-fields"])[1]`,
         },
@@ -1675,7 +1677,7 @@ export const Selectors = {
             // Frontend Registration Form
             frontendForm: {
                 storeNameField: '//input[@name="user_login"]',
-                phoneField: '//input[@id="_vendor_phone"]',
+                phoneField: '//input[@name="_vendor_phone"]',
                 emailField: '//input[@name="user_email"]',
                 passwordField: '//input[@name="pass1"]',
                 confirmPasswordField: '//input[@name="pass2"]',
@@ -2421,8 +2423,8 @@ export const Selectors = {
         // Fields on the builder stage
         stageFields: 'li[class*="form-field-"]',
         // Builder alert (develop: SweetAlert; branch: shared dialogs) and its confirm button
-        alertPopup: '.swal2-container .swal2-popup, [data-wpuf-dialog]',
-        alertConfirm: '.swal2-container .swal2-confirm, [data-wpuf-dialog] [data-slot="alert-dialog-action"]',
+        alertPopup: '.swal2-container .swal2-popup, [data-wpuf-dialog], dialog.wpuf-dialog[open]',
+        alertConfirm: '.swal2-container .swal2-confirm, [data-wpuf-dialog] [data-slot="alert-dialog-action"], .wpuf-dialog__footer .wpuf-dialog__btn:last-child',
         // Field settings panel (same classes on the Vue and the React builder)
         stageFieldEdit: 'Edit',
         fieldOptionsPanel: '.wpuf-form-builder-field-options',

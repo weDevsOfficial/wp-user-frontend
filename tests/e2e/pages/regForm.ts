@@ -778,7 +778,7 @@ export class RegFormPage extends Base {
 
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.emailField, VendorRegistrationForm.wcfmMemberEmail = faker.internet.email());
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.storeNameField, VendorRegistrationForm.wcfmMemberStoreName = faker.word.words(2));
-        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.phoneField, VendorRegistrationForm.wcfmMemberPhone = `+88016${faker.string.numeric(8)}`);
+        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.phoneField, VendorRegistrationForm.wcfmMemberPhone = `88016${faker.string.numeric(8)}`);
         await this.page.setInputFiles(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.storeLogoField, VendorRegistrationForm.wcfmMemberStoreLogo);
         await this.page.waitForTimeout(2000);
         await this.page.setInputFiles(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.storeBannerField, VendorRegistrationForm.wcfmMemberStoreBanner);

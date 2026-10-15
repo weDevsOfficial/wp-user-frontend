@@ -68,8 +68,11 @@ function wpuf_ai_mock_answer( $pre, $args, $url ) {
         );
     }
 
+    // The builder's "AI Generate Options": REST `ai-form-builder/generate-options` (the
+    // admin-ajax action it replaced is kept for older builds).
+    $uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
     // phpcs:ignore WordPress.Security.NonceVerification.Missing -- test mock, reads the action name only.
-    if ( wp_doing_ajax() && isset( $_POST['action'] ) && 'wpuf_ai_generate_field_options' === $_POST['action'] ) {
+    if ( false !== strpos( rawurldecode( $uri ), 'ai-form-builder/generate-options' ) || ( wp_doing_ajax() && isset( $_POST['action'] ) && 'wpuf_ai_generate_field_options' === $_POST['action'] ) ) {
         return wpuf_ai_mock_reply( $provider, [ 'options' => [ 'Mock Red', 'Mock Green', 'Mock Blue' ] ] );
     }
 

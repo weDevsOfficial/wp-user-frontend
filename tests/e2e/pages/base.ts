@@ -418,6 +418,18 @@ export class Base {
     async selectMultiSelectByValue(locator: string, value: string) {
         try {
             await this.waitForLoading();
+            // React forms: no native select, the field's combobox (li.wpuf-el.<name>) with options.
+            const name = (locator.match(/name="([^"\[]+)/) || [])[1];
+            if (name && !(await this.page.locator(locator).count())) {
+                const field = this.page.locator(`li.wpuf-el.${name}`).first();
+                await field.locator('[role="combobox"]').first().click();
+                const option = field.locator(`[role="option"][data-value="${value}"]`).or(field.locator('[role="option"]', { hasText: value })).first();
+                await option.click();
+                await this.page.keyboard.press('Escape');
+                await expect(field.locator('.selected-items')).toContainText(value);
+                console.log('\x1b[33m%s\x1b[0m', `✅ Multiselected ${name} (React) with ${value}`);
+                return;
+            }
             const element = this.page.locator(locator).first();
             await element.waitFor({ state: 'attached' });
             const matched = await element.evaluate((select: HTMLSelectElement, val: string) => {

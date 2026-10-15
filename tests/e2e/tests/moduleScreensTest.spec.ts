@@ -208,10 +208,10 @@ test.describe('Module screens', () => {
         const before = await chat.locator('.wpuf-pm-msg').count();
         await chat.locator('.wpuf-pm-msg').last().hover();
         await chat.locator('.wpuf-pm-msg').last().locator('.wpuf-pm-msg__delete').click();
-        await page.locator('.swal2-confirm').click();
+        await page.locator('.wpuf-dialog__footer .wpuf-dialog__btn:last-child').click();
         await expect(chat.locator('.wpuf-pm-msg')).toHaveCount(before - 1, { timeout: 30000 });
         await chat.locator('.wpuf-pm-iconbtn--danger').click();
-        await page.locator('.swal2-confirm').click();
+        await page.locator('.wpuf-dialog__footer .wpuf-dialog__btn:last-child').click();
         await expect(chat.locator('.wpuf-pm-empty--pane')).toBeVisible({ timeout: 30000 });
         await expect(page).toHaveURL(/#\/$/);
     });

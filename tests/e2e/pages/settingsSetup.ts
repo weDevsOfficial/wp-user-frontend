@@ -505,7 +505,9 @@ export class SettingsSetupPage extends Base {
         // account page on "Account" with the Dashboard tab active.
         await this.navigateToURL(this.wpufSettingsPage);
         const login = await this.settingsField('Login Page', 'wpuf_profile');
-        const firstLogin = Object.keys(login.field.options || {})[0] ?? '';
+        // "-- Select --" is the '' key; JS lists integer keys (page ids) before it.
+        const loginOptions = login.field.options || {};
+        const firstLogin = '' in loginOptions ? '' : (Object.keys(loginOptions)[0] ?? '');
         const custom = await this.settingsField('Show custom fields on post content area');
         await this.saveSettings({
             wpuf_profile: { [login.name]: firstLogin },

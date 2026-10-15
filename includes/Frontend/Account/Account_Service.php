@@ -59,8 +59,8 @@ class Account_Service {
      * @return array[] slug, label, icon, kind ('native' | 'html'), url, active (default tab)
      */
     public function sections() {
-        $default_tab = wpuf_get_option( 'account_page_active_tab', 'wpuf_my_account', 'dashboard' );
-        $payments    = 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
+        $default_tab = Stores::settings()->get( 'wpuf_my_account', 'account_page_active_tab', 'dashboard' );
+        $payments    = 'on' === Stores::settings()->get( 'wpuf_payment', 'enable_payment', 'on' );
         $cpts        = $this->allowed_post_types();
         $out         = [];
 
@@ -70,11 +70,11 @@ class Account_Service {
                 $label   = $label['label'];
             }
 
-            if ( 'subscription' === $section && ( 'off' === wpuf_get_option( 'show_subscriptions', 'wpuf_my_account', 'on' ) || ! $payments ) ) {
+            if ( 'subscription' === $section && ( 'off' === Stores::settings()->get( 'wpuf_my_account', 'show_subscriptions', 'on' ) || ! $payments ) ) {
                 continue;
             }
 
-            if ( 'billing-address' === $section && ( 'off' === wpuf_get_option( 'show_billing_address', 'wpuf_my_account', 'on' ) || ! $payments ) ) {
+            if ( 'billing-address' === $section && ( 'off' === Stores::settings()->get( 'wpuf_my_account', 'show_billing_address', 'on' ) || ! $payments ) ) {
                 continue;
             }
 
@@ -128,7 +128,7 @@ class Account_Service {
      * @return string[]
      */
     public function allowed_post_types() {
-        $types = wpuf_get_option( 'cp_on_acc_page', 'wpuf_my_account', [ 'post' ] );
+        $types = Stores::settings()->get( 'wpuf_my_account', 'cp_on_acc_page', [ 'post' ] );
 
         return array_values( array_filter( array_map( 'strval', is_array( $types ) ? $types : [ $types ] ) ) );
     }
@@ -141,7 +141,7 @@ class Account_Service {
      * @return string
      */
     public function page_url() {
-        $page_id = (int) wpuf_get_option( 'account_page', 'wpuf_my_account', 0 );
+        $page_id = (int) Stores::settings()->get( 'wpuf_my_account', 'account_page', 0 );
         $url     = $page_id ? get_permalink( $page_id ) : get_permalink();
 
         return $url ? $url : home_url( '/' );
@@ -158,7 +158,7 @@ class Account_Service {
         $user   = wp_get_current_user();
         $avatar = wpuf_get_user_avatar_data( $user, 96 );
         // The cover photo field (Pro) saves an attachment id here; no cover falls back to the theme band.
-        $cover_id  = (int) get_user_meta( $user->ID, 'wpuf_cover_photo', true );
+        $cover_id  = Stores::users()->cover_id( $user->ID );
         $cover_url = $cover_id ? wp_get_attachment_image_url( $cover_id, 'full' ) : '';
         $roles  = wp_roles()->get_names();
         $role   = ! empty( $user->roles ) ? $user->roles[0] : '';
@@ -229,11 +229,11 @@ class Account_Service {
             ];
         }
 
-        if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) && 'off' !== wpuf_get_option( 'show_subscriptions', 'wpuf_my_account', 'on' ) ) {
+        if ( 'on' === Stores::settings()->get( 'wpuf_payment', 'enable_payment', 'on' ) && 'off' !== Stores::settings()->get( 'wpuf_my_account', 'show_subscriptions', 'on' ) ) {
             $stats[] = $this->subscription_stat();
         }
 
-        if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) && 'off' !== wpuf_get_option( 'show_billing_address', 'wpuf_my_account', 'on' ) ) {
+        if ( 'on' === Stores::settings()->get( 'wpuf_payment', 'enable_payment', 'on' ) && 'off' !== Stores::settings()->get( 'wpuf_my_account', 'show_billing_address', 'on' ) ) {
             $address = wpuf_get_user()->get_billing_address( true );
 
             $stats[] = [
@@ -307,24 +307,7 @@ class Account_Service {
      * @return array status => count
      */
     private function status_counts( $type, $user_id ) {
-        global $wpdb;
-
-        $counts = array_fill_keys( [ 'publish', 'pending', 'draft', 'future', 'private' ], 0 );
-        $rows   = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT post_status, COUNT(*) AS total FROM {$wpdb->posts} WHERE post_author = %d AND post_type = %s GROUP BY post_status",
-                $user_id,
-                $type
-            )
-        );
-
-        foreach ( (array) $rows as $row ) {
-            if ( isset( $counts[ $row->post_status ] ) ) {
-                $counts[ $row->post_status ] = (int) $row->total;
-            }
-        }
-
-        return $counts;
+        return Stores::submissions()->status_counts( $user_id, $type );
     }
 
     /**
@@ -345,7 +328,7 @@ class Account_Service {
             return new WP_Error( 'wpuf_account_unknown_section', __( 'This section is not available.', 'wp-user-frontend' ), [ 'status' => 404 ] );
         }
 
-        $per_page = $per_page > 0 ? min( 100, (int) $per_page ) : (int) wpuf_get_option( 'per_page', 'wpuf_dashboard', 5 );
+        $per_page = $per_page > 0 ? min( 100, (int) $per_page ) : (int) Stores::settings()->get( 'wpuf_dashboard', 'per_page', 5 );
         $args     = [
             'author'         => get_current_user_id(),
             'post_status'    => [ 'draft', 'future', 'pending', 'publish', 'private' ],
@@ -363,7 +346,7 @@ class Account_Service {
             $items[] = $this->post_row( $post );
         }
 
-        $payments = 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) && 'off' !== wpuf_get_option( 'show_payment_column', 'wpuf_dashboard', 'on' );
+        $payments = 'on' === Stores::settings()->get( 'wpuf_payment', 'enable_payment', 'on' ) && 'off' !== Stores::settings()->get( 'wpuf_dashboard', 'show_payment_column', 'on' );
 
         return [
             'items'     => $items,
@@ -377,7 +360,7 @@ class Account_Service {
                 'singular' => (string) $object->labels->singular_name,
             ],
             'columns'   => [
-                'thumbnail' => 'on' === wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' ),
+                'thumbnail' => 'on' === Stores::settings()->get( 'wpuf_dashboard', 'show_ft_image' ),
                 'payment'   => $payments,
             ],
         ];
@@ -396,7 +379,7 @@ class Account_Service {
         $status      = (string) $post->post_status;
         $viewable    = ! in_array( $status, [ 'draft', 'future', 'pending' ], true );
         $payment     = (string) Stores::submissions()->payment_status( $post->ID );
-        $edit_page   = (int) wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' );
+        $edit_page   = (int) Stores::settings()->get( 'wpuf_frontend_posting', 'edit_page_id' );
         // Not wp_nonce_url(): it HTML-escapes the URL (&amp;), which is right in an attribute and wrong in JSON.
         // Same rules as the classic posts table: wpuf_is_post_editable() (the
         // enable_post_edit, pending / published edit and edit lock settings)
@@ -410,7 +393,7 @@ class Account_Service {
         ) : '';
         $can_delete  = $this->deletion_allowed() && ( (int) $post->post_author === get_current_user_id() || current_user_can( 'delete_others_pages' ) );
         $pay_url     = '';
-        $payment_url = get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
+        $payment_url = get_permalink( Stores::settings()->get( 'wpuf_payment', 'payment_page' ) );
 
         if ( '' !== $payment && 'completed' !== $payment && $payment_url ) {
             $pay_url = add_query_arg(
@@ -423,7 +406,7 @@ class Account_Service {
             );
         }
 
-        $thumb = get_the_post_thumbnail_url( $post, wpuf_get_option( 'ft_img_size', 'wpuf_dashboard', 'thumbnail' ) );
+        $thumb = get_the_post_thumbnail_url( $post, Stores::settings()->get( 'wpuf_dashboard', 'ft_img_size', 'thumbnail' ) );
 
         return [
             'id'             => (int) $post->ID,
@@ -436,7 +419,7 @@ class Account_Service {
             'preview_url'    => $viewable ? '' : (string) add_query_arg( 'preview', 'true', get_permalink( $post ) ),
             'edit_url'       => $edit_url,
             'can_delete'     => $can_delete,
-            'featured'       => in_array( (int) $post->ID, (array) get_option( 'sticky_posts' ), true ),
+            'featured'       => in_array( (int) $post->ID, (array) Stores::settings()->wp_option( 'sticky_posts' ), true ),
             'thumbnail'      => $thumb ? (string) $thumb : '',
             'payment_status' => $payment,
             'pay_url'        => $pay_url,
@@ -453,7 +436,7 @@ class Account_Service {
      * @return bool
      */
     private function deletion_allowed() {
-        return 'yes' === wpuf_get_option( 'enable_post_del', 'wpuf_dashboard', 'yes' );
+        return 'yes' === Stores::settings()->get( 'wpuf_dashboard', 'enable_post_del', 'yes' );
     }
 
     /**

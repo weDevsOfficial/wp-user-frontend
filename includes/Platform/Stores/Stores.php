@@ -96,6 +96,17 @@ class Stores {
     }
 
     /**
+     * The user store (profile and photo meta).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return UserStore
+     */
+    public static function users() {
+        return self::get( UserStore::class );
+    }
+
+    /**
      * Settings store
      *
      * @since WPUF_SINCE

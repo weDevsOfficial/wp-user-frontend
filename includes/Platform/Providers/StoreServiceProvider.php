@@ -17,6 +17,7 @@ use WeDevs\Wpuf\Platform\Stores\SubscriberStore;
 use WeDevs\Wpuf\Platform\Stores\SubscriptionStore;
 use WeDevs\Wpuf\Platform\Stores\TransactionStore;
 use WeDevs\Wpuf\Platform\Stores\UserPackStore;
+use WeDevs\Wpuf\Platform\Stores\UserStore;
 use WeDevs\Wpuf\Platform\Tools\ToolsService;
 use WeDevs\Wpuf\Platform\Transactions\TransactionService;
 
@@ -67,8 +68,8 @@ class StoreServiceProvider extends ServiceProvider {
             }
         );
 
-        // Subscribers table, user packs and submission meta.
-        foreach ( [ SubscriberStore::class, UserPackStore::class, SubmissionStore::class ] as $store ) {
+        // Subscribers table, user packs, submission meta and user meta.
+        foreach ( [ SubscriberStore::class, UserPackStore::class, SubmissionStore::class, UserStore::class ] as $store ) {
             $this->share_tagged(
                 $store,
                 function () use ( $store ) {

@@ -10,7 +10,6 @@ namespace WeDevs\Wpuf\Frontend\Forms;
 
 use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Admin\Subscription;
-use WeDevs\Wpuf\Frontend\Frontend_Form;
 use WeDevs\Wpuf\Platform\Stores\Stores;
 use WeDevs\Wpuf\Traits\FieldableTrait;
 use WP_Error;
@@ -280,7 +279,7 @@ class Form_Schema {
             'fields'   => $fields,
             'needs'    => $this->needs( $fields ),
             'assets'   => untrailingslashit( WPUF_ASSET_URI ),
-            'image_caption' => wpuf_is_checkbox_or_toggle_on( wpuf_get_option( 'image_caption', 'wpuf_frontend_posting', 'off' ) ),
+            'image_caption' => wpuf_is_checkbox_or_toggle_on( Stores::settings()->get( 'wpuf_frontend_posting', 'image_caption', 'off' ) ),
             // The shortcodes a rich editor may not use (the classic wpuf_frontend.protected_shortcodes).
             'protected_shortcodes' => function_exists( 'wpuf_get_protected_shortcodes' ) ? array_values( (array) wpuf_get_protected_shortcodes() ) : [],
             'messages' => $this->messages(),
@@ -337,7 +336,7 @@ class Form_Schema {
             $state = [ 'open' => false, 'reason' => 'login', 'message' => __( 'Please login to update your profile!', 'wp-user-frontend' ) ];
         } elseif ( 'registration' === $mode && is_user_logged_in() ) {
             $state = [ 'open' => false, 'reason' => 'logged_in', 'message' => __( 'You are already logged in!', 'wp-user-frontend' ) ];
-        } elseif ( 'registration' === $mode && ! ( is_multisite() ? 'user' === get_site_option( 'registration' ) : 1 === (int) get_option( 'users_can_register' ) ) ) {
+        } elseif ( 'registration' === $mode && ! ( is_multisite() ? 'user' === Stores::settings()->wp_option( 'registration', false, true ) : 1 === (int) Stores::settings()->wp_option( 'users_can_register' ) ) ) {
             $state = [ 'open' => false, 'reason' => 'closed', 'message' => __( 'User registration disabled, please contact the admin to enable.', 'wp-user-frontend' ) ];
         } else {
             $state = [ 'open' => true, 'reason' => '', 'message' => '' ];
@@ -393,7 +392,7 @@ class Form_Schema {
             'fields'       => $fields,
             'needs'        => $this->needs( $fields ),
             'assets'       => untrailingslashit( WPUF_ASSET_URI ),
-            'image_caption' => wpuf_is_checkbox_or_toggle_on( wpuf_get_option( 'image_caption', 'wpuf_frontend_posting', 'off' ) ),
+            'image_caption' => wpuf_is_checkbox_or_toggle_on( Stores::settings()->get( 'wpuf_frontend_posting', 'image_caption', 'off' ) ),
             // The shortcodes a rich editor may not use (the classic wpuf_frontend.protected_shortcodes).
             'protected_shortcodes' => function_exists( 'wpuf_get_protected_shortcodes' ) ? array_values( (array) wpuf_get_protected_shortcodes() ) : [],
             'messages'     => $this->messages(),
@@ -492,10 +491,10 @@ class Form_Schema {
             return $can_edit;
         }
 
-        $form_id = (int) get_post_meta( $post_id, Frontend_Form::$config_id, true );
+        $form_id = Stores::submissions()->form_id( $post_id );
 
         if ( ! $form_id ) {
-            $form_id = (int) wpuf_get_option( 'default_post_form', 'wpuf_frontend_posting' );
+            $form_id = (int) Stores::settings()->get( 'wpuf_frontend_posting', 'default_post_form' );
         }
 
         if ( ! $form_id ) {
@@ -610,11 +609,11 @@ class Form_Schema {
     private function registration_login_url() {
         $default = site_url( 'wp-login.php', 'login' );
 
-        if ( 'on' !== wpuf_get_option( 'register_link_override', 'wpuf_profile', 'off' ) ) {
+        if ( 'on' !== Stores::settings()->get( 'wpuf_profile', 'register_link_override', 'off' ) ) {
             return $default;
         }
 
-        $page_id = wpuf_get_option( 'login_page', 'wpuf_profile', false );
+        $page_id = Stores::settings()->get( 'wpuf_profile', 'login_page', false );
 
         return $page_id ? home_url( basename( get_permalink( $page_id ) ), 'login' ) : $default;
     }
@@ -655,17 +654,17 @@ class Form_Schema {
             return $closed( 'user_locked', $reason ? $reason : apply_filters( 'wpuf_user_edit_post_lock_notice', __( 'Your post edit access has been locked by an administrator.', 'wp-user-frontend' ) ) );
         }
 
-        if ( 'yes' !== wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) ) {
+        if ( 'yes' !== Stores::settings()->get( 'wpuf_dashboard', 'enable_post_edit', 'yes' ) ) {
             return $closed( 'disabled', __( 'Post Editing is disabled', 'wp-user-frontend' ) );
         }
 
         $status = get_post_status( $post_id );
 
-        if ( 'pending' === $status && 'on' === wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' ) ) {
+        if ( 'pending' === $status && 'on' === Stores::settings()->get( 'wpuf_dashboard', 'disable_pending_edit', 'on' ) ) {
             return $closed( 'pending', __( "You can't edit a post while in pending mode.", 'wp-user-frontend' ) );
         }
 
-        if ( 'publish' === $status && 'off' !== wpuf_get_option( 'disable_publish_edit', 'wpuf_dashboard', 'off' ) ) {
+        if ( 'publish' === $status && 'off' !== Stores::settings()->get( 'wpuf_dashboard', 'disable_publish_edit', 'off' ) ) {
             return $closed( 'published', __( "You're not allowed to edit this post.", 'wp-user-frontend' ) );
         }
 
@@ -770,7 +769,7 @@ class Form_Schema {
     private function featured_facts( array $settings, $post_id ) {
         $user_sub    = Subscription::get_user_pack( get_current_user_id() );
         $remaining   = ! empty( $user_sub['total_feature_item'] ) ? (int) $user_sub['total_feature_item'] : 0;
-        $is_featured = $post_id && in_array( (int) $post_id, (array) get_option( 'sticky_posts' ), true );
+        $is_featured = $post_id && in_array( (int) $post_id, (array) Stores::settings()->wp_option( 'sticky_posts' ), true );
 
         return [
             'enabled'   => $remaining > 0 || $is_featured,
@@ -1040,12 +1039,12 @@ class Form_Schema {
         }
 
         if ( in_array( $field['template'], [ 'avatar', 'profile_photo', 'cover_photo' ], true ) ) {
-            $id = (int) get_user_meta( $user_id, 'profile_photo' === $field['template'] ? 'wpuf_profile_photo' : $name, true );
+            $id = Stores::users()->photo_id( $user_id, $field['template'], $name );
 
             return $id ? $id : '';
         }
 
-        $value = get_user_meta( $user_id, $name, true );
+        $value = Stores::users()->meta( $user_id, $name );
 
         return '' === $value ? null : $value;
     }
@@ -1188,7 +1187,7 @@ class Form_Schema {
         $teeny     = 'teeny' === $field['rich'];
         $editor_id = $field['name'] . '_' . $form_id;
         // Post content's full editor gets no row count from the classic field (wp_editor() then uses default_post_edit_rows).
-        $rows      = 'post_content' === $field['template'] && ! $teeny ? (int) get_option( 'default_post_edit_rows', 20 ) : ( isset( $field['rows'] ) ? (int) $field['rows'] : 5 );
+        $rows      = 'post_content' === $field['template'] && ! $teeny ? (int) Stores::settings()->wp_option( 'default_post_edit_rows', 20 ) : ( isset( $field['rows'] ) ? (int) $field['rows'] : 5 );
         $settings  = [
             'textarea_rows' => $rows,
             'quicktags'     => false,
@@ -1340,16 +1339,16 @@ class Form_Schema {
         $walk( $fields );
 
         if ( ! empty( $needs['recaptcha'] ) ) {
-            $needs['recaptcha_key'] = (string) wpuf_get_option( 'recaptcha_public', 'wpuf_general' );
+            $needs['recaptcha_key'] = (string) Stores::settings()->get( 'wpuf_general', 'recaptcha_public' );
         }
 
         // Form_Field_Cloudflare_Turnstile prints nothing unless Turnstile is on and has a key.
-        if ( ! empty( $needs['turnstile'] ) && wpuf_is_checkbox_or_toggle_on( wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' ) ) ) {
-            $needs['turnstile_key'] = (string) wpuf_get_option( 'turnstile_site_key', 'wpuf_general' );
+        if ( ! empty( $needs['turnstile'] ) && wpuf_is_checkbox_or_toggle_on( Stores::settings()->get( 'wpuf_general', 'enable_turnstile', 'off' ) ) ) {
+            $needs['turnstile_key'] = (string) Stores::settings()->get( 'wpuf_general', 'turnstile_site_key' );
         }
 
         if ( ! empty( $needs['maps'] ) ) {
-            $needs['maps_key'] = (string) wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
+            $needs['maps_key'] = (string) Stores::settings()->get( 'wpuf_general', 'gmap_api_key' );
         }
 
         return $needs;

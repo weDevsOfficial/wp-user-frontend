@@ -372,4 +372,37 @@ class SubmissionStore implements DataStore {
     public function set_lock_time( $post_id, $value ) {
         update_post_meta( $post_id, self::LOCK_TIME, $value );
     }
+
+    /**
+     * How many posts of a type a user has in each status the account's
+     * posts table lists (publish, pending, draft, future, private; 0 when
+     * none).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int    $user_id   User id
+     * @param string $post_type Post type
+     *
+     * @return int[] status => count
+     */
+    public function status_counts( $user_id, $post_type ) {
+        global $wpdb;
+
+        $counts = array_fill_keys( [ 'publish', 'pending', 'draft', 'future', 'private' ], 0 );
+        $rows   = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+            $wpdb->prepare(
+                "SELECT post_status, COUNT(*) AS total FROM {$wpdb->posts} WHERE post_author = %d AND post_type = %s GROUP BY post_status",
+                $user_id,
+                $post_type
+            )
+        );
+
+        foreach ( (array) $rows as $row ) {
+            if ( isset( $counts[ $row->post_status ] ) ) {
+                $counts[ $row->post_status ] = (int) $row->total;
+            }
+        }
+
+        return $counts;
+    }
 }

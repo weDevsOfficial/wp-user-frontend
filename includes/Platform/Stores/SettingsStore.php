@@ -241,6 +241,39 @@ class SettingsStore {
     }
 
     /**
+     * One key of a section option, or the default when it is not stored
+     * (wpuf_get_option(): same keys, same fallback).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $section_id Section option name
+     * @param string $key        Field name
+     * @param mixed  $fallback   Value when the key is not stored
+     *
+     * @return mixed
+     */
+    public function get( $section_id, $key, $fallback = '' ) {
+        return wpuf_get_option( $key, $section_id, $fallback );
+    }
+
+    /**
+     * A WordPress option the plugin reads (`sticky_posts`,
+     * `users_can_register`, `default_post_edit_rows`; on multisite
+     * `registration` from the network options).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $name     Option name
+     * @param mixed  $fallback Value when the option is not stored
+     * @param bool   $network  Read the network option (get_site_option())
+     *
+     * @return mixed
+     */
+    public function wp_option( $name, $fallback = false, $network = false ) {
+        return $network ? get_site_option( $name, $fallback ) : get_option( $name, $fallback );
+    }
+
+    /**
      * Set one key of a section option (wpuf_update_option()).
      *
      * @since WPUF_SINCE

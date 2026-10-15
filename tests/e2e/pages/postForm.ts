@@ -313,11 +313,13 @@ export class PostFormPage extends Base {
                 result = Number(operand1) + Number(operand2);
                 break;
             case '-':
+            case '−':
                 result = Number(operand1) - Number(operand2);
                 break;
             case 'X':
                 result = Number(operand1) * Number(operand2);
                 break;
+            case '×':
             case 'x':
                 result = Number(operand1) * Number(operand2);
                 break;
@@ -826,9 +828,11 @@ export class PostFormPage extends Base {
                 result = Number(operand1) + Number(operand2);
                 break;
             case '-':
+            case '−':
                 result = Number(operand1) - Number(operand2);
                 break;
             case 'X':
+            case '×':
             case 'x':
                 result = Number(operand1) * Number(operand2);
                 break;

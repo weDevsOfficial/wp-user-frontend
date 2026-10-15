@@ -1559,6 +1559,13 @@
     background: none !important;
 }
 
+/* Columns: the classic clearfix (`overflow: hidden`) clipped the focus ring of the
+   first column's controls; flow-root contains the floated columns without clipping. */
+.wpuf-frontend ul.wpuf-form .wpuf-field-columns {
+    display: flow-root;
+    overflow: visible;
+}
+
 /* Columns: controls fill their column, even gaps. */
 .wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-inner-fields {
     box-sizing: border-box;

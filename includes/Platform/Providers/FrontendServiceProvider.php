@@ -156,6 +156,12 @@ class FrontendServiceProvider extends ServiceProvider {
             }
         );
         $this->container->share(
+            \WeDevs\Wpuf\Frontend\Subscriptions\Subscription_Schema::class,
+            function ( $container ) {
+                return new \WeDevs\Wpuf\Frontend\Subscriptions\Subscription_Schema( $container->get( \WeDevs\Wpuf\Frontend\Frontend_Account::class ) );
+            }
+        );
+        $this->container->share(
             Login_Schema::class,
             function ( $container ) {
                 return new Login_Schema( $container->get( \WeDevs\Wpuf\Free\Simple_Login::class ) );
@@ -195,7 +201,7 @@ class FrontendServiceProvider extends ServiceProvider {
         $this->share_tagged(
             AccountController::class,
             function ( $container ) {
-                return new AccountController( $container->get( Account_Service::class ), $container->get( Account_Photos::class ) );
+                return new AccountController( $container->get( Account_Service::class ), $container->get( Account_Photos::class ), $container->get( \WeDevs\Wpuf\Frontend\Subscriptions\Subscription_Schema::class ) );
             }
         );
         $this->share_tagged(

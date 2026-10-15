@@ -301,6 +301,277 @@
     text-decoration: underline;
 }
 
+/* ---- Plans: pack card (PlanCard) and the user's subscription (SubscriptionCard) ---- */
+.wpuf-frontend .wpuf-plan-card {
+    --wpuf-plan-accent: var(--wpuf-fe-primary);
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    padding: 24px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius-lg);
+    background: #ffffff;
+    box-shadow: var(--wpuf-fe-shadow);
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.wpuf-frontend .wpuf-plan-card:hover {
+    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.08);
+}
+
+.wpuf-frontend .wpuf-plan-card.is-featured {
+    border-color: var(--wpuf-plan-accent);
+}
+
+.wpuf-frontend .wpuf-plan-card.is-current {
+    border-color: #a7f3d0;
+}
+
+.wpuf-frontend .wpuf-plan-card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.wpuf-frontend .wpuf-plan-card__title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-plan-card__desc {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-plan-card__desc p {
+    margin: 0 0 6px;
+}
+
+.wpuf-frontend .wpuf-plan-card__price,
+.wpuf-frontend .wpuf-plan-status__price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.wpuf-frontend .wpuf-plan-card__amount {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-plan-card__cycle {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-plan-card__trial {
+    margin: 0;
+    font-size: 13px;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-plan-card__action {
+    margin-top: 4px;
+}
+
+.wpuf-frontend .wpuf-plan-card__button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    text-decoration: none;
+}
+
+.wpuf-frontend .wpuf-plan-card .wpuf-btn--primary.wpuf-plan-card__button {
+    border-color: var(--wpuf-plan-accent);
+    background: var(--wpuf-plan-accent);
+}
+
+.wpuf-frontend .wpuf-plan-card .wpuf-btn--primary.wpuf-plan-card__button:hover {
+    filter: brightness(0.92);
+}
+
+.wpuf-frontend .wpuf-plan-card__button.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.wpuf-frontend .wpuf-plan-card__features {
+    padding-top: 12px;
+    border-top: 1px solid var(--wpuf-fe-border);
+}
+
+.wpuf-frontend .wpuf-plan-card__features ul {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wpuf-frontend .wpuf-plan-card__features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-plan-card__features li svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--wpuf-plan-accent);
+}
+
+.wpuf-frontend .wpuf-plan-card__more {
+    margin-top: 10px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--wpuf-plan-accent);
+    cursor: pointer;
+}
+
+.wpuf-frontend .wpuf-plan-card__more:hover {
+    text-decoration: underline;
+}
+
+.wpuf-frontend .wpuf-plan-status {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius-lg);
+    background: #ffffff;
+    box-shadow: var(--wpuf-fe-shadow);
+}
+
+.wpuf-frontend .wpuf-plan-status__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.wpuf-frontend .wpuf-plan-status__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--wpuf-fe-radius);
+    background: var(--wpuf-fe-success-soft);
+    color: #047857;
+}
+
+.wpuf-frontend .wpuf-plan-status.is-expired .wpuf-plan-status__icon {
+    background: var(--wpuf-fe-danger-soft);
+    color: #b91c1c;
+}
+
+.wpuf-frontend .wpuf-plan-status__title {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+}
+
+.wpuf-frontend .wpuf-plan-status__title h3 {
+    margin: 2px 0 0;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-plan-status__dates,
+.wpuf-frontend .wpuf-plan-status__limits ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wpuf-frontend .wpuf-plan-status__dates li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 14px;
+}
+
+.wpuf-frontend .wpuf-plan-status__dates li svg {
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-plan-status__limits h4 {
+    margin: 0 0 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--wpuf-fe-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.wpuf-frontend .wpuf-plan-status__limits li {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius);
+    background: var(--wpuf-fe-soft);
+    font-size: 14px;
+}
+
+.wpuf-frontend .wpuf-plan-status__note {
+    margin: 0;
+    font-size: 14px;
+    color: #b91c1c;
+}
+
+.wpuf-frontend .wpuf-plan-status__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--wpuf-fe-border);
+}
+
+.wpuf-frontend .wpuf-plan-status__actions .wpuf-btn {
+    text-decoration: none;
+}
+
+.wpuf-frontend .wpuf-plan-cancel {
+    margin: 0;
+}
+
+.wpuf-frontend .wpuf-plan-extra {
+    margin-top: 16px;
+}
+
 /* ---- Pills ---- */
 .wpuf-frontend .wpuf-pill {
     display: inline-flex;

@@ -9,6 +9,7 @@
 namespace WeDevs\Wpuf\Platform\REST\Controllers;
 
 use WeDevs\Wpuf\Frontend\Account\Account_Photos;
+use WeDevs\Wpuf\Frontend\Subscriptions\Subscription_Schema;
 use WeDevs\Wpuf\Frontend\Account\Account_Service;
 use WeDevs\Wpuf\Platform\Http\Submission_Context;
 use WeDevs\Wpuf\Platform\REST\RestController;
@@ -47,14 +48,23 @@ class AccountController extends RestController {
     private $photos;
 
     /**
+     * The subscription card data.
+     *
+     * @var Subscription_Schema|null
+     */
+    private $plans;
+
+    /**
      * @since WPUF_SINCE
      *
-     * @param Account_Service $account Account service
-     * @param Account_Photos  $photos  Account photos
+     * @param Account_Service          $account Account service
+     * @param Account_Photos           $photos  Account photos
+     * @param Subscription_Schema|null $plans   Subscription card data
      */
-    public function __construct( Account_Service $account, Account_Photos $photos ) {
+    public function __construct( Account_Service $account, Account_Photos $photos, $plans = null ) {
         $this->account = $account;
         $this->photos  = $photos;
+        $this->plans   = $plans;
     }
 
     /**
@@ -105,6 +115,7 @@ class AccountController extends RestController {
 				],
 			]
         );
+        $this->route( '/account/subscription', WP_REST_Server::READABLE, 'get_subscription', $logged_in );
         $this->route( '/account/profile', WP_REST_Server::EDITABLE, 'update_profile', $logged_in );
         $this->route( '/account/password', WP_REST_Server::EDITABLE, 'update_password', $logged_in );
         $this->route( '/account/avatar', WP_REST_Server::CREATABLE, 'update_avatar', $logged_in );
@@ -423,6 +434,20 @@ class AccountController extends RestController {
         return rest_ensure_response(
             null === $tax ? [ 'saved' => true ] : array_merge( [ 'saved' => true ], $tax )
         );
+    }
+
+    /**
+     * GET /account/subscription: the user's subscription card (the account
+     * page's Subscription section, Subscription_Schema::info()).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return \WP_REST_Response
+     */
+    public function get_subscription() {
+        $plans = $this->plans ? $this->plans : wpuf()->platform()->get( Subscription_Schema::class );
+
+        return rest_ensure_response( $plans->info( true ) );
     }
 
     /**

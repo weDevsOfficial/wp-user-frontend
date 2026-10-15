@@ -56,7 +56,7 @@ class Account_Service {
      *
      * @since WPUF_SINCE
      *
-     * @return array[] slug, label, icon, kind ('native' | 'html'), url, active (default tab)
+     * @return array[] slug, label, icon, kind ('native' | 'html' | 'posts' | 'subscription'), url, active (default tab)
      */
     public function sections() {
         $default_tab = Stores::settings()->get( 'wpuf_my_account', 'account_page_active_tab', 'dashboard' );
@@ -115,6 +115,14 @@ class Account_Service {
 
         if ( 'edit-profile' === $slug && has_filter( 'wpuf_account_edit_profile_content' ) ) {
             return 'html';
+        }
+
+        // The Subscription section is the plans app's card unless the classic one is kept
+        // (a theme override of dashboard/subscription.php, a filter on the classic markup).
+        if ( 'subscription' === $slug ) {
+            $renderer = wpuf()->platform()->has( \WeDevs\Wpuf\Frontend\Renderer::class ) ? wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Renderer::class ) : null;
+
+            return $renderer && $renderer->mounts( 'plan_info' ) && ! has_filter( 'wpuf_sub_info' ) ? 'subscription' : 'html';
         }
 
         return in_array( $slug, self::NATIVE, true ) ? 'native' : 'html';

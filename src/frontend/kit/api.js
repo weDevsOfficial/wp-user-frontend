@@ -68,6 +68,7 @@ export const getAccountPosts = ( type, page = 1, perPage = 0 ) => apiFetch( { pa
     } )
     .catch( fail );
 export const deleteAccountPost = ( postId ) => send( `/account/posts/${ postId }`, 'DELETE' );
+export const getSubscription = () => get( '/account/subscription' );
 export const getSection = ( slug, pagenum = 1 ) => get( `/account/sections/${ encodeURIComponent( slug ) }`, { pagenum } );
 export const updateProfile = ( data ) => send( '/account/profile', 'PUT', data );
 export const updatePassword = ( data ) => send( '/account/password', 'PUT', data );

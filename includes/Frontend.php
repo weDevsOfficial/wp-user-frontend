@@ -369,7 +369,10 @@ class Frontend {
         if ( wpuf_has_shortcode( 'wpuf_sub_pack' ) ) {
             // Skip loading frontend-subscriptions CSS on Elementor pages (Elementor widget has its own CSS)
             $is_elementor_page = did_action( 'elementor/loaded' ) && isset( $post->ID ) && \Elementor\Plugin::$instance->db->is_built_with_elementor( $post->ID );
-            if ( ! $is_elementor_page ) {
+            // The React plans app has its own sheet (Pack_Display::react_markup() decides the same way).
+            $renderer   = wpuf()->platform()->has( \WeDevs\Wpuf\Frontend\Renderer::class ) ? wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Renderer::class ) : null;
+            $react_plan = $renderer && $renderer->mounts( 'plans' ) && ! has_filter( 'wpuf_subscription_packs' );
+            if ( ! $is_elementor_page && ! $react_plan ) {
                 wp_enqueue_style( 'wpuf-frontend-subscriptions' );
             }
             wp_enqueue_script( 'wpuf-frontend-subscriptions' );

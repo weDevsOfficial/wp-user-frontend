@@ -497,6 +497,15 @@ class Subscription {
     }
 
     /**
+     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Display::pack_view_data()
+     *
+     * @since WPUF_SINCE
+     */
+    public function pack_view_data( $pack, $details_meta, $current_pack_id = '', $coupon_status = false ) {
+        return $this->pack_display()->pack_view_data( $pack, $details_meta, $current_pack_id, $coupon_status );
+    }
+
+    /**
      * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Display::packdropdown()
      *
      * @since WPUF_SINCE

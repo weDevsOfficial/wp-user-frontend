@@ -42,6 +42,12 @@ class Pack_Display {
      * from admin Panel
      */
     public function subscription_packs( $atts = null ) {
+        $react = $this->react_markup( 'plans', 'wpuf_subscription_packs', 'packs', $atts, 'wpuf-plans-root' );
+
+        if ( null !== $react ) {
+            return $react;
+        }
+
         //$cost_per_post = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 0;
 
         // Verify nonce for security
@@ -159,6 +165,40 @@ class Pack_Display {
     }
 
     /**
+     * The React plans app for a subscription shortcode, or null for the
+     * classic render: a theme override of its templates, the block / Elementor
+     * / admin contexts, an unbuilt bundle, or a callback on the classic
+     * markup filter (it rewrites finished HTML, which React output is not).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $part        Renderer part ('plans', 'plan_info')
+     * @param string $html_filter The classic markup filter
+     * @param string $schema      Subscription_Schema method ('packs', 'info')
+     * @param mixed  $argument    Its argument
+     * @param string $classes     Wrapper classes
+     *
+     * @return string|null
+     */
+    private function react_markup( $part, $html_filter, $schema, $argument, $classes ) {
+        $platform = function_exists( 'wpuf' ) && method_exists( wpuf(), 'platform' ) ? wpuf()->platform() : null;
+        $renderer = $platform && $platform->has( \WeDevs\Wpuf\Frontend\Renderer::class ) ? $platform->get( \WeDevs\Wpuf\Frontend\Renderer::class ) : null;
+
+        if ( ! $renderer || ! $renderer->mounts( $part ) || has_filter( $html_filter ) ) {
+            return null;
+        }
+
+        $schemas = $platform->get( \WeDevs\Wpuf\Frontend\Subscriptions\Subscription_Schema::class );
+        $data    = $renderer->build(
+            $part, function () use ( $schemas, $schema, $argument ) {
+				return $schemas->{$schema}( $argument );
+			}
+        );
+
+        return $renderer->markup( $part, $data, '', $classes );
+    }
+
+    /**
      * Render Subscription Pack details
      *
      * @param $pack
@@ -167,6 +207,24 @@ class Pack_Display {
      * @param bool   $coupon_status
      */
     public function pack_details( $pack, $details_meta, $current_pack_id = '', $coupon_status = false ) {
+        wpuf_load_template( 'subscriptions/pack-details.php', $this->pack_view_data( $pack, $details_meta, $current_pack_id, $coupon_status ) );
+    }
+
+    /**
+     * What a pack card shows (price, cycle, trial, button label and link),
+     * after `wpuf_subscription_pack_details_args`: the classic template and
+     * the React plans app render from the same values.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param object $pack            Pack
+     * @param array  $details_meta    get_details_meta_value()
+     * @param string $current_pack_id The user's pack id
+     * @param bool   $coupon_status   Coupon applied
+     *
+     * @return array
+     */
+    public function pack_view_data( $pack, $details_meta, $current_pack_id = '', $coupon_status = false ) {
         // $price_with_tax = $this->wpuf_prices_include_tax();
 
         $user_id = get_current_user_id();
@@ -231,22 +289,20 @@ class Pack_Display {
             $query_url = $details_meta['payment_page'];
         }
 
-        wpuf_load_template(
-            'subscriptions/pack-details.php', apply_filters(
-                'wpuf_subscription_pack_details_args', [
-                    'pack'                  => $pack,
-                    'billing_amount'        => $billing_amount,
-                    'details_meta'          => $details_meta,
-                    'recurring_des'         => $recurring_des,
-                    'trial_des'             => $trial_des,
-                    'coupon_status'         => $coupon_status,
-                    'current_pack_id'       => $current_pack_id,
-                    'current_pack_status'   => isset( $current_pack_status ) ? $current_pack_status : '',
-                    'button_name'           => $button_name,
-                    'query_args'            => $query_args,
-                    'query_url'             => $query_url,
-                ]
-            )
+        return apply_filters(
+            'wpuf_subscription_pack_details_args', [
+                'pack'                  => $pack,
+                'billing_amount'        => $billing_amount,
+                'details_meta'          => $details_meta,
+                'recurring_des'         => $recurring_des,
+                'trial_des'             => $trial_des,
+                'coupon_status'         => $coupon_status,
+                'current_pack_id'       => $current_pack_id,
+                'current_pack_status'   => isset( $current_pack_status ) ? $current_pack_status : '',
+                'button_name'           => $button_name,
+                'query_args'            => $query_args,
+                'query_url'             => $query_url,
+            ]
         );
     }
 
@@ -321,6 +377,12 @@ class Pack_Display {
      * @global type $userdata
      */
     public function subscription_info() {
+        $react = $this->react_markup( 'plan_info', 'wpuf_sub_info', 'info', true, 'wpuf-plan-info-root' );
+
+        if ( null !== $react ) {
+            return $react;
+        }
+
         // _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user()->subscription()->pack_info( $form_id );' );
         // wpuf_get_user()->subscription()->pack_info( $form_id );
         ob_start();

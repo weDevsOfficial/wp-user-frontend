@@ -17,6 +17,7 @@ const apps = {
     forms: './src/frontend/forms/index.jsx',
     'account-page': './src/frontend/account/index.jsx',
     login: './src/frontend/login/index.jsx',
+    plans: './src/frontend/plans/index.jsx',
 };
 
 // The kit: bundles @wpuf/frontend-kit sources and lucide-react, no frontend externals.

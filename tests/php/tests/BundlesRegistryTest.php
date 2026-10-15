@@ -54,7 +54,7 @@ class BundlesRegistryTest extends WP_UnitTestCase {
         $admin    = array_keys( wpuf()->platform()->get( Admin_Bundles::class )->scripts() );
         $frontend = array_keys( wpuf()->platform()->get( Frontend_Bundles::class )->scripts() );
 
-        $this->assertSame( [ 'frontend-runtime', 'frontend-forms', 'frontend-account', 'frontend-login' ], $frontend );
+        $this->assertSame( [ 'frontend-runtime', 'frontend-forms', 'frontend-account', 'frontend-login', 'frontend-plans' ], $frontend );
         $this->assertSame( [], array_values( array_filter( $admin, function ( $key ) { return 0 === strpos( $key, 'frontend-' ); } ) ) );
         $this->assertSame( [], array_values( array_filter( array_keys( wpuf()->platform()->get( Admin_Bundles::class )->styles() ), function ( $key ) { return 0 === strpos( $key, 'frontend-' ); } ) ) );
     }

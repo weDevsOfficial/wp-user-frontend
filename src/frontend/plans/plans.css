@@ -1,0 +1,63 @@
+/**
+ * The plans app (`[wpuf_sub_pack]`): the grid around the kit's PlanCard.
+ */
+.wpuf-frontend .wpuf-plans {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.wpuf-frontend .wpuf-plans .wpuf-notice {
+    margin: 0;
+}
+
+.wpuf-frontend .wpuf-plans__notice-title {
+    display: block;
+    margin-bottom: 2px;
+}
+
+.wpuf-frontend .wpuf-plans__active {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius-lg);
+    background: var(--wpuf-fe-soft);
+}
+
+.wpuf-frontend .wpuf-plans__active p {
+    margin: 0;
+}
+
+.wpuf-frontend .wpuf-plans__active-title {
+    font-weight: 600;
+}
+
+.wpuf-frontend ul.wpuf-plans__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    align-items: stretch;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wpuf-frontend ul.wpuf-plans__grid > li {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.wpuf-frontend ul.wpuf-plans__grid > li::before,
+.wpuf-frontend ul.wpuf-plans__grid > li::marker {
+    content: none;
+}
+
+.wpuf-frontend .wpuf-plans__empty {
+    padding: 24px 0;
+    text-align: center;
+}

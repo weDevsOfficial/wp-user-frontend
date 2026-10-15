@@ -1183,3 +1183,8 @@
 .wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway button[type="submit"]:hover {
     background: var(--wpuf-fe-primary-hover) !important;
 }
+
+/* Subscription section: header, then the card. */
+.wpuf-frontend .wpuf-account-subscription .wpuf-section-head {
+    margin-bottom: 16px;
+}

@@ -1303,3 +1303,102 @@ function wpuf_payment_success_page( $data ) {
 
     return $redirect_page;
 }
+
+/**
+ * The feature lines of a subscription pack card: the pack's own list when
+ * set, otherwise one line per limit of its advanced configuration (the lines
+ * the pack card always printed).
+ *
+ * @since WPUF_SINCE
+ *
+ * @param WP_Post|object $pack Pack with `meta_value`
+ *
+ * @return string[] Plain text lines
+ */
+function wpuf_subscription_pack_features( $pack ) {
+    $meta     = isset( $pack->meta_value ) && is_array( $pack->meta_value ) ? $pack->meta_value : [];
+    $features = [];
+
+    if ( ! empty( $meta['features'] ) && is_array( $meta['features'] ) ) {
+        foreach ( $meta['features'] as $feature ) {
+            $features[] = wp_strip_all_tags( (string) $feature );
+        }
+
+        /** This filter is documented below. */
+        return (array) apply_filters( 'wpuf_subscription_pack_features', $features, $pack );
+    }
+
+    $post_type_limits = isset( $meta['_post_type_name'] ) ? maybe_unserialize( $meta['_post_type_name'] ) : [];
+    $additional_cpt   = isset( $meta['additional_cpt_options'] ) ? maybe_unserialize( $meta['additional_cpt_options'] ) : [];
+    $limits           = array_merge( (array) $post_type_limits, (array) $additional_cpt );
+
+    // type => [ unlimited line, "%d allowed" line ]
+    $lines = [
+        'post'              => [ __( 'Unlimited posts', 'wp-user-frontend' ), /* translators: %d: limit */ __( '%d posts allowed', 'wp-user-frontend' ) ],
+        'page'              => [ __( 'Unlimited pages', 'wp-user-frontend' ), /* translators: %d: limit */ __( '%d pages allowed', 'wp-user-frontend' ) ],
+        'user_request'      => [ __( 'Unlimited user requests', 'wp-user-frontend' ), /* translators: %d: limit */ __( '%d user requests allowed', 'wp-user-frontend' ) ],
+        'product'           => [ __( 'Unlimited products', 'wp-user-frontend' ), /* translators: %d: limit */ __( '%d products allowed', 'wp-user-frontend' ) ],
+        'wp_block'          => [ __( 'Unlimited reusable blocks', 'wp-user-frontend' ), /* translators: %d: limit */ __( '%d reusable blocks allowed', 'wp-user-frontend' ) ],
+        'wp_template'       => [ __( 'Unlimited templates', 'wp-user-frontend' ), /* translators: %d: limit */ __( '%d templates allowed', 'wp-user-frontend' ) ],
+        'wp_template_part'  => [ __( 'Unlimited template parts', 'wp-user-frontend' ), /* translators: %d: limit */ __( '%d template parts allowed', 'wp-user-frontend' ) ],
+        'wp_navigation'     => [ __( 'Unlimited navigation menus', 'wp-user-frontend' ), /* translators: %d: limit */ __( '%d navigation menus allowed', 'wp-user-frontend' ) ],
+        'wp_global_styles'  => [ __( 'Unlimited global styles', 'wp-user-frontend' ), /* translators: %d: limit */ __( '%d global styles allowed', 'wp-user-frontend' ) ],
+        'wp_font_family'    => [ __( 'Unlimited font families', 'wp-user-frontend' ), /* translators: %d: limit */ __( '%d font families allowed', 'wp-user-frontend' ) ],
+        'wp_font_face'      => [ __( 'Unlimited font faces', 'wp-user-frontend' ), /* translators: %d: limit */ __( '%d font faces allowed', 'wp-user-frontend' ) ],
+        'product_variation' => [ __( 'Unlimited product variations', 'wp-user-frontend' ), /* translators: %d: limit */ __( '%d product variations allowed', 'wp-user-frontend' ) ],
+        'shop_order'        => [ __( 'Unlimited shop orders', 'wp-user-frontend' ), /* translators: %d: limit */ __( '%d shop orders allowed', 'wp-user-frontend' ) ],
+        'shop_order_refund' => [ __( 'Unlimited shop refunds', 'wp-user-frontend' ), /* translators: %d: limit */ __( '%d shop refunds allowed', 'wp-user-frontend' ) ],
+        'shop_coupon'       => [ __( 'Unlimited shop coupons', 'wp-user-frontend' ), /* translators: %d: limit */ __( '%d shop coupons allowed', 'wp-user-frontend' ) ],
+    ];
+
+    foreach ( $lines as $type => $texts ) {
+        if ( ! isset( $limits[ $type ] ) || '0' === (string) $limits[ $type ] ) {
+            continue;
+        }
+
+        $features[] = '-1' === (string) $limits[ $type ] ? $texts[0] : sprintf( $texts[1], intval( $limits[ $type ] ) );
+    }
+
+    if ( isset( $meta['_total_feature_item'] ) && '0' !== (string) $meta['_total_feature_item'] ) {
+        /* translators: %d: number of featured items */
+        $features[] = '-1' === (string) $meta['_total_feature_item'] ? __( 'Unlimited featured items', 'wp-user-frontend' ) : sprintf( /* translators: %d: number of featured items */ __( '%d featured items', 'wp-user-frontend' ), intval( $meta['_total_feature_item'] ) );
+    }
+
+    if ( isset( $meta['_enable_post_expiration'] ) && 'yes' === $meta['_enable_post_expiration'] ) {
+        $expiry_period = isset( $meta['_post_expiration_number'] ) ? intval( $meta['_post_expiration_number'] ) : 0;
+        $expiry_type   = isset( $meta['_post_expiration_period'] ) ? $meta['_post_expiration_period'] : 'day';
+
+        /* translators: %d: number, %s: period */
+        $features[] = $expiry_period > 0 ? sprintf( /* translators: %d: number, %s: period */ __( 'Posts expire after %d %s', 'wp-user-frontend' ), $expiry_period, $expiry_type . ( $expiry_period > 1 ? 's' : '' ) ) : __( 'Post expiration enabled', 'wp-user-frontend' ); // phpcs:ignore WordPress.WP.I18n.UnorderedPlaceholdersText -- the pack card's existing msgid, kept for its translations.
+    }
+
+    if ( isset( $meta['_recurring_pay'] ) && 'yes' === $meta['_recurring_pay'] ) {
+        $features[] = __( 'Recurring subscription', 'wp-user-frontend' );
+    }
+
+    if ( isset( $meta['_trial_status'] ) && 'yes' === $meta['_trial_status'] ) {
+        $trial_duration = isset( $meta['_trial_duration'] ) ? intval( $meta['_trial_duration'] ) : 0;
+        $trial_type     = isset( $meta['_trial_duration_type'] ) ? $meta['_trial_duration_type'] : 'day';
+
+        /* translators: %d: number, %s: period */
+        $features[] = $trial_duration > 0 ? sprintf( /* translators: %d: number, %s: period */ __( '%d %s free trial', 'wp-user-frontend' ), $trial_duration, $trial_type . ( $trial_duration > 1 ? 's' : '' ) ) : __( 'Free trial available', 'wp-user-frontend' ); // phpcs:ignore WordPress.WP.I18n.UnorderedPlaceholdersText -- the pack card's existing msgid, kept for its translations.
+    }
+
+    if ( isset( $meta['_enable_mail_after_expired'] ) && 'yes' === $meta['_enable_mail_after_expired'] ) {
+        $features[] = __( 'Email notifications on post expiry', 'wp-user-frontend' );
+    }
+
+    if ( empty( $features ) ) {
+        $features[] = __( 'Full website access', 'wp-user-frontend' );
+    }
+
+    /**
+     * Filters the feature lines of a subscription pack card.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string[] $features Plain text lines
+     * @param object   $pack     Pack
+     */
+    return (array) apply_filters( 'wpuf_subscription_pack_features', $features, $pack );
+}

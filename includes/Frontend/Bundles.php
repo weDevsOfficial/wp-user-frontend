@@ -59,6 +59,7 @@ class Bundles {
         $frontend_forms   = $this->asset( 'forms', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
         $frontend_account = $this->asset( 'account-page', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
         $frontend_login   = $this->asset( 'login', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
+        $frontend_plans   = $this->asset( 'plans', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
 
         return [
             'frontend-runtime'          => [
@@ -85,6 +86,13 @@ class Bundles {
                 'src'       => WPUF_ASSET_URI . '/js/frontend/login.js',
                 'deps'      => array_values( array_unique( array_merge( [ 'wpuf-frontend-runtime' ], $frontend_login['dependencies'] ) ) ),
                 'version'   => $frontend_login['version'],
+                'in_footer' => true,
+            ],
+            // Subscription packs and the user's subscription card (`[wpuf_sub_pack]`, `[wpuf_sub_info]`).
+            'frontend-plans'            => [
+                'src'       => WPUF_ASSET_URI . '/js/frontend/plans.js',
+                'deps'      => array_values( array_unique( array_merge( [ 'wpuf-frontend-runtime' ], $frontend_plans['dependencies'] ) ) ),
+                'version'   => $frontend_plans['version'],
                 'in_footer' => true,
             ],
         ];
@@ -147,6 +155,11 @@ class Bundles {
             'frontend-login-style'   => [
                 'src'     => WPUF_ASSET_URI . '/css/frontend/login.css',
                 'version' => $this->css_version( 'css/frontend/login.css' ),
+                'rtl'     => true,
+            ],
+            'frontend-plans-style'   => [
+                'src'     => WPUF_ASSET_URI . '/css/frontend/plans.css',
+                'version' => $this->css_version( 'css/frontend/plans.css' ),
                 'rtl'     => true,
             ],
             // The classic account sheet scoped to the PHP sections of the React account (tools/frontend-css/account-sections.mjs).

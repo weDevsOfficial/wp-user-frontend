@@ -17,6 +17,7 @@ import { listen, pageOf, urlFor } from './router';
 import Overview from './sections/Overview';
 import Posts from './sections/Posts';
 import { ChangePassword, EditProfile } from './sections/Profile';
+import Subscription from './sections/Subscription';
 import { store } from './store';
 
 const { CalendarDays, LogOut, Mail, Pencil, iconByName } = icons;
@@ -140,6 +141,8 @@ export default function App( { data, root } ) {
         body = <EditProfile profile={ person } nonce={ nonces.profile } onSaved={ ( fresh ) => { setProfile( fresh ); refreshAccount(); } } />;
     } else if ( 'change-password' === section.slug && 'native' === section.kind ) {
         body = <ChangePassword nonce={ nonces.password } />;
+    } else if ( 'subscription' === section.kind ) {
+        body = <Subscription />;
     } else {
         const html = <HtmlSection key={ search } slug={ section.slug } search={ search } initial={ search === firstSearch ? data.section_html : null } />;
         const card = CARD_SECTIONS[ section.slug ];

@@ -326,87 +326,6 @@ class SettingsStore {
     }
 
     /**
-     * Route the legacy settings screen (options.php) through the store: its
-     * sections are sanitized by sanitize_legacy_section() instead of
-     * WeDevs_Settings_API::sanitize_options() (same rules), and a save of a
-     * section from that screen fires `wpuf_settings_saved`.
-     *
-     * @since WPUF_SINCE
-     *
-     * @param object $settings_api The WeDevs_Settings_API instance that registered the sections
-     * @param array  $sections     Registered sections
-     *
-     * @return void
-     */
-    public function hook_legacy_screen( $settings_api, $sections ) {
-        foreach ( $sections as $section ) {
-            if ( empty( $section['id'] ) ) {
-                continue;
-            }
-
-            remove_filter( 'sanitize_option_' . $section['id'], [ $settings_api, 'sanitize_options' ] );
-            add_filter( 'sanitize_option_' . $section['id'], [ $this, 'sanitize_legacy_section' ] );
-            add_action( 'update_option_' . $section['id'], [ $this, 'legacy_section_saved' ], 10, 3 );
-        }
-    }
-
-    /**
-     * Sanitize a section posted by the legacy screen, as
-     * WeDevs_Settings_API::sanitize_options() did: each posted key whose
-     * field (first registration of that name in any section) has a callable
-     * sanitize_callback runs through it; other keys are kept as posted.
-     *
-     * @since WPUF_SINCE
-     *
-     * @param mixed $options Posted section values
-     *
-     * @return mixed
-     */
-    public function sanitize_legacy_section( $options ) {
-        if ( ! $options || ! is_array( $options ) ) {
-            return $options;
-        }
-
-        $schema = $this->fields();
-
-        foreach ( $options as $option_slug => $option_value ) {
-            $callback = $this->legacy_sanitize_callback( $schema, $option_slug );
-
-            if ( $callback ) {
-                $options[ $option_slug ] = call_user_func( $callback, $option_value );
-            }
-        }
-
-        return $options;
-    }
-
-    /**
-     * Fire `wpuf_settings_saved` after the legacy screen saved a section
-     * (only for the section posted to options.php, not for other writes).
-     *
-     * @since WPUF_SINCE
-     *
-     * @param mixed  $old_value Previous value
-     * @param mixed  $value     Saved value
-     * @param string $option    Option name
-     *
-     * @return void
-     */
-    public function legacy_section_saved( $old_value, $value, $option ) {
-        global $pagenow;
-
-        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- options.php verified the option page nonce before saving.
-        $option_page = isset( $_POST['option_page'] ) ? sanitize_key( wp_unslash( $_POST['option_page'] ) ) : '';
-
-        if ( 'options.php' !== $pagenow || $option_page !== $option ) {
-            return;
-        }
-
-        /** This action is documented in includes/Platform/Stores/SettingsStore.php */
-        do_action( 'wpuf_settings_saved', [ $option => $value ], [ $option => $value ], [] );
-    }
-
-    /**
      * Collapse duplicate named fields within a section: the last registration
      * (Pro's functional field) wins, at the first one's position. Unnamed
      * fields (headers, html groupings) are kept.
@@ -639,33 +558,6 @@ class SettingsStore {
         if ( ! function_exists( 'get_editable_roles' ) ) {
             require_once ABSPATH . 'wp-admin/includes/user.php';
         }
-    }
-
-    /**
-     * The sanitize callback WeDevs_Settings_API::get_sanitize_callback() found
-     * for a slug: the first field with that name in any section, if callable.
-     *
-     * @param array  $schema Raw schema (fields())
-     * @param string $slug   Posted key
-     *
-     * @return callable|false
-     */
-    private function legacy_sanitize_callback( $schema, $slug ) {
-        if ( empty( $slug ) ) {
-            return false;
-        }
-
-        foreach ( $schema as $fields ) {
-            foreach ( (array) $fields as $field ) {
-                if ( ! isset( $field['name'] ) || (string) $field['name'] !== (string) $slug ) {
-                    continue;
-                }
-
-                return isset( $field['sanitize_callback'] ) && is_callable( $field['sanitize_callback'] ) ? $field['sanitize_callback'] : false;
-            }
-        }
-
-        return false;
     }
 
     /**

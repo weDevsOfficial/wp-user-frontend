@@ -9,6 +9,7 @@
 namespace WeDevs\Wpuf\Admin\Screens;
 
 use WeDevs\Wpuf\Admin\BootPayload;
+use WeDevs\Wpuf\Platform\Stores\Stores;
 
 /**
  * User Frontend > Settings: the React settings app (the classic
@@ -78,6 +79,9 @@ class Settings extends Screen {
         $handle = 'wpuf-settings-screen';
 
         wp_enqueue_script( $handle );
+        // The settings schema and its helpers (settings-options / settings-screen).
+        Stores::settings()->load_schema();
+
         wpuf()->platform()->get( BootPayload::class )->attach( 'settings', $handle );
 
         /**
@@ -106,7 +110,7 @@ class Settings extends Screen {
                 'upgrade_url'   => 'https://wedevs.com/wp-user-frontend-pro/pricing/',
                 'support_url'   => 'https://wedevs.com/docs/wp-user-frontend-pro/',
                 // Settings of other plugins the React screen cannot show.
-                'legacy_only'  => function_exists( 'wpuf_settings_legacy_only_items' ) ? wpuf_settings_legacy_only_items() : [],
+                'legacy_only'  => wpuf_settings_legacy_only_items(),
             ]
         );
     }

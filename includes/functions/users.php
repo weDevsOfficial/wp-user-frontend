@@ -908,65 +908,6 @@ function wpuf_get_login_layout_options() {
 }
 
 /**
- * Render login layout radio image field
- *
- * @since 4.1.0
- *
- * @param array $args Field arguments
- */
-function wpuf_render_login_layout_field( $args ) {
-    if ( empty( $args['section'] ) || empty( $args['id'] ) || empty( $args['options'] ) ) {
-        return;
-    }
-
-    $value   = get_option( $args['section'] );
-    $current = $value[ $args['id'] ] ?? $args['std'] ?? '';
-    $disabled = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
-    $wrapper_class = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'pro-preview-html' : '';
-
-    echo '<fieldset>';
-
-    printf( '<div class="wpuf-radio-image-wrapper %s">', esc_attr( $wrapper_class ) );
-
-    foreach ( $args['options'] as $key => $option ) {
-        $checked = checked( $current, $key, false );
-        $label   = esc_html( $option['label'] ?? $key );
-        $image   = esc_url( $option['image'] ?? '' );
-
-        printf(
-            '<div class="wpuf-radio-image-option">
-                <input type="radio" id="%1$s_%2$s" name="%3$s[%1$s]" value="%2$s" %4$s %5$s>
-                <label for="%1$s_%2$s" title="%6$s">',
-            esc_attr( $args['id'] ),
-            esc_attr( $key ),
-            esc_attr( $args['section'] ),
-            $checked,
-            $disabled,
-            $label
-        );
-
-        if ( $image ) {
-            printf( '<img src="%s" alt="%s">', $image, $label );
-        }
-
-        echo '</label></div>';
-    }
-
-    // Add pro preview overlay inside the wrapper
-    if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
-        echo wpuf_get_pro_preview_html();
-    }
-
-    echo '</div>';
-
-    if ( ! empty( $args['desc'] ) ) {
-        printf( '<p class="description">%s</p>', wp_kses_post( $args['desc'] ) );
-    }
-
-    echo '</fieldset>';
-}
-
-/**
  * Get WPUF logout URL
  *
  * Returns the logout URL with proper nonce. If WPUF login override is enabled,

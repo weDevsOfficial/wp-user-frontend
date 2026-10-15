@@ -52,17 +52,6 @@ class CoreServiceProvider extends ServiceProvider {
             }
         );
 
-        // The classic settings API (Lib): Admin_Settings and the legacy field renderers
-        // share one instance (each `new` hooked admin_enqueue_scripts again).
-        $this->share_tagged(
-            \WeDevs_Settings_API::class,
-            function () {
-                wpuf_require_once( WPUF_ROOT . '/Lib/WeDevs_Settings_API.php' );
-
-                return new \WeDevs_Settings_API();
-            }
-        );
-
         // The onboarding wizard's own state (options + the activation redirect).
         $this->share_tagged(
             State::class,

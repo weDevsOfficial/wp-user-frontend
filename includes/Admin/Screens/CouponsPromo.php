@@ -86,7 +86,6 @@ class CouponsPromo extends Screen {
     public function load_in_app() {
         wp_enqueue_style( 'wpuf-admin-pages' );
         wp_enqueue_script( 'wpuf-coupons-promo' );
-        wp_set_script_translations( 'wpuf-coupons-promo', 'wp-user-frontend', WPUF_ROOT . '/languages' );
     }
 
     /**

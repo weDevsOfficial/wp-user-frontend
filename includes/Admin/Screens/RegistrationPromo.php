@@ -90,7 +90,6 @@ class RegistrationPromo extends Screen {
         wp_enqueue_style( 'wpuf-admin' );
         wp_enqueue_style( 'wpuf-settings-screen' );
         wp_enqueue_script( 'wpuf-registration-promo' );
-        wp_set_script_translations( 'wpuf-registration-promo', 'wp-user-frontend', WPUF_ROOT . '/languages' );
 
         /** This action is documented in includes/Free/Free_Loader.php */
         do_action( 'wpuf_load_registration_forms' );

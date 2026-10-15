@@ -87,7 +87,6 @@ class ModulesPreview extends Screen {
     public function load_in_app() {
         wp_enqueue_style( 'wpuf-admin-pages' );
         wp_enqueue_script( 'wpuf-modules-preview' );
-        wp_set_script_translations( 'wpuf-modules-preview', 'wp-user-frontend', WPUF_ROOT . '/languages' );
 
         /** This action is documented in includes/Free/Modules_Preview.php */
         do_action( 'wpuf_load_module_page' );

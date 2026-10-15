@@ -84,7 +84,6 @@ class Help extends Screen {
     public function load_in_app() {
         wp_enqueue_style( 'wpuf-admin-pages' );
         wp_enqueue_script( 'wpuf-help' );
-        wp_set_script_translations( 'wpuf-help', 'wp-user-frontend', WPUF_ROOT . '/languages' );
     }
 
     /**

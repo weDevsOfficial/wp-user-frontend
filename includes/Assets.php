@@ -131,10 +131,6 @@ class Assets {
             ]
         );
 
-        // The shared admin components (window.wpuf.components) print their own
-        // strings, so they load translations like the screens do.
-        $this->react()->set_translations();
-
         do_action( 'wpuf_after_register_scripts', $scripts, $styles );
     }
 
@@ -200,6 +196,13 @@ class Assets {
             $version   = ! empty( $script['version'] ) ? $script['version'] : WPUF_VERSION;
 
             wp_register_script( 'wpuf-' . $handle, $this->existing_src( $script['src'] ), $deps, $version, $in_footer );
+
+            // Every React bundle (admin screens, the shared runtime and components,
+            // the frontend apps and their kit) loads its JSON translations, set once
+            // here so no handle is missed.
+            if ( is_string( $script['src'] ) && preg_match( '#/js/(screens|frontend)/[^/]+\.js$#', $script['src'] ) ) {
+                wp_set_script_translations( 'wpuf-' . $handle, 'wp-user-frontend', WPUF_ROOT . '/languages' );
+            }
         }
     }
 

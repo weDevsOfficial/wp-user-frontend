@@ -27,7 +27,7 @@ class Bundles implements Hookable {
 
     /**
      * Hook the stylesheet switch and body classes. Translations are set by the
-     * legacy registry right after registration (set_translations()).
+     * legacy registry, which sets their translations at registration.
      *
      * @since WPUF_SINCE
      *
@@ -262,18 +262,6 @@ class Bundles implements Hookable {
                 'rtl'     => true,
             ],
         ];
-    }
-
-    /**
-     * The shared admin components (window.wpuf.components) print their own
-     * strings, so they load translations like the screens do.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    public function set_translations() {
-        wp_set_script_translations( 'wpuf-admin-ui', 'wp-user-frontend', WPUF_ROOT . '/languages' );
     }
 
     /**

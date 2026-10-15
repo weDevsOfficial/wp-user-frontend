@@ -117,7 +117,6 @@ class Welcome extends Screen {
     public function load_in_app() {
         wp_enqueue_style( 'wpuf-onboarding-screen' );
         wp_enqueue_script( 'wpuf-welcome' );
-        wp_set_script_translations( 'wpuf-welcome', 'wp-user-frontend', WPUF_ROOT . '/languages' );
 
         if ( $this->take_intro() ) {
             wp_add_inline_script( 'wpuf-welcome', 'window.wpufWelcomeIntro = ' . wp_json_encode( $this->intro() ) . ';', 'before' );

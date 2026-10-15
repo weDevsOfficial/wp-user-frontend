@@ -109,7 +109,6 @@ class PostFormsList extends Screen {
         wp_enqueue_style( 'wpuf-admin' );
         wp_enqueue_style( 'wpuf-forms-list' );
         wp_enqueue_script( 'wpuf-forms-list-screen' );
-        wp_set_script_translations( 'wpuf-forms-list-screen', 'wp-user-frontend', WPUF_ROOT . '/languages' );
     }
 
     /**

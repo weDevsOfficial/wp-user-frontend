@@ -89,7 +89,6 @@ class Transactions extends Screen {
     public function load_in_app() {
         wp_enqueue_style( 'wpuf-admin-pages' );
         wp_enqueue_script( 'wpuf-transactions' );
-        wp_set_script_translations( 'wpuf-transactions', 'wp-user-frontend', WPUF_ROOT . '/languages' );
     }
 
     /**

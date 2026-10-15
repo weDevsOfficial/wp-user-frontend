@@ -11,21 +11,7 @@ import { Badge } from '@wpuf/components';
 import { RefreshCw, Users } from 'lucide-react';
 import { fetchSubscribers } from '../../api/subscription';
 import { subscriptionsData } from '../../boot';
-
-const STATUS = {
-	publish: { label: __( 'Published', 'wp-user-frontend' ), tone: 'primary' },
-	draft: { label: __( 'Draft', 'wp-user-frontend' ), tone: 'neutral' },
-	pending: { label: __( 'Pending', 'wp-user-frontend' ), tone: 'warning' },
-	future: { label: __( 'Future', 'wp-user-frontend' ), tone: 'info' },
-	private: { label: __( 'Private', 'wp-user-frontend' ), tone: 'warning' },
-	trash: { label: __( 'Trash', 'wp-user-frontend' ), tone: 'danger' },
-};
-
-// Any other status reads as its own word (capitalised, as the list's pill), never "Draft".
-const statusOf = ( postStatus ) => STATUS[ postStatus ] || {
-	label: postStatus ? postStatus.charAt( 0 ).toUpperCase() + postStatus.slice( 1 ) : __( 'Draft', 'wp-user-frontend' ),
-	tone: 'neutral',
-};
+import { cycleCount, periodLabel, statusOf } from '../../labels';
 
 /**
  * Plan summary card above the form (new and edit): the plan name and status
@@ -59,10 +45,11 @@ const InfoCard = ( { subscription, mode = 'edit' } ) => {
 
 	const amount = '' === pick( 'billing_amount' ) || undefined === pick( 'billing_amount' ) ? 0 : pick( 'billing_amount' );
 	const isFree = ! isRecurring && 0 === parseFloat( amount );
-	const cycle = parseInt( meta._billing_cycle_number, 10 );
-	const period = ! pick( 'cycle_period' ) ? __( 'day', 'wp-user-frontend' ) : pick( 'cycle_period' );
-	/* translators: 1: number of periods, 2: period (day, week, month, year) */
-	const every = 0 === cycle || 1 === cycle || isNaN( cycle ) ? '/' + period : sprintf( __( '/ %1$s %2$ss', 'wp-user-frontend' ), cycle, period );
+	const cycle = cycleCount( meta._billing_cycle_number );
+	const every = 1 === cycle
+		? '/' + periodLabel( pick( 'cycle_period' ), 1 )
+		/* translators: 1: number of periods, 2: billing period (weeks, months) */
+		: sprintf( __( '/ %1$d %2$s', 'wp-user-frontend' ), cycle, periodLabel( pick( 'cycle_period' ), cycle ) );
 	const status = isEdit ? statusOf( live.post_status ) : { label: __( 'New', 'wp-user-frontend' ), tone: 'neutral' };
 	const title = live.post_title || __( 'Untitled plan', 'wp-user-frontend' );
 

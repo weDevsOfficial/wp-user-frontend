@@ -109,7 +109,6 @@ class AiFormBuilder extends Screen {
     public function enqueue( $form_type = 'post' ) {
         wp_enqueue_script( self::HANDLE );
         wp_enqueue_style( self::HANDLE );
-        wp_set_script_translations( self::HANDLE, 'wp-user-frontend', WPUF_ROOT . '/languages' );
 
         if ( $this->boot ) {
             $this->boot->attach( $this->slug(), self::HANDLE );

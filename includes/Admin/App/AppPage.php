@@ -164,7 +164,6 @@ class AppPage {
         $styles->queue = $queue;
 
         wp_enqueue_script( self::HANDLE );
-        wp_set_script_translations( self::HANDLE, 'wp-user-frontend', WPUF_ROOT . '/languages' );
 
         // Before every screen bundle (they all depend on the runtime), so a
         // screen knows it runs in the app when it loads.

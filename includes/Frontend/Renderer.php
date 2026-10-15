@@ -362,7 +362,6 @@ class Renderer implements App_Renderer {
         wp_enqueue_style( 'wpuf-frontend-runtime-style' );
         wp_enqueue_style( 'wpuf-frontend-' . $app . '-style' );
         wp_enqueue_script( 'wpuf-frontend-' . $app );
-        wp_set_script_translations( 'wpuf-frontend-' . $app, 'wp-user-frontend', WPUF_ROOT . '/languages' );
 
         /**
          * Fires when a frontend React app is enqueued: add-ons enqueue the

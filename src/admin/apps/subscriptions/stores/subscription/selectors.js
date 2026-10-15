@@ -1,4 +1,5 @@
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
+import { cycleCount, periodLabel } from '../../labels';
 
 // Internal helper to get global data
 const getWpufSubscriptions = () => window.wpufSubscriptions || {};
@@ -97,7 +98,7 @@ export function isRecurring(state, subscription) {
     return item.meta_value.recurring_pay === 'on' || item.meta_value.recurring_pay === 'yes';
 }
 
-export function getReadableBillingAmount(state, subscription, returnAsHtml = false) {
+export function getReadableBillingAmount(state, subscription) {
     // If subscription is not passed, use current item
     const item = subscription || state.item;
     if (!item || !item.meta_value) {
@@ -108,14 +109,14 @@ export function getReadableBillingAmount(state, subscription, returnAsHtml = fal
     const currencySymbol = wpufSubscriptions.currencySymbol || '$';
 
     if (isRecurring(state, item)) {
-        const cyclePeriod = item.meta_value.cycle_period === '' ? __('day', 'wp-user-frontend') : item.meta_value.cycle_period;
-        const expireAfter = (parseInt(item.meta_value._billing_cycle_number) === 0 || parseInt(item.meta_value._billing_cycle_number) === 1) ? '' : ' ' + item.meta_value._billing_cycle_number + ' ';
+        const count = cycleCount(item.meta_value._billing_cycle_number);
+        const amount = currencySymbol + item.meta_value.billing_amount;
 
-        if (returnAsHtml) {
-            return currencySymbol + item.meta_value.billing_amount + ' <span class="text-sm text-gray-500">per ' + expireAfter + ' ' + cyclePeriod + '(s)</span>';
-        } else {
-            return currencySymbol + item.meta_value.billing_amount + ' every ' + expireAfter + ' ' + cyclePeriod + '(s)';
-        }
+        return 1 === count
+            /* translators: 1: price, 2: billing period (week, month) */
+            ? sprintf(__('%1$s every %2$s', 'wp-user-frontend'), amount, periodLabel(item.meta_value.cycle_period, 1))
+            /* translators: 1: price, 2: number of periods, 3: billing period (weeks, months) */
+            : sprintf(__('%1$s every %2$d %3$s', 'wp-user-frontend'), amount, count, periodLabel(item.meta_value.cycle_period, count));
     } else {
         if (parseInt(item.meta_value.billing_amount) === 0 || item.meta_value.billing_amount === '') {
             return __('Free', 'wp-user-frontend');

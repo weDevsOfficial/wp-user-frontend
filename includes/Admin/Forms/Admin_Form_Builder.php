@@ -98,7 +98,6 @@ class Admin_Form_Builder {
 
         // React form builder bundle, registered in the shared Assets registry (task 2.5b).
         wp_enqueue_script( 'wpuf-form-builder-screen' );
-        wp_set_script_translations( 'wpuf-form-builder-screen', 'wp-user-frontend', WPUF_ROOT . '/languages' );
         wpuf()->platform()->get( BootPayload::class )->attach( 'form_builder', 'wpuf-form-builder-screen' );
 
         $data = $this->localize_data();
@@ -185,8 +184,7 @@ class Admin_Form_Builder {
 
             self::enqueue_libraries();
             wp_enqueue_script( 'wpuf-form-builder-screen' );
-            wp_set_script_translations( 'wpuf-form-builder-screen', 'wp-user-frontend', WPUF_ROOT . '/languages' );
-            add_action( 'admin_footer', [ __CLASS__, 'custom_dequeue' ] );
+                add_action( 'admin_footer', [ __CLASS__, 'custom_dequeue' ] );
             add_action( 'admin_footer', [ __CLASS__, 'retired_footer' ] );
 
             self::$app_styles = array_values( array_diff( wp_styles()->queue, $before ) );

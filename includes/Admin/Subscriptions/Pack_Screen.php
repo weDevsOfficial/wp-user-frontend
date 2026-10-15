@@ -51,7 +51,6 @@ class Pack_Screen {
         wp_enqueue_script( 'wpuf-subscriptions-screen' );
         wp_enqueue_style( 'wpuf-subscriptions-screen' );
         $script_handle = 'wpuf-subscriptions-screen';
-        wp_set_script_translations( $script_handle, 'wp-user-frontend', WPUF_ROOT . '/languages' );
         wpuf()->platform()->get( BootPayload::class )->attach( 'subscriptions', $script_handle );
 
         wp_localize_script(

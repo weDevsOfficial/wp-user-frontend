@@ -231,7 +231,7 @@ final class WP_User_Frontend {
      * @return void
      */
     public function instantiate() {
-        // Legacy services come from the platform container (one instance for
+        // Core services come from the platform container (one instance for
         // wpuf()->key and the container), built eagerly in this order because
         // their constructors add hooks.
         foreach ( [ 'assets', 'subscription', 'fields', 'customize' ] as $key ) {
@@ -318,14 +318,14 @@ final class WP_User_Frontend {
      *
      * @since WPUF_SINCE
      *
-     * @param string $key Legacy key (see Platform\Providers\LegacyServiceProvider::SERVICES)
+     * @param string $key Service key (see Platform\Providers\PluginServiceProvider::SERVICES)
      *
      * @return object
      */
     private function legacy( $key ) {
         $this->platform_bootstrap()->register();
 
-        $this->container[ $key ] = $this->platform()->get( WeDevs\Wpuf\Platform\Providers\LegacyServiceProvider::class_of( $key ) );
+        $this->container[ $key ] = $this->platform()->get( WeDevs\Wpuf\Platform\Providers\PluginServiceProvider::class_of( $key ) );
 
         return $this->container[ $key ];
     }

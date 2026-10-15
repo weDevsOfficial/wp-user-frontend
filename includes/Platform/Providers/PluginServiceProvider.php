@@ -1,6 +1,6 @@
 <?php
 /**
- * Legacy services in the platform container
+ * The plugin's core services in the platform container
  *
  * @package WP_User_Frontend
  * @since WPUF_SINCE
@@ -23,10 +23,10 @@ use WeDevs\Wpuf\Platform\ServiceProvider;
  *
  * @since WPUF_SINCE
  */
-class LegacyServiceProvider extends ServiceProvider {
+class PluginServiceProvider extends ServiceProvider {
 
     /**
-     * Legacy container key => class, in the plugin's boot order.
+     * Container key (`wpuf()->key`) => class, in the plugin's boot order.
      */
     const SERVICES = [
         'tracker'         => \WeDevs\Wpuf\Lib\WeDevs_Insights::class,
@@ -53,7 +53,7 @@ class LegacyServiceProvider extends ServiceProvider {
     ];
 
     /**
-     * Register each legacy class as a shared service.
+     * Register each service class as a shared service.
      *
      * @since WPUF_SINCE
      *
@@ -80,7 +80,7 @@ class LegacyServiceProvider extends ServiceProvider {
      *
      * @since WPUF_SINCE
      *
-     * @param string $key Legacy key (`assets`, `admin`, ...)
+     * @param string $key Service key (`assets`, `admin`, ...)
      *
      * @return string|null
      */

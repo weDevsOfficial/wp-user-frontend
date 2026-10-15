@@ -192,19 +192,19 @@ class PlatformContainerTest extends WP_UnitTestCase {
     public function test_legacy_services_are_the_platform_services() {
         $platform = wpuf()->platform();
 
-        foreach ( \WeDevs\Wpuf\Platform\Providers\LegacyServiceProvider::SERVICES as $key => $class ) {
+        foreach ( \WeDevs\Wpuf\Platform\Providers\PluginServiceProvider::SERVICES as $key => $class ) {
             $this->assertTrue( $platform->has( $class ), $class . ' registered' );
-            $this->assertSame( $class, \WeDevs\Wpuf\Platform\Providers\LegacyServiceProvider::class_of( $key ) );
+            $this->assertSame( $class, \WeDevs\Wpuf\Platform\Providers\PluginServiceProvider::class_of( $key ) );
         }
 
         // The keys the plugin builds in the test context (no wp-admin, no AJAX;
         // other tests may put their own Admin into the legacy array).
         foreach ( [ 'tracker', 'assets', 'subscription', 'fields', 'customize', 'bank', 'paypal', 'api', 'integrations', 'ai_manager', 'post_form_block', 'frontend', 'gateway_manager', 'widgets' ] as $key ) {
             $this->assertNotNull( wpuf()->$key, $key );
-            $this->assertSame( wpuf()->$key, $platform->get( \WeDevs\Wpuf\Platform\Providers\LegacyServiceProvider::class_of( $key ) ), $key );
+            $this->assertSame( wpuf()->$key, $platform->get( \WeDevs\Wpuf\Platform\Providers\PluginServiceProvider::class_of( $key ) ), $key );
         }
 
-        $this->assertNull( \WeDevs\Wpuf\Platform\Providers\LegacyServiceProvider::class_of( 'nope' ) );
+        $this->assertNull( \WeDevs\Wpuf\Platform\Providers\PluginServiceProvider::class_of( 'nope' ) );
         $this->assertSame( wpuf()->assets, $platform->get( \WeDevs\Wpuf\Assets::class ) );
         $this->assertSame( wpuf()->subscription, $platform->get( \WeDevs\Wpuf\Admin\Subscription::class ) );
         $this->assertSame( wpuf()->api, $platform->get( \WeDevs\Wpuf\API::class ) );

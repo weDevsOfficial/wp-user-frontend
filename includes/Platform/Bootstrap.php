@@ -13,7 +13,7 @@ use WeDevs\Wpuf\Platform\Providers\FrontendServiceProvider;
 
 use WeDevs\Wpuf\Platform\Contracts\Hookable;
 use WeDevs\Wpuf\Platform\Providers\CoreServiceProvider;
-use WeDevs\Wpuf\Platform\Providers\LegacyServiceProvider;
+use WeDevs\Wpuf\Platform\Providers\PluginServiceProvider;
 use WeDevs\Wpuf\Platform\Providers\StoreServiceProvider;
 use WeDevs\Wpuf\Platform\Providers\RestServiceProvider;
 use WeDevs\Wpuf\Platform\Providers\AiServiceProvider;
@@ -75,7 +75,7 @@ class Bootstrap {
      */
     public function providers() {
         return [
-            LegacyServiceProvider::class,
+            PluginServiceProvider::class,
             CoreServiceProvider::class,
             AdminServiceProvider::class,
             FrontendServiceProvider::class,

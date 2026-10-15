@@ -50,7 +50,7 @@ Every admin screen runs on a FlyHR-style platform (`includes/Platform/`, `includ
 2. Defines constants (`WPUF_VERSION`, `WPUF_FILE`, `WPUF_ROOT`, etc.)
 3. Creates `WP_User_Frontend` singleton via `wpuf()` helper
 4. Manually includes `wpuf-functions.php`, `Frontend_Render_Form`, reCaptcha libs, AI manager, and gateway helpers
-5. On `plugins_loaded`: loads insights tracker, free/pro loader, upgrades, then `instantiate()` builds every legacy service from the platform container (`Platform\Providers\LegacyServiceProvider`, eager, in the old order) into `$this->container[]` and boots the platform (`wpuf_platform_loaded`)
+5. On `plugins_loaded`: loads insights tracker, free/pro loader, upgrades, then `instantiate()` builds every core service from the platform container (`Platform\Providers\PluginServiceProvider`, eager, in the old order) into `$this->container[]` and boots the platform (`wpuf_platform_loaded`)
 6. Services available via magic getter: `wpuf()->service_name`
 
 ### Directory Structure

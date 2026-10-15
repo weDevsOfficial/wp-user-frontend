@@ -279,13 +279,27 @@ class SettingsStore {
      *
      * @since WPUF_SINCE
      *
-     * @param string $name  Option name
-     * @param mixed  $value Value
+     * @param string    $name     Option name
+     * @param mixed     $value    Value
+     * @param bool|null $autoload Autoload flag (update_option()), null keeps WordPress's default
      *
      * @return bool
      */
-    public function set_wp_option( $name, $value ) {
-        return update_option( $name, $value );
+    public function set_wp_option( $name, $value, $autoload = null ) {
+        return update_option( $name, $value, $autoload );
+    }
+
+    /**
+     * Remove a plain option.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $name Option name
+     *
+     * @return bool
+     */
+    public function delete_wp_option( $name ) {
+        return delete_option( $name );
     }
 
     /**

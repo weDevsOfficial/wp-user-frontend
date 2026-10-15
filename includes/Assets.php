@@ -290,13 +290,6 @@ class Assets {
             'admin'               => [
                 'src' => WPUF_ASSET_URI . '/css/admin.css',
             ],
-            'module'              => [
-                'src' => WPUF_ASSET_URI . '/css/admin/wpuf-module.css',
-            ],
-            'swiffy-slider'       => [
-                'src'     => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider.min.css',
-                'version' => '1.6.0',
-            ],
             // React forms list sheet (tools/admin-css), under the old handle.
             'forms-list'           => [
                 'src' => WPUF_ASSET_URI . '/css/admin/forms-list-screen.css',
@@ -391,23 +384,6 @@ class Assets {
             'registration-forms'       => [
                 'src'       => WPUF_ASSET_URI . '/js/registration-forms.js',
                 'deps'      => [ 'jquery' ],
-                'in_footer' => true,
-            ],
-            'module'                   => [
-                'src'       => WPUF_ASSET_URI . '/js/admin/wpuf-module.js',
-                'deps'      => [ 'wpuf-swiffy-slider', 'wpuf-swiffy-slider-extensions', 'wpuf-rest' ],
-                'in_footer' => true,
-            ],
-            'swiffy-slider'            => [
-                'src'       => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider.min.js',
-                'deps'      => [ 'jquery' ],
-                'version'   => '1.6.0',
-                'in_footer' => true,
-            ],
-            'swiffy-slider-extensions' => [
-                'src'       => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider-extensions.min.js',
-                'deps'      => [ 'jquery' ],
-                'version'   => '1.6.0',
                 'in_footer' => true,
             ],
             'admin-shortcode'          => [

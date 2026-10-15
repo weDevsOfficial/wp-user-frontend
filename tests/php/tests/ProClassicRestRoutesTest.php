@@ -103,7 +103,8 @@ class ProClassicRestRoutesTest extends WP_UnitTestCase {
         wp_set_current_user( self::factory()->user->create( [ 'role' => 'editor' ] ) );
         $response = $this->request( 'POST', '/wpuf/v1/comments/' . $comment . '/status', [ 'status' => 'hold' ] );
         $this->assertSame( 200, $response->get_status() );
-        $this->assertArrayHasKey( 'content', $response->get_data() );
+        $this->assertSame( 'pending', $response->get_data()['item']['status'] );
+        $this->assertArrayHasKey( 'counts', $response->get_data() );
         $this->assertSame( '0', get_comment( $comment )->comment_approved );
     }
 

@@ -30,6 +30,7 @@ const entries = {
     tools: './src/admin/apps/tools/index.jsx',
     transactions: './src/admin/apps/transactions/index.jsx',
     'coupons-promo': './src/admin/apps/coupons-promo/index.jsx',
+    'modules-preview': './src/admin/apps/modules-preview/index.jsx',
 };
 
 // The shared layer (design.md D24): bundles @wpuf/* sources and plugin-ui,

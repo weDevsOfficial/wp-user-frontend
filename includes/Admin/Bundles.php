@@ -85,6 +85,7 @@ class Bundles implements Hookable {
         $tools_asset           = $this->bundle_asset( 'tools', [ 'wp-element', 'wp-i18n', 'wpuf-admin-runtime', 'wpuf-admin-ui' ] );
         $transactions_asset    = $this->bundle_asset( 'transactions', [ 'wp-element', 'wp-i18n', 'wpuf-admin-runtime', 'wpuf-admin-ui' ] );
         $coupons_promo_asset   = $this->bundle_asset( 'coupons-promo', [ 'wp-element', 'wp-i18n', 'wpuf-admin-runtime', 'wpuf-admin-ui' ] );
+        $modules_preview_asset = $this->bundle_asset( 'modules-preview', [ 'wp-api-fetch', 'wp-element', 'wp-i18n', 'wpuf-admin-runtime', 'wpuf-admin-ui' ] );
         // The shared React admin layer (design.md D24): screens and Pro get
         // these as dependencies through the `@wpuf/*` / plugin-ui externals.
         $admin_runtime_asset = $this->bundle_asset( 'admin-runtime', [ 'wp-api-fetch', 'wp-element', 'wp-hooks', 'wp-url' ] );
@@ -189,6 +190,13 @@ class Bundles implements Hookable {
                 'src'       => WPUF_ASSET_URI . '/js/screens/coupons-promo.js',
                 'deps'      => $coupons_promo_asset['dependencies'],
                 'version'   => $coupons_promo_asset['version'],
+                'in_footer' => true,
+            ],
+            // Modules without Pro (Admin\Screens\ModulesPreview).
+            'modules-preview'           => [
+                'src'       => WPUF_ASSET_URI . '/js/screens/modules-preview.js',
+                'deps'      => $modules_preview_asset['dependencies'],
+                'version'   => $modules_preview_asset['version'],
                 'in_footer' => true,
             ],
             // AI form builder, under the Vue app's handle (Admin\Screens\AiFormBuilder).

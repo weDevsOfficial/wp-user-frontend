@@ -12,6 +12,7 @@
 @source "../../../src/admin/apps/tools";
 @source "../../../src/admin/apps/transactions";
 @source "../../../src/admin/apps/coupons-promo";
+@source "../../../src/admin/apps/modules-preview";
 /* Route container classes (app_routes containerClass). */
 @source inline("px-[20px]");
 

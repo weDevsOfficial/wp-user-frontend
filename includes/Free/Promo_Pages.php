@@ -41,9 +41,12 @@ class Promo_Pages extends Pro_Prompt {
     }
 
     public function admin_menu_top() {
-        // Registration Forms without Pro: a route of the React admin app.
+        // Registration Forms and Modules without Pro: routes of the React admin app.
         if ( wpuf()->platform()->has( \WeDevs\Wpuf\Admin\Screens\Registry::class ) ) {
-            wpuf()->platform()->get( \WeDevs\Wpuf\Admin\Screens\Registry::class )->add( new \WeDevs\Wpuf\Admin\Screens\RegistrationPromo() );
+            $registry = wpuf()->platform()->get( \WeDevs\Wpuf\Admin\Screens\Registry::class );
+
+            $registry->add( new \WeDevs\Wpuf\Admin\Screens\RegistrationPromo() );
+            $registry->add( new \WeDevs\Wpuf\Admin\Screens\ModulesPreview() );
         }
 
         $capability     = wpuf_admin_role();
@@ -64,8 +67,6 @@ class Promo_Pages extends Pro_Prompt {
         add_action( "load-$reg_forms_hook", [ $this, 'reg_form_menu_action' ] );
         add_action( "load-$modules", [ $this->loader, 'module_menu_action' ] );
 
-        add_action( 'wpuf_load_module_page', [ $this->loader, 'load_modules_scripts' ] );
-        add_action( 'wpuf_load_module_page', [ $this->loader, 'modules_page_contents' ] );
     }
 
     /**

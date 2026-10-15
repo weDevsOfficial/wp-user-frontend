@@ -50,7 +50,13 @@ class FormStore implements DataStore {
      * @return string[]
      */
     public function post_types() {
-        /** This filter is documented in includes/Ajax/Admin_Form_Builder_Ajax.php */
+        /**
+         * Filters the post types the form builder may save into.
+         *
+         * @since 4.0.0
+         *
+         * @param string[] $post_types Form post types
+         */
         return (array) apply_filters( 'wpuf_form_builder_save_post_types', [ 'wpuf_forms', 'wpuf_profile' ] );
     }
 
@@ -62,7 +68,13 @@ class FormStore implements DataStore {
      * @return string[]
      */
     public function settings_meta_keys() {
-        /** This filter is documented in includes/Ajax/Admin_Form_Builder_Ajax.php */
+        /**
+         * Filters the meta keys form settings may be stored under.
+         *
+         * @since 4.0.0
+         *
+         * @param string[] $meta_keys Meta keys
+         */
         return (array) apply_filters( 'wpuf_form_builder_settings_meta_keys', [ 'wpuf_form_settings' ] );
     }
 

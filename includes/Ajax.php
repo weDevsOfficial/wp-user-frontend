@@ -28,8 +28,6 @@ class Ajax {
         $this->register_ajax( 'wpuf_file_del', [ $this->service( Ajax\Upload_Ajax::class ), 'delete_file' ] );
         $this->register_ajax( 'wpuf_upload_file', [ $this->service( Ajax\Upload_Ajax::class ), 'upload_file' ] );
         $this->register_ajax( 'wpuf_insert_image', [ $this->service( Ajax\Upload_Ajax::class ), 'insert_image' ] );
-        $this->register_ajax( 'wpuf_form_builder_save_form', [ $this->service( Ajax\Admin_Form_Builder_Ajax::class ), 'save_form' ], $this->logged_in_only );
-        $this->register_ajax( 'wpuf_form_setting_post', [ $this->service( Ajax\Admin_Form_Builder_Ajax::class ), 'get_post_taxonomies' ], $this->logged_in_only );
         $promotion = $this->admin_service( 'promotion', Admin\Promotion::class );
         $this->register_ajax( 'wpuf_dismiss_promotional_offer_notice', [ $promotion, 'dismiss_promotional_offer' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_dismiss_review_notice', [ $promotion, 'dismiss_review_notice' ], $this->logged_in_only );
@@ -40,7 +38,6 @@ class Ajax {
         $this->register_ajax( 'wpuf_ajax_login', [ $this->service( Login_Widget::class ), 'ajax_login' ], $this->logged_out_only );
         $this->register_ajax( 'wpuf_lost_password', [ $this->service( Login_Widget::class ), 'ajax_reset_pass' ], $this->logged_out_only );
         $this->register_ajax( 'wpuf_ajax_logout', [ $this->service( Login_Widget::class ), 'ajax_logout' ], $this->logged_in_only );
-        $this->register_ajax( 'wpuf_form_preview', [ $this->service( Frontend\Frontend_Form::class ), 'preview_form' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_make_media_embed_code', [ $this->service( Frontend\Frontend_Form::class ), 'make_media_embed_code' ] );
         $this->register_ajax( 'wpuf_draft_post', [ $this->service( Frontend\Frontend_Form::class ), 'draft_post' ] );
         $this->register_ajax( 'wpuf_delete_user_package', [ $this->admin_service( 'admin_subscription', Admin\Admin_Subscription::class ), 'delete_user_package' ], $this->logged_in_only );

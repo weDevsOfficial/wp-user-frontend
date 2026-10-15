@@ -13,7 +13,6 @@ use WeDevs\Wpuf\AI\Services\Form_Writer;
 use WeDevs\Wpuf\AI\Services\Generation;
 use WeDevs\Wpuf\AI\Services\Provider_Settings;
 use WeDevs\Wpuf\Platform\Caps;
-use WeDevs\Wpuf\Platform\Contracts\Hookable;
 use WeDevs\Wpuf\Platform\REST\RestController as PlatformRestController;
 use WP_Error;
 use WP_REST_Request;
@@ -21,9 +20,9 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * The `wpuf/v1/ai-form-builder/*` routes and the builder's
- * `wpuf_ai_generate_field_options` AJAX action: argument schemas,
- * permissions and request reading. The work is done by the services
+ * The `wpuf/v1/ai-form-builder/*` routes (the AI builder, the settings
+ * screen and the form builder's AI options): argument schemas, permissions
+ * and request reading. The work is done by the services
  * (`Generation`, `Provider_Settings`, `Field_Options`, `Form_Writer`); the
  * answers keep the shapes and statuses the React AI builder and the settings
  * screen read.
@@ -36,7 +35,7 @@ use WP_REST_Server;
  * @since 4.2.1
  * @since WPUF_SINCE On the platform REST base; services injected.
  */
-class RestController extends PlatformRestController implements Hookable {
+class RestController extends PlatformRestController {
 
     /**
      * Route base.
@@ -124,17 +123,6 @@ class RestController extends PlatformRestController implements Hookable {
         $this->settings      = $settings instanceof Provider_Settings ? $settings : new Provider_Settings( $generator );
         $this->field_options = $field_options instanceof Field_Options ? $field_options : new Field_Options( $generator );
         $this->writer        = $writer instanceof Form_Writer ? $writer : new Form_Writer( $generator );
-    }
-
-    /**
-     * The builder's AJAX action for field options.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    public function register_hooks() {
-        add_action( 'wp_ajax_wpuf_ai_generate_field_options', [ $this, 'ajax_generate_field_options' ] );
     }
 
     /**
@@ -680,36 +668,6 @@ class RestController extends PlatformRestController implements Hookable {
         $result = $this->writer->modify( $request->get_param( 'form_id' ), is_array( $data ) ? $data : [] );
 
         return is_wp_error( $result ) ? $result : new WP_REST_Response( $result, 200 );
-    }
-
-    /**
-     * AJAX `wpuf_ai_generate_field_options` (the builder's field settings).
-     *
-     * @since 4.2.2
-     *
-     * @return void
-     */
-    public function ajax_generate_field_options() {
-        check_ajax_referer( 'form-builder-setting-nonce', 'nonce' );
-
-        if ( ! $this->check_permission() ) {
-            wp_send_json_error( [ 'message' => __( 'Permission denied', 'wp-user-frontend' ) ] );
-        }
-
-        $prompt     = sanitize_textarea_field( wp_unslash( isset( $_POST['prompt'] ) ? $_POST['prompt'] : '' ) );
-        $field_type = sanitize_text_field( wp_unslash( isset( $_POST['field_type'] ) ? $_POST['field_type'] : 'dropdown_field' ) );
-
-        if ( empty( $prompt ) ) {
-            wp_send_json_error( [ 'message' => __( 'Prompt is required', 'wp-user-frontend' ) ] );
-        }
-
-        $options = $this->field_options->generate( $prompt, [ 'field_type' => $field_type ] );
-
-        if ( is_wp_error( $options ) ) {
-            wp_send_json_error( [ 'message' => $options->get_error_message() ] );
-        }
-
-        wp_send_json_success( [ 'options' => $options ] );
     }
 
     /**

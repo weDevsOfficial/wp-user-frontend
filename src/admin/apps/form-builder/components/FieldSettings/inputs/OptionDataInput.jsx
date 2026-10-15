@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from '@wordpress/element';
+import { request, restPath } from '@wpuf/api';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { applyFilters } from '@wordpress/hooks';
@@ -206,12 +207,11 @@ export default function OptionDataInput( { optionField, field } ) {
         setAiLoading( true );
         setAiError( '' );
 
-        wp.ajax.post( 'wpuf_ai_generate_field_options', {
-            prompt: aiPrompt,
-            field_type: field.template,
-            nonce: window.wpuf_form_builder?.nonce,
-        } ).done( ( response ) => {
-            const opts = response.options || ( response.data && response.data.options ) || [];
+        request( restPath( 'wpuf/v1', '/ai-form-builder/generate-options' ), {
+            method: 'POST',
+            data: { prompt: aiPrompt, field_type: field.template },
+        } ).then( ( response ) => {
+            const opts = ( response && response.options ) || [];
             if ( opts.length > 0 ) {
                 setAiGeneratedOptions( opts.map( ( opt ) => ( {
                     label: opt.label || opt,
@@ -219,11 +219,11 @@ export default function OptionDataInput( { optionField, field } ) {
                     selected: true,
                 } ) ) );
             } else {
-                setAiError( response.message || i18n.something_went_wrong || __( 'Something went wrong.', 'wp-user-frontend' ) );
+                setAiError( i18n.something_went_wrong || __( 'Something went wrong.', 'wp-user-frontend' ) );
             }
-        } ).fail( ( error ) => {
-            setAiError( error.message || i18n.something_went_wrong || __( 'Something went wrong.', 'wp-user-frontend' ) );
-        } ).always( () => {
+        } ).catch( ( error ) => {
+            setAiError( ( error && error.message ) || i18n.something_went_wrong || __( 'Something went wrong.', 'wp-user-frontend' ) );
+        } ).finally( () => {
             setAiLoading( false );
         } );
     }, [ aiPrompt, field.template, i18n.something_went_wrong ] );

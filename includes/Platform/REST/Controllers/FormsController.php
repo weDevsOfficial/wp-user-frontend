@@ -22,9 +22,8 @@ use WP_REST_Server;
 /**
  * `wpuf/v1/admin/forms/{id}` for post and registration forms:
  *
- * - GET reads a form for the builder, POST saves it (the payload the AJAX action
- *   `wpuf_form_builder_save_form` takes, which stays as a shim; same
- *   `{ success, data: { form_fields, form_settings } }` body), DELETE deletes it
+ * - GET reads a form for the builder, POST saves it (Builder\FormSave; body
+ *   `{ success, data: { form_fields, form_settings } }`), DELETE deletes it
  *   permanently with its fields;
  * - POST `/duplicate`, `/trash`, `/restore` do what the forms list row actions do
  *   (same store calls), for React screens that work without a page reload.

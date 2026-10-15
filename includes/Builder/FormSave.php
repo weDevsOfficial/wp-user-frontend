@@ -16,8 +16,9 @@ use WP_Error;
 
 /**
  * Saves a form from the builder payload: the one implementation behind the
- * REST route `wpuf/v1/admin/forms/{id}` and the AJAX action
- * `wpuf_form_builder_save_form` (kept as a shim). Callers check the request
+ * REST route `wpuf/v1/admin/forms/{id}` (the builder). While it saves, `$_POST`
+ * holds the payload the old AJAX save posted (set_legacy_request()), for the
+ * listeners of the `wpuf_form_builder_save_form` hook. Callers check the request
  * (nonce, capability) first; this class validates the payload, normalizes it
  * like develop's form post and writes through the form store.
  *

@@ -83,8 +83,7 @@ class AiServiceProvider extends ServiceProvider {
         );
 
         // Frozen routes: same paths, arguments, permissions and responses. On the
-        // platform REST base (a RestRoute, registered once by REST\Manager) and
-        // Hookable for the builder's field-options AJAX action.
+        // platform REST base (a RestRoute, registered once by REST\Manager).
         $this->share_tagged(
             RestController::class,
             function ( $container ) {

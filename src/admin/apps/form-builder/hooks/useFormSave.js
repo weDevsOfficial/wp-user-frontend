@@ -15,8 +15,8 @@ import { isOn, validatePaymentSettings, validateRequiredFields } from '../utils/
  * Hook for handling form save over REST (`wpuf/v1/admin/forms/{id}`).
  *
  * Sends form_fields, notifications, and form_settings as JSON from the React store.
- * Also serializes remaining PHP form elements (nonce, post_id) via FormData, the
- * payload the AJAX action `wpuf_form_builder_save_form` (kept as a shim) takes.
+ * Also serializes remaining PHP form elements (nonce, post_id) via FormData
+ * (Builder\FormSave hands them to the `wpuf_form_builder_save_form` listeners).
  *
  * @return {Object} { isSaving, saveForm }
  */

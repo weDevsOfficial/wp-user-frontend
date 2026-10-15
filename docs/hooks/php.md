@@ -47,7 +47,7 @@ Bridge rules: output of third-party listeners is captured and shown inside the m
 | Hook / handle | Kind | Where | Note |
 |---|---|---|---|
 | `wpuf_forms_list_post_types` | filter | `Platform/REST/Controllers/FormListController::get_items` | post types the forms list REST lists (default `wpuf_forms`, `wpuf_profile`; others get 400) |
-| `wpuf_form_builder_save_post_types`, `wpuf_form_builder_settings_meta_keys` | filter | `Ajax/Admin_Form_Builder_Ajax` | builder save allowlists (security, task 1.19) |
+| `wpuf_form_builder_save_post_types`, `wpuf_form_builder_settings_meta_keys` | filter | `Platform/Stores/FormStore` | builder save allowlists (security, task 1.19) |
 | `wpuf_subscription_single_row_fields` | filter | `Api/Subscription` | fields a single-row edit may change |
 | `wpuf_before_update_subscription_pack` | action | `Api/Subscription` | now fires **once**, after a successful insert, with the saved pack id (was twice: old id, new id) |
 | `wpuf_update_subscription_pack` | action | `Admin/Subscription` (classic) and now `Api/Subscription` (REST) | REST fires it once after `wpuf_after_update_subscription_pack_meta`, args `( $id, $pack_data )` with classic field names (meta keys without the leading `_`) |

@@ -57,7 +57,6 @@ class FrontendServiceProvider extends ServiceProvider {
     const HANDLERS = [
         \WeDevs\Wpuf\Ajax\Frontend_Form_Ajax::class,
         \WeDevs\Wpuf\Ajax\Upload_Ajax::class,
-        \WeDevs\Wpuf\Ajax\Admin_Form_Builder_Ajax::class,
         \WeDevs\Wpuf\Ajax\Address_Form_Ajax::class,
         \WeDevs\Wpuf\Integrations\WPUF_ACF_Compatibility::class,
         \WeDevs\Wpuf\Widgets\Login_Widget::class,

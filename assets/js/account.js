@@ -1,7 +1,4 @@
- // Account page CSS entry point
-import '../css/frontend/account.css';
-
-// Account page JavaScript functionality
+ // Account page JavaScript functionality
 // Note: Form submission is handled by frontend-form.js
 (function($) {
     'use strict';

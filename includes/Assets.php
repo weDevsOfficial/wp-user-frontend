@@ -421,16 +421,16 @@ class Assets {
                 'version' => '2.70',
             ],
             'frontend-form'            => [
-                'src'  => WPUF_ASSET_URI . '/js/frontend-form' . $this->suffix . '.js',
+                'src'  => WPUF_ASSET_URI . '/js/frontend-form.js',
                 'deps' => [ 'jquery', 'wpuf-rest', 'wpuf-dialog' ],
             ],
             'account'                  => [
-                'src'       => WPUF_ASSET_URI . '/js/account' . $this->suffix . '.js',
+                'src'       => WPUF_ASSET_URI . '/js/account.js',
                 'deps'      => [ 'jquery' ],
                 'in_footer' => true,
             ],
             'upload'                   => [
-                'src'  => WPUF_ASSET_URI . '/js/upload' . $this->suffix . '.js',
+                'src'  => WPUF_ASSET_URI . '/js/upload.js',
                 'deps' => [ 'jquery', 'plupload-handlers', 'jquery-ui-sortable', 'wpuf-rest', 'wpuf-dialog' ],
             ],
             'ajax_login'               => [
@@ -451,8 +451,10 @@ class Assets {
         $scripts = array_merge( $scripts, $this->react()->scripts(), $this->frontend_bundles()->scripts() );
 
         $scripts += [
+            // File-less: the plans page script was only a CSS entry; the handle
+            // stays for `wpuf_subscription` (localized here) and add-ons.
             'frontend-subscriptions' => [
-                'src'       => WPUF_ASSET_URI . '/js/frontend-subscriptions.min.js',
+                'src'       => false,
                 'in_footer' => true,
             ],
             'elementor-subscription-plans' => [

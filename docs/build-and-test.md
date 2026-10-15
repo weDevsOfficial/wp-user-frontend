@@ -3,7 +3,7 @@ Read when setting up the dev loop or before running CI-equivalent checks locally
 
 # Build & Test
 
-## Frontend (Vite + Vue 3)
+## Frontend (wp-scripts + Tailwind CLI)
 
 ```bash
 pnpm build                           # Production build (all entry points), ends with bin/verify-build.mjs
@@ -11,9 +11,7 @@ pnpm run build:admin                # React admin apps in one wp-scripts build (
 WPUF_ENTRY=form-builder pnpm run build:admin  # one app (form-builder | forms-list-screen | subscriptions | settings-screen | ai-form-builder | admin-app = the app shell)
 pnpm run build:forms-list-screen     # Build forms list module (alias of WPUF_ENTRY=forms-list-screen)
 pnpm run build:subscriptions         # Build admin subscriptions module
-pnpm run build:frontend-subscriptions # Build frontend subscriptions module
 pnpm run build:ai-form-builder       # React AI form builder: wp-scripts entry + Tailwind 4 sheet
-pnpm run build:account               # Build account module
 pnpm run build:user-directory        # Build user directory module
 pnpm run build:css                   # Compile Tailwind CSS via Grunt
 pnpm run dev:user-directory          # Dev mode for user directory module

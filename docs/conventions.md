@@ -16,7 +16,7 @@ Read before writing or reviewing code.
 - **Overridable templates** — themes can override templates from `templates/` directory. Do not break override paths.
 - **Free/Pro split** — `includes/Free/Free_Loader.php` loads free-only features; Pro version detected via `WP_User_Frontend_Pro` class.
 - **Form field contract** — all form fields implement `Field_Contract` for consistent rendering.
-- **Legacy + modern coexistence** — jQuery form builder alongside Vue 3 components, LESS alongside Tailwind, Grunt alongside Vite. Do not rewrite legacy code without explicit permission.
+- **Legacy + modern coexistence** — the classic jQuery frontend (plain JS and CSS) alongside the React admin and frontend. Do not rewrite legacy code without explicit permission.
 
 ## Admin platform rules (branch `feature/react-admin-revamp`, see `docs/architecture.md`)
 - Stored data shapes are frozen; an untouched save changes nothing.

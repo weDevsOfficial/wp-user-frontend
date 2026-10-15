@@ -8,7 +8,6 @@
 .github export-ignore
 state.json export-ignore
 Gruntfile.js export-ignore
-vite.config.mjs export-ignore
 tailwind.config.js export-ignore
 postcss.config.js export-ignore
 package-lock.json export-ignore

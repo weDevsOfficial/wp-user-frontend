@@ -10,28 +10,9 @@ module.exports = function( grunt) {
         // setting folder templates
         dirs: {
             css: 'assets/css',
-            less: 'assets/less',
             images: 'assets/images',
             js: 'assets/js',
             template: 'assets/js-templates'
-        },
-
-        // Compile all .less files.
-        less: {
-
-            // one to one
-            front: {
-                files: {
-                    '<%= dirs.css %>/frontend-forms.css': '<%= dirs.less %>/frontend-forms.less',
-                    '<%= dirs.css %>/elementor-frontend-forms.css': '<%= dirs.less %>/elementor-frontend-forms.less'
-                }
-            },
-
-            admin: {
-                files: {
-                    '<%= dirs.css %>/admin.css': ['<%= dirs.less %>/admin.less']
-                }
-            }
         },
 
         wp_readme_to_markdown: {
@@ -74,21 +55,7 @@ module.exports = function( grunt) {
             }
         },
 
-        uglify: {
-            minify: {
-                files: {
-                    '<%= dirs.js %>/frontend-form.min.js': ['<%= dirs.js %>/frontend-form.js'],
-                    '<%= dirs.js %>/upload.min.js': ['<%= dirs.js %>/upload.js'],
-                }
-            }
-        },
-
         watch: {
-            less: {
-                files: ['<%= dirs.less %>/*.less'],
-                tasks: ['less:front', 'less:admin']
-            },
-
             formBuilder: {
                 files: [
                     'src/admin/apps/form-builder/**/*.{js,jsx}',
@@ -170,16 +137,14 @@ module.exports = function( grunt) {
     });
 
     // Load NPM tasks to be used here
-    grunt.loadNpmTasks( 'grunt-contrib-less' );
     grunt.loadNpmTasks( 'grunt-wp-i18n' );
-    grunt.loadNpmTasks( 'grunt-contrib-uglify' );
     grunt.loadNpmTasks( 'grunt-contrib-watch' );
     // grunt.loadNpmTasks( 'grunt-notify' );
     grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
     grunt.loadNpmTasks( 'grunt-shell' );
     grunt.loadNpmTasks( 'grunt-postcss' );
 
-    grunt.registerTask( 'default', [ 'less', 'uglify', 'i18n', 'tailwind' ] );
+    grunt.registerTask( 'default', [ 'i18n', 'tailwind' ] );
 
     // file auto generation
     grunt.registerTask( 'i18n', [ 'shell:makepot' ] );

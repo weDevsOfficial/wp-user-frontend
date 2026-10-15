@@ -32,7 +32,7 @@ Per-directory `CLAUDE.md` files auto-load when Claude works in that path:
 ## Non-Negotiables
 
 - **Preserve existing behavior.** Hooks, filters, public methods, REST routes, template paths, and shortcodes are contracts — don't change signatures or drop parameters silently.
-- **Legacy code stays.** The site frontend, field types, payments, LESS and Grunt coexist with the React admin platform intentionally. Don't rewrite legacy code without explicit permission; renamed classes keep a `class_alias` stub at the old name.
+- **Legacy code stays.** The site frontend, field types and payments coexist with the React admin platform intentionally. Don't rewrite legacy code without explicit permission; renamed classes keep a `class_alias` stub at the old name.
 - **Free/Pro split matters.** Never assume Pro features exist. Detect with `class_exists('WP_User_Frontend_Pro')`.
 - **Scope discipline.** No drive-by refactors. Note unrelated issues separately instead of fixing them inline.
 
@@ -91,7 +91,6 @@ wp-user-frontend/
 │   ├── css/                # Compiled stylesheets
 │   ├── js/                 # Compiled JS bundles
 │   ├── images/             # Static images
-│   ├── less/               # LESS source files (legacy)
 │   └── vendor/             # Third-party vendor assets
 ├── Lib/                    # Third-party libraries
 │   ├── Gateway/            # Payment gateways (PayPal, Bank)
@@ -122,10 +121,8 @@ Simple array-based container with magic `__get()`. Services accessed via `wpuf()
 ### Frontend Architecture
 - **React** for every admin screen (`webpack.admin.config.js`, wp-scripts) and the optional React frontend (`webpack.frontend.config.js`); no Vue is left
 - **jQuery** (legacy) for the classic frontend forms and older frontend interactions
-- **Vite** builds two plain entries (`assets/js/frontend-subscriptions.js`, `assets/js/account.js`), no Vue
-- **Grunt** for legacy build tasks (LESS compilation, Tailwind CSS, release packaging)
+- **Grunt** runs the Tailwind CSS 3 CLI for the account and plans sheets and the POT step; no LESS, Vite or minify step (the classic jQuery files and their CSS are served as written)
 - **Tailwind CSS 3** with DaisyUI component library and scoped preflight
-- **LESS** (legacy) for older stylesheets
 
 ### REST API
 Namespace `wpuf/v1`. Controllers live in `includes/Platform/REST/Controllers/` on the `Platform\REST\RestController` base: the admin routes (`FormsController`, `ToolsController`, `TransactionsController`, `SubscribersController`, `OnboardingController`), the frontend routes (`FormsPublicController`, `AccountController`, `UploadsController`) and the frozen routes (`FormListController`, `SubscriptionController`, `SettingsController`). The AI form builder keeps its controller with its feature (`includes/AI/RestController.php`); Pro adds its own under `wpuf-pro/includes/Platform/<Feature>/`. `Platform\REST\Manager` registers all of them once on `rest_api_init`; permissions come from `Platform\Caps`.
@@ -156,7 +153,7 @@ Text, Textarea, Email, URL, Dropdown, MultiDropdown, Checkbox, Radio, Image, Fea
 - **Overridable templates** — themes can override templates from `templates/` directory
 - **Free/Pro split** — `includes/Free/Free_Loader.php` loads free-only features; Pro version detected via `WP_User_Frontend_Pro` class
 - **Form field contract** — all form fields implement `Field_Contract` for consistent rendering
-- **Legacy + modern coexistence** — classic jQuery frontend alongside the React frontend, LESS alongside Tailwind, Grunt alongside Vite and wp-scripts
+- **Legacy + modern coexistence** — classic jQuery frontend (plain JS and CSS) alongside the React frontend, Grunt (Tailwind CLI) alongside wp-scripts
 - **Third-party integrations** — Dokan, WC Vendors, WC Marketplace, ACF, n8n, Events Calendar
 
 ## Testing

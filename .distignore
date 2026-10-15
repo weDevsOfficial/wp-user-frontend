@@ -57,8 +57,6 @@
 # Build / tooling config (root-anchored)
 /Gruntfile.js
 /gruntfile.js
-/vite.config.mjs
-/vite.config.js
 /webpack.admin.config.js
 /webpack.config.js
 /webpack.wpuf-externals.js

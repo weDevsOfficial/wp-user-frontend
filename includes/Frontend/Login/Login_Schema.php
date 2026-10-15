@@ -111,7 +111,7 @@ class Login_Schema {
             ),
             'links'       => wp_kses_post( $this->login->get_action_links( [ 'lostpassword' => false ] ) ),
             'texts'       => [
-                'usernameLabel' => __( 'Username or E-mail:', 'wp-user-frontend' ),
+                'usernameLabel' => __( 'Username or Email', 'wp-user-frontend' ),
                 'buttonText'    => __( 'Get New Password', 'wp-user-frontend' ),
             ],
         ];

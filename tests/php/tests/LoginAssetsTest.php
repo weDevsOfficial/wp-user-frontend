@@ -33,7 +33,7 @@ class LoginAssetsTest extends WP_UnitTestCase {
     }
 
     public function tear_down() {
-        unset( $_GET['action'], $_GET['reset'] );
+        unset( $_GET['action'], $_GET['reset'], $_GET['key'], $_GET['login'] );
         parent::tear_down();
     }
 
@@ -44,6 +44,11 @@ class LoginAssetsTest extends WP_UnitTestCase {
         $this->assertSame( 'lost_password', Simple_Login::screen_part() );
 
         $_GET['action'] = 'rp';
+        $this->assertSame( 'lost_password', Simple_Login::screen_part(), 'no or a bad reset key: the lost password form with the notice' );
+
+        $user          = self::factory()->user->create_and_get();
+        $_GET['key']   = get_password_reset_key( $user );
+        $_GET['login'] = $user->user_login;
         $this->assertSame( 'reset_password', Simple_Login::screen_part() );
 
         $_GET['action'] = 'resetpass';

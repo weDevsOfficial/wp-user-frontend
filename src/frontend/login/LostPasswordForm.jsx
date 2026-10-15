@@ -1,105 +1,74 @@
 /**
- * The `[wpuf-login]` lost password screen (`?action=lostpassword`) in React,
- * with the classic template's markup (templates/lost-pass-form.php: ids,
- * names, classes), so the free and Pro login sheets style it as before. It
- * posts the same fields to the same URL: Simple_Login::process_reset_password()
- * sends the e-mail, redirects and reports errors exactly as for the classic
- * form. What the template printed through hooks (`lostpassword_form`, the
+ * The `[wpuf-login]` lost password screen (`?action=lostpassword`), built
+ * like the registration form and sent to `wpuf/v1/login/lost-password`
+ * (LoginController → Simple_Login::request_reset(): the form nonce,
+ * `lostpassword_post`, the reset e-mail). The answer is the same whether an
+ * account matches or not, and shows in the card; the form stays for another
+ * try. What the template printed through hooks (`lostpassword_form`, the
  * notices, the action links) comes captured in the boot data.
- *
- * Added on top of the classic form: the required check before posting (the
- * server's own message) and the post lock with a spinner in the button.
  *
  * @since WPUF_SINCE
  */
-import { useEffect, useRef, useState } from '@wordpress/element';
+import { useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { ServerHtml, cx } from '@wpuf/frontend-kit';
+import { ServerHtml, api } from '@wpuf/frontend-kit';
 
-import { FieldError, SubmitButton, proLogin, referer, usePostLock, wrapActionLinks } from './parts';
+import { ActionLinks, LoginFrame, SubmitRow, TextRow, referer, textsOf, useLoginSubmit } from './parts';
 
 export default function LostPasswordForm( { data } ) {
-    const pro = proLogin( data );
-    const texts = data.texts || {};
-    const [ error, setError ] = useState( '' );
-    const [ busy, setBusy ] = usePostLock();
-    const linksRef = useRef( null );
+    const texts = textsOf( data );
+    const [ fieldError, setFieldError ] = useState( '' );
+    const [ notice, setNotice ] = useState( '' );
     const userRef = useRef( null );
+    const { busy, errors, setErrors, submit } = useLoginSubmit( api.requestPasswordReset, ( response ) => {
+        setNotice( ( response && response.message ) || '' );
+        userRef.current.value = '';
+    } );
 
-    useEffect( () => {
-        if ( pro && linksRef.current ) {
-            wrapActionLinks( linksRef.current );
-        }
-    }, [ pro ] );
-
-    const onSubmit = ( event ) => {
-        if ( busy ) {
-            event.preventDefault();
-
-            return;
-        }
+    const onSubmit = ( form ) => {
+        setNotice( '' );
 
         // The check retrieve_password() runs first, with its message.
         if ( ! userRef.current.value.trim() ) {
-            event.preventDefault();
-            setError( __( 'Enter a username or e-mail address.', 'wp-user-frontend' ) );
+            setErrors( [] );
+            setFieldError( __( 'Enter a username or e-mail address.', 'wp-user-frontend' ) );
             userRef.current.focus();
 
             return;
         }
 
-        setError( '' );
-        setBusy( true );
+        setFieldError( '' );
+        submit( form );
     };
 
     return (
         <>
-            { data.notices && <ServerHtml html={ data.notices } slug="lostpassword_notices" className="wpuf-slot-inline" /> }
+            <LoginFrame id="lostpasswordform" name="lostpasswordform" data={ data } errors={ errors } notice={ notice } busy={ busy } onSubmit={ onSubmit }>
+                <TextRow
+                    field={ { name: 'user_login', label: texts.usernameLabel } }
+                    id="wpuf-user_login"
+                    inputRef={ userRef }
+                    autoComplete="username"
+                    error={ fieldError }
+                    onInput={ () => fieldError && setFieldError( '' ) }
+                />
 
-            <form
-                name="lostpasswordform"
-                id="lostpasswordform"
-                className={ cx( busy && 'is-submitting' ) || undefined }
-                method="post"
-                noValidate
-                aria-busy={ busy ? 'true' : undefined }
-                onSubmit={ onSubmit }
-            >
-                <p>
-                    <label htmlFor="wpuf-user_login">{ texts.usernameLabel }</label>
-                    <input
-                        ref={ userRef }
-                        type="text"
-                        name="user_login"
-                        id="wpuf-user_login"
-                        className="input"
-                        size="20"
-                        autoComplete="username"
-                        autoCapitalize="none"
-                        spellCheck="false"
-                        readOnly={ busy }
-                        aria-invalid={ error ? 'true' : undefined }
-                        aria-describedby={ error ? 'wpuf-login-error-user_login' : undefined }
-                        onInput={ () => error && setError( '' ) }
-                    />
-                    <FieldError id="wpuf-login-error-user_login" message={ error } />
-                </p>
+                { data.hook && (
+                    <li className="wpuf-el wpuf-login-hook">
+                        <ServerHtml html={ data.hook } slug="lostpassword_form" className="wpuf-slot-inline" />
+                    </li>
+                ) }
 
-                { data.hook && <ServerHtml html={ data.hook } slug="lostpassword_form" className="wpuf-slot-inline" /> }
-
-                <p className="submit">
-                    <SubmitButton text={ texts.buttonText } busyText={ __( 'Sending…', 'wp-user-frontend' ) } busy={ busy } />
+                <SubmitRow text={ texts.buttonText } busyText={ __( 'Sending…', 'wp-user-frontend' ) } busy={ busy }>
                     <input type="hidden" name="redirect_to" value={ data.redirect_to || '' } />
                     <input type="hidden" name="wpuf_reset_password" value="true" />
                     <input type="hidden" name="action" value="lostpassword" />
                     <input type="hidden" id="_wpnonce" name="_wpnonce" value={ data.nonce } />
                     <input type="hidden" name="_wp_http_referer" value={ referer() } />
-                </p>
-            </form>
+                </SubmitRow>
+            </LoginFrame>
 
-            <div className="wpuf-action-links" ref={ linksRef }>
-                { data.links && <ServerHtml html={ data.links } slug="lostpassword_links" className="wpuf-slot-inline" /> }
-            </div>
+            <ActionLinks html={ data.links } slug="lostpassword_links" />
         </>
     );
 }

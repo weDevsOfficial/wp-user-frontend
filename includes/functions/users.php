@@ -900,7 +900,7 @@ function wpuf_get_login_layout_options() {
     foreach ( $layouts as $key => $label ) {
         $options[ $key ] = [
             'label' => $label,
-            'image' => $image_url . $key . '.svg',
+            'image' => $image_url . $key . '.png',
         ];
     }
 

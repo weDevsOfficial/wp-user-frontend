@@ -52,6 +52,11 @@ export const submitRegistration = ( formId, data ) => send( `/registration/${ fo
 export const updateRegistration = ( formId, data ) => send( `/registration/${ formId }/profile`, 'PUT', data );
 export const checkUsername = ( value ) => get( '/registration/username-check', { value } );
 
+// The `[wpuf-login]` screens (LoginController): the form's fields as posted.
+export const logIn = ( data ) => send( '/login', 'POST', data );
+export const requestPasswordReset = ( data ) => send( '/login/lost-password', 'POST', data );
+export const resetPassword = ( data ) => send( '/login/reset-password', 'POST', data );
+
 // Checkout (the pay page): the billing address with the item's tax, the
 // states of a country, and Pro's coupons (the page's `wpuf_nonce`).
 export const saveBillingAddress = ( data ) => send( '/account/billing-address', 'PUT', data );

@@ -98,15 +98,19 @@ class LoginScreensTest extends WP_UnitTestCase {
 
     public function test_reset_password_screen_renders_the_mount_with_the_key() {
         add_action( 'resetpassword_form', function () { echo '<span class="qa-reset">extra</span>'; } );
+        $user              = self::factory()->user->create_and_get();
+        $key               = get_password_reset_key( $user );
         $_GET['action']    = 'rp';
-        $_REQUEST['key']   = 'abc123';
-        $_REQUEST['login'] = 'someone';
+        $_GET['key']       = $key;
+        $_GET['login']     = $user->user_login;
+        $_REQUEST['key']   = $key;
+        $_REQUEST['login'] = $user->user_login;
 
         $data = $this->boot( wpuf()->frontend->simple_login->login_form() );
 
         $this->assertSame( 'resetpass', $data['view'] );
-        $this->assertSame( 'abc123', $data['key'] );
-        $this->assertSame( 'someone', $data['login'] );
+        $this->assertSame( $key, $data['key'] );
+        $this->assertSame( $user->user_login, $data['login'] );
         $this->assertNotFalse( wp_verify_nonce( $data['nonce'], 'wpuf_reset_pass' ) );
         $this->assertStringContainsString( 'qa-reset', $data['hook'], 'resetpassword_form output' );
         $this->assertStringContainsString( 'Enter your new password below.', $data['notices'] );
@@ -119,7 +123,10 @@ class LoginScreensTest extends WP_UnitTestCase {
         $this->assertStringContainsString( 'name="lostpasswordform"', $lost );
         $this->assertStringContainsString( 'name="user_login"', $lost );
 
+        $user           = self::factory()->user->create_and_get();
         $_GET['action'] = 'rp';
+        $_GET['key']    = get_password_reset_key( $user );
+        $_GET['login']  = $user->user_login;
         $reset          = $this->classic();
 
         $this->assertStringContainsString( 'name="resetpasswordform"', $reset );
@@ -127,5 +134,16 @@ class LoginScreensTest extends WP_UnitTestCase {
         foreach ( [ 'name="pass1"', 'name="pass2"', 'name="key"', 'name="login"', 'name="wpuf_reset_password"' ] as $field ) {
             $this->assertStringContainsString( $field, $reset );
         }
+    }
+
+    public function test_bad_reset_link_shows_the_lost_password_form_with_the_notice() {
+        $_GET['action'] = 'rp';
+        $_GET['key']    = 'not-a-key';
+        $_GET['login']  = 'nobody';
+
+        $data = $this->boot( wpuf()->frontend->simple_login->login_form() );
+
+        $this->assertSame( 'lostpassword', $data['view'] );
+        $this->assertStringContainsString( 'invalid or has expired', $data['notices'] );
     }
 }

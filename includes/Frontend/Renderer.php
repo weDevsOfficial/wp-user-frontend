@@ -18,8 +18,9 @@ use WeDevs\Wpuf\Platform\Contracts\App_Renderer;
  *
  * - a theme overrides one of the part's templates (`wpuf/<template>` in the
  *   child or parent theme), so a site's own markup keeps working;
- * - the block render callback and the Elementor widgets, which render their
- *   own way (with_source());
+ * - the block render callback and the Elementor form widget, which render
+ *   their own way (with_source()); the Elementor account widget renders the
+ *   React app (REACT_SOURCES);
  * - the admin, and an app whose bundle is not built.
  *
  * @since WPUF_SINCE
@@ -42,6 +43,16 @@ class Renderer implements App_Renderer {
         'plans'          => [ 'plans', [ 'subscriptions/listing.php', 'subscriptions/pack-details.php' ] ],
         'plan_info'      => [ 'plans', [ 'dashboard/subscription.php' ] ],
         'account'        => [ 'account', [ 'account.php', 'unauthorized.php', 'submit-post.php', 'dashboard/dashboard.php', 'dashboard/posts.php', 'dashboard/edit-profile.php', 'dashboard/change-password.php', 'dashboard/billing-address.php', 'dashboard/subscription.php' ] ],
+    ];
+
+    /**
+     * Parts that render the React app when called from a source other than
+     * the shortcode itself: source => parts.
+     *
+     * @since WPUF_SINCE
+     */
+    const REACT_SOURCES = [
+        'elementor' => [ 'account' ],
     ];
 
     /**
@@ -165,9 +176,16 @@ class Renderer implements App_Renderer {
      * @return bool
      */
     public function mounts( $part ) {
+        $source = self::$source;
+        $react  = 'shortcode' === $source
+            || ( isset( self::REACT_SOURCES[ $source ] ) && in_array( $part, self::REACT_SOURCES[ $source ], true ) );
+        // Elementor renders widgets for its editor on the editor page and over
+        // admin-ajax; the preview frame mounts them (Elementor::enqueue_react_apps()).
+        $front  = ! is_admin() || 'elementor' === $source;
+
         return isset( self::PARTS[ $part ] )
-            && ! is_admin()
-            && 'shortcode' === self::$source
+            && $react
+            && $front
             && $this->app_built( self::PARTS[ $part ][0] )
             && ! $this->has_template_override( $part );
     }

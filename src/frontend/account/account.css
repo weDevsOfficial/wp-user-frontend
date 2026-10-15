@@ -376,7 +376,7 @@
         display: none;
     }
 
-    .wpuf-frontend .wpuf-account-nav.is-open + .wpuf-logout-link {
+    .wpuf-frontend .wpuf-account-nav.is-open + .wpuf-logout-section .wpuf-logout-link {
         display: flex;
     }
 }

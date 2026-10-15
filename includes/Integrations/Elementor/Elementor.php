@@ -19,6 +19,36 @@ class Elementor {
         // Ensure editor scripts are enqueued for TinyMCE in Elementor preview
         add_action( 'elementor/frontend/after_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
         add_action( 'elementor/editor/after_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+
+        // Built after `elementor/init` on most requests.
+        if ( did_action( 'elementor/init' ) ) {
+            $this->flush_cache_on_update();
+        } else {
+            add_action( 'elementor/init', [ $this, 'flush_cache_on_update' ] );
+        }
+    }
+
+    /**
+     * Clear Elementor's caches once after a WPUF update: Elementor caches each
+     * page's widget assets (`get_style_depends()`), so pages saved before the
+     * update would keep loading the sheets the widgets used then.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function flush_cache_on_update() {
+        if ( WPUF_VERSION === get_option( 'wpuf_elementor_cache_version' ) ) {
+            return;
+        }
+
+        update_option( 'wpuf_elementor_cache_version', WPUF_VERSION, false );
+
+        $elementor = \Elementor\Plugin::$instance;
+
+        if ( isset( $elementor->files_manager ) && method_exists( $elementor->files_manager, 'clear_cache' ) ) {
+            $elementor->files_manager->clear_cache();
+        }
     }
 
     /**
@@ -79,7 +109,8 @@ class Elementor {
         wp_dequeue_style( 'wpuf-layout4' );
         wp_dequeue_style( 'wpuf-layout5' );
 
-        $style_handles = [ 'wpuf-elementor-frontend-forms', 'wpuf-account' ];
+        // The account widget renders the React app; its classic sheet only without the app.
+        $style_handles = $this->react_account() ? [ 'wpuf-elementor-frontend-forms' ] : [ 'wpuf-elementor-frontend-forms', 'wpuf-account' ];
 
         /**
          * Filters the list of style handles to enqueue in Elementor context.
@@ -151,6 +182,45 @@ class Elementor {
     }
 
     /**
+     * Whether the account widget renders the React app (its bundle is built).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    public function react_account() {
+        $platform = wpuf()->platform();
+
+        return $platform->has( \WeDevs\Wpuf\Frontend\Renderer::class ) && $platform->get( \WeDevs\Wpuf\Frontend\Renderer::class )->app_built( 'account' );
+    }
+
+    /**
+     * The React apps the widgets render (Frontend\Renderer::REACT_SOURCES), and
+     * a bridge that mounts a widget's app when Elementor adds or re-renders
+     * the widget after the page loaded (editor preview, popups).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    private function enqueue_react_apps() {
+        if ( ! $this->react_account() ) {
+            return;
+        }
+
+        wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Renderer::class )->enqueue( 'account' );
+
+        wp_add_inline_script(
+            'wpuf-frontend-runtime',
+            "window.addEventListener( 'elementor/frontend/init', function () {
+                window.elementorFrontend.hooks.addAction( 'frontend/element_ready/wpuf-account.default', function ( scope ) {
+                    document.dispatchEvent( new window.CustomEvent( 'wpuf:frontend:html', { detail: { root: scope[ 0 ] } } ) );
+                } );
+            } );"
+        );
+    }
+
+    /**
      * Enqueue all required WPUF form assets for Elementor
      *
      * Ensures all necessary styles and scripts are loaded for WPUF forms
@@ -166,8 +236,13 @@ class Elementor {
         if ( $frontend instanceof \WeDevs\Wpuf\Frontend ) {
             // Same bundle and localized data as every other WPUF page (single source of truth).
             $frontend->enqueue_form_assets();
-            $frontend->enqueue_account_assets();
+
+            if ( ! $this->react_account() ) {
+                $frontend->enqueue_account_assets();
+            }
         }
+
+        $this->enqueue_react_apps();
 
         // Conditionally enqueue Google Maps if API key is configured
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );

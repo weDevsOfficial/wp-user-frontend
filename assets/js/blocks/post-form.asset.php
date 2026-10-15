@@ -10,5 +10,5 @@
 		'wp-notices',
 		'wp-server-side-render'
 	),
-	'version' => '24f1e608b0d09a59d4e1'
+	'version' => '26acb99e4a398831c440'
 );

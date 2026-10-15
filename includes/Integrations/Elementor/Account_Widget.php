@@ -83,7 +83,11 @@ class Account_Widget extends Widget_Base {
      * @return array
      */
     public function get_style_depends() {
-        return [ 'wpuf-account' ];
+        $platform = wpuf()->platform();
+        $react    = $platform->has( \WeDevs\Wpuf\Frontend\Renderer::class ) && $platform->get( \WeDevs\Wpuf\Frontend\Renderer::class )->app_built( 'account' );
+
+        // The React account's sheets, or the classic one without the app.
+        return $react ? [ 'wpuf-frontend-runtime-style', 'wpuf-frontend-account-style' ] : [ 'wpuf-account' ];
     }
 
     /**

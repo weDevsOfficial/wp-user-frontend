@@ -412,7 +412,7 @@ class Frontend_Account {
             'stats'    => $account->stats(),
             'settings' => [
                 'page_url'    => $account->page_url(),
-                'default_tab' => wpuf_get_option( 'account_page_active_tab', 'wpuf_my_account', 'dashboard' ),
+                'default_tab' => $account->default_tab(),
                 'per_page'    => (int) wpuf_get_option( 'per_page', 'wpuf_dashboard', 5 ),
                 'post_types'  => $account->allowed_post_types(),
             ],

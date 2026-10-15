@@ -59,7 +59,7 @@ class Account_Service {
      * @return array[] slug, label, icon, kind ('native' | 'html' | 'posts' | 'subscription'), url, active (default tab)
      */
     public function sections() {
-        $default_tab = Stores::settings()->get( 'wpuf_my_account', 'account_page_active_tab', 'dashboard' );
+        $default_tab = $this->saved_default_tab();
         $payments    = 'on' === Stores::settings()->get( 'wpuf_payment', 'enable_payment', 'on' );
         $cpts        = $this->allowed_post_types();
         $out         = [];
@@ -91,7 +91,39 @@ class Account_Service {
             ];
         }
 
+        // The saved tab may be empty or a section that is hidden now: the first one opens.
+        if ( $out && ! in_array( true, wp_list_pluck( $out, 'active' ), true ) ) {
+            $out[0]['active'] = true;
+        }
+
         return $out;
+    }
+
+    /**
+     * The section the account opens on: the saved "active tab" when it is one
+     * of the sections, else the first section.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string Section slug
+     */
+    public function default_tab() {
+        foreach ( $this->sections() as $section ) {
+            if ( $section['active'] ) {
+                return $section['slug'];
+            }
+        }
+
+        return 'dashboard';
+    }
+
+    /**
+     * The saved "active tab" setting.
+     *
+     * @return string
+     */
+    private function saved_default_tab() {
+        return (string) Stores::settings()->get( 'wpuf_my_account', 'account_page_active_tab', 'dashboard' );
     }
 
     /**
@@ -149,6 +181,18 @@ class Account_Service {
      * @return string
      */
     public function page_url() {
+        // The page the account is shown on (the shortcode or a page builder
+        // widget), as the classic template linked its sections.
+        $rest = defined( 'REST_REQUEST' ) && REST_REQUEST;
+
+        if ( ! $rest && ! wp_doing_ajax() && ! is_admin() && is_singular() ) {
+            $current = get_permalink( get_queried_object_id() );
+
+            if ( $current ) {
+                return $current;
+            }
+        }
+
         $page_id = (int) Stores::settings()->get( 'wpuf_my_account', 'account_page', 0 );
         $url     = $page_id ? get_permalink( $page_id ) : get_permalink();
 

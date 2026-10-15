@@ -72,7 +72,7 @@ class RendererTest extends WP_UnitTestCase {
         $this->assertFalse( $this->renderer()->mounts( 'nope' ) );
     }
 
-    public function test_when_built_except_from_block_elementor_or_override() {
+    public function test_when_built_except_from_block_elementor_forms_or_override() {
         $this->build( 'forms', 'account' );
         $renderer = $this->renderer();
 
@@ -89,11 +89,20 @@ class RendererTest extends WP_UnitTestCase {
                 }
             )
         );
-        $this->assertFalse(
+        // Elementor: the account widget renders the React app, the form widget the classic form.
+        $this->assertTrue(
             Renderer::with_source(
                 'elementor',
                 function () use ( $renderer ) {
                     return $renderer->mounts( 'account' );
+                }
+            )
+        );
+        $this->assertFalse(
+            Renderer::with_source(
+                'elementor',
+                function () use ( $renderer ) {
+                    return $renderer->mounts( 'post_form' );
                 }
             )
         );

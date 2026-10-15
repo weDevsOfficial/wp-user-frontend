@@ -217,4 +217,20 @@ class AccountRestTest extends WP_UnitTestCase {
         $this->assertSame( 200, $response->get_status() );
         $this->assertTrue( wp_check_password( 'new-pass-456', get_user_by( 'id', $user_id )->user_pass, $user_id ) );
     }
+
+    public function test_default_tab_falls_back_to_the_first_section() {
+        $this->user();
+        $saved = get_option( 'wpuf_my_account' );
+
+        foreach ( [ '' => 'dashboard', 'nope' => 'dashboard', 'edit-profile' => 'edit-profile' ] as $value => $expected ) {
+            update_option( 'wpuf_my_account', array_merge( (array) $saved, [ 'account_page_active_tab' => $value ] ) );
+            $data   = $this->request( 'GET', '/wpuf/v1/account' )->get_data();
+            $active = wp_list_pluck( wp_list_filter( $data['sections'], [ 'active' => true ] ), 'slug' );
+
+            $this->assertSame( $expected, $data['settings']['default_tab'], 'saved: ' . var_export( $value, true ) );
+            $this->assertSame( [ $expected ], array_values( $active ), 'one active section' );
+        }
+
+        update_option( 'wpuf_my_account', $saved );
+    }
 }

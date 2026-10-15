@@ -91,7 +91,8 @@ export default function App( { data, root } ) {
     const [ firstSearch ] = useState( search );
 
     const known = sections.some( ( section ) => section.slug === current );
-    const active = known ? current : settings.default_tab;
+    const fallback = sections.some( ( item ) => item.slug === settings.default_tab ) ? settings.default_tab : ( sections[ 0 ] || {} ).slug;
+    const active = known ? current : fallback;
     const section = sections.find( ( item ) => item.slug === active ) || sections[ 0 ];
 
     const go = useCallback( ( slug, extra = {} ) => {
@@ -230,10 +231,13 @@ export default function App( { data, root } ) {
                             } ) }
                         </ul>
                     </nav>
-                    <a className="wpuf-logout-link" href={ person.logout_url }>
-                        <LogOut size={ 16 } aria-hidden="true" />
-                        { __( 'Sign out', 'wp-user-frontend' ) }
-                    </a>
+                    { /* `.wpuf-logout-section`: the classic wrapper (Elementor account widget styles it). */ }
+                    <div className="wpuf-logout-section">
+                        <a className="wpuf-logout-link" href={ person.logout_url }>
+                            <LogOut size={ 16 } aria-hidden="true" />
+                            { __( 'Sign out', 'wp-user-frontend' ) }
+                        </a>
+                    </div>
                 </aside>
 
                 { /* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- delegates real link clicks */ }

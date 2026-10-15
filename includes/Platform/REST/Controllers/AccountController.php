@@ -202,7 +202,7 @@ class AccountController extends RestController {
                 'stats'    => $this->account->stats(),
                 'settings' => [
                     'page_url'    => $this->account->page_url(),
-                    'default_tab' => Stores::settings()->get( 'wpuf_my_account', 'account_page_active_tab', 'dashboard' ),
+                    'default_tab' => $this->account->default_tab(),
                     'per_page'    => (int) Stores::settings()->get( 'wpuf_dashboard', 'per_page', 5 ),
                     'post_types'  => $this->account->allowed_post_types(),
                 ],

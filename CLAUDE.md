@@ -81,7 +81,6 @@ wp-user-frontend/
 │   ├── frontend/           # React frontend: kit, forms, account, login (Renderer)
 │   ├── css/                # Admin + frontend source styles
 │   └── js/                 # Blocks, user directory
-├── admin/form-builder/views # Legacy builder PHP views still included
 ├── templates/              # Overridable PHP templates
 │   ├── dashboard/          # User dashboard templates
 │   ├── subscriptions/      # Subscription plan templates

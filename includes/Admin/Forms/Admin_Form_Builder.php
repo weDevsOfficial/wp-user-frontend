@@ -78,8 +78,6 @@ class Admin_Form_Builder {
             add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
             add_action( 'admin_footer', [ $this, 'custom_dequeue' ] );
             add_action( 'admin_footer', [ $this, 'admin_footer' ] );
-            add_action( 'wpuf_admin_form_builder', [ $this, 'include_form_builder' ] );
-            add_action( 'wpuf_admin_form_builder_view', [ $this, 'include_form_builder' ] );
         }
 
         // The stage submit area hook is retired (Builder\HookDeprecations); develop's
@@ -204,7 +202,7 @@ class Admin_Form_Builder {
 
     /**
      * The builder's hidden form inputs: form ID, form type, settings key and
-     * the save nonce (admin/form-builder/views/form-builder-app.php).
+     * the save nonce; the app builds the form with them.
      *
      * @since WPUF_SINCE
      *
@@ -411,29 +409,6 @@ class Admin_Form_Builder {
         wp_deregister_style( 'imagify-css-sweetalert' );
         wp_dequeue_script( 'imagify-js-sweetalert' );
         wp_deregister_script( 'imagify-js-sweetalert' );
-    }
-
-    /**
-     * Include form builder view template
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function include_form_builder() {
-        $form_id           = $this->settings['post_id'];
-        $form_type         = $this->settings['form_type'];
-        $post_type         = $this->settings['post_type'];
-        $form_settings_key = $this->settings['form_settings_key'];
-        $shortcodes        = $this->settings['shortcodes'];
-        $forms             = get_posts(
-            [
-                'post_type'   => $post_type,
-                'post_status' => 'any',
-            ]
-        );
-
-        include WPUF_ROOT . '/admin/form-builder/views/form-builder-app.php';
     }
 
     /**

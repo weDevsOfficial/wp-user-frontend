@@ -33,15 +33,6 @@ class Tools extends Screen {
     }
 
     /**
-     * Nothing to print: the old URL always redirects to the app route.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    public function render() {}
-
-    /**
      * The admin app route.
      *
      * @since WPUF_SINCE

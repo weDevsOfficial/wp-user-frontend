@@ -27,13 +27,14 @@ abstract class Screen {
     abstract public function slug();
 
     /**
-     * Print the screen.
+     * Print the screen. Screens that run in the admin app print nothing on
+     * their old page (the request went to the app, or a load step redirected).
      *
      * @since WPUF_SINCE
      *
      * @return void
      */
-    abstract public function render();
+    public function render() {}
 
     /**
      * Runs on the screen's `load-*` hook, before output.

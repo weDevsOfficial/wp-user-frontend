@@ -33,15 +33,6 @@ class RegistrationPromo extends Screen {
     }
 
     /**
-     * Free_Loader prints the page and enqueues its assets.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    public function render() {}
-
-    /**
      * Admin app route.
      *
      * @since WPUF_SINCE

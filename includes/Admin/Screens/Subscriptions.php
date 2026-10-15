@@ -54,15 +54,6 @@ class Subscriptions extends Screen {
     }
 
     /**
-     * Nothing to print: the old URL always redirects to the app route.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    public function render() {}
-
-    /**
      * Admin app route of the subscriptions screen (task 5d).
      *
      * @since WPUF_SINCE

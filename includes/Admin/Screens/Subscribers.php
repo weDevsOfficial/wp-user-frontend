@@ -31,15 +31,6 @@ class Subscribers extends Screen {
     }
 
     /**
-     * Nothing to print: the old URL always redirects to the app route.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    public function render() {}
-
-    /**
      * App route of an old Subscribers request: the pack's Subscribers view,
      * or the subscriptions list without a pack.
      *

@@ -45,15 +45,6 @@ class Onboarding extends Screen {
     }
 
     /**
-     * The page always opens the app route.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    public function render() {}
-
-    /**
      * Admin app routes: the wizard, and one step of it.
      *
      * @since WPUF_SINCE

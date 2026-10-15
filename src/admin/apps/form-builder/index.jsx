@@ -208,7 +208,7 @@ const ROUTES = {
 
 /**
  * The builder screen's form: `#wpuf-form-builder` with the mount element and
- * the hidden inputs the save reads (admin/form-builder/views/form-builder-app.php).
+ * the hidden inputs the save reads (Admin_Form_Builder::form_attributes()).
  *
  * @param {Object} attributes `builder_form` of the builder boot.
  *

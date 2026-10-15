@@ -17,7 +17,6 @@ module.exports = {
         '!./assets/vendor/**',
         './includes/Admin/**/*.php',
         './includes/Free/Free_Loader.php',
-        './admin/form-builder/views/*.php',
         // Class lists of removed Vue admin views. The frontend sheets built from
         // this config (account, frontend subscriptions) still rely on some of
         // them (measured 2026-10-07: dropping them removes classes the user

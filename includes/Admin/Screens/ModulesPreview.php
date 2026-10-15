@@ -33,15 +33,6 @@ class ModulesPreview extends Screen {
     }
 
     /**
-     * The page's load step redirects to the route; nothing to print.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    public function render() {}
-
-    /**
      * Admin app route.
      *
      * @since WPUF_SINCE

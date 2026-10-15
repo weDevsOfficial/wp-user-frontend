@@ -79,22 +79,6 @@ class PostFormsList extends Screen {
     }
 
     /**
-     * Print the list or the builder.
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    public function render() {
-        // The list and the builder are app routes (the old URL redirects in the
-        // load step). Only add-new gets here, after its load step created the
-        // form and sent the Location header to its builder.
-        if ( in_array( $this->action(), [ 'edit', 'add-new' ], true ) ) {
-            require_once WPUF_INCLUDES . '/Admin/views/post-form.php';
-        }
-    }
-
-    /**
      * The list's script and styles.
      *
      * @return void

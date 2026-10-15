@@ -81,9 +81,18 @@ class RendererTest extends WP_UnitTestCase {
         $this->assertTrue( $renderer->mounts( 'edit_form' ) );
         $this->assertFalse( $renderer->mounts( 'unknown_part' ) );
 
-        $this->assertFalse(
+        // Block: the page renders the React form, the editor preview the classic one.
+        $this->assertTrue(
             Renderer::with_source(
                 'block',
+                function () use ( $renderer ) {
+                    return $renderer->mounts( 'post_form' );
+                }
+            )
+        );
+        $this->assertFalse(
+            Renderer::with_source(
+                'block-preview',
                 function () use ( $renderer ) {
                     return $renderer->mounts( 'post_form' );
                 }
@@ -156,7 +165,7 @@ class RendererTest extends WP_UnitTestCase {
         $this->assertFalse( wp_script_is( 'wpuf-frontend-form', 'enqueued' ), 'the classic form bundle stays off' );
 
         $classic = Renderer::with_source(
-            'block',
+            'block-preview',
             function () use ( $form_id ) {
                 return do_shortcode( '[wpuf_form id="' . $form_id . '"]' );
             }
@@ -167,18 +176,18 @@ class RendererTest extends WP_UnitTestCase {
         $this->assertTrue( wp_script_is( 'wpuf-frontend-form', 'enqueued' ), 'a form that stays classic gets the classic bundle' );
     }
 
-    public function test_block_render_keeps_the_classic_form() {
+    public function test_block_renders_the_react_form_and_the_preview_the_classic_one() {
         $this->build( 'forms', 'account' );
         $form_id = wpuf_create_sample_form( 'Block Form', 'wpuf_forms' );
+        $render  = function () use ( $form_id ) {
+            return do_shortcode( '[wpuf_form id="' . $form_id . '"]' );
+        };
 
-        $html = Renderer::with_source(
-            'block',
-            function () use ( $form_id ) {
-                return do_shortcode( '[wpuf_form id="' . $form_id . '"]' );
-            }
-        );
+        $this->assertStringContainsString( 'data-wpuf-mount="forms"', Renderer::with_source( 'block', $render ) );
 
-        $this->assertStringNotContainsString( 'data-wpuf-mount', $html );
-        $this->assertStringContainsString( 'name="form_id" value="' . $form_id . '"', $html );
+        $preview = Renderer::with_source( 'block-preview', $render );
+
+        $this->assertStringNotContainsString( 'data-wpuf-mount', $preview );
+        $this->assertStringContainsString( 'name="form_id" value="' . $form_id . '"', $preview );
     }
 }

@@ -18,8 +18,9 @@ use WeDevs\Wpuf\Platform\Contracts\App_Renderer;
  *
  * - a theme overrides one of the part's templates (`wpuf/<template>` in the
  *   child or parent theme), so a site's own markup keeps working;
- * - the block render callback and the Elementor form widget, which render
- *   their own way (with_source()); the Elementor account widget renders the
+ * - the block editor preview (server-rendered, scripts stripped) and the
+ *   Elementor form widget, which render their own way (with_source()); the
+ *   post form block on the page and the Elementor account widget render the
  *   React app (REACT_SOURCES);
  * - the admin, and an app whose bundle is not built.
  *
@@ -52,6 +53,7 @@ class Renderer implements App_Renderer {
      * @since WPUF_SINCE
      */
     const REACT_SOURCES = [
+        'block'     => [ 'post_form' ],
         'elementor' => [ 'account' ],
     ];
 

@@ -84,10 +84,10 @@ class Frontend {
 
     /**
      * Whether the only reason to load the classic form bundle on this page is
-     * a post form the React app will render. Every other trigger (payment
-     * page, preview, Dokan, the block, Elementor, the other shortcodes) keeps
-     * the classic bundle; a form the render-time filter sends back to classic
-     * gets the bundle from enqueue_on_shortcode_render().
+     * a post form the React app will render (shortcode or post form block).
+     * Every other trigger (payment page, preview, Dokan, Elementor, the other
+     * shortcodes) keeps the classic bundle; a form the render-time filter
+     * sends back to classic gets the bundle from enqueue_on_shortcode_render().
      *
      * @since WPUF_SINCE
      *
@@ -105,7 +105,6 @@ class Frontend {
         if ( ( isset( $post->ID ) && $pay_page === (int) $post->ID )
             || isset( $_GET['wpuf_preview'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             || $this->dokan_is_seller_dashboard()
-            || ( isset( $post->post_content ) && has_block( 'wpuf/post-form', $post ) )
             || $this->elementor_needs_form_assets() ) {
             return false;
         }

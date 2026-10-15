@@ -13,7 +13,7 @@ WPUF has two layers that run together:
 1. `wpuf.php` loads Composer, defines the constants and creates the `WP_User_Frontend` singleton (`wpuf()`).
 2. `plugins_loaded` → `instantiate()`: `Bootstrap::register()` registers the seven providers in `Platform\Container` (`LegacyServiceProvider`, `CoreServiceProvider`, `AdminServiceProvider`, `FrontendServiceProvider`, `StoreServiceProvider`, `RestServiceProvider`, `AiServiceProvider`; no hooks yet), then the legacy services are built **from the container** in the order and under the conditions they always were (`WP_User_Frontend::legacy( $key )`: `wpuf()->assets`, `->subscription`, `->fields`, `->customize`, `->bank`, `->paypal`, `->api`, `->integrations`, `->ai_manager`, `->post_form_block`, in wp-admin `->admin`, `->setup_wizard`, `->pro_upgrades`, `->privacy`, else `->frontend`; later `->gateway_manager` and `->ajax` on `init`, `->widgets` on `widgets_init`, `->tracker`, `->free_loader`, `->upgrades` in their own `plugins_loaded` steps). One instance serves `wpuf()->key` and `$container->get( Class::class )`; their constructors add their hooks, as always.
 3. Then `wpuf()->platform_bootstrap()->boot()`: every service tagged `Hookable` gets `register_hooks()` once, then `do_action( 'wpuf_platform_loaded', $container, $bootstrap )`.
-4. Pro boots after free (`wpuf_platform_loaded`, script dependencies, `Platform\VersionGuard` refuses an older free) and adds its own providers to the same container (`wpuf-pro/includes/Platform/ProPlatformProvider.php`).
+4. Pro boots after free (`wpuf_platform_loaded`, script dependencies) and adds its own providers to the same container (`wpuf-pro/includes/Platform/ProPlatformProvider.php`). Version guards both ways: Pro declares `WPUF_PRO_PLATFORM_VERSION` when its file loads; free's `Platform\VersionGuard` does not start a Pro without it (before 4.3.0: free runs alone, `wpuf_is_pro_active()` false, one notice), and Pro's `Platform_Guard` keeps Pro off with a notice when free has no `WPUF_PLATFORM_VERSION` (before 4.4.0).
 5. `rest_api_init` → `Platform\REST\Manager` registers every controller once: the three frozen ones `wpuf()->api` built, every service tagged `RestRoute` (free and Pro), plus the `wpuf_rest_controllers` filter.
 6. `admin_menu` → `Admin\Menu` registers the top-level page (the app) and the old submenu slugs; each old page's `load-` hook runs `Screens\Registry::load()`, which fires the screen's load step and redirects to the app route.
 
@@ -48,7 +48,8 @@ Rules of the container: services are built only in providers (`share_tagged`), d
 ```
 includes/Platform/            the platform: Container, ServiceProvider, Bootstrap, Caps, VersionGuard, Http/JsonOutputGuard,
                               Providers/ (Legacy, Core, Admin, Frontend, Store, Rest, Ai)
-  Contracts/                  Hookable, RestRoute, DataStore
+  Contracts/                  Hookable, RestRoute, DataStore, App_Renderer, Form_Schema_Provider, Rate_Limiter
+                              (the last three are what Pro / add-ons resolve from the container)
   Providers/                  Legacy, Core, Admin, Frontend, Store, Rest, Ai service providers (Admin shares the admin layer's 16 services, Frontend the frontend layer's 8 and the 6 AJAX handler classes: `Ajax::service()` and `Frontend` take them from the container)
   REST/                       Manager, RestController (base), Controllers/*
   Stores/                     FormStore, FieldStore, SubscriptionStore, SettingsStore, TransactionStore, SubscriberStore,
@@ -81,7 +82,7 @@ wpuf-functions.php            loader of the global functions (public API): inclu
                               and the two Walker classes stay in the loader
 ```
 
-Pro mirrors this under `wpuf-pro/includes/Platform/<Feature>/` (Coupons, License, Modules, Settings, Subscriptions, Builder, Screens), each with its provider; `Platform/LegacyServiceProvider` shares every Pro service the bootstraps used to build with `new` (reached through `Platform_Guard::make()`, which falls back to `new` with an older free plugin), `Platform/Free_Data` is Pro's one door to the free stores (raw reads kept for an older free), `Platform/Content/RestrictionStore` holds the content restriction meta.
+Pro mirrors this under `wpuf-pro/includes/Platform/<Feature>/` (Coupons, License, Modules, Settings, Subscriptions, Builder, Screens), each with its provider; `Platform/LegacyServiceProvider` shares every Pro service the bootstraps used to build with `new` (reached through `Platform_Guard::make()`: the container's shared instance, else `new`); Pro reads and writes free data through free's `Stores::*()` and resolves free services by contract (`App_Renderer`, `Form_Schema_Provider`, `Rate_Limiter`); `Platform/Content/RestrictionStore` holds the content restriction meta.
 
 ## Non-negotiables
 

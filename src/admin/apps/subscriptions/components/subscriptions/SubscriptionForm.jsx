@@ -2,17 +2,17 @@
  * DESCRIPTION: Subscription form component for creating/editing subscriptions
  * DESCRIPTION: Refactored to use URL-based navigation via router
  */
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { doAction } from '@wordpress/hooks';
-import { Button, ErrorState, Skeleton, notify } from '@wpuf/components';
+import { Button, ClassicFields, ErrorState, Skeleton, classicFieldValues, notify } from '@wpuf/components';
 import SubscriptionDetails from './SubscriptionDetails';
 import InfoCard from './InfoCard';
 import UpdateButton from './UpdateButton';
 import { SubscriptionFormFooter } from '../../slots';
 import { useSubscriptionData, useSubscriptionActions, useSubscriptionNavigation } from '../../hooks';
-import { fetchSubscription } from '../../api/subscription';
+import { fetchLegacyFields, fetchSubscription } from '../../api/subscription';
 import { subscriptionsData } from '../../boot';
 
 // Loading: the form's shape (title, tabs, two sections), no layout jump.
@@ -50,6 +50,16 @@ const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null } ) => {
 	const [ loadError, setLoadError ] = useState( null );
 	const [ loadKey, setLoadKey ] = useState( 0 );
 	const [ currentTab, setCurrentTab ] = useState( 'subscription_details' );
+	// Other plugins' fields of the classic pack form (their PHP hooks still run).
+	const [ classic, setClassic ] = useState( { rows: '', html: '' } );
+	const classicForm = useRef( null );
+
+	useEffect( () => {
+		setClassic( { rows: '', html: '' } );
+		fetchLegacyFields( 'edit' === mode ? subscriptionId : 0 )
+			.then( ( data ) => setClassic( { rows: data.rows || '', html: data.html || '' } ) )
+			.catch( () => {} );
+	}, [ mode, subscriptionId ] );
 
 	// Navigation hook
 	const { goToList } = useSubscriptionNavigation();
@@ -147,7 +157,7 @@ const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null } ) => {
 
 		let result = null;
 		try {
-			result = await storeUpdateItem();
+			result = await storeUpdateItem( classicFieldValues( classicForm.current ) );
 		} catch ( err ) {
 			result = { success: false, message: err.message };
 		}
@@ -218,6 +228,14 @@ const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null } ) => {
 				currentTab={ currentTab }
 				onTabChange={ setCurrentTab }
 			/>
+
+			{ ( classic.rows || classic.html ) && (
+				<div className="border border-gray-200 rounded-xl mt-4 mb-4 p-4">
+					<h4 className="m-0 mb-1 text-sm font-semibold text-gray-900">{ __( 'More options', 'wp-user-frontend' ) }</h4>
+					<p className="m-0 mb-3 text-xs text-gray-500">{ __( 'Fields other plugins add to subscriptions.', 'wp-user-frontend' ) }</p>
+					<ClassicFields ref={ classicForm } rows={ classic.rows } html={ classic.html } onChange={ () => setIsDirty( true ) } />
+				</div>
+			) }
 
 			{/* Extension slot: Pro and third-party plugins can add UI below form fields */}
 			<SubscriptionFormFooter.Slot

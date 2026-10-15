@@ -120,6 +120,21 @@ class Onboarding extends Screen {
     public function load_in_app() {
         wp_enqueue_style( 'wpuf-onboarding-screen' );
         wp_enqueue_script( 'wpuf-onboarding-screen' );
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only route check.
+        $route = isset( $_GET['wpuf_route'] ) ? sanitize_text_field( wp_unslash( $_GET['wpuf_route'] ) ) : '';
+
+        // The old setup wizard page printed this in its head: still fired when
+        // the page opens the wizard (its URL and the activation redirect land here).
+        if ( 0 === strpos( $route, '/onboarding' ) ) {
+            add_action(
+                'admin_head',
+                function () {
+                    /** Styles for the setup wizard page. */
+                    do_action( 'wpuf_setup_wizard_styles' );
+                }
+            );
+        }
     }
 
     /**

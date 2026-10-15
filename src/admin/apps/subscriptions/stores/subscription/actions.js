@@ -259,7 +259,7 @@ export function fetchCounts(status = 'all') {
     };
 }
 
-export function updateItem() {
+export function updateItem( extra = {} ) {
     return async ({ select, dispatch }) => {
         const item = select.getItem();
         if (item === null) {
@@ -299,7 +299,7 @@ export function updateItem() {
         const updatedItem = applyFilters( 'wpuf.subscription.itemBeforeSave', select.getItem() );
 
         try {
-            const response = await updateSubscription(updatedItem);
+            const response = await updateSubscription(updatedItem, extra);
 
             // The route answers 200 with success: false on a refused save: keep the edits dirty.
             if ( ! response || false !== response.success ) {

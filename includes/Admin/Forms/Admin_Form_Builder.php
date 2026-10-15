@@ -354,7 +354,12 @@ class Admin_Form_Builder {
 
         // The retired script-dependency filter still fires too; the React bundle
         // declares its own dependencies, so the result is not used.
-        $retired->filter( 'wpuf_form_builder_js_deps', [ 'jquery', 'jquery-ui-sortable', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-resizable', 'underscore', 'wpuf-sweetalert2', 'wpuf-selectize', 'wpuf-tooltip' ] );
+        $deps = $retired->filter( 'wpuf_form_builder_js_deps', [ 'jquery', 'jquery-ui-sortable', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-resizable', 'underscore', 'wpuf-sweetalert2', 'wpuf-selectize', 'wpuf-tooltip' ] );
+
+        // Develop's post form builder ran its own filter inside that one (Admin_Form::js_dependencies()).
+        if ( 'wpuf_forms' === $this->settings['post_type'] ) {
+            $retired->filter( 'wpuf_form_builder_wpuf_forms_js_deps', $deps );
+        }
 
         return [
             'wpuf_form_builder'   => $wpuf_form_builder,

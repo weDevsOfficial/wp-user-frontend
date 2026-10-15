@@ -52,6 +52,15 @@ class CoreServiceProvider extends ServiceProvider {
             }
         );
 
+        // Fields other plugins print through the classic edit screens' form hooks
+        // (coupon, subscription pack), for the React screens.
+        $this->share_tagged(
+            \WeDevs\Wpuf\Platform\Classic\Hook_Fields::class,
+            function () {
+                return new \WeDevs\Wpuf\Platform\Classic\Hook_Fields();
+            }
+        );
+
         // The onboarding wizard's own state (options + the activation redirect).
         $this->share_tagged(
             State::class,

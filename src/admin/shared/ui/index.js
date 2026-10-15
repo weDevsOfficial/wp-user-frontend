@@ -40,3 +40,4 @@ export { default as SortHeader, nextSort } from './SortHeader';
 export { default as SearchInput } from './SearchInput';
 export { default as dialogs, DialogHost } from './dialogs';
 export { default as AIConfigModal } from './AIConfigModal';
+export { default as ClassicFields, classicFieldValues } from './ClassicFields';

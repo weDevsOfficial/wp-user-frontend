@@ -65,6 +65,7 @@ class HookDeprecations {
         'wpuf_form_builder_template_builder_stage_submit_area' => [ 'action', 'slot wpuf-form-builder-canvas-submit-area' ],
         'wpuf_form_builder_template_builder_stage_bottom_area' => [ 'action', 'slot wpuf-form-builder-canvas-bottom' ],
         'wpuf_form_builder_js_deps'                           => [ 'filter', 'a script of your own that depends on the builder handle (the React bundle declares its own dependencies; Vue, Vuex, toastr, scrollTo and clipboard are gone)' ],
+        'wpuf_form_builder_wpuf_forms_js_deps'                => [ 'filter', 'a script of your own that depends on the builder handle (post form builder; the React bundle declares its own dependencies)' ],
     ];
 
     /**

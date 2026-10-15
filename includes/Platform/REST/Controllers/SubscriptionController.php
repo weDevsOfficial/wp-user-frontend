@@ -71,6 +71,22 @@ class SubscriptionController extends RestController {
             ]
         );
 
+        // Fields other plugins print into the classic pack form (SubscriptionStore::legacy_fields()).
+        register_rest_route(
+            $this->namespace, '/' . $this->base . '/fields', [
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => [ $this, 'get_legacy_fields' ],
+                'permission_callback' => [ $this, 'permission_check' ],
+                'args'                => [
+                    'id' => [
+                        'type'              => 'integer',
+                        'default'           => 0,
+                        'sanitize_callback' => 'absint',
+                    ],
+                ],
+            ]
+        );
+
         register_rest_route(
             $this->namespace, '/' . $this->base . '/subscribers', [
                 [
@@ -497,6 +513,25 @@ class SubscriptionController extends RestController {
                 'message' => $id ? __( 'Subscription updated successfully', 'wp-user-frontend' ) : __( 'Subscription added successfully', 'wp-user-frontend' ),
             ]
         );
+    }
+
+    /**
+     * The classic pack form's fields from other plugins, for a pack (0: new).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Request
+     *
+     * @return WP_REST_Response|\WP_Error
+     */
+    public function get_legacy_fields( $request ) {
+        $id = (int) $request['id'];
+
+        if ( $id && ! $this->is_subscription( $id ) ) {
+            return new \WP_Error( 'wpuf_subscription_not_found', __( 'Subscription not found', 'wp-user-frontend' ), [ 'status' => 404 ] );
+        }
+
+        return rest_ensure_response( Stores::subscriptions()->legacy_fields( $id ) );
     }
 
     /**

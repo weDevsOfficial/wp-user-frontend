@@ -10,9 +10,11 @@ namespace WeDevs\Wpuf\Platform\Stores;
 
 use Exception;
 use WeDevs\Wpuf\Admin\Subscription;
+use WeDevs\Wpuf\Platform\Classic\Hook_Fields;
 use WeDevs\Wpuf\Platform\Contracts\DataStore;
 use WeDevs\Wpuf\Platform\Models\SubscriptionPack;
 use WP_Error;
+use WP_Post;
 use WP_REST_Request;
 
 /**
@@ -165,7 +167,33 @@ class SubscriptionStore implements DataStore {
         $is_new = empty( $id );
         $name   = ! empty( $subscription['post_title'] ) ? sanitize_text_field( $subscription['post_title'] ) : '';
         $values = $this->rest_values( $subscription );
+        $fields = wpuf()->platform()->get( Hook_Fields::class );
+        $extra  = $fields->clean( $request->get_param( 'extra' ) );
 
+        // Fields other plugins printed into the classic pack form (legacy_fields())
+        // read their values from $_POST while the pack saves, as before.
+        return $fields->with_post_data(
+            $extra,
+            function () use ( $subscription, $request, $id, $is_new, $name, $values, $extra ) {
+                return $this->write_from_rest( $subscription, $request, $id, $is_new, $name, $values, $extra );
+            }
+        );
+    }
+
+    /**
+     * The writes of save_from_rest().
+     *
+     * @param array           $subscription Payload
+     * @param WP_REST_Request $request      Request
+     * @param int             $id           Pack id (0: new)
+     * @param bool            $is_new       New pack
+     * @param string          $name         Pack name
+     * @param array           $values       rest_values()
+     * @param array           $extra        The classic form fields' values
+     *
+     * @return int|WP_Error
+     */
+    private function write_from_rest( $subscription, WP_REST_Request $request, $id, $is_new, $name, array $values, array $extra ) {
         try {
             $current_time = wpuf_current_datetime();
 
@@ -236,6 +264,8 @@ class SubscriptionStore implements DataStore {
             }
             $pack_data['post_title']                 = $name;
             $pack_data['postnum_rollback_on_delete'] = $values['meta']['postnum_rollback_on_delete'];
+            // The classic save handed the whole posted form, the other plugins' fields too.
+            $pack_data = array_merge( $extra, $pack_data );
 
             do_action( 'wpuf_update_subscription_pack', $id, $pack_data );
 
@@ -248,6 +278,62 @@ class SubscriptionStore implements DataStore {
         } catch ( Exception $e ) {
             return new WP_Error( 'wpuf_subscription_error', $e->getMessage() );
         }
+    }
+
+    /**
+     * What other plugins print into the classic pack form: the
+     * `wpuf_admin_subscription_detail` / `wpuf_admin_subscription_post_restriction`
+     * rows and the `wpuf_admin_subs_nav_tab` / `wpuf_admin_subs_nav_content`
+     * tabs, fired with the classic arguments (global `$post` set to the pack).
+     * The app shows them under "More options" and sends their inputs back on
+     * save (`extra`), so those fields keep working.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $id Pack id (0: new)
+     *
+     * @return array { rows: table rows, html: other markup } (sanitized)
+     */
+    public function legacy_fields( $id ) {
+        $id     = absint( $id );
+        $pack   = $id ? get_post( $id ) : null;
+        $post   = $pack instanceof WP_Post ? $pack : new WP_Post(
+            (object) [
+                'ID'           => 0,
+                'post_type'    => self::POST_TYPE,
+                'post_content' => '',
+                'post_title'   => '',
+            ]
+        );
+        $meta   = Subscription::get_subscription_meta( $id, $post );
+        $admin  = is_object( wpuf()->admin ) ? wpuf()->admin->admin_subscription : null;
+        $fields = wpuf()->platform()->get( Hook_Fields::class );
+
+        $hidden_recurring_class = ! wpuf_is_option_on( isset( $meta['_recurring_pay'] ) ? $meta['_recurring_pay'] : '' ) ? 'none' : '';
+        $hidden_trial_class     = ! wpuf_is_option_on( isset( $meta['_trial_status'] ) ? $meta['_trial_status'] : '' ) ? 'none' : '';
+
+        return [
+            'rows' => $fields->render(
+                $post,
+                function () use ( $meta, $hidden_recurring_class, $hidden_trial_class, $admin, $post ) {
+                    /** Classic pack form: rows of the payment settings. */
+                    do_action( 'wpuf_admin_subscription_detail', $meta, $hidden_recurring_class, $hidden_trial_class, $admin );
+
+                    /** Classic pack form: rows of the posting restriction (since 2.7.0). */
+                    do_action( 'wpuf_admin_subscription_post_restriction', $meta, $post, $admin );
+                }
+            ),
+            'html' => $fields->render(
+                $post,
+                function () use ( $post ) {
+                    /** Classic pack form: extra tab links. */
+                    do_action( 'wpuf_admin_subs_nav_tab', $post );
+
+                    /** Classic pack form: extra tab panes. */
+                    do_action( 'wpuf_admin_subs_nav_content', $post );
+                }
+            ),
+        ];
     }
 
     /**

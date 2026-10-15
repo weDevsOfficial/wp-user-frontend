@@ -53,17 +53,30 @@ export const fetchSubscriptionCounts = async (status = 'all') => {
 /**
  * Create or Update subscription
  *
- * @param {Object} data - Subscription data
+ * @param {Object} data  - Subscription data
+ * @param {Object} extra - Values of other plugins' classic form fields (fetchLegacyFields)
  * @return {Promise<Object>} API response
  */
-export const updateSubscription = async (data) => {
+export const updateSubscription = async (data, extra = {}) => {
     let path = ENDPOINT;
     if (data.ID) {
         path += `/${data.ID}`;
     }
     return request(path, {
         method: 'POST',
-        data: { subscription: data },
+        data: { subscription: data, extra },
+    });
+};
+
+/**
+ * Fields other plugins print into the classic pack form ({ rows, html }).
+ *
+ * @param {number} id - Subscription ID (0: new)
+ * @return {Promise<Object>} API response
+ */
+export const fetchLegacyFields = async (id = 0) => {
+    return request(addQueryArgs(`${ENDPOINT}/fields`, { id: id || 0 }), {
+        method: 'GET',
     });
 };
 

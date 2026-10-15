@@ -20,9 +20,20 @@
 /node_modules
 /assets/less
 
-# Nested build inputs for the user-directory module (keep its built output)
-modules/user-directory/src
-modules/user-directory/node_modules
+# The user-directory module's own npm project: ship its PHP and views, not its
+# build setup (its bundle is built into assets/).
+/modules/user-directory/node_modules
+/modules/user-directory/package.json
+/modules/user-directory/package-lock.json
+/modules/user-directory/webpack.config.js
+/modules/user-directory/tailwind.config.js
+
+# Local work folders that can sit in a checkout (never in git, never shipped)
+/dist
+/.playwright-mcp
+/openspec
+/qa-stories
+/RELEASE_NOTES.md
 
 # Dotfiles / dev config (root-anchored)
 /.babelrc
@@ -78,7 +89,10 @@ modules/user-directory/node_modules
 /docs.md
 /docs
 
-# Match anywhere (safe — these never appear inside required vendor paths)
+# Match anywhere (safe: none of these is needed at runtime, vendor included)
 .DS_Store
 *.zip
 *.log
+*.map
+CLAUDE.md
+AGENTS.md

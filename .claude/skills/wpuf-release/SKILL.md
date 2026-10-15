@@ -16,9 +16,9 @@ Release** → **wp.org SVN deploy** (10up, LAST). SVN secrets `WPORG_SVN_USERNAM
 The old flow pushed `master` and let **Appsero** auto-deploy to wp.org. That is
 replaced: `deploy-org.yml` (10up) is now the only publisher. Key model facts:
 
-- **Generated assets are UNTRACKED (gitignored)** — built in CI (`npm run build`
-  + `npx grunt release`) and shipped by the 10up action from the **working tree**
-  minus `.distignore` (same model as weDocs). `guard-build-untracked.yml` fails any
+- **Generated assets are UNTRACKED (gitignored)**: built ONCE in CI (`pnpm build`;
+  `pnpm run i18n` only adds the POT) and shipped by the 10up action from the
+  **working tree** minus `.distignore` (same model as weDocs). `guard-build-untracked.yml` fails any
   PR/push that re-tracks them. Only the generated outputs are ignored — third-party
   libs and the hand-written vite/less sources stay tracked.
 - **NEVER set `BUILD_DIR`** on the 10up action — it would sync only the git-tracked
@@ -26,8 +26,12 @@ replaced: `deploy-org.yml` (10up) is now the only publisher. Key model facts:
   built JS/CSS). Leave it unset.
 - `.distignore` controls what ships (excludes `src`, `node_modules`, `.github`,
   `.claude`, `Gruntfile.js`, `vite.config.mjs`, `appsero.json`, tests, etc.).
-- POT comes from `grunt-wp-i18n` (`npx grunt release` runs `i18n`) — **no WP-CLI
-  install needed** (unlike weDocs).
+- POT comes from `bin/make-pot.mjs` (`pnpm run i18n` = `grunt i18n`, WP-CLI in CI).
+- The zip comes from `bin/zip.mjs` (`pnpm zip`): same `.distignore` copy as the deploy,
+  production Composer packages, then checks on the unpacked zip (tag = WPUF_VERSION =
+  header = Stable tag, one folder, every generated asset, no sources / dev files /
+  maps / dot-files / dev Composer packages, every PHP file lints). CI writes the zip
+  and release notes to `$RUNNER_TEMP`, so nothing extra lands in the deployed tree.
 
 ## ⭐ Golden path
 
@@ -137,9 +141,9 @@ Description/FAQ copy is edited straight on wp.org via the
 with a release — so land the keywords here, at draft time (golden path step 1).
 
 ## Workflow facts (`.github/workflows/deploy-org.yml`)
-- Trigger: any tag push. Order: build → `grunt release` (POT + legacy assets +
-  tailwind + readme.md) → composer `--no-dev` → **disk-gate** (`forms-list.min.js`
-  + `wp-user-frontend.pot`) → zip → GitHub Release → wp.org SVN deploy (LAST).
+- Trigger: any tag push. Order: `pnpm build` (once) → `pnpm run i18n` (POT) →
+  composer `--no-dev` → `verify-build --release` → `bin/zip.mjs --keep-vendor`
+  (zip + checks, in `$RUNNER_TEMP/release`) → GitHub Release → wp.org SVN deploy (LAST).
 - 10up deploy: NO `BUILD_DIR`, NO `dry-run`. `SLUG: wp-user-frontend`.
 - `main.yml` updates wp.org readme/assets on `master` push (needs `.wordpress-org/`
   for banners/icons — add it if/when assets exist).

@@ -155,7 +155,7 @@ independent, revisit these to enable real parallelism + retries.
 
 Tests run via **`.github/workflows/e2e-wpuf.yml`** (Ubuntu 22.04, PHP 7.4, Node 24):
 checkout Lite → clone + build **wpuf-pro** (needs `ACCESS_TOKEN` secret) → build Lite
-(`composer`, `npm run build`, `grunt release`) → install plugins → `npm ci` in `tests/e2e`
+(`composer`, `pnpm build`) → install plugins → `npm ci` in `tests/e2e`
 → Playwright. Triggers: push/PR to `develop`, weekly `schedule` (Sun 19:00 UTC), and
 `workflow_dispatch`.
 

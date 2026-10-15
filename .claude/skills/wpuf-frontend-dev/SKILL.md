@@ -74,8 +74,7 @@ grunt tailwind        # Generate Tailwind CSS
 grunt tailwind-minify # Minify Tailwind output
 grunt watch           # Watch for file changes
 grunt makepot         # Generate .pot translation file
-grunt release         # Full release build
-npm run release       # Alias for grunt release
+pnpm run release      # install, clean, build once, POT, zip (bin/zip.mjs)
 ```
 
 ### CSS Build

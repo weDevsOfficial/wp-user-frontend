@@ -45,10 +45,10 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm build
 
-      # POT + legacy assets (less/concat/uglify/tailwind) + readme.md.
-      # The POT comes from bin/make-pot.mjs (WP-CLI, set up with PHP above).
-      - name: Build legacy assets + POT
-        run: pnpm exec grunt release
+      # The POT (bin/make-pot.mjs, WP-CLI set up with PHP above). Everything else
+      # was built once by `pnpm build`; nothing is rebuilt after this point.
+      - name: POT
+        run: pnpm run i18n
 
       - name: Composer install (no dev)
         run: composer install --no-dev --optimize-autoloader
@@ -59,24 +59,26 @@ jobs:
       - name: Verify built assets exist on disk
         run: node bin/verify-build.mjs --release
 
-      # Distributable zip (mirrors what ships to wp.org, via .distignore).
-      # Same script as `pnpm zip` locally: .distignore copy, zip, and a check that
-      # no source, tooling or test path is inside. Named after WPUF_VERSION.
-      - name: Generate plugin zip
-        run: node bin/zip.mjs --out "$GITHUB_WORKSPACE" --skip-verify
+      # Distributable zip, the same file set the deploy below ships (.distignore).
+      # bin/zip.mjs checks tag = WPUF_VERSION = header = Stable tag, then the
+      # unpacked zip: one folder, every generated asset, no sources / dev files /
+      # maps, every PHP file lints. Written outside the working tree so neither
+      # the zip nor the notes can reach SVN.
+      - name: Generate and check the plugin zip
+        run: node bin/zip.mjs --out "$RUNNER_TEMP/release" --skip-verify --keep-vendor
 
       - name: Extract changelog
         run: |
           { echo "## Changelog"; echo ""; \
-            awk '/^= v?[0-9]/{n++; if(n>1) exit} n>=1{print}' readme.txt; } > RELEASE_NOTES.md
-          echo "---- release notes ----"; cat RELEASE_NOTES.md
+            awk '/^= v?[0-9]/{n++; if(n>1) exit} n>=1{print}' readme.txt; } > "$RUNNER_TEMP/release/RELEASE_NOTES.md"
+          echo "---- release notes ----"; cat "$RUNNER_TEMP/release/RELEASE_NOTES.md"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ github.ref_name }}
-          files: wp-user-frontend-v*.zip
-          body_path: RELEASE_NOTES.md
+          files: ${{ runner.temp }}/release/wp-user-frontend-v*.zip
+          body_path: ${{ runner.temp }}/release/RELEASE_NOTES.md
 
       # wp.org SVN deploy last — the zip/Release above survive a deploy retry.
       # NO BUILD_DIR: the default 10up flow rsyncs the working tree (with the

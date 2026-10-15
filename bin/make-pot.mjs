@@ -47,7 +47,7 @@ execFileSync( wp, [
 
 const pot = readFileSync( out, 'utf8' );
 const strings = ( pot.match( /^msgid "/gm ) || [] ).length - 1;
-const react = ( pot.match( /assets\/js\/react\/[\w-]+\.js/g ) || [] ).length;
+const react = ( pot.match( /assets\/js\/screens\/[\w-]+\.js/g ) || [] ).length;
 
 if ( ! react ) {
     console.error( 'make-pot: no string references the React bundles; the React screens would be untranslatable.' );

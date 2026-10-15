@@ -134,7 +134,6 @@ jobs:
           ln -sfn "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/plugins/wp-user-frontend"
           ( cd "$GITHUB_WORKSPACE" && pnpm install --frozen-lockfile )
           npm run build
-          npx grunt --force
           # Drop the self-referencing symlink now that vite is done. Leaving it
           # makes the workspace contain itself; lite's later `grunt` makepot
           # recursively scans PHP files, follows the cycle, and exhausts the
@@ -155,8 +154,6 @@ jobs:
           composer i --no-dev -o
           pnpm install --frozen-lockfile
           pnpm build
-          pnpm exec grunt release --force
-          pnpm exec grunt --force
 
       # Install test dependencies with performance optimizations
       - name: Install test dependencies

@@ -1,5 +1,5 @@
 name: Guard — built assets must stay untracked
-# Generated assets are built in CI (`pnpm build` + `grunt release`) and shipped
+# Generated assets are built in CI (`pnpm build`, POT by `pnpm run i18n`) and shipped
 # by the deploy workflow from the working tree. They must NEVER be committed to git
 # (re-tracking them bloats every PR and risks stale output shipping). Fail any
 # PR/push that tracks one of the known generated files.

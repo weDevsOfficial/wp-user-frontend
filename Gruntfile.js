@@ -142,86 +142,12 @@ module.exports = function( grunt) {
 
         },
 
-        // Clean up build directory
-        clean: {
-            main: ['build/']
-        },
-
-        // Copy the plugin into the build directory
-        copy: {
-            main: {
-                src: [
-                    '**',
-                    '!**/node_modules/**',
-                    '!build/**',
-                    '!assets/css/*.less',
-                    '!bin/**',
-                    '!.git/**',
-                    '!includes/pro/.git/**',
-                    '!Gruntfile.js',
-                    '!secret.json',
-                    '!package.json',
-                    '!debug.log',
-                    '!phpunit.xml',
-                    '!.gitignore',
-                    '!.gitmodules',
-                    '!npm-debug.log',
-                    '!plugin-deploy.sh',
-                    '!export.sh',
-                    '!config.codekit',
-                    '!**/nbproject/**',
-                    '!assets/less/**',
-                    '!tests/**',
-                    '!tools/**',
-                    '!**/Gruntfile.js',
-                    '!**/package.json',
-                    '!**/readme.md',
-                    '!**/docs.md',
-                    '!**/*~',
-                    '!**/log.txt',
-                    '!**/package-lock.json',
-                    '!**/pnpm-lock.yaml',
-                    '!pnpm-workspace.yaml',
-                    '!**/appsero.json',
-                    '!**/composer.lock',
-                    '!**/phpcs-report.txt',
-                    '!**/phpcs.xml.dist',
-                    '!**/postcss.config.js',
-                    '!**/tailwind.config.js',
-                    '!**/vite.config.mjs',
-                    '!webpack.admin.config.js',
-                    '!webpack.config.js',
-                    '!**/CLAUDE.md',
-                    '!.claude/**',
-                    '!**/.DS_Store',
-                ],
-                dest: 'build/'
-            }
-        },
-
-        //Compress build directory into <name>.zip and <name>-<version>.zip
-        compress: {
-            main: {
-                options: {
-                    mode: 'zip',
-                    archive: './build/wp-user-frontend-v'+pkg.version+'.zip'
-                },
-                expand: true,
-                cwd: 'build/',
-                src: ['**/*'],
-                dest: 'wp-user-frontend'
-            }
-        },
-
         // is to run NPM commands through Grunt
         shell: {
             // POT with the React strings (WP-CLI make-pot over src/admin and the
             // assets/js/screens bundles); grunt-wp-i18n reads PHP only.
             makepot: {
                 command: 'node bin/make-pot.mjs',
-            },
-            npm_build: {
-                command: 'pnpm run build',
             },
             npm_build_ai_form_builder: {
                 command: 'pnpm run build:ai-form-builder',
@@ -250,9 +176,6 @@ module.exports = function( grunt) {
     grunt.loadNpmTasks( 'grunt-wp-i18n' );
     grunt.loadNpmTasks( 'grunt-contrib-uglify' );
     grunt.loadNpmTasks( 'grunt-contrib-watch' );
-    grunt.loadNpmTasks( 'grunt-contrib-clean' );
-    grunt.loadNpmTasks( 'grunt-contrib-copy' );
-    grunt.loadNpmTasks( 'grunt-contrib-compress' );
     // grunt.loadNpmTasks( 'grunt-notify' );
     grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
     grunt.loadNpmTasks( 'grunt-shell' );
@@ -265,8 +188,8 @@ module.exports = function( grunt) {
     grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
 
     // build stuff
-    grunt.registerTask( 'release', [ 'less', 'uglify', 'i18n', 'readme', 'tailwind', 'tailwind-minify' ] );
-    grunt.registerTask( 'zip', [ 'shell:npm_build', 'clean', 'copy', 'compress' ] );
+    // No release task here: `pnpm release` is the one release command (build once,
+    // POT, zip through bin/zip.mjs).
 
     // User Directory CSS build task
     grunt.registerTask( 'build-user-directory', 'Build User Directory CSS with Tailwind', function() {

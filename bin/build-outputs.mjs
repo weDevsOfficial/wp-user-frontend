@@ -1,5 +1,5 @@
 /**
- * Generated assets: what `pnpm build` (and `grunt release`) must produce.
+ * Generated assets: what `pnpm build` (and the POT step) must produce.
  * Shared by verify-build.mjs and sanitize-dist.mjs.
  */
 // Output of `pnpm build`. React bundles also need their `.asset.php`

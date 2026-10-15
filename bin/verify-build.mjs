@@ -3,9 +3,9 @@
  * Fails when a generated asset is missing, empty or half built.
  *
  * Generated assets are gitignored and built fresh (`pnpm build`, then
- * `grunt release` for a release), so a broken build would otherwise ship a
+ * `pnpm run i18n` for a release), so a broken build would otherwise ship a
  * plugin whose admin screens do not load. Run after `pnpm build`; pass
- * `--release` after `grunt release` to also check the release-only outputs.
+ * `--release` after `pnpm run i18n` to also check the release-only outputs.
  */
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';

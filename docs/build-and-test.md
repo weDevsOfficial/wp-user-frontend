@@ -19,10 +19,12 @@ pnpm run build:css                   # Compile Tailwind CSS via Grunt
 pnpm run dev:user-directory          # Dev mode for user directory module
 ```
 
-## Frontend (Grunt, legacy)
+## Release
 
 ```bash
-grunt release                        # Full release build
+pnpm release                         # install, clean, build once, POT, zip + zip checks (bin/zip.mjs)
+pnpm zip                             # zip + checks only, on the current build
+pnpm run i18n                        # POT only (bin/make-pot.mjs, needs WP-CLI)
 ```
 
 ## PHP
@@ -71,7 +73,7 @@ import). Tailwind scans sources only, so a full build is deterministic (no CSS d
   minified but **not** named `.min.js`: `wp i18n make-pot` and translate.wordpress.org
   skip `*.min.js`, and WordPress loads a script's JSON translations by the md5 of the
   enqueued file's path, so the bundle must be both extracted and enqueued under that name.
-- `node bin/make-pot.mjs` (run by `grunt i18n` / `grunt release`, needs WP-CLI) writes
+- `node bin/make-pot.mjs` (run by `pnpm run i18n`, needs WP-CLI) writes
   `languages/wp-user-frontend.pot` from the PHP, `src/admin` and those bundles.
 - Every React handle calls `wp_set_script_translations( $handle, 'wp-user-frontend', WPUF_ROOT . '/languages' )`
   so JSON shipped in the plugin's `languages/` loads too, not only `WP_LANG_DIR`.
@@ -83,8 +85,8 @@ import). Tailwind scans sources only, so a full build is deterministic (no CSS d
 
 Generated assets are gitignored, so a release only works if CI builds every React part. Check it locally before tagging:
 
-1. Clean clones of free and Pro (siblings), then the free steps of `deploy-org.yml`: `pnpm install --frozen-lockfile`, `pnpm build`, `pnpm exec grunt release`, `composer install --no-dev --optimize-autoloader`, `node bin/verify-build.mjs --release`, then `rsync -a --exclude-from=.distignore ./ <pkg>/wp-user-frontend/` (that folder is the wp.org package).
-2. Pro steps of `release.yml`: `composer install --no-dev -o`, the user-directory composer install (with the transient advisory / stability relax), `npm install && npm run build`, the user-directory `npm install && npm run build`, `npx grunt --force`, `npx grunt zip-all --force`, then the workflow's own "Verify built assets" block on `dist/` (on macOS drop `globstar` and use `dist/wp-user-frontend-pro-*`: bash 3.2 has no `**`).
+1. Clean clones of free and Pro (siblings). Free: `pnpm release` (the steps of `deploy-org.yml`: one build, POT, then `bin/zip.mjs`, which copies through `.distignore` like the deploy, installs production Composer packages in the copy and checks the unpacked zip: versions agree, one folder, every generated asset, no sources / dev files / maps / dot-files / dev Composer packages, every PHP file lints). The zip is in `dist/`.
+2. Pro: `pnpm release` (build, user-directory build, POT, `zip:all`, `verify:zips`), or one plan with `pnpm run zip:plan -- professional`. `tools/verify-zips.mjs` checks the unpacked zips: versions agree, one folder, plan header / `$plan` / Appsero key, exactly the plan's modules, built assets, POT, autoloaders, no sources / lockfiles / maps / dev files / dev Composer packages, PHP lint (4 known user-directory layout files are reported as warnings).
 3. Install the package and one plan zip on a fresh site with the AI mock (`tests/e2e/wp/wpuf-ai-mock.php` in mu-plugins) and run, with Pro on and off:
    `QA_BASE_URL=http://site.test WPUF_E2E_WP_PATH=/path/to/site npx playwright test tests/releaseSmokeTest.spec.ts tests/aiFormBuilderTest.spec.ts --project=e2e`
    `releaseSmokeTest` (RS0001-RS0005) fails when a React screen does not mount, logs a JS error or a plugin asset returns 4xx/5xx.

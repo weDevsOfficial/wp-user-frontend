@@ -91,6 +91,33 @@ class Bundles {
     }
 
     /**
+     * The @font-face rules of the admin app's font (Plus Jakarta Sans, shipped
+     * in assets/fonts), so the frontend apps use the same type as the admin.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string CSS
+     */
+    private function font_face() {
+        $base = WPUF_ASSET_URI . '/fonts/plus-jakarta-sans/';
+        $css  = '';
+        $sets = [
+            'latin-ext' => 'U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF',
+            'latin'     => 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD',
+        ];
+
+        foreach ( $sets as $set => $range ) {
+            $css .= sprintf(
+                '@font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:400 800;font-display:swap;src:url("%1$s") format("woff2");unicode-range:%2$s;}',
+                esc_url( $base . 'PlusJakartaSans-' . $set . '.woff2' ),
+                $range
+            );
+        }
+
+        return $css;
+    }
+
+    /**
      * Frontend app stylesheets, keyed by handle without the `wpuf-` prefix,
      * in registration order.
      *
@@ -102,6 +129,8 @@ class Bundles {
         return [
             'frontend-runtime-style' => [
                 'src'     => WPUF_ASSET_URI . '/css/frontend/runtime.css',
+                // The admin app's font (assets/fonts), for the frontend apps' --wpuf-fe-font.
+                'inline'  => $this->font_face(),
                 'version' => $this->css_version( 'css/frontend/runtime.css' ),
                 'rtl'     => true,
             ],

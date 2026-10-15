@@ -156,6 +156,10 @@ class Assets {
             if ( ! empty( $style['rtl'] ) ) {
                 wp_style_add_data( 'wpuf-' . $handle, 'rtl', 'replace' );
             }
+
+            if ( ! empty( $style['inline'] ) ) {
+                wp_add_inline_style( 'wpuf-' . $handle, $style['inline'] );
+            }
         }
     }
 

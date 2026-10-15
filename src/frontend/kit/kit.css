@@ -28,7 +28,8 @@
     --wpuf-fe-radius-lg: 10px;
     --wpuf-fe-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --wpuf-fe-focus: 0 0 0 3px rgba(17, 24, 39, 0.18);
-    --wpuf-fe-font: inherit;
+    /* The admin app's font (Frontend Bundles::font_face()), system fallback. */
+    --wpuf-fe-font: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --wpuf-fe-size: 14px;
     --wpuf-fe-line: 1.5;
     color: var(--wpuf-fe-text);

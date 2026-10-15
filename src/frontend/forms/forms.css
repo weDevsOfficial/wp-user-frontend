@@ -1932,3 +1932,8 @@
     font-weight: 600;
     color: inherit;
 }
+
+/* "Use theme CSS" forms keep the theme's font. */
+.wpuf-frontend.wpuf-form-root:has(form.wpuf-theme-style) {
+    --wpuf-fe-font: inherit;
+}

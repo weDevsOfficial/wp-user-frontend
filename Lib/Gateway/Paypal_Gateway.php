@@ -239,20 +239,6 @@ class Paypal_Gateway extends Payment_Gateway {
     }
 
     /**
-     * Dismiss PayPal notice
-     *
-     * @since WPUF_PRO_SINCE
-     *
-     * @return void
-     */
-    public function dismiss_paypal_notice() {
-        $legacy_paypal = isset( wpuf()->paypal ) ? wpuf()->paypal : null;
-        if ( $legacy_paypal && method_exists( $legacy_paypal, 'dismiss_paypal_notice' ) ) {
-            $legacy_paypal->dismiss_paypal_notice();
-        }
-    }
-
-    /**
      * Inject webhook CSS
      *
      * @since WPUF_PRO_SINCE

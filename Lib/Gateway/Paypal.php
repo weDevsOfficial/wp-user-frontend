@@ -162,28 +162,6 @@ class Paypal {
     }
 
     /**
-     * Handle dismissal of PayPal settings notice
-     *
-     * @deprecated WPUF_SINCE The notice calls the REST route `wpuf/v1/admin/notices/paypal/dismiss`.
-     */
-    public function dismiss_paypal_notice() {
-        // Verify nonce
-        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'wpuf_dismiss_paypal_notice' ) ) {
-            wp_die( 'Security check failed' );
-        }
-
-        // Check user capabilities
-        if ( ! current_user_can( 'manage_options' ) ) {
-            wp_die( 'Insufficient permissions' );
-        }
-
-        // Mark notice as dismissed
-        update_option( 'wpuf_paypal_settings_notice_dismissed', true );
-
-        wp_die();
-    }
-
-    /**
      * Main webhook processor
      */
     public function process_webhook( $raw_input ) {

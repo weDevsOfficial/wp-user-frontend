@@ -215,33 +215,6 @@ class Promotion {
     }
 
     /**
-     * Dismiss promotion notice
-     *
-     * @since  2.5
-     * @deprecated WPUF_SINCE The notice calls the REST route `wpuf/v1/admin/notices/promotion/dismiss`.
-     *
-     * @return void
-     */
-    public function dismiss_promotional_offer() {
-        if ( empty( $_POST['_wpnonce'] ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
-        if ( ! current_user_can( wpuf_admin_role() ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
-        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_nonce' ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
-        if ( ! empty( $_POST['dismissed'] ) ) {
-            $offer_key = ! empty( $_POST['option_name'] ) ? sanitize_text_field( wp_unslash( $_POST['option_name'] ) ) : '';
-            update_option( $offer_key, 'hide' );
-        }
-    }
-
-    /**
      * Show admin notice
      *
      * @since WPUF @param $message and @param $option_name replaced with $args
@@ -294,31 +267,5 @@ class Promotion {
             });
         </script>
         <?php
-    }
-
-    /**
-     * Dismiss review notice
-     *
-     * @since  3.1.0
-     * @deprecated WPUF_SINCE The notice calls the REST route `wpuf/v1/admin/notices/review/dismiss`.
-     *
-     * @return void
-     **/
-    public function dismiss_review_notice() {
-        if ( empty( $_POST['_wpnonce'] ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
-        if ( ! current_user_can( wpuf_admin_role() ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
-        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_nonce' ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
-        if ( ! empty( $_POST['dismissed'] ) ) {
-            update_option( 'wpuf_review_notice_dismiss', 'yes' );
-        }
     }
 }

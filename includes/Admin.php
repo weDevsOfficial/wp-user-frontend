@@ -29,9 +29,7 @@ class Admin {
         $this->container['admin_subscription'] = $platform->get( Admin\Admin_Subscription::class );
         $this->container['admin_installer']    = $platform->get( Admin\Admin_Installer::class );
 
-        // Legacy wpuf/form block (gutenberg_block). Superseded by the wpuf/post-form block but
-        // still registered so existing posts keep editing without an invalid block notice.
-        foreach ( [ 'forms', 'gutenberg_block', 'plugin_upgrade_notice', 'posting', 'shortcodes_button', 'tools', 'onboarding' ] as $key ) {
+        foreach ( [ 'forms', 'plugin_upgrade_notice', 'posting', 'shortcodes_button', 'tools', 'onboarding' ] as $key ) {
             $this->container[ $key ] = $platform->get( AdminServiceProvider::class_of( $key ) );
         }
 

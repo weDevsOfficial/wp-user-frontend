@@ -34,7 +34,6 @@ class AdminServiceProvider extends ServiceProvider {
         'admin_form'            => \WeDevs\Wpuf\Admin\Forms\Admin_Form::class,
         'admin_subscription'    => \WeDevs\Wpuf\Admin\Admin_Subscription::class,
         'forms'                 => \WeDevs\Wpuf\Admin\Forms\Form_Manager::class,
-        'gutenberg_block'       => \WeDevs\Wpuf\Frontend\Form_Gutenberg_Block::class,
         'plugin_upgrade_notice' => \WeDevs\Wpuf\Admin\Plugin_Upgrade_Notice::class,
         'posting'               => \WeDevs\Wpuf\Admin\Posting::class,
         'shortcodes_button'     => \WeDevs\Wpuf\Admin\Shortcodes_Button::class,

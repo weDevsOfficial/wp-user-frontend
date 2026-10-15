@@ -450,7 +450,10 @@ final class WP_User_Frontend {
      * @since 2.5.4
      */
     public function wpuf_loader() {
-        $has_pro = class_exists( 'WP_User_Frontend_Pro' );
+        // An older Pro is not started (VersionGuard); free then runs as the free plugin.
+        \WeDevs\Wpuf\Platform\VersionGuard::stop_outdated_pro();
+
+        $has_pro = wpuf_is_pro_active();
 
         if ( $has_pro ) {
             $this->is_pro = true;

@@ -76,7 +76,7 @@ class Menu {
 
         do_action( 'wpuf_admin_menu_bottom' );
 
-        if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
+        if ( ! wpuf_is_pro_active() ) {
             $premium_hook = add_submenu_page( $this->parent_slug, __( 'Premium', 'wp-user-frontend' ), $this->get_premium_menu_title(), $capability, 'wpuf_premium', [ $this, 'premium_page' ] );
 
             $this->all_submenu_hooks['premium'] = $premium_hook;
@@ -144,7 +144,7 @@ class Menu {
      * @return void
      */
     public function premium_menu_styles() {
-        if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
+        if ( wpuf_is_pro_active() ) {
             return;
         }
         ?>

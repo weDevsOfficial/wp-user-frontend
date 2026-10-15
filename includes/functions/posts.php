@@ -1111,7 +1111,7 @@ function wpuf_get_draft_post_status( $form_settings ) {
  * @return void
  */
 function wpuf_set_all_terms_as_allowed() {
-    if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
+    if ( wpuf_is_pro_active() ) {
         $subscriptions  = wpuf()->subscription->get_subscriptions();
         $allowed_term   = [];
 

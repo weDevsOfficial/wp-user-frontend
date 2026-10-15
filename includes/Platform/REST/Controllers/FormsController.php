@@ -238,7 +238,7 @@ class FormsController extends RestController {
     public function create_item( $request ) {
         $type = (string) $request['type'];
 
-        if ( 'wpuf_profile' === $type && ! class_exists( 'WP_User_Frontend_Pro' ) ) {
+        if ( 'wpuf_profile' === $type && ! wpuf_is_pro_active() ) {
             return $this->error( 'invalid_type', __( 'Registration forms need WP User Frontend Pro.', 'wp-user-frontend' ), 400 );
         }
 
@@ -344,13 +344,13 @@ class FormsController extends RestController {
         if ( 'wpuf_profile' === $type ) {
             $settings = Normalizers::registration_form_selects( $settings );
 
-            if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
+            if ( wpuf_is_pro_active() ) {
                 $settings = Normalizers::registration_user_status( $settings );
             }
         } else {
             $settings = Normalizers::post_form_selects( $settings );
 
-            if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
+            if ( wpuf_is_pro_active() ) {
                 $settings = Normalizers::post_expiration( $settings );
             }
         }

@@ -65,7 +65,7 @@ class Pack_Screen {
                 'supportUrl'      => esc_url(
                     'https://wedevs.com/contact/?utm_source=wpuf-subscription'
                 ),
-                'isProActive'     => class_exists( 'WP_User_Frontend_Pro' ),
+                'isProActive'     => wpuf_is_pro_active(),
                 'upgradeUrl'      => esc_url(
                     'https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpuf-subscription'
                 ),

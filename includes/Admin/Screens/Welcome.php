@@ -138,7 +138,7 @@ class Welcome extends Screen {
         $doc   = function ( $path ) {
             return 'https://wedevs.com/docs/wp-user-frontend-pro/' . $path . '?utm_source=wpuf-welcome&utm_medium=welcome-page';
         };
-        $is_pro = class_exists( 'WP_User_Frontend_Pro' );
+        $is_pro = wpuf_is_pro_active();
 
         return [
             'wpufWelcome' => [

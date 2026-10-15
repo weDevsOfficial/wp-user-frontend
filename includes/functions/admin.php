@@ -186,5 +186,6 @@ function wpuf_load_headway_badge( $selector = '#wpuf-headway-icon' ) {
  * @return bool
  */
 function wpuf_is_pro_active() {
-    return class_exists( 'WP_User_Frontend_Pro' );
+    // An older Pro the version guard did not start counts as not active.
+    return class_exists( 'WP_User_Frontend_Pro' ) && ! \WeDevs\Wpuf\Platform\VersionGuard::pro_needs_update();
 }

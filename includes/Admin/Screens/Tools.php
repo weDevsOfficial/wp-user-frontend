@@ -137,7 +137,7 @@ class Tools extends Screen {
         return [
             'wpufTools' => [
                 'canManageSite' => Caps::can( Caps::MANAGE_SITE ),
-                'isPro'         => class_exists( 'WP_User_Frontend_Pro' ),
+                'isPro'         => wpuf_is_pro_active(),
                 'onboarding'    => $onboarding,
                 'deletable'     => ToolsService::DELETABLE,
                 'menus'         => $tools->menus(),

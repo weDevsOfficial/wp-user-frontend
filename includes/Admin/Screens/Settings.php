@@ -97,7 +97,7 @@ class Settings extends Screen {
             [
                 'rest_url'    => esc_url_raw( rest_url() ),
                 'nonce'       => wp_create_nonce( 'wp_rest' ),
-                'is_pro'      => class_exists( 'WP_User_Frontend_Pro' ),
+                'is_pro'      => wpuf_is_pro_active(),
                 'asset_url'   => WPUF_ASSET_URI,
                 // Quick links next to page / form selects (edit, add new).
                 'admin_url'   => admin_url(),

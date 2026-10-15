@@ -8,6 +8,8 @@
 
 namespace WeDevs\Wpuf\Frontend;
 
+use WeDevs\Wpuf\Platform\Contracts\App_Renderer;
+
 /**
  * The frontend shortcodes (post form, edit form, registration / profile,
  * login screens, account) render their React app (`frontend-react-architecture.md`
@@ -22,7 +24,7 @@ namespace WeDevs\Wpuf\Frontend;
  *
  * @since WPUF_SINCE
  */
-class Renderer {
+class Renderer implements App_Renderer {
 
     /**
      * App per part: part => [ app script name, templates a theme can override ].

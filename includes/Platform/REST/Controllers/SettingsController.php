@@ -150,7 +150,7 @@ class SettingsController extends RestController {
             'values'       => $values,
             'pro_sections' => $pro_sections,
             'caps'         => [
-                'is_pro'     => class_exists( 'WP_User_Frontend_Pro' ),
+                'is_pro'     => wpuf_is_pro_active(),
                 'can_manage' => current_user_can( wpuf_admin_role() ),
             ],
             'modules'      => wpuf_settings_modules(),

@@ -8,6 +8,8 @@
 
 namespace WeDevs\Wpuf\Platform\REST;
 
+use WeDevs\Wpuf\Platform\Contracts\Rate_Limiter;
+
 /**
  * Counts hits per key (a guest's IP, a user id) inside a sliding window.
  * The guest submit and upload routes refuse once the window is full, so a
@@ -15,7 +17,7 @@ namespace WeDevs\Wpuf\Platform\REST;
  *
  * @since WPUF_SINCE
  */
-class Rate_Limit {
+class Rate_Limit implements Rate_Limiter {
 
     /**
      * Transient prefix.

@@ -171,7 +171,7 @@ class AiFormBuilder extends Screen {
             'provider'             => '' !== $ai_status['provider'] ? $ai_status['provider'] : 'openai',
             'model'                => '' !== $ai_status['model'] ? $ai_status['model'] : 'gpt-3.5-turbo',
             'hasApiKey'            => $show_api_status ? $ai_status['has_api_key'] : null,
-            'isProActive'          => class_exists( 'WP_User_Frontend_Pro' ),
+            'isProActive'          => wpuf_is_pro_active(),
             'temperature'          => $ai_status['temperature'],
             'maxTokens'            => $ai_status['max_tokens'],
             'promptTemplates'      => $ai_manager ? $ai_manager->get_all_prompt_templates() : [],

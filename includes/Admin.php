@@ -45,7 +45,7 @@ class Admin {
         );
 
         // only free users will see the promotion
-        if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
+        if ( ! wpuf_is_pro_active() ) {
             $this->container['promotion'] = $platform->get( AdminServiceProvider::class_of( 'promotion' ) );
         }
 
@@ -138,7 +138,7 @@ class Admin {
                 ),
                 'version'                      => WPUF_VERSION,
                 'pro_version'                  => defined( 'WPUF_PRO_VERSION' ) ? WPUF_PRO_VERSION : '',
-                'isProActive'                  => class_exists( 'WP_User_Frontend_Pro' ),
+                'isProActive'                  => wpuf_is_pro_active(),
                 'plan'                         => function_exists( 'wpuf_pro_current_plan' ) ? wpuf_pro_current_plan() : '',
                 'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
                 'protected_shortcodes_message' => sprintf(

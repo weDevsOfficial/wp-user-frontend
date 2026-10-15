@@ -44,7 +44,7 @@ class BootPayload {
             'assetUrl'   => WPUF_ASSET_URI,
             'version'    => WPUF_VERSION,
             'proVersion' => defined( 'WPUF_PRO_VERSION' ) ? WPUF_PRO_VERSION : '',
-            'isPro'      => class_exists( 'WP_User_Frontend_Pro' ),
+            'isPro'      => wpuf_is_pro_active(),
             'plan'       => function_exists( 'wpuf_pro_current_plan' ) ? (string) wpuf_pro_current_plan() : '',
             'canManage'  => current_user_can( wpuf_admin_role() ),
         ];

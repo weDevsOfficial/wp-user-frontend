@@ -10,6 +10,7 @@ namespace WeDevs\Wpuf\Frontend\Forms;
 
 use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Admin\Subscription;
+use WeDevs\Wpuf\Platform\Contracts\Form_Schema_Provider;
 use WeDevs\Wpuf\Platform\Stores\Stores;
 use WeDevs\Wpuf\Traits\FieldableTrait;
 use WP_Error;
@@ -24,7 +25,7 @@ use WP_Error;
  *
  * @since WPUF_SINCE
  */
-class Form_Schema {
+class Form_Schema implements Form_Schema_Provider {
 
     use FieldableTrait;
 

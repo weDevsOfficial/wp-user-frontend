@@ -172,7 +172,7 @@ if ( ! function_exists( 'wpuf_settings_modules' ) ) {
      */
     function wpuf_settings_modules() {
         $modules = [
-            'is_pro'              => class_exists( 'WP_User_Frontend_Pro' ),
+            'is_pro'              => wpuf_is_pro_active(),
             'sms'                 => false,
             'social_login'        => false,
             'content_restriction' => false,
@@ -386,7 +386,7 @@ add_filter( 'wpuf_settings_rest_data', 'wpuf_profile_roles_inject' );
  * @return void
  */
 function wpuf_profile_roles_save( $saved, $incoming, $extra ) {
-    if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
+    if ( ! wpuf_is_pro_active() ) {
         return;
     }
 

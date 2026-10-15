@@ -974,7 +974,7 @@ function wpuf_settings_field_profile( $args = [] ) { // phpcs:ignore Generic.Cod
 
     $val = get_option( 'wpuf_profile', [] );
 
-    if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
+    if ( ! wpuf_is_pro_active() ) {
         $crown_icon = sprintf( '<span class="pro-icon"><img src="%s" alt="PRO"></span>', WPUF_ASSET_URI . '/images/pro-badge.svg' );
         $class      = 'class="pro-preview"';
         $disabled   = 'disabled';
@@ -1029,7 +1029,7 @@ function wpuf_settings_field_profile( $args = [] ) { // phpcs:ignore Generic.Cod
                     <select name="wpuf_profile[roles][<?php echo esc_attr( $role ); ?>]" class="regular" style="min-width: 300px;" <?php echo esc_attr( $disabled ); ?>>
                         <option value=""><?php esc_html_e( '&mdash; Select &mdash;', 'wp-user-frontend' ); ?></option>
                         <?php
-                        if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
+                        if ( wpuf_is_pro_active() ) {
                             foreach ( $profile_forms as $profile_form ) {
                                 ?>
                                 <option value="<?php echo esc_attr( $profile_form->ID ); ?>"<?php selected( $current, $profile_form->ID ); ?>><?php echo esc_html( $profile_form->post_title ); ?></option>
@@ -1039,7 +1039,7 @@ function wpuf_settings_field_profile( $args = [] ) { // phpcs:ignore Generic.Cod
                         ?>
                     </select>
                     <?php
-                    if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
+                    if ( ! wpuf_is_pro_active() ) {
                         echo wp_kses_post( wpuf_get_pro_preview_html() );
                     }
                     ?>

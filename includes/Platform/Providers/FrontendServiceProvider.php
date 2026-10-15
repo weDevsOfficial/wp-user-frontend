@@ -14,6 +14,9 @@ use WeDevs\Wpuf\Frontend\Forms\Submission_Service;
 use WeDevs\Wpuf\Frontend\Forms\Upload_Service;
 use WeDevs\Wpuf\Frontend\Login\Login_Schema;
 use WeDevs\Wpuf\Frontend\Renderer;
+use WeDevs\Wpuf\Platform\Contracts\App_Renderer;
+use WeDevs\Wpuf\Platform\Contracts\Form_Schema_Provider;
+use WeDevs\Wpuf\Platform\Contracts\Rate_Limiter;
 use WeDevs\Wpuf\Platform\REST\Controllers\AccountController;
 use WeDevs\Wpuf\Platform\REST\Controllers\AuthController;
 use WeDevs\Wpuf\Platform\REST\Controllers\FormsPublicController;
@@ -123,6 +126,22 @@ class FrontendServiceProvider extends ServiceProvider {
                 return new Form_Schema();
             }
         );
+
+        // The contracts Pro and add-ons resolve: the same shared objects.
+        $aliases = [
+            App_Renderer::class         => Renderer::class,
+            Rate_Limiter::class         => Rate_Limit::class,
+            Form_Schema_Provider::class => Form_Schema::class,
+        ];
+
+        foreach ( $aliases as $contract => $service ) {
+            $this->container->share(
+                $contract,
+                function ( $container ) use ( $service ) {
+                    return $container->get( $service );
+                }
+            );
+        }
         $this->container->share(
             Submission_Service::class,
             function ( $container ) {

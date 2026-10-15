@@ -29,6 +29,21 @@ class VersionGuardTest extends WP_UnitTestCase {
         $this->assertTrue( VersionGuard::is_outdated_pro( '5.0.0', '0.9' ), 'Pro with older platform' );
         $this->assertFalse( VersionGuard::is_outdated_pro( '5.0.0', '1.0' ), 'Pro with current platform' );
         $this->assertFalse( VersionGuard::is_outdated_pro( '5.0.0', '1.1' ), 'Pro with newer platform' );
+        $this->assertTrue( VersionGuard::is_outdated_pro( '', null ), 'Pro class loaded, version not defined yet, no platform' );
+    }
+
+    /**
+     * Without Pro, or with a Pro that declares the platform, nothing is stopped
+     * and wpuf_is_pro_active() follows the Pro class.
+     */
+    public function test_current_pro_is_not_stopped() {
+        $this->assertFalse( VersionGuard::pro_needs_update() );
+        $this->assertFalse( VersionGuard::stop_outdated_pro() );
+        $this->assertSame( class_exists( 'WP_User_Frontend_Pro' ), wpuf_is_pro_active() );
+
+        if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
+            $this->assertTrue( defined( 'WPUF_PRO_PLATFORM_VERSION' ), 'Pro declares its platform when its file loads' );
+        }
     }
 
     /**

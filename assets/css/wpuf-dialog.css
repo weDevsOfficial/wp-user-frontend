@@ -1,0 +1,232 @@
+/**
+ * The WPUF dialog (assets/js/wpuf-dialog.js), plugin-ui dialog design:
+ * white card, 10px radius, 24px padding, 18px semibold title, muted 14px
+ * description, tinted icon, buttons on the right. Every rule is scoped to
+ * `.wpuf-dialog`; the theme's font is inherited.
+ */
+.wpuf-dialog {
+    --wpuf-dialog-primary: #111827;
+    --wpuf-dialog-primary-hover: #1f2937;
+    --wpuf-dialog-danger: #dc2626;
+    --wpuf-dialog-danger-hover: #b91c1c;
+    --wpuf-dialog-text: #111827;
+    --wpuf-dialog-muted: #6b7280;
+    --wpuf-dialog-border: #e5e7eb;
+    --wpuf-dialog-ring: rgba(17, 24, 39, 0.2);
+
+    box-sizing: border-box;
+    position: fixed;
+    width: min(440px, calc(100vw - 32px));
+    max-width: none;
+    max-height: calc(100vh - 32px);
+    margin: auto;
+    padding: 24px;
+    overflow: auto;
+    border: 1px solid var(--wpuf-dialog-border);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--wpuf-dialog-text);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.wp-admin .wpuf-dialog {
+    --wpuf-dialog-primary: #059669;
+    --wpuf-dialog-primary-hover: #047857;
+    --wpuf-dialog-ring: rgba(5, 150, 105, 0.3);
+}
+
+.wpuf-dialog::backdrop {
+    background: rgba(17, 24, 39, 0.5);
+}
+
+.wpuf-dialog *,
+.wpuf-dialog *::before,
+.wpuf-dialog *::after {
+    box-sizing: border-box;
+}
+
+.wpuf-dialog .wpuf-dialog__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.wpuf-dialog .wpuf-dialog__content {
+    display: grid;
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 6px;
+}
+
+.wpuf-dialog .wpuf-dialog__media {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: #fffbeb;
+    color: #d97706;
+}
+
+.wpuf-dialog--danger .wpuf-dialog__media {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.wpuf-dialog--success .wpuf-dialog__media {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.wpuf-dialog--info .wpuf-dialog__media {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.wpuf-dialog .wpuf-dialog__title {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: var(--wpuf-dialog-text);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+.wpuf-dialog .wpuf-dialog__desc {
+    margin: 0;
+    color: var(--wpuf-dialog-muted);
+    font-size: 14px;
+}
+
+.wpuf-dialog .wpuf-dialog__desc p {
+    margin: 0 0 6px;
+}
+
+.wpuf-dialog .wpuf-dialog__desc p:last-child {
+    margin-bottom: 0;
+}
+
+.wpuf-dialog .wpuf-dialog__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.wpuf-dialog .wpuf-dialog__footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.wpuf-dialog .wpuf-dialog__btn {
+    display: inline-flex;
+    height: 36px;
+    margin: 0;
+    padding: 0 16px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: none;
+    cursor: pointer;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.wpuf-dialog .wpuf-dialog__btn:focus,
+.wpuf-dialog .wpuf-dialog__close:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.wpuf-dialog .wpuf-dialog__btn:focus-visible,
+.wpuf-dialog .wpuf-dialog__close:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--wpuf-dialog-ring);
+}
+
+.wpuf-dialog .wpuf-dialog__btn--outline {
+    border-color: var(--wpuf-dialog-border);
+    background: #fff;
+    color: var(--wpuf-dialog-text);
+}
+
+.wpuf-dialog .wpuf-dialog__btn--outline:hover {
+    background: #f9fafb;
+}
+
+.wpuf-dialog .wpuf-dialog__btn--primary {
+    background: var(--wpuf-dialog-primary);
+    color: #fff;
+}
+
+.wpuf-dialog .wpuf-dialog__btn--primary:hover {
+    background: var(--wpuf-dialog-primary-hover);
+}
+
+.wpuf-dialog .wpuf-dialog__btn--danger {
+    background: var(--wpuf-dialog-danger);
+    color: #fff;
+}
+
+.wpuf-dialog .wpuf-dialog__btn--danger:hover {
+    background: var(--wpuf-dialog-danger-hover);
+}
+
+.wpuf-dialog .wpuf-dialog__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--wpuf-dialog-muted);
+    cursor: pointer;
+}
+
+.wpuf-dialog .wpuf-dialog__close:hover {
+    background: #f3f4f6;
+    color: var(--wpuf-dialog-text);
+}
+
+@media (max-width: 480px) {
+    .wpuf-dialog .wpuf-dialog__footer {
+        flex-direction: column-reverse;
+    }
+
+    .wpuf-dialog .wpuf-dialog__btn {
+        width: 100%;
+    }
+}
+
+.wpuf-dialog--closable .wpuf-dialog__header {
+    padding-right: 24px;
+}
+
+.wpuf-dialog:focus {
+    outline: none;
+}

@@ -79,23 +79,16 @@
             $( ':submit[name="wpuf_user_subscription_cancel"]').click(function(e){
                 e.preventDefault();
 
-                Swal.fire({
+                window.wpufDialog.confirm( {
                     text: wpuf_frontend.cancelSubMsg,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d54e21',
-                    confirmButtonText: wpuf_frontend.delete_it,
-                    cancelButtonText: wpuf_frontend.cancel_it,
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
+                    tone: 'danger',
+                    confirmText: wpuf_frontend.delete_it,
+                    cancelText: wpuf_frontend.cancel_it
+                } ).then( function ( confirmed ) {
+                    if ( confirmed ) {
+                        $('#wpuf_cancel_subscription').submit();
                     }
-                }).then(function ( result ) {
-                    if ( !result.isConfirmed ) {
-                        return false;
-                    }
-                    $('#wpuf_cancel_subscription').submit();
-                });
+                } );
             });
 
             this.warningOnExit();
@@ -509,7 +502,7 @@
                 });
             } ).catch( function( error ) {
                 self.next('span.wpuf-loading').remove();
-                Swal.fire( { html: error.message, icon: 'warning', confirmButtonColor: '#d54e21', confirmButtonText: 'OK' } );
+                window.wpufDialog.alert( { html: error.message, tone: 'warning' } );
             } );
         },
 
@@ -642,15 +635,12 @@
                         }
                     } else {
                         if ( typeof res.data.type !== 'undefined' && res.data.type === 'login' ) {
-                            Swal.fire({
+                            window.wpufDialog.confirm( {
                                 text: res.error,
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#3085d6",
-                                cancelButtonColor: "#d33",
-                                confirmButtonText: "OK"
-                            } ).then( function ( result ) {
-                                if (result.isConfirmed) {
+                                tone: 'warning',
+                                confirmText: ( window.wpufDialogL10n || {} ).ok
+                            } ).then( function ( confirmed ) {
+                                if ( confirmed ) {
                                     window.location = res.redirect_to;
                                 } else {
                                     submitButton.removeAttr('disabled');
@@ -661,15 +651,12 @@
                         }
 
                         if ( typeof res.type !== 'undefined' && res.type === 'login' ) {
-                            Swal.fire({
+                            window.wpufDialog.confirm( {
                                 text: res.error,
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#3085d6",
-                                cancelButtonColor: "#d33",
-                                confirmButtonText: "OK"
-                            }).then(function(result) {
-                                if (result.isConfirmed) {
+                                tone: 'warning',
+                                confirmText: ( window.wpufDialogL10n || {} ).ok
+                            } ).then( function ( confirmed ) {
+                                if ( confirmed ) {
                                     window.location = res.redirect_to;
                                 } else {
                                     submitButton.removeAttr('disabled');
@@ -686,16 +673,7 @@
 
                             const errorMsg = res.error ? res.error : res.data.error;
 
-                            Swal.fire({
-                                html: errorMsg,
-                                icon: 'warning',
-                                showCancelButton: false,
-                                confirmButtonColor: '#d54e21',
-                                confirmButtonText: 'OK',
-                                customClass: {
-                                    cancelButton: 'btn btn-danger',
-                                }
-                            });
+                            window.wpufDialog.alert( { html: errorMsg, tone: 'warning' } );
 
                         }
 

@@ -1025,9 +1025,9 @@ abstract class Field_Contract {
      * @return void
      */
     public function enqueue_file_upload_scripts() {
-        wp_enqueue_style( 'wpuf-sweetalert2' );
+        wp_enqueue_style( 'wpuf-dialog' );
 
-        wp_enqueue_script( 'wpuf-sweetalert2' );
+        wp_enqueue_script( 'wpuf-dialog' );
         wp_enqueue_script( 'wpuf-upload' );
 
         wp_localize_script(

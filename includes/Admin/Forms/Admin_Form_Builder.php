@@ -136,7 +136,7 @@ class Admin_Form_Builder {
      */
     public static function enqueue_libraries() {
         wp_enqueue_style( 'wpuf-font-awesome' );
-        wp_enqueue_style( 'wpuf-sweetalert2' );
+        wp_enqueue_style( 'wpuf-dialog' );
         wp_enqueue_style( 'wpuf-selectize' );
         wp_enqueue_style( 'wpuf-tooltip' );
         wp_enqueue_style( 'wpuf-jquery-ui' );
@@ -150,7 +150,7 @@ class Admin_Form_Builder {
         wp_enqueue_editor();
 
         wp_enqueue_script( 'wpuf-subscriptions' );
-        wp_enqueue_script( 'wpuf-sweetalert2' );
+        wp_enqueue_script( 'wpuf-dialog' );
         wp_enqueue_script( 'wpuf-selectize' );
         wp_enqueue_script( 'wpuf-tooltip' );
         wp_enqueue_script( 'wpuf-timepicker' );

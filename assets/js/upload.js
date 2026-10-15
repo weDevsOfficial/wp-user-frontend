@@ -208,19 +208,13 @@
             var self = this,
             el = $(e.currentTarget);
 
-            Swal.fire({
+            window.wpufDialog.confirm( {
                 text: wpuf_upload.confirmMsg,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d54e21',
-                confirmButtonText: wpuf_upload.delete_it,
-                cancelButtonText: wpuf_upload.cancel_it,
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger',
-                }
-            }).then(function (result) {
-                if (!result.isConfirmed) {
+                tone: 'danger',
+                confirmText: wpuf_upload.delete_it,
+                cancelText: wpuf_upload.cancel_it
+            } ).then( function ( confirmed ) {
+                if ( ! confirmed ) {
                     return;
                 }
                 var data = {

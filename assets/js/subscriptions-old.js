@@ -36,19 +36,18 @@
             $( 'body.post-type-wpuf_subscription #post' ).submit( function( event ) {
                 if ( document.activeElement.value === 'Update' ) {
                     event.preventDefault();
-                    Swal.fire({
+                    var form = this;
+
+                    window.wpufDialog.confirm( {
                         title: 'Are you sure to update the subscription?',
                         text: 'The changes you made will be applied only to the new subscriptions and pending recurring payments.',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Update'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $( this ).unbind('submit').submit()
+                        tone: 'warning',
+                        confirmText: 'Update'
+                    } ).then( function ( confirmed ) {
+                        if ( confirmed ) {
+                            $( form ).unbind( 'submit' ).submit();
                         }
-                    });
+                    } );
                 }
             } );
 

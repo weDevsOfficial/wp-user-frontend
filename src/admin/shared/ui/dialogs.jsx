@@ -50,8 +50,8 @@ const dialogs = {
     alert: ( options ) => add( { type: 'confirm', options: { tone: 'primary', confirmText: undefined, ...( options || {} ), cancelText: false, alert: true } } ),
 
     /**
-     * Develop's "Oops..." alert (the builder's refused drops and single-instance
-     * fields, the AI builder's failed generation): oops picture, green title,
+     * The "Oops..." alert (the builder's refused drops and single-instance
+     * fields, the AI builder's failed generation): warning icon, title,
      * corner close, OK. `options` overrides any ConfirmDialog prop.
      *
      * @since WPUF_SINCE
@@ -65,13 +65,11 @@ const dialogs = {
         type: 'confirm',
         options: {
             tone: 'primary',
-            title: <span style={ { color: '#059669' } }>{ __( 'Oops...', 'wp-user-frontend' ) }</span>,
+            title: __( 'Oops...', 'wp-user-frontend' ),
             message,
             icon: 'oops',
             showClose: true,
             confirmText: __( 'OK', 'wp-user-frontend' ),
-            width: '560px',
-            padding: '16px',
             ...( options || {} ),
             cancelText: false,
             alert: true,

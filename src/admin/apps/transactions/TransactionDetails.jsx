@@ -70,7 +70,7 @@ export default function TransactionDetails( { row, onClose, onAction, canManage 
 
     return (
         /* translators: %d: payment ID */
-        <Modal open onClose={ onClose } title={ sprintf( __( 'Payment #%d', 'wp-user-frontend' ), row.id ) } className="max-w-xl">
+        <Modal open onClose={ onClose } title={ sprintf( __( 'Payment #%d', 'wp-user-frontend' ), row.id ) } className="sm:max-w-xl">
             <div className="flex items-center gap-4 rounded-lg bg-gray-50 p-4">
                 <span className={ `inline-flex size-12 shrink-0 items-center justify-center rounded-full ${ pending ? 'bg-amber-50 text-amber-600' : 'bg-emerald-50 text-primary' }` } aria-hidden="true">
                     <StatusIcon size={ 24 } strokeWidth={ 1.75 } />

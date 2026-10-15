@@ -356,14 +356,14 @@ class Frontend {
 
         wp_enqueue_style( 'wpuf-layout1' );
         wp_enqueue_style( 'wpuf-frontend-forms' );
-        wp_enqueue_style( 'wpuf-sweetalert2' );
+        wp_enqueue_style( 'wpuf-dialog' );
         wp_enqueue_style( 'wpuf-jquery-ui' );
 
         wp_enqueue_script( 'suggest' );
         wp_enqueue_script( 'wpuf-billing-address' );
         wp_enqueue_script( 'wpuf-upload' );
         wp_enqueue_script( 'wpuf-frontend-form' );
-        wp_enqueue_script( 'wpuf-sweetalert2' );
+        wp_enqueue_script( 'wpuf-dialog' );
 
         // Load appropriate subscription script based on shortcode
         if ( wpuf_has_shortcode( 'wpuf_sub_pack' ) ) {

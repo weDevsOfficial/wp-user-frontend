@@ -201,8 +201,9 @@ class Bundles implements Hookable {
             // Frontend React runtime and apps (Frontend\Renderer).
             'frontend-runtime'          => [
                 'src'       => WPUF_ASSET_URI . '/js/frontend/runtime.js',
-                // wp-api-request prints wpApiSettings (REST root + nonce) for the upload XHR.
-                'deps'      => array_values( array_unique( array_merge( $frontend_runtime['dependencies'], [ 'wp-api-request' ] ) ) ),
+                // wp-api-request prints wpApiSettings (REST root + nonce) for the upload XHR;
+                // wpuf-dialog is the kit's confirm / alert.
+                'deps'      => array_values( array_unique( array_merge( $frontend_runtime['dependencies'], [ 'wp-api-request', 'wpuf-dialog' ] ) ) ),
                 'version'   => $frontend_runtime['version'],
                 'in_footer' => true,
             ],

@@ -37,7 +37,7 @@ class Assets {
             [
                 'wpuf-frontend-forms',
                 'wpuf-font-awesome',
-                'wpuf-sweetalert2',
+                'wpuf-dialog',
                 'wpuf-selectize',
                 'wpuf-tooltip',
                 'buttons',
@@ -109,6 +109,16 @@ class Assets {
         do_action( 'wpuf_before_register_scripts', $scripts, $styles );
         $this->register_styles( $styles );
         $this->register_scripts( $scripts );
+
+        wp_localize_script(
+            'wpuf-dialog', 'wpufDialogL10n', [
+                'css'     => add_query_arg( 'ver', file_exists( WPUF_ROOT . '/assets/css/wpuf-dialog.css' ) ? (string) filemtime( WPUF_ROOT . '/assets/css/wpuf-dialog.css' ) : WPUF_VERSION, WPUF_ASSET_URI . '/css/wpuf-dialog.css' ),
+                'ok'      => __( 'OK', 'wp-user-frontend' ),
+                'cancel'  => __( 'Cancel', 'wp-user-frontend' ),
+                'confirm' => __( 'Yes', 'wp-user-frontend' ),
+                'close'   => __( 'Close', 'wp-user-frontend' ),
+            ]
+        );
 
         // The shared admin components (window.wpuf.components) print their own
         // strings, so they load translations like the screens do.
@@ -246,6 +256,10 @@ class Assets {
                 'src'     => WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css',
                 'version' => '1.9.1',
             ],
+            'dialog'             => [
+                'src'     => WPUF_ASSET_URI . '/css/wpuf-dialog.css',
+                'version' => file_exists( WPUF_ROOT . '/assets/css/wpuf-dialog.css' ) ? (string) filemtime( WPUF_ROOT . '/assets/css/wpuf-dialog.css' ) : WPUF_VERSION,
+            ],
             'sweetalert2'        => [
                 'src'     => WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.css',
                 'version' => '11.4.8',
@@ -323,6 +337,7 @@ class Assets {
         $api_key              = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
         $scripts = [
+            // Registered for add-ons that enqueue it; WPUF itself uses wpuf-dialog.
             'sweetalert2'              => [
                 'src'       => WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.js',
                 'in_footer' => true,
@@ -340,6 +355,13 @@ class Assets {
                 'in_footer' => true,
                 'version'   => '3.3.7',
             ],
+            // The WPUF dialog (confirm / alert / toast) of the classic scripts and the frontend apps; replaces SweetAlert2.
+            'dialog'                   => [
+                'src'       => WPUF_ASSET_URI . '/js/wpuf-dialog.js',
+                'deps'      => [],
+                'in_footer' => true,
+                'version'   => file_exists( WPUF_ROOT . '/assets/js/wpuf-dialog.js' ) ? (string) filemtime( WPUF_ROOT . '/assets/js/wpuf-dialog.js' ) : WPUF_VERSION,
+            ],
             // REST client of the classic scripts (wpuf/v1 with the wp_rest nonce, plain fetch).
             'rest'                     => [
                 'src'  => WPUF_ASSET_URI . '/js/wpuf-rest.js',
@@ -347,11 +369,11 @@ class Assets {
             ],
             'admin'                    => [
                 'src'  => WPUF_ASSET_URI . '/js/wpuf-admin.js',
-                'deps' => [ 'jquery', 'wpuf-rest' ],
+                'deps' => [ 'jquery', 'wpuf-rest', 'wpuf-dialog' ],
             ],
             'subscriptions'            => [
                 'src'       => WPUF_ASSET_URI . '/js/subscriptions-old.js',
-                'deps'      => [ 'jquery', 'wpuf-rest' ],
+                'deps'      => [ 'jquery', 'wpuf-rest', 'wpuf-dialog' ],
                 'in_footer' => true,
             ],
             // Alias of the React subscriptions script: data localized or inline
@@ -407,7 +429,7 @@ class Assets {
             ],
             'frontend-form'            => [
                 'src'  => WPUF_ASSET_URI . '/js/frontend-form' . $this->suffix . '.js',
-                'deps' => [ 'jquery', 'wpuf-rest' ],
+                'deps' => [ 'jquery', 'wpuf-rest', 'wpuf-dialog' ],
             ],
             'account'                  => [
                 'src'       => WPUF_ASSET_URI . '/js/account' . $this->suffix . '.js',
@@ -416,7 +438,7 @@ class Assets {
             ],
             'upload'                   => [
                 'src'  => WPUF_ASSET_URI . '/js/upload' . $this->suffix . '.js',
-                'deps' => [ 'jquery', 'plupload-handlers', 'jquery-ui-sortable', 'wpuf-rest' ],
+                'deps' => [ 'jquery', 'plupload-handlers', 'jquery-ui-sortable', 'wpuf-rest', 'wpuf-dialog' ],
             ],
             'ajax_login'               => [
                 'src'  => WPUF_ASSET_URI . '/js/wpuf-login-widget.js',

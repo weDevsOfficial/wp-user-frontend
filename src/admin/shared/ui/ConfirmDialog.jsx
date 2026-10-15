@@ -1,23 +1,21 @@
 /**
- * Confirmation dialog, the one WPUF admin confirm / alert (replaces Swal,
- * window.confirm and the settings message modal), on plugin-ui's AlertDialog
- * (focus trap, Escape) with develop's Vue look, measured on develop:
+ * Confirmation dialog, the one WPUF admin confirm / alert, on plugin-ui's
+ * AlertDialog in its own design: header (media, title, description),
+ * optional body, footer with plugin-ui buttons (Cancel outline, the action
+ * destructive for "danger", default otherwise). Focus trap and Escape come
+ * from plugin-ui.
  *
- * - variant "alert" (default): the builder's SweetAlert2 popup. 512px wide,
- *   5px corners, an 80px icon on top (trash for "danger", warning circle
- *   otherwise, or `media`), 30px semibold title, 18px gray message, centered
- *   buttons (Cancel white with a gray border, the action red or green), a 40%
- *   black backdrop. `showClose` adds the corner ×.
- * - variant "panel": the subscriptions Popup.vue. Left aligned title and
- *   message, corner close button, the action then Cancel on the right.
- * - variant "card": the forms list "AI Provider Not Configured" modal. 576px
- *   card, 110px icon (`media`), 24px title, 18px gray text, large buttons.
+ * - `variant` (alert | panel | card) is kept for callers; every variant uses
+ *   the same plugin-ui look ("card" centres the header).
+ * - `icon` picks the media: delete (trash, red), warning (amber), oops
+ *   (amber), info (primary), none; `media` replaces it.
+ * - Content dialogs (upsells, field notices) pass `children`, `hideTitle`,
+ *   `extraActions` and a `width` (max width, e.g. "40rem").
  *
  * The action has focus (`focusCancel` focuses Cancel); Escape, the overlay
- * and × call `onDismiss` (default `onCancel`). Content dialogs (upsells,
- * notices) use `children`, `hideTitle`, `extraActions` and a wider `className`.
+ * and × call `onDismiss` (default `onCancel`).
  *
- * useConfirm() gives the Swal-style flow inside a component:
+ * useConfirm() gives the promise flow inside a component:
  *   const [ confirm, dialog ] = useConfirm();
  *   if ( await confirm( { title, message } ) ) { ... }   // render { dialog }
  * Outside components use `dialogs.confirm()` / `dialogs.alert()` (./dialogs).
@@ -28,84 +26,21 @@ import {
     AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
     AlertDialogTitle,
     cn,
 } from '@wedevs/plugin-ui';
 import { useCallback, useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import { CircleAlert, Info, Trash2, TriangleAlert, X } from 'lucide-react';
 
-import { useBoot } from '../hooks';
-
-// Develop's popup icons (assets/images).
+// Media icon and its tint per `icon`.
 const ICONS = {
-    delete: '/images/delete-icon-rounded.svg',
-    warning: '/images/warning-circle.svg',
-    oops: '/images/oops.svg',
-};
-
-/**
- * Corner close button: SweetAlert's × or Popup.vue's x-mark.
- *
- * @param {Object}   props
- * @param {string}   props.variant alert|panel
- * @param {Function} props.onClick Close.
- */
-function CloseButton( { variant, onClick } ) {
-    if ( 'panel' === variant ) {
-        return (
-            <button type="button" onClick={ onClick } aria-label={ __( 'Close', 'wp-user-frontend' ) } className="absolute right-4 top-4 cursor-pointer rounded-md border-0 bg-white p-0 text-gray-400 hover:text-gray-500">
-                <svg className="size-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        );
-    }
-
-    return (
-        <button type="button" onClick={ onClick } aria-label={ __( 'Close', 'wp-user-frontend' ) } className="absolute right-0 top-0 flex size-12 cursor-pointer items-center justify-center border-0 bg-transparent p-0 text-[40px] leading-none text-[#ccc] hover:text-[#f27474]">
-            &times;
-        </button>
-    );
-}
-
-// Class sets per develop look. Sizes of the alert go through CSS variables
-// (`width` / `padding` props): plugin-ui's own size classes are overridden
-// with arbitrary values tailwind-merge recognises.
-const LOOKS = {
-    // FlyHR dialog look with our colours: 10px radius, 24px padding, 24px bold
-    // title, 16px muted message, 40px actions.
-    alert: {
-        content: 'flex w-[var(--wpuf-dialog-w)] max-w-[calc(100%-2rem)] flex-col items-center gap-0 rounded-[10px] bg-white p-6 text-center shadow-lg ring-0 sm:max-w-[calc(100%-2rem)] data-[size=default]:sm:max-w-[calc(100%-2rem)]',
-        media: 'mb-4 flex justify-center',
-        title: 'm-0 text-2xl font-bold leading-tight tracking-tight text-gray-900',
-        message: 'm-0 mt-2 text-base text-gray-500',
-        footer: 'mt-6 flex flex-wrap items-center justify-center gap-3',
-        cancel: 'h-10 rounded-md border border-solid border-gray-300 bg-white px-5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50',
-        confirm: 'h-10 rounded-md border-0 px-5 text-sm font-medium text-white shadow-sm',
-        danger: 'bg-red-600 hover:bg-red-700',
-        primary: 'bg-primary hover:bg-primaryHover',
-    },
-    panel: {
-        content: 'block w-full max-w-lg gap-0 rounded-[10px] bg-white p-6 text-left shadow-lg ring-0 sm:max-w-lg',
-        title: 'm-0 ml-4 text-lg font-semibold leading-7 text-gray-900',
-        message: 'm-0 ml-4 mt-1 text-sm text-gray-500',
-        footer: 'mt-6 flex flex-row-reverse gap-3',
-        cancel: 'h-10 rounded-md border border-solid border-gray-300 bg-white px-5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50',
-        confirm: 'h-10 rounded-md border-0 px-5 text-sm font-medium text-white shadow-sm',
-        danger: 'bg-red-600 hover:bg-red-700',
-        primary: 'bg-primary hover:bg-primaryHover',
-    },
-    card: {
-        content: 'flex w-[576px] max-w-[calc(100%-2.5rem)] flex-col items-center gap-0 rounded-[10px] bg-white p-6 text-center shadow-lg ring-0 sm:max-w-[calc(100%-2.5rem)] data-[size=default]:sm:max-w-[calc(100%-2.5rem)]',
-        media: 'mb-6 flex justify-center',
-        title: 'm-0 mb-2 text-2xl font-bold leading-tight tracking-tight text-gray-900',
-        message: 'm-0 mb-6 text-base text-gray-500',
-        footer: 'flex justify-center gap-3',
-        cancel: 'h-10 rounded-md border border-solid border-gray-300 bg-white px-5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50',
-        confirm: 'h-10 rounded-md border-0 px-5 text-sm font-medium text-white shadow-sm',
-        danger: 'bg-red-600 hover:bg-red-700',
-        primary: 'bg-primary hover:bg-primaryHover',
-    },
+    delete: { Icon: Trash2, tint: 'bg-red-50 text-red-600' },
+    warning: { Icon: TriangleAlert, tint: 'bg-amber-50 text-amber-600' },
+    oops: { Icon: CircleAlert, tint: 'bg-amber-50 text-amber-600' },
+    info: { Icon: Info, tint: 'bg-emerald-50 text-emerald-600' },
 };
 
 /**
@@ -113,8 +48,8 @@ const LOOKS = {
  * @param {boolean}  props.open            Open.
  * @param {*}        props.title           Title.
  * @param {*}        [props.message]       Message.
- * @param {string}   [props.variant]       alert|panel|card
- * @param {string}   [props.icon]          alert icon: delete|warning|oops|none (default by tone).
+ * @param {string}   [props.variant]       alert|panel|card (card centres the header).
+ * @param {string}   [props.icon]          delete|warning|oops|info|none (default by tone).
  * @param {*}        [props.media]         Image or icon shown instead of `icon`.
  * @param {*}        [props.children]      Extra content below the message.
  * @param {*}        [props.extraActions]  Extra buttons / links before Cancel.
@@ -122,12 +57,11 @@ const LOOKS = {
  * @param {boolean}  [props.showClose]     Corner close button.
  * @param {string}   [props.confirmText]   Action label (default "Yes").
  * @param {string}   [props.cancelText]    Cancel label (default "Cancel"); false hides it (alert).
- * @param {string}   [props.tone]          danger (red action) | primary | warning (green action)
+ * @param {string}   [props.tone]          danger (destructive action) | primary | warning
  * @param {boolean}  [props.busy]          Action running.
  * @param {boolean}  [props.focusCancel]   Focus Cancel instead of the action (the safe choice).
  * @param {string}   [props.className]     Extra classes on the dialog.
- * @param {string}   [props.width]         alert width (CSS length, default 512px).
- * @param {string}   [props.padding]       alert padding (CSS value, default "0 0 20px").
+ * @param {string}   [props.width]         Max width (CSS length) for content dialogs.
  * @param {Function} [props.onConfirm]     Action.
  * @param {Function} [props.onCancel]      Cancel button.
  * @param {Function} [props.onDismiss]     Escape / overlay / close button (default onCancel).
@@ -150,68 +84,89 @@ export default function ConfirmDialog( {
     focusCancel = false,
     className,
     width,
-    padding,
     onConfirm,
     onCancel,
     onDismiss,
 } ) {
-    const assetUrl = useBoot().assetUrl || ( window.wpuf_admin_script || {} ).asset_url || '';
-    const look = LOOKS[ variant ] || LOOKS.alert;
     const danger = 'danger' === tone;
-    const panel = 'panel' === variant;
     const dismiss = onDismiss || onCancel;
     const iconName = icon || ( danger ? 'delete' : 'warning' );
+    const known = ICONS[ iconName ];
     let image = media;
 
-    if ( ! image && 'alert' === variant && ICONS[ iconName ] && assetUrl ) {
-        image = <img src={ assetUrl + ICONS[ iconName ] } alt="" className={ 'oops' === iconName ? 'h-20 w-auto' : 'size-14' } />;
+    if ( ! image && known && ! hideTitle ) {
+        const { Icon, tint } = known;
+
+        image = (
+            <span className={ cn( 'flex size-10 items-center justify-center rounded-full', tint ) }>
+                <Icon className="size-5" aria-hidden="true" />
+            </span>
+        );
     }
-
-    const confirmButton = (
-        <AlertDialogAction
-            autoFocus={ ! focusCancel }
-            disabled={ busy }
-            aria-busy={ busy || undefined }
-            onClick={ ( event ) => {
-                event.preventDefault();
-                onConfirm?.();
-            } }
-            className={ cn( look.confirm, danger ? look.danger : look.primary ) }
-        >
-            { confirmText || __( 'Yes', 'wp-user-frontend' ) }
-        </AlertDialogAction>
-    );
-
-    const cancelButton = false !== cancelText && (
-        <AlertDialogCancel
-            autoFocus={ focusCancel }
-            disabled={ busy }
-            onClick={ ( event ) => {
-                event.preventDefault();
-                onCancel?.();
-            } }
-            className={ look.cancel }
-        >
-            { cancelText || __( 'Cancel', 'wp-user-frontend' ) }
-        </AlertDialogCancel>
-    );
 
     return (
         <AlertDialog open={ open } onOpenChange={ ( next ) => ( next || busy ? undefined : dismiss?.() ) }>
             <AlertDialogContent
                 data-wpuf-dialog={ variant }
-                style={ 'alert' === variant ? { '--wpuf-dialog-w': width || '512px', '--wpuf-dialog-p': padding || '0 0 20px' } : undefined }
-                className={ cn( look.content, className ) }
+                style={ width ? { '--wpuf-dialog-w': width } : undefined }
+                className={ cn(
+                    'bg-white',
+                    width && 'w-[var(--wpuf-dialog-w)] max-w-[calc(100%-2rem)] sm:max-w-[calc(100%-2rem)] data-[size=default]:max-w-[calc(100%-2rem)] data-[size=default]:sm:max-w-[calc(100%-2rem)]',
+                    className
+                ) }
             >
-                { ( showClose || panel ) && <CloseButton variant={ variant } onClick={ () => dismiss?.() } /> }
-                { image && look.media && <div className={ look.media }>{ image }</div> }
-                <AlertDialogTitle className={ hideTitle ? 'sr-only' : look.title }>{ title }</AlertDialogTitle>
-                { message && <AlertDialogDescription className={ look.message }>{ message }</AlertDialogDescription> }
+                { ( showClose || 'panel' === variant ) && (
+                    <button
+                        type="button"
+                        onClick={ () => dismiss?.() }
+                        aria-label={ __( 'Close', 'wp-user-frontend' ) }
+                        className="absolute right-3 top-3 flex size-8 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent p-0 text-muted-foreground hover:bg-muted hover:text-foreground"
+                    >
+                        <X className="size-4" aria-hidden="true" />
+                    </button>
+                ) }
+                { /* Icon beside the text (card: above it, centred); plugin-ui's media grid leaves a wide gap. */ }
+                <AlertDialogHeader
+                    className={ cn(
+                        'flex gap-4 place-items-start',
+                        'card' === variant ? 'flex-col items-center text-center sm:items-center sm:text-center' : 'flex-row items-start text-left sm:text-left'
+                    ) }
+                >
+                    { image && <div className="shrink-0">{ image }</div> }
+                    <div className={ cn( 'grid min-w-0 flex-1 gap-1.5', 'card' === variant && 'justify-items-center' ) }>
+                        <AlertDialogTitle className={ hideTitle ? 'sr-only' : undefined }>{ title }</AlertDialogTitle>
+                        { message && <AlertDialogDescription>{ message }</AlertDialogDescription> }
+                    </div>
+                </AlertDialogHeader>
                 { children }
-                { /* Popup.vue lists the action first in a reversed row; the others read left to right. */ }
-                <div className={ look.footer }>
-                    { panel ? <>{ confirmButton }{ cancelButton }{ extraActions }</> : <>{ extraActions }{ cancelButton }{ confirmButton }</> }
-                </div>
+                <AlertDialogFooter>
+                    { extraActions }
+                    { false !== cancelText && (
+                        <AlertDialogCancel
+                            variant="outline"
+                            autoFocus={ focusCancel }
+                            disabled={ busy }
+                            onClick={ ( event ) => {
+                                event.preventDefault();
+                                onCancel?.();
+                            } }
+                        >
+                            { cancelText || __( 'Cancel', 'wp-user-frontend' ) }
+                        </AlertDialogCancel>
+                    ) }
+                    <AlertDialogAction
+                        variant={ danger ? 'destructive' : 'default' }
+                        autoFocus={ ! focusCancel }
+                        disabled={ busy }
+                        aria-busy={ busy || undefined }
+                        onClick={ ( event ) => {
+                            event.preventDefault();
+                            onConfirm?.();
+                        } }
+                    >
+                        { confirmText || __( 'Yes', 'wp-user-frontend' ) }
+                    </AlertDialogAction>
+                </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
     );

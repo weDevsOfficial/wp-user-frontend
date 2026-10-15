@@ -6,12 +6,7 @@ jQuery(function($) {
 
         // REST DELETE wpuf/v1/admin/posts/{id}/lock.
         window.wpufRest.request( wpuf_admin_script.rest, 'admin/posts/' + parseInt( post_id, 10 ) + '/lock', { method: 'DELETE' } ).then( function() {
-            Swal.fire({
-                icon: 'success',
-                title: wpuf_admin_script.cleared_schedule_lock,
-                showConfirmButton: false,
-                timer: 1500
-            });
+            window.wpufDialog.toast( { title: wpuf_admin_script.cleared_schedule_lock, tone: 'success', timeout: 1500 } );
         } );
         $(this).closest("p").hide();
     });
@@ -76,27 +71,24 @@ jQuery(function($) {
                 return;
             }
 
-            Swal.fire({
+            var button = this;
+
+            window.wpufDialog.confirm( {
                 title: 'Are you sure to update the post?',
                 html: wpuf_admin_script.protected_shortcodes_message,
-                icon: 'warning',
-                padding: '0px 2em 2em',
-                width: '35em',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Proceed with Update',
-                cancelButtonText: 'Remove Shortcode & Publish'
-            } ).then( ( result ) => {
-                if (result.isConfirmed) {
-                    $(this).off('click', checkForShortcodes).click();
+                tone: 'warning',
+                confirmText: 'Proceed with Update',
+                cancelText: 'Remove Shortcode & Publish'
+            } ).then( function ( confirmed ) {
+                if ( confirmed ) {
+                    $( button ).off( 'click', checkForShortcodes ).click();
 
                     // Rebind the event listener after the initial removal
-                    setTimeout(function() {
-                        postButton.on('click', checkForShortcodes);
-                    }, 500);
+                    setTimeout( function () {
+                        postButton.on( 'click', checkForShortcodes );
+                    }, 500 );
                 }
-            });
+            } );
         };
 
         // for gutenberg

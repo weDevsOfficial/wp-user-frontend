@@ -102,8 +102,8 @@ class Admin {
         }
 
         wp_enqueue_style( 'wpuf-admin' );
-        wp_enqueue_style( 'wpuf-sweetalert2' );
-        wp_enqueue_script( 'wpuf-sweetalert2' );
+        wp_enqueue_style( 'wpuf-dialog' );
+        wp_enqueue_script( 'wpuf-dialog' );
         wp_enqueue_script( 'wpuf-admin' );
 
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended

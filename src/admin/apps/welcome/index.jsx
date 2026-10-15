@@ -123,7 +123,7 @@ function Welcome() {
                 ) }
             </div>
 
-            <Modal open={ video } onClose={ () => setVideo( false ) } title={ __( 'The post form builder', 'wp-user-frontend' ) } className="w-[min(960px,92vw)] p-4">
+            <Modal open={ video } onClose={ () => setVideo( false ) } title={ __( 'The post form builder', 'wp-user-frontend' ) } className="w-[min(960px,92vw)] max-w-none p-4 sm:max-w-none">
                 { video && (
                     <div className="relative w-full overflow-hidden rounded-md bg-black pt-[56.25%]">
                         <iframe

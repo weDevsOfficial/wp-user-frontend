@@ -123,8 +123,8 @@ class Posting {
             add_action( 'admin_head', 'wpuf_hide_google_map_button' );
         }
 
-        wp_enqueue_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.css', [], '11.4.8' );
-        wp_enqueue_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.js', [], '11.4.8', true );
+        wp_enqueue_style( 'wpuf-dialog' );
+        wp_enqueue_script( 'wpuf-dialog' );
         // wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', ['jquery', 'plupload-handlers'] );
         wp_enqueue_script( 'wpuf-upload' );
         wp_localize_script( 'wpuf-upload', 'wpuf_upload', [

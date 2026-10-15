@@ -277,8 +277,8 @@ class Renderer {
         // (Profile_Form::mount_profile_form).
         wp_enqueue_style( 'wpuf-layout1' );
         wp_enqueue_style( 'wpuf-frontend-forms' );
-        wp_enqueue_style( 'wpuf-sweetalert2' );
-        wp_enqueue_script( 'wpuf-sweetalert2' );
+        wp_enqueue_style( 'wpuf-dialog' );
+        wp_enqueue_script( 'wpuf-dialog' );
 
         if ( 'post' === ( isset( $schema['form_type'] ) ? $schema['form_type'] : 'post' ) && empty( $schema['layout']['use_theme_css'] ) && preg_match( '/^layout[1-5]$/', $layout ) ) {
             wp_enqueue_style( 'wpuf-' . $layout );

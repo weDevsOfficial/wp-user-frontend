@@ -16,11 +16,16 @@ import { doAction } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 
 import renderNotFound from './not-found';
+import renderStateCard from './state-card';
 import setTitle from './title';
 
 const boot = window.wpufAdmin || {};
 const app = boot.app || { routes: [], globals: {}, pageUrl: window.location.href };
-const screens = {};
+// Built-in screen `state`: a route that only shows a state card (its `state`
+// key: icon, title, text, actions), e.g. a Pro page without a licence.
+const screens = {
+    state: { mount: ( element, { route } ) => renderStateCard( element, route.state || {} ) },
+};
 const guards = new Set();
 const queryListeners = new Set();
 

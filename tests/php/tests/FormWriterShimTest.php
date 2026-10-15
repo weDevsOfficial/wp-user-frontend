@@ -9,7 +9,7 @@
 
 use WeDevs\Wpuf\Admin\Forms\Admin_Form_Builder;
 use WeDevs\Wpuf\Admin\Forms\Form_Manager;
-use WeDevs\Wpuf\Admin\Onboarding;
+use WeDevs\Wpuf\Platform\Onboarding\Wizard;
 use WeDevs\Wpuf\Hooks\Form_Settings_Cleanup;
 use WeDevs\Wpuf\Platform\Stores\FieldStore;
 use WeDevs\Wpuf\Platform\Stores\FormStore;
@@ -207,18 +207,16 @@ class FormWriterShimTest extends WP_UnitTestCase {
                 return array_merge( $registry, $templates );
             }
         );
-        $create = new ReflectionMethod( Onboarding::class, 'create_form_from_template' );
-        $create->setAccessible( true );
-        $onboarding = ( new ReflectionClass( Onboarding::class ) )->newInstanceWithoutConstructor();
+        $handlers = wpuf()->platform()->get( Wizard::class )->handlers();
 
         foreach ( $templates as $name => $template ) {
             $legacy = wpuf_legacy_create_form_from_template( $template );
-            $shim   = $create->invoke( $onboarding, $name );
+            $shim   = $handlers->create_form_from_template( $name );
 
             $this->assertEquals( $this->snapshot( $legacy ), $this->snapshot( $shim ), $name . ' (empty settings still stored, fields not unslashed)' );
         }
 
-        $this->assertFalse( $create->invoke( $onboarding, 'no_such_template' ) );
+        $this->assertFalse( $handlers->create_form_from_template( 'no_such_template' ) );
     }
 
     public function test_settings_cleanup_strip_matches_the_legacy_strip() {

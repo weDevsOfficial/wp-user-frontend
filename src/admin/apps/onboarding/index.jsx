@@ -3,16 +3,16 @@
  * (Admin\Screens\Onboarding), full screen like FlyHR's, on the shared
  * components. The wizard state comes with the page or from
  * wpuf/v1/onboarding; each step saves through wpuf/v1/onboarding/{step},
- * which runs the step handler of Admin\Onboarding.
+ * which runs the step handler of Platform\Onboarding\Wizard.
  *
  * @since WPUF_SINCE
  */
 import { createRoot, useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { request, restPath } from '@wpuf/api';
 import { Loading, WpufProviders, notify } from '@wpuf/components';
 
 import { registerScreen } from '../../app/client';
+import { api } from './api';
 import Confetti from './Confetti';
 import { Reveal, RevealWords, afterWords } from './Reveal';
 import { Tick } from './parts';
@@ -31,8 +31,6 @@ const STEPS = {
 let cache = window.wpufOnboarding?.state || null;
 // The heading arrives once per visit, not on every step.
 let headingPlayed = false;
-
-const api = ( path, data ) => request( restPath( 'wpuf/v1', path ), data ? { method: 'POST', data } : {} );
 
 /**
  * The step rail: the picker shows only while it is open; a step before the

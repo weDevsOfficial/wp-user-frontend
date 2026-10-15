@@ -8,34 +8,95 @@
 
 namespace WeDevs\Wpuf\Platform\Onboarding;
 
-use WeDevs\Wpuf\Platform\Onboarding\State;
-
+use WP_Error;
 
 /**
- * The wizard's plugin step: the recommended plugins and gateway cards, what is
- * still missing, installing and activating a plugin within the request's time
- * budget, and the Pro user directory module switch.
+ * The wizard's companion plugins: the recommended list, what is still not
+ * running, and installing + activating them (one per request from the
+ * plugins step, or the rest of a pick within the request's time budget).
  *
- * @since WPUF_SINCE Moved out of Admin\Onboarding, which delegates to it.
+ * @since WPUF_SINCE
  */
 class Plugin_Installer {
 
     /**
-     * The wizard's own state.
+     * The wizard's run state (last run's install errors).
      *
+     * @var State
+     */
+    private $state;
+
+    /**
      * @since WPUF_SINCE
      *
-     * @return State
+     * @param State $state Run state
      */
-    private function state() {
-        return wpuf()->platform()->get( State::class );
+    public function __construct( State $state ) {
+        $this->state = $state;
     }
 
     /**
-     * Step 6: companion plugins
+     * Whether the current user may install and switch on plugins.
      *
-     * Plugins are installed over ajax from the step itself, so nothing is
-     * saved here beyond marking the step as visited.
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    public function can_install() {
+        return current_user_can( 'install_plugins' ) && current_user_can( 'activate_plugins' );
+    }
+
+    /**
+     * Install and activate one picked plugin (the plugins step's progress
+     * list asks for them one at a time), clearing its failure from the last run.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $slug Recommended plugin slug
+     *
+     * @return true|WP_Error
+     */
+    public function install( $slug ) {
+        $plugins = $this->get_recommended_plugins();
+
+        if ( ! isset( $plugins[ $slug ] ) ) {
+            return new WP_Error( 'wpuf_onboarding_unknown_plugin', __( 'Unknown plugin.', 'wp-user-frontend' ), [ 'status' => 404 ] );
+        }
+
+        if ( ! $this->can_install() ) {
+            return new WP_Error( 'wpuf_onboarding_cannot_install', __( 'You do not have permission to install plugins.', 'wp-user-frontend' ), [ 'status' => 403 ] );
+        }
+
+        if ( function_exists( 'set_time_limit' ) ) {
+            // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- disabled on some hosts.
+            @set_time_limit( 120 );
+        }
+
+        wp_raise_memory_limit( 'admin' );
+
+        $result = $this->install_and_activate( $slug );
+        $errors = $this->state->plugin_errors();
+        $name   = $plugins[ $slug ]['name'];
+
+        if ( is_wp_error( $result ) ) {
+            $errors[ $name ] = $result->get_error_message();
+
+            $this->state->set_plugin_errors( $errors );
+
+            return new WP_Error( 'wpuf_onboarding_install_failed', $result->get_error_message(), [ 'status' => 500 ] );
+        }
+
+        unset( $errors[ $name ] );
+
+        $this->state->set_plugin_errors( $errors );
+
+        return true;
+    }
+
+    /**
+     * The plugins step's save: install whatever of the pick is still not
+     * running (the step installs them one by one before it saves, so this
+     * normally finds nothing left), and remember what failed.
      *
      * @since WPUF_SINCE
      *
@@ -47,8 +108,8 @@ class Plugin_Installer {
         $plugins = $this->get_recommended_plugins();
         $errors  = [];
 
-        if ( ! $picked || ! current_user_can( 'install_plugins' ) ) {
-            $this->state()->set_plugin_errors( [] );
+        if ( ! $picked || ! $this->can_install() ) {
+            $this->state->set_plugin_errors( [] );
 
             return;
         }
@@ -90,9 +151,9 @@ class Plugin_Installer {
         }
 
         if ( $errors ) {
-            $this->state()->set_plugin_errors( $errors );
+            $this->state->set_plugin_errors( $errors );
         } else {
-            $this->state()->set_plugin_errors( [] );
+            $this->state->set_plugin_errors( [] );
         }
     }
 
@@ -116,72 +177,6 @@ class Plugin_Installer {
         }
 
         return max( 5, $limit * 0.75 );
-    }
-
-    /**
-     * The gateways offered on the settings step, with what each one still needs
-     *
-     * Built from the same source the settings screen renders, then annotated so a
-     * card can say whether it is ready to take money or still wants credentials.
-     * Bank transfer is the only one that works on the spot, which is why it is the
-     * default; the rest send the admin to Settings afterwards.
-     *
-     * Stripe is added back when nothing registered it. Without this the card
-     * simply vanishes on a Pro site whose Stripe module is switched off, which
-     * reads as "we do not support Stripe" rather than "turn the module on".
-     *
-     * @since WPUF_SINCE
-     *
-     * @return array gateway id => card data
-     */
-    public function get_gateway_cards() {
-        $gateways = wpuf_get_gateways( 'gateway_selector' );
-        $gateways = is_array( $gateways ) ? $gateways : [];
-
-        if ( ! isset( $gateways['stripe'] ) ) {
-            $gateways['stripe'] = [
-                'admin_label'    => __( 'Credit Card', 'wp-user-frontend' ),
-                'icon'           => '',
-                'is_pro_preview' => ! wpuf_is_pro_active(),
-            ];
-
-            // Pro is here, so the gateway is available; its module is just off.
-            if ( wpuf_is_pro_active() ) {
-                $gateways['stripe']['needs_module'] = true;
-            }
-        }
-
-        // Anything that cannot take a payment until the admin enters credentials.
-        $needs_credentials = [ 'paypal', 'stripe' ];
-
-        foreach ( $gateways as $id => $gateway ) {
-            $is_pro_preview = ! empty( $gateway['is_pro_preview'] );
-
-            $gateways[ $id ]['is_pro_preview'] = $is_pro_preview;
-            // A gateway whose module is off cannot take keys yet; its card says so.
-            $gateways[ $id ]['needs_setup'] = ! $is_pro_preview && empty( $gateway['needs_module'] ) && in_array( $id, $needs_credentials, true );
-
-            if ( ! empty( $gateway['needs_module'] ) ) {
-                $gateways[ $id ]['hint'] = __( 'Turn the Stripe module on in Modules, then add your keys.', 'wp-user-frontend' );
-            } elseif ( $is_pro_preview ) {
-                $gateways[ $id ]['hint'] = __( 'Comes with Pro.', 'wp-user-frontend' );
-            } elseif ( $gateways[ $id ]['needs_setup'] ) {
-                $gateways[ $id ]['hint'] = __( 'Needs your API keys in Settings.', 'wp-user-frontend' );
-            } else {
-                $gateways[ $id ]['hint'] = __( 'Works right away.', 'wp-user-frontend' );
-            }
-        }
-
-        /**
-         * Filter the gateway cards shown on the onboarding settings step
-         *
-         * @since WPUF_SINCE
-         *
-         * @param array $gateways Gateway id => card data.
-         */
-        $gateways = apply_filters( 'wpuf_onboarding_gateway_cards', $gateways );
-
-        return is_array( $gateways ) ? $gateways : [];
     }
 
     /**
@@ -418,49 +413,5 @@ class Plugin_Installer {
         }
 
         return '';
-    }
-
-    /**
-     * Turn the Pro user directory module on or off
-     *
-     * @since WPUF_SINCE
-     *
-     * @param bool $enable
-     *
-     * @return void
-     */
-    public function toggle_pro_directory_module( $enable ) {
-        $module = 'user-directory/userlisting.php';
-
-        if ( ! function_exists( 'wpuf_pro_activate_module' ) ) {
-            return;
-        }
-
-        if ( ! $enable ) {
-            wpuf_pro_deactivate_module( $module );
-
-            return;
-        }
-
-        if ( function_exists( 'wpuf_pro_is_module_allowed' ) && ! wpuf_pro_is_module_allowed( $module ) ) {
-            return;
-        }
-
-        wpuf_pro_activate_module( $module );
-    }
-
-    /**
-     * Whether the user directory is available on this site
-     *
-     * @since WPUF_SINCE
-     *
-     * @return bool
-     */
-    public function is_directory_active() {
-        if ( function_exists( 'wpuf_pro_is_module_active' ) && wpuf_pro_is_module_active( 'user-directory/userlisting.php' ) ) {
-            return true;
-        }
-
-        return function_exists( 'wpuf_free_is_module_active' ) && wpuf_free_is_module_active( 'user_directory' );
     }
 }

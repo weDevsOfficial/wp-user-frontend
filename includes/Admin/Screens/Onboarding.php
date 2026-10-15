@@ -8,7 +8,8 @@
 
 namespace WeDevs\Wpuf\Admin\Screens;
 
-use WeDevs\Wpuf\Admin\Onboarding as Wizard;
+use WeDevs\Wpuf\Admin\Onboarding as Onboarding_Page;
+use WeDevs\Wpuf\Platform\Onboarding\Wizard;
 use WeDevs\Wpuf\Platform\Caps;
 
 /**
@@ -29,7 +30,7 @@ class Onboarding extends Screen {
      * @return string
      */
     public function slug() {
-        return Wizard::PAGE_SLUG;
+        return Onboarding_Page::PAGE_SLUG;
     }
 
     /**
@@ -75,7 +76,7 @@ class Onboarding extends Screen {
                 [
                     'id'   => 'onboarding',
                     'path' => '/onboarding',
-                    'page' => 'index.php?page=' . Wizard::PAGE_SLUG,
+                    'page' => 'index.php?page=' . Onboarding_Page::PAGE_SLUG,
                 ]
             ),
             array_merge(
@@ -83,7 +84,7 @@ class Onboarding extends Screen {
                 [
                     'id'   => 'onboarding-step',
                     'path' => '/onboarding/:step',
-                    'page' => 'index.php?page=' . Wizard::PAGE_SLUG . '&step=:step',
+                    'page' => 'index.php?page=' . Onboarding_Page::PAGE_SLUG . '&step=:step',
                 ]
             ),
         ];
@@ -111,10 +112,10 @@ class Onboarding extends Screen {
      * @return void
      */
     public function load_before_redirect() {
-        $wizard = $this->wizard();
+        $page = wpuf()->admin->onboarding;
 
-        if ( $wizard ) {
-            $wizard->maybe_restart();
+        if ( $page instanceof Onboarding_Page ) {
+            $page->maybe_restart();
         }
     }
 
@@ -141,24 +142,12 @@ class Onboarding extends Screen {
      */
     public function app_globals() {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only route selection.
-        $route  = isset( $_GET['wpuf_route'] ) ? sanitize_text_field( wp_unslash( $_GET['wpuf_route'] ) ) : '';
-        $wizard = $this->wizard();
+        $route = isset( $_GET['wpuf_route'] ) ? sanitize_text_field( wp_unslash( $_GET['wpuf_route'] ) ) : '';
 
         return [
             'wpufOnboarding' => [
-                'state' => $wizard && 0 === strpos( $route, '/onboarding' ) ? $wizard->get_state() : null,
+                'state' => 0 === strpos( $route, '/onboarding' ) ? wpuf()->platform()->get( Wizard::class )->get_state() : null,
             ],
         ];
-    }
-
-    /**
-     * The wizard service.
-     *
-     * @return Wizard|null
-     */
-    private function wizard() {
-        $admin = wpuf()->admin;
-
-        return is_object( $admin ) && $admin->onboarding instanceof Wizard ? $admin->onboarding : null;
     }
 }

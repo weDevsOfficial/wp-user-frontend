@@ -15,12 +15,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, cn } from '@wedevs/pl
  * @param {string}   [props.titleClassName] Extra title classes.
  * @param {*}        [props.icon]      Shown above the title.
  * @param {string}   [props.className] Extra classes (width).
+ * @param {boolean}  [props.showClose] Corner close button (default true; off while work runs).
  * @param {*}        props.children    Body.
  */
-export default function Modal( { open, onClose, title, hideTitle = false, titleClassName, icon, className, children } ) {
+export default function Modal( { open, onClose, title, hideTitle = false, titleClassName, icon, className, showClose = true, children } ) {
     return (
         <Dialog open={ open } onOpenChange={ ( next ) => ! next && onClose?.() }>
-            <DialogContent className={ cn( 'bg-white sm:max-w-lg', className ) }>
+            <DialogContent className={ cn( 'bg-white sm:max-w-lg', className ) } showCloseButton={ showClose }>
                 <DialogHeader>
                     { icon }
                     <DialogTitle className={ hideTitle ? 'sr-only' : titleClassName }>{ title }</DialogTitle>

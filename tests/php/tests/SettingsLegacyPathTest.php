@@ -7,7 +7,7 @@
  * @package WP_User_Frontend
  */
 
-use WeDevs\Wpuf\Admin\Onboarding;
+use WeDevs\Wpuf\Platform\Onboarding\Wizard;
 use WeDevs\Wpuf\Platform\Stores\Stores;
 
 /**
@@ -148,7 +148,7 @@ class SettingsLegacyPathTest extends WP_UnitTestCase {
     }
 
     public function test_onboarding_writes_go_through_the_store() {
-        $onboarding = ( new ReflectionClass( Onboarding::class ) )->newInstanceWithoutConstructor();
+        $onboarding = wpuf()->platform()->get( Wizard::class )->handlers();
 
         update_option( 'wpuf_payment', [ 'currency' => 'USD' ] );
         $this->fired = [];

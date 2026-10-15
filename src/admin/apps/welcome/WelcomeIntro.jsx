@@ -12,6 +12,7 @@
  */
 import { useEffect, useRef, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
+import { tokens } from '@wpuf/utilities';
 
 /** How long the welcome takes to fade away. */
 const EXIT_MS = 280;
@@ -123,7 +124,8 @@ export default function WelcomeIntro( { data, onDone } ) {
                 padding: '40px 16px',
                 background: '#ffffff',
                 color: '#111827',
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
+                // The admin app's font (Plus Jakarta Sans), like every other screen.
+                fontFamily: tokens.fontSans,
                 animation: leaving ? `wpuf-intro-out ${ EXIT_MS }ms cubic-bezier( .4, 0, 1, 1 ) both` : 'wpuf-intro-in 240ms cubic-bezier( .16, 1, .3, 1 ) both',
             } }
         >

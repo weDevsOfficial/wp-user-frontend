@@ -8,6 +8,10 @@
 
 namespace WeDevs\Wpuf\Platform\Providers;
 
+use WeDevs\Wpuf\Platform\Onboarding\Pages;
+use WeDevs\Wpuf\Platform\Onboarding\Plugin_Installer;
+use WeDevs\Wpuf\Platform\Onboarding\State;
+use WeDevs\Wpuf\Platform\Onboarding\Wizard;
 use WeDevs\Wpuf\Platform\ServiceProvider;
 use WeDevs\Wpuf\Platform\Stores\FieldStore;
 use WeDevs\Wpuf\Platform\Stores\FormStore;
@@ -78,7 +82,7 @@ class StoreServiceProvider extends ServiceProvider {
             );
         }
 
-        // Domain services over the stores and develop's tables (Tools, Transactions).
+        // Domain services over the stores and develop's tables (Tools, Transactions, onboarding).
         $this->share_tagged(
             ToolsService::class,
             function ( $container ) {
@@ -102,6 +106,32 @@ class StoreServiceProvider extends ServiceProvider {
             TransactionService::class,
             function ( $container ) {
                 return new TransactionService( $container->get( TransactionStore::class ) );
+            }
+        );
+
+        // The setup wizard (Admin\Onboarding page, Screens\Onboarding, REST, Tools).
+        $this->share_tagged(
+            Pages::class,
+            function () {
+                return new Pages();
+            }
+        );
+
+        $this->share_tagged(
+            Plugin_Installer::class,
+            function ( $container ) {
+                return new Plugin_Installer( $container->get( State::class ) );
+            }
+        );
+
+        $this->share_tagged(
+            Wizard::class,
+            function ( $container ) {
+                return new Wizard(
+                    $container->get( State::class ),
+                    $container->get( Pages::class ),
+                    $container->get( Plugin_Installer::class )
+                );
             }
         );
     }

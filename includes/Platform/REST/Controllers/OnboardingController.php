@@ -8,8 +8,8 @@
 
 namespace WeDevs\Wpuf\Platform\REST\Controllers;
 
-use WeDevs\Wpuf\Admin\Onboarding;
 use WeDevs\Wpuf\Platform\Caps;
+use WeDevs\Wpuf\Platform\Onboarding\Wizard;
 use WeDevs\Wpuf\Platform\REST\RestController;
 use WP_Error;
 use WP_REST_Request;
@@ -17,8 +17,9 @@ use WP_REST_Server;
 
 /**
  * `wpuf/v1/onboarding`: the setup wizard's state, a step's save (the step
- * handlers of Admin\Onboarding, with the values the step's form sent) and a
- * step visit (where the admin left off).
+ * handlers of Platform\Onboarding\Wizard, with the values the step sent), a
+ * step visit (where the admin left off) and installing one companion plugin
+ * (the plugins step's progress list).
  *
  * @since WPUF_SINCE
  */
@@ -41,7 +42,7 @@ class OnboardingController extends RestController {
     /**
      * The wizard.
      *
-     * @var Onboarding|null
+     * @var Wizard|null
      */
     private $wizard = null;
 
@@ -67,6 +68,25 @@ class OnboardingController extends RestController {
                     'methods'             => WP_REST_Server::READABLE,
                     'callback'            => [ $this, 'get_item' ],
                     'permission_callback' => [ $this, 'can_manage' ],
+                ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/plugins/install',
+            [
+                [
+                    'methods'             => WP_REST_Server::CREATABLE,
+                    'callback'            => [ $this, 'install_plugin' ],
+                    'permission_callback' => [ $this, 'can_install' ],
+                    'args'                => [
+                        'slug' => [
+                            'type'              => 'string',
+                            'required'          => true,
+                            'sanitize_callback' => 'sanitize_key',
+                        ],
+                    ],
                 ],
             ]
         );
@@ -126,6 +146,53 @@ class OnboardingController extends RestController {
     }
 
     /**
+     * Who may install a companion plugin: a wizard user who may also install
+     * and activate plugins.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return true|WP_Error
+     */
+    public function can_install() {
+        $can = $this->can_manage();
+
+        if ( true !== $can ) {
+            return $can;
+        }
+
+        if ( ! $this->wizard()->plugins()->can_install() ) {
+            return new WP_Error( 'wpuf_rest_forbidden', __( 'You do not have permission to install plugins.', 'wp-user-frontend' ), [ 'status' => 403 ] );
+        }
+
+        return true;
+    }
+
+    /**
+     * Install and activate one recommended plugin.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Request
+     *
+     * @return \WP_REST_Response|WP_Error slug, installed
+     */
+    public function install_plugin( $request ) {
+        $slug   = (string) $request->get_param( 'slug' );
+        $result = $this->wizard()->plugins()->install( $slug );
+
+        if ( is_wp_error( $result ) ) {
+            return $result;
+        }
+
+        return rest_ensure_response(
+            [
+                'slug'      => $slug,
+                'installed' => true,
+            ]
+        );
+    }
+
+    /**
      * The wizard's state.
      *
      * @since WPUF_SINCE
@@ -151,7 +218,7 @@ class OnboardingController extends RestController {
      */
     public function save_step( $request ) {
         $values = $request->get_param( 'values' );
-        $result = $this->wizard()->run_step( $request['step'], is_array( $values ) ? $values : [] );
+        $result = $this->wizard()->run_step( (string) $request['step'], is_array( $values ) ? $values : [] );
 
         if ( is_wp_error( $result ) ) {
             return $result;
@@ -178,16 +245,13 @@ class OnboardingController extends RestController {
     }
 
     /**
-     * The admin's wizard on admin requests, else one without admin hooks
-     * (REST requests do not load Admin).
+     * The wizard service.
      *
-     * @return Onboarding
+     * @return Wizard
      */
     private function wizard() {
         if ( null === $this->wizard ) {
-            $admin = function_exists( 'wpuf' ) ? wpuf()->admin : null;
-
-            $this->wizard = is_object( $admin ) && $admin->onboarding instanceof Onboarding ? $admin->onboarding : new Onboarding( false );
+            $this->wizard = wpuf()->platform()->get( Wizard::class );
         }
 
         return $this->wizard;

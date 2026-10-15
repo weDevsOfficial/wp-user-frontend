@@ -6,10 +6,10 @@
  * @package WP_User_Frontend
  */
 
-use WeDevs\Wpuf\Admin\Onboarding;
+use WeDevs\Wpuf\Platform\Onboarding\Wizard;
 
 /**
- * @covers \WeDevs\Wpuf\Admin\Onboarding::save_registration
+ * @covers \WeDevs\Wpuf\Platform\Onboarding\Step_Handlers::save_registration
  */
 class OnboardingPagesTest extends WP_UnitTestCase {
 
@@ -28,7 +28,7 @@ class OnboardingPagesTest extends WP_UnitTestCase {
         update_option( 'wpuf_profile', [ 'login_page' => $login, 'reg_override_page' => $reg ] );
         update_option( 'wpuf_my_account', [ 'account_page' => $account ] );
 
-        $wizard = new Onboarding( false );
+        $wizard = wpuf()->platform()->get( Wizard::class );
 
         foreach ( [ $post, $trashed, 999999 ] as $bad ) {
             $wizard->run_step( 'registration', [ 'login_page' => (string) $bad, 'reg_page' => (string) $bad, 'account_page' => (string) $bad ] );

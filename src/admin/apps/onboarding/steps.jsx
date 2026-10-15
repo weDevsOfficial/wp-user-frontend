@@ -7,7 +7,10 @@
  */
 import { useState } from '@wordpress/element';
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { Button, Select, dialogs } from '@wpuf/components';
+import { Progress, ProgressIndicator, ProgressTrack, Spinner } from '@wedevs/plugin-ui';
+import { Button, Modal, Notice, Select, dialogs } from '@wpuf/components';
+
+import { installPlugin } from './api';
 
 import { ActionBar, ChoiceCard, Field, ProBadgeImage, StepShell, SwitchRow, Tick, TickCircle } from './parts';
 
@@ -396,38 +399,220 @@ export function CommonStep( { data, nav, save, busy, state } ) {
 }
 
 /**
- * Companion plugins step.
+ * Where a plugin is in the install run: its badge on the card.
+ *
+ * @param {Object} props
+ * @param {Object} [props.run] { state: installing|done|failed, message }
+ */
+function InstallStatus( { run } ) {
+    if ( ! run ) {
+        return null;
+    }
+
+    if ( 'installing' === run.state ) {
+        return (
+            <span className="wpuf-onboarding-install is-installing inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-0.5 text-xs font-medium text-primary shadow-sm">
+                <Spinner className="size-3.5" />
+                { __( 'Installing…', 'wp-user-frontend' ) }
+            </span>
+        );
+    }
+
+    if ( 'done' === run.state ) {
+        return (
+            <span className="wpuf-onboarding-install is-done inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
+                <Tick />
+                { __( 'Installed', 'wp-user-frontend' ) }
+            </span>
+        );
+    }
+
+    return (
+        <span className="wpuf-onboarding-install is-failed inline-flex rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-700">
+            { __( 'Failed', 'wp-user-frontend' ) }
+        </span>
+    );
+}
+
+/**
+ * The install run in a dialog: one row per picked plugin with its state and
+ * a progress bar. It cannot be closed while plugins install; a failure shows
+ * the reason with Try again / Skip.
+ *
+ * @param {Object}   props
+ * @param {boolean}  props.open
+ * @param {Object[]} props.items      Picked plugins (slug, name, logo).
+ * @param {Object}   props.runs       slug => { state, message }
+ * @param {boolean}  props.installing
+ * @param {Function} props.onClose
+ * @param {Function} props.onRetry
+ * @param {Function} [props.onSkip]
+ */
+function InstallDialog( { open, items, runs, installing, onClose, onRetry, onSkip } ) {
+    const total = items.length;
+    const done = items.filter( ( item ) => 'done' === runs[ item.slug ]?.state ).length;
+    const failed = items.filter( ( item ) => 'failed' === runs[ item.slug ]?.state );
+    const current = items.find( ( item ) => 'installing' === runs[ item.slug ]?.state );
+    let title = __( 'Installing plugins', 'wp-user-frontend' );
+
+    if ( ! installing ) {
+        title = failed.length ? __( 'Some plugins did not install', 'wp-user-frontend' ) : __( 'Plugins installed', 'wp-user-frontend' );
+    }
+
+    const row = ( item ) => {
+        const run = runs[ item.slug ];
+        const state = run?.state || 'waiting';
+
+        return (
+            <li key={ item.slug } data-slug={ item.slug } data-state={ state } className="wpuf-install-row m-0 flex items-start gap-3 border-0 border-b border-solid border-gray-100 py-3 last:border-b-0">
+                { item.logo ? <img src={ item.logo } alt="" className="h-8 w-8 shrink-0" /> : <span className="h-8 w-8 shrink-0" /> }
+                <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-medium text-gray-900">{ item.name }</span>
+                    { 'failed' === state && run.message && <span className="mt-0.5 block text-xs leading-4 text-red-700">{ run.message }</span> }
+                </span>
+                <span className="shrink-0 pt-0.5 text-xs font-medium">
+                    { 'installing' === state && <span className="inline-flex items-center gap-1.5 text-primary"><Spinner className="size-3.5" />{ __( 'Installing…', 'wp-user-frontend' ) }</span> }
+                    { 'done' === state && <span className="inline-flex items-center gap-1.5 text-emerald-700"><Tick />{ __( 'Installed', 'wp-user-frontend' ) }</span> }
+                    { 'failed' === state && <span className="text-red-700">{ __( 'Failed', 'wp-user-frontend' ) }</span> }
+                    { 'waiting' === state && <span className="text-gray-400">{ __( 'Waiting', 'wp-user-frontend' ) }</span> }
+                </span>
+            </li>
+        );
+    };
+
+    return (
+        <Modal open={ open } onClose={ installing ? () => {} : onClose } showClose={ ! installing } title={ title } className="wpuf-install-dialog sm:max-w-md">
+            <div aria-live="polite">
+                <div className="mb-2 flex items-center justify-between text-[13px] text-gray-600">
+                    <span className="wpuf-install-status">
+                        { current
+                            /* translators: 1: plugin name, 2: position, 3: total */
+                            ? sprintf( __( 'Installing %1$s (%2$d of %3$d)', 'wp-user-frontend' ), current.name, Math.min( done + 1, total ), total )
+                            /* translators: 1: installed count, 2: total */
+                            : sprintf( __( '%1$d of %2$d installed', 'wp-user-frontend' ), done, total ) }
+                    </span>
+                    <span className="font-medium text-gray-900">{ total ? Math.round( ( done / total ) * 100 ) : 0 }%</span>
+                </div>
+                <Progress value={ total ? ( done / total ) * 100 : 0 } size="sm" rounded aria-label={ __( 'Plugins installed', 'wp-user-frontend' ) }>
+                    <ProgressTrack>
+                        <ProgressIndicator />
+                    </ProgressTrack>
+                </Progress>
+                <ul className="m-0 mt-3 list-none p-0">{ items.map( row ) }</ul>
+                { installing && <p className="m-0 mt-3 text-xs text-gray-500">{ __( 'Keep this page open. Large plugins can take a minute.', 'wp-user-frontend' ) }</p> }
+            </div>
+            { ! installing && failed.length > 0 && (
+                <div className="mt-4 flex justify-end gap-3">
+                    { onSkip && <Button variant="secondary" onClick={ onSkip } data-action="install-skip">{ __( 'Skip for now', 'wp-user-frontend' ) }</Button> }
+                    <Button onClick={ onRetry } data-action="install-retry">{ __( 'Try again', 'wp-user-frontend' ) }</Button>
+                </div>
+            ) }
+        </Modal>
+    );
+}
+
+/**
+ * Companion plugins step: the picked plugins install one by one (each card
+ * shows its progress, a bar shows the run), then the step saves. A failure
+ * keeps the admin on the step with the reason, to retry or skip.
  *
  * @param {Object} props Step props.
  */
 export function PluginsStep( { data, nav, save, busy } ) {
     const items = data.items || [];
     const [ picked, setPicked ] = useState( data.can_install ? items.map( ( item ) => item.slug ) : [] );
+    const [ runs, setRuns ] = useState( {} );
+    const [ installing, setInstalling ] = useState( false );
+    const [ dialog, setDialog ] = useState( false );
+    const queue = picked.filter( ( slug ) => 'done' !== runs[ slug ]?.state );
+    const failed = items.filter( ( item ) => 'failed' === runs[ item.slug ]?.state );
+
+    const mark = ( slug, run ) => setRuns( ( all ) => ( { ...all, [ slug ]: run } ) );
+
+    const run = async () => {
+        let ok = true;
+
+        setInstalling( true );
+        setDialog( true );
+
+        for ( const slug of queue ) {
+            mark( slug, { state: 'installing' } );
+
+            try {
+                await installPlugin( slug );
+                mark( slug, { state: 'done' } );
+            } catch ( error ) {
+                ok = false;
+                mark( slug, { state: 'failed', message: error.message } );
+            }
+        }
+
+        setInstalling( false );
+
+        // Everything picked runs now: the save has nothing left to install (the
+        // dialog goes with the step). A failure keeps the dialog open with the reason.
+        if ( ok ) {
+            save( { plugins: [] } );
+        }
+    };
 
     const body = ( item ) => (
         <>
             { item.logo && <img src={ item.logo } alt="" className="wpuf-onboarding-logo mb-3 h-10 w-10" /> }
-            <strong className="mb-1 block pe-8 text-sm font-semibold text-gray-900">{ item.name }</strong>
+            <strong className="mb-1 block pe-24 text-sm font-semibold text-gray-900">{ item.name }</strong>
             <span className="block text-[13px] leading-5 text-gray-500">{ item.desc }</span>
+            { 'failed' === runs[ item.slug ]?.state && runs[ item.slug ].message && (
+                <span className="wpuf-onboarding-install-error mt-2 block text-xs leading-4 text-red-700">{ runs[ item.slug ].message }</span>
+            ) }
         </>
     );
+
+    const nextLabel = () => {
+        if ( installing ) {
+            return __( 'Installing…', 'wp-user-frontend' );
+        }
+
+        if ( failed.length ) {
+            return __( 'Try again', 'wp-user-frontend' );
+        }
+
+        return queue.length ? __( 'Install & Continue', 'wp-user-frontend' ) : __( 'Continue', 'wp-user-frontend' );
+    };
 
     return (
         <>
             <StepShell title={ __( 'Plugins that work well alongside', 'wp-user-frontend' ) } subtitle={ __( 'Free weDevs plugins for the members and content you collect. Untick any you do not want.', 'wp-user-frontend' ) }>
-                { ( data.errors || [] ).length > 0 && (
-                    <div role="alert" className="wpuf-onboarding-note mb-6 rounded-lg border border-solid border-amber-200 bg-amber-50 px-4 py-3 text-[13px] leading-5 text-amber-800">
-                        { __( 'These did not install last time:', 'wp-user-frontend' ) }
+                { ( data.errors || [] ).length > 0 && ! Object.keys( runs ).length && (
+                    <Notice tone="warning" title={ __( 'These did not install last time:', 'wp-user-frontend' ) } className="mb-6" role="alert">
                         { data.errors.map( ( error ) => (
                             <span key={ error.name } className="block"><strong>{ error.name }:</strong> { error.message }</span>
                         ) ) }
-                    </div>
+                    </Notice>
                 ) }
+
+                { failed.length > 0 && ! installing && (
+                    <Notice tone="error" className="wpuf-onboarding-install-failed mb-6" role="alert">
+                        { sprintf(
+                            /* translators: %s: plugin names */
+                            _n( '%s did not install. Try again, or skip this step and install it later from Plugins.', '%s did not install. Try again, or skip this step and install them later from Plugins.', failed.length, 'wp-user-frontend' ),
+                            failed.map( ( item ) => item.name ).join( ', ' )
+                        ) }
+                    </Notice>
+                ) }
+
                 <div className="wpuf-onboarding-grid grid gap-4 sm:grid-cols-2">
                     { items.map( ( item ) => ( data.can_install ? (
-                        <ChoiceCard key={ item.slug } name="plugins" value={ item.slug } checked={ picked.includes( item.slug ) } onChange={ ( on ) => setPicked( ( list ) => toggleIn( list, item.slug, on ) ) }>
+                        <ChoiceCard
+                            key={ item.slug }
+                            name="plugins"
+                            value={ item.slug }
+                            checked={ picked.includes( item.slug ) }
+                            disabled={ installing || 'done' === runs[ item.slug ]?.state }
+                            status={ runs[ item.slug ] ? <InstallStatus run={ runs[ item.slug ] } /> : null }
+                            onChange={ ( on ) => setPicked( ( list ) => toggleIn( list, item.slug, on ) ) }
+                        >
                             { body( item ) }
-                            { item.installed && <span className="wpuf-onboarding-badge mt-3 inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">{ __( 'Will be activated', 'wp-user-frontend' ) }</span> }
+                            { item.installed && ! runs[ item.slug ] && <span className="wpuf-onboarding-badge mt-3 inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">{ __( 'Will be activated', 'wp-user-frontend' ) }</span> }
                         </ChoiceCard>
                     ) : (
                         <div key={ item.slug } data-value={ item.slug } className="wpuf-onboarding-card is-installed flex flex-col items-start rounded-[10px] border border-solid border-gray-200 bg-gray-50 p-5">
@@ -437,12 +622,24 @@ export function PluginsStep( { data, nav, save, busy } ) {
                     ) ) ) }
                 </div>
             </StepShell>
+            <InstallDialog
+                open={ dialog }
+                items={ items.filter( ( item ) => picked.includes( item.slug ) ) }
+                runs={ runs }
+                installing={ installing }
+                onClose={ () => setDialog( false ) }
+                onRetry={ run }
+                onSkip={ nav.skip ? () => {
+                    setDialog( false );
+                    nav.skip();
+                } : null }
+            />
             <ActionBar
-                busy={ busy }
-                nextLabel={ busy ? __( 'Installing…', 'wp-user-frontend' ) : __( 'Install & Continue', 'wp-user-frontend' ) }
+                busy={ busy || installing }
+                nextLabel={ nextLabel() }
                 onPrevious={ nav.previous }
                 onSkip={ nav.skip }
-                onNext={ () => save( { plugins: picked } ) }
+                onNext={ () => ( queue.length && data.can_install ? run() : save( { plugins: [] } ) ) }
             />
         </>
     );
@@ -472,10 +669,10 @@ export function ReadyStep( { data, save, busy, state } ) {
                     ) ) }
                 </ul>
 
-                <p className="wpuf-onboarding-note m-0 mb-6 rounded-lg bg-emerald-50 px-4 py-3 text-[13px] text-emerald-800">
+                <Notice tone="success" icon={ false } className="wpuf-onboarding-note mb-6">
                     { __( 'Run this setup again any time from', 'wp-user-frontend' ) }{ ' ' }
                     <a href={ state.urls?.tools } className="font-medium text-primary hover:underline">{ __( 'User Frontend › Tools', 'wp-user-frontend' ) }</a>.
-                </p>
+                </Notice>
 
                 <SwitchRow
                     name="share_essentials"

@@ -140,8 +140,10 @@ export function SwitchRow( { name, checked, onChange, title, desc } ) {
  * @param {string}   props.value    Submitted value.
  * @param {*}        props.children
  * @param {boolean}  [props.compact] Smaller, centred card (gateways).
+ * @param {boolean}  [props.disabled] Locked (while plugins install).
+ * @param {*}        [props.status]   Replaces the tick (install progress).
  */
-export function ChoiceCard( { checked, onChange, name, value, children, compact = false } ) {
+export function ChoiceCard( { checked, onChange, name, value, children, compact = false, disabled = false, status = null } ) {
     return (
         <button
             type="button"
@@ -149,11 +151,12 @@ export function ChoiceCard( { checked, onChange, name, value, children, compact 
             aria-checked={ checked }
             data-name={ name }
             data-value={ value }
+            disabled={ disabled }
             onClick={ () => onChange( ! checked ) }
-            className={ `wpuf-onboarding-card relative flex w-full cursor-pointer flex-col rounded-[10px] border shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 ${ compact ? 'items-center p-4 text-center' : 'items-start p-5 text-start' } ${ checked ? 'is-selected border-primary bg-primary/5 ring-2 ring-primary/15' : 'border-gray-200 bg-white hover:border-primary' }` }
+            className={ `wpuf-onboarding-card relative flex w-full cursor-pointer flex-col rounded-[10px] border shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 disabled:cursor-default ${ compact ? 'items-center p-4 text-center' : 'items-start p-5 text-start' } ${ checked ? 'is-selected border-primary bg-primary/5 ring-2 ring-primary/15' : 'border-gray-200 bg-white enabled:hover:border-primary' }` }
         >
             <span className={ `absolute ${ compact ? 'end-3 top-3' : 'end-5 top-5' }` }>
-                <TickCircle on={ checked } />
+                { status || <TickCircle on={ checked } /> }
             </span>
             { children }
         </button>

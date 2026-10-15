@@ -10,7 +10,7 @@ namespace WeDevs\Wpuf\Platform\REST\Controllers;
 
 use WeDevs\Wpuf\Frontend\Account\Account_Service;
 use WeDevs\Wpuf\Frontend\Forms\Upload_Service;
-use WeDevs\Wpuf\Platform\Http\Admin_Ajax_Context;
+use WeDevs\Wpuf\Platform\Http\Submission_Context;
 use WeDevs\Wpuf\Platform\REST\RestController;
 use WP_Error;
 use WP_REST_Request;
@@ -223,7 +223,9 @@ class AccountController extends RestController {
      */
     public function update_profile( WP_REST_Request $request ) {
         $body   = $this->body( $request );
-        $result = Admin_Ajax_Context::run( fn() => $this->account->update_profile( $body ) );
+        // The profile hooks see the request the classic account form posted
+        // (the route checked the account nonce already).
+        $result = Submission_Context::run( $body, fn() => $this->account->update_profile( $body ), [ 'nonce' => false ] );
 
         return is_wp_error( $result ) ? $result : rest_ensure_response(
             [

@@ -10,8 +10,7 @@ namespace WeDevs\Wpuf\Frontend\Forms;
 
 use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Ajax\Frontend_Form_Ajax;
-use WeDevs\Wpuf\Platform\Http\Ajax_Abort;
-use WeDevs\Wpuf\Platform\Http\Request_Shim;
+use WeDevs\Wpuf\Platform\Http\Submission_Context;
 use WeDevs\Wpuf\Platform\Stores\Stores;
 use WeDevs\Wpuf\Traits\FieldableTrait;
 use WP_Error;
@@ -21,17 +20,15 @@ use WP_Error;
  * validation, every `wpuf_add_post_*` / `wpuf_edit_post_*` hook and every
  * redirect rule runs once, in one place, for both transports.
  *
- * Compatibility shim: the legacy submit handler and about thirty of its
- * listeners (the WooCommerce product template among them) read `$_POST`
- * directly; `Request_Shim::with_input()` fills the superglobals from the
- * service input for the duration of the call (see the trait).
+ * The legacy submit handler, the field classes and the submit hooks read the
+ * posted values from `$_POST`: every call runs through Submission_Context,
+ * which builds that request from the service input and restores it after.
  *
  * @since WPUF_SINCE
  */
 class Submission_Service {
 
     use FieldableTrait;
-    use Request_Shim;
 
     /**
      * Settings of the form being handled (the trait reads them).
@@ -78,23 +75,12 @@ class Submission_Service {
      * @return array|WP_Error The AJAX success payload (`redirect_to`, `show_message`, `message`, ...) or the error
      */
     public function submit( array $input, $slashed = false ) {
-        // The admin-side submission hooks a classic (admin-ajax) submit has.
-        wpuf()->boot_submission_hooks();
-
-        return $this->with_input(
+        return Submission_Context::run(
             $input,
-            $slashed,
             function () {
-                if ( ! $this->nonce_ok() ) {
-                    return $this->expired();
-                }
-
-                return Ajax_Abort::collect(
-                    function () {
-                        return $this->ajax->submit_post();
-                    }
-                );
-            }
+                return $this->ajax->submit_post();
+            },
+            [ 'slashed' => $slashed ]
         );
     }
 
@@ -109,34 +95,33 @@ class Submission_Service {
      * @return array|WP_Error `post_id`, `url`, `message`, ... or the error
      */
     public function draft( array $input, $slashed = false ) {
-        wpuf()->boot_submission_hooks();
+        $values = $slashed ? wp_unslash( $input ) : $input;
 
-        return $this->with_input(
+        return Submission_Context::run(
             $input,
-            $slashed,
-            function () {
-                if ( ! $this->nonce_ok() ) {
-                    return $this->expired();
-                }
-
-                return $this->save_draft();
-            }
+            function () use ( $values ) {
+                return $this->save_draft( $values );
+            },
+            [ 'slashed' => $slashed ]
         );
     }
 
     /**
      * The draft handler (the body of the old `Frontend_Form::draft_post()`,
-     * returning instead of answering).
+     * returning instead of answering). Its own values come from $input; the
+     * field values go through the field classes (get_input_fields()), which
+     * read the request Submission_Context built.
      *
      * @since WPUF_SINCE
      *
+     * @param array $input Submission input, unslashed
+     *
      * @return array|WP_Error
      */
-    private function save_draft() {
+    private function save_draft( array $input ) {
         add_filter( 'wpuf_form_fields', [ $this, 'add_field_settings' ] );
 
-        // phpcs:disable WordPress.Security.NonceVerification.Missing -- the nonce is checked in draft().
-        $form_id             = isset( $_POST['form_id'] ) ? intval( wp_unslash( $_POST['form_id'] ) ) : 0;
+        $form_id             = isset( $input['form_id'] ) ? intval( $input['form_id'] ) : 0;
         $form                = new Form( $form_id );
         $this->form_settings = $form->get_settings();
         $this->form_fields   = $form->get_fields();
@@ -150,7 +135,7 @@ class Submission_Service {
             return new WP_Error( 'wpuf_draft_login', __( 'You must be logged in to save drafts.', 'wp-user-frontend' ), [ 'status' => 401 ] );
         }
 
-        if ( ! isset( $_POST['post_id'] ) ) {
+        if ( ! isset( $input['post_id'] ) ) {
             [ $user_can_post, $submission_info ] = $form->is_submission_open( $form, $this->form_settings );
             $user_can_post                       = apply_filters( 'wpuf_can_post', $user_can_post, $form_id, $this->form_settings );
             $submission_info                     = apply_filters( 'wpuf_addpost_notice', $submission_info, $form_id, $this->form_settings );
@@ -167,15 +152,15 @@ class Submission_Service {
         [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
         $allowed_tags = wp_kses_allowed_html( 'post' );
-        $post_content = isset( $_POST['post_content'] ) ? wp_kses( wp_unslash( $_POST['post_content'] ), $allowed_tags ) : '';
+        $post_content = isset( $input['post_content'] ) ? wp_kses( $input['post_content'], $allowed_tags ) : '';
 
         $postarr = [
             'post_type'    => $this->form_settings['post_type'],
             'post_status'  => wpuf_get_draft_post_status( $this->form_settings ),
             'post_author'  => $current_user_id,
-            'post_title'   => isset( $_POST['post_title'] ) ? sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) : '',
+            'post_title'   => isset( $input['post_title'] ) ? sanitize_text_field( $input['post_title'] ) : '',
             'post_content' => $post_content,
-            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) : '',
+            'post_excerpt' => isset( $input['post_excerpt'] ) ? wp_kses( $input['post_excerpt'], $allowed_tags ) : '',
         ];
 
         if ( ! empty( $this->form_fields ) ) {
@@ -186,10 +171,10 @@ class Submission_Service {
 
                 $category_name = $field['name'];
 
-                if ( isset( $_POST[ $category_name ] ) && is_array( $_POST[ $category_name ] ) ) {
-                    $category = array_map( 'sanitize_text_field', wp_unslash( $_POST[ $category_name ] ) );
+                if ( isset( $input[ $category_name ] ) && is_array( $input[ $category_name ] ) ) {
+                    $category = array_map( 'sanitize_text_field', $input[ $category_name ] );
                 } else {
-                    $category = isset( $_POST[ $category_name ] ) ? sanitize_text_field( wp_unslash( $_POST[ $category_name ] ) ) : '';
+                    $category = isset( $input[ $category_name ] ) ? sanitize_text_field( $input[ $category_name ] ) : '';
                 }
 
                 if ( '' !== $category && '0' !== $category && '-1' !== $category[0] ) {
@@ -212,12 +197,12 @@ class Submission_Service {
             $postarr['post_category'] = is_array( $this->form_settings['default_cat'] ) ? $this->form_settings['default_cat'] : [ $this->form_settings['default_cat'] ];
         }
 
-        if ( isset( $_POST['tags'] ) ) {
-            $postarr['tags_input'] = explode( ',', sanitize_text_field( wp_unslash( $_POST['tags'] ) ) );
+        if ( isset( $input['tags'] ) ) {
+            $postarr['tags_input'] = explode( ',', sanitize_text_field( $input['tags'] ) );
         }
 
-        if ( isset( $_POST['post_id'] ) ) {
-            $update_post_id = intval( wp_unslash( $_POST['post_id'] ) );
+        if ( isset( $input['post_id'] ) ) {
+            $update_post_id = intval( $input['post_id'] );
             $can_edit       = wpuf_user_can_edit_post( $update_post_id );
 
             if ( is_wp_error( $can_edit ) ) {
@@ -255,8 +240,7 @@ class Submission_Service {
 
         do_action( 'wpuf_draft_post_after_insert', $post_id, $form_id, $this->form_settings, $this->form_fields );
 
-        $action = isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '';
-        // phpcs:enable WordPress.Security.NonceVerification.Missing
+        $action = isset( $input['action'] ) ? sanitize_text_field( $input['action'] ) : '';
 
         return [
             'post_id'        => $post_id,

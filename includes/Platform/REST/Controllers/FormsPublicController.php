@@ -11,7 +11,6 @@ namespace WeDevs\Wpuf\Platform\REST\Controllers;
 use WeDevs\Wpuf\Frontend\Forms\Form_Schema;
 use WeDevs\Wpuf\Frontend\Forms\Submission_Service;
 use WeDevs\Wpuf\Frontend\Renderer;
-use WeDevs\Wpuf\Platform\Http\Admin_Ajax_Context;
 use WeDevs\Wpuf\Platform\REST\Rate_Limit;
 use WeDevs\Wpuf\Platform\REST\RestController;
 use WP_Error;
@@ -292,7 +291,7 @@ class FormsPublicController extends RestController {
         $input = $this->input( $request );
         unset( $input['post_id'] );
 
-        return $this->answer( Admin_Ajax_Context::run( fn() => $this->submissions->submit( $input ) ) );
+        return $this->answer( $this->submissions->submit( $input ) );
     }
 
     /**
@@ -308,7 +307,7 @@ class FormsPublicController extends RestController {
         $input            = $this->input( $request );
         $input['post_id'] = (int) $request['post_id'];
 
-        return $this->answer( Admin_Ajax_Context::run( fn() => $this->submissions->submit( $input ) ) );
+        return $this->answer( $this->submissions->submit( $input ) );
     }
 
     /**
@@ -323,7 +322,7 @@ class FormsPublicController extends RestController {
     public function create_draft( WP_REST_Request $request ) {
         $input = $this->input( $request );
 
-        return $this->answer( Admin_Ajax_Context::run( fn() => $this->submissions->draft( $input ) ) );
+        return $this->answer( $this->submissions->draft( $input ) );
     }
 
     /**

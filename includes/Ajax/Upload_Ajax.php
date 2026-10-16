@@ -74,7 +74,7 @@ class Upload_Ajax {
             die( 'error' );
         }
 
-        $wpuf_file = isset( $_FILES['wpuf_file'] ) ? $_FILES['wpuf_file'] : []; // WPCS: sanitization ok.
+        $wpuf_file = isset( $_FILES['wpuf_file'] ) ? $_FILES['wpuf_file'] : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- the file entry is validated by wp_handle_upload().
         $file_name      = pathinfo( $wpuf_file['name'], PATHINFO_FILENAME );
         $file_extension = pathinfo( $wpuf_file['name'], PATHINFO_EXTENSION );
         $upload = [
@@ -414,7 +414,7 @@ class Upload_Ajax {
         return $data;
     }
 
-    public static function attach_html( $attach_id, $type = NULL, $form_id = NULL ) {
+    public static function attach_html( $attach_id, $type = null, $form_id = null ) {
         if ( ! $type ) {
             $type = isset( $_GET['type'] ) ? sanitize_text_field( wp_unslash( $_GET['type'] ) ) : 'image';
         }
@@ -611,5 +611,4 @@ class Upload_Ajax {
     public function insert_image() {
         $this->upload_file( true );
     }
-    
 }

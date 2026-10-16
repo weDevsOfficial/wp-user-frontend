@@ -1229,7 +1229,7 @@ class Render_Form {
 
     public function taxnomy_select( $terms, $attr ) {
         $selected           = $terms ? $terms : '';
-        $required           = sprintf( 'data-required="%s" data-type="select"', esc_attr( $attr['required'] ) );
+        $required           = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
         $taxonomy           = $attr['name'];
         $class              = ' wpuf_' . $attr['name'] . '_' . $selected;
         $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
@@ -1385,7 +1385,7 @@ class Render_Form {
 
                     case 'select':
                         $selected = $terms ? $terms[0] : '';
-                        $required = sprintf( 'data-required="%s" data-type="select"', esc_attr( $attr['required'] ) );
+                        $required = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
                         $tax_args = [
                             'show_option_none' => isset( $attr['first'] ) ? $attr['first'] : '--select--',
                             'hierarchical'     => 1,
@@ -1410,7 +1410,7 @@ class Render_Form {
 
                     case 'multiselect':
                         $selected = $terms ? $terms : [];
-                        $required = sprintf( 'data-required="%s" data-type="multiselect"', esc_attr( $attr['required'] ) );
+                        $required = sprintf( 'data-required="%s" data-type="multiselect"', $attr['required'] );
                         $walker   = new WPUF_Walker_Category_Multi();
                         $tax_args = [
                             // 'show_option_none' => __( '-- Select --', 'wpuf' ),

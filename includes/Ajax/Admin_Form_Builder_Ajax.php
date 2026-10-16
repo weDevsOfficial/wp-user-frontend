@@ -178,7 +178,8 @@ class Admin_Form_Builder_Ajax {
                 $cat .= '<div class="wpuf-mt-6 wpuf-input-container taxonomy-container" data-taxonomy="' . esc_attr( $tax->name ) . '">';
                 $cat .= '<div class="wpuf-flex wpuf-items-center">';
                 $cat .= '<label for="' . esc_attr( $select_id ) . '" class="wpuf-text-sm wpuf-text-gray-700 wpuf-my-2">';
-                $cat .= sprintf( __( 'Default %s', 'wp-user-frontend' ), $tax->label );
+                /* translators: %s: taxonomy label */
+                $cat .= sprintf( esc_html__( 'Default %s', 'wp-user-frontend' ), esc_html( $tax->label ) );
                 $cat .= '</label></div>';
 
                 $cat .= '<select

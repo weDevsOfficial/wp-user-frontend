@@ -1967,7 +1967,8 @@ export const Selectors = {
                 enableInput: '(//label[normalize-space()="Enable time input"])[1]',
                 asPublishTime: '(//label[normalize-space()="Set this as publish time input"])[1]',
                 validateFormat: (format: string) => `//input[@data-format="${format}"]`,
-                validateTimeInput: '//div[@class="ui-timepicker-div"]',
+                // jQuery UI timepicker (classic) or the React calendar's time row.
+                validateTimeInput: '//div[@class="ui-timepicker-div"] | //div[contains(@class,"wpuf-calendar__time")]',
                 validatePostPublishTime: (postTitle: string) => `//a[normalize-space()='${postTitle}']//..//..//..//td[normalize-space()='Published1970/01/01 at 2:07 am']`,
                 validateMinDate: (expectedMinDate: string) => `//input[@data-mintime="${expectedMinDate}"]`,
                 validateMaxDate: (expectedMaxDate: string) => `//input[@data-maxtime="${expectedMaxDate}"]`,
@@ -2182,7 +2183,8 @@ export const Selectors = {
             validatePackCreated: (packName: string) => `//div[contains(text(),'${packName}')]`,
             validatePackFree: (packName: string) => `//div[contains(text(),'${packName}')]//..//..//..//p[normalize-space(text())="Free"]`,
             validatePackPaid: (packName: string, packPrice: string)=> `//div[contains(text(),'${packName}')]//..//..//..//p[normalize-space(text())='$${packPrice}']`,
-            validateRecurringPackPaid: (packName: string, packPrice: string, packExpirationNumber:string, packExpirationPeriod:string)=> `//div[contains(text(),'${packName}')]//..//..//..//p[normalize-space(text())='$${packPrice} every ${packExpirationNumber} ${packExpirationPeriod}(s)']`,
+            // Translatable plurals since 5756aba2 ("every 3 weeks", "every 1 week"); develop printed "week(s)".
+            validateRecurringPackPaid: (packName: string, packPrice: string, packExpirationNumber:string, packExpirationPeriod:string)=> `//div[contains(text(),'${packName}')]//..//..//..//p[normalize-space(text())='$${packPrice} every ${packExpirationNumber} ${packExpirationPeriod}${'1' === String(packExpirationNumber) ? '' : 's'}']`,
             recurringPackIcon: (packName: string)=> `//div[contains(text(),'${packName}')]//..//..//..//div[3]//*[name()='svg']`,
             // The status is the kit Badge (a span since 5756aba2), so any tag.
             validatePackPublished: (packName)=> `//div[contains(text(),"${packName}")]//..//..//..//*[normalize-space(text())="Published"]`,
@@ -2206,7 +2208,8 @@ export const Selectors = {
             subscriptionPageTitle: '//h1[contains(text(),"Subscription")]',
             packTitleFE: (packName: string) => `//h3[normalize-space(text())='${packName}']`,
             packPriceFE: (packName: string, packPrice: string) => `//h3[normalize-space(text())='${packName}']//..//..//span[normalize-space(text())='$${packPrice}.00']`,
-            validateRecurringPackPaid: (packName: string, packPrice: string, packExpirationNumber:string, packExpirationPeriod:string, installments:string)=> `//h3[normalize-space(text())='${packName}']//..//..//span[normalize-space(text())='$${packPrice}.00']//..//span[2]//div[normalize-space(text())='Every ${packExpirationNumber} ${packExpirationPeriod.charAt(0).toUpperCase() + packExpirationPeriod.slice(1)}s, for ${installments} installments']`,
+            // React plan card: the amount and the server's cycle text side by side in the price row.
+            validateRecurringPackPaid: (packName: string, packPrice: string, packExpirationNumber:string, packExpirationPeriod:string, installments:string)=> `//article[contains(@class,"wpuf-plan-card")][.//h3[normalize-space()='${packName}']]//div[contains(@class,"wpuf-plan-card__price")][span[contains(@class,"wpuf-plan-card__amount")][normalize-space()='$${packPrice}.00']][span[contains(@class,"wpuf-plan-card__cycle")][normalize-space()='Every ${packExpirationNumber} ${packExpirationPeriod.charAt(0).toUpperCase() + packExpirationPeriod.slice(1)}s, for ${installments} installments']]`,
             packDescriptionFE: (packName: string, packDescription: string) => `//h3[normalize-space(text())='${packName}']//..//..//p[normalize-space(text())='${packDescription}']`,
             freePackButton: (packName: string)=>  `//h3[normalize-space(text())='${packName}']//..//..//span[normalize-space(text())='Free']`,
             buyNowButton: (packName:string) =>`//h3[normalize-space(text())='${packName}']//..//..//a[normalize-space(text())='Buy Now']`,
@@ -2216,7 +2219,8 @@ export const Selectors = {
             freeButton: (packName: string) => `//div[contains(@class,"wpuf-pricing-box")]//h3[contains(text(),"${packName}")]//..//..//a[contains(text(),"Free")]`,
             packExpiration: (packName: string) => `//div[contains(@class,"wpuf-pricing-box")]//h3[contains(text(),"${packName}")]//..//..//span[contains(@class,"expiration") or contains(@class,"cycle")]`,
             currentPackIndicator: '//div[contains(@class,"current-pack") or contains(text(),"Active")]',
-            cancelSubscriptionButton: '//input[@name="wpuf_user_subscription_cancel" or @value="Cancel"]',
+            // Classic <input>, React <button> (same name).
+            cancelSubscriptionButton: '//*[self::input or self::button][@name="wpuf_user_subscription_cancel" or @value="Cancel"]',
             cancelSubscriptionForm: '//form[@id="wpuf_cancel_subscription"]',
             noSubscriptionMessage: '//p[contains(text(),"not subscribed")]',
             allPackCards: '//div[contains(@class,"wpuf-pricing-box") or contains(@class,"pack-card")]',
@@ -2244,8 +2248,9 @@ export const Selectors = {
             noSubscriptionPara: '//p[normalize-space()="You have not subscribed to any package yet."]',
             packDetails: '//div[contains(@class,"pack-details") or contains(@class,"subscription-details")]',
             postCountTable: '//table[contains(@class,"post-count") or contains(@class,"remaining")]',
-            cancelButton: '//input[@name="wpuf_user_subscription_cancel"]',
-            confirmModal: '//button[normalize-space()="Yes"]',
+            cancelButton: '//*[self::input or self::button][@name="wpuf_user_subscription_cancel"]',
+            // Classic "Yes", or the WPUF dialog's confirm (last button in its footer; the page has its own "Cancel subscription" button too).
+            confirmModal: '//button[normalize-space()="Yes"] | //dialog[contains(@class,"wpuf-dialog")]//*[contains(@class,"wpuf-dialog__footer")]//button[last()]',
             upgradeButton: '//a[contains(text(),"Upgrade") or contains(text(),"Change Plan")]',
         },
 

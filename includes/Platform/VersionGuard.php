@@ -12,10 +12,10 @@ use WeDevs\Wpuf\Platform\Contracts\Hookable;
 
 /**
  * Free updates from wordpress.org before Pro (D10). An older Pro (before
- * 4.3.0, no `WPUF_PRO_PLATFORM_VERSION`) is built on code this version no
+ * 5.0.0, no `WPUF_PRO_PLATFORM_VERSION`) is built on code this version no
  * longer has, so it is not started: free runs as the free plugin
  * (wpuf_is_pro_active() is false) and one notice asks to update Pro. Pro
- * 4.3.0+ declares its platform version when its file loads.
+ * 5.0.0+ declares its platform version when its file loads.
  *
  * @since WPUF_SINCE
  */
@@ -29,7 +29,7 @@ class VersionGuard implements Hookable {
     /**
      * Pro version that brings that platform (shown in the notice).
      */
-    const REQUIRED_PRO_VERSION = '4.3.0';
+    const REQUIRED_PRO_VERSION = '5.0.0';
 
     /**
      * Scripts an older Pro enqueues for the Vue form builder.

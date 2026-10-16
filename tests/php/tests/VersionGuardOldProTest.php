@@ -1,6 +1,6 @@
 <?php
 /**
- * An older Pro (before 4.3.0: main class loaded, no WPUF_PRO_PLATFORM_VERSION)
+ * An older Pro (before 5.0.0: main class loaded, no WPUF_PRO_PLATFORM_VERSION)
  * is not started: its plugins_loaded boot is removed and free runs as the
  * free plugin. Runs in its own process: it declares a stand-in Pro class.
  *

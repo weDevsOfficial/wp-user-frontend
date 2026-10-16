@@ -80,6 +80,28 @@ class SubmissionValidatorTest extends WP_UnitTestCase {
         $this->assertSame( 'Inner text is required.', $validator->validate( [ $column ], [] ) );
     }
 
+    public function test_fields_inside_a_conditional_column_are_not_required() {
+        $validator = new Submission_Validator();
+        $column    = [
+            'name'         => 'video_col',
+            'template'     => 'column_field',
+            'wpuf_cond'    => [ 'condition_status' => 'yes' ],
+            'inner_fields' => [ 'column-1' => [ $this->field( 'video_url', 'text_field' ) ], 'column-2' => [] ],
+        ];
+
+        $this->assertSame( '', $validator->validate( [ $column ], [] ), 'the column was hidden by its own condition' );
+    }
+
+    public function test_required_content_with_only_media_is_filled() {
+        $validator = new Submission_Validator();
+        $content   = [ $this->field( 'post_content', 'post_content', [ 'input_type' => 'textarea' ] ) ];
+
+        $this->assertSame( '', $validator->validate( $content, [ 'post_content' => '<p><img src="https://example.com/a.jpg" alt="" /></p>' ] ) );
+        $this->assertSame( '', $validator->validate( $content, [ 'post_content' => '<figure><iframe src="https://example.com/v"></iframe></figure>' ] ) );
+        $this->assertSame( '', $validator->validate( $content, [ 'post_content' => '[gallery ids="1,2"]' ] ) );
+        $this->assertSame( 'Post content is required.', $validator->validate( $content, [ 'post_content' => '<p> </p>' ] ) );
+    }
+
     public function test_fields_hidden_by_visibility_are_not_required() {
         $validator = new Submission_Validator();
         $members   = $this->field( 'members_note', 'text_field', [ 'css' => '', 'wpuf_visibility' => [ 'selected' => 'logged_in', 'choices' => [] ] ] );

@@ -570,6 +570,22 @@ class SubscriptionStore implements DataStore {
         $post_expiration_period = $text( '_post_expiration_period', '' );
         $sort_order             = $number( '_sort_order', 1 );
 
+        // Packs saved before 4.0.11 only have the combined "30 day" value (the
+        // 4.0.8 upgrade never split it): keep it instead of writing '' when the
+        // two parts are not sent.
+        if ( ! $post_expiration_number || ! $post_expiration_period ) {
+            $stored = ! empty( $meta_value['_post_expiration_time'] ) ? $meta_value['_post_expiration_time'] : '';
+
+            if ( ! $stored && ! empty( $subscription['ID'] ) ) {
+                $stored = get_post_meta( (int) $subscription['ID'], '_post_expiration_time', true );
+            }
+
+            if ( is_string( $stored ) && preg_match( '/^\s*(\d+)\s+([a-z]+?)s?\s*$/i', $stored, $parts ) ) {
+                $post_expiration_number = $post_expiration_number ? $post_expiration_number : (int) $parts[1];
+                $post_expiration_period = $post_expiration_period ? $post_expiration_period : sanitize_text_field( strtolower( $parts[2] ) );
+            }
+        }
+
         if ( $sort_order < 1 ) {
             $sort_order = 1;
         }

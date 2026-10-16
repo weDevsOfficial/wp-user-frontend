@@ -38,6 +38,8 @@ class VersionGuardOldProTest extends WP_UnitTestCase {
 
         $this->assertTrue( VersionGuard::stop_outdated_pro() );
         $this->assertFalse( has_action( 'plugins_loaded', [ wpuf_pro(), 'init_plugin' ] ), 'the older Pro does not boot' );
+        $this->assertSame( 10, has_action( 'init', [ VersionGuard::class, 'start_outdated_pro_updater' ] ), 'its updater still starts' );
+        $this->assertFalse( VersionGuard::start_outdated_pro_updater(), 'no updater class in the stand-in: nothing breaks' );
 
         // The notice on WPUF screens.
         wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );

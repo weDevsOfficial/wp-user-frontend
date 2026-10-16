@@ -278,10 +278,17 @@ class TransactionService {
 
         $title = get_the_title( $post_id );
 
+        // Packs are edited on the subscriptions screen, not post.php.
+        if ( 'wpuf_subscription' === get_post_type( $post_id ) ) {
+            $url = current_user_can( wpuf_admin_role() ) ? \WeDevs\Wpuf\Admin\Subscriptions\Pack_Post_Type::screen_url( $post_id ) : '';
+        } else {
+            $url = current_user_can( 'edit_post', $post_id ) ? admin_url( 'post.php?post=' . $post_id . '&action=edit' ) : '';
+        }
+
         return [
             'id'    => (int) $post_id,
             'title' => '' !== $title ? html_entity_decode( $title, ENT_QUOTES, 'UTF-8' ) : '#' . $post_id,
-            'url'   => current_user_can( 'edit_post', $post_id ) ? admin_url( 'post.php?post=' . $post_id . '&action=edit' ) : '',
+            'url'   => $url,
         ];
     }
 

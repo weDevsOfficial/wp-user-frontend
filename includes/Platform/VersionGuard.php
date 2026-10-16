@@ -104,7 +104,59 @@ class VersionGuard implements Hookable {
             return false;
         }
 
-        return remove_action( 'plugins_loaded', [ wpuf_pro(), 'init_plugin' ] );
+        $stopped = remove_action( 'plugins_loaded', [ wpuf_pro(), 'init_plugin' ] );
+
+        if ( $stopped ) {
+            // Pro's own boot was the only place its updater and License page
+            // started; keep both so the site can still update Pro.
+            add_action( 'init', [ self::class, 'start_outdated_pro_updater' ] );
+        }
+
+        return $stopped;
+    }
+
+    /**
+     * Keep the Appsero updater and License page of a stopped older Pro, as
+     * its `Admin\Update::init_appsero()` did: Pro is not on wordpress.org, so
+     * without them the site would never be offered the Pro update this
+     * version asks for.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool Whether the updater started
+     */
+    public static function start_outdated_pro_updater() {
+        $updater = 'WeDevs\Wpuf\Pro\Admin\Appsero\Updater';
+
+        if ( ! class_exists( 'WP_User_Frontend_Pro', false ) || ! class_exists( '\WeDevs\Wpuf\Lib\Appsero\Client' ) || ! class_exists( $updater ) ) {
+            return false;
+        }
+
+        $file = ( new \ReflectionClass( 'WP_User_Frontend_Pro' ) )->getFileName();
+        $key  = dirname( $file ) . '/includes/appsero_key.php';
+        $hash = file_exists( $key ) ? require $key : '958afc63-99f8-4b98-b321-fcbc5cf95694';
+
+        $client  = new \WeDevs\Wpuf\Lib\Appsero\Client( $hash, 'WPUF Pro', $file );
+        $license = $client->license();
+
+        if ( method_exists( $license, 'set_option_key' ) ) {
+            $license->set_option_key( 'wpuf_license' );
+        }
+
+        $license->add_settings_page(
+            [
+                'type'        => 'submenu',
+                'menu_title'  => 'License',
+                'page_title'  => 'WPUF Pro License',
+                'capability'  => 'manage_options',
+                'parent_slug' => 'wp-user-frontend',
+                'menu_slug'   => 'wpuf_updates',
+            ]
+        );
+
+        $updater::init( $client );
+
+        return true;
     }
 
     /**

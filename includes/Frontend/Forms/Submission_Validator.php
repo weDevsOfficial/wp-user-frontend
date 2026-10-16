@@ -103,6 +103,12 @@ class Submission_Validator {
             }
 
             if ( isset( $field['template'] ) && 'column_field' === $field['template'] && ! empty( $field['inner_fields'] ) && is_array( $field['inner_fields'] ) ) {
+                // A column with its own condition or visibility hides its
+                // fields with it: they are skipped like conditional fields.
+                if ( $this->is_conditional( $field ) || ! $this->is_shown( $field ) ) {
+                    continue;
+                }
+
                 foreach ( $field['inner_fields'] as $column ) {
                     $list = array_merge( $list, $this->flatten( (array) $column ) );
                 }
@@ -227,7 +233,14 @@ class Submission_Validator {
             return true;
         }
 
-        $value = trim( wp_strip_all_tags( (string) $value ) );
+        $raw   = (string) $value;
+        $value = trim( wp_strip_all_tags( $raw ) );
+
+        // Rich text holding only media (an image, embed, video) or a shortcode
+        // is filled in, as the classic editor check counted it.
+        if ( '' === $value && preg_match( '/<(img|iframe|video|audio|embed|object|figure)\b|\[[a-z0-9_-]+/i', $raw ) ) {
+            return false;
+        }
 
         return '' === $value || '-1' === $value;
     }

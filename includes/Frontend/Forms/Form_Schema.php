@@ -247,8 +247,14 @@ class Form_Schema implements Form_Schema_Provider {
 
         $state = $post_id ? $this->edit_state( $post_id ) : $this->create_state( $form, $form_id );
 
-        $fields = apply_filters( 'wpuf_render_fields', $this->form_fields, $form_id );
-        $fields = $this->describe_fields( (array) $fields, $post_id, 'post', $form_id );
+        // A closed form shows only its message (as the classic render): its
+        // fields, hidden values and shortcode / action-hook output stay out.
+        $fields = [];
+
+        if ( ! empty( $state['open'] ) ) {
+            $fields = apply_filters( 'wpuf_render_fields', $this->form_fields, $form_id );
+            $fields = $this->describe_fields( (array) $fields, $post_id, 'post', $form_id );
+        }
         $state  = $this->empty_form_state( $state, $fields, $form_id, '/post-forms/' );
 
         $schema = [
@@ -344,8 +350,13 @@ class Form_Schema implements Form_Schema_Provider {
             $state = [ 'open' => true, 'reason' => '', 'message' => '' ];
         }
 
-        $fields = apply_filters( 'wpuf_render_fields', $this->form_fields, $form_id );
-        $fields = $this->describe_fields( (array) $fields, $user_id, 'user', $form_id );
+        // A closed form shows only its message: no fields, values or shortcode output.
+        $fields = [];
+
+        if ( ! empty( $state['open'] ) ) {
+            $fields = apply_filters( 'wpuf_render_fields', $this->form_fields, $form_id );
+            $fields = $this->describe_fields( (array) $fields, $user_id, 'user', $form_id );
+        }
         $state  = $this->empty_form_state( $state, $fields, $form_id, '/registration-forms/' );
 
         // A registration started from a subscription pack carries the pack along (Profile_Form::submit_button()).
@@ -893,7 +904,14 @@ class Form_Schema implements Form_Schema_Provider {
                 $field['default'] = (string) $field['country_list']['name'];
             }
 
-            if ( in_array( $field['template'], $this->server_rendered(), true ) ) {
+            // A field type another plugin added (its class outside WPUF and
+            // Pro, which also has `WPUF_*` module classes) has no React
+            // component: its own render() markup is shown instead of a plain
+            // text input, as the classic form did.
+            $class       = is_object( $object ) ? get_class( $object ) : '';
+            $third_party = $class && 0 !== strpos( $class, 'WeDevs\\Wpuf\\' ) && 0 !== strpos( $class, 'WPUF_' );
+
+            if ( $third_party || in_array( $field['template'], $this->server_rendered(), true ) ) {
                 ob_start();
 
                 try {

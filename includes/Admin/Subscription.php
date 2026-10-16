@@ -48,6 +48,11 @@ class Subscription {
 
         add_action( 'admin_enqueue_scripts', [ $this, 'subscription_script' ] );
 
+        // Packs have no WordPress screens any more: old links open the app.
+        foreach ( [ 'load-edit.php', 'load-post.php', 'load-post-new.php' ] as $screen_hook ) {
+            add_action( $screen_hook, [ $this, 'redirect_classic_pack_screens' ] );
+        }
+
         add_action( 'user_register', [ $this, 'after_registration' ], 10, 1 );
 
         add_action( 'register_form', [ $this, 'register_form' ] );
@@ -355,6 +360,15 @@ class Subscription {
      */
     public function after_registration( $user_id ) {
         return $this->pack_post_type()->after_registration( $user_id );
+    }
+
+    /**
+     * @see \WeDevs\Wpuf\Admin\Subscriptions\Pack_Post_Type::redirect_classic_screens()
+     *
+     * @since WPUF_SINCE
+     */
+    public function redirect_classic_pack_screens() {
+        return $this->pack_post_type()->redirect_classic_screens();
     }
 
     /**

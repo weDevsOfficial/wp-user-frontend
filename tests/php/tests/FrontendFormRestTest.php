@@ -122,6 +122,66 @@ class FrontendFormRestTest extends WP_UnitTestCase {
         $this->assertSame( 401, $this->request( 'POST', '/wpuf/v1/forms/' . $form_id . '/submissions', $this->submission( $form_id ) )->get_status() );
     }
 
+    public function test_closed_form_schema_has_no_fields() {
+        wp_set_current_user( self::factory()->user->create( [ 'role' => 'subscriber' ] ) );
+        $form_id = $this->form( [ 'post_permission' => 'role_base', 'roles' => [ 'editor' ] ] );
+        $ran     = false;
+
+        add_filter(
+            'wpuf_render_fields',
+            function ( $fields ) use ( &$ran ) {
+                $ran = true;
+
+                return $fields;
+            }
+        );
+
+        $data = $this->request( 'GET', '/wpuf/v1/forms/' . $form_id . '/schema' )->get_data();
+
+        $this->assertFalse( $data['state']['open'] );
+        $this->assertSame( [], $data['fields'], 'a closed form shows only its message' );
+        $this->assertFalse( $ran, 'its fields (and their shortcode / hook output) are not built' );
+    }
+
+    public function test_third_party_field_types_render_their_own_markup() {
+        wp_set_current_user( self::factory()->user->create( [ 'role' => 'subscriber' ] ) );
+        $form_id = $this->form();
+        $field   = new class() extends \WeDevs\Wpuf\Fields\Form_Field_Text {
+            public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
+                echo '<li class="acme-color-picker"><input name="acme_color" type="color"></li>';
+            }
+        };
+
+        $manager = wpuf()->fields;
+        $prop    = new ReflectionProperty( $manager, 'fields' );
+        $prop->setAccessible( true );
+        $original              = (array) $manager->get_fields();
+        $fields                = $original;
+        $fields['acme_color']  = $field;
+        $prop->setValue( $manager, $fields );
+
+        add_filter(
+            'wpuf_render_fields',
+            function ( $form_fields ) {
+                $form_fields[] = [ 'template' => 'acme_color', 'input_type' => 'acme_color', 'name' => 'acme_color', 'label' => 'Colour', 'is_meta' => 'yes', 'wpuf_cond' => [ 'condition_status' => 'no' ] ];
+
+                return $form_fields;
+            }
+        );
+
+        $data  = $this->request( 'GET', '/wpuf/v1/forms/' . $form_id . '/schema' )->get_data();
+        $color = wp_list_filter( $data['fields'], [ 'name' => 'acme_color' ] );
+        $color = reset( $color );
+
+        $this->assertTrue( $color['server_rendered'] );
+        $this->assertStringContainsString( 'acme-color-picker', $color['html'] );
+
+        $title = wp_list_filter( $data['fields'], [ 'name' => 'post_title' ] );
+        $this->assertArrayNotHasKey( 'server_rendered', reset( $title ), 'core fields stay React' );
+
+        $prop->setValue( $manager, $original );
+    }
+
     public function test_visitor_reads_a_guest_form() {
         wp_set_current_user( 0 );
         $form_id = $this->form( [ 'post_permission' => 'guest_post' ] );

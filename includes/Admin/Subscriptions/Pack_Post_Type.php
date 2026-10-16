@@ -89,6 +89,66 @@ class Pack_Post_Type {
     }
 
     /**
+     * Admin URL of the subscriptions screen, on one pack's editor when given.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int|string $pack_id Pack id, 'new' for a new pack, 0 for the list.
+     *
+     * @return string
+     */
+    public static function screen_url( $pack_id = 0 ) {
+        $args = [ 'page' => 'wpuf_subscription' ];
+
+        if ( 'new' === $pack_id ) {
+            $args['action'] = 'new';
+        } elseif ( $pack_id ) {
+            $args['action'] = 'edit';
+            $args['id']     = absint( $pack_id );
+        }
+
+        return add_query_arg( $args, admin_url( 'admin.php' ) );
+    }
+
+    /**
+     * The post type has no WordPress screens (`show_ui` false): the old
+     * `edit.php?post_type=wpuf_subscription`, `post-new.php?...` and
+     * `post.php?post=<pack>&action=edit` links go to the subscriptions screen
+     * instead of WordPress's permission message.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function redirect_classic_screens() {
+        global $pagenow;
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            return;
+        }
+
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only redirect.
+        $post_type = isset( $_GET['post_type'] ) ? sanitize_key( wp_unslash( $_GET['post_type'] ) ) : '';
+        $post_id   = isset( $_GET['post'] ) ? absint( wp_unslash( $_GET['post'] ) ) : 0;
+        // phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+        if ( 'post.php' === $pagenow ) {
+            if ( ! $post_id || 'wpuf_subscription' !== get_post_type( $post_id ) ) {
+                return;
+            }
+
+            $target = self::screen_url( $post_id );
+        } elseif ( 'wpuf_subscription' === $post_type ) {
+            $target = self::screen_url( 'post-new.php' === $pagenow ? 'new' : 0 );
+        } else {
+            return;
+        }
+
+        wp_safe_redirect( $target );
+        exit;
+    }
+
+    /**
      * Enqueue scripts and styles
      *
      * @since 2.2

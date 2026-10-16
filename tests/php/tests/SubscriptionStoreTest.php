@@ -224,6 +224,24 @@ class SubscriptionStoreTest extends WP_UnitTestCase {
         $this->assertSame( '7 day', get_post_meta( $this->last_pack(), '_post_expiration_time', true ) );
     }
 
+    public function test_old_pack_keeps_its_combined_post_expiration_on_save() {
+        // A pack from before 4.0.11: only the combined value, no number / period keys.
+        $id = self::factory()->post->create( [ 'post_type' => 'wpuf_subscription', 'post_status' => 'publish', 'post_title' => 'Old pack' ] );
+        update_post_meta( $id, '_post_expiration_time', '30 days' );
+        update_post_meta( $id, '_enable_post_expiration', 'yes' );
+
+        $payload               = $this->payload();
+        $payload['ID']         = $id;
+        $payload['post_title'] = 'Old pack renamed';
+        unset( $payload['meta_value']['_post_expiration_number'], $payload['meta_value']['_post_expiration_period'] );
+
+        ( new Subscription_Api() )->create_or_update_item( $this->request( $payload ) );
+
+        $this->assertSame( '30 day', get_post_meta( $id, '_post_expiration_time', true ) );
+        $this->assertSame( '30', (string) get_post_meta( $id, '_post_expiration_number', true ) );
+        $this->assertSame( 'day', get_post_meta( $id, '_post_expiration_period', true ) );
+    }
+
     public function test_single_row_edit_matches() {
         $legacy_id  = self::factory()->post->create( [ 'post_type' => 'wpuf_subscription', 'post_status' => 'publish', 'post_title' => 'Pack' ] );
         $current_id = self::factory()->post->create( [ 'post_type' => 'wpuf_subscription', 'post_status' => 'publish', 'post_title' => 'Pack' ] );

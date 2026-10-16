@@ -127,4 +127,15 @@ class AdversarialReviewFixesTest extends WP_UnitTestCase {
 
         $this->assertStringNotContainsString( '" onmouseover="', $html );
     }
+
+    /** AR-09: old pack screens and pack links open the subscriptions screen. */
+    public function test_pack_screen_urls() {
+        $url = \WeDevs\Wpuf\Admin\Subscriptions\Pack_Post_Type::screen_url( 12 );
+
+        $this->assertStringContainsString( 'page=wpuf_subscription', $url );
+        $this->assertStringContainsString( 'action=edit', $url );
+        $this->assertStringContainsString( 'id=12', $url );
+        $this->assertStringContainsString( 'action=new', \WeDevs\Wpuf\Admin\Subscriptions\Pack_Post_Type::screen_url( 'new' ) );
+        $this->assertSame( 10, has_action( 'load-post.php', [ wpuf()->subscription, 'redirect_classic_pack_screens' ] ) );
+    }
 }

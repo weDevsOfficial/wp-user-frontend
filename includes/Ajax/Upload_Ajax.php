@@ -182,34 +182,14 @@ class Upload_Ajax {
          */
         $upload_types = apply_filters(
             'wpuf_upload_capable_field_types',
-            [ 'image_upload', 'file_upload', 'featured_image', 'avatar' ],
+            [ 'image_upload', 'file_upload', 'featured_image', 'avatar', 'cover_photo', 'profile_photo' ],
             $form_id,
             $field_type
         );
 
         $form_fields = function_exists( 'wpuf_get_form_fields' ) ? wpuf_get_form_fields( $form_id ) : [];
 
-        $allowed_names = [];
-
-        if ( is_array( $form_fields ) ) {
-            foreach ( $form_fields as $field ) {
-                if ( ! is_array( $field ) ) {
-                    continue;
-                }
-
-                $input_type = isset( $field['input_type'] ) ? $field['input_type'] : '';
-                $template   = isset( $field['template'] ) ? $field['template'] : '';
-                $name       = isset( $field['name'] ) ? $field['name'] : '';
-
-                if ( '' === $name ) {
-                    continue;
-                }
-
-                if ( in_array( $input_type, $upload_types, true ) || in_array( $template, $upload_types, true ) ) {
-                    $allowed_names[] = $name;
-                }
-            }
-        }
+        $allowed_names = $this->collect_upload_field_names( $form_fields, $upload_types );
 
         /**
          * Final allow-list of field names that may receive an upload for this form.
@@ -226,6 +206,53 @@ class Upload_Ajax {
         $allowed_names = apply_filters( 'wpuf_upload_allowed_field_names', $allowed_names, $form_id, $field_type );
 
         return in_array( $field_type, (array) $allowed_names, true );
+    }
+
+    /**
+     * Collect the names of upload-capable fields, including nested ones
+     *
+     * Walks column (`inner_fields` keyed by column) and repeat (`inner_fields`
+     * list) fields so an upload field placed inside them is still accepted.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $fields       form fields or a nested field list
+     * @param array $upload_types upload-capable input types / templates
+     *
+     * @return array
+     */
+    protected function collect_upload_field_names( $fields, $upload_types ) {
+        $names = [];
+
+        if ( ! is_array( $fields ) ) {
+            return $names;
+        }
+
+        foreach ( $fields as $field ) {
+            if ( ! is_array( $field ) ) {
+                continue;
+            }
+
+            // A column bucket (list of fields) has no field keys of its own.
+            if ( ! isset( $field['input_type'] ) && ! isset( $field['template'] ) ) {
+                $names = array_merge( $names, $this->collect_upload_field_names( $field, $upload_types ) );
+                continue;
+            }
+
+            $input_type = isset( $field['input_type'] ) ? $field['input_type'] : '';
+            $template   = isset( $field['template'] ) ? $field['template'] : '';
+            $name       = isset( $field['name'] ) ? $field['name'] : '';
+
+            if ( '' !== $name && ( in_array( $input_type, $upload_types, true ) || in_array( $template, $upload_types, true ) ) ) {
+                $names[] = $name;
+            }
+
+            if ( ! empty( $field['inner_fields'] ) ) {
+                $names = array_merge( $names, $this->collect_upload_field_names( $field['inner_fields'], $upload_types ) );
+            }
+        }
+
+        return $names;
     }
 
     /**

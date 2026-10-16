@@ -1906,7 +1906,8 @@ export const Selectors = {
                 }else if(type === 'checkbox'){
                     return '//div[@data-type="tax-checkbox"]'
                 }else if(type === 'multiselect'){
-                    return '//select[contains(@class,"category multiselect")]'
+                    // Classic: the select carries the classes; React: its wrapper around the multiselect.
+                    return '//select[contains(@class,"category multiselect")] | //div[contains(@class,"category multiselect")]'
                 }
             },
 

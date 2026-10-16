@@ -353,9 +353,7 @@ class Pack_Display {
                 ?>
             </div>
             <?php
-        } elseif ( $payment_enabled && $force_pack && $form->is_enabled_fallback_cost() && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
-            // Kept for a fallback cost of 0 too (older forms; the builder no longer saves one):
-            // the flow still runs as on develop, and this is the only "pack is exhausted" note.
+        } elseif ( $payment_enabled && $force_pack && $form->is_enabled_fallback_cost() && 0 < (float) apply_filters( 'wpuf_payment_amount', (float) $form->get_subs_fallback_cost() ) && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
             ?>
             <div class="wpuf-info">
                 <?php
@@ -367,6 +365,18 @@ class Pack_Display {
                 $text = sprintf( __( 'Your Subscription pack is exhausted. There is a <strong>%s</strong> charge to add a new post.', 'wp-user-frontend' ), wpuf_format_price( $fallback_cost ) );
 
                 echo wp_kses_post( apply_filters( 'wpuf_ppp_notice', wp_kses_post( $text ), esc_html( $form_id ), $form_settings ) );
+                ?>
+            </div>
+            <?php
+        } elseif ( $payment_enabled && $force_pack && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+            // The pack is used up and there is no charge to show (0): say so without a
+            // "$0.00 charge" sentence (develop printed one; owner: no $0.00 charge notice).
+            ?>
+            <div class="wpuf-info">
+                <?php
+                $text = __( 'Your Subscription pack is exhausted.', 'wp-user-frontend' );
+
+                echo wp_kses_post( apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings ) );
                 ?>
             </div>
             <?php

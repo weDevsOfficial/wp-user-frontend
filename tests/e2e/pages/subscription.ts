@@ -462,7 +462,9 @@ export class SubscriptionPage extends Base {
         }
         if (limit > packData.maxPosts) {
             await this.navigateToPostSubmissionPage();
-            await this.checkElementText(Selectors.postFormSettings.wpufInfo, `Your Subscription pack is exhausted. There is a $0.00 charge to add a new post`);
+            // No "$0.00 charge" sentence for a charge of 0 (owner); the pack-exhausted note stays.
+            await this.checkElementText(Selectors.postFormSettings.wpufInfo, 'Your Subscription pack is exhausted.');
+            await expect(this.page.locator(Selectors.postFormSettings.wpufInfo)).not.toContainText('$0.00');
         }
         console.log('\x1b[32m%s\x1b[0m', `✅ Max posts limit validated: ${packData.maxPosts}`);
     }

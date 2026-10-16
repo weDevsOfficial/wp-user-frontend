@@ -887,6 +887,12 @@ class Form_Schema implements Form_Schema_Provider {
                 $field['countries'] = $this->country_choices( $field );
             }
 
+            // The default country starts selected on a new entry (Field_Country::render(): the
+            // saved value when editing, else country_list['name']); the form store reads `default`.
+            if ( 'country_list_field' === $field['template'] && ! $post_id && ! empty( $field['country_list']['name'] ) ) {
+                $field['default'] = (string) $field['country_list']['name'];
+            }
+
             if ( in_array( $field['template'], $this->server_rendered(), true ) ) {
                 ob_start();
 

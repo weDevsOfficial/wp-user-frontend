@@ -57,7 +57,8 @@ export function CancelPlanForm( { fields, label = __( 'Cancel subscription', 'wp
             { Object.keys( fields ).map( ( name ) => (
                 <input key={ name } type="hidden" name={ name } value={ fields[ name ] } />
             ) ) }
-            <Button type="submit" variant="danger" size={ size } busy={ busy }>{ label }</Button>
+            { /* name as develop's Cancel button (input[name="wpuf_user_subscription_cancel"]); the hidden fields carry what the server reads. */ }
+            <Button type="submit" name="wpuf_user_subscription_cancel" value={ label } variant="danger" size={ size } busy={ busy }>{ label }</Button>
         </form>
     );
 }

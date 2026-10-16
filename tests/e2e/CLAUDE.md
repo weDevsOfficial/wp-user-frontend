@@ -249,3 +249,26 @@ per-page screens (they were removed). App tests: `adminAppTest.spec.ts`
   cancel slot; "Okay" alone lets it reopen for the next custom field.
 - Leftover subscription packs restrict post content ("Access Restricted"): run the
   post form specs before, or on a different site than, the subscription spec.
+
+## Full parallel run in one go (2026-10-16, branch `feature/react-admin-revamp`)
+
+The method that took a full local 4-shard run from 7 failures to a clean run on
+`feature/react-admin-revamp` (free PR #1993, Pro PR #1732). Full runbook with
+commands, ratio script and failure table: openspec
+`revamp-admin-react-flyhr/testing.md`, section "Full parallel run in one go".
+
+- One wp-env copy per shard, `wp-env clean all` before every run, setup project,
+  then `--shard=N/4 --global-timeout=3600000` (no hang). Sync code only between runs.
+- Triage each failure while the run goes (screenshot, `error-context.md`, a probe on an
+  idle copy, the saved data via wp-cli); compare with develop before calling it a bug.
+- "Target page, context or browser has been closed" means the test timeout fired:
+  find the step that waited.
+- Helpers to reuse: `utils/wpLoginForm.ts` (wp-login empties the password ~200 ms after
+  load), `Base.dismissEditorModals()` (block editor welcome guide / pattern chooser),
+  `navigateToURL` (document, then up to 15 s for load), `frontendLogin` (waits for the
+  REST login and the redirect), `wpCli` (one retry when the wp-env wrapper fails).
+- React markup: select by `name` or stable classes, not classic ids (taxonomy selects,
+  price inputs, plan card `section.wpuf-plan-status`, badge `span`); set text with
+  `fill()`, not key by key; one dialog handler per page.
+- Verify fixes on idle copies before the next full run; clear duplicate packs / products
+  first, a used site adds its own failures.

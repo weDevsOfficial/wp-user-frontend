@@ -978,12 +978,15 @@ export class FieldOptionSettingsPage extends Base {
     }
 
     async validateDefaultCountry(expectedCountry: string) {
-        await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectedCountry(expectedCountry))).toHaveAttribute('selected');
+        // React picks the option through the select's value (no `selected` attribute on the option).
+        await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.openCountryList).first()).toHaveValue(expectedCountry);
         console.log(`Default country validated: ${expectedCountry}`);
     }
 
     async validateHiddenCountry(expectedCountries: Array<string>) {
-        await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.openCountryList);
+        // The options live in the native select either way (React keeps it beside its list
+        // button); opening the list is not needed, and clicking the hidden native select stalls.
+        await this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.openCountryList).first().waitFor({ state: 'attached', timeout: 30000 });
         for (const country of expectedCountries) {
             await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectedCountry(country))).toHaveCount(0);
         }
@@ -991,7 +994,9 @@ export class FieldOptionSettingsPage extends Base {
     }
 
     async validateOnlyShowCountry(expectedCountries: Array<string>) {
-        await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.openCountryList);
+        // The options live in the native select either way (React keeps it beside its list
+        // button); opening the list is not needed, and clicking the hidden native select stalls.
+        await this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.openCountryList).first().waitFor({ state: 'attached', timeout: 30000 });
         for (const country of expectedCountries) {
             await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectedCountry(country))).toHaveCount(1);
         }

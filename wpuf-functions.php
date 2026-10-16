@@ -170,6 +170,35 @@ add_filter( 'media_upload_tabs', 'wpuf_unset_media_tab' );
  *
  * @return array
  */
+/**
+ * Neutralize Vue/mustache template delimiters in a display string
+ *
+ * The admin form builder mounts a full-build Vue instance on #wpuf-form-builder.
+ * Any text node inside that root that contains {{ }} is compiled as a Vue
+ * expression. Term names (and other stored, lower-privilege data) are shown
+ * inside the builder, so a name such as {{constructor.constructor('...')()}}
+ * would execute as JavaScript. HTML escaping does not help because the browser
+ * decodes entities before Vue reads the template, and { } are not escaped.
+ *
+ * Inserting a zero-width space between the braces breaks the delimiter match
+ * while keeping the visible text identical. This is display-only and never
+ * touches the stored term/post data.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $value
+ *
+ * @return string
+ */
+function wpuf_neutralize_template_delimiters( $value ) {
+    if ( ! is_string( $value ) || '' === $value ) {
+        return $value;
+    }
+
+    // Zero-width space (U+200B) between each pair of braces.
+    return str_replace( [ '{{', '}}' ], [ "{\xE2\x80\x8B{", "}\xE2\x80\x8B}" ], $value );
+}
+
 function wpuf_get_post_types( $args = [] ) {
     $defaults = [];
 
@@ -2124,7 +2153,7 @@ function taxnomy_select( $terms, $attr ) {
 
     $dataset = sprintf(
         'data-required="%s" data-type="select" data-form-id="%d"',
-        $attr['required'],
+        esc_attr( $attr['required'] ),
         $attr['form_id']
     );
 
@@ -4553,7 +4582,10 @@ function wpuf_get_terms( $taxonomy = 'category' ) {
     );
 
     foreach ( $terms as $key => $term ) {
-        $items[ $term->term_id ] = $term->name;
+        // Used to build option maps for the Vue-mounted form builder. Neutralize
+        // any mustache delimiters so a crafted term name is shown as literal text
+        // and never evaluated as a Vue template (stored XSS).
+        $items[ $term->term_id ] = wpuf_neutralize_template_delimiters( $term->name );
     }
 
     return $items;

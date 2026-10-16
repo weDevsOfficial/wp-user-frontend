@@ -103,19 +103,23 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                     ];
 
                     // translators: %s: post type name and taxonomy name
-                    $tax = '<tr class="wpuf_settings_taxonomy"> <th>' . sprintf( 
+                    // This block renders inside #wpuf-form-builder, which is a Vue
+                    // instance. v-pre tells Vue to skip compiling this subtree so a
+                    // term name containing mustache syntax ({{ }}) is treated as
+                    // literal text and never evaluated as a Vue template.
+                    $tax = '<tr class="wpuf_settings_taxonomy"> <th>' . sprintf(
                         // translators: %1$s is Post type and %2$s is Tax name
-                        __( 'Default %1$s %2$s', 'wp-user-frontend' ), $post_type_selected, $tax->name ) . '</th> <td>
-                        <select multiple name="wpuf_settings[default_'.$tax->name.'][]">';
+                        __( 'Default %1$s %2$s', 'wp-user-frontend' ), esc_html( $post_type_selected ), esc_html( $tax->name ) ) . '</th> <td>
+                        <select multiple v-pre name="wpuf_settings[default_' . esc_attr( $tax->name ) . '][]">';
                     $categories = get_terms( $args );
 
                     foreach ( $categories as $category ) {
                         $selected = '';
-                        if ( in_array( $category->term_id, $default_category ) ) {
+                        if ( in_array( $category->term_id, $default_category, true ) ) {
                             $selected = 'selected ';
                         }
 
-                        $tax .= '<option ' . $selected . 'value="' . $category->term_id . '">' . $category->name . '</option>';
+                        $tax .= '<option ' . $selected . 'value="' . esc_attr( $category->term_id ) . '">' . esc_html( $category->name ) . '</option>';
                     }
 
                     $tax .='</select>

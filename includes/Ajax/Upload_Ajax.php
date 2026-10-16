@@ -60,6 +60,14 @@ class Upload_Ajax {
                 die( 'error' );
             }
         }
+
+        // Bind the request to a real upload-capable field in the form. The client
+        // supplied `type` must name a configured file/image upload field, otherwise
+        // a caller could create attachments against a form that has no upload field.
+        if ( ! $this->is_valid_upload_field( $form_id, $field_type ) ) {
+            die( 'error' );
+        }
+
         $wpuf_file = isset( $_FILES['wpuf_file'] ) ? $_FILES['wpuf_file'] : []; // WPCS: sanitization ok.
         $file_name      = pathinfo( $wpuf_file['name'], PATHINFO_FILENAME );
         $file_extension = pathinfo( $wpuf_file['name'], PATHINFO_EXTENSION );
@@ -142,6 +150,82 @@ class Upload_Ajax {
             wp_send_json_error( $attach['error'], 200 );
         }
         exit;
+    }
+
+    /**
+     * Verify the requested field is a real upload-capable field of the form
+     *
+     * The upload endpoint must not trust the client-supplied `type` value to
+     * authorize an upload. The value has to name a field that actually exists in
+     * the form and is of an upload-capable type.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int    $form_id    the form the upload targets
+     * @param string $field_type the client-supplied field name (`type`)
+     *
+     * @return bool
+     */
+    public function is_valid_upload_field( $form_id, $field_type ) {
+        if ( empty( $field_type ) ) {
+            return false;
+        }
+
+        /**
+         * Field input types that are allowed to receive uploads.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array  $upload_types
+         * @param int    $form_id
+         * @param string $field_type
+         */
+        $upload_types = apply_filters(
+            'wpuf_upload_capable_field_types',
+            [ 'image_upload', 'file_upload', 'featured_image', 'avatar' ],
+            $form_id,
+            $field_type
+        );
+
+        $form_fields = function_exists( 'wpuf_get_form_fields' ) ? wpuf_get_form_fields( $form_id ) : [];
+
+        $allowed_names = [];
+
+        if ( is_array( $form_fields ) ) {
+            foreach ( $form_fields as $field ) {
+                if ( ! is_array( $field ) ) {
+                    continue;
+                }
+
+                $input_type = isset( $field['input_type'] ) ? $field['input_type'] : '';
+                $template   = isset( $field['template'] ) ? $field['template'] : '';
+                $name       = isset( $field['name'] ) ? $field['name'] : '';
+
+                if ( '' === $name ) {
+                    continue;
+                }
+
+                if ( in_array( $input_type, $upload_types, true ) || in_array( $template, $upload_types, true ) ) {
+                    $allowed_names[] = $name;
+                }
+            }
+        }
+
+        /**
+         * Final allow-list of field names that may receive an upload for this form.
+         *
+         * Lets integrations that do not store fields as WPUF form inputs (for
+         * example weForms) register their own upload field names.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array  $allowed_names
+         * @param int    $form_id
+         * @param string $field_type
+         */
+        $allowed_names = apply_filters( 'wpuf_upload_allowed_field_names', $allowed_names, $form_id, $field_type );
+
+        return in_array( $field_type, (array) $allowed_names, true );
     }
 
     /**

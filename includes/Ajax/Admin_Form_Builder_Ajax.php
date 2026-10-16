@@ -109,12 +109,12 @@ class Admin_Form_Builder_Ajax {
                     'taxonomy'     => $tax->name,
                 ];
 
-                $cat .= '<tr class="wpuf_settings_taxonomy"> <th>' . __( 'Default ', 'wp-user-frontend' ) . $post_type . ' ' . $tax->name . '</th> <td>
-                <select multiple name="wpuf_settings[default_' . $tax->name . '][]">';
+                $cat .= '<tr class="wpuf_settings_taxonomy"> <th>' . esc_html__( 'Default ', 'wp-user-frontend' ) . esc_html( $post_type ) . ' ' . esc_html( $tax->name ) . '</th> <td>
+                <select multiple v-pre name="wpuf_settings[default_' . esc_attr( $tax->name ) . '][]">';
                 $categories = get_terms( $args );
 
                 foreach ( $categories as $category ) {
-                    $cat .= '<option value="' . $category->term_id . '">' . $category->name . '</option>';
+                    $cat .= '<option value="' . esc_attr( $category->term_id ) . '">' . esc_html( wpuf_neutralize_template_delimiters( $category->name ) ) . '</option>';
                 }
 
                 $cat .= '</select></td>';
@@ -193,8 +193,8 @@ class Admin_Form_Builder_Ajax {
 
                 if ( ! is_wp_error( $categories ) && ! empty( $categories ) ) {
                     foreach ( $categories as $category ) {
-                        $selected = in_array( $category->term_id, (array) $current_value ) ? 'selected="selected"' : '';
-                        $cat .= '<option value="' . esc_attr( $category->term_id ) . '" ' . $selected . '>' . esc_html( $category->name ) . '</option>';
+                        $selected = in_array( $category->term_id, (array) $current_value, true ) ? 'selected="selected"' : '';
+                        $cat .= '<option value="' . esc_attr( $category->term_id ) . '" ' . $selected . '>' . esc_html( wpuf_neutralize_template_delimiters( $category->name ) ) . '</option>';
                     }
                 }
 

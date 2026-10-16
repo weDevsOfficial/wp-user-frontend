@@ -223,6 +223,16 @@ final class WP_User_Frontend {
 
         // Gateway helper functions
         require_once __DIR__ . '/Lib/Gateway/gateway-functions.php';
+
+        // Old global class names (develop loaded them on every request) resolve
+        // to their namespaced classes when outside code asks for them.
+        spl_autoload_register(
+            function ( $class_name ) {
+                if ( 'WPUF_Frontend_Render_Form' === $class_name ) {
+                    class_alias( \WeDevs\Wpuf\Frontend_Render_Form::class, 'WPUF_Frontend_Render_Form' );
+                }
+            }
+        );
     }
 
     /**

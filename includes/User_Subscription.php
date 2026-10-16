@@ -248,6 +248,20 @@ class User_Subscription {
     }
 
     /**
+     * Delete the subscription pack of the user (a recurring PayPal pack is
+     * cancelled at PayPal too).
+     *
+     * @deprecated WPUF_SINCE Use \WeDevs\Wpuf\Admin\Subscriptions\User_Profile::remove_user_pack().
+     *
+     * @return void
+     */
+    public function delete_pack() {
+        _deprecated_function( __METHOD__, 'WPUF_SINCE', '\\WeDevs\\Wpuf\\Admin\\Subscriptions\\User_Profile::remove_user_pack()' );
+
+        \WeDevs\Wpuf\Admin\Subscriptions\User_Profile::remove_user_pack( $this->user->id );
+    }
+
+    /**
      * Determine if the user has used a Free pack before
      *
      * @param int $pack_id

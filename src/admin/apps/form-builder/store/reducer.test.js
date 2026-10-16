@@ -1,4 +1,4 @@
-import reducer, { DEFAULT_STATE, generateFieldId, withInnerFieldIds } from './reducer';
+import reducer, { DEFAULT_STATE, generateFieldId, stripSessionIds, withInnerFieldIds } from './reducer';
 import {
     SET_FORM_FIELDS,
     ADD_FIELD,
@@ -874,5 +874,25 @@ describe( 'inner field ids on load', () => {
         expect( state.formFields[ 1 ].inner_fields[ 1 ].id ).toBe( 77 );
         expect( state.formFields[ 2 ] ).toBe( stored[ 2 ] );
         expect( withInnerFieldIds( state.formFields )[ 0 ] ).toBe( state.formFields[ 0 ] );
+    } );
+} );
+
+describe( 'stripSessionIds', () => {
+    test( 'the save sends inner fields as stored: no id the builder session gave them', () => {
+        const stored = [
+            { id: 1, template: 'column_field', inner_fields: { 'column-1': [ { name: 'a', template: 'text_field' } ], 'column-2': [ { id: 55, name: 'b', template: 'text_field' } ] } },
+            { id: 2, template: 'repeat_field', inner_fields: [ { name: 'c', template: 'text_field' } ] },
+        ];
+        const loaded = withInnerFieldIds( stored );
+
+        expect( loaded[ 0 ].inner_fields[ 'column-1' ][ 0 ].id ).toBeTruthy();
+        expect( loaded[ 1 ].inner_fields[ 0 ].id ).toBeTruthy();
+
+        const saved = stripSessionIds( loaded );
+
+        expect( saved[ 0 ].inner_fields[ 'column-1' ][ 0 ] ).toEqual( { name: 'a', template: 'text_field' } );
+        expect( saved[ 0 ].inner_fields[ 'column-2' ][ 0 ] ).toEqual( { id: 55, name: 'b', template: 'text_field' } );
+        expect( saved[ 1 ].inner_fields[ 0 ] ).toEqual( { name: 'c', template: 'text_field' } );
+        expect( saved[ 0 ].id ).toBe( 1 );
     } );
 } );

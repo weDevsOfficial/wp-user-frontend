@@ -85,4 +85,59 @@ class ProAdversarialReviewFixesTest extends WP_UnitTestCase {
         $_COOKIE['wpuf_guest_upload'] = 'tok';
         $this->assertTrue( $claim->invoke( null, $guest ) );
     }
+
+    /** AR-14: modules can still register a deactivation callback. */
+    public function test_module_deactivation_hook_helper_is_back() {
+        $this->assertTrue( function_exists( 'wpuf_register_deactivation_hook' ) );
+    }
+
+    /** AR-16: coupons sharing a code (allowed by the classic editor) stay editable; a partial update keeps the status. */
+    public function test_coupon_edits_keep_old_duplicates_and_status() {
+        wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+        $store = wpuf()->platform()->get( CouponStore::class );
+
+        $first  = $store->save( [ 'code' => 'TWIN', 'type' => 'amount', 'amount' => 5, 'status' => 'publish' ] );
+        $second = self::factory()->post->create( [ 'post_type' => 'wpuf_coupon', 'post_status' => 'draft', 'post_title' => 'TWIN' ] );
+        update_post_meta( $second, '_code', 'TWIN' );
+        update_post_meta( $second, '_type', 'amount' );
+        update_post_meta( $second, '_amount', 3 );
+
+        $saved = $store->save( [ 'amount' => 4 ], $second );
+
+        $this->assertNotWPError( $saved, 'editing an old duplicate is not refused' );
+        $this->assertSame( 'draft', get_post_status( $second ), 'a partial update keeps the status' );
+        $this->assertWPError( $store->save( [ 'code' => 'TWIN', 'type' => 'amount', 'amount' => 1 ] ), 'a new coupon still may not take a used code' );
+        $this->assertNotWPError( $first );
+    }
+
+    /** AR-18: visitors do not read an administrator's activity. */
+    public function test_user_activity_route_hides_administrators_from_visitors() {
+        if ( ! class_exists( 'WPUF_User_Activity' ) && defined( 'WPUF_PRO_MODULES' ) ) {
+            require_once WPUF_PRO_MODULES . '/user-activity/user_activity.php';
+        }
+
+        if ( ! class_exists( 'WPUF_User_Activity' ) ) {
+            $this->markTestSkipped( 'The user activity module is not loaded.' );
+        }
+
+        $module = new ReflectionClass( 'WPUF_User_Activity' );
+        $module = $module->newInstanceWithoutConstructor();
+        $admin  = self::factory()->user->create( [ 'role' => 'administrator' ] );
+        $member = self::factory()->user->create( [ 'role' => 'subscriber' ] );
+        $ask    = function ( $user_id ) use ( $module ) {
+            $request = new WP_REST_Request( 'GET', '/wpuf/v1/user-activity/' . $user_id );
+            $request->set_param( 'user_id', $user_id );
+
+            return $module->rest_can_read( $request );
+        };
+
+        wp_set_current_user( 0 );
+
+        $this->assertFalse( $ask( $admin ) );
+        $this->assertTrue( $ask( $member ) );
+        $this->assertFalse( $ask( 999999 ), 'no such user' );
+
+        wp_set_current_user( $admin );
+        $this->assertTrue( $ask( $admin ) );
+    }
 }

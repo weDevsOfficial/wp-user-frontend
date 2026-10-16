@@ -570,3 +570,278 @@ function wpuf_rest_post_js( $path, array $data = [] ) {
         wp_json_encode( $options )
     );
 }
+
+/*
+ * Removed from wpuf-functions.php by the 5.0 clean-up; kept as deprecated public API
+ * so outside code calling them does not fatal.
+ */
+
+/**
+ * Upload the files of `wpuf_post_attachments` (the pre-2.0 attachment input)
+ *
+ * @param int $post_id Post id
+ *
+ * @deprecated WPUF_SINCE Not used by WP User Frontend any more; kept as public API.
+ */
+function wpuf_upload_attachment( $post_id ) {
+    _deprecated_function( __FUNCTION__, 'WPUF_SINCE' );
+
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is verified by the submit/draft handler that calls this.
+    if ( ! isset( $_FILES['wpuf_post_attachments'] ) ) {
+        return false;
+    }
+
+    $fields = (int) wpuf_get_option( 'attachment_num' );
+
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is verified by the submit/draft handler that calls this.
+    $wpuf_post_attachments = isset( $_FILES['wpuf_post_attachments'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_FILES['wpuf_post_attachments'] ) ) : [];
+
+    for ( $i = 0; $i < $fields; $i++ ) {
+        $file_name = basename( $wpuf_post_attachments['name'][ $i ] );
+
+        if ( $file_name ) {
+            if ( $file_name ) {
+                $upload = [
+                    'name'     => $wpuf_post_attachments['name'][ $i ],
+                    'type'     => $wpuf_post_attachments['type'][ $i ],
+                    'tmp_name' => $wpuf_post_attachments['tmp_name'][ $i ],
+                    'error'    => $wpuf_post_attachments['error'][ $i ],
+                    'size'     => $wpuf_post_attachments['size'][ $i ],
+                ];
+
+                wp_handle_upload( $upload );
+            }//file exists
+        }// end for
+    }
+}
+
+/**
+ * Render a settings text input (old settings screen markup)
+ *
+ * @param array $args Field arguments
+ *
+ * @return string
+ *
+ * @deprecated WPUF_SINCE Not used by WP User Frontend any more; kept as public API.
+ */
+function wpuf_text( $args = [] ) {
+    _deprecated_function( __FUNCTION__, 'WPUF_SINCE' );
+
+    $defaults = [
+        'id'           => '',
+        'name'         => isset( $name ) ? $name : 'text',
+        'value'        => isset( $value ) ? $value : null,
+        'label'        => isset( $label ) ? $label : null,
+        'desc'         => isset( $desc ) ? $desc : null,
+        'placeholder'  => '',
+        'class'        => 'regular-text',
+        'disabled'     => false,
+        'autocomplete' => '',
+        'data'         => false,
+    ];
+
+    $args = wp_parse_args( $args, $defaults );
+
+    $class    = implode( ' ', array_map( 'sanitize_html_class', explode( ' ', $args['class'] ) ) );
+    $disabled = '';
+
+    if ( $args['disabled'] ) {
+        $disabled = ' disabled="disabled"';
+    }
+
+    $data = '';
+
+    if ( ! empty( $args['data'] ) ) {
+        foreach ( $args['data'] as $key => $value ) {
+            $data .= 'data-' . $key . '="' . esc_attr( $value ) . '" ';
+        }
+    }
+
+    $output = '<span id="wpuf-' . $args['name'] . '-wrap">';
+
+    if ( ! empty( $args['label'] ) ) {
+        $output .= '<label class="wpuf-label" for="' . $args['id'] . '">' . esc_html( $args['label'] ) . '</label>';
+    }
+
+    if ( ! empty( $args['desc'] ) ) {
+        $output .= '<span class="wpuf-description">' . wp_kses_post( $args['desc'] ) . '</span>';
+    }
+
+    $output .= '<input type="text" name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['id'] ) . '" autocomplete="' . esc_attr( $args['autocomplete'] ) . '" value="' . esc_attr( $args['value'] ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="' . $class . '" ' . $data . '' . $disabled . '/>';
+
+    $output .= '</span>';
+
+    return $output;
+}
+
+/**
+ * Whether the license expired more than 15 days ago
+ *
+ * @since 2.3.13
+ *
+ * @return bool
+ *
+ * @deprecated WPUF_SINCE Not used by WP User Frontend any more; kept as public API.
+ */
+function wpuf_is_license_expired() {
+    _deprecated_function( __FUNCTION__, 'WPUF_SINCE' );
+
+    $remote_addr = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+
+    if ( in_array( $remote_addr, [ '127.0.0.1', '::1' ], true ) ) {
+        return false;
+    }
+
+    $license_status = get_option( 'wpuf_license_status' );
+
+    // seems like this wasn't activated at all
+    if ( ! isset( $license_status->update ) ) {
+        return false;
+    }
+
+    // if license has expired more than 15 days ago
+    $update    = strtotime( $license_status->update );
+    $threshold = strtotime( '+15 days', $update );
+
+    // printf( 'Validity: %s, Threshold: %s', date( 'd-m-Y', $update), date( 'd-m-Y', $threshold ) );
+
+    if ( time() >= $threshold ) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Print a post status label for the user dashboard
+ *
+ * @param string $status Post status
+ *
+ * @deprecated WPUF_SINCE Not used by WP User Frontend any more; kept as public API.
+ */
+function wpuf_admin_post_status( $status ) {
+    _deprecated_function( __FUNCTION__, 'WPUF_SINCE' );
+
+    $fontcolor = '#000';
+    $title = '';
+    if ( 'publish' === $status ) {
+        $title     = __( 'Published', 'wp-user-frontend' );
+        $fontcolor = '#009200';
+    } elseif ( 'draft' === $status || 'private' === $status ) {
+        $title     = __( 'Draft', 'wp-user-frontend' );
+        $fontcolor = '#bbbbbb';
+    } elseif ( 'pending' === $status ) {
+        $title     = __( 'Pending', 'wp-user-frontend' );
+        $fontcolor = '#C00202';
+    } elseif ( 'future' === $status ) {
+        $title     = __( 'Scheduled', 'wp-user-frontend' );
+        $fontcolor = '#bbbbbb';
+    }
+
+    echo wp_kses_post( '<span style="color:' . $fontcolor . ';">' . $title . '</span>' );
+}
+
+/**
+ * URL of the Pro badge icon
+ *
+ * @since 4.1.0
+ *
+ * @return string
+ *
+ * @deprecated WPUF_SINCE Not used by WP User Frontend any more; kept as public API.
+ */
+function wpuf_get_pro_icon() {
+    _deprecated_function( __FUNCTION__, 'WPUF_SINCE' );
+
+    return WPUF_ASSET_URI . '/images/pro-badge.svg';
+}
+
+/**
+ * Print a value inside <pre> (debug helper)
+ *
+ * @param mixed $data Value
+ *
+ * @deprecated WPUF_SINCE The settings screen is React; prints nothing.
+ */
+function wpuf_pre( $data = null ) {
+    _deprecated_function( __FUNCTION__, 'WPUF_SINCE' );
+    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r -- the helper's job.
+    echo '<pre>' . esc_html( print_r( $data, true ) ) . '</pre>';
+}
+
+/**
+ * Old settings screen multiselect field (the React settings screen renders its own)
+ *
+ * @param array $args Field arguments
+ *
+ * @deprecated WPUF_SINCE The settings screen is React; prints nothing.
+ */
+function wpuf_settings_multiselect( $args = null ) {
+    _deprecated_function( __FUNCTION__, 'WPUF_SINCE' );
+}
+
+/**
+ * Old settings screen masked password field (the React settings screen renders its own)
+ *
+ * @param array $args Field arguments
+ *
+ * @deprecated WPUF_SINCE The settings screen is React; prints nothing.
+ */
+function wpuf_settings_password_preview( $args = null ) {
+    _deprecated_function( __FUNCTION__, 'WPUF_SINCE' );
+}
+
+/**
+ * Old settings screen login layout field (the React settings screen renders its own)
+ *
+ * @param array $args Field arguments
+ *
+ * @deprecated WPUF_SINCE The settings screen is React; prints nothing.
+ */
+function wpuf_render_login_layout_field( $args = null ) {
+    _deprecated_function( __FUNCTION__, 'WPUF_SINCE' );
+}
+
+/**
+ * Old settings screen AI key field (the React settings screen renders its own)
+ *
+ * @param array $args Field arguments
+ *
+ * @deprecated WPUF_SINCE The settings screen is React; prints nothing.
+ */
+function wpuf_ai_api_key_field( $args = null ) {
+    _deprecated_function( __FUNCTION__, 'WPUF_SINCE' );
+}
+
+/**
+ * Old settings screen AI temperature field (the React settings screen renders its own)
+ *
+ * @param array $args Field arguments
+ *
+ * @deprecated WPUF_SINCE The settings screen is React; prints nothing.
+ */
+function wpuf_ai_temperature_field( $args = null ) {
+    _deprecated_function( __FUNCTION__, 'WPUF_SINCE' );
+}
+
+/**
+ * Old settings screen login section header (the React settings screen renders its own)
+ *
+ * @param array $args Field arguments
+ *
+ * @deprecated WPUF_SINCE The settings screen is React; prints nothing.
+ */
+function wpuf_render_login_settings_section_header( $args = null ) {
+    _deprecated_function( __FUNCTION__, 'WPUF_SINCE' );
+}
+
+/**
+ * Old settings screen profile form field (the React settings screen renders its own)
+ *
+ * @param mixed $form Field arguments
+ *
+ * @deprecated WPUF_SINCE The settings screen is React; prints nothing.
+ */
+function wpuf_settings_field_profile( $form = null ) {
+    _deprecated_function( __FUNCTION__, 'WPUF_SINCE' );
+}

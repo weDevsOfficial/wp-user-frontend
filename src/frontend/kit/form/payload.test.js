@@ -1,4 +1,4 @@
-import { buildPayload } from './payload';
+import { afterSubmit, buildPayload } from './payload';
 
 const schema = { id: 7, page_id: 3, nonces: { submit: 'n' } };
 
@@ -35,5 +35,28 @@ describe( 'buildPayload', () => {
         expect( buildPayload( { ...schema, mode: 'create', form_type: 'post' }, { post_title: 'A' }, visible, fields ).wpuf_form_status ).toBe( 'new' );
         expect( buildPayload( { ...schema, mode: 'edit', form_type: 'post', post: { id: 9 } }, { post_title: 'A' }, visible, fields ).wpuf_form_status ).toBeUndefined();
         expect( buildPayload( { ...schema, mode: 'create', form_type: 'registration' }, { post_title: 'A' }, visible, fields ).wpuf_form_status ).toBeUndefined();
+    } );
+} );
+
+describe( 'afterSubmit', () => {
+    const original = global.window;
+
+    afterEach( () => {
+        global.window = original;
+    } );
+
+    test( 'reports whether the page is leaving, so the form stays busy until it unloads', () => {
+        const assign = jest.fn();
+
+        global.window = { location: { href: 'https://example.com/form/', assign } };
+
+        const shown = jest.fn();
+
+        expect( afterSubmit( { show_message: true, message: 'Saved' }, schema, shown ) ).toBe( false );
+        expect( shown ).toHaveBeenCalledWith( 'Saved' );
+        expect( assign ).not.toHaveBeenCalled();
+
+        expect( afterSubmit( { redirect_to: 'https://example.com/post/' }, schema, shown ) ).toBe( true );
+        expect( assign ).toHaveBeenCalledWith( 'https://example.com/post/' );
     } );
 } );

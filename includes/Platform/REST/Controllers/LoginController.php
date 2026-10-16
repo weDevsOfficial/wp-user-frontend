@@ -93,7 +93,7 @@ class LoginController extends RestController {
      * @return \WP_REST_Response|WP_Error
      */
     public function sign_in( WP_REST_Request $request ) {
-        if ( ! $this->limiter->allow( 'login_form', 10 ) ) {
+        if ( ! $this->account_attempt_allowed( $this->limiter, 'login_form', $request->get_param( 'log' ), 10 ) ) {
             return $this->too_many();
         }
 
@@ -115,7 +115,7 @@ class LoginController extends RestController {
      * @return \WP_REST_Response|WP_Error
      */
     public function lost_password( WP_REST_Request $request ) {
-        if ( ! $this->limiter->allow( 'login_lost_password', 5 ) ) {
+        if ( ! $this->account_attempt_allowed( $this->limiter, 'login_lost_password', $request->get_param( 'user_login' ), 5 ) ) {
             return $this->too_many();
         }
 
@@ -143,7 +143,7 @@ class LoginController extends RestController {
      * @return \WP_REST_Response|WP_Error
      */
     public function reset_password( WP_REST_Request $request ) {
-        if ( ! $this->limiter->allow( 'login_reset_password', 10 ) ) {
+        if ( ! $this->account_attempt_allowed( $this->limiter, 'login_reset_password', $request->get_param( 'login' ), 10 ) ) {
             return $this->too_many();
         }
 

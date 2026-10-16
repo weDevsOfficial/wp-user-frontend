@@ -181,4 +181,15 @@ class RendererTest extends WP_UnitTestCase {
         $this->assertStringNotContainsString( 'data-wpuf-mount', $html );
         $this->assertStringContainsString( 'name="form_id" value="' . $form_id . '"', $html );
     }
+
+    /** AR-15: React form pages carry the classic `wpuf_frontend` object for theme / add-on scripts. */
+    public function test_forms_app_localizes_the_classic_frontend_object() {
+        $this->build( 'forms' );
+        $this->renderer()->enqueue( 'forms' );
+
+        $data = (string) wp_scripts()->get_data( 'wpuf-frontend-forms', 'data' );
+
+        $this->assertStringContainsString( 'var wpuf_frontend', $data );
+        $this->assertStringContainsString( '"nonce"', $data );
+    }
 }

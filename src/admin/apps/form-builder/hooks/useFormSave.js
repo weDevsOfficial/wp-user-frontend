@@ -2,6 +2,7 @@ import { useState, useCallback } from '@wordpress/element';
 import { select as selectStore, useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { STORE_NAME } from '../store';
+import { stripSessionIds } from '../store/reducer';
 import { fireBeforeSave, fireAfterSave } from '../extensions/hooks';
 import { showToast } from '../common/Toast';
 import { openSaveValidationError } from '../common/BuilderDialogs';
@@ -97,7 +98,7 @@ export default function useFormSave() {
             method: 'POST',
             data: {
                 form_data: formData,
-                form_fields: JSON.stringify( formFields ),
+                form_fields: JSON.stringify( stripSessionIds( formFields ) ),
                 notifications: JSON.stringify( notifications ),
                 settings: JSON.stringify( saveSettings ),
                 touched: isDirty ? '1' : '',
@@ -115,6 +116,15 @@ export default function useFormSave() {
 
                 if ( keep && response.form_settings ) {
                     setFormSettings( response.form_settings );
+                }
+
+                if ( keep ) {
+                    // The saved copies above are the new baseline: compare
+                    // later edits with them, or the form never turns clean.
+                    const store = selectStore( STORE_NAME );
+
+                    sent.formFields = store.getFormFields();
+                    sent.settings = store.getSettings();
                 }
 
                 setIsSaving( false );

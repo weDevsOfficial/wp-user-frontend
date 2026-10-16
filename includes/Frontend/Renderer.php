@@ -365,6 +365,30 @@ class Renderer implements App_Renderer {
         wp_enqueue_style( 'wpuf-frontend-' . $app . '-style' );
         wp_enqueue_script( 'wpuf-frontend-' . $app );
 
+        // Theme and add-on scripts written for the classic form read its
+        // `wpuf_frontend` object (nonce, REST data, asset URL): React form
+        // pages get the same keys the checkout page has.
+        if ( 'forms' === $app && ! wp_script_is( 'wpuf-frontend-form', 'enqueued' ) ) {
+            $data = (string) wp_scripts()->get_data( 'wpuf-frontend-forms', 'data' );
+
+            if ( false === strpos( $data, 'var wpuf_frontend ' ) ) {
+                wp_localize_script(
+                    'wpuf-frontend-forms',
+                    'wpuf_frontend',
+                    /** This filter is documented in includes/Frontend.php */
+                    apply_filters(
+                        'wpuf_frontend_object',
+                        [
+                            'asset_url' => WPUF_ASSET_URI,
+                            'ajaxurl'   => admin_url( 'admin-ajax.php' ),
+                            'nonce'     => wp_create_nonce( 'wpuf_nonce' ),
+                            'rest'      => wpuf_rest_script_data(),
+                        ]
+                    )
+                );
+            }
+        }
+
         /**
          * Fires when a frontend React app is enqueued: add-ons enqueue the
          * bundles that register their field components with the kit.

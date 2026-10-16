@@ -26,7 +26,10 @@ const SECTIONS = [
  * @param {*}      content  JSON value.
  */
 const download = ( filename, content ) => {
-    const url = window.URL.createObjectURL( new window.Blob( [ JSON.stringify( content ) ], { type: 'application/json' } ) );
+    // Slashes escaped like wp_json_encode() (develop's export): the import refuses
+    // a file holding `<script>…</script>`, which a Custom HTML field may carry.
+    const json = JSON.stringify( content ).replace( /\//g, '\\/' );
+    const url = window.URL.createObjectURL( new window.Blob( [ json ], { type: 'application/json' } ) );
     const link = document.createElement( 'a' );
 
     link.href = url;

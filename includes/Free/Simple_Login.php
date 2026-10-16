@@ -588,7 +588,9 @@ class Simple_Login {
 
         $enable_turnstile = wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' );
 
-        if ( 'on' !== $enable_turnstile ) {
+        // The login form shows the widget only with "Turnstile in login form"
+        // on (login-form.php, Login_Schema): without it there is no token to check.
+        if ( 'on' !== $enable_turnstile || 'on' !== wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' ) ) {
             return true;
         }
 

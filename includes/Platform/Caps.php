@@ -34,9 +34,10 @@ class Caps {
     const MANAGE_SETTINGS = 'manage_settings';
 
     /**
-     * Site-wide actions develop kept for administrators: accept / reject / delete
-     * payments, Tools danger zone, onboarding. Defaults to `manage_options`, not
-     * `wpuf_admin_role()`.
+     * Site-wide actions for administrators: accept / reject / delete payments
+     * (develop checked `manage_options` on accept only; delete and reject now
+     * need it too), form import, the settings save, the Tools danger zone,
+     * onboarding. Defaults to `manage_options`, not `wpuf_admin_role()`.
      */
     const MANAGE_SITE = 'manage_site';
 

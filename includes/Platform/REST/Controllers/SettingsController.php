@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf\Platform\REST\Controllers;
 
+use WeDevs\Wpuf\Platform\Caps;
 use WeDevs\Wpuf\Platform\Stores\Normalizers;
 use WeDevs\Wpuf\Platform\Stores\Stores;
 use WeDevs\Wpuf\Platform\REST\RestController;
@@ -69,7 +70,7 @@ class SettingsController extends RestController {
                 [
                     'methods'             => WP_REST_Server::CREATABLE,
                     'callback'            => [ $this, 'save_items' ],
-                    'permission_callback' => [ $this, 'permission_check' ],
+                    'permission_callback' => [ $this, 'save_permission_check' ],
                 ],
             ]
         );
@@ -86,6 +87,19 @@ class SettingsController extends RestController {
      */
     public function permission_check() {
         return current_user_can( wpuf_admin_role() );
+    }
+
+    /**
+     * Who may save: the settings carry gateway credentials, API keys and
+     * mail templates, and develop saved them through options.php, which
+     * needs `manage_options` whatever `wpuf_admin_role` is filtered to.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    public function save_permission_check() {
+        return Caps::can( Caps::MANAGE_SITE );
     }
 
     /**

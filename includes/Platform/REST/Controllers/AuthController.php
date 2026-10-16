@@ -147,7 +147,7 @@ class AuthController extends RestController {
      * @return \WP_REST_Response|WP_Error
      */
     public function login( WP_REST_Request $request ) {
-        if ( ! $this->limiter->allow( 'auth_login', 10 ) ) {
+        if ( ! $this->account_attempt_allowed( $this->limiter, 'auth_login', $request->get_param( 'log' ), 10 ) ) {
             return $this->too_many();
         }
 
@@ -172,7 +172,7 @@ class AuthController extends RestController {
      * @return \WP_REST_Response|WP_Error
      */
     public function lost_password( WP_REST_Request $request ) {
-        if ( ! $this->limiter->allow( 'auth_lost_password', 5 ) ) {
+        if ( ! $this->account_attempt_allowed( $this->limiter, 'auth_lost_password', $request->get_param( 'user_login' ), 5 ) ) {
             return $this->too_many();
         }
 

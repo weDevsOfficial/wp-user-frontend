@@ -219,9 +219,12 @@ export function afterSubmit( response, schema, showMessage ) {
     if ( response.show_message ) {
         showMessage( response.message || __( 'Thank you.', 'wp-user-frontend' ) );
 
-        return;
+        return false;
     }
 
     // The classic form sets `window.location = redirect_to`: an empty target reloads the page.
     window.location.assign( response.redirect_to || window.location.href );
+
+    // Leaving the page: the caller keeps the form busy until it unloads.
+    return true;
 }

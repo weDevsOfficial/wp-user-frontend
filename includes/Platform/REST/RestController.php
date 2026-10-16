@@ -249,4 +249,27 @@ abstract class RestController extends WP_REST_Controller implements RestRoute {
 
         return is_array( $value ) ? $value : (array) $value;
     }
+
+    /**
+     * Rate limit of a login / password request: per account name and, much
+     * looser, per client address. Behind a proxy that does not pass the
+     * visitor's address every visitor shares one address (map the real one
+     * with the `wpuf_rate_limit_client_address` filter); keying on the
+     * account too keeps one visitor's typos from locking the others out.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param \WeDevs\Wpuf\Platform\Contracts\Rate_Limiter $limiter Limiter
+     * @param string                                          $key     What is limited, e.g. 'login_form'
+     * @param mixed                                           $account The submitted user name or e-mail
+     * @param int                                             $limit   Hits per account and minute (the address gets six times as many)
+     *
+     * @return bool
+     */
+    protected function account_attempt_allowed( $limiter, $key, $account, $limit ) {
+        $account = is_scalar( $account ) ? strtolower( trim( (string) $account ) ) : '';
+
+        return $limiter->allow( $key . '_address', $limit * 6 )
+            && $limiter->allow( $key . '|' . md5( $account ), $limit );
+    }
 }

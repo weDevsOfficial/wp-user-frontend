@@ -35,4 +35,17 @@ class LegacyClassAliasTest extends WP_UnitTestCase {
         $this->assertTrue( method_exists( 'WeDevs\\Wpuf\\Ajax\\Upload_Ajax', 'attach_html' ) );
         $this->assertTrue( method_exists( 'WeDevs\\Wpuf\\Ajax\\Address_Form_Ajax', 'wpuf_ajax_address_form' ) );
     }
+
+    public function test_removed_public_api_still_resolves() {
+        $this->assertTrue( class_exists( 'WPUF_Frontend_Render_Form' ) );
+        $this->assertTrue( method_exists( 'WPUF_Frontend_Render_Form', 'render_form' ) );
+        $this->assertTrue( method_exists( wpuf_get_user( 1 )->subscription(), 'delete_pack' ) );
+
+        foreach ( [ 'wpuf_upload_attachment', 'wpuf_text', 'wpuf_pre', 'wpuf_is_license_expired', 'wpuf_admin_post_status', 'wpuf_get_pro_icon', 'wpuf_settings_multiselect', 'wpuf_settings_password_preview', 'wpuf_render_login_layout_field', 'wpuf_ai_api_key_field', 'wpuf_ai_temperature_field', 'wpuf_render_login_settings_section_header', 'wpuf_settings_field_profile' ] as $function ) {
+            $this->assertTrue( function_exists( $function ), $function );
+        }
+
+        $this->setExpectedDeprecated( 'wpuf_get_pro_icon' );
+        $this->assertStringEndsWith( '/images/pro-badge.svg', wpuf_get_pro_icon() );
+    }
 }

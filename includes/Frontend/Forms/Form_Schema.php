@@ -1067,11 +1067,39 @@ class Form_Schema implements Form_Schema_Provider {
                 return is_wp_error( $terms ) ? [] : array_map( 'intval', $terms );
         }
 
+        if ( $name && in_array( $field['template'], [ 'image_upload', 'file_upload' ], true ) && method_exists( $object, 'is_meta' ) && $object->is_meta( $field ) ) {
+            return $this->upload_ids( get_post_meta( $post_id, $name, false ) );
+        }
+
         if ( $name && method_exists( $object, 'is_meta' ) && $object->is_meta( $field ) ) {
             return $object->get_meta( $post_id, $name, 'post' );
         }
 
         return null;
+    }
+
+    /**
+     * Attachment ids of an upload field from all its meta rows, as the
+     * classic fields read them (Form_Field_Image / Pro Field_File): one id
+     * per row (Pro profile files, older posts), or one row holding a
+     * serialized / plain array or a comma list. Reading only the first row
+     * showed one file and the next save dropped the others.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $rows Meta rows (get_*_meta( ..., false ))
+     *
+     * @return int[]
+     */
+    private function upload_ids( $rows ) {
+        $rows = array_values( (array) $rows );
+
+        if ( 1 === count( $rows ) ) {
+            $first = is_serialized( $rows[0] ) ? wpuf_safe_unserialize( $rows[0] ) : $rows[0];
+            $rows  = is_array( $first ) ? $first : explode( ',', (string) $first );
+        }
+
+        return array_values( array_filter( array_map( 'intval', $rows ) ) );
     }
 
     /**
@@ -1113,6 +1141,12 @@ class Form_Schema implements Form_Schema_Provider {
             $id = Stores::users()->photo_id( $user_id, $field['template'], $name );
 
             return $id ? $id : '';
+        }
+
+        if ( in_array( $field['template'], [ 'image_upload', 'file_upload' ], true ) ) {
+            $ids = $this->upload_ids( get_user_meta( $user_id, $name, false ) );
+
+            return $ids ? $ids : null;
         }
 
         $value = Stores::users()->meta( $user_id, $name );

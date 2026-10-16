@@ -218,13 +218,16 @@ class FormListController extends RestController {
          */
         $extra_columns = (array) apply_filters( 'wpuf_form_submissions_columns', [], $form_id, $settings );
 
+        // One query for the page's authors; terms come from the cache WP_Query primed.
+        cache_users( array_unique( array_map( 'intval', wp_list_pluck( $query->posts, 'post_author' ) ) ) );
+
         foreach ( $query->posts as $post ) {
             $author = get_userdata( $post->post_author );
             $terms  = [];
 
             foreach ( $taxonomies as $taxonomy ) {
-                $names                    = wp_get_post_terms( $post->ID, $taxonomy->name, [ 'fields' => 'names' ] );
-                $terms[ $taxonomy->name ] = is_wp_error( $names ) ? [] : array_map( 'wp_strip_all_tags', $names );
+                $list                     = get_the_terms( $post, $taxonomy->name );
+                $terms[ $taxonomy->name ] = is_array( $list ) ? array_map( 'wp_strip_all_tags', wp_list_pluck( $list, 'name' ) ) : [];
             }
 
             if ( 'publish' === $post->post_status ) {

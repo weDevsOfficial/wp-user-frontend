@@ -123,7 +123,9 @@ class ToolsController extends RestController {
                 ],
             ]
         );
-        $this->route( $base . '/import', WP_REST_Server::CREATABLE, 'import', $forms );
+        // Develop let only `manage_options` upload the JSON file (Admin_Tools::enable_json_upload()),
+        // and an import carries form settings such as a registration role.
+        $this->route( $base . '/import', WP_REST_Server::CREATABLE, 'import', $site );
         $this->route( $base . '/shortcodes', WP_REST_Server::READABLE, 'get_shortcodes', $forms );
         $this->route( $base . '/onboarding', WP_REST_Server::READABLE, 'get_onboarding', $site );
     }

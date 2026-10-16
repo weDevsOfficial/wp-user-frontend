@@ -90,7 +90,8 @@ export function withInnerFieldIds( fields ) {
         return fields;
     }
 
-    const ensure = ( field ) => ( field && ! field.id ? { ...field, id: generateFieldId() } : field );
+    // Marked so the save sends the inner field as stored (stripSessionIds()).
+    const ensure = ( field ) => ( field && ! field.id ? { ...field, id: generateFieldId(), _wpuf_session_id: true } : field );
 
     return fields.map( ( field ) => {
         if ( ! field || ! field.inner_fields ) {
@@ -113,6 +114,49 @@ export function withInnerFieldIds( fields ) {
             return {
                 ...field,
                 inner_fields: Object.fromEntries( columns.map( ( [ key, list ] ) => [ key, Array.isArray( list ) ? list.map( ensure ) : list ] ) ),
+            };
+        }
+
+        return field;
+    } );
+}
+
+/**
+ * The fields as they are saved: inner fields drop the id withInnerFieldIds()
+ * gave them for this builder session, so an untouched save stores the same
+ * bytes (the stored inner fields had no id).
+ *
+ * @param {Array} fields Form fields.
+ * @return {Array} Fields without session ids.
+ */
+export function stripSessionIds( fields ) {
+    if ( ! Array.isArray( fields ) ) {
+        return fields;
+    }
+
+    const strip = ( field ) => {
+        if ( ! field || ! field._wpuf_session_id ) {
+            return field;
+        }
+
+        const { id, _wpuf_session_id: marker, ...rest } = field; // eslint-disable-line no-unused-vars
+
+        return rest;
+    };
+
+    return fields.map( ( field ) => {
+        if ( ! field || ! field.inner_fields ) {
+            return field;
+        }
+
+        if ( Array.isArray( field.inner_fields ) ) {
+            return { ...field, inner_fields: field.inner_fields.map( strip ) };
+        }
+
+        if ( 'object' === typeof field.inner_fields ) {
+            return {
+                ...field,
+                inner_fields: Object.fromEntries( Object.entries( field.inner_fields ).map( ( [ key, list ] ) => [ key, Array.isArray( list ) ? list.map( strip ) : list ] ) ),
             };
         }
 

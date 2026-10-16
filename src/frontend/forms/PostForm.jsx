@@ -29,6 +29,10 @@ export default function PostForm( { schema: boot, root } ) {
     const [ draftId, setDraftId ] = useState( 0 );
     const [ saved, setSaved ] = useState( '' );
     const dirty = useRef( false );
+    // Set once a submit succeeded and the page is redirecting: the form stays
+    // busy (the classic form kept its button disabled), so a second click or
+    // Enter cannot post the entry again while the next page loads.
+    const leaving = useRef( false );
     const initial = useRef( null );
 
     // Like the classic warningOnExit(): only a real change arms the exit warning (a focus or blur does not).
@@ -127,6 +131,10 @@ export default function PostForm( { schema: boot, root } ) {
     };
 
     const onSubmit = async () => {
+        if ( leaving.current ) {
+            return;
+        }
+
         setFormError( '' );
 
         // Like the classic form: the fields on screen are checked (the hidden steps are the server's).
@@ -187,7 +195,7 @@ export default function PostForm( { schema: boot, root } ) {
             }
 
             dirty.current = false;
-            afterSubmit( response, schema, ( message ) => {
+            leaving.current = afterSubmit( response, schema, ( message ) => {
                 setDone( message );
                 window.setTimeout( () => root.scrollIntoView( { behavior: 'smooth', block: 'start' } ), 0 );
             } );
@@ -200,7 +208,9 @@ export default function PostForm( { schema: boot, root } ) {
                 showError( e );
             }
         } finally {
-            setBusy( false );
+            if ( ! leaving.current ) {
+                setBusy( false );
+            }
         }
     };
 

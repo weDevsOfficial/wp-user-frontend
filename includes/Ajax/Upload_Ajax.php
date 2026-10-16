@@ -64,7 +64,13 @@ class Upload_Ajax {
         // Bind the request to a real upload-capable field in the form. The client
         // supplied `type` must name a configured file/image upload field, otherwise
         // a caller could create attachments against a form that has no upload field.
-        if ( ! $this->is_valid_upload_field( $form_id, $field_type ) ) {
+        // The editor's "Insert Photo" upload sends no field name, so it is bound to
+        // a content field that has Insert Photo turned on instead.
+        $allowed = $image_only
+            ? $this->form_allows_insert_image( $form_id )
+            : $this->is_valid_upload_field( $form_id, $field_type );
+
+        if ( ! $allowed ) {
             die( 'error' );
         }
 
@@ -206,6 +212,64 @@ class Upload_Ajax {
         $allowed_names = apply_filters( 'wpuf_upload_allowed_field_names', $allowed_names, $form_id, $field_type );
 
         return in_array( $field_type, (array) $allowed_names, true );
+    }
+
+    /**
+     * Check whether the form has a field with "Insert Photo" enabled
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $form_id the form the upload targets
+     *
+     * @return bool
+     */
+    public function form_allows_insert_image( $form_id ) {
+        $form_fields = function_exists( 'wpuf_get_form_fields' ) ? wpuf_get_form_fields( $form_id ) : [];
+
+        $allowed = $this->has_insert_image_field( $form_fields );
+
+        /**
+         * Whether an "Insert Photo" upload is allowed for this form.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param bool $allowed
+         * @param int  $form_id
+         */
+        return (bool) apply_filters( 'wpuf_upload_allow_insert_image', $allowed, $form_id );
+    }
+
+    /**
+     * Find a field with "Insert Photo" enabled, including nested ones
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $fields form fields or a nested field list
+     *
+     * @return bool
+     */
+    protected function has_insert_image_field( $fields ) {
+        if ( ! is_array( $fields ) ) {
+            return false;
+        }
+
+        foreach ( $fields as $field ) {
+            if ( ! is_array( $field ) ) {
+                continue;
+            }
+
+            if ( isset( $field['insert_image'] ) && 'yes' === $field['insert_image'] ) {
+                return true;
+            }
+
+            $nested = isset( $field['inner_fields'] ) ? $field['inner_fields'] : ( ! isset( $field['input_type'] ) && ! isset( $field['template'] ) ? $field : [] );
+
+            if ( $nested && $this->has_insert_image_field( $nested ) ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

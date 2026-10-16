@@ -40,8 +40,8 @@ configs are gone — phases are now **projects** selected with `--project`:
 - `--project=parity` → develop vs branch comparison (`parity/`, needs `PARITY_*` in `.env`, see `utils/paritySites.ts`); local gate, not in CI shards
 
 `workers: 1` + `fullyParallel: false`, so no two stateful specs hit the shared site
-at once. `pnpm run test:parallel` invokes `--project=e2e` three times
-(`--shard=1/3`, `2/3`, `3/3`) **sequentially** against the single wp-env.
+at once. `pnpm run test:parallel` invokes `--project=e2e` four times
+(`--shard=1/4` to `4/4`) **sequentially** against the single wp-env.
 
 - We deliberately do **not** wire `dependencies: ['setup']` — under `--shard` a setup
   dependency reruns the heavy, destructive site reset once per shard. Setup stays a

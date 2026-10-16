@@ -8,7 +8,7 @@ All WPUF JS hooks use the global `wp.hooks` (`import { applyFilters, doAction } 
 ## Naming
 - Existing names are frozen: `wpuf.formBuilder.*`, `wpuf.formsList.*`, `wpuf.subscription.*`, `wpuf.userPosts.*`.
 - New names: `wpuf.<area>.<thing>` in camelCase. Shared wrappers derive names from their namespace: `wpuf.<ns>.dataviews.fields|actions|data|view`, `wpuf.<ns>.filters`, `wpuf.<ns>.tabs`; commands as actions `wpuf.<screen>.refresh`.
-- Target: every name is a constant in `src/admin/shared/filters.ts` (`WPUF_FILTERS`, `WPUF_ACTIONS`, `WPUF_SLOTS`); no string literals in screens.
+- Every name is a constant in `src/admin/shared/filters.js`: `HOOKS` (filters and actions in one map), `SLOTS` (SlotFill names), `HOOK_NAMES`, plus `applyWpufFilters()` / `doWpufAction()`, which warn in development when a name is not in `HOOKS`. Runtime copy: `window.wpuf.filters` (`admin-runtime` entry). `src/admin/shared/filters.test.js` (`pnpm run test:shared`) fails when source code uses a name that is not listed. Add a new name there first; no string literals in screens.
 - Pro registers at module scope in a script that depends on free's handle (not in `domReady`); free reads filters at render time.
 
 ## Existing hooks

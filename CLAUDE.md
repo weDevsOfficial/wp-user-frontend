@@ -2,7 +2,7 @@
 
 ## What This Is
 
-WP User Frontend (WPUF) is a WordPress plugin that enables frontend content management — post submission, user registration/login, dashboards, subscriptions, guest posting, content restriction, and AI form building. Requires PHP 5.6+.
+WP User Frontend (WPUF) is a WordPress plugin that enables frontend content management: post submission, user registration/login, dashboards, subscriptions, guest posting, content restriction, and AI form building. Requires PHP 7.4+ and WordPress 6.6+ (`wpuf.php` header).
 
 ## Skill Routing (invoke these, don't re-explain them)
 
@@ -59,12 +59,14 @@ Every admin screen runs on a FlyHR-style platform (`includes/Platform/`, `includ
 wp-user-frontend/
 ├── wpuf.php                # Main plugin file & bootstrap class
 ├── wpuf-functions.php      # Loads the includes/functions/<domain>.php helpers
-├── includes/               # PHP backend (264 files)
+├── includes/               # PHP backend (280 files)
 │   ├── Admin/              # Admin settings, menus, subscription management
 │   ├── Ajax/               # AJAX handlers (forms, uploads, addresses)
 │   ├── AI/                 # AI form builder (config, prompts, REST)
+│   ├── Blocks/             # Post form block (classic render)
 │   ├── Builder/            # Builder boot data, save, hook bridge, retired-hook deprecations
 │   ├── Fields/             # Form field types (20+ field classes)
+│   ├── functions/          # Global helpers split by domain (loaded by wpuf-functions.php)
 │   ├── Free/               # Free version functionality & pro prompts
 │   ├── Frontend/           # Frontend forms, dashboard, registration, payments
 │   ├── Hooks/              # Form settings cleanup hooks
@@ -72,7 +74,6 @@ wp-user-frontend/
 │   ├── Traits/             # Shared traits (FieldableTrait, TaxableTrait)
 │   ├── Widgets/            # WordPress widgets
 │   ├── Data/               # Data layer classes
-│   ├── Log/                # Logging utilities
 │   ├── Platform/           # Container, providers, REST (Manager + Controllers), stores, Caps, Onboarding services
 │   ├── upgrades/           # Version migration scripts
 │   └── Abstracts/          # Abstract base classes
@@ -99,8 +100,9 @@ wp-user-frontend/
 ├── modules/                # Self-contained feature modules
 │   └── user-directory/     # User directory module (own npm project)
 ├── tests/
-│   └── e2e/                # Playwright E2E tests
-├── views/                  # Legacy PHP view files
+│   ├── e2e/                # Playwright E2E + parity tests
+│   ├── php/                # PHPUnit suite (WordPress test library)
+│   └── contracts/          # Hook / endpoint / runtime contract snapshots
 ├── config/                 # Configuration files
 └── languages/              # Translation files
 ```
@@ -115,17 +117,18 @@ wp-user-frontend/
 - `includes/AI_Manager.php` — AI form builder orchestration
 
 ### Service Container
-Simple array-based container with magic `__get()`. Services accessed via `wpuf()->service_name`. Major services:
-`assets`, `subscription`, `fields`, `customize`, `bank`, `paypal`, `gateway_manager`, `api`, `integrations`, `ai_manager`, `admin`, `frontend`, `ajax`, `setup_wizard`, `pro_upgrades`, `privacy`, `widgets`, `tracker`, `free_loader`, `upgrades`
+The platform container (`WeDevs\Wpuf\Platform\Container`) builds every service: `wpuf()->platform()->get( Class::class )`. Service providers in `includes/Platform/Providers/` (`Plugin`, `Core`, `Store`, `Rest`, `Admin`, `Frontend`, `Ai`) register them; Pro adds its providers on `wpuf_platform_loaded`. Storage goes through the stores (`Platform\Stores\Stores::forms()`, `::fields()`, `::subscriptions()`, `::settings()`, `::transactions()`, `::subscribers()`, `::user_packs()`, `::submissions()`, `::users()`).
+The legacy keys stay as an array with magic `__get()` (`wpuf()->service_name`), filled from the same container instances (`PluginServiceProvider::SERVICES`):
+`assets`, `subscription`, `fields`, `customize`, `bank`, `paypal`, `gateway_manager`, `api`, `integrations`, `ai_manager`, `post_form_block`, `admin`, `frontend`, `ajax`, `setup_wizard`, `pro_upgrades`, `privacy`, `widgets`, `tracker`, `free_loader`, `upgrades`
 
 ### Frontend Architecture
-- **React** for every admin screen (`webpack.admin.config.js`, wp-scripts) and the optional React frontend (`webpack.frontend.config.js`); no Vue is left
-- **jQuery** (legacy) for the classic frontend forms and older frontend interactions
-- **Grunt** runs the Tailwind CSS 3 CLI for the account and plans sheets and the POT step; no LESS, Vite or minify step (the classic jQuery files and their CSS are served as written)
-- **Tailwind CSS 3** with DaisyUI component library and scoped preflight
+- **React** for every admin screen (`webpack.admin.config.js`, wp-scripts) and the frontend shortcodes (`webpack.frontend.config.js`: post / edit / registration / profile forms, login screens, account, plans, checkout; mounted by `Frontend\Renderer`); no Vue is left
+- **jQuery** (legacy) for the classic render, which stays where `Frontend\Renderer` does not mount React: a theme template override, the post form block and Elementor widgets, an unbuilt app, and older frontend interactions
+- **Grunt** runs the Tailwind CSS 3 CLI for the classic account sheet (`src/css/frontend/account.css` to `assets/css/frontend/account.css`) and `frontend-subscriptions.min.css`, and the POT step; no LESS, Vite or JS minify step (the classic jQuery files and their CSS are served as written). The React plans and checkout CSS come from the frontend webpack build
+- **CSS**: admin screens use Tailwind 4 with plain classes, scoped per screen (`tools/admin-css`); the React frontend uses plain hand-scoped CSS under `.wpuf-frontend` (no Tailwind); Tailwind 3 with DaisyUI is left only in the two classic Grunt sheets above
 
 ### REST API
-Namespace `wpuf/v1`. Controllers live in `includes/Platform/REST/Controllers/` on the `Platform\REST\RestController` base: the admin routes (`FormsController`, `ToolsController`, `TransactionsController`, `SubscribersController`, `OnboardingController`), the frontend routes (`FormsPublicController`, `AccountController`, `UploadsController`) and the frozen routes (`FormListController`, `SubscriptionController`, `SettingsController`). The AI form builder keeps its controller with its feature (`includes/AI/RestController.php`); Pro adds its own under `wpuf-pro/includes/Platform/<Feature>/`. `Platform\REST\Manager` registers all of them once on `rest_api_init`; permissions come from `Platform\Caps`.
+Namespace `wpuf/v1`. Controllers live in `includes/Platform/REST/Controllers/` on the `Platform\REST\RestController` base: the admin routes (`FormsController`, `ToolsController`, `TransactionsController`, `SubscribersController`, `OnboardingController`, `NoticesController` for notice dismiss and ACF tasks, `FreeModulesController` for free module toggles, `PostLockController` for clearing a frontend edit lock), the frontend routes (`FormsPublicController`, `AccountController`, `UploadsController`, `AuthController` for the Login widget, `LoginController` for the `[wpuf-login]` screens) and the frozen routes (`FormListController`, `SubscriptionController`, `SettingsController`). The AI form builder keeps its controller with its feature (`includes/AI/RestController.php`); Pro adds its own under `wpuf-pro/includes/Platform/<Feature>/`. `Platform\REST\Manager` registers all of them once on `rest_api_init`; permissions come from `Platform\Caps`.
 
 ### Payment System
 Payment gateways managed through `Lib/Gateway/`:
@@ -142,13 +145,13 @@ Text, Textarea, Email, URL, Dropdown, MultiDropdown, Checkbox, Radio, Image, Fea
 
 - **PHP**: WordPress Coding Standards (WPCS) via PHPCS
 - **JS**: JSHint (legacy), Prettier for formatting
-- **CSS**: Tailwind CSS 3 with DaisyUI
+- **CSS**: Tailwind 4 (admin screens, `tools/admin-css`), plain scoped CSS (React frontend), Tailwind 3 with DaisyUI (classic account and subscription sheets only)
 - **PHP Namespace**: `WeDevs\Wpuf\` for `includes/`, `WeDevs\Wpuf\Lib\` for `Lib/`
 
 ## Key Patterns
 
 - **Singleton pattern** via `WeDevs\WpUtils\SingletonTrait` for main plugin class
-- **Simple container** — array-based `$container[]` with magic `__get()` (not a formal DI container)
+- **Platform container**: `wpuf()->platform()->get()`, service providers, Stores for all storage; the legacy `$container[]` keys with magic `__get()` stay for back compat
 - **WordPress hooks** extensively used for extensibility (actions & filters)
 - **Overridable templates** — themes can override templates from `templates/` directory
 - **Free/Pro split** — `includes/Free/Free_Loader.php` loads free-only features; Pro version detected via `WP_User_Frontend_Pro` class
@@ -159,9 +162,10 @@ Text, Textarea, Email, URL, Dropdown, MultiDropdown, Checkbox, Radio, Image, Fea
 ## Testing
 
 - **Playwright** for E2E tests in `tests/e2e/`
-  - A single `playwright.config.ts` with `setup` / `e2e` / `api` projects (select via `--project`)
+  - A single `tests/e2e/playwright.config.ts` with `setup` / `e2e` / `api` / `parity` projects (select via `--project`; `parity` compares a develop site with the branch site, local gate)
   - The `e2e` project is sharded via Playwright's native `--shard=i/n`
-- **PHPUnit 7.5.9** listed as dev dependency (test infrastructure in development)
+- **PHPUnit 9.6** suite in `tests/php` (`WP_TESTS_DIR=$HOME/Sites/parity-db/wp-tests-lib vendor/bin/phpunit --filter <Test>`, add `WPUF_TESTS_WITH_PRO=1` to load Pro)
+- **Jest**: `pnpm run test:shared|test:stores|test:form-builder|test:ai-form-builder|test:frontend`
 
 ## Integrations
 

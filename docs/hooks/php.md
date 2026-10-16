@@ -47,13 +47,13 @@ Bridge rules: output of third-party listeners is captured and shown inside the m
 | Hook / handle | Kind | Where | Note |
 |---|---|---|---|
 | `wpuf_forms_list_post_types` | filter | `Platform/REST/Controllers/FormListController::get_items` | post types the forms list REST lists (default `wpuf_forms`, `wpuf_profile`; others get 400) |
-| `wpuf_form_builder_save_post_types`, `wpuf_form_builder_settings_meta_keys` | filter | `Platform/Stores/FormStore` | builder save allowlists (security, task 1.19) |
-| `wpuf_subscription_single_row_fields` | filter | `Api/Subscription` | fields a single-row edit may change |
-| `wpuf_before_update_subscription_pack` | action | `Api/Subscription` | now fires **once**, after a successful insert, with the saved pack id (was twice: old id, new id) |
-| `wpuf_update_subscription_pack` | action | `Admin/Subscription` (classic) and now `Api/Subscription` (REST) | REST fires it once after `wpuf_after_update_subscription_pack_meta`, args `( $id, $pack_data )` with classic field names (meta keys without the leading `_`) |
-| `wpuf-admin-subscriptions` | script handle | `Assets.php` | no-file alias of `wpuf-subscriptions-screen`, enqueued with it, so data localized on the old handle still prints |
-| `window.wpuf_single_objects` | JS global | builder (`wpuf-form-builder-screen`) | printed again as on develop (also under `wpuf_form_builder`) |
-| `wpuf_tec_form_fields` | filter | Events Calendar template constructor | runs wherever the template registry is built (forms list, create from template, onboarding), not on the builder page |
+| `wpuf_form_builder_save_post_types`, `wpuf_form_builder_settings_meta_keys` | filter | `Platform/Stores/FormStore` and `Builder/FormSave` (builder save via `FormsController`) | builder save allowlists (security, task 1.19) |
+| `wpuf_subscription_single_row_fields` | filter | `Platform/Stores/SubscriptionStore::update_single_row` (called by `Platform/REST/Controllers/SubscriptionController`) | fields a single-row edit may change |
+| `wpuf_before_update_subscription_pack` | action | `Platform/Stores/SubscriptionStore` (REST save via `SubscriptionController`) | now fires **once**, after a successful insert, with the saved pack id (was twice: old id, new id) |
+| `wpuf_update_subscription_pack` | action | `Platform/Stores/SubscriptionStore` (REST save via `SubscriptionController`) | fired once after `wpuf_after_update_subscription_pack_meta`, args `( $id, $pack_data )` with classic field names (meta keys without the leading `_`), as the classic pack screen fired it on develop |
+| `wpuf-admin-subscriptions` | script handle | registered in `Assets.php`, enqueued by `Admin/Subscriptions/Pack_Screen` | no-file alias of `wpuf-subscriptions-screen`, enqueued with it, so data localized on the old handle still prints |
+| `window.wpuf_single_objects` | JS global | builder (`wpuf-form-builder-screen`, `Admin/Forms/Admin_Form_Builder`) | printed again as on develop (also under `wpuf_form_builder`) |
+| `wpuf_tec_form_fields` | filter | `Integrations/Events_Calendar/Templates/Event_Form_Template::get_form_fields()` (called by its constructor) | runs wherever the template registry is built (forms list, create from template, onboarding), not on the builder page |
 | handles whose file is gone | script/style | `Assets::existing_src()` | registered with `src` false, so dependents and localizations still work |
 
 ## Enqueue hooks on the builder

@@ -7,14 +7,36 @@ Read when setting up the dev loop or before running CI-equivalent checks locally
 
 ```bash
 pnpm build                           # Production build (all entry points), ends with bin/verify-build.mjs
-pnpm run build:admin                # React admin apps in one wp-scripts build (webpack.admin.config.js)
-WPUF_ENTRY=form-builder pnpm run build:admin  # one app (form-builder | forms-list-screen | subscriptions | settings-screen | ai-form-builder | admin-app = the app shell)
-pnpm run build:forms-list-screen     # Build forms list module (alias of WPUF_ENTRY=forms-list-screen)
-pnpm run build:subscriptions         # Build admin subscriptions module
-pnpm run build:ai-form-builder       # React AI form builder: wp-scripts entry + Tailwind 4 sheet
-pnpm run build:user-directory        # Build user directory module
-pnpm run build:css                   # Compile Tailwind CSS via Grunt
+pnpm run build:admin                 # React admin apps in one wp-scripts build (webpack.admin.config.js)
+WPUF_ENTRY=form-builder pnpm run build:admin  # one admin entry, see the list below
+pnpm run build:frontend              # React frontend apps (webpack.frontend.config.js), then prune-chunks, account-sections, frontend-css check
+WPUF_ENTRY=forms pnpm run build:frontend      # one frontend entry, see the list below
+pnpm run build:form-builder          # alias of WPUF_ENTRY=form-builder (admin)
+pnpm run build:forms-list-screen     # alias of WPUF_ENTRY=forms-list-screen (admin)
+pnpm run build:subscriptions         # alias of WPUF_ENTRY=subscriptions (admin JS only, not the sheet)
+pnpm run build:settings-screen       # WPUF_ENTRY=settings-screen + its Tailwind 4 sheet
+pnpm run build:ai-form-builder       # WPUF_ENTRY=ai-form-builder + its Tailwind 4 sheet
+pnpm run build:admin-css             # every Tailwind 4 admin sheet (tools/admin-css); one: node tools/admin-css/build.mjs <settings|subscriptions|forms|forms-list|onboarding|pages|ai-form-builder>
+pnpm run build:blocks                # Gutenberg blocks (webpack.config.js)
+pnpm run build:user-directory        # Build user directory module (npm inside modules/user-directory)
+pnpm run build:css                   # Tailwind 3 via Grunt: frontend/account.css + frontend-subscriptions.min.css
+WPUF_ENTRY=form-builder pnpm run dev:admin    # watch one admin entry
+WPUF_ENTRY=account-page pnpm run dev:frontend # watch one frontend entry
 pnpm run dev:user-directory          # Dev mode for user directory module
+```
+
+`WPUF_ENTRY` names (an unknown name throws and lists the valid ones):
+- `webpack.admin.config.js`: apps `form-builder`, `forms-list-screen`, `subscriptions`, `settings-screen`, `ai-form-builder`, `admin-app` (the app shell), `registration-promo`, `onboarding`, `welcome`, `help`, `tools`, `transactions`, `coupons-promo`, `modules-preview`; shared layer `admin-runtime`, `admin-ui`. Output `assets/js/screens/<name>.js` + `.asset.php` (+ lazy chunks). Admin entries import no CSS: screen sheets come only from `tools/admin-css`.
+- `webpack.frontend.config.js`: apps `forms`, `account-page`, `login`, `plans`, `checkout`; shared `runtime` (the kit). Output `assets/js/frontend/<name>.js` + `.asset.php` and `assets/css/frontend/<name>.css` + `-rtl.css`.
+
+## Jest
+
+```bash
+pnpm run test:shared                 # src/admin/shared (filters contract, store contract, api, ui helpers)
+pnpm run test:stores                 # admin app stores (src/admin/apps/stores.jest.config.js)
+pnpm run test:form-builder           # form builder
+pnpm run test:ai-form-builder        # AI form builder
+pnpm run test:frontend               # src/frontend (kit, form store, payload, account store)
 ```
 
 ## Release
@@ -55,15 +77,36 @@ composer phpcbf                      # Auto-fix PHP code style
   REST/AJAX/admin pages, per-screen runtime hooks/handles/globals, and a develop vs branch
   diff. A missing JS file 301s to an HTML 404 with status 200, so crawls check the script
   content type, not only 4xx.
-- **PHPUnit 9.6** is a dev dependency; the suite (`tests/php`, wp-env) is added with the
-  admin platform.
+- **PHPUnit 9.6** (`phpunit/phpunit` 9.6.37 + `yoast/phpunit-polyfills`): `tests/php/tests/*Test.php`,
+  bootstrap `tests/php/bootstrap.php`, config `phpunit.xml.dist`. Runs against a WordPress test
+  library given by `WP_TESTS_DIR` (default `/tmp/wpuf-tests-lib`; `composer test:install` creates
+  one with a scratch database). Run the tests related to your change, not the whole suite, while iterating:
+  ```bash
+  WP_TESTS_DIR=$HOME/Sites/parity-db/wp-tests-lib vendor/bin/phpunit --filter FormsRestTest
+  WPUF_TESTS_WITH_PRO=1 WP_TESTS_DIR=$HOME/Sites/parity-db/wp-tests-lib vendor/bin/phpunit --filter PlatformRestTest   # loads the sibling wpuf-pro too
+  ```
 
 ## Package manager
 
 pnpm on branch `feature/react-admin-revamp` (like FlyHR): `pnpm install --frozen-lockfile && pnpm build`
 (pnpm 12.8.1 from `packageManager`, Node 22.22.2+). `pnpm build` ends with `bin/verify-build.mjs`
 (fails on a missing/empty generated asset, a React `.asset.php` without deps, or an unresolved
-import). Tailwind scans sources only, so a full build is deterministic (no CSS drift).
+import). `pnpm build` runs, in order: `build:tailwind`, `build:admin`, `build:frontend`,
+`build:tailwind-minify`, `build:admin-css`, `build:user-directory`, `build:blocks`, `build:sanitize`,
+`build:verify`. Sheet inputs are sources, not build order: the Tailwind 4 admin sheets read
+`@source` paths under `src/admin`, and `tailwind.config.js` (Tailwind 3) excludes the admin,
+block and User Directory bundles; its `./assets/**/*.js` glob still matches the generated
+`assets/js/frontend/` bundles, which made no difference when measured (2026-10-16: identical
+`account.css` and `frontend-subscriptions.min.css` with and without them).
+**Build only your entry while working** anyway: a full build rewrites every generated output
+(all sheets, the shared `admin-runtime` / `admin-ui` / `runtime` bundles, blocks, User Directory),
+which hides what your change did. A single entry touches only its own files:
+`WPUF_ENTRY=<app> pnpm run build:admin` writes `assets/js/screens/<app>.js` + `.asset.php` (+ chunks)
+and no CSS; `WPUF_ENTRY=<app> pnpm run build:frontend` writes that app's JS, `.asset.php`, CSS and
+RTL CSS (then prunes stale frontend chunks and runs the CSS check). A changed class in an admin
+screen needs its sheet rebuilt too (`node tools/admin-css/build.mjs <entry>`). Generated assets
+are gitignored (`/assets/*`), so none of this reaches a commit. Run the full `pnpm build` once
+before handoff.
 `modules/user-directory` keeps npm (`build:user-directory` runs `npm ci` there).
 
 ## Translations (React admin)
@@ -91,5 +134,5 @@ Generated assets are gitignored, so a release only works if CI builds every Reac
 
 ## Before Committing
 1. `composer phpcs` on changed PHP files.
-2. Relevant `pnpm run build:*` for changed Vue entry point.
+2. Build only the touched entry (`WPUF_ENTRY=<entry> pnpm run build:admin` / `build:frontend`, plus `node tools/admin-css/build.mjs <entry>` for admin CSS) and run the related jest suites and PHPUnit tests; full `pnpm build` once before handoff.
 3. Verify Playwright tests still pass for affected features.

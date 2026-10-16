@@ -125,7 +125,8 @@ export default function TaxonomyField( { field, value, onChange, onBlur, formId,
     }
 
     return (
-        <Field field={ field } id={ id } error={ error } fieldsClass={ fieldsClass } data-type={ 'checkbox' === type ? 'tax-checkbox' : undefined }>
+        // Classic prints data-type / data-required on div.wpuf-fields for the checkbox list.
+        <Field field={ field } id={ id } error={ error } fieldsClass={ fieldsClass } fieldsAttrs={ 'checkbox' === type ? { 'data-type': 'tax-checkbox', 'data-required': field.required } : {} }>
             { control }
             <span className="wpuf-wordlimit-message wpuf-help" />
         </Field>

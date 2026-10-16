@@ -3,6 +3,7 @@ import { WpufApi } from '../pages/api/WpufApi';
 import { createAdminAppPassword, wpCli } from '../utils/wpEnvCli';
 import { Urls } from '../utils/testData';
 import { configureSpecFailFast } from '../utils/specFailFast';
+import { wpLoginForm } from '../utils/wpLoginForm';
 
 /**
  * Post form settings develop's builder always stored: an untouched save from the
@@ -116,11 +117,7 @@ test.describe('Post form defaults', () => {
     test('PFD0002 : The form renders its labels above the inputs on the frontend', { tag: [ '@Lite', '@Test_PFD0002' ] }, async () => {
         // A throwaway subscriber: the form is shown to logged-in users only.
         userId = cliValue( wpCli( `user create ${ user.login } ${ user.login }@example.com --role=subscriber --user_pass=${ user.pass } --porcelain` ), /^\d+$/ );
-        await page.goto( `${ Urls.baseUrl }/wp-login.php`, { waitUntil: 'load' } );
-        await page.locator( '#user_login' ).fill( user.login );
-        await page.locator( '#user_pass' ).fill( user.pass );
-        await page.locator( '#wp-submit' ).click();
-        await page.waitForLoadState( 'load' );
+        await wpLoginForm( page, Urls.baseUrl, user.login, user.pass );
 
         await page.goto( `${ Urls.baseUrl }/?page_id=${ pageId }`, { waitUntil: 'load' } );
         await expect( page.locator( 'form.wpuf-form-add ul.wpuf-form' ) ).toHaveClass( /form-label-above/ );

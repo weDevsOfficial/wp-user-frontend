@@ -756,6 +756,16 @@ export class RegFormSettingsPage extends Base {
         }
     }
 
+    /**
+     * The builder's notification body is its own rich editor (Tiptap, a contenteditable),
+     * not TinyMCE in an iframe: fill the one under the given label.
+     */
+    async fillNotificationBody(label: string, body: string) {
+        const editor = this.page.locator(`xpath=//*[normalize-space()="${label}"]/following::div[contains(@class,"wpuf-rich-editor")][1]//*[@contenteditable="true"]`).first();
+        await editor.waitFor({ timeout: 30000 });
+        await editor.fill(body);
+    }
+
     async setEmailVerificationNotificationBody(formName: string, body: string) {
         let flag = true;
 
@@ -775,9 +785,7 @@ export class RegFormSettingsPage extends Base {
             await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
             await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
 
-            // Handle iframe for rich text editor
-            await this.page.frameLocator(Selectors.regFormSettings.notificationSettingsSection.confirmationEmailBodyTextarea)
-                .locator(Selectors.regFormSettings.notificationSettingsSection.textareaBody).fill(body);
+            await this.fillNotificationBody('Confirmation Email Body', body);
 
             await this.validateAndClick(Selectors.regFormSettings.saveButton);
             flag = await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
@@ -910,9 +918,7 @@ export class RegFormSettingsPage extends Base {
             await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
             await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
 
-            // Handle iframe for rich text editor
-            await this.page.frameLocator(Selectors.regFormSettings.notificationSettingsSection.welcomeEmailBodyTextarea)
-                .locator(Selectors.regFormSettings.notificationSettingsSection.textareaBody).fill(body);
+            await this.fillNotificationBody('Welcome Email Body', body);
 
             await this.validateAndClick(Selectors.regFormSettings.saveButton);
             flag = await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);

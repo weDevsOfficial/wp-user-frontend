@@ -148,6 +148,13 @@ class SubscriptionSchemaTest extends WP_UnitTestCase {
         $this->assertSame( [], $data['cards'] );
     }
 
+    public function test_price_is_plain_text_for_the_app() {
+        $price = $this->card( $this->schema()->packs() )['price'];
+
+        $this->assertStringNotContainsString( '&#', $price, 'wpuf_format_price() writes the symbol as an entity; React would print it' );
+        $this->assertStringContainsString( '12', $price );
+    }
+
     public function test_current_pill_only_for_a_paid_pack() {
         $user = self::factory()->user->create();
 

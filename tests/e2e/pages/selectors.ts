@@ -728,9 +728,9 @@ export const Selectors = {
                 operand2: '//span[@id="operand_two"] | (//p[contains(@class,"captcha-number")]/span)[3]',
                 operator: '//span[@id="operator"] | (//p[contains(@class,"captcha-number")]/span)[2]',
                 mathCaptcha: '(//label[contains(.,"Math Captcha *")]/following::input)[1]',
-                // Error container the WPUF submit handler fills when the captcha is
-                // unanswered/wrong (jQuery `.wpuf-captcha-error`). Used to prove enforcement.
-                error: '//*[contains(@class,"wpuf-captcha-error")]',
+                // Error shown when the captcha is unanswered/wrong: classic `.wpuf-captcha-error`,
+                // or the React field's `div.wpuf-error-msg` in the Math Captcha row. Proves enforcement.
+                error: '//*[contains(@class,"wpuf-captcha-error")] | //li[.//label[contains(.,"Math Captcha")]]//div[contains(@class,"wpuf-error-msg")]',
             },
             // Guest name
             guestName: '//input[@name="guest_name"]',

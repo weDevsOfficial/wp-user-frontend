@@ -4,6 +4,7 @@ import { createAdminAppPassword, wpCli } from '../utils/wpEnvCli';
 import { Urls } from '../utils/testData';
 import { configureSpecFailFast } from '../utils/specFailFast';
 import { aiWp } from '../pages/aiFormBuilder';
+import { wpLoginForm } from '../utils/wpLoginForm';
 
 /**
  * QR Code field (Pro module) from the frontend: the posted value is stored and
@@ -176,11 +177,7 @@ test.describe('QR Code field', () => {
         }
 
         authorId = cliValue( wpCli( `user create ${ author.login } ${ author.login }@example.com --role=author --user_pass=${ author.pass } --porcelain` ), /^\d+$/ );
-        await page.goto( `${ Urls.baseUrl }/wp-login.php`, { waitUntil: 'load' } );
-        await page.locator( '#user_login' ).fill( author.login );
-        await page.locator( '#user_pass' ).fill( author.pass );
-        await page.locator( '#wp-submit' ).click();
-        await page.waitForURL( /wp-admin|\/$/, { timeout: 30000 } );
+        await wpLoginForm( page, Urls.baseUrl, author.login, author.pass );
         // Logged in: the form renders (logged-out visitors get a login prompt instead).
         await page.goto( pageUrl, { waitUntil: 'load' } );
         await expect( page.locator( 'form.wpuf-form-add select.qr_code_type_class' ) ).toHaveCount( 1 );

@@ -267,7 +267,8 @@ export default function Checkout( { data } ) {
 
                 <div className="wpuf-checkout-footer">
                     { formError && <div className="wpuf-errors wpuf-checkout-errors" id="wpuf-checkout-errors" role="alert">{ formError }</div> }
-                    <Button type="submit" variant="primary" className="wpuf-checkout-btn" onClick={ check } busy={ busy }>
+                    { /* name as develop's button (scripts and styles target button[name="wpuf_payment_submit"]); the hidden field above still posts it. */ }
+                    <Button type="submit" name="wpuf_payment_submit" value="1" variant="primary" className="wpuf-checkout-btn" onClick={ check } busy={ busy }>
                         { ! busy && <Lock size={ 16 } aria-hidden="true" /> }
                         { busy ? __( 'Processing…', 'wp-user-frontend' ) : __( 'Continue to Payment', 'wp-user-frontend' ) }
                     </Button>

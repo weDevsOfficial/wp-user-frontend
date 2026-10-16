@@ -83,8 +83,9 @@ export function FieldLabel( { field, id } ) {
  * @param {*}       [props.after]        Rendered after the fields box, inside the row.
  * @param {string}  [props.fieldsBase]   The fields box class (`wpuf-fields`; the address field uses `wpuf-fields-address`).
  * @param {boolean} [props.invalid]      Mark the box `has-error` without a message (the classic content limit).
+ * @param {Object}  [props.fieldsAttrs]  Attributes on `div.wpuf-fields` (classic prints some there, e.g. the taxonomy checkboxes' `data-type`).
  */
-export default function Field( { field, id, error, children, noLabel = false, label = null, className = '', fieldsClass = '', noHelp = false, after = null, fieldsBase = 'wpuf-fields', invalid = false, plain = false, ...rest } ) {
+export default function Field( { field, id, error, children, noLabel = false, label = null, className = '', fieldsClass = '', noHelp = false, after = null, fieldsBase = 'wpuf-fields', invalid = false, plain = false, fieldsAttrs = {}, ...rest } ) {
     // print_list_attributes(): the size class only when the field has a width; `row_class`
     // when the field prints its row under another name (Pro's profile fields: `wpuf_<name>`).
     const size = field.width ? `field-size-${ field.width }` : '';
@@ -97,7 +98,7 @@ export default function Field( { field, id, error, children, noLabel = false, la
         >
             { label }
             { ! label && ! noLabel && <FieldLabel field={ field } id={ id } /> }
-            <div className={ cx( fieldsBase, fieldsClass, ( error || invalid ) && 'has-error' ) }>
+            <div className={ cx( fieldsBase, fieldsClass, ( error || invalid ) && 'has-error' ) } { ...fieldsAttrs }>
                 { children }
                 { ! noHelp && field.help && <span className="wpuf-help" dangerouslySetInnerHTML={ { __html: field.help } } /> }
                 { error && LIMIT_ERROR !== error && (

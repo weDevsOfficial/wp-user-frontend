@@ -212,7 +212,8 @@ class Subscription_Schema {
             'description' => wp_kses_post( wpautop( (string) $pack->post_content ) ),
             'featured'    => ! empty( $pack->featured ),
             'free'        => $free,
-            'price'       => $free ? __( 'Free', 'wp-user-frontend' ) : wpuf_format_price( $amount ),
+            // Plain text for React: wpuf_format_price() writes the symbol as an entity (&#36;).
+            'price'       => $free ? __( 'Free', 'wp-user-frontend' ) : self::text( wpuf_format_price( $amount ) ),
             'cycle'       => trim( wp_strip_all_tags( isset( $view['recurring_des'] ) ? (string) $view['recurring_des'] : '' ) ),
             'trial'       => isset( $view['trial_des'] ) ? wp_strip_all_tags( (string) $view['trial_des'] ) : '',
             'recurring'   => isset( $pack->meta_value['recurring_pay'] ) && wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay'] ),
@@ -339,7 +340,7 @@ class Subscription_Schema {
                 'id'    => $pack_id,
                 'title' => self::text( (string) $pack->post_title ),
             ],
-            'price'     => $amount > 0 ? wpuf_format_price( $amount ) : __( 'Free', 'wp-user-frontend' ),
+            'price'     => $amount > 0 ? self::text( wpuf_format_price( $amount ) ) : __( 'Free', 'wp-user-frontend' ),
             'cycle'     => '',
             'recurring' => $recurring,
             'dates'     => [],

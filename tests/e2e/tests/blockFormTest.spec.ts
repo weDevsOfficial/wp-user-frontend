@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, Page, test, expect, chromium } from '@playwright/test';
 import { BasicLoginPage } from '../pages/basicLogin';
+import { Base } from '../pages/base';
 import { configureSpecFailFast } from '../utils/specFailFast';
 import { Users, Urls } from '../utils/testData';
 import { wpCli } from '../utils/wpEnvCli';
@@ -167,13 +168,15 @@ test.describe('Post Form block (wpuf/post-form)', () => {
 
     test('BLK0004 : Block editor previews the form and offers the block', { tag: ['@Lite', '@Block'] }, async () => {
         await page.goto(`${Urls.baseUrl}/wp-admin/post.php?post=${blockPage.id}&action=edit`);
-        // No welcome guide / pattern modal in the way.
+        // No welcome guide / pattern modal in the way. Turning the preference off does not
+        // close one that is already open (a new user's first editor visit), so close it too.
         await page.waitForFunction(() => !! (window as any).wp?.data?.dispatch, null, { timeout: 30000 });
         await page.evaluate(() => {
             const { dispatch } = (window as any).wp.data;
             try { dispatch('core/preferences').set('core/edit-post', 'welcomeGuide', false); } catch (e) { /* older WP */ }
             try { dispatch('core/preferences').set('core', 'enableChoosePatternModal', false); } catch (e) { /* older WP */ }
         });
+        await new Base(page).dismissEditorModals();
 
         // The canvas is an iframe on block-based themes, inline otherwise.
         const iframe = page.frameLocator('iframe[name="editor-canvas"]');

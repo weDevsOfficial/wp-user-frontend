@@ -353,7 +353,9 @@ class Pack_Display {
                 ?>
             </div>
             <?php
-        } elseif ( $payment_enabled && $force_pack && $form->is_enabled_fallback_cost() && 0 < (float) $form->get_subs_fallback_cost() && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+        } elseif ( $payment_enabled && $force_pack && $form->is_enabled_fallback_cost() && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+            // Kept for a fallback cost of 0 too (older forms; the builder no longer saves one):
+            // the flow still runs as on develop, and this is the only "pack is exhausted" note.
             ?>
             <div class="wpuf-info">
                 <?php

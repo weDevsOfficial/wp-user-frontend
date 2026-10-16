@@ -494,7 +494,12 @@ class Payment {
                 $item_name   = $post->post_title;
                 break;
             case 'pack':
-                $pack        = wpuf()->subscription->get_subscription( $pack_id );
+                $pack        = wpuf()->subscription->get_purchasable_subscription( $pack_id );
+
+                if ( ! $pack ) {
+                    wp_die( esc_html__( 'This subscription pack is not available.', 'wp-user-frontend' ) );
+                }
+
                 $custom      = $pack->meta_value;
                 $cost        = $pack->meta_value['billing_amount'];
                 $amount      = $cost;

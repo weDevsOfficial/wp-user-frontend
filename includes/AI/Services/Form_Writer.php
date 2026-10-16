@@ -145,6 +145,19 @@ class Form_Writer {
 
             $form_settings = wp_parse_args( isset( $form_data['form_settings'] ) ? $form_data['form_settings'] : [], $default_settings );
 
+            // AI forms are open to editors; the registration role is a site
+            // decision, so only users who can promote users may pick one, and
+            // never one that can take the site over.
+            if ( isset( $form_settings['role'] ) ) {
+                $role = sanitize_key( $form_settings['role'] );
+
+                if ( ! current_user_can( 'promote_users' ) || ! wpuf_is_role_allowed_for_registration( $role ) ) {
+                    unset( $form_settings['role'] );
+                } else {
+                    $form_settings['role'] = $role;
+                }
+            }
+
             // The form template of the post type lets the integrations save
             // their meta through their hooks (WooCommerce's price, ...).
             if ( ! empty( $form_settings['post_type'] ) ) {

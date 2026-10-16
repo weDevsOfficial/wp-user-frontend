@@ -213,7 +213,7 @@ class Checkout_Service {
         $is_free = false;
 
         if ( $request['pack_id'] ) {
-            $pack = wpuf()->subscription->get_subscription( $request['pack_id'] );
+            $pack = wpuf()->subscription->get_purchasable_subscription( $request['pack_id'] );
 
             if ( ! $pack ) {
                 return [ 'status' => 'no_pack' ];

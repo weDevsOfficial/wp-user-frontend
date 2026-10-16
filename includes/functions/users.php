@@ -1033,3 +1033,71 @@ function wpuf_logout_visibility_css() {
     </style>
     <?php
 }
+
+/**
+ * Whether a role may be assigned by frontend registration
+ *
+ * The role a form offers is configurable (contributors, authors, editors,
+ * marketplace roles), so this is not an allow-list of role names. It only
+ * refuses roles that could take the site over, whatever they are named.
+ * Shared by free registration, Pro registration and the AI form writer.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $role Role slug.
+ *
+ * @return bool
+ */
+function wpuf_is_role_allowed_for_registration( $role ) {
+    if ( 'administrator' === $role ) {
+        return false;
+    }
+
+    $role_object = get_role( $role );
+
+    if ( ! $role_object ) {
+        return false;
+    }
+
+    // Capabilities that amount to control of the site: running code on it (plugin,
+    // theme and core install/update/edit), changing its settings, or promoting
+    // yourself. A role holding any of them is never handed out by a public
+    // registration form, whatever the form was configured with.
+    //
+    // Deliberately *not* listed: unfiltered_html, which the stock editor role holds,
+    // and edit_users, which some marketplace plugins grant to store-manager roles.
+    // Including either would refuse roles sites legitimately register into. Verified
+    // against a WooCommerce + Dokan install: no non-administrator role holds any
+    // capability in this list.
+    $default_site_control_caps = [
+        'manage_options',
+        'activate_plugins',
+        'install_plugins',
+        'update_plugins',
+        'edit_plugins',
+        'edit_themes',
+        'update_core',
+        'edit_files',
+        'promote_users',
+        'manage_network',
+    ];
+
+    $site_control_caps = apply_filters(
+        'wpuf_registration_forbidden_capabilities',
+        $default_site_control_caps
+    );
+
+    // A third-party filter returning a non-array must not fatal here, and returning
+    // empty must not silently turn the check off.
+    $site_control_caps = ! empty( $site_control_caps ) && is_array( $site_control_caps )
+        ? $site_control_caps
+        : $default_site_control_caps;
+
+    foreach ( $site_control_caps as $capability ) {
+        if ( ! empty( $role_object->capabilities[ $capability ] ) ) {
+            return false;
+        }
+    }
+
+    return true;
+}

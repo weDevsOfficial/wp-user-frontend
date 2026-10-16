@@ -166,6 +166,29 @@ class Subscription {
     }
 
     /**
+     * A pack visitors may buy or activate: a published wpuf_subscription
+     *
+     * The plain get_subscription() reads any post (the admin edits drafts), so
+     * checkout and payment use this one: a draft, private or trashed pack, or
+     * any other post id, is not for sale.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $sub_id Pack id.
+     *
+     * @return object|bool
+     */
+    public static function get_purchasable_subscription( $sub_id ) {
+        $post = get_post( $sub_id );
+
+        if ( ! $post || 'wpuf_subscription' !== $post->post_type || 'publish' !== $post->post_status ) {
+            return false;
+        }
+
+        return self::get_subscription( $sub_id );
+    }
+
+    /**
      * Update user meta
      *
      * If data = 0, means 'unlimited'

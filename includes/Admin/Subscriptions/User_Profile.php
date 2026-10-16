@@ -327,7 +327,9 @@ class User_Profile {
      * @param int $user_id
      */
     public function profile_subscription_update( $user_id ) {
-        if ( ! current_user_can( 'edit_user', $user_id ) ) {
+        // Same gate as the details box: users may not hand themselves a pack
+        // from their own profile screen (every user has edit_user on itself).
+        if ( ! current_user_can( 'edit_users' ) || ! current_user_can( 'edit_user', $user_id ) ) {
             return;
         }
         $nonce = isset( $_REQUEST['wpuf-subscription-nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf-subscription-nonce'] ) ) : '';

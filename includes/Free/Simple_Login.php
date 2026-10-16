@@ -700,7 +700,8 @@ class Simple_Login {
                     '</strong>',
                     $errors
                 );
-            '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Cloudflare Turnstile verification failed. Reasons: [', 'wp-user-frontend' );
+
+            return null;
         }
 
         $validation_error = new WP_Error();
@@ -724,7 +725,13 @@ class Simple_Login {
             return null;
         }
 
-        if ( isset( $_POST['g-recaptcha-response'] ) ) {
+        // The login forms print reCAPTCHA when it is on, so a request without
+        // the token skipped it (the REST route makes that a plain JSON POST).
+        $recaptcha_on = 'on' === wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' )
+            && '' !== (string) wpuf_get_option( 'recaptcha_public', 'wpuf_general', '' )
+            && '' !== (string) wpuf_get_option( 'recaptcha_private', 'wpuf_general', '' );
+
+        if ( isset( $_POST['g-recaptcha-response'] ) || $recaptcha_on ) {
             if ( empty( $_POST['g-recaptcha-response'] ) ) {
                 $this->login_errors[] = __( 'Empty reCaptcha Field', 'wp-user-frontend' );
                 return null;

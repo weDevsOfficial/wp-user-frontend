@@ -203,7 +203,7 @@ class Upload_Handler {
         $attachment_class_names = implode( ' ', $attachment_class_names );
         $html = '<li class="ui-state-default wpuf-image-wrap thumbnail">';
         $html .= sprintf(
-            '<div class="attachment-name"><img src="%s" alt="%s" class="%s" /></div>', $image,
+            '<div class="attachment-name"><img src="%s" alt="%s" class="%s" /></div>', esc_url( $image ),
             esc_attr( $attachment->post_title ), esc_attr( $attachment_class_names )
         );
         $html .= sprintf(
@@ -225,7 +225,7 @@ class Upload_Handler {
             );
             $html .= '</div>';
         }
-        $html .= sprintf( '<input type="hidden" name="wpuf_files[%s][]" value="%d">', $type, $attach_id );
+        $html .= sprintf( '<input type="hidden" name="wpuf_files[%s][]" value="%d">', esc_attr( $type ), $attach_id );
         $html .= '<div class="caption">';
         $html .= sprintf(
             '<a href="#" class="attachment-delete" data-attach-id="%d"> <img src="%s" /></a>', $attach_id,

@@ -402,7 +402,7 @@ export class OnboardingPage extends Base {
      * Every image the wizard renders, described well enough to prove it is a
      * vector that actually loaded rather than a broken or raster asset.
      */
-    async getImageReport(): Promise<Array<{ file: string; loaded: boolean; isSvg: boolean; naturalW: number }>> {
+    async getImageReport(): Promise<Array<{ file: string; src: string; loaded: boolean; isSvg: boolean; naturalW: number }>> {
         return await this.page.evaluate( async () => {
             const imgs = ( Array.from( document.querySelectorAll( 'img' ) ) as HTMLImageElement[] )
                 .filter( img => ( img.getAttribute( 'src' ) || '' ).includes( '/images/' ) );
@@ -421,6 +421,7 @@ export class OnboardingPage extends Base {
 
                     return {
                         file: src.split( '/' ).pop()!.split( '?' )[0],
+                        src,
                         // A broken image reports a natural width of 0 once it has settled.
                         loaded: img.complete && img.naturalWidth > 0,
                         isSvg: /\.svg$/i.test( src.split( '?' )[0] ),

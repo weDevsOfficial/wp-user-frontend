@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config({ quiet: true });
-import { expect, request, type Page, type Dialog } from '@playwright/test';
+import { expect, request, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Base } from './base';
 import { faker } from '@faker-js/faker';
@@ -740,16 +740,8 @@ export class PostFormPage extends Base {
         await this.navigateToURL(this.downloadsPage);
         //Validate Product Title
         await this.validateAndClick(Selectors.postForms.downloadsFormData.titleBE(DownloadsForm.title));
-        await this.page.waitForTimeout(200);
-        try {
-            await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
-        } catch (error) {
-            await this.navigateToURL(this.downloadsPage);
-            //Validate Product Title
-            await this.validateAndClick(Selectors.postForms.downloadsFormData.titleBE(DownloadsForm.title));
-            await this.page.waitForTimeout(200);
-            await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
-        }
+        // The welcome guide shows once per user: close it when it opens, go on when it does not.
+        await this.dismissEditorModals();
         //Validate Product Price — the edd_price input renders correct-but-hidden inside a
         //collapsed price panel, so assert it is present (value is encoded in the selector)
         //rather than visible (which would hang the full test timeout).
@@ -759,7 +751,12 @@ export class PostFormPage extends Base {
         //Validate Product Category
         await this.validateAndClick(Selectors.postForms.downloadsFormData.clickDownload);
         await this.page.waitForTimeout(300);
-        await this.validateAndClick(Selectors.postForms.downloadsFormData.clickCategory);
+        // The panel toggles and the editor remembers it open: open it only when closed.
+        const categories = this.page.locator(Selectors.postForms.downloadsFormData.clickCategory).first();
+        await categories.waitFor();
+        if ('true' !== await categories.getAttribute('aria-expanded')) {
+            await categories.click();
+        }
         await this.assertionValidate(Selectors.postForms.downloadsFormData.categoryBE(DownloadsForm.category));
         //Validate Product Tags
         //await this.validateAndClick(Selectors.postForms.downloadsFormData.clickTag);
@@ -792,8 +789,6 @@ export class PostFormPage extends Base {
     async editFirstPostFromDashboard(newTitle: string): Promise<string> {
         await this.openPostsDashboard();
         const oldTitle = ((await this.page.locator(Selectors.postForms.dashboardManage.allPostTitles).first().textContent()) || '').trim();
-        // Open the row's "⋮" options menu, then click Edit.
-        await this.validateAndClick(Selectors.postForms.dashboardManage.optionsMenuTrigger(oldTitle));
         await this.validateAndClick(Selectors.postForms.dashboardManage.editLinkForPost(oldTitle));
         // Same post form in edit mode — overwrite the title and save the update.
         await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE).fill(newTitle);
@@ -865,7 +860,6 @@ export class PostFormPage extends Base {
         const title = ((await this.page.locator(S.dashboardManage.allPostTitles).first().textContent()) || '').trim();
 
         // Open the edit form for that post.
-        await this.validateAndClick(S.dashboardManage.optionsMenuTrigger(title));
         await this.validateAndClick(S.dashboardManage.editLinkForPost(title));
 
         // --- Negative: type a decoy title, leave the captcha blank, submit. ---
@@ -885,7 +879,6 @@ export class PostFormPage extends Base {
         console.log('\x1b[32m%s\x1b[0m', `✅ Math Captcha enforced: unanswered submit blocked ("${decoyTitle}" not saved)`);
 
         // --- Positive: reopen, answer the captcha, resubmit the SAME title → success. ---
-        await this.validateAndClick(S.dashboardManage.optionsMenuTrigger(title));
         await this.validateAndClick(S.dashboardManage.editLinkForPost(title));
         await this.page.locator(S.postFormsFrontendCreate.postTitleFormsFE).fill(title);
         await this.solveMathCaptchaIfPresent();
@@ -898,13 +891,10 @@ export class PostFormPage extends Base {
     // delete?" confirm dialog, and assert it is removed from the list.
     async deletePostFromDashboard(title: string) {
         await this.openPostsDashboard();
-        const dialogHandler = async (dialog: Dialog) => { await dialog.accept(); };
-        this.page.on('dialog', dialogHandler);
-        // Open the row's "⋮" options menu, then click Delete (fires the confirm).
-        await this.validateAndClick(Selectors.postForms.dashboardManage.optionsMenuTrigger(title));
+        // Delete on the row, then confirm in the WPUF dialog (no browser confirm any more).
         await this.validateAndClick(Selectors.postForms.dashboardManage.deleteLinkForPost(title));
-        this.page.off('dialog', dialogHandler);
-        await this.page.waitForLoadState('domcontentloaded');
+        await this.validateAndClick(Selectors.postForms.dashboardManage.deleteConfirm);
+        await expect(this.page.locator(Selectors.postForms.dashboardManage.postTitleCell(title))).toHaveCount(0, { timeout: 30000 });
         await this.page.reload();
         await expect(this.page.locator(Selectors.postForms.dashboardManage.postTitleCell(title))).toHaveCount(0);
         console.log('\x1b[32m%s\x1b[0m', `✅ Post deleted: "${title}" no longer in dashboard`);

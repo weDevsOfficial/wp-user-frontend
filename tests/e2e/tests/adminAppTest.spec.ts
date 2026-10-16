@@ -53,7 +53,7 @@ const APP = `${Urls.baseUrl}/wp-admin/admin.php?page=wp-user-frontend`;
  * @Test_APP0026 : Forms list search with no match shows the empty state; clearing it brings the list back
  * @Test_APP0027 : Builder refuses a second single-instance field; Remove asks first, Cancel keeps the field
  * @Test_APP0028 : Tools import refuses a file with a script block and imports a clean export
- * @Test_APP0025 : Pro modules switch on / off through the React page; without a valid license all are locked and REST refuses switch-on
+ * @Test_APP0025 : Pro modules switch on / off through the React page; without a valid license the license-required card shows and REST refuses switch-on
  * @Test_APP0023 : A column stored the develop way (inner fields without ids, as after an update) opens each inner field for editing
  */
 
@@ -900,12 +900,14 @@ test.describe('Admin app', () => {
                 expect(isOn(), `stored after switching ${want ? 'on' : 'off'}`).toBe(want);
             }
 
-            // No valid license: locked, no switches, and the REST route refuses to switch one on.
+            // No valid license: the license-required card (ba20fb21), no switches, and the
+            // REST route refuses to switch one on.
             aiWp(['eval', '$l = get_option( "wpuf_license" ); $l["status"] = "deactivate"; update_option( "wpuf_license", $l );'], true);
             await page.goto('about:blank');
             await page.goto(`${APP}#/modules`);
-            await expect(page.getByText('No active license')).toBeVisible({ timeout: 30000 });
-            await expect(page.getByRole('tab', { name: /^Locked/ })).toHaveAttribute('aria-selected', 'true');
+            const card = page.locator('.wpuf-app-state');
+            await expect(card.getByRole('heading', { name: 'WPUF Pro License Required' })).toBeVisible({ timeout: 30000 });
+            await expect(card.getByRole('link', { name: 'Activate License' })).toHaveAttribute('href', '#/license');
             await expect(page.locator('li[data-module] [role="switch"]')).toHaveCount(0);
             const status = await page.evaluate(async (module) => {
                 const nonce = (window as unknown as { wpApiSettings?: { nonce: string } }).wpApiSettings?.nonce || '';

@@ -17,8 +17,20 @@ export const LIMIT_ERROR = 'wpuf-content-limit';
 /** Whether a field setting says "required" (Field_Contract::is_required(): exactly "yes"). */
 export const isRequired = ( field ) => 'yes' === field.required;
 
-/** Whether the field is read-only (its inputs are disabled and post nothing, as the classic form does). */
-export const isReadOnly = ( field ) => 'yes' === field.read_only;
+/**
+ * Whether the field is read-only (its inputs are disabled and post nothing, as the classic form does).
+ * Classic tests `! empty( $field['read_only'] )`: the builder stores `true`, older forms "yes" or
+ * `[ "yes" ]`. An explicit "no" (AI templates) stays editable.
+ */
+export const isReadOnly = ( field ) => {
+    const value = field.read_only;
+
+    if ( Array.isArray( value ) ) {
+        return value.length > 0;
+    }
+
+    return !! value && '0' !== value && 'no' !== value;
+};
 
 /** The label icon of Field_Contract::print_label(): an image URL or an icon class, left or right. */
 function LabelIcon( { field, side } ) {

@@ -461,6 +461,12 @@ test.describe('Onboarding Wizard Tests', () => {
             const images = await onboarding.getImageReport();
 
             for (const image of images) {
+                // Login layout previews are screenshots of the real React login screens (PNG
+                // since 89d0785f); the rule is about artwork, so they only have to decode.
+                if (image.src.includes('/login-layouts/')) {
+                    expect(image.loaded, `${step} step preview ${image.file} should decode`).toBeTruthy();
+                    continue;
+                }
                 expect(image.isSvg, `${step} step still ships a raster image: ${image.file}`).toBeTruthy();
                 expect(image.loaded, `${step} step image ${image.file} should decode`).toBeTruthy();
             }

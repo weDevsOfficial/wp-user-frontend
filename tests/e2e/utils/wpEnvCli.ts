@@ -32,7 +32,20 @@ export function wpCli(command: string): string {
     // point WPUF_E2E_WP_ENV_DIR at that project dir so DB assertions hit the running instance
     // instead of an unstarted one in the test cwd.
     const cwd = process.env.WPUF_E2E_WP_ENV_DIR || process.cwd();
-    return execSync(full, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'], cwd } );
+    const run = () => execSync(full, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'], cwd } );
+
+    try {
+        return run();
+    } catch ( error ) {
+        // A wp-cli answer ("Error: No data exists for key ...") is the real result: callers
+        // read it. Anything else is the wrapper failing under load (npx / docker run), which
+        // made a full parallel run read '' for stored values: try once more.
+        const stderr = String( ( error as { stderr?: unknown } ).stderr || '' );
+        if ( /^Error: /m.test( stderr ) ) {
+            throw error;
+        }
+        return run();
+    }
 }
 
 /**

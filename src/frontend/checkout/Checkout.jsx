@@ -34,8 +34,14 @@ export default function Checkout( { data } ) {
     useEffect( () => {
         const detail = { root: root.current };
 
+        // jQuery runs the handlers in this call and passes their errors up: a gateway that
+        // fails to start (e.g. Stripe without a key) must not take the checkout down with it.
         if ( window.jQuery ) {
-            window.jQuery( document ).trigger( 'wpuf:checkout:ready', [ root.current ] );
+            try {
+                window.jQuery( document ).trigger( 'wpuf:checkout:ready', [ root.current ] );
+            } catch ( error ) {
+                window.console?.error( 'WPUF checkout: a wpuf:checkout:ready handler failed.', error );
+            }
         }
 
         document.dispatchEvent( new window.CustomEvent( 'wpuf:checkout:ready', { detail } ) );

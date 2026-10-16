@@ -412,10 +412,12 @@ export class FieldOptionSettingsPage extends Base {
     }
 
     async validateReadOnly(fieldType: string, expectedReadOnly: string) {
-        const isReadOnly = await this.page.getAttribute(
+        // A boolean attribute: classic printed disabled="disabled", React prints disabled="".
+        const disabledAttr = await this.page.getAttribute(
             Selectors.fieldOptionsSettings.frontend.fieldInput(fieldType),
             'disabled'
         );
+        const isReadOnly = null === disabledAttr ? null : 'disabled';
         if (expectedReadOnly && isReadOnly === expectedReadOnly) {
             console.log('\x1b[32m%s\x1b[0m', `✅ Validated read-only field`);
         } else if (!expectedReadOnly && isReadOnly !== expectedReadOnly) {
@@ -586,34 +588,44 @@ export class FieldOptionSettingsPage extends Base {
     }
 
     async validateContentRestrictionMinChar() {
-        // Validate content restriction in frontend
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(faker.string.alpha(9), { delay: 100 });
+        // Whole values (fill): key-by-key typing dropped keys in a loaded headed browser.
+        const textarea = this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE);
+        const start = faker.string.alpha(9);
+        await textarea.fill(start);
         await this.assertionValidate(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.minCharMsg);
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(faker.string.alpha(1), { delay: 100 });
+        await textarea.fill(start + faker.string.alpha(1));
         await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.minCharMsg)).not.toBeVisible();
     }
 
     async validateContentRestrictionMaxChar() {
-        // Validate content restriction in frontend
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(faker.string.alpha(10), { delay: 100 });
+        // Whole values (fill): key-by-key typing dropped keys in a loaded headed browser.
+        const textarea = this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE);
+        const start = faker.string.alpha(10);
+        await textarea.fill(start);
         await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.maxCharMsg)).not.toBeVisible();
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(faker.string.alpha(1), { delay: 100 });
+        await textarea.fill(start + faker.string.alpha(1));
         await this.assertionValidate(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.maxCharMsg);
     }
 
     async validateContentRestrictionMinWord() {
-        // Validate content restriction in frontend
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(faker.word.words(9), { delay: 100 });
+        // Whole values (fill): key-by-key typing dropped keys in a loaded headed browser.
+        const textarea = this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE);
+        const start = faker.word.words(9);
+        await textarea.fill(start);
         await this.assertionValidate(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.minWordMsg);
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(' ' + faker.word.words(1), { delay: 100 });
+        await textarea.fill(start + ' ' + faker.word.words(1));
         await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.minWordMsg)).not.toBeVisible();
     }
 
     async validateContentRestrictionMaxWord() {
         // Validate content restriction in frontend
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(faker.word.words(10), { delay: 100 });
+        // Whole values (fill), not key by key: a headed browser under load dropped keys, and
+        // what is checked here is the message at 10 and at 11 words.
+        const textarea = this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE);
+        const tenWords = faker.word.words(10);
+        await textarea.fill(tenWords);
         await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.maxWordMsg)).not.toBeVisible();
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(' ' + faker.word.words(1), { delay: 100 });
+        await textarea.fill(tenWords + ' ' + faker.word.words(1));
         await this.assertionValidate(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.maxWordMsg);
     }
 
@@ -896,16 +908,15 @@ export class FieldOptionSettingsPage extends Base {
     }
 
     async validateMaxImageSize(expectedMaxImageSize: number) {
-        // const dialogHandler = async (dialog: Dialog) => {
-        //     if (dialog.type() === 'confirm') {
-        //         await dialog.accept();
-        //     }
-        // };
-        // this.page.on('dialog', dialogHandler);
-        this.page.on('dialog', dialog => dialog.accept());
+        // One accept-all handler per page: a handler added on every call accepted the
+        // same dialog twice later on ("No dialog is showing") and failed that test.
+        const flagged = this.page as Page & { wpufAcceptDialogs?: boolean };
+        if (!flagged.wpufAcceptDialogs) {
+            flagged.wpufAcceptDialogs = true;
+            this.page.on('dialog', (dialog) => { dialog.accept().catch(() => { /* already handled */ }); });
+        }
         await this.page.setInputFiles(Selectors.postForms.postFormsFrontendCreate.postImageUploadFormsFE, PostForm.imageUpload);
         await this.page.waitForLoadState('domcontentloaded', { timeout: 10000 });
-        // this.page.off('dialog', dialogHandler);
         console.log(`Max image size validated: ${expectedMaxImageSize}KB`);
     }
 

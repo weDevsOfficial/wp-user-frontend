@@ -101,6 +101,29 @@ export class Base {
     // Validate an element is present in the DOM without requiring visibility.
     // Use when the *value/text is already encoded in the selector* (so presence
     // proves the data), but the element may sit in a collapsed/inactive panel —
+    /**
+     * Close the block editor's own modals when they open: the welcome guide (once per
+     * user, the dismissal is saved, so a later test sees none) and the "Choose a pattern"
+     * start screen of a new page. Waits a moment for one, never fails when none shows.
+     */
+    async dismissEditorModals(timeout: number = 5000) {
+        const modal = this.page.locator('.components-modal__frame').first();
+        for (let round = 0; round < 2; round++) {
+            const shown = await modal.waitFor({ state: 'visible', timeout: 0 === round ? timeout : 1500 }).then(() => true, () => false);
+            if (!shown) {
+                return;
+            }
+            await modal.locator('button[aria-label="Close"]').first().click().catch(() => {});
+            await modal.waitFor({ state: 'detached', timeout: 5000 }).catch(() => {});
+        }
+        // Keep the guide off for the rest of this user's session.
+        await this.page.evaluate(() => {
+            try {
+                (window as unknown as { wp: { data: { dispatch: (s: string) => { set: (a: string, b: string, c: boolean) => void } } } }).wp.data.dispatch('core/preferences').set('core/edit-post', 'welcomeGuide', false);
+            } catch (e) { /* not the block editor */ }
+        }).catch(() => {});
+    }
+
     // e.g. the EDD `edd_price` input on the block-editor download page renders
     // correct-but-hidden inside a collapsed price panel, so a visibility wait
     // (assertionValidate) would hang for the full test timeout.

@@ -162,10 +162,14 @@ export class RegFormSettingsPage extends Base {
         const errorLoginMessage = await this.page.innerText(Selectors.regFormSettings.wpLoginErrorMessage);
         expect(errorLoginMessage).toBe('ERROR: Your account has to be approved by an administrator before you can login.');
 
+        // The WPUF login (React) lists its errors as lines in one alert; with Turnstile on and
+        // no token the Turnstile line comes first, as develop listed both (its check does not stop the login).
         await this.navigateToURL(this.wpufLoginPage);
         await new BasicLoginPage(this.page).frontendLogin(userEmail, userPassword);
-        const errorWPUFLoginMessage = await this.page.innerText(Selectors.regFormSettings.wpLoginErrorMessage);
-        expect(errorWPUFLoginMessage).toBe('ERROR: Your account has to be approved by an administrator before you can login.');
+        await expect(this.page.locator(Selectors.regFormSettings.wpufLoginErrorLines)).toContainText(
+            [ 'ERROR: Your account has to be approved by an administrator before you can login.' ],
+            { timeout: 30000 }
+        );
     }
 
     async approveNewUser(userEmail: string) {
@@ -184,7 +188,8 @@ export class RegFormSettingsPage extends Base {
     async validateLoginAfterApproval(userEmail: string, userPassword: string) {
         await this.navigateToURL(this.wpufLoginPage);
         await new BasicLoginPage(this.page).frontendLogin(userEmail, userPassword);
-        expect(this.page.url()).toBe(this.siteHomePage + '/');
+        // The React login signs in over REST and then redirects: wait for the redirect.
+        await expect(this.page).toHaveURL(this.siteHomePage + '/', { timeout: 30000 });
 
         await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);

@@ -747,13 +747,13 @@ export const Selectors = {
         // are scoped by post title so a user owning multiple posts doesn't trip
         // Playwright strict mode; the Options cell holds the Edit + Delete links.
         dashboardManage: {
-            allPostTitles: '//td[@data-label="Title: "]//a',
-            postTitleCell: (title: string) => `//td[@data-label="Title: "]//a[normalize-space()="${title}"]`,
-            // The Options cell is a "⋮" dropdown — its trigger must be clicked
-            // to reveal the Edit/Delete menu items (they are display:none until then).
-            optionsMenuTrigger: (title: string) => `//tr[.//td[@data-label="Title: "]//a[normalize-space()="${title}"]]//button[contains(@class,"wpuf-posts-menu-button")]`,
-            editLinkForPost: (title: string) => `//tr[.//td[@data-label="Title: "]//a[normalize-space()="${title}"]]//td[@data-label="Options: "]//a[normalize-space()="Edit"]`,
-            deleteLinkForPost: (title: string) => `//tr[.//td[@data-label="Title: "]//a[normalize-space()="${title}"]]//td[@data-label="Options: "]//a[normalize-space()="Delete"]`,
+            // React account Posts section: View / Edit / Delete are buttons on the row
+            // (no "⋮" menu any more); Delete asks in the WPUF dialog.
+            allPostTitles: '//td[@data-label="Title"]//a',
+            postTitleCell: (title: string) => `//td[@data-label="Title"]//a[normalize-space()="${title}"]`,
+            editLinkForPost: (title: string) => `//tr[.//td[@data-label="Title"]//a[normalize-space()="${title}"]]//td[@data-label="Options"]//a[@title="Edit"]`,
+            deleteLinkForPost: (title: string) => `//tr[.//td[@data-label="Title"]//a[normalize-space()="${title}"]]//td[@data-label="Options"]//button[@title="Delete"]`,
+            deleteConfirm: '[data-wpuf-dialog] [data-slot="alert-dialog-action"], .wpuf-dialog__footer .wpuf-dialog__btn:last-child',
         },
 
         productFrontendCreate: {
@@ -771,9 +771,9 @@ export const Selectors = {
             // Excerpt
             productExcerpt: '//textarea[@name="post_excerpt"]',
             //Regular Price
-            productRegularPrice: '//input[@id="_regular_price"]',
+            productRegularPrice: '//input[@name="_regular_price"]',
             // sale preice
-            productSalePrice: '//input[@id="_sale_price"]',
+            productSalePrice: '//input[@name="_sale_price"]',
             // image Gallery
             productImageGallery: '//li[@data-label="Product Image Gallery"]//input[@type="file"]',
             //visibility
@@ -784,20 +784,22 @@ export const Selectors = {
             enableReviews: 'xpath=//*[@role="radio"][following-sibling::input[1][@value="_enable_reviews"]] | //input[@value="_enable_reviews"] >> visible=true >> nth=0',
             // downloadable
             downloadable: 'xpath=//*[@role="radio"][following-sibling::input[1][@value="no"]] | //input[@value="no"] >> visible=true >> nth=0',
+            // Taxonomy selects by name: the React select keeps the native <select>
+            // (name only, no id) hidden beside its list button; a multiselect posts name[].
             // brand
-            selectBrand: '//select[@id="product_brand"]',
+            selectBrand: '//select[@name="product_brand" or @name="product_brand[]"]',
             // category
-            selectCategory: '//select[@id="product_cat"]',
+            selectCategory: '//select[@name="product_cat" or @name="product_cat[]"]',
             // tag
-            selectTag: '//select[@id="product_tag"]',
+            selectTag: '//select[@name="product_tag" or @name="product_tag[]"]',
             // attribute
-            selectShippingClass: '//select[@id="product_shipping_class"]',
+            selectShippingClass: '//select[@name="product_shipping_class" or @name="product_shipping_class[]"]',
             // type
-            selectType: '//select[@id="product_type"]',
+            selectType: '//select[@name="product_type" or @name="product_type[]"]',
             // visibility
-            selectVisibility: '//select[@id="product_visibility"]',
+            selectVisibility: '//select[@name="product_visibility" or @name="product_visibility[]"]',
             // color
-            selectColor: '//select[@id="pa_color"]',
+            selectColor: '//select[@name="pa_color" or @name="pa_color[]"]',
             //create
             createProduct: '//input[@name="submit"]'
 
@@ -817,15 +819,15 @@ export const Selectors = {
             // Excerpt
             downloadsExcerpt: '//textarea[@name="post_excerpt"]',
             // Regular Price
-            downloadsRegularPrice: '//input[@id="edd_price"]',
+            downloadsRegularPrice: '//input[@name="edd_price"]',
             // Purchase Note
             purchaseNote: '//textarea[@name="edd_product_notes"]',
             // Downloadable files
             downloadableFiles: '//li[@data-label="Downloadable Files"]//input[@type="file"]',
             // Category
-            downloadCategory: '//select[@id="download_category"]',
+            downloadCategory: '//select[@name="download_category" or @name="download_category[]"]',
             // Tag
-            downloadsTag: '//select[@id="download_tag"]',
+            downloadsTag: '//select[@name="download_tag" or @name="download_tag[]"]',
             // Create
             createDownloads: '//input[@name="submit"]'
         },
@@ -1408,6 +1410,8 @@ export const Selectors = {
         wpufMessage: '//div[@class="wpuf-message"]',
         accountGuestText: '.wpuf-account-guest .wpuf-state-card__text',
         wpLoginErrorMessage: '//div[@id="login_error"]',
+        // React [wpuf-login]: one line per server error inside the alert.
+        wpufLoginErrorLines: '.wpuf-login-root .wpuf-error .wpuf-login-error-line',
 
         regSettingsSection: {
             regSettingsHeader: '//li[contains(concat(" ", normalize-space(@class), " "), " active_settings_tab ") and normalize-space()="General"]',
@@ -2179,9 +2183,10 @@ export const Selectors = {
             validatePackPaid: (packName: string, packPrice: string)=> `//div[contains(text(),'${packName}')]//..//..//..//p[normalize-space(text())='$${packPrice}']`,
             validateRecurringPackPaid: (packName: string, packPrice: string, packExpirationNumber:string, packExpirationPeriod:string)=> `//div[contains(text(),'${packName}')]//..//..//..//p[normalize-space(text())='$${packPrice} every ${packExpirationNumber} ${packExpirationPeriod}(s)']`,
             recurringPackIcon: (packName: string)=> `//div[contains(text(),'${packName}')]//..//..//..//div[3]//*[name()='svg']`,
-            validatePackPublished: (packName)=> `//div[contains(text(),"${packName}")]//..//..//..//div[normalize-space(text())="Published"]`,
-            validatePackDrafted: (packName)=> `//div[contains(text(),"${packName}")]//..//..//..//div[normalize-space(text())="Draft"]`,
-            validatePackTrashed: (packName)=> `//div[contains(text(),"${packName}")]//..//..//..//div[normalize-space(text())="Trash"]`,
+            // The status is the kit Badge (a span since 5756aba2), so any tag.
+            validatePackPublished: (packName)=> `//div[contains(text(),"${packName}")]//..//..//..//*[normalize-space(text())="Published"]`,
+            validatePackDrafted: (packName)=> `//div[contains(text(),"${packName}")]//..//..//..//*[normalize-space(text())="Draft"]`,
+            validatePackTrashed: (packName)=> `//div[contains(text(),"${packName}")]//..//..//..//*[normalize-space(text())="Trash"]`,
             // React tabs: a button whose name is the label plus the count (no count when 0).
             validateAllPackCount: (packCount: number)=> packCount ? `role=button[name="All Subscriptions ${packCount}"s]` : 'role=button[name="All Subscriptions"s]',
             validatePublishedPackCount: (packCount: number)=> packCount ? `role=button[name="Published ${packCount}"s]` : 'role=button[name="Published"s]',
@@ -2191,7 +2196,8 @@ export const Selectors = {
             packPreferences: 'role=button[name="Preferences"s]',
             inputColor: 'xpath=//*[normalize-space(text())="Button Color"]/following::input[not(@type) or @type="text"][1] | //input[@type="color"]/following-sibling::input[1] >> visible=true >> nth=0',
             savePreferencesButton: '//button[normalize-space()="Save Preferences"]',
-            buyNowButtonColorFE: (packName:string, buttonColor: string)=> `//h3[normalize-space(text())='${packName}']//..//..//a[contains(@style,"background-color: ${buttonColor}")]`,
+            // React plan card: the saved colour is the card's --wpuf-plan-accent (the button paints with it).
+            buyNowButtonColorFE: (packName:string, buttonColor: string)=> `//article[contains(@class,"wpuf-plan-card")][.//h3[normalize-space()='${packName}']][contains(@style,"--wpuf-plan-accent") and contains(@style,"${buttonColor}")]`,
         },
 
         // Frontend Subscription Page
@@ -2213,7 +2219,8 @@ export const Selectors = {
             cancelSubscriptionForm: '//form[@id="wpuf_cancel_subscription"]',
             noSubscriptionMessage: '//p[contains(text(),"not subscribed")]',
             allPackCards: '//div[contains(@class,"wpuf-pricing-box") or contains(@class,"pack-card")]',
-            oneTimePayment: (packName: string, packPrice: string) => `//h3[normalize-space(text())='${packName}']//..//..//span[normalize-space(text())='$${packPrice}.00']//..//div[normalize-space(text())="One time payment"]`,
+            // React plan card: amount and cycle side by side in the price row.
+            oneTimePayment: (packName: string, packPrice: string) => `//article[contains(@class,"wpuf-plan-card")][.//h3[normalize-space()='${packName}']]//div[contains(@class,"wpuf-plan-card__price")][span[contains(@class,"wpuf-plan-card__amount")][normalize-space()='$${packPrice}.00']][span[contains(@class,"wpuf-plan-card__cycle")][normalize-space()="One time payment"]]`,
 
         },
 
@@ -2221,16 +2228,18 @@ export const Selectors = {
         accountPage: {
             packNotExistsMsg: '//p[normalize-space(text())="Your subscription pack is not exists. Please contact admin."]',
             subscriptionMsg: '//p[normalize-space(text())="View your current subscription status, billing details, and renewal information."]',
-            detailsCard: '//div[@class="wpuf-subscription-card"]',
-            currentPackName: (packName: string)=> `//h3[normalize-space()='Subscription: ${packName}']`,
-            freePack: '//span[normalize-space(text())="Free"]',
-            currentPackPrice: (packPrice: string)=> `//span[normalize-space(text())="$${packPrice}"]`,
-            showDetailsButton: '//button[normalize-space()="Show Details"]',
-            hideDetailsButton: '//button[normalize-space(text())="Hide Details"]',
-            remainingPosts: (postType: string) => `//tr[contains(.,"${postType}")]//td[last()]`,
-            showedLimits: (packName: string, featureName: string, count: string) => `//h3[normalize-space()='Subscription: ${packName}']//..//..//..//span[contains(., "${featureName}: ${count}")]`,
-            expirationDate: '//p[@class="wpuf-subscription-expire-date"]',
-            subscriptionStatus: '//span[contains(@class,"status")]',
+            // React plan card (kit plans.jsx): title in the h3, price / dates as facts,
+            // "What is left" as value + label, the plan features behind "Show all (n)".
+            detailsCard: '//section[contains(@class,"wpuf-plan-status")]',
+            currentPackName: (packName: string)=> `//section[contains(@class,"wpuf-plan-status")]//h3[normalize-space()='${packName}']`,
+            freePack: '//section[contains(@class,"wpuf-plan-status")]//span[contains(@class,"wpuf-plan-card__amount")][normalize-space()="Free"]',
+            currentPackPrice: (packPrice: string)=> `//section[contains(@class,"wpuf-plan-status")]//span[contains(@class,"wpuf-plan-card__amount")][contains(normalize-space(), "$${packPrice}")]`,
+            showDetailsButton: '//button[contains(@class,"wpuf-plan-status__more")][@aria-expanded="false"]',
+            hideDetailsButton: '//button[contains(@class,"wpuf-plan-status__more")][@aria-expanded="true"]',
+            remainingPosts: (postType: string) => `(//div[contains(@class,"wpuf-plan-status__limits")]//li[span[normalize-space()="${postType}"]]/strong)[1]`,
+            showedLimits: (packName: string, featureName: string, count: string) => `(//section[contains(@class,"wpuf-plan-status")][.//h3[normalize-space()='${packName}']]//div[contains(@class,"wpuf-plan-status__limits")]//li[strong[normalize-space()="${count}"]][span[normalize-space()="${featureName}"]])[1]`,
+            expirationDate: '//section[contains(@class,"wpuf-plan-status")]//div[contains(@class,"wpuf-plan-fact")][dt[contains(normalize-space(),"Expires")]]/dd',
+            subscriptionStatus: '//section[contains(@class,"wpuf-plan-status")]//span[contains(@class,"wpuf-pill")]',
             noSubscriptionPara: '//p[normalize-space()="You have not subscribed to any package yet."]',
             packDetails: '//div[contains(@class,"pack-details") or contains(@class,"subscription-details")]',
             postCountTable: '//table[contains(@class,"post-count") or contains(@class,"remaining")]',

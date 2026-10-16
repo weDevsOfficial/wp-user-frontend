@@ -32,27 +32,29 @@ export const Selectors = {
             clickDokanSidebar: '//div[normalize-space(text())="Dokan"]',
             licenseTab: '//li[@id="toplevel_page_wp-user-frontend"]//ul//li[normalize-space()="License"]',
         },
-        // WPUF frontend [wpuf-login] shortcode (templates/login-form.php,
+        // WPUF frontend [wpuf-login] shortcode: the React login app (src/frontend/login, root .wpuf-login-root;
+        // the classic templates/login-form.php,
         // lost-pass-form.php, logged-in.php — Lite Simple_Login)
         frontendLogin: {
-            loginForm: '#wpuf-login-form form#loginform',
-            usernameField: '#wpuf-login-form input#wpuf-user_login',
-            passwordField: '#wpuf-login-form input#wpuf-user_pass',
-            rememberMeCheckbox: '#wpuf-login-form input#wpuf-rememberme',
+            loginForm: '.wpuf-login-root form#loginform',
+            usernameField: '.wpuf-login-root input#wpuf-user_login',
+            passwordField: '.wpuf-login-root input#wpuf-user_pass',
+            rememberMeCheckbox: '.wpuf-login-root input#wpuf-rememberme',
             // The app renders a <button id="wp-submit"> (a classic template an <input>).
-            submitButton: '#wpuf-login-form #wp-submit',
-            fieldError: '#wpuf-login-form .wpuf-error-msg',
-            lostPasswordLink: '#wpuf-login-form .wpuf-lost-password a',
-            errorNotice: 'div.wpuf-error',
-            messageNotice: 'div.wpuf-message',
+            submitButton: '.wpuf-login-root #wp-submit',
+            fieldError: '.wpuf-login-root .wpuf-error-msg',
+            lostPasswordLink: '.wpuf-login-root .wpuf-lost-password a',
+            // The server's errors and messages sit inside the form card (.wpuf-login-notices).
+            errorNotice: '.wpuf-login-notices .wpuf-error',
+            messageNotice: '.wpuf-login-notices .wpuf-message',
             loggedInView: 'div.wpuf-user-loggedin',
-            lostPasswordForm: '#wpuf-login-form form#lostpasswordform',
-            lostPasswordUserField: '#wpuf-login-form form#lostpasswordform input#wpuf-user_login',
-            lostPasswordSubmit: '#wpuf-login-form form#lostpasswordform #wp-submit',
-            resetPasswordForm: '#wpuf-login-form form#resetpasswordform',
-            resetPass1: '#wpuf-login-form input#wpuf-pass1',
-            resetPass2: '#wpuf-login-form input#wpuf-pass2',
-            resetSubmit: '#wpuf-login-form form#resetpasswordform #wp-submit',
+            lostPasswordForm: '.wpuf-login-root form#lostpasswordform',
+            lostPasswordUserField: '.wpuf-login-root form#lostpasswordform input#wpuf-user_login',
+            lostPasswordSubmit: '.wpuf-login-root form#lostpasswordform #wp-submit',
+            resetPasswordForm: '.wpuf-login-root form#resetpasswordform',
+            resetPass1: '.wpuf-login-root input#wpuf-pass1',
+            resetPass2: '.wpuf-login-root input#wpuf-pass2',
+            resetSubmit: '.wpuf-login-root form#resetpasswordform #wp-submit',
         },
     },
 
@@ -386,7 +388,7 @@ export const Selectors = {
             // Enter_NAME
             editNewFormName: '//input[@name="post_title"]',
             enterNewFormName: '//input[@name="post_title"]',  // TODO: Catch with Child
-            confirmNewNameTickButton: '//input[@name="post_title"]/following-sibling::i[1]',
+            confirmNewNameTickButton: '//input[@name="post_title"]/following-sibling::*[self::i or self::button][1]',
         },
 
         createPreset_PF: {
@@ -967,7 +969,7 @@ export const Selectors = {
             // Enter_NAME
             editNewFormName: '//input[@name="post_title"]',
             enterNewFormName: '//input[@name="post_title"]',  // TODO: Catch with Child
-            confirmNewNameTickButton: '//input[@name="post_title"]/following-sibling::i[1]',
+            confirmNewNameTickButton: '//input[@name="post_title"]/following-sibling::*[self::i or self::button][1]',
         },
 
         addFields: {
@@ -1138,7 +1140,7 @@ export const Selectors = {
         clickFormEditor: '//a[contains(text(),"Form Editor")]',
         clickFormEditorSettings: '(//a[contains(@class,"wpuf-nav-tab")][normalize-space()="Settings"] | (//a[contains(@class,"wpuf-nav-tab wpuf-nav-tab-active")])[2])[1]',
         clickBlankForm: '//a[contains(normalize-space(.), "Create Form") and (@title="Blank Form" or ancestor::div[contains(@class,"wpuf-template-card")]//span[normalize-space()="Blank Form"])]',
-        confirmNewNameTickButton: '//input[@name="post_title"]/following-sibling::i[1]',
+        confirmNewNameTickButton: '//input[@name="post_title"]/following-sibling::*[self::i or self::button][1]',
         clickForm: (formName: string) => `(//td//a[normalize-space()="${formName}"] | //span[normalize-space()="${formName}"])[1]`,
         postTypePage: (type: string) => `//a[normalize-space()="${type}"]`,
         postCategory: (category: string) => `//a[normalize-space()="${category}"]`,
@@ -1664,7 +1666,8 @@ export const Selectors = {
 
             wcValidation: {
                 vendorValidation: (name: string) => `//a[normalize-space()='${name}']`,
-                vendorStatusValidation: '//td//span[text()="Active"]',
+                // The status in this vendor's row (earlier runs leave other Active vendors).
+                vendorStatusValidation: (name: string) => `//tr[.//a[normalize-space()='${name}']]//td//span[text()="Active"]`,
             }
         },
 

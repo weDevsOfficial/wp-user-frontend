@@ -472,6 +472,15 @@ export class RegFormPage extends Base {
             return false;
         }
         await this.page.keyboard.press('Enter');
+        // The search box renders even when Google refuses the key at runtime (no billing on
+        // the key's project: BillingNotEnabledMapError; referer not allowed). The place is
+        // then never geocoded, the location input stays empty and Register cannot pass.
+        const location = this.page.locator('.wpuf-form-google-map-container:has(input[placeholder="Search address"]) input[id^="wpuf-map-lat-"]').first();
+        const located = await expect(location).not.toHaveValue('', { timeout: 10000 }).then(() => true, () => false);
+        if (!located) {
+            console.log('\x1b[33m%s\x1b[0m', '⚠️  Dokan vendor store location (Google Maps) did not resolve — the Maps key is refused at runtime (billing / referer). Cannot complete vendor registration; RF0009–RF0011 skip.');
+            return false;
+        }
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.passwordField, VendorRegistrationForm.dokanVendorPassword = VendorRegistrationForm.dokanVendorEmail);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.confirmPasswordField, VendorRegistrationForm.dokanVendorPassword = VendorRegistrationForm.dokanVendorEmail);
         // Submit Registration. WPUF keeps Register `disabled` until every required
@@ -647,7 +656,7 @@ export class RegFormPage extends Base {
         await this.page.waitForTimeout(5000)
         await this.navigateToURL(this.wcVendorsPage);
         await this.assertionValidate(Selectors.vendorRegistrationForms.wcVendor.wcValidation.vendorValidation(VendorRegistrationForm.wcVendorShopName));
-        await this.assertionValidate(Selectors.vendorRegistrationForms.wcVendor.wcValidation.vendorStatusValidation);
+        await this.assertionValidate(Selectors.vendorRegistrationForms.wcVendor.wcValidation.vendorStatusValidation(VendorRegistrationForm.wcVendorShopName));
 
     }
 
@@ -790,6 +799,8 @@ export class RegFormPage extends Base {
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.cityField, VendorRegistrationForm.wcfmMemberCity);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.zipField, VendorRegistrationForm.wcfmMemberZip);
         await this.selectOptionWithLabel(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.countryField, VendorRegistrationForm.wcfmMemberCountry);
+        // The State part is a required text input; the React form enforces it (classic let it through).
+        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.stateField, VendorRegistrationForm.wcfmMemberState);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.facebookField, VendorRegistrationForm.wcfmMemberFacebook = `https://www.facebook.com/${this.generateWordWithMinLength(5)}`);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.twitterField, VendorRegistrationForm.wcfmMemberTwitter = `https://www.x.com/${this.generateWordWithMinLength(5)}`);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.googleField, VendorRegistrationForm.wcfmMemberGoogle = `https://www.google.com/${this.generateWordWithMinLength(5)}`);

@@ -403,11 +403,19 @@ export class OnboardingPage extends Base {
      * vector that actually loaded rather than a broken or raster asset.
      */
     async getImageReport(): Promise<Array<{ file: string; loaded: boolean; isSvg: boolean; naturalW: number }>> {
-        return await this.page.evaluate( () => {
-            const imgs = Array.from( document.querySelectorAll( 'img' ) ) as HTMLImageElement[];
+        return await this.page.evaluate( async () => {
+            const imgs = ( Array.from( document.querySelectorAll( 'img' ) ) as HTMLImageElement[] )
+                .filter( img => ( img.getAttribute( 'src' ) || '' ).includes( '/images/' ) );
+
+            // Under load an image can still be fetching when the step settles: wait for each
+            // to decode (or fail) before reading it, capped so a stuck request cannot hang.
+            imgs.forEach( img => { img.loading = 'eager'; } );
+            await Promise.all( imgs.map( img => Promise.race( [
+                img.decode().catch( () => null ),
+                new Promise( resolve => setTimeout( resolve, 5000 ) ),
+            ] ) ) );
 
             return imgs
-                .filter( img => ( img.getAttribute( 'src' ) || '' ).includes( '/images/' ) )
                 .map( img => {
                     const src = img.getAttribute( 'src' ) || '';
 

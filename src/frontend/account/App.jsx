@@ -281,7 +281,8 @@ export default function App( { data, root } ) {
                     <div className="wpuf-logout-section">
                         <a className="wpuf-logout-link" href={ person.logout_url }>
                             <LogOut size={ 16 } aria-hidden="true" />
-                            { __( 'Sign out', 'wp-user-frontend' ) }
+                            { /* "Log out" as develop's sidebar; "Sign out" is the greeting's link on the dashboard. */ }
+                            { __( 'Log out', 'wp-user-frontend' ) }
                         </a>
                     </div>
                 </aside>

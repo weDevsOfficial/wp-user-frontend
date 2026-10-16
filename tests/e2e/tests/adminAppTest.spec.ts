@@ -42,7 +42,7 @@ const APP = `${Urls.baseUrl}/wp-admin/admin.php?page=wp-user-frontend`;
  * @Test_APP0013 : Add New in the app: the template picker's Blank Form and a template each create a form and open its builder in the app without a page load
  * @Test_APP0014 : AI form builder in the app: list button -> AI route -> generate -> Edit with Builder -> builder route, no page load; old AI URLs (with nonce) land on the route
  * @Test_APP0015 : List row action buttons in the app: Edit (builder route), Duplicate (confirm, toast View form), Trash (confirm), Restore, Delete Permanently (confirm), bulk Move to trash (confirm), all without a page load, counts follow; registration Edit (Pro)
- * @Test_APP0016 : Pro without a valid license: Registration Forms stays Pro's preview page (no app route, no way round it); the free routes still run in the app
+ * @Test_APP0016 : Pro without a valid license: Registration Forms is the license-required card in the app (no list, no builder, Activate License goes to the license route); the free routes still run
  * @Test_APP0017 : License (Pro) is the app route #/license: old URL lands there, the key is masked (never in the page), a site without an active key gets the key form
  * @Test_APP0018 : Without Pro, Registration Forms is the app route #/registration-forms on the new components (free shortcode with Copy, Pro features, modules icons) and shows admin notices
  * @Test_APP0019 : Help, Tools, Transactions and Coupons: old URLs land on their app routes with the menu row lit, and those routes show admin notices as develop's pages did
@@ -256,9 +256,11 @@ test.describe('Admin app', () => {
         await expect(page.locator('input[name="wpuf_form_id"]')).toHaveValue(String(id));
         await expect(page.locator('input[name="wpuf_form_builder_nonce"]')).toHaveCount(1);
 
-        // The builder folds the WordPress menu: its rows show in a flyout on hover.
+        // The builder folds the WordPress menu: its rows show in a flyout on hover. The flyout
+        // timing is the browser's, so the click goes to the menu link itself (same handler).
+        const postFormsLink = page.locator('#toplevel_page_wp-user-frontend a', { hasText: 'Post Forms' }).first();
         await page.locator('#toplevel_page_wp-user-frontend').hover();
-        await page.locator('#toplevel_page_wp-user-frontend a', { hasText: 'Post Forms' }).first().click();
+        await postFormsLink.dispatchEvent('click');
         await expect(page.locator('#wpuf-post-forms-list-table-view').first()).toBeVisible({ timeout: 30000 });
         expect(await page.evaluate(() => document.body.classList.contains('wpuf-builder-screen'))).toBe(false);
         expect(await sheetOn('wpuf-forms-list-css'), 'list sheet back on').toBe(true);
@@ -548,11 +550,11 @@ test.describe('Admin app', () => {
         }
     });
 
-    test('APP0016 : Pro without a valid license keeps the registration preview page', { tag: ['@Pro', '@Test_APP0016'] }, async () => {
+    test('APP0016 : Pro without a valid license shows the license-required card for Registration Forms', { tag: ['@Pro', '@Test_APP0016'] }, async () => {
         test.skip(!(await appOn()), 'admin app is off');
         test.skip(!HAS_WP_CLI, 'needs WP-CLI on the site');
 
-        const registrationRoute = () => page.evaluate(() => ((window as unknown as { wpufAdmin: { app: { routes: { id: string; mode: string }[] } } }).wpufAdmin.app.routes.find((r) => 'registration-forms' === r.id) || { mode: 'none' }).mode);
+        const card = page.locator('.wpuf-app-state');
         await page.goto(`${APP}#/post-forms`);
         test.skip(!(await proRegistrationList()), 'needs licensed Pro to start from');
 
@@ -565,19 +567,22 @@ test.describe('Admin app', () => {
             await page.goto(`${APP}#/post-forms`);
             await page.reload();
             await expect(page.locator('#wpuf-post-forms-list-table-view table').first()).toBeVisible({ timeout: 30000 });
-            expect(await registrationRoute(), 'registration routes stay page mode').toBe('page');
 
+            // Registration Forms is the license-required card in the app: never the list.
             const row = page.locator('#toplevel_page_wp-user-frontend a', { hasText: 'Registration Forms' }).first();
-            expect(await row.getAttribute('href'), 'menu row keeps the preview page').toContain('page=wpuf-profile-forms');
-            expect(await row.getAttribute('href')).not.toContain('#/');
-
-            // A hand-typed route opens the preview page, not the list.
+            expect(await row.getAttribute('href'), 'menu row opens the app route').toContain('#/registration-forms');
             await page.goto(`${APP}#/registration-forms`);
-            await expect(page).toHaveURL(/page=wpuf-profile-forms/, { timeout: 30000 });
+            await expect(card.getByRole('heading', { name: 'WPUF Pro License Required' })).toBeVisible({ timeout: 30000 });
             await expect(page.locator('#wpuf-profile-forms-list-table-view')).toHaveCount(0);
+
+            // The builder route is not served either.
             await page.goto(`${APP}#/registration-forms/1/edit`);
-            await expect(page).toHaveURL(/page=wpuf-profile-forms/, { timeout: 30000 });
             await expect(page.locator('#wpuf-form-builder')).toHaveCount(0);
+
+            // The card's action goes to the license page of the app.
+            await page.goto(`${APP}#/registration-forms`);
+            await card.getByRole('link', { name: 'Activate License' }).click();
+            await expect(page).toHaveURL(/#\/license/, { timeout: 30000 });
 
             // Free routes still run in the app.
             await page.goto(`${APP}#/settings`);
@@ -588,7 +593,8 @@ test.describe('Admin app', () => {
 
         await page.goto(`${APP}#/post-forms`);
         await page.reload();
-        expect(await registrationRoute(), 'license restored').toBe('app');
+        await page.goto(`${APP}#/registration-forms`);
+        await expect(page.locator('#wpuf-profile-forms-list-table-view').first(), 'license restored: the list is back').toBeVisible({ timeout: 30000 });
     });
 
     test('APP0017 : License page in the app (Pro)', { tag: ['@Pro', '@Test_APP0017'] }, async () => {

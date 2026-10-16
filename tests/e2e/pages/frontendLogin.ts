@@ -46,7 +46,7 @@ export class FrontendLoginPage extends Base {
     async validateLoginAppAssets(loginUrl: string) {
         for (const url of [loginUrl, this.lostPasswordUrl(loginUrl)]) {
             await this.navigateToURL(url);
-            await expect(this.page.locator('#wpuf-login-form form')).toBeVisible();
+            await expect(this.page.locator('.wpuf-login-root form')).toBeVisible();
             const scripts = await this.page.locator('script[src]').evaluateAll((nodes) => nodes.map((node) => (node as HTMLScriptElement).src));
             expect(scripts.some((src) => /\/frontend\/login\.js/.test(src)), 'login app').toBe(true);
             expect(scripts.some((src) => /frontend-form(\.min)?\.js/.test(src)), 'classic form bundle').toBe(false);
@@ -98,37 +98,38 @@ export class FrontendLoginPage extends Base {
         return loginUrl + (loginUrl.includes('?') ? '&' : '?') + 'action=lostpassword';
     }
 
-    /** Unknown e-mail on the lost-password form is rejected with the no-user error. */
+    /**
+     * Unknown e-mail on the lost-password form: the same neutral answer as for a
+     * real account (the form must not tell which accounts exist), in the card, no page load.
+     */
     async validateLostPasswordUnknownEmail(loginUrl: string, email: string) {
         await this.navigateToURL(this.lostPasswordUrl(loginUrl));
         await expect(this.page.locator(S.lostPasswordForm)).toBeVisible();
         await this.page.locator(S.lostPasswordUserField).fill(email);
         await this.page.locator(S.lostPasswordSubmit).click();
-        await expect(this.page.locator(S.errorNotice)).toBeVisible();
-        await expect(this.page.locator(S.errorNotice)).toContainText(/no user registered with that email/i);
+        await expect(this.page.locator(S.messageNotice).first()).toContainText(/account matches/i);
+        await expect(this.page.locator(S.errorNotice)).toHaveCount(0);
     }
 
     /**
      * Known user requests a reset. Returns:
-     *  - 'sent'     — confirmation message shown (mail handed off)
-     *  - 'mailfail' — WPUF reached the mailer but the env cannot send (SMTP gap)
+     *  - 'sent'     - the neutral confirmation shows in the card (mail handed off)
+     *  - 'mailfail' - WPUF reached the mailer but the env cannot send (SMTP gap): the form
+     *                 shows "We could not send the e-mail" (logged, no white page)
      */
     async requestLostPasswordKnownUser(loginUrl: string, userLogin: string): Promise<'sent' | 'mailfail'> {
         await this.navigateToURL(this.lostPasswordUrl(loginUrl));
         await expect(this.page.locator(S.lostPasswordForm)).toBeVisible();
         await this.page.locator(S.lostPasswordUserField).fill(userLogin);
+        // The form starts with an info line of its own: branch on the REST answer, not on what shows first.
+        const answered = this.page.waitForResponse((response) => /wpuf\/v1\/login\/lost-password(\?|$)/.test(response.url()) || /rest_route=(%2F|\/)wpuf(%2F|\/)v1(%2F|\/)login(%2F|\/)lost-password/.test(response.url()));
         await this.page.locator(S.lostPasswordSubmit).click();
-        // Success redirects to ?checkemail=confirm with a .wpuf-message. When the
-        // env has no mail transport, email_reset_pass wp_die()s with a bare
-        // "The e-mail could not be sent." page — an environment gap, not a WPUF bug.
-        await this.page.waitForLoadState('load');
-        const bodyText = (await this.page.locator('body').innerText()) ?? '';
-        if (/e-?mail could not be sent/i.test(bodyText)) {
+        const response = await answered;
+        if (200 !== response.status()) {
+            await expect(this.page.locator(S.errorNotice).first()).toContainText(/could not send the e-?mail/i);
             return 'mailfail';
         }
-        const message = this.page.locator(S.messageNotice);
-        await expect(message.first()).toBeVisible();
-        await expect(message.first()).toContainText(/check your e-?mail/i);
+        await expect(this.page.locator(S.messageNotice).first()).toContainText(/account matches|check your inbox/i);
         return 'sent';
     }
 
@@ -137,7 +138,11 @@ export class FrontendLoginPage extends Base {
         await this.navigateToURL(loginUrl);
         await this.page.locator(S.usernameField).fill(username);
         await this.page.locator(S.passwordField).fill(password);
+        // The app logs in over REST and then goes where the server says: let the answer
+        // (which sets the cookies) arrive before navigating.
+        const answered = this.page.waitForResponse((response) => /wpuf\/v1\/login(\?|$)/.test(response.url()) || /rest_route=(%2F|\/)wpuf(%2F|\/)v1(%2F|\/)login($|&)/.test(response.url()));
         await this.page.locator(S.submitButton).click();
+        expect((await answered).status()).toBe(200);
         await this.navigateToURL(loginUrl);
         await expect(this.page.locator(S.loggedInView)).toBeVisible();
         await expect(this.page.locator(S.loggedInView)).toContainText(/currently logged in/i);

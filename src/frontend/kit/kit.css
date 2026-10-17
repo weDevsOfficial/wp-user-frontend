@@ -323,7 +323,24 @@
 }
 
 .wpuf-frontend .wpuf-plan-card.is-featured {
-    border-color: var(--wpuf-plan-accent);
+    border: 2px solid var(--wpuf-plan-accent);
+    box-shadow: 0 10px 24px rgba(17, 24, 39, 0.1);
+}
+
+/* The highlighted plan's ribbon, in the card flow (no outside spacing needed). */
+.wpuf-frontend .wpuf-plan-card__ribbon {
+    margin: -24px -24px 4px;
+    padding: 7px 12px;
+    border-radius: calc(var(--wpuf-fe-radius-lg) - 2px) calc(var(--wpuf-fe-radius-lg) - 2px) 0 0;
+    background: var(--wpuf-plan-accent);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    text-align: center;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
 }
 
 .wpuf-frontend .wpuf-plan-card.is-current {

@@ -213,6 +213,28 @@ class Pack_Fields {
                             'min'      => 1,
                         ],
                     ],
+                    // Plans page: show this pack as the recommended one (ribbon + accent border).
+                    'highlight'       => [
+                        'id'      => 'highlight',
+                        'name'    => 'highlight',
+                        'db_key'  => '_wpuf_highlight',
+                        'db_type' => 'meta',
+                        'type'    => 'switcher',
+                        'label'   => __( 'Highlight this plan', 'wp-user-frontend' ),
+                        'tooltip' => __( 'Show this plan as the recommended one on the plans page, with a ribbon and an accent border.', 'wp-user-frontend' ),
+                        'default' => false,
+                    ],
+                    'highlight_label' => [
+                        'id'          => 'highlight-label',
+                        'name'        => 'highlight_label',
+                        'db_key'      => '_wpuf_highlight_label',
+                        'db_type'     => 'meta',
+                        'type'        => 'input-text',
+                        'label'       => __( 'Highlight label', 'wp-user-frontend' ),
+                        'tooltip'     => __( 'The ribbon text, for example "Most popular" or "Best value". Leave empty for "Most popular".', 'wp-user-frontend' ),
+                        'placeholder' => __( 'Most popular', 'wp-user-frontend' ),
+                        'default'     => '',
+                    ],
                     'publish_time' => [
                         'id'      => 'publish-time',
                         'name'    => 'publish-time',
@@ -614,6 +636,9 @@ class Pack_Fields {
             ],
             'trial'            => [
                 'trial_period' => true,
+            ],
+            'highlight'        => [
+                'highlight_label' => true,
             ],
         ];
 

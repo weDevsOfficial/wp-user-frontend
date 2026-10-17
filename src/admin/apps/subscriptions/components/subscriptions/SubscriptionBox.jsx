@@ -6,7 +6,8 @@
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
-import { Check, Lock, Repeat, Tag } from 'lucide-react';
+import { Check, Lock, Repeat, Star, Tag } from 'lucide-react';
+import { highlightOf } from '../../labels';
 import { ActionMenu, Badge, ConfirmDialog } from '@wpuf/components';
 import { useSubscriptionItem } from '../../hooks/useSubscriptionItem';
 import { SubscriptionBoxFooter } from '../../slots';
@@ -41,7 +42,7 @@ const SubscriptionBox = ({ subscription, onEdit, onChanged }) => {
 
 	return (
 		<>
-			<div className="flex flex-col text-sm bg-white border border-gray-200 rounded-[10px] shadow-sm relative">
+			<div className={ `flex flex-col text-sm bg-white border rounded-[10px] shadow-sm relative ${ highlightOf( subscription ) ? 'border-2 border-primary' : 'border-gray-200' }` }>
 				<div
 					onClick={!isTrashed ? handleEdit : undefined}
 					className={`border-b border-gray-200 bg-white px-5 pt-5 pb-4 rounded-t-[10px] ${!isTrashed ? 'cursor-pointer' : ''}`}
@@ -70,6 +71,12 @@ const SubscriptionBox = ({ subscription, onEdit, onChanged }) => {
 				<div className="flex px-5 pt-4 justify-between items-center gap-2">
 					<span className="flex flex-wrap items-center gap-2">
 						<Badge tone={ status.tone }>{ status.label }</Badge>
+						{ highlightOf( subscription ) && (
+							<Badge tone="info" title={ __( 'Highlighted on the plans page', 'wp-user-frontend' ) }>
+								<Star size={ 12 } aria-hidden="true" />
+								{ highlightOf( subscription ) }
+							</Badge>
+						) }
 						{ /* Published but left out of the plans page shortcode (include / exclude). */ }
 						{ 'publish' === subscription.post_status && links.plansUrl && ! links.onPlansPage && (
 							<span className="text-xs text-amber-700" title={ __( 'The [wpuf_sub_pack] shortcode on the plans page includes or excludes packs by ID.', 'wp-user-frontend' ) }>

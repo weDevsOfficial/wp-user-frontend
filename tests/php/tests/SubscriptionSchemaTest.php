@@ -165,4 +165,21 @@ class SubscriptionSchemaTest extends WP_UnitTestCase {
         update_user_meta( $user, '_wpuf_subscription_pack', [ 'pack_id' => $this->pack, 'status' => 'completed', 'expire' => '' ] );
         $this->assertTrue( $this->card( $this->schema()->packs() )['current'] );
     }
+
+    public function test_highlighted_pack_card_is_featured_with_its_label() {
+        $card = $this->card( $this->schema()->packs() );
+
+        $this->assertFalse( $card['featured'] );
+        $this->assertSame( '', $card['badge'] );
+
+        update_post_meta( $this->pack, '_wpuf_highlight', 'on' );
+        update_post_meta( $this->pack, '_wpuf_highlight_label', 'Best value' );
+        $card = $this->card( $this->schema()->packs() );
+
+        $this->assertTrue( $card['featured'] );
+        $this->assertSame( 'Best value', $card['badge'] );
+
+        update_post_meta( $this->pack, '_wpuf_highlight', 'off' );
+        $this->assertFalse( $this->card( $this->schema()->packs() )['featured'] );
+    }
 }

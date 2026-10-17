@@ -594,6 +594,18 @@ class SubscriptionStore implements DataStore {
             $cycle_period = 'day';
         }
 
+        $meta = [];
+
+        // Plans page highlight: only what the form sent (a pack that never had
+        // it and is saved untouched keeps no such meta).
+        if ( array_key_exists( '_wpuf_highlight', $meta_value ) ) {
+            $meta['_wpuf_highlight'] = in_array( $meta_value['_wpuf_highlight'], [ 'on', 'yes', true, '1', 1 ], true ) ? 'on' : 'off';
+        }
+
+        if ( array_key_exists( '_wpuf_highlight_label', $meta_value ) ) {
+            $meta['_wpuf_highlight_label'] = mb_substr( sanitize_text_field( (string) $meta_value['_wpuf_highlight_label'] ), 0, 40 );
+        }
+
         return [
             'status'       => ! empty( $subscription['post_status'] ) ? sanitize_text_field( $subscription['post_status'] ) : 'publish',
             'date'         => ! empty( $subscription['post_date'] ) ? sanitize_text_field( $subscription['post_date'] ) : '',
@@ -628,7 +640,7 @@ class SubscriptionStore implements DataStore {
                 '_sort_order'                => $sort_order,
                 '_sub_view_allowed_term_ids' => ! empty( $meta_value['_sub_view_allowed_term_ids'] ) ? $this->sanitize_term_ids( $meta_value['_sub_view_allowed_term_ids'] ) : [],
                 'postnum_rollback_on_delete' => $text( 'postnum_rollback_on_delete', '' ),
-            ],
+            ] + $meta,
         ];
     }
 }

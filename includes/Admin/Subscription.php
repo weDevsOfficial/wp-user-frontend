@@ -141,6 +141,14 @@ class Subscription {
         $meta['_remove_feature_item']       = get_post_meta( $subscription_id, '_remove_feature_item', true );
         $meta['_sort_order']                = get_post_meta( $subscription_id, '_sort_order', true );
 
+        // Plans page highlight: loaded only when stored, so saving a pack that
+        // never had it writes nothing new (SubscriptionStore::rest_values()).
+        foreach ( [ '_wpuf_highlight', '_wpuf_highlight_label' ] as $highlight_key ) {
+            if ( metadata_exists( 'post', $subscription_id, $highlight_key ) ) {
+                $meta[ $highlight_key ] = get_post_meta( $subscription_id, $highlight_key, true );
+            }
+        }
+
         // Taxonomy restriction meta keys
         $meta['_sub_allowed_term_ids']      = get_post_meta( $subscription_id, '_sub_allowed_term_ids', true );
         $meta['_sub_view_allowed_term_ids'] = get_post_meta( $subscription_id, '_sub_view_allowed_term_ids', true );

@@ -279,4 +279,33 @@ class SubscriptionStoreTest extends WP_UnitTestCase {
         $this->assertNotNull( get_post( $page ) );
         $this->assertFalse( Stores::subscriptions()->delete( $page ) );
     }
+
+    public function test_highlight_is_saved_when_sent_and_never_added_by_an_untouched_save() {
+        $id = self::factory()->post->create( [ 'post_type' => 'wpuf_subscription', 'post_status' => 'publish', 'post_title' => 'Pack' ] );
+
+        // An untouched save of a pack that never had it writes no highlight meta.
+        $payload       = $this->payload();
+        $payload['ID'] = $id;
+        ( new Subscription_Api() )->create_or_update_item( $this->request( $payload ) );
+
+        $this->assertFalse( metadata_exists( 'post', $id, '_wpuf_highlight' ) );
+        $this->assertFalse( metadata_exists( 'post', $id, '_wpuf_highlight_label' ) );
+        $this->assertArrayNotHasKey( '_wpuf_highlight', \WeDevs\Wpuf\Admin\Subscription::get_subscription_meta( $id ) );
+
+        // Turned on with a label: stored as 'on' and plain text (40 characters at most).
+        $payload['meta_value']['_wpuf_highlight']       = 'on';
+        $payload['meta_value']['_wpuf_highlight_label'] = '<b>Best value</b> ' . str_repeat( 'x', 60 );
+        ( new Subscription_Api() )->create_or_update_item( $this->request( $payload ) );
+
+        $this->assertSame( 'on', get_post_meta( $id, '_wpuf_highlight', true ) );
+        $this->assertSame( 40, mb_strlen( get_post_meta( $id, '_wpuf_highlight_label', true ) ) );
+        $this->assertStringStartsWith( 'Best value', get_post_meta( $id, '_wpuf_highlight_label', true ) );
+
+        // Turned off: stored as 'off' (the meta is now part of the pack).
+        $payload['meta_value']['_wpuf_highlight'] = 'off';
+        ( new Subscription_Api() )->create_or_update_item( $this->request( $payload ) );
+
+        $this->assertSame( 'off', get_post_meta( $id, '_wpuf_highlight', true ) );
+        $this->assertSame( 'off', \WeDevs\Wpuf\Admin\Subscription::get_subscription_meta( $id )['_wpuf_highlight'] );
+    }
 }

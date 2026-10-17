@@ -79,13 +79,13 @@ export function PlanCard( { card, color = '' } ) {
 
     return (
         <article className={ cx( 'wpuf-plan-card', `wpuf-pack-${ card.id }`, card.featured && 'is-featured', card.current && 'is-current' ) } style={ style }>
+            { /* "Highlight this plan" (pack setting): a ribbon with its label. */ }
+            { card.featured && (
+                <div className="wpuf-plan-card__ribbon">{ card.badge || __( 'Most popular', 'wp-user-frontend' ) }</div>
+            ) }
             <header className="wpuf-plan-card__head">
                 <h3 className="wpuf-plan-card__title">{ card.title }</h3>
-                { card.current ? (
-                    <Pill tone="green">{ __( 'Current plan', 'wp-user-frontend' ) }</Pill>
-                ) : card.featured && (
-                    <Pill tone="blue">{ __( 'Most popular', 'wp-user-frontend' ) }</Pill>
-                ) }
+                { card.current && <Pill tone="green">{ __( 'Current plan', 'wp-user-frontend' ) }</Pill> }
             </header>
 
             { card.description && <ServerHtml html={ card.description } className="wpuf-plan-card__desc" /> }

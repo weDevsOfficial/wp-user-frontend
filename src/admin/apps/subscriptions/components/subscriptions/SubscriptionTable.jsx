@@ -5,7 +5,8 @@
  * @since WPUF_SINCE
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { Lock, Repeat } from 'lucide-react';
+import { Lock, Repeat, Star } from 'lucide-react';
+import { highlightOf } from '../../labels';
 import { ActionMenu, Badge, ConfirmDialog } from '@wpuf/components';
 import { useSubscriptionItem } from '../../hooks/useSubscriptionItem';
 import { SubscriptionBoxFooter } from '../../slots';
@@ -53,7 +54,15 @@ const SubscriptionRow = ( { subscription, onEdit, onChanged } ) => {
 			</td>
 			<td className={ TD + ' whitespace-nowrap text-gray-500' }>{ billingAmount }</td>
 			<td className={ TD + ' whitespace-nowrap' }>
-				<Badge tone={ status.tone }>{ status.label }</Badge>
+				<span className="inline-flex flex-wrap items-center gap-2">
+					<Badge tone={ status.tone }>{ status.label }</Badge>
+					{ highlightOf( subscription ) && (
+						<Badge tone="info" title={ __( 'Highlighted on the plans page', 'wp-user-frontend' ) }>
+							<Star size={ 12 } aria-hidden="true" />
+							{ highlightOf( subscription ) }
+						</Badge>
+					) }
+				</span>
 			</td>
 			<td className={ TD + ' whitespace-nowrap text-gray-500' }>
 				{ isRecurringSub ? (

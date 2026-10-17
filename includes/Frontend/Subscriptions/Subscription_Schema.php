@@ -210,7 +210,9 @@ class Subscription_Schema {
             'id'          => (int) $pack->ID,
             'title'       => self::text( (string) $pack->post_title ),
             'description' => wp_kses_post( wpautop( (string) $pack->post_content ) ),
-            'featured'    => ! empty( $pack->featured ),
+            // The pack's "Highlight this plan" setting (or a `featured` flag a filter set).
+            'featured'    => ! empty( $pack->featured ) || ( isset( $pack->meta_value['_wpuf_highlight'] ) && 'on' === $pack->meta_value['_wpuf_highlight'] ),
+            'badge'       => isset( $pack->meta_value['_wpuf_highlight_label'] ) ? self::text( (string) $pack->meta_value['_wpuf_highlight_label'] ) : '',
             'free'        => $free,
             // Plain text for React: wpuf_format_price() writes the symbol as an entity (&#36;).
             'price'       => $free ? __( 'Free', 'wp-user-frontend' ) : self::text( wpuf_format_price( $amount ) ),

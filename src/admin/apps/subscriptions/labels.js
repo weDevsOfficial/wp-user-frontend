@@ -30,6 +30,24 @@ export function statusOf( postStatus ) {
 }
 
 /**
+ * The pack's plans page highlight ("Highlight this plan"): its label, or ''
+ * when the pack is not highlighted.
+ *
+ * @param {Object} subscription Pack (with meta_value).
+ *
+ * @return {string} Label.
+ */
+export function highlightOf( subscription ) {
+	const meta = ( subscription && subscription.meta_value ) || {};
+
+	if ( 'on' !== meta._wpuf_highlight ) {
+		return '';
+	}
+
+	return meta._wpuf_highlight_label || __( 'Most popular', 'wp-user-frontend' );
+}
+
+/**
  * A billing period for a count: "week" / "weeks" (empty period = day).
  *
  * @param {string} period Stored period: day, week, month, year.

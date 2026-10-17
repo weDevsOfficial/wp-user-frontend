@@ -1211,7 +1211,9 @@
     border-radius: 6px;
 }
 
-/* Repeat field: each entry a soft card, round add / remove buttons. */
+/* Repeat field: a list of entries, each input with its remove / add icon
+   buttons in line at the right (the layout is in Pro's frontend-fields.css);
+   entries of several fields sit in a light box. */
 .wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container > p {
     margin: 0 0 4px !important;
     color: var(--wpuf-m-text);
@@ -1227,48 +1229,46 @@
 }
 
 .wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-instance {
-    margin: 0 0 12px;
-    padding: 16px 16px 8px;
+    margin: 0 0 8px;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-instance--group {
+    padding: 12px;
     border: 1px solid var(--wpuf-m-border);
     border-radius: var(--wpuf-m-radius);
     background: color-mix(in srgb, var(--wpuf-m-input-bg) 60%, transparent);
 }
 
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-instance > li {
-    margin: 0 0 12px !important;
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-instance li {
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls {
-    display: flex;
-    gap: 8px;
-    margin: 0 0 8px;
-}
-
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls .wpuf-repeat-btn {
+    width: 42px;
+    height: 42px;
+    min-height: 42px;
     padding: 0 !important;
     border: 1px solid var(--wpuf-m-border) !important;
-    border-radius: 999px !important;
+    border-radius: var(--wpuf-m-radius) !important;
     background: var(--wpuf-m-input-bg) !important;
     box-shadow: none !important;
-    color: var(--wpuf-m-accent) !important;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 1;
-    cursor: pointer;
+    color: var(--wpuf-m-muted) !important;
 }
 
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls button:hover,
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls button:focus-visible {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls .wpuf-repeat-btn:hover:not(:disabled),
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls .wpuf-repeat-btn:focus-visible {
     border-color: var(--wpuf-m-accent) !important;
+    color: var(--wpuf-m-accent) !important;
     outline: none;
 }
 
-.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls .wpuf-remove-repeat {
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls .wpuf-repeat-btn:focus-visible {
+    box-shadow: 0 0 0 3px var(--wpuf-m-ring) !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls .wpuf-remove-repeat:hover:not(:disabled) {
+    border-color: #dc2626 !important;
     color: #dc2626 !important;
 }
 

@@ -1,6 +1,15 @@
 /**
  * The plans app (`[wpuf_sub_pack]`): the grid around the kit's PlanCard.
  */
+
+/* As develop's plans list (max-w-5xl): up to 1024px, centered, wider than a
+   block theme's content column; no effect where the column is narrower. */
+.wpuf-frontend.wpuf-plans-root {
+    max-width: 64rem;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 .wpuf-frontend .wpuf-plans {
     display: flex;
     flex-direction: column;
@@ -38,8 +47,9 @@
 
 .wpuf-frontend ul.wpuf-plans__grid {
     display: grid;
-    /* 200px: three plans fit a 645px theme content column (3 x 204 + 2 gaps). */
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+    /* auto-fit: the plans share the row (three at about 330px in 1024px);
+       200px keeps three in one row down to a 645px column. */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
     gap: 16px;
     align-items: stretch;
     margin: 0;
@@ -49,6 +59,8 @@
 
 .wpuf-frontend ul.wpuf-plans__grid > li {
     display: flex;
+    /* One or two plans do not stretch across the whole row. */
+    max-width: 360px;
     margin: 0;
     padding: 0;
 }

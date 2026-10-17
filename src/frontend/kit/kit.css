@@ -323,24 +323,35 @@
 }
 
 .wpuf-frontend .wpuf-plan-card.is-featured {
+    margin-top: 30px;
     border: 2px solid var(--wpuf-plan-accent);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
     box-shadow: 0 10px 24px rgba(17, 24, 39, 0.1);
 }
 
-/* The highlighted plan's ribbon, in the card flow (no outside spacing needed). */
+/* The highlighted plan's ribbon sits on top of the card (in the card's own
+   30px top margin, or the plans grid's row space: plans.css), so the card
+   bodies of a row stay aligned. */
 .wpuf-frontend .wpuf-plan-card__ribbon {
-    margin: -24px -24px 4px;
-    padding: 7px 12px;
-    border-radius: calc(var(--wpuf-fe-radius-lg) - 2px) calc(var(--wpuf-fe-radius-lg) - 2px) 0 0;
+    position: absolute;
+    right: -2px;
+    bottom: 100%;
+    left: -2px;
+    height: 30px;
+    padding: 0 12px;
+    overflow: hidden;
+    border-radius: var(--wpuf-fe-radius-lg) var(--wpuf-fe-radius-lg) 0 0;
     background: var(--wpuf-plan-accent);
     color: #ffffff;
     font-size: 12px;
     font-weight: 600;
-    line-height: 1.4;
+    line-height: 30px;
     letter-spacing: 0.06em;
     text-align: center;
+    text-overflow: ellipsis;
     text-transform: uppercase;
-    overflow-wrap: anywhere;
+    white-space: nowrap;
 }
 
 .wpuf-frontend .wpuf-plan-card.is-current {

@@ -52,6 +52,16 @@
     padding: 0;
 }
 
+/* A highlighted plan: every card gets the ribbon's 30px on top, so the
+   card bodies line up on every row (kit.css .wpuf-plan-card__ribbon). */
+.wpuf-frontend ul.wpuf-plans__grid:has(.wpuf-plan-card.is-featured) > li {
+    padding-top: 30px;
+}
+
+.wpuf-frontend ul.wpuf-plans__grid:has(.wpuf-plan-card.is-featured) .wpuf-plan-card.is-featured {
+    margin-top: 0;
+}
+
 .wpuf-frontend ul.wpuf-plans__grid > li::before,
 .wpuf-frontend ul.wpuf-plans__grid > li::marker {
     content: none;

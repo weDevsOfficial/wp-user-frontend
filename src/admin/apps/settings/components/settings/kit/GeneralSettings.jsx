@@ -126,6 +126,18 @@ export default function GeneralSettings( { fields, renderField, values = {}, onF
     const turnstileOn = values.enable_turnstile === 'on' || values.enable_turnstile === 1 || values.enable_turnstile === true;
     const toggleTurnstile = () => onField && onField( 'enable_turnstile', turnstileOn ? 'off' : 'on' );
 
+    // A search may leave only one provider's fields: show that provider's card
+    // view (searching "turnstile" opened an empty reCAPTCHA panel).
+    const hasRecaptcha = !! ( byName( 'recaptcha_public' ) || byName( 'recaptcha_private' ) );
+    const hasTurnstile = !! ( byName( 'enable_turnstile' ) || byName( 'turnstile_site_key' ) || byName( 'turnstile_secret_key' ) );
+    let view = securityView;
+
+    if ( 'recaptcha' === view && ! hasRecaptcha && hasTurnstile ) {
+        view = 'cloudflare';
+    } else if ( 'cloudflare' === view && ! hasTurnstile && hasRecaptcha ) {
+        view = 'recaptcha';
+    }
+
     return (
         <div>
             { basicFields.length ? (
@@ -149,7 +161,7 @@ export default function GeneralSettings( { fields, renderField, values = {}, onF
                         <OptionCard
                             logo={ assetUrl ? `${ assetUrl }/images/recaptcha.png` : '' }
                             label="reCAPTCHA"
-                            viewed={ securityView === 'recaptcha' }
+                            viewed={ view === 'recaptcha' }
                             checked={ recaptchaOn }
                             onView={ () => setSecurityView( 'recaptcha' ) }
                             checkTitle={ __( 'Active when the reCAPTCHA keys are filled', 'wp-user-frontend' ) }
@@ -157,14 +169,14 @@ export default function GeneralSettings( { fields, renderField, values = {}, onF
                         <OptionCard
                             logo={ assetUrl ? `${ assetUrl }/images/cloudflare.png` : '' }
                             label="Cloudflare"
-                            viewed={ securityView === 'cloudflare' }
+                            viewed={ view === 'cloudflare' }
                             checked={ turnstileOn }
                             onView={ () => setSecurityView( 'cloudflare' ) }
                             onToggle={ toggleTurnstile }
                             checkTitle={ __( 'Enable Cloudflare Turnstile', 'wp-user-frontend' ) }
                         />
                     </div>
-                    { securityView === 'recaptcha'
+                    { view === 'recaptcha'
                         ? [ renderByName( 'recaptcha_public' ), renderByName( 'recaptcha_private' ) ]
                         // enable_turnstile is driven by the card checkbox above, so only the keys render here.
                         : [ renderByName( 'turnstile_site_key' ), renderByName( 'turnstile_secret_key' ) ] }

@@ -18,6 +18,8 @@ import { stripTags } from './components/settings/utils';
 import UnsavedChanges from './components/settings/UnsavedChanges';
 import MessageModal from './components/settings/MessageModal';
 import ErrorBoundary from './components/settings/ErrorBoundary';
+import ModuleOff from './components/settings/ModuleOff';
+import { OPEN_SECTION_EVENT } from './components/settings/navigate';
 
 // Register the store.
 import './stores/settings';
@@ -172,6 +174,27 @@ const SettingsApp = () => {
         [ activeTab, isDirty, setActiveTab, setSearch ]
     );
 
+    // A note or search result asked for a section: open its tab on it.
+    useEffect( () => {
+        const open = ( event ) => {
+            const section = event.detail && event.detail.section;
+            const owner = ia.find( ( t ) => ( t.sections || [] ).includes( section ) || ( t.off || [] ).some( ( o ) => o.id === section ) );
+
+            if ( ! owner ) {
+                return;
+            }
+
+            setSearch( '' );
+            setActiveTab( owner.id );
+            setActiveSub( owner.subtabs ? section : null );
+            window.scrollTo( { top: 0, behavior: 'smooth' } );
+        };
+
+        window.addEventListener( OPEN_SECTION_EVENT, open );
+
+        return () => window.removeEventListener( OPEN_SECTION_EVENT, open );
+    }, [ ia, setActiveTab, setSearch ] );
+
     const handleDiscard = useCallback( () => {
         discard();
         if ( pendingTab ) {
@@ -182,6 +205,17 @@ const SettingsApp = () => {
     }, [ discard, pendingTab, setActiveTab ] );
 
     const currentTab = ia.find( ( t ) => t.id === activeTab ) || ia[ 0 ];
+    // Sections of switched-off Pro modules (IA `off`): a sub-tab / tab with a notice.
+    const offSections = ( currentTab && currentTab.off ) || [];
+    const subtabIds = currentTab ? [ ...( currentTab.sections || [] ), ...offSections.map( ( o ) => o.id ) ] : [];
+    const currentSub = activeSub || subtabIds[ 0 ];
+    const offShown = ! ( search && search.trim() ) && offSections.find( ( o ) => o.id === ( currentTab.subtabs ? currentSub : subtabIds[ 0 ] ) );
+    // The tab that holds a section, for the search results' "Tab › Section" line.
+    const ownerTitle = ( sid ) => {
+        const owner = ia.find( ( t ) => ( t.sections || [] ).includes( sid ) );
+
+        return owner ? owner.title : '';
+    };
 
     // Global search: when a term is entered, search across EVERY section (not just
     // the active tab), so e.g. "social" finds the Social Login fields under
@@ -194,7 +228,7 @@ const SettingsApp = () => {
         ? allSectionIds
         : ( currentTab
             ? ( currentTab.sections || [] ).filter(
-                ( sectionId ) => ! currentTab.subtabs || ( activeSub || currentTab.sections[ 0 ] ) === sectionId
+                ( sectionId ) => ! offShown && ( ! currentTab.subtabs || currentSub === sectionId )
             )
             : [] );
 
@@ -303,17 +337,23 @@ const SettingsApp = () => {
                         </Notice>
                     ) : null }
 
-                    { ! searching && currentTab && currentTab.subtabs && currentTab.sections.length > 1 ? (
+                    { ! searching && currentTab && currentTab.subtabs && subtabIds.length > 1 ? (
                         <div className="mb-8" data-settings-subtabs="">
                             <Tabs
                                 variant="pill"
                                 label={ currentTab.title }
-                                tabs={ currentTab.sections.map( ( sid ) => ( { id: sid, label: sectionTitle( sid ) } ) ) }
-                                value={ activeSub || currentTab.sections[ 0 ] }
+                                tabs={ subtabIds.map( ( sid ) => {
+                                    const off = offSections.find( ( o ) => o.id === sid );
+
+                                    return { id: sid, label: off ? off.title : sectionTitle( sid ) };
+                                } ) }
+                                value={ currentSub }
                                 onChange={ setActiveSub }
                             />
                         </div>
                     ) : null }
+
+                    { offShown ? <ModuleOff title={ offShown.title } /> : null }
 
                     { searching && ! searchHasResults ? (
                         <div className="flex flex-col items-center justify-center py-16 text-center">
@@ -326,6 +366,9 @@ const SettingsApp = () => {
                             <p className="mt-1 mb-0 text-sm text-gray-400">
                                 { __( 'Try a different keyword.', 'wp-user-frontend' ) }
                             </p>
+                            <Button size="sm" variant="secondary" className="mt-4" onClick={ () => setSearch( '' ) }>
+                                { __( 'Clear search', 'wp-user-frontend' ) }
+                            </Button>
                         </div>
                     ) : (
                         renderedSections.map( ( sectionId ) => (
@@ -333,6 +376,7 @@ const SettingsApp = () => {
                                 <SettingsSection
                                     sectionId={ sectionId }
                                     tabTitle={ ! searching && currentTab && ! currentTab.subtabs ? currentTab.title : null }
+                                    searchTab={ searching ? ownerTitle( sectionId ) : null }
                                 />
                             </ErrorBoundary>
                         ) )

@@ -105,7 +105,14 @@ export default function ToolsTab( { tools } ) {
         try {
             const result = await runTool( route, data );
 
-            notify( result?.message || __( 'Done.', 'wp-user-frontend' ) );
+            // After a reset, offer the setup that puts the settings back.
+            notify(
+                result?.message || __( 'Done.', 'wp-user-frontend' ),
+                'success',
+                'reset' === key && entry && entry.url ? {
+                    action: { label: __( 'Run setup again', 'wp-user-frontend' ), onClick: () => window.location.assign( entry.url ) },
+                } : undefined
+            );
         } catch ( error ) {
             notify( error.message, 'error' );
         } finally {
@@ -146,7 +153,7 @@ export default function ToolsTab( { tools } ) {
 
             <Section title={ __( 'Danger zone', 'wp-user-frontend' ) } description={ __( 'These tools remove data permanently. Export your forms first if you may need them again.', 'wp-user-frontend' ) }>
                 <div className="overflow-hidden rounded-[10px] border border-solid border-red-200 bg-white">
-                    <DangerRow title={ __( 'Reset Settings', 'wp-user-frontend' ) } text={ __( 'Caution: This tool will delete all the plugin settings of WP User Frontend Pro', 'wp-user-frontend' ) }>
+                    <DangerRow title={ __( 'Reset Settings', 'wp-user-frontend' ) } text={ __( 'Resets the General, Dashboard, Login / Registration and Payment settings to their defaults. The other tabs (Frontend Posting, My Account, Email, SMS, Social Login and more) are kept.', 'wp-user-frontend' ) }>
                         <Button
                             variant="destructive"
                             busy={ 'reset' === busy }

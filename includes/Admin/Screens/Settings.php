@@ -111,6 +111,14 @@ class Settings extends Screen {
                 'support_url'   => 'https://wedevs.com/docs/wp-user-frontend-pro/',
                 // Settings of other plugins the React screen cannot show.
                 'legacy_only'  => wpuf_settings_legacy_only_items(),
+                // WordPress registration (registration forms need it open), with
+                // where to change it; same check as the registration form.
+                'registration' => [
+                    'open' => is_multisite()
+                        ? in_array( Stores::settings()->wp_option( 'registration', false, true ), [ 'user', 'all' ], true )
+                        : 1 === (int) Stores::settings()->wp_option( 'users_can_register' ),
+                    'url'  => is_multisite() ? network_admin_url( 'settings.php#registration' ) : admin_url( 'options-general.php#users_can_register' ),
+                ],
             ]
         );
     }

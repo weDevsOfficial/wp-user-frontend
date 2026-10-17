@@ -40,6 +40,12 @@ function wpuf_settings_sections() {
             'icon'  => 'dashicons-money',
         ],
         [
+            // The subscription screen's former Preferences (same option and key).
+            'id'    => 'wpuf_subscription_settings',
+            'title' => __( 'Subscriptions', 'wp-user-frontend' ),
+            'icon'  => 'dashicons-tickets-alt',
+        ],
+        [
             'id'    => 'wpuf_mails',
             'title' => __( 'E-Mails', 'wp-user-frontend' ),
             'icon'  => 'dashicons-email-alt',
@@ -497,14 +503,22 @@ function wpuf_settings_fields() {
                     'default' => 'off',
                 ],
                 [
-                    'name'    => 'login_form_recaptcha',
-                    'label'   => __( 'reCAPTCHA in Login Form', 'wp-user-frontend' ),
-                    'desc'    => __(
-                        'If enabled, users have to verify reCAPTCHA in login page. Also, make sure that reCAPTCHA is configured properly from <b>General Options</b>',
+                    'name'     => 'login_form_recaptcha',
+                    'label'    => __( 'reCAPTCHA in Login Form', 'wp-user-frontend' ),
+                    'desc'     => __(
+                        'If enabled, users have to verify reCAPTCHA in login page. Also, make sure that reCAPTCHA is configured properly from <b>General › Security</b>',
                         'wp-user-frontend'
                     ),
-                    'type'    => 'checkbox',
-                    'default' => 'off',
+                    'type'     => 'checkbox',
+                    'default'  => 'off',
+                    // React: a note with a link when the keys it needs are empty (display only).
+                    'requires' => [
+                        'section' => 'wpuf_general',
+                        'fields'  => [ 'recaptcha_public', 'recaptcha_private' ],
+                        'check'   => 'filled',
+                        'message' => __( 'The reCAPTCHA keys are empty in General › Security, so this has no effect yet.', 'wp-user-frontend' ),
+                        'action'  => __( 'Add reCAPTCHA keys', 'wp-user-frontend' ),
+                    ],
                 ],
                 [
                     'name'       => 'login_form_turnstile',
@@ -515,7 +529,15 @@ function wpuf_settings_fields() {
                     ),
                     'type'       => 'toggle',
                     'default'    => 'off',
-                    'depends_on' => 'enable_turnstile',
+                    // Shown always: the switch it needs lives in another section
+                    // (General), so a same-section depends_on hid it for good.
+                    'requires'   => [
+                        'section' => 'wpuf_general',
+                        'fields'  => [ 'enable_turnstile' ],
+                        'check'   => 'on',
+                        'message' => __( 'Cloudflare Turnstile is turned off in General › Security, so this has no effect yet.', 'wp-user-frontend' ),
+                        'action'  => __( 'Turn on Turnstile', 'wp-user-frontend' ),
+                    ],
                 ],
                 [
                     'name'     => 'profile_form_roles',
@@ -803,6 +825,9 @@ function wpuf_settings_fields() {
                     ],
                 ],
                 [
+                    // Read by no gateway (test mode is set per gateway). The field
+                    // and its stored default stay as they were; the React screen
+                    // shows `note` in its place (`display`).
                     'name'    => 'sandbox_mode',
                     'label'   => __( 'Enable demo/sandbox mode', 'wp-user-frontend' ),
                     'desc'    => __(
@@ -811,6 +836,8 @@ function wpuf_settings_fields() {
                     ),
                     'type'    => 'checkbox',
                     'default' => 'on',
+                    'display' => 'note',
+                    'note'    => __( 'Test (sandbox) payments are set per gateway: set "PayPal Mode" to Sandbox in the PayPal settings below, or use Stripe test keys in the Stripe settings.', 'wp-user-frontend' ),
                 ],
                 [
                     'name'    => 'payment_page',
@@ -956,6 +983,23 @@ function wpuf_settings_fields() {
             ]
         ),
     ];
+
+    // The subscription plans' look (was the Subscriptions screen's Preferences
+    // tab, saved through wpuf/v1/subscription-settings to the same key).
+    $settings_fields['wpuf_subscription_settings'] = apply_filters(
+        'wpuf_options_subscription', [
+            [
+                'name'              => 'button_color',
+                'label'             => __( 'Button Color', 'wp-user-frontend' ),
+                'desc'              => __( 'Color of the subscription plan buttons. Not set: the default dark color.', 'wp-user-frontend' ),
+                'type'              => 'color',
+                'default'           => '',
+                // Display only: the plan cards' default accent (--wpuf-fe-primary) while nothing is stored.
+                'preview'           => [ 'default' => '#111827' ],
+                'sanitize_callback' => 'sanitize_hex_color',
+            ],
+        ]
+    );
 
     return apply_filters( 'wpuf_settings_fields', $settings_fields );
 }

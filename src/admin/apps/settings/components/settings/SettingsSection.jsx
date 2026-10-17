@@ -15,6 +15,9 @@ import EmailIcon from './kit/email-icons';
 import { STORE_NAME } from '../../stores/settings/constants';
 import { stripTags } from './utils';
 import { settingsData } from '../../boot';
+import SectionNotes from './SectionNotes';
+import { Button } from '@wpuf/components';
+import { openSettingsSection } from './navigate';
 
 // Sections whose fields are grouped by provider (Figma gateway/provider cards).
 const SVG_FB = '<svg width="22" height="22" viewBox="0 0 24 24" fill="#1877F2" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.08 24 18.09 24 12.07z"/></svg>';
@@ -122,7 +125,13 @@ const groupFields = ( fields ) => {
     return groups;
 };
 
-export default function SettingsSection( { sectionId, tabTitle } ) {
+/**
+ * @param {Object} props
+ * @param {string} props.sectionId   Section id.
+ * @param {string} [props.tabTitle]  Title of the tab showing it (hides a repeated section title).
+ * @param {string} [props.searchTab] While searching: the tab that holds the section.
+ */
+export default function SettingsSection( { sectionId, tabTitle, searchTab } ) {
     const { section, fields, values, sectionHtml, search, forcePro } = useSelect(
         ( select ) => {
             const store = select( STORE_NAME );
@@ -197,13 +206,25 @@ export default function SettingsSection( { sectionId, tabTitle } ) {
 
     return (
         <section className="mb-6 rounded-[10px] border border-gray-200 bg-white p-6 shadow-sm" data-settings-section={ sectionId }>
-            { showTitle ? (
+            { searchTab ? (
+                // A search result: where it lives, and a way to open it there.
+                <div className="-mx-6 -mt-6 mb-6 flex flex-wrap items-center justify-between gap-3 border-0 border-b border-solid border-gray-200 px-6 py-3">
+                    <h3 className="m-0 text-base! font-semibold leading-6 text-gray-900">
+                        <span className="font-normal text-gray-500">{ searchTab } › </span>{ title }
+                    </h3>
+                    <Button size="xs" variant="secondary" onClick={ () => openSettingsSection( sectionId ) }>
+                        { __( 'Open in tab', 'wp-user-frontend' ) }
+                    </Button>
+                </div>
+            ) : showTitle ? (
                 <>
                     <h3 className="-mx-6 -mt-6 mb-6 border-0 border-b border-solid border-gray-200 px-6 py-4 text-base! font-semibold leading-6 text-gray-900">
                         { title }
                     </h3>
                 </>
             ) : null }
+
+            <SectionNotes sectionId={ sectionId } />
 
             { /* Output of the legacy wsa_form_top_{section} hook (kses'd in PHP). */ }
             { sectionHtml && sectionHtml.top ? (

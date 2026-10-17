@@ -316,11 +316,40 @@ class SettingsController extends RestController {
     protected function kses_field_texts( $fields ) {
         foreach ( $fields as $index => $field ) {
             if ( isset( $field['desc'] ) && is_string( $field['desc'] ) ) {
+                // A read-only value printed as an <input> in the desc (Social
+                // Login redirect URIs) would be stripped below: hand it over as
+                // plain text, which React shows with a Copy button.
+                $copy = $this->desc_input_value( $field['desc'] );
+
+                if ( '' !== $copy ) {
+                    $fields[ $index ]['copy_value'] = $copy;
+                }
+
                 $fields[ $index ]['desc'] = wp_kses_post( $field['desc'] );
             }
         }
 
         return $fields;
+    }
+
+    /**
+     * The value of a single read-only `<input>` in a field description, '' when
+     * there is none. A URL is cleaned as a URL, anything else as text.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $desc Field description markup.
+     *
+     * @return string
+     */
+    protected function desc_input_value( $desc ) {
+        if ( false === stripos( $desc, '<input' ) || ! preg_match( '/<input\b[^>]*\bvalue\s*=\s*(["\'])(.*?)\1/is', $desc, $match ) ) {
+            return '';
+        }
+
+        $value = html_entity_decode( $match[2], ENT_QUOTES, 'UTF-8' );
+
+        return preg_match( '#^https?://#i', $value ) ? esc_url_raw( $value ) : sanitize_text_field( $value );
     }
 
     /**

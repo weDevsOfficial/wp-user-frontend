@@ -1,6 +1,7 @@
 import { TextInput } from '@wpuf/components';
 import { CONTROL_SIZE } from '../controlSize';
 import SettingLabel, { LongHelp } from './SettingLabel';
+import CopyValue from './CopyValue';
 import { Notice } from '@wpuf/components';
 
 /**
@@ -9,6 +10,20 @@ import { Notice } from '@wpuf/components';
  * stores the string as typed.
  */
 export default function TextField( { field, name, value, onChange } ) {
+    // Generated values the admin only copies (PayPal / Stripe webhook URLs):
+    // the schema marks them `readonly`, `attr: disabled` or class `disabled`.
+    const readOnly = !! field.readonly || 'disabled' === field.attr || /(^|\s)disabled(\s|$)/.test( field.class || '' );
+
+    if ( readOnly ) {
+        return (
+            <>
+                <SettingLabel field={ field } htmlFor={ name } />
+                <CopyValue value={ value || field.default || '' } id={ name } />
+                <LongHelp html={ field.long_help } />
+            </>
+        );
+    }
+
     return (
         <>
             <SettingLabel field={ field } htmlFor={ name } />

@@ -29,7 +29,7 @@ const toggleIn = ( list, value, on ) => ( on ? [ ...list.filter( ( item ) => ite
  *
  * @param {Object} props Step props (data, nav, save, busy).
  */
-export function FeaturesStep( { data, nav, save, busy } ) {
+export function FeaturesStep( { data, nav, save, busy, state } ) {
     const [ picked, setPicked ] = useState( data.picked || [] );
     const [ directoryOff, setDirectoryOff ] = useState( false );
 
@@ -68,7 +68,10 @@ export function FeaturesStep( { data, nav, save, busy } ) {
                         </ChoiceCard>
                     ) ) }
                 </div>
-                <p className="m-0 mt-6 text-[13px] text-gray-500">{ __( 'You can turn any of these on later in Settings.', 'wp-user-frontend' ) }</p>
+                <p className="m-0 mt-6 text-[13px] text-gray-500">
+                    { __( 'Unticked features only hide their menus. Bring them back any time by running setup again from', 'wp-user-frontend' ) }{ ' ' }
+                    <a href={ state.urls?.tools } className="font-medium text-primary hover:underline">{ __( 'User Frontend › Tools', 'wp-user-frontend' ) }</a>.
+                </p>
             </StepShell>
             <ActionBar
                 busy={ busy }
@@ -161,6 +164,20 @@ export function RegistrationStep( { data, nav, save, busy, state } ) {
     return (
         <>
             <StepShell title={ __( 'Login & Registration', 'wp-user-frontend' ) } subtitle={ __( 'Visitors sign up and log in on your own site, in your own theme.', 'wp-user-frontend' ) }>
+                { false === data.registration_open && (
+                    <Notice
+                        tone="warning"
+                        className="mb-6"
+                        title={ __( 'New user registration is turned off in WordPress', 'wp-user-frontend' ) }
+                        action={
+                            <Button size="sm" variant="secondary" href={ data.registration_url } target="_blank" rel="noopener noreferrer">
+                                { __( 'Allow sign-ups', 'wp-user-frontend' ) }
+                            </Button>
+                        }
+                    >
+                        { __( 'The registration page shows visitors "User registration disabled" until "Anyone can register" is turned on in the WordPress settings.', 'wp-user-frontend' ) }
+                    </Notice>
+                ) }
                 <Field label={ __( 'Login page', 'wp-user-frontend' ) } htmlFor="wpuf-onboarding-login-page" required help={ __( 'Pick a page and we add the login form to it, or we make a new page.', 'wp-user-frontend' ) }>
                     <Select id="wpuf-onboarding-login-page" value={ login } options={ data.login_pages } onChange={ setLogin } />
                 </Field>
@@ -352,6 +369,17 @@ export function CommonStep( { data, nav, save, busy, state } ) {
                                                 </strong>
                                                 { gateway.hint && (
                                                     <span className={ `wpuf-onboarding-card-hint mt-1 block text-xs leading-4 ${ gateway.needs_setup || gateway.is_pro || gateway.needs_module ? 'is-warning text-amber-700' : 'text-gray-500' }` }>{ gateway.hint }</span>
+                                                ) }
+                                                { /* Locked cards: the way to unlock them. */ }
+                                                { ( gateway.needs_module || gateway.is_pro ) && (
+                                                    <a
+                                                        href={ gateway.needs_module ? state.urls?.modules : state.urls?.pro }
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="mt-1 text-xs font-medium text-primary hover:underline"
+                                                    >
+                                                        { gateway.needs_module ? __( 'Open Modules', 'wp-user-frontend' ) : __( 'See Pro', 'wp-user-frontend' ) }
+                                                    </a>
                                                 ) }
                                             </>
                                         );

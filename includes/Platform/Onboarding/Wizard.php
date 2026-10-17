@@ -564,6 +564,7 @@ class Wizard {
                 'settings' => wpuf_admin_app_url( '/settings', [] ),
                 'payment'  => wpuf_admin_app_url( '/settings', [ 'tab' => 'wpuf_payment' ] ),
                 'pro'      => \WeDevs\Wpuf\Free\Pro_Prompt::get_pro_url(),
+                'modules'  => wpuf_admin_app_url( '/modules', [] ),
             ],
             'images'   => [
                 'logo'     => WPUF_ASSET_URI . '/images/onboarding-logo.svg',

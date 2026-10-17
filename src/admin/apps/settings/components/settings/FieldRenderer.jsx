@@ -26,8 +26,12 @@ import TaxSettings from './kit/fields/TaxSettings';
 import ProBadge from './kit/ProBadge';
 import ProPreviewWrapper from './kit/ProPreviewWrapper';
 import ProNote from './kit/fields/ProNote';
-import QuickLinks, { QUICK_LINKS } from './kit/fields/QuickLinks';
+import QuickLinks, { KeyLink, QUICK_LINKS } from './kit/fields/QuickLinks';
+import PagePrerequisite from './kit/fields/PagePrerequisite';
+import SettingRequirement from './kit/fields/SettingRequirement';
+import FormPrerequisite from './kit/fields/FormPrerequisite';
 import { RawHTML } from '@wordpress/element';
+import { Notice } from '@wpuf/components';
 import { applyFilters } from '@wordpress/hooks';
 import { stripTags } from './utils';
 import { settingsData } from '../../boot';
@@ -150,6 +154,16 @@ const pickComponent = ( type ) => {
 };
 
 export default function FieldRenderer( { sectionId, field, value, onChange, forcePro = false } ) {
+    // A field shown as a note in place of its control (`display: 'note'`): the
+    // setting keeps its stored value and default, nobody edits it here.
+    if ( 'note' === field.display && field.note ) {
+        return (
+            <div className="mt-5 wpuf-input-container" data-setting={ field.name }>
+                <Notice tone="info">{ field.note }</Notice>
+            </div>
+        );
+    }
+
     const type = field.type || 'text';
     const normalized = normalizeField( field );
     const isPro = normalized.__isPro || forcePro;
@@ -243,6 +257,10 @@ export default function FieldRenderer( { sectionId, field, value, onChange, forc
         <div className="mt-5 wpuf-input-container" data-setting={ field.name }>
             { isProInactive ? <ProPreviewWrapper>{ control }</ProPreviewWrapper> : control }
             { ! isProInactive && QUICK_LINKS[ field.name ] && <QuickLinks kind={ QUICK_LINKS[ field.name ] } value={ value } /> }
+            { ! isProInactive && 'page' === QUICK_LINKS[ field.name ] && <PagePrerequisite name={ field.name } value={ value } /> }
+            { ! isProInactive && <KeyLink name={ field.name } /> }
+            { ! isProInactive && field.requires && <SettingRequirement requires={ field.requires } /> }
+            { ! isProInactive && [ 'post_form', 'profile_form' ].includes( QUICK_LINKS[ field.name ] ) && <FormPrerequisite value={ value } /> }
             { normalized.__descHtml && (
                 <RawHTML className="mt-1 text-sm text-gray-500">{ normalized.__descHtml }</RawHTML>
             ) }

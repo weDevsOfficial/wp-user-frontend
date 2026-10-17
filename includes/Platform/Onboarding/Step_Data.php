@@ -172,6 +172,12 @@ class Step_Data {
             'account_pages' => $account,
             'account_page'  => $pages->page_choice( $account_page, $account ),
             'autologin'     => wpuf_is_checkbox_or_toggle_on( wpuf_get_option( 'autologin_after_registration', 'wpuf_profile', 'on' ) ),
+            // WordPress registration must be open for sign ups (same check as
+            // the registration form), with where to open it.
+            'registration_open' => is_multisite()
+                ? in_array( Stores::settings()->wp_option( 'registration', false, true ), [ 'user', 'all' ], true )
+                : 1 === (int) Stores::settings()->wp_option( 'users_can_register' ),
+            'registration_url'  => is_multisite() ? network_admin_url( 'settings.php#registration' ) : admin_url( 'options-general.php#users_can_register' ),
             'layouts'       => $layout_options,
             'layout'        => $layout,
         ];
@@ -312,7 +318,7 @@ class Step_Data {
         }
 
         if ( $this->wizard->wants( 'payments' ) ) {
-            $ready  = ! empty( $payment['enable_payment'] ) && wpuf_is_checkbox_or_toggle_on( $payment['enable_payment'] ) && ! empty( $payment['active_gateways'] );
+            $ready  = ! empty( $payment['enable_payment'] ) && wpuf_is_checkbox_or_toggle_on( $payment['enable_payment'] ) && $this->has_ready_gateway( $payment );
             $rows[] = [ __( 'Payments ready', 'wp-user-frontend' ), $ready, wpuf_admin_app_url( '/settings', [ 'tab' => 'wpuf_payment' ] ), __( 'Payments', 'wp-user-frontend' ) ];
         }
 
@@ -329,6 +335,38 @@ class Step_Data {
             },
             $rows
         );
+    }
+
+    /**
+     * Whether an active gateway can take money now: Bank Payment always,
+     * PayPal and Stripe once their credentials are in (a ticked PayPal with
+     * no keys is not "ready"); another plugin's gateway counts as ready.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $payment The `wpuf_payment` settings.
+     *
+     * @return bool
+     */
+    private function has_ready_gateway( array $payment ) {
+        $active = isset( $payment['active_gateways'] ) && is_array( $payment['active_gateways'] ) ? array_keys( array_filter( $payment['active_gateways'] ) ) : [];
+        $filled = function ( $key ) use ( $payment ) {
+            return isset( $payment[ $key ] ) && '' !== trim( (string) $payment[ $key ] );
+        };
+
+        foreach ( $active as $id ) {
+            if ( 'paypal' === $id && ! $filled( 'paypal_email' ) && ! $filled( 'paypal_client_id' ) ) {
+                continue;
+            }
+
+            if ( 'stripe' === $id && ! $filled( 'stripe_api_secret' ) ) {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

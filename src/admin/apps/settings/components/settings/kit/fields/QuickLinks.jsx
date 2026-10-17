@@ -17,8 +17,36 @@ export const QUICK_LINKS = {
     redirect_after_login_page: 'page',
     subscription_page: 'page',
     payment_page: 'page',
+    payment_success: 'page',
+    bank_success: 'page',
+    paypal_error_page: 'page',
     default_post_form: 'post_form',
     post_submission_form: 'post_form',
+    edit_profile_form: 'profile_form',
+    default_post_owner: 'user',
+};
+
+// Where to get the keys a setting asks for: shown under the first key field
+// of each service (setting => [ url, label ]).
+export const KEY_LINKS = {
+    recaptcha_public: [ 'https://www.google.com/recaptcha/admin', __( 'Get reCAPTCHA keys', 'wp-user-frontend' ) ],
+    turnstile_site_key: [ 'https://dash.cloudflare.com/?to=/:account/turnstile', __( 'Get Turnstile keys', 'wp-user-frontend' ) ],
+    ipstack_key: [ 'https://ipstack.com/dashboard', __( 'Get your ipstack key', 'wp-user-frontend' ) ],
+    gmap_api_key: [ 'https://console.cloud.google.com/google/maps-apis/credentials', __( 'Get a Google Maps API key', 'wp-user-frontend' ) ],
+    paypal_client_id: [ 'https://developer.paypal.com/dashboard/applications', __( 'Get PayPal API credentials', 'wp-user-frontend' ) ],
+    paypal_api_username: [ 'https://developer.paypal.com/api/nvp-soap/apiCredentials/', __( 'How to get PayPal NVP credentials', 'wp-user-frontend' ) ],
+    stripe_api_secret: [ 'https://dashboard.stripe.com/apikeys', __( 'Get Stripe API keys', 'wp-user-frontend' ) ],
+    stripe_signing_secret: [ 'https://dashboard.stripe.com/webhooks', __( 'Open Stripe webhooks', 'wp-user-frontend' ) ],
+    twilio_sid: [ 'https://console.twilio.com/', __( 'Get Twilio credentials', 'wp-user-frontend' ) ],
+    nexmo_api_key: [ 'https://dashboard.nexmo.com/', __( 'Get Vonage API credentials', 'wp-user-frontend' ) ],
+    clickatell_api_id: [ 'https://portal.clickatell.com/', __( 'Get Clickatell credentials', 'wp-user-frontend' ) ],
+    smsglobal_api_key: [ 'https://mxt.smsglobal.com/integrations', __( 'Get SMSGlobal API keys', 'wp-user-frontend' ) ],
+    fb_app_id: [ 'https://developers.facebook.com/apps/', __( 'Create a Facebook app', 'wp-user-frontend' ) ],
+    instagram_app_id: [ 'https://developers.facebook.com/apps/', __( 'Create an Instagram app', 'wp-user-frontend' ) ],
+    twitter_app_id: [ 'https://developer.x.com/en/portal/dashboard', __( 'Create an X app', 'wp-user-frontend' ) ],
+    google_app_id: [ 'https://console.cloud.google.com/apis/credentials', __( 'Create Google OAuth credentials', 'wp-user-frontend' ) ],
+    linkedin_app_id: [ 'https://www.linkedin.com/developers/apps', __( 'Create a LinkedIn app', 'wp-user-frontend' ) ],
+    github_app_id: [ 'https://github.com/settings/developers', __( 'Create a GitHub OAuth app', 'wp-user-frontend' ) ],
 };
 
 // Where each AI provider issues API keys.
@@ -70,6 +98,10 @@ const LINKS = {
     ],
     post_form: formLinks( 'post' ),
     profile_form: formLinks( 'profile' ),
+    user: ( id ) => [
+        id && { label: __( 'Edit user', 'wp-user-frontend' ), href: `${ adminUrl() }user-edit.php?user_id=${ id }` },
+        { label: __( 'Add new user', 'wp-user-frontend' ), href: `${ adminUrl() }user-new.php` },
+    ],
 };
 
 /**
@@ -99,6 +131,28 @@ export default function QuickLinks( { kind, value, addNew = true } ) {
                     { link.label } ↗
                 </a>
             ) ) }
+        </div>
+    );
+}
+
+/**
+ * "Get your keys" under a setting that asks for a third-party key (KEY_LINKS).
+ *
+ * @param {Object} props
+ * @param {string} props.name Setting name.
+ */
+export function KeyLink( { name } ) {
+    const link = KEY_LINKS[ name ];
+
+    if ( ! link ) {
+        return null;
+    }
+
+    return (
+        <div className="mt-2 text-xs">
+            <a href={ link[ 0 ] } target="_blank" rel="noopener noreferrer" className="text-primary no-underline hover:underline">
+                { link[ 1 ] } ↗
+            </a>
         </div>
     );
 }

@@ -164,10 +164,12 @@ function ModulesPreview() {
                 notify(
                     next
                         /* translators: %s: module name */
-                        ? sprintf( __( '%s activated. Reload the page to use it.', 'wp-user-frontend' ), item.name )
+                        ? sprintf( __( '%s activated. Reload to use it.', 'wp-user-frontend' ), item.name )
                         /* translators: %s: module name */
                         : sprintf( __( '%s deactivated.', 'wp-user-frontend' ), item.name ),
-                    'success'
+                    'success',
+                    // The module's menu appears after a page load.
+                    next ? { action: { label: __( 'Reload now', 'wp-user-frontend' ), onClick: () => window.location.reload() } } : undefined
                 );
             } )
             .catch( ( error ) => notify( ( error && error.message ) || __( 'Could not change the module.', 'wp-user-frontend' ), 'error' ) )

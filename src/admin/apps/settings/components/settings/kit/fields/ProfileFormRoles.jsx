@@ -1,5 +1,7 @@
 import { useSelect, useDispatch } from '@wordpress/data';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
+import { openRoute } from '../../../../../../app/client';
+import { adminUrl } from './QuickLinks';
 import { STORE_NAME } from '../../../../stores/settings/constants';
 import SelectDropdown from './SelectDropdown';
 import QuickLinks from './QuickLinks';
@@ -56,6 +58,33 @@ export default function ProfileFormRoles() {
                             disabled={ ! isPro }
                         />
                         { isPro && <QuickLinks kind="profile_form" value={ map[ role ] ? String( map[ role ] ) : '' } addNew={ false } /> }
+                        { isPro && ( () => {
+                            // The mapped form registers new users as another role: say so.
+                            const form = forms.find( ( f ) => String( f.id ) === String( map[ role ] || '' ) );
+
+                            if ( ! form || ! form.role || form.role === role ) {
+                                return null;
+                            }
+
+                            const route = `/registration-forms/${ form.id }/edit?tab=settings`;
+
+                            return (
+                                <p className="mt-1 mb-0 text-xs text-gray-500">
+                                    { /* translators: %s: role name */ }
+                                    { sprintf( __( 'This form registers new users as %s.', 'wp-user-frontend' ), form.role_label || form.role ) }{ ' ' }
+                                    <a
+                                        href={ `${ adminUrl() }admin.php?page=wp-user-frontend#${ route }` }
+                                        onClick={ ( event ) => {
+                                            event.preventDefault();
+                                            openRoute( route, `${ adminUrl() }admin.php?page=wp-user-frontend#${ route }` );
+                                        } }
+                                        className="text-primary no-underline hover:underline"
+                                    >
+                                        { __( 'Form settings', 'wp-user-frontend' ) }
+                                    </a>
+                                </p>
+                            );
+                        } )() }
                     </div>
                 </div>
             ) ) }

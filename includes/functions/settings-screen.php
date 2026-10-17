@@ -48,8 +48,12 @@ if ( ! function_exists( 'wpuf_settings_ia' ) ) {
                 'title'    => __( 'Login & Registration', 'wp-user-frontend' ),
                 'icon'     => 'login',
                 // My Account + Login/Registration + Social Login as sub-tabs.
-                'sections' => [ 'wpuf_my_account', 'wpuf_profile', 'wpuf_social_api' ],
-                'subtabs'  => true,
+                'sections'        => [ 'wpuf_my_account', 'wpuf_profile', 'wpuf_social_api' ],
+                'subtabs'         => true,
+                // Pro module => its section: kept as an "off" sub-tab when the module is off.
+                'module_sections' => [
+                    'wpuf_social_api' => [ 'social-login/wpuf-social-login.php', __( 'Social Login', 'wp-user-frontend' ) ],
+                ],
             ],
             [
                 'id'       => 'email',
@@ -61,15 +65,18 @@ if ( ! function_exists( 'wpuf_settings_ia' ) ) {
                 'id'       => 'sms',
                 'title'    => __( 'SMS', 'wp-user-frontend' ),
                 'icon'     => 'chat',
-                'sections' => [ 'wpuf_sms' ],
-                'module'   => 'sms',
+                'sections'        => [ 'wpuf_sms' ],
+                'module'          => 'sms',
+                'module_sections' => [
+                    'wpuf_sms' => [ 'sms-notification/wpuf-sms.php', __( 'SMS Notification', 'wp-user-frontend' ) ],
+                ],
             ],
             [
                 'id'       => 'payments',
                 'title'    => __( 'Payments', 'wp-user-frontend' ),
                 'icon'     => 'credit-card',
-                // Payments + Invoices + Tax as sub-tabs.
-                'sections' => [ 'wpuf_payment', 'wpuf_payment_invoices', 'wpuf_payment_tax' ],
+                // Payments + Subscriptions + Invoices + Tax as sub-tabs.
+                'sections' => [ 'wpuf_payment', 'wpuf_subscription_settings', 'wpuf_payment_invoices', 'wpuf_payment_tax' ],
                 'subtabs'  => true,
             ],
             [
@@ -95,16 +102,31 @@ if ( ! function_exists( 'wpuf_settings_ia' ) ) {
         // feature lives elsewhere). Keep only existing sections per tab, and
         // remove any tab left with no sections.
         $existing_ids = wp_list_pluck( wpuf_settings_sections(), 'id' );
+        // With Pro, a switched-off module registers no section: say so instead
+        // of dropping the tab or sub-tab without a word.
+        $pro_modules = wpuf_is_pro_active() && function_exists( 'wpuf_pro_is_module_active' );
 
         foreach ( $ia as $i => $tab ) {
             $ia[ $i ]['sections'] = array_values( array_intersect( $tab['sections'], $existing_ids ) );
+            $ia[ $i ]['off']      = [];
+
+            foreach ( isset( $tab['module_sections'] ) ? $tab['module_sections'] : [] as $sid => $module ) {
+                if ( $pro_modules && ! in_array( $sid, $existing_ids, true ) && ! wpuf_pro_is_module_active( $module[0] ) ) {
+                    $ia[ $i ]['off'][] = [
+                        'id'    => $sid,
+                        'title' => $module[1],
+                    ];
+                }
+            }
+
+            unset( $ia[ $i ]['module_sections'] );
         }
 
         $ia = array_values(
             array_filter(
                 $ia,
                 static function ( $tab ) {
-                    return ! empty( $tab['sections'] );
+                    return ! empty( $tab['sections'] ) || ! empty( $tab['off'] );
                 }
             )
         );
@@ -351,10 +373,27 @@ add_action( 'wpuf_settings_saved', 'wpuf_ai_persist_keys', 10, 3 );
 function wpuf_profile_roles_inject( $data ) {
     $roles = apply_filters( 'wpuf_settings_user_roles', wpuf_get_user_roles() );
 
-    $forms     = get_posts( [ 'numberposts' => -1, 'post_type' => 'wpuf_profile' ] );
+    $forms     = get_posts(
+        [
+            'numberposts' => -1,
+            'post_type'   => 'wpuf_profile',
+        ]
+    );
     $form_list = [];
+    $role_names = wp_roles()->get_names();
+
     foreach ( $forms as $form ) {
-        $form_list[] = [ 'id' => $form->ID, 'title' => $form->post_title ];
+        // The role the form gives new users, so the table can show when a
+        // role is mapped to a form that registers users as another role.
+        $settings  = \WeDevs\Wpuf\Platform\Stores\Stores::forms()->read_settings( $form->ID );
+        $form_role = ! empty( $settings['role'] ) ? sanitize_key( $settings['role'] ) : '';
+
+        $form_list[] = [
+            'id'         => $form->ID,
+            'title'      => $form->post_title,
+            'role'       => $form_role,
+            'role_label' => isset( $role_names[ $form_role ] ) ? translate_user_role( $role_names[ $form_role ] ) : $form_role,
+        ];
     }
 
     $val = get_option( 'wpuf_profile', [] );

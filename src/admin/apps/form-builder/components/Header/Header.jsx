@@ -9,6 +9,8 @@ import useFormSave from '../../hooks/useFormSave';
 import LegacySlot, { getLegacySlots } from '../../common/LegacySlot';
 import { getRouteQuery, inApp, openRoute } from '../../../../app/client';
 import { builderData } from '../../utils/boot';
+import { addQueryArgs } from '@wordpress/url';
+import { FormUsage } from './FormUsage';
 
 /**
  * Builder URL of another form of the same type: its app route in the admin
@@ -232,6 +234,15 @@ export default function Header( { activeTab, onTabChange } ) {
                             </button>
                         );
                     } ) }
+                    { /* Where the form is shown, or a new page with its shortcode. */ }
+                    { post.ID ? (
+                        <FormUsage
+                            post={ post }
+                            shortcode={ shortcodes[ 0 ]
+                                ? ( shortcodes[ 0 ].type ? `[${ shortcodes[ 0 ].name } type="${ shortcodes[ 0 ].type }" id="${ post.ID }"]` : `[${ shortcodes[ 0 ].name } id="${ post.ID }"]` )
+                                : `[wpuf_form id="${ post.ID }"]` }
+                        />
+                    ) : null }
                 </div>
                 <div className="flex shrink-0 items-center">
                     <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
@@ -275,9 +286,11 @@ export default function Header( { activeTab, onTabChange } ) {
                         <Button
                             variant="secondary"
                             size="lg"
-                            href={ `${ previewUrl }?wpuf_preview=1&form_id=${ post.ID }` }
+                            // addQueryArgs: with plain permalinks the page URL already has `?page_id=`.
+                            href={ addQueryArgs( previewUrl, { wpuf_preview: 1, form_id: post.ID } ) }
                             target="_blank"
                             rel="noopener noreferrer"
+                            title={ isDirty ? __( 'Preview shows the last saved version. Save first to see your changes.', 'wp-user-frontend' ) : undefined }
                         >
                             { __( 'Preview', 'wp-user-frontend' ) }
                             <Eye size={ 16 } strokeWidth={ 1.5 } className="text-gray-500" aria-hidden="true" />

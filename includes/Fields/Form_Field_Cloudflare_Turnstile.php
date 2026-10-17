@@ -78,16 +78,16 @@ class Form_Field_Cloudflare_Turnstile extends Field_Contract {
             'msg' => sprintf(
                 '<span class="wpuf-text-xl wpuf-text-gray-500">%1$s <a class="wpuf-text-primary wpuf-italic wpuf-font-bold" style="text-decoration: underline;" href="%2$s" target="_blank">%3$s</a> %4$s <a class="wpuf-text-primary" href="%5$s" target="_blank">%6$s</a></span>',
                 __( 'You need to set Site key and Secret key in', 'wp-user-frontend' ),
-                admin_url( 'admin.php?page=wpuf-settings#wpuf_general' ),
+                esc_url( wpuf_admin_app_url( '/settings', [ 'tab' => 'wpuf_general' ] ) ),
                 __( 'Settings', 'wp-user-frontend' ),
                 __( 'in order to use "Cloudflare Turnstile" field.', 'wp-user-frontend' ),
-                'https://developers.cloudflare.com/turnstile/',
-                __( 'Click here to get the these key', 'wp-user-frontend' )
+                'https://dash.cloudflare.com/?to=/:account/turnstile',
+                __( 'Get your keys', 'wp-user-frontend' )
             ),
             'cta' => sprintf(
                 '<a class="%1$s" href="%2$s" target="_blank">%3$s</a>',
                 'wpuf-px-[20px] wpuf-py-[10px] !wpuf-border !wpuf-border-solid !wpuf-border-gray-300 !wpuf-rounded-md hover:!wpuf-bg-gray-50 !wpuf-text-black',
-                admin_url( 'admin.php?page=wpuf-settings#wpuf_general' ),
+                esc_url( wpuf_admin_app_url( '/settings', [ 'tab' => 'wpuf_general' ] ) ),
                 __( 'Go to Setting', 'wp-user-frontend' )
             ),
         ];

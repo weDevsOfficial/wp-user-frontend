@@ -17,8 +17,8 @@ import { __, sprintf } from '@wordpress/i18n';
 import { applyFilters } from '@wordpress/hooks';
 import { ActionMenu, Badge, Checkbox, SortHeader } from '@wpuf/components';
 
-import { STATUS_TONES } from '../utils/constants';
 import ShortcodeCopy from './ShortcodeCopy';
+import FormPages from './FormPages';
 import { openRoute } from '../../../app/client';
 import { adminScript } from '../boot';
 
@@ -26,6 +26,11 @@ const openSubmissions = ( form ) => openRoute(
     `/post-forms/${ form.ID }/submissions`,
     `${ adminScript().admin_url }admin.php?page=wp-user-frontend#/post-forms/${ form.ID }/submissions`
 );
+
+// In-app links (hash routes of the admin app page).
+const appUrl = ( route ) => `${ adminScript().admin_url }admin.php?page=wp-user-frontend#${ route }`;
+
+const SMALL_LINK = 'text-xs font-medium no-underline hover:underline';
 
 // FlyHR list-table cells: header text comes from the row (uppercase 12px gray).
 const TH = 'px-2 font-normal';
@@ -75,11 +80,38 @@ const FormsTable = ( {
                     >
                         { form.post_title }
                     </a>
-                    { form.form_status === 'draft' && (
-                        <span className="text-gray-400">
-                            { ' ' }&mdash; { __( 'Draft', 'wp-user-frontend' ) }
-                        </span>
-                    ) }
+                    { /* What else depends on this form: settings that pick it, approval. */ }
+                    { ( ( form.settings_roles && form.settings_roles.length ) || form.approval_required ) ? (
+                        <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                            { ( form.settings_roles || [] ).map( ( ref ) => (
+                                <a
+                                    key={ ref.key }
+                                    href={ appUrl( `/settings?tab=${ ref.section }` ) }
+                                    className="no-underline"
+                                    /* translators: %s: what the form is used as, e.g. Default post form */
+                                    title={ sprintf( __( '%s (open the setting)', 'wp-user-frontend' ), ref.label ) }
+                                >
+                                    <Badge tone="neutral">{ ref.label }</Badge>
+                                </a>
+                            ) ) }
+                            { form.approval_required && (
+                                <Badge tone="warning">{ __( 'Admin approval', 'wp-user-frontend' ) }</Badge>
+                            ) }
+                        </div>
+                    ) : null }
+                </td>
+            ),
+        },
+        {
+            // The form's own status (the Saved / Drafts tabs), not its posts' status.
+            key: 'form_status',
+            label: __( 'Status', 'wp-user-frontend' ),
+            thClassName: TH,
+            render: ( form ) => (
+                <td key="form_status" className={ TD + ' whitespace-nowrap' }>
+                    <Badge tone={ 'publish' === form.form_status ? 'primary' : 'neutral' }>
+                        { 'publish' === form.form_status ? __( 'Saved', 'wp-user-frontend' ) : statusLabel( form.form_status ) }
+                    </Badge>
                 </td>
             ),
         },
@@ -89,21 +121,60 @@ const FormsTable = ( {
             thClassName: TH,
             render: ( form ) => (
                 <td key="post_type" className={ TD + ' whitespace-nowrap text-gray-500' }>
-                    { form.settings_post_type }
+                    { null === form.post_type_label ? (
+                        // The type's plugin is off: the form makes nothing.
+                        <span className="flex flex-col items-start gap-1">
+                            <Badge tone="danger">
+                                { /* translators: %s: post type slug */ }
+                                { sprintf( __( '"%s" is not registered', 'wp-user-frontend' ), form.settings_post_type || 'post' ) }
+                            </Badge>
+                            <a href={ `${ editUrl( form.ID ) }${ editUrl( form.ID ).includes( '#' ) ? '?tab=settings&section=general' : '' }` } className={ SMALL_LINK + ' text-red-700' }>
+                                { __( 'Fix in form settings', 'wp-user-frontend' ) }
+                            </a>
+                        </span>
+                    ) : (
+                        <span title={ form.settings_post_type }>{ form.post_type_label || form.settings_post_type }</span>
+                    ) }
                 </td>
             ),
         },
         {
             key: 'post_status',
-            label: __( 'Post Status', 'wp-user-frontend' ),
+            // The status the form gives the posts it creates (form setting).
+            label: __( 'New Post Status', 'wp-user-frontend' ),
             thClassName: TH,
             render: ( form ) => (
-                <td key="post_status" className={ TD + ' whitespace-nowrap' }>
-                    <Badge tone={ STATUS_TONES[ form.post_status ] || 'neutral' }>
-                        { statusLabel( form.post_status ) }
-                    </Badge>
+                // Plain text like Post Type: a setting, not a state (the Status badge is the form's).
+                <td key="post_status" className={ TD + ' whitespace-nowrap text-gray-500' }>
+                    { statusLabel( form.post_status ) }
                 </td>
             ),
+        },
+        {
+            // How the form charges (form Payment settings).
+            key: 'payment',
+            label: __( 'Payment', 'wp-user-frontend' ),
+            thClassName: TH,
+            render: ( form ) => {
+                const mode = form.payment && form.payment.mode;
+
+                return (
+                    <td key="payment" className={ TD + ' whitespace-nowrap text-gray-500' }>
+                        { 'pack' === mode && (
+                            <a href={ appUrl( '/subscriptions' ) } className="no-underline" title={ __( 'Posting needs a subscription pack. Manage packs', 'wp-user-frontend' ) }>
+                                <Badge tone="neutral">{ __( 'Subscription', 'wp-user-frontend' ) }</Badge>
+                            </a>
+                        ) }
+                        { 'ppp' === mode && (
+                            <Badge tone="neutral">
+                                { /* translators: %s: price per post */ }
+                                { sprintf( __( 'Pay per post %s', 'wp-user-frontend' ), form.payment.cost ) }
+                            </Badge>
+                        ) }
+                        { ! mode && <span className="text-gray-400">{ __( 'Free', 'wp-user-frontend' ) }</span> }
+                    </td>
+                );
+            },
         },
         {
             key: 'submissions',
@@ -171,6 +242,20 @@ const FormsTable = ( {
             ),
         },
         {
+            // The posts and pages that show the form, or a link to put it on a new page.
+            key: 'pages',
+            label: __( 'Used on', 'wp-user-frontend' ),
+            thClassName: TH,
+            render: ( form ) => (
+                <td key="pages" className={ TD }>
+                    <FormPages
+                        form={ form }
+                        shortcode={ 'wpuf_profile' === postType ? `[wpuf_profile type="registration" id="${ form.ID }"]` : getShortcode( form.ID ) }
+                    />
+                </td>
+            ),
+        },
+        {
             key: 'guest_post',
             label: __( 'Guest Post', 'wp-user-frontend' ),
             thClassName: TH,
@@ -204,19 +289,23 @@ const FormsTable = ( {
                             vertical
                             /* translators: %s: form name */
                             label={ sprintf( __( 'Actions for %s', 'wp-user-frontend' ), form.post_title ) }
-                            items={ menuItems.map( ( item ) => ( {
-                                ...item,
-                                onClick: () => onAction( item.key, form ),
-                            } ) ) }
+                            items={ menuItems
+                                // `when( form )`: an item only for some rows (Publish on drafts).
+                                .filter( ( item ) => ! item.when || item.when( form ) )
+                                .map( ( { when, ...item } ) => ( { // eslint-disable-line no-unused-vars
+                                    ...item,
+                                    onClick: () => onAction( item.key, form ),
+                                } ) ) }
                         />
                     </div>
                 </td>
             ),
         },
-    ], [ onAction, editUrl, formType, getShortcode, copiedKey, onCopyShortcode, menuItems ] );
+    ], [ onAction, editUrl, formType, postType, getShortcode, copiedKey, onCopyShortcode, menuItems ] );
 
     // Submissions count posts made with a post form; registration forms make users.
-    const baseColumns = 'wpuf_profile' === postType ? defaultColumns.filter( ( col ) => 'submissions' !== col.key ) : defaultColumns;
+    // Payment is a post form setting too.
+    const baseColumns = 'wpuf_profile' === postType ? defaultColumns.filter( ( col ) => ! [ 'submissions', 'payment' ].includes( col.key ) ) : defaultColumns;
     const columns = applyFilters( 'wpuf.formsList.tableColumns', baseColumns, postType );
 
     return (

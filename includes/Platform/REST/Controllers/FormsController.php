@@ -130,6 +130,27 @@ class FormsController extends RestController {
             ]
         );
 
+        // The posts and pages that show each listed form (forms list "Pages" column).
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/pages',
+            [
+                [
+                    'methods'             => WP_REST_Server::READABLE,
+                    'callback'            => [ $this, 'get_pages' ],
+                    'permission_callback' => $this->permission( Caps::MANAGE_FORMS ),
+                    'args'                => [
+                        'ids' => [
+                            'type'     => 'array',
+                            'items'    => [ 'type' => 'integer' ],
+                            'required' => true,
+                            'maxItems' => 100,
+                        ],
+                    ],
+                ],
+            ]
+        );
+
         // A new form for the builder's "new form" route (the builder page's
         // `action=add-new` did the same before opening the form).
         register_rest_route(
@@ -177,7 +198,7 @@ class FormsController extends RestController {
             ]
         );
 
-        foreach ( [ 'duplicate', 'trash', 'restore' ] as $action ) {
+        foreach ( [ 'duplicate', 'publish', 'trash', 'restore' ] as $action ) {
             register_rest_route(
                 $this->namespace,
                 '/' . $this->rest_base . '/(?P<id>[\d]+)/' . $action,
@@ -193,11 +214,53 @@ class FormsController extends RestController {
                         'methods'             => WP_REST_Server::CREATABLE,
                         'callback'            => [ $this, $action . '_item' ],
                         // Trash and restore need the delete cap, like WordPress's own trash.
-                        'permission_callback' => [ $this, 'duplicate' === $action ? 'update_item_permissions_check' : 'delete_item_permissions_check' ],
+                        // Publish edits the form like duplicate does.
+                        'permission_callback' => [ $this, in_array( $action, [ 'duplicate', 'publish' ], true ) ? 'update_item_permissions_check' : 'delete_item_permissions_check' ],
                     ],
                 ]
             );
         }
+    }
+
+    /**
+     * GET /admin/forms/pages: the posts and pages that show each form
+     * (published, or editable by the user), with view and edit links.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Request
+     *
+     * @return \WP_REST_Response
+     */
+    public function get_pages( $request ) {
+        $ids = array_filter( array_map( 'absint', (array) $request['ids'] ), [ $this->forms, 'is_form' ] );
+        $out = [];
+
+        foreach ( $this->forms->embedding_posts( $ids ) as $form_id => $post_ids ) {
+            $out[ $form_id ] = [];
+
+            foreach ( $post_ids as $post_id ) {
+                $post = get_post( $post_id );
+
+                // Only what the user may see: a published post, or one they can edit.
+                if ( ! $post || ( 'publish' !== $post->post_status && ! current_user_can( 'edit_post', $post_id ) ) ) {
+                    continue;
+                }
+
+                $type = get_post_type_object( $post->post_type );
+
+                $out[ $form_id ][] = [
+                    'id'     => (int) $post_id,
+                    'title'  => '' !== $post->post_title ? wp_strip_all_tags( $post->post_title ) : __( '(no title)', 'wp-user-frontend' ),
+                    'status' => $post->post_status,
+                    'type'   => $type ? $type->labels->singular_name : $post->post_type,
+                    'view'   => 'publish' === $post->post_status ? get_permalink( $post ) : '',
+                    'edit'   => current_user_can( 'edit_post', $post_id ) ? get_edit_post_link( $post_id, 'raw' ) : '',
+                ];
+            }
+        }
+
+        return rest_ensure_response( [ 'pages' => (object) $out ] );
     }
 
     /**
@@ -524,6 +587,32 @@ class FormsController extends RestController {
         $response->set_status( 201 );
 
         return $response;
+    }
+
+    /**
+     * Publish a draft form (the list's Publish).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Request
+     *
+     * @return \WP_REST_Response|\WP_Error
+     */
+    public function publish_item( $request ) {
+        $form_id = (int) $request['id'];
+
+        // A trashed form is restored first (Restore), not published from the trash.
+        if ( 'trash' === get_post_status( $form_id ) ) {
+            return $this->error( 'trashed', __( 'Restore the form from the trash before publishing it.', 'wp-user-frontend' ), 409 );
+        }
+
+        $result = $this->forms->publish( $form_id );
+
+        if ( ! $result || is_wp_error( $result ) ) {
+            return $this->error( 'not_published', __( 'The form could not be published.', 'wp-user-frontend' ), 500 );
+        }
+
+        return $this->status_response( $form_id );
     }
 
     /**

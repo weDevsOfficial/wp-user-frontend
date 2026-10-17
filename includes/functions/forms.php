@@ -987,7 +987,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'label'     => __( 'Page', 'wp-user-frontend' ),
                             'type'      => 'select',
                             'options'   => $pages,
-                            'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
+                            'help_text' => __( 'The page users are sent to after submitting the form', 'wp-user-frontend' ),
                         ],
                         'url'              => [
                             'label' => __( 'Custom URL', 'wp-user-frontend' ),
@@ -1082,7 +1082,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'label'     => __( 'Page', 'wp-user-frontend' ),
                             'type'      => 'select',
                             'options'   => $pages,
-                            'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
+                            'help_text' => __( 'The page users are sent to after updating a post', 'wp-user-frontend' ),
                         ],
                         'edit_url'         => [
                             'label' => __( 'Custom URL', 'wp-user-frontend' ),
@@ -1463,6 +1463,7 @@ function wpuf_get_forms_counts_with_status( $post_type = 'wpuf_forms' ) {
         [
             'all'     => __( 'All', 'wp-user-frontend' ),
             'publish' => __( 'Saved', 'wp-user-frontend' ),
+            'draft'   => __( 'Drafts', 'wp-user-frontend' ),
             'trash'   => __( 'Trash', 'wp-user-frontend' ),
         ]
     );

@@ -69,14 +69,14 @@ export default function ModulesEmptyState( { isProActive } ) {
                     { __( 'No modules have been activated yet.', 'wp-user-frontend' ) }
                 </p>
                 <p className="text-sm text-gray-500 mt-2">
-                    { __( 'No modules have been activated yet.', 'wp-user-frontend' ) }
+                    { __( 'Turn on a module (for example Post Expiration or Comments) to configure it for this form.', 'wp-user-frontend' ) }
                 </p>
                 { isProActive && (
                     <Button
                         className="mt-4"
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={ `${ admin }admin.php?page=wpuf-modules` }
+                        href={ `${ admin }admin.php?page=wp-user-frontend#/modules` }
                     >
                         { __( 'Go To Module Page', 'wp-user-frontend' ) }
                     </Button>

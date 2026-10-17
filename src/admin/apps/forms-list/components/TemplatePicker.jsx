@@ -212,7 +212,7 @@ function TemplateCard( { item, onPreview, onKeyDown, previewed, onCreate, creati
                 aria-describedby={ hasPreview ? hintId : undefined }
                 onClick={ item.template ? ( event ) => onCreate( item, event ) : undefined }
                 aria-disabled={ creating ? 'true' : undefined }
-                { ...( item.is_pro ? { target: '_blank', rel: 'noopener noreferrer' } : {} ) }
+                { ...( item.is_pro || item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {} ) }
             >
                 { item.actionLabel }
             </a>
@@ -249,8 +249,13 @@ function TemplateCard( { item, onPreview, onKeyDown, previewed, onCreate, creati
                 { item.is_pro && (
                     <span className="absolute end-2 top-2 z-20"><ProBadge utm="wpuf-form-templates" link={ false } /></span>
                 ) }
-                { dimmed && ! item.is_pro && (
-                    <span className="absolute start-2 top-2 z-20 rounded-full border border-solid border-gray-200 bg-white px-2 py-0.5 text-xs font-medium text-gray-600">{ __( 'Not installed', 'wp-user-frontend' ) }</span>
+                { ! item.enabled && ! item.is_pro && (
+                    <span className="absolute start-2 top-2 z-20 rounded-full border border-solid border-gray-200 bg-white px-2 py-0.5 text-xs font-medium text-gray-600">
+                        { item.requires && item.requires.name
+                            /* translators: %s: plugin name */
+                            ? sprintf( __( 'Requires %s', 'wp-user-frontend' ), item.requires.name )
+                            : __( 'Not installed', 'wp-user-frontend' ) }
+                    </span>
                 ) }
 
                 { busy && (
@@ -368,16 +373,24 @@ export default function TemplatePicker( { open, onClose, data, onAI } ) {
         ( data.templates || [] ).forEach( ( template ) => {
             let actionLabel = '';
 
+            // A disabled template waits for a plugin: offer its installer (who may install).
+            const install = ! template.enabled && ! template.is_pro && template.requires && template.requires.url;
+
             if ( template.is_pro ) {
                 actionLabel = __( 'Upgrade to PRO', 'wp-user-frontend' );
             } else if ( template.enabled ) {
                 actionLabel = __( 'Create Form', 'wp-user-frontend' );
+            } else if ( install ) {
+                /* translators: %s: plugin name */
+                actionLabel = sprintf( __( 'Install %s', 'wp-user-frontend' ), template.requires.name );
             }
 
             list.push( {
                 ...template,
+                url: install ? template.requires.url : template.url,
+                external: !! install,
                 actionLabel,
-                action: !! ( template.url && actionLabel ),
+                action: !! ( ( install || template.url ) && actionLabel ),
                 template: template.enabled && ! template.is_pro ? template.key : '',
             } );
         } );

@@ -8,7 +8,7 @@
 import { __ } from '@wordpress/i18n';
 import { useRef, useState } from '@wordpress/element';
 import { applyFilters } from '@wordpress/hooks';
-import { Button, dialogs } from '@wpuf/components';
+import { AIConfigModal, Button, dialogs } from '@wpuf/components';
 
 import { config, createForm, generateForm } from './api';
 import { buildSummary, newSessionId } from './lib/chat';
@@ -18,6 +18,13 @@ import SuccessStage from './components/SuccessStage';
 import { openRoute } from '../../app/client';
 
 const DEFAULT_TITLE = 'Generated Form';
+
+// The AI settings section (provider and API key) in the admin app.
+const AI_SETTINGS_ROUTE = '/settings?tab=wpuf_ai';
+
+const aiSettingsUrl = () => `${ ( config().siteUrl || '' ).replace( /\/$/, '' ) }/wp-admin/admin.php?page=wp-user-frontend#${ AI_SETTINGS_ROUTE }`;
+
+const openAiSettings = () => openRoute( AI_SETTINGS_ROUTE, aiSettingsUrl() );
 
 /**
  * Develop's "Oops..." for a failed generation (and its hint for requests that
@@ -36,6 +43,13 @@ function showGenerationError( message, notAFormHint ) {
         title: <span style={ { color: '#FF9000' } }>{ __( 'Oops...', 'wp-user-frontend' ) }</span>,
         confirmText: i18n.tryAgain || __( 'Try Again', 'wp-user-frontend' ),
         className: 'wpuf-ai-error-dialog',
+        // A provider error is usually the API key or the model: offer the settings.
+        extraActions: notAFormHint ? null : (
+            // A page load, so the open dialog goes with it.
+            <Button variant="secondary" href={ aiSettingsUrl() }>
+                { __( 'Check AI settings', 'wp-user-frontend' ) }
+            </Button>
+        ),
         children: notAFormHint ? (
             <div style={ { display: 'flex', alignItems: 'center', gap: 8, margin: '20px 28.8px 4px', padding: 16, color: '#1d4ed8', background: '#f0f9ff', border: '1px solid #dbeafe', borderRadius: 12, fontSize: 14, lineHeight: 1.5, textAlign: 'left' } }>
                 { i18n.nonFormRequest || __( 'I can only help with form creation. Try: "Create a contact form"', 'wp-user-frontend' ) }
@@ -112,6 +126,8 @@ export default function AIFormBuilderApp() {
     const [ saving, setSaving ] = useState( false );
     const session = useRef( null );
     const formId = useRef( config().formId || '' );
+    // Opened by a link (not the list's AI button, which checks first) without a key.
+    const [ needsKey, setNeedsKey ] = useState( false === config().hasApiKey );
 
     const sessionId = () => {
         if ( ! session.current ) {
@@ -273,13 +289,16 @@ export default function AIFormBuilderApp() {
     }
 
     return (
-        <InputStage
-            description={ input.description }
-            promptId={ input.promptId }
-            integration={ input.integration }
-            generating={ generating }
-            onChange={ ( change ) => setInput( ( current ) => ( { ...current, ...change } ) ) }
-            onGenerate={ generate }
-        />
+        <>
+            <InputStage
+                description={ input.description }
+                promptId={ input.promptId }
+                integration={ input.integration }
+                generating={ generating }
+                onChange={ ( change ) => setInput( ( current ) => ( { ...current, ...change } ) ) }
+                onGenerate={ generate }
+            />
+            <AIConfigModal isOpen={ needsKey } onClose={ () => setNeedsKey( false ) } onGoToSettings={ openAiSettings } />
+        </>
     );
 }

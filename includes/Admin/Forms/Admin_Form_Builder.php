@@ -326,6 +326,13 @@ class Admin_Form_Builder {
                 'roles'            => wp_list_pluck( get_editable_roles(), 'name' ),
                 'subscriptions'    => $this->get_subscriptions(),
                 'preview_url'      => get_wpuf_preview_page(),
+                // Prerequisites the builder points out (WPUF_SINCE): the Turnstile
+                // switch, WordPress registration, the Account page post types.
+                'turnstile_enabled'     => wpuf_is_checkbox_or_toggle_on( wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' ) ),
+                'registration_open'     => is_multisite() ? in_array( get_site_option( 'registration' ), [ 'user', 'all' ], true ) : (bool) get_option( 'users_can_register' ),
+                'registration_url'      => is_multisite() ? network_admin_url( 'settings.php#registration' ) : admin_url( 'options-general.php#users_can_register' ),
+                'account_post_types'    => array_values( array_filter( array_map( 'strval', (array) wpuf_get_option( 'cp_on_acc_page', 'wpuf_my_account', [ 'post' ] ) ) ) ),
+                'admin_url'             => admin_url(),
             ]
         );
         $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );

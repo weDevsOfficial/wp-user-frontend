@@ -6,17 +6,32 @@
  * @since WPUF_SINCE
  */
 import { __ } from '@wordpress/i18n';
-import { EmptyState as SharedEmptyState } from '@wpuf/components';
+import { Button, EmptyState as SharedEmptyState } from '@wpuf/components';
 import { FileText, Inbox, SearchX, UserPlus } from 'lucide-react';
 import CreateButtons from './CreateButtons';
 
-const EmptyState = ( { type, formType = 'post', onAddNew, onAIFormBuilder } ) => {
+const EmptyState = ( { type, formType = 'post', onAddNew, onAIFormBuilder, onClearSearch, onShowAll } ) => {
     if ( type === 'search' ) {
-        return <SharedEmptyState size="card" icon={ SearchX } title={ __( 'No forms found matching your search!', 'wp-user-frontend' ) } />;
+        return (
+            <SharedEmptyState
+                size="card"
+                icon={ SearchX }
+                title={ __( 'No forms found matching your search!', 'wp-user-frontend' ) }
+                actions={ onClearSearch ? <Button size="sm" variant="secondary" onClick={ onClearSearch }>{ __( 'Clear search', 'wp-user-frontend' ) }</Button> : null }
+            />
+        );
     }
 
     if ( type === 'tab-empty' ) {
-        return <SharedEmptyState size="card" icon={ Inbox } title={ __( 'No Items Here!', 'wp-user-frontend' ) } />;
+        return (
+            <SharedEmptyState
+                size="card"
+                icon={ Inbox }
+                title={ __( 'No Items Here!', 'wp-user-frontend' ) }
+                description={ __( 'No forms have this status.', 'wp-user-frontend' ) }
+                actions={ onShowAll ? <Button size="sm" variant="secondary" onClick={ onShowAll }>{ __( 'View all forms', 'wp-user-frontend' ) }</Button> : null }
+            />
+        );
     }
 
     return (

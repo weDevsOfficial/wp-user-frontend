@@ -100,7 +100,17 @@ export default function VisibilityInput( { optionField, field, value, onChange }
                                 </li>
                             ) )
                         ) : (
-                            <li>{ __( 'No subscription plan found.', 'wp-user-frontend' ) }</li>
+                            <li>
+                                { __( 'No subscription packs yet. Create a pack, then come back to choose who can see this field.', 'wp-user-frontend' ) }{ ' ' }
+                                <a
+                                    href={ `${ ( window.wpuf_form_builder && window.wpuf_form_builder.admin_url ) || '' }admin.php?page=wp-user-frontend#/subscriptions?action=new` }
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-primary no-underline hover:underline"
+                                >
+                                    { __( 'Create subscription pack', 'wp-user-frontend' ) }
+                                </a>
+                            </li>
                         ) }
                     </ul>
                 </div>

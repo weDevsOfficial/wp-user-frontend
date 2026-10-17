@@ -29,6 +29,7 @@ const useFormsFetch = ( { postType = 'wpuf_forms', sort = null } = {} ) => {
                 error: list.getError( postType ),
                 pagination: list.getPagination( postType ),
                 counts: list.getCounts( postType ),
+                notices: list.getNotices( postType ),
             };
         },
         [ postType ]

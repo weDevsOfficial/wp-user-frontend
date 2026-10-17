@@ -15,7 +15,11 @@ const SelectionBar = ( { count, currentTab, onAction, onClear } ) => {
             { key: 'restore', label: __( 'Restore', 'wp-user-frontend' ) },
             { key: 'delete', label: __( 'Delete Permanently', 'wp-user-frontend' ), danger: true },
         ]
-        : [ { key: 'trash', label: __( 'Move to trash', 'wp-user-frontend' ), danger: true } ];
+        : [
+            // The Drafts tab can publish the selected forms at once.
+            'draft' === currentTab && { key: 'publish', label: __( 'Publish', 'wp-user-frontend' ) },
+            { key: 'trash', label: __( 'Move to trash', 'wp-user-frontend' ), danger: true },
+        ].filter( Boolean );
 
     return (
         <div className="flex flex-wrap items-center gap-3 border-0 border-b border-solid border-gray-200 bg-primary/5 px-4 py-2.5">

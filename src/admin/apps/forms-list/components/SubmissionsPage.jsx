@@ -17,6 +17,7 @@ import { foldMenu, unfoldMenu } from '../../form-builder/skeleton';
 import TableSkeleton from './TableSkeleton';
 import { STATUS_TONES } from '../utils/constants';
 import { adminScript } from '../boot';
+import { newPageUrl } from './FormPages';
 
 const TH = 'px-4 font-normal';
 const TD = 'px-4 py-2.5 align-middle text-[13px]';
@@ -86,6 +87,30 @@ const SubmissionsPage = ( { formId } ) => {
         };
     }, [ formId, page, perPage, status, query, sort, attempt ] );
 
+    // Where the form is shown (empty state: link it, or put it on a page).
+    const [ formPages, setFormPages ] = useState( null );
+    const [ copied, setCopied ] = useState( false );
+
+    useEffect( () => {
+        let live = true;
+
+        request( restPath( 'wpuf/v1', '/admin/forms/pages' ), { query: { ids: [ formId ] } } )
+            .then( ( response ) => live && setFormPages( ( response && response.pages && response.pages[ formId ] ) || [] ) )
+            .catch( () => live && setFormPages( null ) );
+
+        return () => {
+            live = false;
+        };
+    }, [ formId ] );
+
+    const copyShortcode = () => {
+        const text = `[wpuf_form id="${ formId }"]`;
+
+        ( window.navigator.clipboard ? window.navigator.clipboard.writeText( text ) : Promise.reject() )
+            .then( () => setCopied( true ) )
+            .catch( () => setCopied( false ) );
+    };
+
     const counts = ( data && data.counts ) || {};
     // Counts only once known (no "(0)" flash while the first page loads).
     const tabs = STATUS_TABS().map( ( tab ) => ( data ? { ...tab, count: counts[ tab.id ] || 0 } : tab ) );
@@ -144,7 +169,26 @@ const SubmissionsPage = ( { formId } ) => {
                 size="card"
                 icon={ Inbox }
                 title={ __( 'No submissions yet', 'wp-user-frontend' ) }
-                description={ __( 'Add the form to a page; posts submitted through it appear here.', 'wp-user-frontend' ) }
+                description={ formPages && formPages.length
+                    /* translators: %s: page titles */
+                    ? sprintf( __( 'The form is shown on %s. Posts submitted through it appear here.', 'wp-user-frontend' ), formPages.map( ( page ) => page.title ).join( ', ' ) )
+                    : __( 'Add the form to a page; posts submitted through it appear here.', 'wp-user-frontend' ) }
+                actions={ formPages && formPages.length ? (
+                    formPages[ 0 ].view ? (
+                        <Button variant="secondary" href={ formPages[ 0 ].view } target="_blank" rel="noopener noreferrer">
+                            { __( 'View the page', 'wp-user-frontend' ) }
+                        </Button>
+                    ) : null
+                ) : (
+                    <>
+                        <Button href={ newPageUrl( { post_title: form ? form.title : '' }, `[wpuf_form id="${ formId }"]` ) } target="_blank" rel="noopener noreferrer">
+                            { __( 'Add to a new page', 'wp-user-frontend' ) }
+                        </Button>
+                        <Button variant="secondary" onClick={ copyShortcode }>
+                            { copied ? __( 'Copied', 'wp-user-frontend' ) : __( 'Copy shortcode', 'wp-user-frontend' ) }
+                        </Button>
+                    </>
+                ) }
             />
         );
     } else {

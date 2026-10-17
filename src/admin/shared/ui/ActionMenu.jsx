@@ -6,7 +6,7 @@
  */
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, cn } from '@wedevs/plugin-ui';
 import { __ } from '@wordpress/i18n';
-import { Check, Copy, Eye, FileText, Pencil, RotateCcw, Send, Trash2, X, Zap } from 'lucide-react';
+import { Check, Copy, Eye, FilePlus, FileText, Pencil, RotateCcw, Send, Trash2, X, Zap } from 'lucide-react';
 
 // Default item icons by key / action (FlyHR row menus); an item's own `icon` wins.
 const ICONS = {
@@ -14,6 +14,7 @@ const ICONS = {
     'quick-edit': Zap,
     quick_edit: Zap,
     duplicate: Copy,
+    add_page: FilePlus,
     copy: Copy,
     view: Eye,
     preview: Eye,

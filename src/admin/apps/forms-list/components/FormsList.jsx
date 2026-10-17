@@ -7,9 +7,11 @@ import { useState, useEffect, useCallback, useMemo, useRef } from '@wordpress/el
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { request, restPath } from '@wpuf/api';
 import { applyFilters } from '@wordpress/hooks';
-import { AIConfigModal, ErrorState, Notice, Pagination, SearchInput, Tabs, notify, useConfirm } from '@wpuf/components';
+import { select as selectData, useDispatch } from '@wordpress/data';
+import { AIConfigModal, Button, ErrorState, Notice, Pagination, SearchInput, Tabs, notify, useConfirm } from '@wpuf/components';
 
 import useFormsFetch, { PER_PAGE } from '../hooks/useFormsFetch';
+import { store as formsListStore } from '../store';
 import useClipboard from '../hooks/useClipboard';
 
 import SelectionBar from './SelectionBar';
@@ -18,6 +20,7 @@ import TableSkeleton from './TableSkeleton';
 import EmptyState from './EmptyState';
 import CreateButtons from './CreateButtons';
 import TemplatePicker from './TemplatePicker';
+import { newPageUrl } from './FormPages';
 import { inApp, openRoute } from '../../../app/client';
 import { adminScript, formTemplates } from '../boot';
 
@@ -43,7 +46,7 @@ const FormsList = ( {
 
     // Newest first until a sortable header is clicked (server default).
     const [ sort, setSort ] = useState( null );
-    const { forms, loading, error, pagination, counts, fetchForms } = useFormsFetch( { postType, sort } );
+    const { forms, loading, error, pagination, counts, notices, fetchForms } = useFormsFetch( { postType, sort } );
     // The page-load counts until the list has answered once, then the live ones.
     const postCounts = counts || initialCounts;
     const { copiedKey, copyToClipboard } = useClipboard();
@@ -86,6 +89,21 @@ const FormsList = ( {
             }
         };
     }, [] );
+
+    // Back from a page editor tab ("Add to a new page", "Edit"): refresh "Used on".
+    const { fetchPages } = useDispatch( formsListStore );
+
+    useEffect( () => {
+        const refresh = () => {
+            if ( forms.length ) {
+                fetchPages( forms.map( ( form ) => form.ID ) );
+            }
+        };
+
+        window.addEventListener( 'focus', refresh );
+
+        return () => window.removeEventListener( 'focus', refresh );
+    }, [ forms, fetchPages ] );
 
     // A new page of rows clears the selection.
     useEffect( () => {
@@ -144,6 +162,8 @@ const FormsList = ( {
         /* translators: %d: number of forms */
         delete: ( n ) => sprintf( _n( '%d form permanently deleted.', '%d forms permanently deleted.', n, 'wp-user-frontend' ), n ),
         duplicate: () => __( 'Form duplicated successfully.', 'wp-user-frontend' ),
+        /* translators: %d: number of forms */
+        publish: ( n ) => sprintf( _n( '%d form published. It now shows on its pages.', '%d forms published. They now show on their pages.', n, 'wp-user-frontend' ), n ),
     };
 
     const [ acting, setActing ] = useState( false );
@@ -195,8 +215,49 @@ const FormsList = ( {
         return true;
     }, [ acting, forms, pagination, currentTab, searchTerm, perPage, fetchForms, routeBase, buildAdminUrl ] ); // eslint-disable-line react-hooks/exhaustive-deps
 
+    // The shortcode a new page gets: registration forms register, post forms post.
+    // (The same filter as getShortcode(), which is declared further down.)
+    const pageShortcode = useCallback(
+        ( form ) => ( 'wpuf_profile' === postType
+            ? `[wpuf_profile type="registration" id="${ form.ID }"]`
+            : applyFilters( 'wpuf.formsList.getShortcode', `[wpuf_form id="${ form.ID }"]`, form.ID, formType ) ),
+        [ postType, formType ]
+    );
+
+    // What stops working when a form goes: its pages, its posts' edit links, the settings that pick it.
+    const formImpact = ( form ) => {
+        const lines = [];
+        const pages = selectData( formsListStore ).getPages( form.ID );
+
+        if ( Array.isArray( pages ) && pages.length ) {
+            /* translators: 1: number of pages, 2: page titles */
+            lines.push( sprintf( _n( 'It is shown on %1$d page (%2$s), which will show an error instead.', 'It is shown on %1$d pages (%2$s), which will show an error instead.', pages.length, 'wp-user-frontend' ), pages.length, pages.map( ( page ) => page.title ).join( ', ' ) ) );
+        }
+
+        const posts = Number( form.post_count ) || 0;
+
+        if ( posts ) {
+            /* translators: %d: number of posts */
+            lines.push( sprintf( _n( '%d post was made with it; its frontend edit link uses this form.', '%d posts were made with it; their frontend edit links use this form.', posts, 'wp-user-frontend' ), posts ) );
+        }
+
+        ( form.settings_roles || [] ).forEach( ( ref ) => {
+            /* translators: %s: setting role, e.g. Default post form */
+            lines.push( sprintf( __( 'Settings use it as: %s.', 'wp-user-frontend' ), ref.label ) );
+        } );
+
+        return lines.length ? ' ' + lines.join( ' ' ) : '';
+    };
+
     // Row action handler
     const handleAction = useCallback( async ( action, form ) => {
+        // WordPress's new page screen with the shortcode in it (nothing saved until published).
+        if ( 'add_page' === action ) {
+            window.open( newPageUrl( form, pageShortcode( form ) ), '_blank', 'noopener' );
+
+            return;
+        }
+
         // Edit: the builder route in the admin app (no page load), else its page.
         if ( 'edit' === action ) {
             openRoute( `${ routeBase }/${ form.ID }/edit`, buildAdminUrl( form.ID, 'edit' ) );
@@ -205,17 +266,18 @@ const FormsList = ( {
         }
 
         const name = form.post_title || __( '(no title)', 'wp-user-frontend' );
+        const impact = formImpact( form );
         const asks = {
             delete: {
                 title: __( 'Delete Permanently', 'wp-user-frontend' ),
                 /* translators: %s: form title */
-                message: sprintf( __( 'Delete "%s" permanently? This action cannot be undone.', 'wp-user-frontend' ), name ),
+                message: sprintf( __( 'Delete "%s" permanently? This action cannot be undone.', 'wp-user-frontend' ), name ) + impact,
                 confirmText: __( 'Delete Permanently', 'wp-user-frontend' ),
             },
             trash: {
                 title: __( 'Move to Trash', 'wp-user-frontend' ),
                 /* translators: %s: form title */
-                message: sprintf( __( 'Move "%s" to the trash? You can restore it from the Trash tab.', 'wp-user-frontend' ), name ),
+                message: sprintf( __( 'Move "%s" to the trash? You can restore it from the Trash tab.', 'wp-user-frontend' ), name ) + impact,
                 confirmText: __( 'Move to Trash', 'wp-user-frontend' ),
             },
             duplicate: {
@@ -233,7 +295,7 @@ const FormsList = ( {
         }
 
         await runAction( action, [ form.ID ] );
-    }, [ buildAdminUrl, confirm, routeBase, runAction ] );
+    }, [ buildAdminUrl, confirm, routeBase, runAction, pageShortcode ] );
 
     // Bulk action handler (develop's bulk request to the server list action)
     const handleBulkAction = useCallback( async ( bulkAction ) => {
@@ -320,7 +382,10 @@ const FormsList = ( {
 
         return [
             { key: 'edit', label: __( 'Edit', 'wp-user-frontend' ) },
+            // Only on drafts: a draft form shows visitors an error instead of the form.
+            { key: 'publish', label: __( 'Publish', 'wp-user-frontend' ), when: ( form ) => 'publish' !== form.form_status },
             { key: 'duplicate', label: __( 'Duplicate', 'wp-user-frontend' ) },
+            { key: 'add_page', label: __( 'Add to a new page', 'wp-user-frontend' ) },
             { key: 'trash', label: __( 'Trash', 'wp-user-frontend' ), destructive: true },
         ];
     }, [ currentTab ] );
@@ -364,7 +429,16 @@ const FormsList = ( {
             />
         );
     } else if ( forms.length === 0 ) {
-        content = <EmptyState type={ getEmptyStateType() } formType={ formType } onAddNew={ openModal } onAIFormBuilder={ aiHandler } />;
+        content = (
+            <EmptyState
+                type={ getEmptyStateType() }
+                formType={ formType }
+                onAddNew={ openModal }
+                onAIFormBuilder={ aiHandler }
+                onClearSearch={ () => handleSearchChange( '' ) }
+                onShowAll={ () => setCurrentTab( 'any' ) }
+            />
+        );
     } else {
         content = (
             <>
@@ -423,6 +497,40 @@ const FormsList = ( {
                 </h3>
                 <CreateButtons onAddNew={ openModal } onAIFormBuilder={ aiHandler } />
             </div>
+
+            { /* Registration lists: sign-ups closed in WordPress, users to approve. */ }
+            { notices && false === notices.registration_open && (
+                <Notice
+                    tone="warning"
+                    className="mt-6"
+                    title={ __( 'New user registration is turned off in WordPress', 'wp-user-frontend' ) }
+                    action={ notices.can_open ? (
+                        <Button size="sm" variant="secondary" href={ notices.registration_url }>
+                            { __( 'Allow sign-ups', 'wp-user-frontend' ) }
+                        </Button>
+                    ) : null }
+                >
+                    { __( 'Visitors see "User registration disabled" instead of these forms. Turn on "Anyone can register" in the WordPress settings.', 'wp-user-frontend' ) }
+                </Notice>
+            ) }
+            { notices && notices.pending_users > 0 && (
+                <Notice
+                    tone="info"
+                    className="mt-4"
+                    title={ sprintf(
+                        /* translators: %d: number of users */
+                        _n( '%d user is waiting for approval', '%d users are waiting for approval', notices.pending_users, 'wp-user-frontend' ),
+                        notices.pending_users
+                    ) }
+                    action={
+                        <Button size="sm" variant="secondary" href={ notices.pending_users_url }>
+                            { __( 'Review users', 'wp-user-frontend' ) }
+                        </Button>
+                    }
+                >
+                    { __( 'Forms with admin approval keep new users pending until you approve them.', 'wp-user-frontend' ) }
+                </Notice>
+            ) }
 
             { /* List card (FlyHR): toolbar with status tabs + search, selection
                  bar, table or state, footer pagination. */ }

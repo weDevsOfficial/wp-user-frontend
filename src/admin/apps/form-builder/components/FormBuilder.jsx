@@ -2,6 +2,7 @@ import { useState, useEffect } from '@wordpress/element';
 import { dispatch, select, useSelect } from '@wordpress/data';
 import { STORE_NAME } from '../store';
 import Header from './Header/Header';
+import { RegistrationClosedNotice } from './Header/FormUsage';
 import Sidebar from './Sidebar/Sidebar';
 import BuilderCanvas from './Canvas/BuilderCanvas';
 import BuilderDnd from './Dnd/BuilderDnd';
@@ -64,6 +65,7 @@ export default function FormBuilder() {
     return (
         <PageShell className={ `wpuf-form-builder wpuf-form-builder-${ formType }` }>
             <Header activeTab={ activeTab } onTabChange={ changeTab } />
+            <RegistrationClosedNotice />
 
             { activeTab === 'form-editor' && (
                 // One drag-and-drop context for the palette and the canvas (D16).

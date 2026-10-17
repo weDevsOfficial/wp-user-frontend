@@ -359,7 +359,9 @@ class FormListController extends RestController {
         // Execute the main query
         $query = new \WP_Query( $query_args );
 
-        $forms = [];
+        $forms    = [];
+        $refs     = $this->settings_references();
+        $wp_roles = wp_roles();
 
         if ( $query->have_posts() ) {
             while ( $query->have_posts() ) {
@@ -385,6 +387,13 @@ class FormListController extends RestController {
                     'settings_user_role'  => ! empty( $settings['role'] ) ? $settings['role'] : '',
                     'post_count'          => $post_count,
                     'pending_count'       => $pending_count,
+                    // Read-only extras for the list's columns and badges (WPUF_SINCE).
+                    'post_type_label'     => $this->post_type_label( $settings ),
+                    'payment'             => $this->payment_summary( $settings ),
+                    'settings_roles'      => isset( $refs[ $post_id ] ) ? $refs[ $post_id ] : [],
+                    'approval_required'   => isset( $settings['wpuf_user_status'] ) && 'pending' === $settings['wpuf_user_status'],
+                    'user_role_label'     => ! empty( $settings['role'] ) && isset( $wp_roles->role_names[ $settings['role'] ] ) ? translate_user_role( $wp_roles->role_names[ $settings['role'] ] ) : '',
+                    'user_role_exists'    => empty( $settings['role'] ) || $wp_roles->is_role( $settings['role'] ),
                 ];
             }
         }
@@ -403,8 +412,135 @@ class FormListController extends RestController {
                 ],
                 // The status tab counts, so the list can update them after an action.
                 'counts'     => wpuf_get_forms_counts_with_status( $post_type ),
+                // What the list should warn about (registration off, users to approve).
+                'notices'    => $this->list_notices( $post_type ),
             ]
         );
+    }
+
+    /**
+     * The label of a form's post type, null when the type is not registered
+     * (its plugin was turned off: the form makes nothing).
+     *
+     * @param array $settings Form settings
+     *
+     * @return string|null
+     */
+    private function post_type_label( $settings ) {
+        $type   = ! empty( $settings['post_type'] ) ? $settings['post_type'] : 'post';
+        $object = get_post_type_object( $type );
+
+        return $object ? (string) $object->labels->name : null;
+    }
+
+    /**
+     * How a post form charges: '' (free), 'pack' (subscription required) or
+     * 'ppp' (pay per post, with its cost).
+     *
+     * @param array $settings Form settings
+     *
+     * @return array { mode, cost }
+     */
+    private function payment_summary( $settings ) {
+        $on = isset( $settings['payment_options'] ) && wpuf_is_checkbox_or_toggle_on( $settings['payment_options'] );
+
+        if ( ! $on ) {
+            return [
+                'mode' => '',
+                'cost' => '',
+            ];
+        }
+
+        $pack = isset( $settings['choose_payment_option'] ) && 'force_pack_purchase' === $settings['choose_payment_option'];
+
+        return [
+            'mode' => $pack ? 'pack' : 'ppp',
+            'cost' => $pack ? '' : wp_strip_all_tags( html_entity_decode( wpuf_format_price( isset( $settings['pay_per_post_cost'] ) ? $settings['pay_per_post_cost'] : 0 ), ENT_QUOTES ) ),
+        ];
+    }
+
+    /**
+     * The forms that settings point at: form id => [ { key, label, section } ].
+     *
+     * @return array
+     */
+    private function settings_references() {
+        $refs  = [];
+        $add   = function ( $form_id, $key, $label, $section ) use ( &$refs ) {
+            $form_id = absint( $form_id );
+
+            if ( $form_id ) {
+                $refs[ $form_id ][] = [
+                    'key'     => $key,
+                    'label'   => $label,
+                    'section' => $section,
+                ];
+            }
+        };
+        $store = Stores::settings();
+
+        $add( $store->get( 'wpuf_frontend_posting', 'default_post_form', 0 ), 'default_post_form', __( 'Default post form', 'wp-user-frontend' ), 'wpuf_frontend_posting' );
+        $add( $store->get( 'wpuf_my_account', 'post_submission_form', 0 ), 'post_submission_form', __( 'Account page form', 'wp-user-frontend' ), 'wpuf_my_account' );
+        $add( $store->get( 'wpuf_my_account', 'edit_profile_form', 0 ), 'edit_profile_form', __( 'Edit profile form', 'wp-user-frontend' ), 'wpuf_my_account' );
+
+        $profile = $store->read( 'wpuf_profile' );
+        $roles   = is_array( $profile ) && isset( $profile['roles'] ) && is_array( $profile['roles'] ) ? $profile['roles'] : [];
+        $names   = wp_roles()->role_names;
+        $by_form = [];
+
+        foreach ( $roles as $role => $form_id ) {
+            if ( absint( $form_id ) ) {
+                $by_form[ absint( $form_id ) ][] = isset( $names[ $role ] ) ? translate_user_role( $names[ $role ] ) : $role;
+            }
+        }
+
+        foreach ( $by_form as $form_id => $role_labels ) {
+            /* translators: %s: comma separated role names */
+            $add( $form_id, 'profile_form_roles', sprintf( __( 'Profile form for: %s', 'wp-user-frontend' ), implode( ', ', $role_labels ) ), 'wpuf_profile' );
+        }
+
+        return $refs;
+    }
+
+    /**
+     * Warnings for the forms list: registration closed in WordPress and users
+     * waiting for approval (registration forms only).
+     *
+     * @param string $post_type Form post type
+     *
+     * @return array
+     */
+    private function list_notices( $post_type ) {
+        if ( 'wpuf_profile' !== $post_type ) {
+            return (object) [];
+        }
+
+        $open = is_multisite()
+            ? in_array( get_site_option( 'registration' ), [ 'user', 'all' ], true )
+            : (bool) get_option( 'users_can_register' );
+
+        $pending = 0;
+
+        if ( current_user_can( 'list_users' ) ) {
+            $query   = new \WP_User_Query(
+                [
+                    'meta_key'    => 'wpuf_user_status', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- one count for the list notice.
+                    'meta_value'  => 'pending', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- one count for the list notice.
+                    'fields'      => 'ID',
+                    'number'      => 1,
+                    'count_total' => true,
+                ]
+            );
+            $pending = (int) $query->get_total();
+        }
+
+        return [
+            'registration_open'  => $open,
+            'registration_url'   => is_multisite() ? network_admin_url( 'settings.php#registration' ) : admin_url( 'options-general.php#users_can_register' ),
+            'can_open'           => is_multisite() ? current_user_can( 'manage_network_options' ) : current_user_can( 'manage_options' ),
+            'pending_users'      => $pending,
+            'pending_users_url'  => admin_url( 'users.php?wpuf_user_approve_filter-top=pending' ),
+        ];
     }
 
     /**

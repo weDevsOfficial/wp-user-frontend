@@ -419,6 +419,21 @@ class FormStore implements DataStore {
     }
 
     /**
+     * Publish a draft form (the forms list's Publish): a draft form on a page
+     * shows visitors "publish your form" instead of the form. WordPress's
+     * status hooks fire as on any post update.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $form_id Form id
+     *
+     * @return int|WP_Error Form id
+     */
+    public function publish( $form_id ) {
+        return $this->update( $form_id, [ 'post_status' => 'publish' ] );
+    }
+
+    /**
      * Restore a trashed form to its status before the trash (as the forms list did).
      *
      * @since WPUF_SINCE
@@ -589,6 +604,116 @@ class FormStore implements DataStore {
                 'post_type'   => 'wpuf_input',
             ]
         );
+    }
+
+    /**
+     * The posts and pages that show forms: the `[wpuf_form id]` /
+     * `[wpuf_profile id]` shortcodes and the `wpuf/post-form` block in post
+     * content, and the `wpuf-form` Elementor widget in `_elementor_data`.
+     * Trash, revisions and auto drafts are left out.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int[] $form_ids Form ids
+     *
+     * @return array form id => int[] post ids
+     */
+    public function embedding_posts( array $form_ids ) {
+        global $wpdb;
+
+        $form_ids = array_values( array_filter( array_map( 'absint', $form_ids ) ) );
+        $found    = array_fill_keys( $form_ids, [] );
+
+        if ( ! $form_ids ) {
+            return $found;
+        }
+
+        $add = function ( $form_id, $post_id ) use ( &$found ) {
+            $form_id = (int) $form_id;
+
+            if ( isset( $found[ $form_id ] ) && ! in_array( (int) $post_id, $found[ $form_id ], true ) ) {
+                $found[ $form_id ][] = (int) $post_id;
+            }
+        };
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- one read for the forms list.
+        $rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT ID, post_content FROM {$wpdb->posts}
+                WHERE post_status NOT IN ( 'trash', 'auto-draft', 'inherit' )
+                AND post_type NOT IN ( 'revision', 'attachment', 'wpuf_forms', 'wpuf_profile', 'wpuf_input' )
+                AND ( post_content LIKE %s OR post_content LIKE %s OR post_content LIKE %s )",
+                '%' . $wpdb->esc_like( '[wpuf_form' ) . '%',
+                '%' . $wpdb->esc_like( '[wpuf_profile' ) . '%',
+                '%' . $wpdb->esc_like( 'wp:wpuf/post-form' ) . '%'
+            )
+        );
+
+        foreach ( (array) $rows as $row ) {
+            $content = (string) $row->post_content;
+
+            if ( preg_match_all( '/\[wpuf_(?:form|profile)\b[^\]]*?\bid\s*=\s*["\']?(\d+)/', $content, $matches ) ) {
+                foreach ( $matches[1] as $form_id ) {
+                    $add( $form_id, $row->ID );
+                }
+            }
+
+            if ( preg_match_all( '/<!--\s*wp:wpuf\/post-form\s+(\{.*?\})\s*\/?-->/s', $content, $blocks ) ) {
+                foreach ( $blocks[1] as $json ) {
+                    $attrs = json_decode( $json, true );
+
+                    if ( ! empty( $attrs['formId'] ) ) {
+                        $add( $attrs['formId'], $row->ID );
+                    }
+                }
+            }
+        }
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- one read for the forms list.
+        $meta = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT m.post_id, m.meta_value FROM {$wpdb->postmeta} m
+                INNER JOIN {$wpdb->posts} p ON p.ID = m.post_id
+                WHERE m.meta_key = '_elementor_data' AND m.meta_value LIKE %s
+                AND p.post_status NOT IN ( 'trash', 'auto-draft', 'inherit' ) AND p.post_type <> 'revision'",
+                '%' . $wpdb->esc_like( '"widgetType":"wpuf-form"' ) . '%'
+            )
+        );
+
+        foreach ( (array) $meta as $row ) {
+            $this->walk_elementor( json_decode( (string) $row->meta_value, true ), $row->post_id, $add );
+        }
+
+        return $found;
+    }
+
+    /**
+     * Collect the form ids of `wpuf-form` widgets in Elementor data.
+     *
+     * @param mixed    $elements Elementor elements
+     * @param int      $post_id  Post id
+     * @param callable $add      ( form id, post id )
+     *
+     * @return void
+     */
+    private function walk_elementor( $elements, $post_id, $add ) {
+        if ( ! is_array( $elements ) ) {
+            return;
+        }
+
+        foreach ( $elements as $element ) {
+            if ( ! is_array( $element ) ) {
+                continue;
+            }
+
+            if ( isset( $element['widgetType'] ) && 'wpuf-form' === $element['widgetType'] && ! empty( $element['settings']['form_id'] ) ) {
+                $add( $element['settings']['form_id'], $post_id );
+            }
+
+            if ( ! empty( $element['elements'] ) ) {
+                $this->walk_elementor( $element['elements'], $post_id, $add );
+            }
+        }
     }
 
     /**

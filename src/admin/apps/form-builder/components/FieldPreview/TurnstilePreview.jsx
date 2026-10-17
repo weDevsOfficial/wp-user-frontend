@@ -21,6 +21,9 @@ export default function TurnstilePreview( { field } ) {
     const size = field.turnstile_size === 'compact' ? '-compact' : '';
     const imageSrc = `${ assetUrl }/images/cloudflare-placeholder-${ theme }${ size }.png`;
 
+    // Keys set but the Cloudflare switch (Settings > General) off: the site hides the field.
+    const off = false === data.turnstile_enabled;
+
     return (
         <div className="wpuf-fields">
             <img
@@ -28,6 +31,19 @@ export default function TurnstilePreview( { field } ) {
                 src={ imageSrc }
                 alt=""
             />
+            { off && (
+                <p className="mt-2 mb-0 text-xs text-amber-700">
+                    { __( 'Cloudflare Turnstile is turned off in Settings, so this field is hidden on your site.', 'wp-user-frontend' ) }{ ' ' }
+                    <a
+                        href={ `${ data.admin_url || '' }admin.php?page=wp-user-frontend#/settings?tab=wpuf_general` }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary no-underline hover:underline"
+                    >
+                        { __( 'Turn on Turnstile', 'wp-user-frontend' ) }
+                    </a>
+                </p>
+            ) }
         </div>
     );
 }

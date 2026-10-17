@@ -21,6 +21,7 @@ import IntegrationConditionalLogic from '../ConditionalLogic/IntegrationConditio
 import copyMailTag from '../../utils/copyMailTag';
 import TaxonomyDefaults from './fields/TaxonomyDefaults';
 import SettingInfo from './fields/SettingInfo';
+import FieldHelp from './FieldHelp';
 import { Notice } from '@wpuf/components';
 import { builderData } from '../../utils/boot';
 
@@ -186,6 +187,8 @@ function SettingsFieldControl( { fieldKey, field, name, value, onChange, setting
                 value={ value }
                 onChange={ onChange }
             />
+            { /* What the setting depends on elsewhere (pages, packs, payments). */ }
+            <FieldHelp name={ name } field={ field } value={ value } />
             { /* `info` (structured help) wins over the classic builder's `long_help` HTML. */ }
             { field.info ? <SettingInfo info={ field.info } /> : field.long_help && (
                 <RawHTML className="text-sm mt-4 wpuf-long-help" onClick={ copyMailTag }>{ field.long_help }</RawHTML>

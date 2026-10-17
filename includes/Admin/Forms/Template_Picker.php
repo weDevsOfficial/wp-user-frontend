@@ -60,6 +60,8 @@ class Template_Picker {
                 'description' => ! empty( $template->description ) ? wp_strip_all_tags( $template->description ) : '',
                 'category'    => self::category_of( $title, $categories, $default ),
                 'enabled'     => $enabled,
+                // The plugin a disabled template waits for (name + install link), WPUF_SINCE.
+                'requires'    => $enabled ? null : self::requirement( $template ),
                 'is_pro'      => false,
                 'url'         => $enabled
                     ? esc_url_raw(
@@ -187,5 +189,53 @@ class Template_Picker {
         }
 
         return $fallback;
+    }
+
+    /**
+     * The plugin a template needs (by its class), with an install link for
+     * who may install plugins. Filter `wpuf_form_template_requirement`.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param object $template Template object
+     *
+     * @return array|null { name, url }
+     */
+    private static function requirement( $template ) {
+        $class = get_class( $template );
+        $known = [
+            'WooCommerce' => [ 'WooCommerce', 'woocommerce' ],
+            'EDD'         => [ 'Easy Digital Downloads', 'easy-digital-downloads' ],
+            'Dokan'       => [ 'Dokan', 'dokan-lite' ],
+            'WC_Vendors'  => [ 'WC Vendors', 'wc-vendors' ],
+            'WCMp'        => [ 'MultiVendorX', 'dc-woocommerce-multi-vendor' ],
+            'Events'      => [ 'The Events Calendar', 'the-events-calendar' ],
+        ];
+        $found = null;
+
+        foreach ( $known as $needle => $plugin ) {
+            if ( false !== stripos( $class, $needle ) ) {
+                $found = [
+                    'name' => $plugin[0],
+                    'url'  => current_user_can( 'install_plugins' ) ? admin_url( 'plugin-install.php?s=' . rawurlencode( $plugin[1] ) . '&tab=search&type=term' ) : '',
+                ];
+                break;
+            }
+        }
+
+        /**
+         * Filters the plugin a disabled form template needs.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array|null $found    { name, url } or null when unknown
+         * @param object     $template Template object
+         */
+        $found = apply_filters( 'wpuf_form_template_requirement', $found, $template );
+
+        return is_array( $found ) && ! empty( $found['name'] ) ? [
+            'name' => wp_strip_all_tags( (string) $found['name'] ),
+            'url'  => ! empty( $found['url'] ) ? esc_url_raw( $found['url'] ) : '',
+        ] : null;
     }
 }

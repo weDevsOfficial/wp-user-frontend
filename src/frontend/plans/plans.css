@@ -38,7 +38,8 @@
 
 .wpuf-frontend ul.wpuf-plans__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    /* 200px: three plans fit a 645px theme content column (3 x 204 + 2 gaps). */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
     gap: 16px;
     align-items: stretch;
     margin: 0;

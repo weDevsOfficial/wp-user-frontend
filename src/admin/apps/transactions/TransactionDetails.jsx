@@ -27,6 +27,23 @@ const Linked = ( { item } ) => {
 };
 
 /**
+ * "All payments …" under a user, pack or coupon: narrows the list to it.
+ *
+ * @param {Object}   props
+ * @param {Function} props.onClick () => void
+ * @param {*}        props.children Label.
+ */
+const ScopeLink = ( { onClick, children } ) => (
+    <button
+        type="button"
+        onClick={ onClick }
+        className="ms-2 cursor-pointer border-0 bg-transparent p-0 text-xs text-gray-500 hover:text-primary hover:underline"
+    >
+        { children }
+    </button>
+);
+
+/**
  * @param {Object}   props
  * @param {Function} props.icon     lucide icon.
  * @param {*}        props.label    Label.
@@ -58,8 +75,10 @@ const Group = ( { title, children } ) => (
  * @param {Function} props.onClose   () => void
  * @param {Function} props.onAction  ( action, rows ) => void
  * @param {boolean}  props.canManage Actions allowed.
+ * @param {Function} [props.onScope] ( key, id ) => void: list one user's / pack's / coupon's payments.
+ * @param {Function} [props.onGatewaySettings] () => void: open the payment settings.
  */
-export default function TransactionDetails( { row, onClose, onAction, canManage } ) {
+export default function TransactionDetails( { row, onClose, onAction, canManage, onScope, onGatewaySettings } ) {
     if ( ! row ) {
         return null;
     }
@@ -90,20 +109,29 @@ export default function TransactionDetails( { row, onClose, onAction, canManage 
                     <Row icon={ Receipt } label={ __( 'Subtotal', 'wp-user-frontend' ) }>{ row.amounts.subtotal }</Row>
                     <Row icon={ Tag } label={ __( 'Coupon', 'wp-user-frontend' ) }>
                         { row.coupon && <Linked item={ row.coupon } /> }
+                        { row.coupon && onScope && <ScopeLink onClick={ () => onScope( 'coupon_id', row.coupon.id ) }>{ __( 'All payments with it', 'wp-user-frontend' ) }</ScopeLink> }
                         { row.amounts.discount && <span className="ms-2 text-gray-500">−{ row.amounts.discount }</span> }
                     </Row>
                     <Row icon={ Percent } label={ __( 'Tax', 'wp-user-frontend' ) }>{ row.amounts.tax }</Row>
                 </Group>
 
                 <Group title={ __( 'Buyer', 'wp-user-frontend' ) }>
-                    <Row icon={ User } label={ __( 'User', 'wp-user-frontend' ) }><Linked item={ row.user } /></Row>
+                    <Row icon={ User } label={ __( 'User', 'wp-user-frontend' ) }>
+                        { row.user && <Linked item={ row.user } /> }
+                        { row.user && onScope && <ScopeLink onClick={ () => onScope( 'user_id', row.user.id ) }>{ __( 'All payments by this user', 'wp-user-frontend' ) }</ScopeLink> }
+                    </Row>
                     <Row icon={ UserRound } label={ __( 'Payer', 'wp-user-frontend' ) }>{ row.payer }</Row>
                     <Row icon={ Mail } label={ __( 'Email', 'wp-user-frontend' ) }>{ row.payer_email }</Row>
                     <Row icon={ MapPin } label={ __( 'Address', 'wp-user-frontend' ) }>{ address }</Row>
                 </Group>
 
                 <Group title={ __( 'Item', 'wp-user-frontend' ) }>
-                    { row.pack && <Row icon={ Package } label={ __( 'Subscription', 'wp-user-frontend' ) }><Linked item={ row.pack } /></Row> }
+                    { row.pack && (
+                        <Row icon={ Package } label={ __( 'Subscription', 'wp-user-frontend' ) }>
+                            <Linked item={ row.pack } />
+                            { onScope && <ScopeLink onClick={ () => onScope( 'pack_id', row.pack.id ) }>{ __( 'All payments for this pack', 'wp-user-frontend' ) }</ScopeLink> }
+                        </Row>
+                    ) }
                     { row.post && <Row icon={ FileText } label={ __( 'Post', 'wp-user-frontend' ) }><Linked item={ row.post } /></Row> }
                     { ! row.pack && ! row.post && <Row icon={ Package } label={ __( 'Item', 'wp-user-frontend' ) } /> }
                 </Group>
@@ -116,6 +144,7 @@ export default function TransactionDetails( { row, onClose, onAction, canManage 
                             </span>
                         ) }
                         <span className="font-medium text-gray-900">{ row.gateway || '–' }</span>
+                        { onGatewaySettings && <ScopeLink onClick={ onGatewaySettings }>{ __( 'Gateway settings', 'wp-user-frontend' ) }</ScopeLink> }
                     </div>
                     <Row icon={ Hash } label={ __( 'Transaction ID', 'wp-user-frontend' ) }>{ row.transaction_id }</Row>
                 </Group>

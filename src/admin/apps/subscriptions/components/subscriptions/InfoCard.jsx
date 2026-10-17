@@ -12,6 +12,7 @@ import { RefreshCw, Users } from 'lucide-react';
 import { fetchSubscribers } from '../../api/subscription';
 import { subscriptionsData } from '../../boot';
 import { cycleCount, periodLabel, statusOf } from '../../labels';
+import { useSubscriptionNavigation } from '../../hooks/useSubscriptionNavigation';
 
 /**
  * Plan summary card above the form (new and edit): the plan name and status
@@ -25,6 +26,7 @@ import { cycleCount, periodLabel, statusOf } from '../../labels';
 const InfoCard = ( { subscription, mode = 'edit' } ) => {
 	const live = useSelect( ( select ) => select( 'wpuf/subscriptions' ).getItem(), [] ) || subscription;
 	const [ subscribers, setSubscribers ] = useState( subscription.subscribers ?? 0 );
+	const { goToSubscribers } = useSubscriptionNavigation();
 	const meta = live.meta_value || {};
 	// The form writes the `_`-prefixed meta keys (field db_key); loaded items also carry the plain ones.
 	const pick = ( key ) => ( undefined !== meta[ '_' + key ] ? meta[ '_' + key ] : meta[ key ] );
@@ -85,6 +87,25 @@ const InfoCard = ( { subscription, mode = 'edit' } ) => {
 					</span>
 				) }
 			</div>
+			{ /* A pack's limits are copied to the user when they buy it (User_Subscription). */ }
+			{ isEdit && subscribers > 0 && (
+				<div className="flex flex-wrap items-center justify-between gap-2 border-0 border-t border-solid border-gray-200 bg-amber-50/60 px-6 py-2.5 text-[13px] text-amber-900 rounded-b-[10px]">
+					<span>
+						{ sprintf(
+							/* translators: %d: number of current subscribers */
+							_n( 'Changes apply to new subscribers. The %d current subscriber keeps the limits they bought.', 'Changes apply to new subscribers. The %d current subscribers keep the limits they bought.', subscribers, 'wp-user-frontend' ),
+							subscribers
+						) }
+					</span>
+					<button
+						type="button"
+						onClick={ () => goToSubscribers( subscription.ID ) }
+						className="cursor-pointer border-0 bg-transparent p-0 text-[13px] font-medium text-amber-900 underline hover:text-amber-700"
+					>
+						{ __( 'View subscribers', 'wp-user-frontend' ) }
+					</button>
+				</div>
+			) }
 		</div>
 	);
 };

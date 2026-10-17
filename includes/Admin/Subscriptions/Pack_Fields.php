@@ -103,10 +103,11 @@ class Pack_Fields {
                             'message' => sprintf(
                                 // translators: %s: Payment Settings URL
                                 __(
-                                    'For subscriptions to work correctly, please ensure the payment gateway and related settings are properly configured in the <a href="%s">Payment Settings</a>',
+                                    'For subscriptions to work correctly, please ensure the payment gateway and related settings are properly configured in the <a href="%s" target="_blank" rel="noopener noreferrer">Payment Settings</a>',
                                     'wp-user-frontend'
                                 ),
-                                admin_url( 'admin.php?page=wpuf-settings#wpuf_payment' )
+                                // The admin app's settings route, in a new tab (the pack form keeps its edits).
+                                esc_url( function_exists( 'wpuf_admin_app_url' ) && wpuf_admin_app_enabled() ? wpuf_admin_app_url( '/settings', [ 'tab' => 'wpuf_payment' ] ) : admin_url( 'admin.php?page=wpuf-settings#wpuf_payment' ) )
                             ),
                         ],
                     ],
@@ -313,6 +314,8 @@ class Pack_Fields {
                             'Send an e-mail to the author after exceeding post expiration time',
                             'wp-user-frontend'
                         ),
+                        // Hint under the field (SubscriptionField): what the switch depends on.
+                        'hint'    => __( 'Checked once a day by WP-Cron. The e-mail goes out through your site\'s mail setup.', 'wp-user-frontend' ),
                         'key_id'  => 'send_mail',
                         'default' => '',
                     ],
@@ -370,6 +373,7 @@ class Pack_Fields {
                             'Enter the billing amount for the subscription that will be charged to users who subscribe to this plan',
                             'wp-user-frontend'
                         ),
+                        'hint'    => __( '0 makes a free plan: its button says "Free".', 'wp-user-frontend' ),
                         'default' => 0,
                     ],
                     'expire_in'        => [
@@ -436,6 +440,11 @@ class Pack_Fields {
                             'Set the maximum number of posts users can list within their subscription period. Enter -1 for unlimited',
                             'wp-user-frontend'
                         ),
+                        'hint'          => __( 'Limits apply on post forms whose payment setting is "Mandatory Subscription". Administrators skip plan limits: test with a subscriber account.', 'wp-user-frontend' ),
+                        'hint_link'     => [
+                            'label' => __( 'Open post forms', 'wp-user-frontend' ),
+                            'route' => '/post-forms',
+                        ],
                         'default'       => '-1',
                     ],
                     'number_of_pages'         => [
@@ -547,6 +556,7 @@ class Pack_Fields {
                             'Limit the featured items users can display during their subscription. Featured items gain more visibility, enhancing content or product exposure. Enter -1 for unlimited',
                             'wp-user-frontend'
                         ),
+                        'hint'    => __( 'Subscribers get a "Featured" checkbox on post forms. Featured posts become sticky posts and stay at the top of the blog.', 'wp-user-frontend' ),
                         'default' => '-1',
                     ],
                     'remove_featured_item'     => [
@@ -655,6 +665,10 @@ class Pack_Fields {
             'wp_navigation',
             'wp_template',
             'wp_template_part',
+            // Theme styles and fonts are not posts people make (a stored value stays as it was).
+            'wp_global_styles',
+            'wp_font_family',
+            'wp_font_face',
         ];
 
         foreach ( $post_types as $key => $name ) {
@@ -683,7 +697,7 @@ class Pack_Fields {
                             'Set the maximum number of %s users can create within their subscription period. Enter -1 for unlimited',
                             'wp-user-frontend'
                         ),
-                        esc_html( $key )
+                        esc_html( $post_type_object->label )
                     ),
                     'default'       => '-1',
                 ];

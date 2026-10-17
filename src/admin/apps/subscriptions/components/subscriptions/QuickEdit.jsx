@@ -110,7 +110,7 @@ const QuickEdit = () => {
 			{/* Date Field */}
 			<div className="px-2 mt-4">
 				<label htmlFor="post-date" className="block text-sm font-medium leading-6 text-gray-900">
-					{ __( 'Date', 'wp-user-frontend' ) }
+					{ __( 'Publish date', 'wp-user-frontend' ) }
 				</label>
 				<div className="relative mt-2">
 					<DateTime id="post-date" withTime value={ date } onChange={ setDate } className={ errors?.date ? 'border-red-500' : '' } />

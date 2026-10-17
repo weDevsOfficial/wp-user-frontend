@@ -3,13 +3,55 @@
  * DESCRIPTION: Handles various field types: input-text, input-number, textarea, switcher, select, inline, time-date, multi-select
  */
 import { useMemo } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { applyFilters } from '@wordpress/hooks';
 import { Minus, Plus } from 'lucide-react';
 import { DateTime, HelpTip, MultiSelect, NumberInput, ProBadge, Select, TextInput, Textarea, Toggle } from '@wpuf/components';
 import ProTooltip from './ProTooltip';
 import { subscriptionsData } from '../../boot';
+import { openRoute } from '../../../../app/client';
+
+const ON = [ true, 'yes', 'on', 'true', '1', 1 ];
+
+/**
+ * "Enable Recurring Payment" on: which active gateways can renew a pack, or a
+ * warning with the way to fix it (boot `gateways`, Prerequisites::active_gateways()).
+ *
+ * @return {JSX.Element} Hint.
+ */
+const RecurringHint = () => {
+	const gateways = subscriptionsData().gateways || [];
+	const recurring = gateways.filter( ( gateway ) => gateway.recurring );
+
+	if ( recurring.length ) {
+		return (
+			<span className="label-text-alt text-gray-500">
+				{ sprintf(
+					/* translators: %s: gateway names */
+					__( 'Renewed automatically by: %s. Bank Payment cannot renew a plan.', 'wp-user-frontend' ),
+					recurring.map( ( gateway ) => gateway.label ).join( ', ' )
+				) }
+			</span>
+		);
+	}
+
+	return (
+		<span className="label-text-alt text-amber-700">
+			{ __( 'None of the active gateways can renew a plan, so buyers cannot pay for it. Turn on PayPal or Stripe.', 'wp-user-frontend' ) }{ ' ' }
+			<a
+				href="#/settings?tab=wpuf_payment"
+				onClick={ ( event ) => {
+					event.preventDefault();
+					openRoute( '/settings?tab=wpuf_payment', 'admin.php?page=wp-user-frontend#/settings?tab=wpuf_payment' );
+				} }
+				className="font-medium text-amber-800 underline"
+			>
+				{ __( 'Payment settings', 'wp-user-frontend' ) }
+			</a>
+		</span>
+	);
+};
 
 const has = ( object, key ) => !! object && Object.prototype.hasOwnProperty.call( object, key );
 
@@ -402,6 +444,36 @@ const SubscriptionField = ( { field, fieldId, subscription, onFieldChange } ) =>
 					<div className="label">
 						<span className="label-text-alt">{ field.description }</span>
 					</div>
+				) }
+
+				{/* A field's hint (`hint`, optional `hint_link` { label, route | url }) */}
+				{ field.hint && (
+					<div className="label">
+						<span className="label-text-alt text-gray-500">
+							{ field.hint }
+							{ field.hint_link && ( field.hint_link.route || field.hint_link.url ) && (
+								<>
+									{ ' ' }
+									<a
+										href={ field.hint_link.url || '#' + field.hint_link.route }
+										target={ field.hint_link.url ? '_blank' : undefined }
+										rel={ field.hint_link.url ? 'noopener noreferrer' : undefined }
+										onClick={ field.hint_link.route ? ( event ) => {
+											event.preventDefault();
+											openRoute( field.hint_link.route, 'admin.php?page=wp-user-frontend#' + field.hint_link.route );
+										} : undefined }
+										className="font-medium text-primary no-underline hover:underline"
+									>
+										{ field.hint_link.label }
+									</a>
+								</>
+							) }
+						</span>
+					</div>
+				) }
+
+				{ 'recurring_pay' === field.name && ON.includes( value ) && (
+					<div className="label"><RecurringHint /></div>
 				) }
 
 				{ error && (

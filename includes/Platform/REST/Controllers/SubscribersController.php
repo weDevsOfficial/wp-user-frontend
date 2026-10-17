@@ -141,13 +141,45 @@ class SubscribersController extends RestController {
             )
         );
 
+        $items = array_map( [ $this, 'prepare_row' ], $rows );
+
+        // Usage (used / remaining of the pack's limits) on each user's current
+        // row of this pack: the newest row of a user whose pack is this one.
+        $current = [];
+
+        foreach ( array_unique( wp_list_pluck( $items, 'user_id' ) ) as $user_id ) {
+            $user_pack = $user_id ? Stores::user_packs()->read( $user_id ) : null;
+
+            if ( ! is_array( $user_pack ) || (int) ( isset( $user_pack['pack_id'] ) ? $user_pack['pack_id'] : 0 ) !== $pack_id ) {
+                continue;
+            }
+
+            $latest = $store->query(
+                [
+                    'pack_id' => $pack_id,
+                    'user_id' => $user_id,
+                    'orderby' => 'id',
+                    'order'   => 'DESC',
+                    'number'  => 1,
+                ]
+            );
+
+            if ( $latest ) {
+                $current[ (int) $latest[0]->id ] = $this->usage( $pack_id, $user_pack, $user_id, (string) $latest[0]->starts_from );
+            }
+        }
+
+        foreach ( $items as $index => $item ) {
+            $items[ $index ]['usage'] = isset( $current[ $item['id'] ] ) ? $current[ $item['id'] ] : null;
+        }
+
         return rest_ensure_response(
             [
                 'pack'   => [
                     'id'    => $pack_id,
                     'title' => get_the_title( $pack ),
                 ],
-                'items'  => array_map( [ $this, 'prepare_row' ], $rows ),
+                'items'  => $items,
                 'total'  => $total,
                 'pages'  => (int) ceil( $total / max( 1, $per_page ) ),
                 'counts' => [
@@ -187,6 +219,116 @@ class SubscribersController extends RestController {
             'starts_from'     => $this->format_date( isset( $row->starts_from ) ? (string) $row->starts_from : '' ),
             'expire'          => $this->format_date( isset( $row->expire ) ? (string) $row->expire : '' ),
             'edit_url'        => $user_id && current_user_can( 'edit_user', $user_id ) ? esc_url_raw( get_edit_user_link( $user_id ) ) : '',
+            // The user's posts in wp-admin (row menu), for who may see others' posts.
+            'posts_url'       => $user_id && current_user_can( 'edit_others_posts' ) ? esc_url_raw( admin_url( 'edit.php?author=' . $user_id ) ) : '',
+        ];
+    }
+
+    /**
+     * What a subscriber used of the pack and what is left: per post type the
+     * pack's limit (`_post_type_name` + `additional_cpt_options`) against the
+     * remaining count in the user's pack meta, plus featured items and the
+     * expiry. -1 is unlimited: then "used" counts the user's posts of the type
+     * since the subscription started (only public types; internal ones such
+     * as templates show only when the pack limits them).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int   $pack_id   Pack ID
+     * @param array  $user_pack The user's `_wpuf_subscription_pack` meta
+     * @param int    $user_id   User ID
+     * @param string $since     Subscription start (Y-m-d H:i:s)
+     *
+     * @return array { items: [ { type, label, limit, used, remaining } ], featured, expire }
+     */
+    private function usage( $pack_id, array $user_pack, $user_id, $since ) {
+        $limits = array_merge(
+            (array) maybe_unserialize( get_post_meta( $pack_id, '_post_type_name', true ) ),
+            (array) maybe_unserialize( get_post_meta( $pack_id, 'additional_cpt_options', true ) )
+        );
+        $left   = isset( $user_pack['posts'] ) && is_array( $user_pack['posts'] ) ? $user_pack['posts'] : [];
+        $items  = [];
+
+        foreach ( $limits as $type => $limit ) {
+            $limit = (int) $limit;
+            $type  = sanitize_key( (string) $type );
+
+            // 0: the pack does not allow the type. Types no longer registered are left out.
+            if ( 0 === $limit || ! post_type_exists( $type ) ) {
+                continue;
+            }
+
+            $object    = get_post_type_object( $type );
+            $remaining = isset( $left[ $type ] ) ? (int) $left[ $type ] : $limit;
+            $line      = $this->usage_line( $type, $object ? $object->labels->name : $type, $limit, $remaining );
+
+            if ( -1 === $line['limit'] ) {
+                if ( ! $object || ! $object->public ) {
+                    continue;
+                }
+
+                $line['used'] = $this->posts_since( $user_id, $type, $since );
+            }
+
+            $items[] = $line;
+        }
+
+        $featured = (int) get_post_meta( $pack_id, '_total_feature_item', true );
+
+        return [
+            'items'    => $items,
+            'featured' => 0 !== $featured
+                ? $this->usage_line( 'featured', __( 'Featured items', 'wp-user-frontend' ), $featured, isset( $user_pack['total_feature_item'] ) ? (int) $user_pack['total_feature_item'] : $featured )
+                : null,
+            'expire'   => isset( $user_pack['expire'] ) ? $this->format_date( (string) $user_pack['expire'] ) : '',
+        ];
+    }
+
+    /**
+     * The user's posts of a type since a date (any status but trash / auto draft).
+     *
+     * @param int    $user_id User ID
+     * @param string $type    Post type
+     * @param string $since   Y-m-d H:i:s ('' or not a date: all time)
+     *
+     * @return int
+     */
+    private function posts_since( $user_id, $type, $since ) {
+        $args = [
+            'post_type'      => $type,
+            'author'         => (int) $user_id,
+            'post_status'    => [ 'publish', 'pending', 'draft', 'future', 'private' ],
+            'posts_per_page' => 1,
+            'fields'         => 'ids',
+            'no_found_rows'  => false,
+        ];
+
+        if ( false !== strtotime( $since ) ) {
+            $args['date_query'] = [ [ 'after' => $since, 'inclusive' => true ] ];
+        }
+
+        return (int) ( new \WP_Query( $args ) )->found_posts;
+    }
+
+    /**
+     * One usage line (-1 = unlimited; used never below 0).
+     *
+     * @param string $type      Key
+     * @param string $label     Label
+     * @param int    $limit     Pack limit
+     * @param int    $remaining Remaining for the user
+     *
+     * @return array
+     */
+    private function usage_line( $type, $label, $limit, $remaining ) {
+        $unlimited = -1 === $limit || -1 === $remaining;
+
+        return [
+            'type'      => $type,
+            'label'     => wp_strip_all_tags( (string) $label ),
+            'limit'     => $unlimited ? -1 : $limit,
+            'remaining' => $unlimited ? -1 : max( 0, $remaining ),
+            'used'      => $unlimited ? null : max( 0, $limit - $remaining ),
         ];
     }
 

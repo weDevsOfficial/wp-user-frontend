@@ -13,6 +13,9 @@
 
 @source "../../../src/admin/apps/subscriptions";
 @source "../../../includes/Admin/views/subscriptions.php";
+/* Route container class (Admin\Screens\Subscriptions): the 20px page gutter
+   of the forms lists. */
+@source inline("px-[20px]");
 
 /* Words in these sources that read as Tailwind classes but never had CSS in
    the Tailwind 3 build (unprefixed there, or not classes at all, e.g.

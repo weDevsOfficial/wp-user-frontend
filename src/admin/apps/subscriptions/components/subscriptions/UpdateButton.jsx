@@ -23,7 +23,12 @@ const UpdateButton = ( {
 			{ key: 'draft', label: __( 'Save as Draft', 'wp-user-frontend' ), onClick: onSaveDraft, disabled: isUpdating || draftDisabled },
 		] }
 		trigger={
-			<Button size="lg" busy={ isUpdating } disabled={ ! isUpdating && publishDisabled && draftDisabled }>
+			<Button
+				size="lg"
+				busy={ isUpdating }
+				disabled={ ! isUpdating && publishDisabled && draftDisabled }
+				title={ ! isUpdating && publishDisabled && draftDisabled ? __( 'No changes to save', 'wp-user-frontend' ) : undefined }
+			>
 				{ ! isUpdating && <Save size={ 16 } strokeWidth={ 2 } aria-hidden="true" /> }
 				{ buttonText }
 				<ChevronDown size={ 16 } strokeWidth={ 2 } className="-me-1 opacity-80" aria-hidden="true" />

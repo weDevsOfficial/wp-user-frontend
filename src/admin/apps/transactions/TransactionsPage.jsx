@@ -11,6 +11,8 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 import { Button, DateTime, EmptyState, ErrorState, PageFooter, PageHeader, PageShell, Pagination, SearchInput, Select, Tabs, dialogs, notify } from '@wpuf/components';
 import { Receipt, SearchX, X } from 'lucide-react';
 
+import { openRoute } from '../../app/client';
+
 import SummaryCards from './SummaryCards';
 import { store } from './store';
 import TableSkeleton from './TableSkeleton';
@@ -45,7 +47,12 @@ const CONFIRM = {
     } ),
 };
 
-const DEFAULTS = { status: 'all', search: '', gateway: '', from: '', to: '', orderby: 'created', order: 'desc', page: 1 };
+// user_id / pack_id / coupon_id: one user's, pack's or coupon's payments (links
+// from Subscribers, packs, coupons and the user profile).
+const DEFAULTS = { status: 'all', search: '', gateway: '', from: '', to: '', user_id: '', pack_id: '', coupon_id: '', orderby: 'created', order: 'desc', page: 1 };
+const SCOPES = [ 'user_id', 'pack_id', 'coupon_id' ];
+
+const goTo = ( route ) => openRoute( route, 'admin.php?page=wp-user-frontend#' + route );
 
 /**
  * @param {Object} props
@@ -98,6 +105,13 @@ export default function TransactionsPage( { context } ) {
     const load = useCallback( ( signal ) => {
         const params = { ...query, per_page: perPageSent.current ? perPage : undefined };
 
+        // The id filters are integers on the route: leave them out when unset.
+        SCOPES.forEach( ( key ) => {
+            if ( ! params[ key ] ) {
+                delete params[ key ];
+            }
+        } );
+
         return fetchTransactions( params, signal ).then( ( response ) => {
             if ( response ) {
                 setPerPage( response.per_page );
@@ -129,7 +143,8 @@ export default function TransactionsPage( { context } ) {
     const chosen = rows.filter( ( row ) => selected.includes( row.key ) );
     const orders = chosen.filter( ( row ) => 'order' === row.kind );
     const records = chosen.filter( ( row ) => 'transaction' === row.kind );
-    const filtered = query.search || query.gateway || query.from || query.to;
+    const scoped = SCOPES.some( ( key ) => query[ key ] );
+    const filtered = query.search || query.gateway || query.from || query.to || scoped;
 
     const tabs = [
         { id: 'all', label: __( 'All', 'wp-user-frontend' ), count: counts.all },
@@ -162,7 +177,79 @@ export default function TransactionsPage( { context } ) {
 
     const clearFilters = () => {
         setSearch( '' );
-        setQuery( { search: '', gateway: '', from: '', to: '', page: 1 } );
+        setQuery( { search: '', gateway: '', from: '', to: '', user_id: '', pack_id: '', coupon_id: '', page: 1 } );
+    };
+
+    // The user / pack / coupon the list is narrowed to, named by the server.
+    const scopeLabels = result?.scope || {};
+    const scopeChips = SCOPES.filter( ( key ) => query[ key ] ).map( ( key ) => {
+        const name = scopeLabels[ key ] || '#' + query[ key ];
+        const labels = {
+            /* translators: %s: user name */
+            user_id: sprintf( __( 'Payments by %s', 'wp-user-frontend' ), name ),
+            /* translators: %s: subscription pack name */
+            pack_id: sprintf( __( 'Payments for %s', 'wp-user-frontend' ), name ),
+            /* translators: %s: coupon code */
+            coupon_id: sprintf( __( 'Payments with coupon %s', 'wp-user-frontend' ), name ),
+        };
+
+        return { key, label: labels[ key ] };
+    } );
+
+    // An empty tab or list: say why and what to do next.
+    const emptyState = () => {
+        if ( filtered ) {
+            return {
+                size: 'card',
+                icon: SearchX,
+                title: __( 'No payments match these filters', 'wp-user-frontend' ),
+                description: '',
+                actions: <Button variant="secondary" onClick={ clearFilters }>{ __( 'Clear filters', 'wp-user-frontend' ) }</Button>,
+            };
+        }
+
+        if ( 'pending' === query.status ) {
+            return {
+                size: 'card',
+                icon: Receipt,
+                title: __( 'No bank payments are waiting', 'wp-user-frontend' ),
+                description: __( 'Bank payments wait here until you accept or reject them.', 'wp-user-frontend' ),
+                actions: <Button variant="secondary" onClick={ () => setQuery( { status: 'all', page: 1 } ) }>{ __( 'Show all payments', 'wp-user-frontend' ) }</Button>,
+            };
+        }
+
+        if ( 'completed' === query.status ) {
+            return {
+                size: 'card',
+                icon: Receipt,
+                title: __( 'No completed payments yet', 'wp-user-frontend' ),
+                description: '',
+                actions: <Button variant="secondary" onClick={ () => setQuery( { status: 'all', page: 1 } ) }>{ __( 'Show all payments', 'wp-user-frontend' ) }</Button>,
+            };
+        }
+
+        if ( false === boot.paymentsEnabled ) {
+            return {
+                size: 'page',
+                icon: Receipt,
+                title: __( 'Payments are turned off', 'wp-user-frontend' ),
+                description: __( 'Turn on payments to sell subscription packs and paid posts. Payments then show up here.', 'wp-user-frontend' ),
+                actions: <Button onClick={ () => goTo( '/settings?tab=wpuf_payment' ) }>{ __( 'Turn on payments', 'wp-user-frontend' ) }</Button>,
+            };
+        }
+
+        return {
+            size: 'page',
+            icon: Receipt,
+            title: __( 'No transactions found.', 'wp-user-frontend' ),
+            description: __( 'Payments for subscriptions and paid posts show up here.', 'wp-user-frontend' ),
+            actions: (
+                <>
+                    <Button onClick={ () => goTo( '/subscriptions?action=new' ) }>{ __( 'Create a subscription pack', 'wp-user-frontend' ) }</Button>
+                    <Button variant="secondary" onClick={ () => goTo( '/settings?tab=wpuf_payment' ) }>{ __( 'Payment settings', 'wp-user-frontend' ) }</Button>
+                </>
+            ),
+        };
     };
 
     let content;
@@ -172,14 +259,16 @@ export default function TransactionsPage( { context } ) {
     } else if ( error ) {
         content = <ErrorState title={ __( 'Could not load the transactions', 'wp-user-frontend' ) } message={ error.message } onRetry={ () => load() } />;
     } else if ( ! rows.length ) {
+        const empty = emptyState();
+
         content = (
             <EmptyState
-                size={ filtered ? 'card' : 'page' }
-                icon={ filtered ? SearchX : Receipt }
+                size={ empty.size }
+                icon={ empty.icon }
                 showPlus={ false }
-                title={ filtered ? __( 'No payments match these filters', 'wp-user-frontend' ) : __( 'No transactions found.', 'wp-user-frontend' ) }
-                description={ filtered ? '' : __( 'Payments for subscriptions and paid posts show up here.', 'wp-user-frontend' ) }
-                actions={ filtered ? <Button variant="secondary" onClick={ clearFilters }>{ __( 'Clear filters', 'wp-user-frontend' ) }</Button> : null }
+                title={ empty.title }
+                description={ empty.description }
+                actions={ empty.actions }
             />
         );
     } else {
@@ -244,6 +333,20 @@ export default function TransactionsPage( { context } ) {
                         />
                         <DateTime id="wpuf-tx-from" value={ query.from } onChange={ ( from ) => setQuery( { from, page: 1 } ) } placeholder={ __( 'From date', 'wp-user-frontend' ) } className="w-44 min-w-0" />
                         <DateTime id="wpuf-tx-to" value={ query.to } onChange={ ( to ) => setQuery( { to, page: 1 } ) } placeholder={ __( 'To date', 'wp-user-frontend' ) } className="w-44 min-w-0" />
+                        { scopeChips.map( ( chip ) => (
+                            <span key={ chip.key } data-wpuf-ui="" className="inline-flex items-center gap-1.5 rounded-full border border-solid border-gray-200 bg-gray-50 py-1 pl-3 pr-1.5 text-xs font-medium text-gray-700">
+                                { chip.label }
+                                <button
+                                    type="button"
+                                    onClick={ () => setQuery( { [ chip.key ]: '', page: 1 } ) }
+                                    className="inline-flex cursor-pointer items-center rounded-full border-0 bg-transparent p-0.5 text-gray-500 hover:bg-gray-200 hover:text-gray-900"
+                                    /* translators: %s: filter label */
+                                    aria-label={ sprintf( __( 'Remove filter: %s', 'wp-user-frontend' ), chip.label ) }
+                                >
+                                    <X size={ 12 } aria-hidden="true" />
+                                </button>
+                            </span>
+                        ) ) }
                         { filtered && (
                             <Button variant="link" onClick={ clearFilters }>
                                 <X size={ 14 } aria-hidden="true" />
@@ -291,7 +394,18 @@ export default function TransactionsPage( { context } ) {
                 </div>
             </div>
 
-            <TransactionDetails row={ viewing } onClose={ () => setViewing( null ) } onAction={ act } canManage={ !! boot.canManage } />
+            <TransactionDetails
+                row={ viewing }
+                onClose={ () => setViewing( null ) }
+                onAction={ act }
+                canManage={ !! boot.canManage }
+                onScope={ ( key, id ) => {
+                    setViewing( null );
+                    setSearch( '' );
+                    setQuery( { search: '', user_id: '', pack_id: '', coupon_id: '', [ key ]: String( id ), status: 'all', page: 1 } );
+                } }
+                onGatewaySettings={ () => goTo( '/settings?tab=wpuf_payment' ) }
+            />
             <PageFooter />
         </PageShell>
     );

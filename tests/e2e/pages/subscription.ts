@@ -642,13 +642,14 @@ export class SubscriptionPage extends Base {
     }
 
     async editPreferances(buttonColor: string) {
+        // Preferences live in Settings > Payments > Subscriptions (the list's quick link).
         await this.validateAndClick(Selectors.subscription.newPackPage.packPreferences);
         await this.waitForLoading();
         await this.validateAndFillStrings(Selectors.subscription.newPackPage.inputColor, buttonColor);
         await this.waitForLoading();
         // The save is a REST call: wait for it, or the next test can load the
         // packs page before the colour is stored.
-        const saved = this.page.waitForResponse((response) => response.url().includes('subscription-settings') && response.request().method() === 'POST');
+        const saved = this.page.waitForResponse((response) => /wpuf\/v1\/settings/.test(response.url()) && response.request().method() === 'POST');
         await this.validateAndClick(Selectors.subscription.newPackPage.savePreferencesButton);
         await saved;
         await this.waitForLoading();

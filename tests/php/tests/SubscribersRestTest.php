@@ -154,4 +154,97 @@ class SubscribersRestTest extends WP_UnitTestCase {
         unset( $_GET['post_ID'] );
         $this->assertSame( '/subscriptions', $screen->app_route_for_request() );
     }
+
+    /**
+     * Pack limits and the admin's pack meta for the usage tests.
+     *
+     * @param array $left      Remaining posts per type
+     * @param int   $pack_id   Pack the user is on (default this pack)
+     * @param mixed $featured  Remaining featured items
+     *
+     * @return void
+     */
+    private function usage_fixture( $left, $pack_id = 0, $featured = '2' ) {
+        update_post_meta( $this->pack, '_post_type_name', [ 'post' => '10', 'page' => '-1', 'wp_template' => '-1', 'attachment' => '0' ] );
+        update_post_meta( $this->pack, '_total_feature_item', '5' );
+        update_user_meta(
+            $this->admin,
+            '_wpuf_subscription_pack',
+            [
+                'pack_id'            => $pack_id ? $pack_id : $this->pack,
+                'posts'              => $left,
+                'total_feature_item' => $featured,
+                'expire'             => '2026-12-31 00:00:00',
+            ]
+        );
+    }
+
+    /**
+     * Usage line of a type from a row.
+     *
+     * @param array  $row  Row
+     * @param string $type Type key
+     *
+     * @return array|null
+     */
+    private function line( $row, $type ) {
+        foreach ( $row['usage']['items'] as $line ) {
+            if ( $type === $line['type'] ) {
+                return $line;
+            }
+        }
+
+        return null;
+    }
+
+    public function test_usage_shows_used_and_remaining_on_the_current_row_only() {
+        wp_set_current_user( $this->admin );
+        $this->usage_fixture( [ 'post' => '7', 'page' => '-1', 'wp_template' => '-1' ] );
+        $this->subscriber( [ 'transaction_id' => 'OLD', 'starts_from' => '2026-01-01 10:00:00' ] );
+        $this->subscriber( [ 'transaction_id' => 'NEW', 'starts_from' => '2026-09-01 10:00:00' ] );
+
+        // Two pages after the start, one before: unlimited types count posts since the start.
+        self::factory()->post->create( [ 'post_type' => 'page', 'post_author' => $this->admin, 'post_date' => '2026-09-05 10:00:00' ] );
+        self::factory()->post->create( [ 'post_type' => 'page', 'post_author' => $this->admin, 'post_date' => '2026-09-06 10:00:00' ] );
+        self::factory()->post->create( [ 'post_type' => 'page', 'post_author' => $this->admin, 'post_date' => '2026-08-01 10:00:00' ] );
+
+        $items = $this->call( $this->pack )->get_data()['items'];
+        $rows  = wp_list_pluck( $items, 'usage', 'transaction_id' );
+
+        $this->assertNull( $rows['OLD'], 'an older row of the user has no usage' );
+        $this->assertNotNull( $rows['NEW'] );
+
+        $current = array_values( array_filter( $items, function ( $item ) {
+            return 'NEW' === $item['transaction_id'];
+        } ) )[0];
+
+        $this->assertSame( [ 'type' => 'post', 'label' => 'Posts', 'limit' => 10, 'remaining' => 7, 'used' => 3 ], $this->line( $current, 'post' ) );
+        $this->assertSame( -1, $this->line( $current, 'page' )['limit'] );
+        $this->assertSame( 2, $this->line( $current, 'page' )['used'], 'unlimited: posts since the subscription started' );
+        $this->assertNull( $this->line( $current, 'wp_template' ), 'internal unlimited types are left out' );
+        $this->assertNull( $this->line( $current, 'attachment' ), 'a type the pack does not allow (0) is left out' );
+        $this->assertSame( [ 'type' => 'featured', 'label' => 'Featured items', 'limit' => 5, 'remaining' => 2, 'used' => 3 ], $current['usage']['featured'] );
+        $this->assertNotSame( '', $current['usage']['expire'] );
+    }
+
+    public function test_no_usage_when_the_user_is_on_another_pack() {
+        wp_set_current_user( $this->admin );
+        $this->usage_fixture( [ 'post' => '7' ], $this->pack + 999 );
+        $this->subscriber();
+
+        $this->assertNull( $this->call( $this->pack )->get_data()['items'][0]['usage'] );
+    }
+
+    public function test_used_never_goes_below_zero() {
+        wp_set_current_user( $this->admin );
+        // Remaining above the limit (the pack limit was lowered later).
+        $this->usage_fixture( [ 'post' => '25' ], 0, '9' );
+        $this->subscriber();
+
+        $row = $this->call( $this->pack )->get_data()['items'][0];
+
+        $this->assertSame( 0, $this->line( $row, 'post' )['used'] );
+        $this->assertSame( 25, $this->line( $row, 'post' )['remaining'] );
+        $this->assertSame( 0, $row['usage']['featured']['used'] );
+    }
 }

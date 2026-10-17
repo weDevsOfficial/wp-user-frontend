@@ -311,6 +311,9 @@ class TransactionStore implements DataStore {
                 'gateway'  => '',
                 'from'     => '',
                 'to'       => '',
+                'user_id'  => 0,
+                'pack_id'  => 0,
+                'coupon_id' => 0,
                 'orderby'  => 'created',
                 'order'    => 'desc',
                 'page'     => 1,
@@ -322,6 +325,9 @@ class TransactionStore implements DataStore {
         $args['orderby']  = in_array( $args['orderby'], self::ORDERBY, true ) ? $args['orderby'] : 'created';
         $args['order']    = 'asc' === strtolower( (string) $args['order'] ) ? 'ASC' : 'DESC';
         $args['per_page'] = max( 1, min( 100, absint( $args['per_page'] ) ) );
+        $args['user_id']  = absint( $args['user_id'] );
+        $args['pack_id']  = absint( $args['pack_id'] );
+        $args['coupon_id'] = absint( $args['coupon_id'] );
         $args['offset']   = ( max( 1, absint( $args['page'] ) ) - 1 ) * $args['per_page'];
 
         return $args;
@@ -393,6 +399,24 @@ class TransactionStore implements DataStore {
 
             // Orders are bank payments waiting for approval.
             if ( self::BANK_LABEL !== $gateway ) {
+                $order = null;
+            }
+        }
+
+        // One user's / pack's / coupon's payments (links from Subscribers, coupons,
+        // packs and the user profile). A pending bank order belongs to its author;
+        // its pack and coupon are inside serialized data, so those filters leave orders out.
+        if ( ! empty( $args['user_id'] ) ) {
+            $tx .= $wpdb->prepare( ' AND user_id = %d', $args['user_id'] );
+
+            if ( null !== $order ) {
+                $order .= $wpdb->prepare( ' AND post_author = %d', $args['user_id'] );
+            }
+        }
+
+        foreach ( [ 'pack_id', 'coupon_id' ] as $column ) {
+            if ( ! empty( $args[ $column ] ) ) {
+                $tx   .= $wpdb->prepare( " AND {$column} = %d", $args[ $column ] ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- column from the fixed list above.
                 $order = null;
             }
         }

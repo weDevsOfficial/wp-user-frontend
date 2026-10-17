@@ -10,11 +10,15 @@
  * @since WPUF_SINCE
  */
 import { useEffect, useState } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
-import { Badge, Button, EmptyState, ErrorState, Pagination, SortHeader, Tabs } from '@wpuf/components';
-import { ArrowLeft, Users } from 'lucide-react';
+import { __, sprintf } from '@wordpress/i18n';
+import { ActionMenu, Badge, Button, EmptyState, ErrorState, Pagination, SortHeader, Tabs, notify } from '@wpuf/components';
+import { ArrowLeft, FileText, Receipt, Users } from 'lucide-react';
+import { openRoute } from '../../../../app/client';
+import { writeText } from '../../../forms-list/hooks/useClipboard';
+import { packLinks } from '../../hooks/useSubscriptionItem';
 import TableSkeleton from '../../../forms-list/components/TableSkeleton';
 import { fetchPackSubscribers } from '../../api/subscription';
+import SubscriberUsage from './SubscriberUsage';
 import { useSubscriptionNavigation } from '../../hooks';
 
 // Transactions table tokens (transactions/TransactionsTable.jsx).
@@ -24,7 +28,8 @@ const TD = 'px-2 py-2.5 align-middle text-[13px]';
 const STATUS_TABS = () => [
 	{ id: 'all', label: __( 'All', 'wp-user-frontend' ) },
 	{ id: 'Completed', label: __( 'Completed', 'wp-user-frontend' ) },
-	{ id: 'Cancel', label: __( 'Cancel', 'wp-user-frontend' ) },
+	// Stored as "Cancel"; shown as "Cancelled".
+	{ id: 'Cancel', label: __( 'Cancelled', 'wp-user-frontend' ) },
 ];
 
 // Badge tones (as the payments list); Cancel in the danger tone.
@@ -35,7 +40,7 @@ const TONE = {
 
 const LABEL = {
 	Completed: __( 'Completed', 'wp-user-frontend' ),
-	Cancel: __( 'Cancel', 'wp-user-frontend' ),
+	Cancel: __( 'Cancelled', 'wp-user-frontend' ),
 };
 
 /**
@@ -109,15 +114,27 @@ const Subscribers = ( { subscriptionId } ) => {
 				icon={ Users }
 				showPlus={ false }
 				title={ 'all' === status ? __( 'No subscribers yet', 'wp-user-frontend' ) : __( 'No subscribers with this status', 'wp-user-frontend' ) }
-				description={ 'all' === status ? __( 'Users who take this subscription appear here.', 'wp-user-frontend' ) : '' }
-				actions={ 'all' !== status ? (
+				description={ 'all' === status ? __( 'Users who buy this pack appear here. Share its buy link, or assign the pack to a user from their profile (Users > a user > WPUF Subscription; not for recurring packs).', 'wp-user-frontend' ) : '' }
+				actions={ 'all' === status ? (
+					<>
+						{ pack && packLinks( { ID: subscriptionId } ).buyLink && (
+							<Button onClick={ () => writeText( packLinks( { ID: subscriptionId } ).buyLink ).then(
+								() => notify( __( 'Buy link copied.', 'wp-user-frontend' ), 'success' ),
+								() => notify( __( 'Could not copy. Please copy it manually.', 'wp-user-frontend' ), 'danger' )
+							) }>
+								{ __( 'Copy buy link', 'wp-user-frontend' ) }
+							</Button>
+						) }
+						<Button variant="secondary" className="no-underline!" href="users.php">{ __( 'Go to Users', 'wp-user-frontend' ) }</Button>
+					</>
+				) : (
 					<Button variant="secondary" onClick={ () => {
 						setStatus( 'all' );
 						setPage( 1 );
 					} }>
 						{ __( 'Show all', 'wp-user-frontend' ) }
 					</Button>
-				) : null }
+				) }
 			/>
 		);
 	} else {
@@ -132,10 +149,12 @@ const Subscribers = ( { subscriptionId } ) => {
 								<th scope="col" className={ TH }>{ __( 'User Name', 'wp-user-frontend' ) }</th>
 								<th scope="col" className={ TH }>{ __( 'Subscription ID', 'wp-user-frontend' ) }</th>
 								<th scope="col" className={ TH }>{ __( 'Status', 'wp-user-frontend' ) }</th>
+								<th scope="col" className={ TH }>{ __( 'Usage', 'wp-user-frontend' ) }</th>
 								<th scope="col" className={ TH }>{ __( 'Gateway', 'wp-user-frontend' ) }</th>
 								<th scope="col" className={ TH }>{ __( 'Transaction ID', 'wp-user-frontend' ) }</th>
 								{ sortable( 'starts_from', __( 'Starts from', 'wp-user-frontend' ) ) }
 								{ sortable( 'expire', __( 'Expire date', 'wp-user-frontend' ) ) }
+								<th scope="col" className="w-14 pr-4"><span className="sr-only">{ __( 'Actions', 'wp-user-frontend' ) }</span></th>
 							</tr>
 						</thead>
 						<tbody className={ loading ? 'opacity-60' : '' }>
@@ -155,15 +174,56 @@ const Subscribers = ( { subscriptionId } ) => {
 											</Badge>
 										) : dash }
 									</td>
+									<td className={ TD }>
+										<SubscriberUsage usage={ item.usage } name={ item.name } />
+									</td>
 									<td className={ TD + ' whitespace-nowrap text-gray-500' }>
 										<span className="inline-flex items-center gap-2">
 											{ item.gateway_logo && <img src={ item.gateway_logo } alt="" className="h-4 w-5 object-contain" /> }
 											{ item.gateway || '–' }
 										</span>
 									</td>
-									<td className={ TD + ' text-gray-500' }>{ item.transaction_id || dash }</td>
+									<td className={ TD + ' text-gray-500' }>
+										{ /* A paid row opens its payment in Transactions; free packs store "Free". */ }
+										{ item.transaction_id && 'Free' !== item.transaction_id ? (
+											<a
+												href={ `#/transactions?search=${ encodeURIComponent( item.transaction_id ) }` }
+												onClick={ ( event ) => {
+													event.preventDefault();
+													openRoute( `/transactions?search=${ encodeURIComponent( item.transaction_id ) }`, `admin.php?page=wp-user-frontend#/transactions?search=${ encodeURIComponent( item.transaction_id ) }` );
+												} }
+												className="text-gray-700 no-underline hover:text-primary hover:underline"
+											>
+												{ item.transaction_id }
+											</a>
+										) : ( item.transaction_id || dash ) }
+									</td>
 									<td className={ TD + ' whitespace-nowrap text-gray-500' }>{ item.starts_from || dash }</td>
-									<td className={ TD + ' whitespace-nowrap pr-4 text-gray-500' }>{ item.expire || dash }</td>
+									<td className={ TD + ' whitespace-nowrap text-gray-500' }>{ item.expire || dash }</td>
+									<td className="pr-4 align-middle">
+										<div className="flex justify-end">
+											<ActionMenu
+												vertical
+												/* translators: %s: user name */
+												label={ sprintf( __( 'Actions for %s', 'wp-user-frontend' ), item.name || '#' + item.user_id ) }
+												items={ [
+													item.edit_url && { key: 'edit', label: __( 'Edit user', 'wp-user-frontend' ), onClick: () => window.open( item.edit_url, '_blank', 'noopener' ) },
+													{
+														key: 'payments',
+														icon: <Receipt size={ 16 } strokeWidth={ 2 } className="shrink-0" aria-hidden="true" />,
+														label: __( 'View payments', 'wp-user-frontend' ),
+														onClick: () => openRoute( `/transactions?user_id=${ item.user_id }`, `admin.php?page=wp-user-frontend#/transactions?user_id=${ item.user_id }` ),
+													},
+													item.posts_url && {
+														key: 'posts',
+														icon: <FileText size={ 16 } strokeWidth={ 2 } className="shrink-0" aria-hidden="true" />,
+														label: __( 'View posts', 'wp-user-frontend' ),
+														onClick: () => window.open( item.posts_url, '_blank', 'noopener' ),
+													},
+												].filter( Boolean ) }
+											/>
+										</div>
+									</td>
 								</tr>
 							) ) }
 						</tbody>

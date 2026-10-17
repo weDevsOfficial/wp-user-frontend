@@ -16,12 +16,15 @@ use WeDevs\Wpuf\Platform\REST\Controllers\NoticesController;
 use WeDevs\Wpuf\Platform\REST\Controllers\OnboardingController;
 use WeDevs\Wpuf\Platform\REST\Controllers\PostLockController;
 use WeDevs\Wpuf\Platform\REST\Controllers\SettingsController;
+use WeDevs\Wpuf\Platform\REST\Controllers\SetupController;
 use WeDevs\Wpuf\Platform\REST\Controllers\SubscribersController;
 use WeDevs\Wpuf\Platform\REST\Controllers\SubscriptionController;
 use WeDevs\Wpuf\Platform\REST\Controllers\ToolsController;
 use WeDevs\Wpuf\Platform\REST\Controllers\TransactionsController;
 use WeDevs\Wpuf\Platform\REST\Manager;
 use WeDevs\Wpuf\Platform\ServiceProvider;
+use WeDevs\Wpuf\Platform\Onboarding\Pages;
+use WeDevs\Wpuf\Platform\Setup\Prerequisites;
 use WeDevs\Wpuf\Platform\Stores\FormStore;
 use WeDevs\Wpuf\Platform\Tools\ToolsService;
 use WeDevs\Wpuf\Platform\Transactions\TransactionService;
@@ -114,6 +117,14 @@ class RestServiceProvider extends ServiceProvider {
             PostLockController::class,
             function () {
                 return new PostLockController();
+            }
+        );
+
+        // wpuf/v1/admin/setup/* (prerequisites of the settings and subscriptions screens).
+        $this->share_tagged(
+            SetupController::class,
+            function ( $container ) {
+                return new SetupController( new Prerequisites( $container->get( Pages::class ) ) );
             }
         );
 

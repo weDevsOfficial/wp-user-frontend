@@ -95,8 +95,36 @@ class User_Profile {
                             </span>
 
                             <span class="value">
-                                <?php echo isset( $pack->post_title ) ? esc_html( $pack->post_title ) : ''; ?>
+                                <?php
+                                // The pack name opens the pack; then the user's payments and posts (admin app routes).
+                                $app_links = function_exists( 'wpuf_admin_app_url' ) && wpuf_admin_app_enabled();
+
+                                if ( isset( $pack->post_title ) && $app_links && current_user_can( wpuf_admin_role() ) ) {
+                                    printf(
+                                        '<a href="%1$s">%2$s</a>',
+                                        esc_url(
+                                            wpuf_admin_app_url(
+                                                '/subscriptions', [
+                                                    'action' => 'edit',
+                                                    'id'     => (int) $pack->ID,
+                                                ]
+                                            )
+                                        ),
+                                        esc_html( $pack->post_title )
+                                    );
+                                } else {
+                                    echo isset( $pack->post_title ) ? esc_html( $pack->post_title ) : '';
+                                }
+                                ?>
                             </span>
+                            <?php if ( $app_links && current_user_can( wpuf_admin_role() ) ) : ?>
+                                <span class="wpuf-sub-links" style="display:block;margin-top:4px;font-size:12px;">
+                                    <a href="<?php echo esc_url( wpuf_admin_app_url( '/transactions', [ 'user_id' => (int) $userdata->ID ] ) ); ?>"><?php esc_html_e( 'Payments', 'wp-user-frontend' ); ?></a>
+                                    <?php if ( current_user_can( 'edit_others_posts' ) ) : ?>
+                                        | <a href="<?php echo esc_url( admin_url( 'edit.php?author=' . (int) $userdata->ID ) ); ?>"><?php esc_html_e( 'Posts', 'wp-user-frontend' ); ?></a>
+                                    <?php endif; ?>
+                                </span>
+                            <?php endif; ?>
                         </div>
 
                         <div class="sub-price">

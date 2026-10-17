@@ -11,10 +11,8 @@ import { doAction } from '@wordpress/hooks';
 import { WpufProviders, PageHeader, PageShell, UnsavedGuard } from '@wpuf/components';
 import SubscriptionForm from './components/subscriptions/SubscriptionForm';
 import SubscriptionList from './components/subscriptions/SubscriptionList';
-import SidebarMenu from './components/subscriptions/SidebarMenu';
 import ContentHeader from './components/subscriptions/ContentHeader';
 import QuickEdit from './components/subscriptions/QuickEdit';
-import Preferences from './components/subscriptions/Preferences';
 import Notices from './components/subscriptions/Notices';
 import Subscribers from './components/subscriptions/Subscribers';
 
@@ -153,34 +151,26 @@ const SubscriptionsApp = () => {
                 allCount={allCount}
                 onAddSubscription={handleAddSubscription}
             />
-            <div className={`flex items-start gap-6 pt-6 ${isUnsavedPopupOpen ? 'blur-sm' : ''}`}>
-                {/* Left Sidebar */}
-                <div className="w-60 shrink-0">
-                    <SidebarMenu
-                        currentSubscriptionStatus={status}
-                        allCount={allCount}
-                        onStatusClick={handleStatusClick}
-                        isUnsavedPopupOpen={isUnsavedPopupOpen}
-                    />
-                </div>
-
-                {/* Main Content */}
-                <div className="min-w-0 flex-1">
-                    {action === 'edit' || action === 'new' ? (
+            {/* The list and Preferences: the forms list layout, status tabs in the
+                list card. The form and subscribers views: full width, no sidebar
+                (each has its own way back: Cancel, the back arrow). */}
+            <div className={isUnsavedPopupOpen ? 'blur-sm' : ''}>
+                {action === 'edit' || action === 'new' ? (
+                    <div className="pt-6">
                         <SubscriptionForm
                             mode={action === 'new' ? 'add-new' : 'edit'}
                             subscriptionId={subscriptionId}
                             onDiscardChanges={handleDiscardChanges}
                             onContinueEditing={handleContinueEditing}
                         />
-                    ) : action === 'subscribers' && subscriptionId ? (
+                    </div>
+                ) : action === 'subscribers' && subscriptionId ? (
+                    <div className="pt-6">
                         <Subscribers subscriptionId={subscriptionId} />
-                    ) : status === 'preferences' ? (
-                        <Preferences />
-                    ) : (
-                        <SubscriptionList />
-                    )}
-                </div>
+                    </div>
+                ) : (
+                    <SubscriptionList onStatusClick={handleStatusClick} />
+                )}
             </div>
 
             {/* Unsaved changes: the dialog on sidebar/cancel, the browser prompt on unload */}

@@ -142,7 +142,7 @@ plugin-ui (base-ui). Native inputs became ARIA widgets; locate them this way
 | Checkbox | `[@role="checkbox"]`; `.check()` works on it |
 | Multi-select | `[@role="combobox"]`, options `[@role="option"][normalize-space()="Name"]` (no data-value) |
 | Menus (card "⋯", Save/Publish) | trigger `button[@aria-label="Actions"]` or the button; items `[@role="menuitem"]`. Menus open on **click** (develop opened some on hover) |
-| Tabs with counts | `role=button[name="All Subscriptions 1"s]` (count is its own element; no count when 0) |
+| Tabs with counts | subscriptions list card: `role=tab[name=/^All Subscriptions\s*\(1\)$/]` (count as "(n)", also 0); the form views keep the sidebar buttons |
 | Confirm dialogs | scope to `//*[@role="alertdialog" or @role="dialog"]//button[...]` (the "Trash" tab is also a button) |
 | Builder canvas labels | `//label[@for="x" or @for="wpuf-x"]` |
 | Forms list rows | `//tr[.//td//a[normalize-space()="Name"]]` |

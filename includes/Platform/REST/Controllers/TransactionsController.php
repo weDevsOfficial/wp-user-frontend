@@ -94,6 +94,22 @@ class TransactionsController extends RestController {
                             'default' => '',
                             'pattern' => '^(\d{4}-\d{2}-\d{2})?$',
                         ],
+                        // One user's / pack's / coupon's payments (0: all).
+                        'user_id'   => [
+                            'type'    => 'integer',
+                            'default' => 0,
+                            'minimum' => 0,
+                        ],
+                        'pack_id'   => [
+                            'type'    => 'integer',
+                            'default' => 0,
+                            'minimum' => 0,
+                        ],
+                        'coupon_id' => [
+                            'type'    => 'integer',
+                            'default' => 0,
+                            'minimum' => 0,
+                        ],
                     ] + $this->collection_args( TransactionService::ORDERBY, 'created', [ 'per_page' => null ] ),
                 ],
             ]
@@ -179,6 +195,9 @@ class TransactionsController extends RestController {
                 'gateway'  => $request['gateway'],
                 'from'     => $request['from'],
                 'to'       => $request['to'],
+                'user_id'  => (int) $request['user_id'],
+                'pack_id'  => (int) $request['pack_id'],
+                'coupon_id' => (int) $request['coupon_id'],
                 'orderby'  => $request['orderby'],
                 'order'    => $request['order'],
                 'page'     => $request['page'],
@@ -192,8 +211,41 @@ class TransactionsController extends RestController {
                 'total'    => $result['total'],
                 'per_page' => (int) $per_page,
                 'counts'   => $result['counts'],
+                'scope'    => (object) $this->scope_labels( $request ),
             ]
         );
+    }
+
+    /**
+     * Names of the user / pack / coupon a list is narrowed to (filter chips).
+     * Payer names already show in the list for who may read it.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Request
+     *
+     * @return array user_id|pack_id|coupon_id => label
+     */
+    private function scope_labels( $request ) {
+        $labels = [];
+        $user   = (int) $request['user_id'] ? get_userdata( (int) $request['user_id'] ) : false;
+
+        if ( $user ) {
+            $labels['user_id'] = $user->display_name;
+        }
+
+        foreach ( [
+            'pack_id'   => 'wpuf_subscription',
+            'coupon_id' => 'wpuf_coupon',
+        ] as $key => $post_type ) {
+            $post = (int) $request[ $key ] ? get_post( (int) $request[ $key ] ) : null;
+
+            if ( $post && $post_type === $post->post_type ) {
+                $labels[ $key ] = wp_strip_all_tags( $post->post_title );
+            }
+        }
+
+        return $labels;
     }
 
     /**

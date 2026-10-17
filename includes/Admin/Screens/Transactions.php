@@ -97,6 +97,8 @@ class Transactions extends Screen {
                 'canManage' => Caps::can( Caps::MANAGE_SITE ),
                 'gateways'  => $service->gateways(),
                 'perPage'   => $service->per_page(),
+                // The empty list explains when payments are off (link to the settings).
+                'paymentsEnabled' => 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ),
             ],
         ];
     }

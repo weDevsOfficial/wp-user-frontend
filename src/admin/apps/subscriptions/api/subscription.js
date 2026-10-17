@@ -140,3 +140,28 @@ export const fetchPackSubscribers = async (subscriptionId, params = {}) => {
         method: 'GET',
     });
 };
+
+/**
+ * What the subscriptions need before visitors can buy a pack (setup checks).
+ *
+ * @return {Promise<Object>} { checks: [ { id, ok, severity, title, description, section, page, setting } ] }
+ */
+export const fetchSetupChecks = async () => {
+    return request(`${NAMESPACE}/admin/setup/subscriptions`, {
+        method: 'GET',
+    });
+};
+
+/**
+ * Add a page setting's shortcode to its page (setup quick action).
+ *
+ * @param {number} pageId  Page ID
+ * @param {string} setting Page setting name
+ * @return {Promise<Object>} API response
+ */
+export const addPageShortcode = async (pageId, setting) => {
+    return request(`${NAMESPACE}/admin/setup/pages/${pageId}/shortcode`, {
+        method: 'POST',
+        data: { setting },
+    });
+};

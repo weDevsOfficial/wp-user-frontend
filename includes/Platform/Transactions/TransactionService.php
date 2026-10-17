@@ -225,7 +225,8 @@ class TransactionService {
         $row['coupon']   = $row['coupon_id'] ? [
             'id'   => $row['coupon_id'],
             'code' => get_the_title( $row['coupon_id'] ),
-            'url'  => current_user_can( 'edit_post', $row['coupon_id'] ) ? admin_url( 'post.php?post=' . $row['coupon_id'] . '&action=edit' ) : '',
+            // The coupons screen of the admin app (Pro), else the coupon's post screen.
+            'url'  => current_user_can( 'edit_post', $row['coupon_id'] ) ? $this->coupon_url( (int) $row['coupon_id'] ) : '',
         ] : null;
         $row['post']     = $this->linked_post( $row['post_id'] );
         $row['pack']     = $this->linked_post( $row['pack_id'] );
@@ -265,6 +266,21 @@ class TransactionService {
     }
 
     /**
+     * Edit link of a coupon: the admin app's coupons route when Pro serves it.
+     *
+     * @param int $coupon_id Coupon id
+     *
+     * @return string
+     */
+    private function coupon_url( $coupon_id ) {
+        if ( class_exists( 'WP_User_Frontend_Pro' ) && function_exists( 'wpuf_admin_app_url' ) && wpuf_admin_app_enabled() ) {
+            return wpuf_admin_app_url( '/coupons', [ 'action' => 'edit', 'id' => $coupon_id ] );
+        }
+
+        return admin_url( 'post.php?post=' . $coupon_id . '&action=edit' );
+    }
+
+    /**
      * Title and edit link of a post or pack.
      *
      * @param int $post_id Post ID
@@ -280,7 +296,10 @@ class TransactionService {
 
         // Packs are edited on the subscriptions screen, not post.php.
         if ( 'wpuf_subscription' === get_post_type( $post_id ) ) {
-            $url = current_user_can( wpuf_admin_role() ) ? \WeDevs\Wpuf\Admin\Subscriptions\Pack_Post_Type::screen_url( $post_id ) : '';
+            // The admin app route (no page reload); the old screen URL redirects there anyway.
+            $url = current_user_can( wpuf_admin_role() )
+                ? ( function_exists( 'wpuf_admin_app_url' ) && wpuf_admin_app_enabled() ? wpuf_admin_app_url( '/subscriptions', [ 'action' => 'edit', 'id' => (int) $post_id ] ) : \WeDevs\Wpuf\Admin\Subscriptions\Pack_Post_Type::screen_url( $post_id ) )
+                : '';
         } else {
             $url = current_user_can( 'edit_post', $post_id ) ? admin_url( 'post.php?post=' . $post_id . '&action=edit' ) : '';
         }

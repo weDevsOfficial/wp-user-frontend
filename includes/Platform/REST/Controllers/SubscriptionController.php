@@ -361,12 +361,78 @@ class SubscriptionController extends RestController {
             );
         }
 
+        // The admin cards list the plan's features as the frontend plan card
+        // does (read only; a save reads the post fields and `meta_value`).
+        $coupons = $this->coupons_by_pack();
+
+        foreach ( $subscriptions as $subscription ) {
+            if ( is_object( $subscription ) ) {
+                $subscription->card_features = array_values( array_map( 'wp_strip_all_tags', array_map( 'strval', wpuf_subscription_pack_features( $subscription ) ) ) );
+
+                // Subscribers split (no request per card) and the coupons for this pack.
+                $subscription->subscriber_counts = [
+                    'total'     => count( wpuf()->subscription->subscription_pack_users( $subscription->ID ) ),
+                    'cancelled' => count( Stores::subscribers()->user_ids( (int) $subscription->ID, 'Cancel' ) ),
+                ];
+                $subscription->card_coupons      = [
+                    'only' => isset( $coupons['packs'][ (int) $subscription->ID ] ) ? $coupons['packs'][ (int) $subscription->ID ] : [],
+                    'all'  => $coupons['all'],
+                ];
+            }
+        }
+
         return new WP_REST_Response(
             [
                 'success'       => true,
                 'subscriptions' => $subscriptions,
             ]
         );
+    }
+
+    /**
+     * Published coupons (Pro) per pack: `_package` lists pack ids, or `all`.
+     * Read only, for the pack cards; empty without the coupon post type.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array { packs: { pack id: [ { id, code } ] }, all: int }
+     */
+    private function coupons_by_pack() {
+        $out = [
+            'packs' => [],
+            'all'   => 0,
+        ];
+
+        if ( ! post_type_exists( 'wpuf_coupon' ) || ! current_user_can( wpuf_admin_role() ) ) {
+            return $out;
+        }
+
+        $ids = get_posts(
+            [
+                'post_type'      => 'wpuf_coupon',
+                'post_status'    => 'publish',
+                'posts_per_page' => 100,
+                'fields'         => 'ids',
+            ]
+        );
+
+        foreach ( $ids as $coupon_id ) {
+            $packs = (array) get_post_meta( $coupon_id, '_package', true );
+
+            if ( in_array( 'all', $packs, true ) ) {
+                ++$out['all'];
+                continue;
+            }
+
+            foreach ( array_filter( array_map( 'absint', $packs ) ) as $pack_id ) {
+                $out['packs'][ $pack_id ][] = [
+                    'id'   => (int) $coupon_id,
+                    'code' => wp_strip_all_tags( get_the_title( $coupon_id ) ),
+                ];
+            }
+        }
+
+        return $out;
     }
 
     /**

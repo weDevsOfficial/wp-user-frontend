@@ -163,7 +163,19 @@ const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null } ) => {
 		}
 
 		if ( result?.success ) {
-			notify( result.message, 'success' );
+			// A published pack: offer the plans page that lists it.
+			const plansUrl = ( subscriptionsData().plansPage || {} ).url;
+
+			notify(
+				result.message,
+				'success',
+				'publish' === status && plansUrl ? {
+					action: {
+						label: __( 'View plans page', 'wp-user-frontend' ),
+						onClick: () => window.open( plansUrl, '_blank', 'noopener' ),
+					},
+				} : undefined
+			);
 			setIsDirty( false );
 			doAction( 'wpuf.subscription.afterSave', result, mode );
 			goToList();

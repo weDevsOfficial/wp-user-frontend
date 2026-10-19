@@ -303,7 +303,6 @@ class Frontend_Form extends Frontend_Render_Form {
         // Who may post comes before plan and payment notices: render_form() prints the
         // login or role message, instead of telling them to buy a plan that would not help.
         if ( ! $this->may_post( $this->form_settings ) ) {
-            wp_enqueue_style( 'wpuf-font-awesome' );
             $this->render_form( $id, null, $atts, $form );
 
             return ob_get_clean();

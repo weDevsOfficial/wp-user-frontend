@@ -5558,6 +5558,30 @@ function wpuf_clear_schedule_lock() {
  *
  * @return array
  */
+/**
+ * Normalize submitted text before checking it for protected shortcodes
+ *
+ * Runs the value through the same wp_kses() pass used when the post is
+ * saved, then removes NUL and other control bytes, so the text that is
+ * checked matches the text that ends up stored.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $value raw (unslashed) submitted value
+ *
+ * @return string
+ */
+function wpuf_normalize_for_shortcode_check( $value ) {
+    if ( ! is_string( $value ) || '' === $value ) {
+        return '';
+    }
+
+    $value = wp_kses( $value, wp_kses_allowed_html( 'post' ) );
+    $value = wp_kses_no_null( $value );
+
+    return (string) preg_replace( '/[\x00-\x1F\x7F]/', '', $value );
+}
+
 function wpuf_get_protected_shortcodes() {
     return [
         'wpuf-registration',

@@ -49,4 +49,26 @@ describe( 'findRecommendations', () => {
         expect( keys( { enable_multistep: 'on' }, { site_payments: site }, fields ) ).toEqual( [] );
         expect( keys( {}, { site_payments: site }, [ { template: 'post_title' } ] ) ).toEqual( [] );
     } );
+
+    it( 'asks to turn on pricing payment when the form has pricing fields (Pro)', () => {
+        const pro = { site_payments: site, subscriptions: [ { id: 1 } ], is_pro_active: true };
+        const fields = [ { template: 'post_title' }, { template: 'pricing_radio' } ];
+        const found = findRecommendations( { post_permission: 'role_base' }, pro, fields );
+
+        expect( found.map( ( item ) => item.key ) ).toEqual( [ 'pricing_payment' ] );
+        expect( found[ 0 ].action.set ).toEqual( { enable_pricing_payment: 'on' } );
+        expect( keys( { enable_pricing_payment: 'on' }, pro, fields ) ).toEqual( [] );
+        expect( keys( {}, pro, [ { input_type: 'price_field' } ] ) ).toEqual( [ 'pricing_payment' ] );
+        // Without Pro the setting does not exist.
+        expect( keys( {}, { site_payments: site }, fields ) ).toEqual( [] );
+    } );
+
+    it( 'flags pricing payment without pricing fields, and its site payment setup', () => {
+        const pro = { site_payments: site, subscriptions: [ { id: 1 } ], is_pro_active: true };
+        const fields = [ { template: 'pricing_checkbox' } ];
+
+        expect( keys( { enable_pricing_payment: 'on' }, pro, [ { template: 'post_title' } ] ) ).toEqual( [ 'pricing_fields' ] );
+        expect( keys( { enable_pricing_payment: 'on' }, { ...pro, site_payments: { ...site, payment_page: false } }, fields ) ).toEqual( [ 'site_payments' ] );
+        expect( keys( { enable_pricing_payment: 'on', post_permission: 'guest_post' }, pro, fields ) ).toEqual( [ 'guest_details' ] );
+    } );
 } );

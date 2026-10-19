@@ -16,6 +16,9 @@ import { __ } from '@wordpress/i18n';
  */
 const isOn = ( value ) => [ true, 'on', 'yes', 'true', '1', 1 ].includes( value );
 
+// Pro fields Pricing_Field_Payment::calculate_pricing_cost() charges for.
+const PRICING_FIELDS = [ 'pricing_checkbox', 'pricing_radio', 'pricing_dropdown', 'pricing_multiselect', 'price_field' ];
+
 /**
  * The problems of the current settings, as notices with an action.
  *
@@ -33,7 +36,11 @@ export function findRecommendations( settings, data, fields = [] ) {
     const payPerPost = payments && 'enable_pay_per_post' === option;
     const forcePack = payments && 'force_pack_purchase' === option;
     const cost = parseFloat( settings.pay_per_post_cost );
-    const charges = payPerPost ? cost > 0 : forcePack;
+    // Pro: Enable Pricing Fields Payment charges the pricing fields' total,
+    // with or without Payment Options.
+    const pricingOn = !! data.is_pro_active && isOn( settings.enable_pricing_payment );
+    const hasPricing = ( fields || [] ).some( ( field ) => field && ( PRICING_FIELDS.includes( field.template ) || PRICING_FIELDS.includes( field.input_type ) ) );
+    const charges = ( payPerPost ? cost > 0 : forcePack ) || ( pricingOn && hasPricing );
 
     // An empty Post Permission shows the form to logged-out visitors, but the
     // submit endpoint only accepts them on a Guest Post form.
@@ -55,6 +62,24 @@ export function findRecommendations( settings, data, fields = [] ) {
             title: __( 'The form is not split into steps', 'wp-user-frontend' ),
             message: __( 'The form has <b>Step Start</b> fields, but <b>Enable Multi-Step</b> is off, so visitors see one long page.', 'wp-user-frontend' ),
             action: { label: __( 'Turn on Multi-Step', 'wp-user-frontend' ), set: { enable_multistep: 'on' }, section: 'general' },
+        } );
+    }
+
+    if ( data.is_pro_active && hasPricing && ! pricingOn ) {
+        found.push( {
+            key: 'pricing_payment',
+            title: __( 'Pricing fields are not charged', 'wp-user-frontend' ),
+            message: __( 'The form has <b>pricing fields</b>, but <b>Enable Pricing Fields Payment</b> is off, so members see a price and a total and are never asked to pay.', 'wp-user-frontend' ),
+            action: { label: __( 'Turn on pricing payment', 'wp-user-frontend' ), set: { enable_pricing_payment: 'on' }, section: 'payment_settings' },
+        } );
+    }
+
+    if ( pricingOn && ! hasPricing ) {
+        found.push( {
+            key: 'pricing_fields',
+            title: __( 'Nothing to charge for', 'wp-user-frontend' ),
+            message: __( '<b>Enable Pricing Fields Payment</b> is on, but the form has no pricing field, so every post is free. Add a pricing field or turn it off.', 'wp-user-frontend' ),
+            action: { label: __( 'Turn off pricing payment', 'wp-user-frontend' ), set: { enable_pricing_payment: 'off' }, section: 'payment_settings' },
         } );
     }
 

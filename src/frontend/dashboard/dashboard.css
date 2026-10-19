@@ -132,7 +132,8 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding: 20px 20px 12px;
+    /* Same inline padding as the table cells (kit .wpuf-table: 16px), so title and columns line up. */
+    padding: 20px 16px 12px;
 }
 
 .wpuf-frontend .wpuf-dashboard-posts__title {
@@ -180,7 +181,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    padding: 0 20px 12px;
+    padding: 0 16px 12px;
     border-bottom: 1px solid var(--wpuf-fe-border);
 }
 

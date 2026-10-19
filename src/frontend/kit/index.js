@@ -14,6 +14,7 @@ import Field, { FieldLabel, isRequired } from './components/Field';
 import ServerHtml, { loadAssets } from './components/ServerHtml';
 import PostsTable from './components/PostsTable';
 import ProfileHero from './components/ProfileHero';
+import { AvatarPhoto, CoverPhotoActions } from './components/PhotoControls';
 import Select, { SelectModeContext } from './components/Select';
 import confirmDialog, { alertDialog, loginDialog } from './components/confirm';
 import FormRenderer from './form/FormRenderer';
@@ -85,6 +86,8 @@ export {
     Pagination,
     PostsTable,
     ProfileHero,
+    AvatarPhoto,
+    CoverPhotoActions,
     RailItem,
     StatCard,
     StateCard,

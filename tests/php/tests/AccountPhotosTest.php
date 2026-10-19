@@ -77,4 +77,33 @@ class AccountPhotosTest extends WP_UnitTestCase {
         $this->assertSame( 400, $response->get_status() );
         $this->assertSame( 'wpuf_account_no_file', $response->get_data()['code'] );
     }
+
+    public function test_photos_are_stored_without_the_form_field_binding() {
+        $attachment = self::factory()->attachment->create( [ 'post_author' => 0 ] );
+        $uploads    = $this->getMockBuilder( \WeDevs\Wpuf\Frontend\Forms\Upload_Service::class )
+            ->disableOriginalConstructor()
+            ->onlyMethods( [ 'upload', 'store_file' ] )
+            ->getMock();
+
+        // The form upload refuses (no profile / cover field to bind to), as on a real site.
+        $uploads->method( 'upload' )->willReturn( new WP_Error( 'wpuf_upload_forbidden', 'not allowed', [ 'status' => 403 ] ) );
+        $uploads->method( 'store_file' )->willReturn( $attachment );
+
+        $photos = new Account_Photos( $uploads );
+
+        foreach ( [ Account_Photos::PROFILE => 'wpuf_profile_photo', Account_Photos::COVER => 'wpuf_cover_photo' ] as $kind => $meta ) {
+            $result = $photos->store(
+                [
+                    'name' => 'me.png',
+                    'size' => 1024,
+                ],
+                $kind
+            );
+
+            $this->assertSame( $attachment, $result, $kind );
+            $this->assertSame( $attachment, (int) get_user_meta( $this->user, $meta, true ), $kind );
+        }
+
+        $this->assertSame( $this->user, (int) get_post_field( 'post_author', $attachment ), 'the photo belongs to the user' );
+    }
 }

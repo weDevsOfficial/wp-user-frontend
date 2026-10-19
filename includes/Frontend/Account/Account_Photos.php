@@ -70,15 +70,15 @@ class Account_Photos {
         }
 
         $user_id = get_current_user_id();
-        $form_id = (int) Stores::settings()->get( 'wpuf_my_account', 'edit_profile_form', 0 );
-        $result  = $this->uploads->upload( $file, $form_id ? $form_id : $this->any_form_id(), $kind );
+        // Not a form upload: the photo rules above decide (image types, size; the
+        // route checks Pro and login), so the form field binding of upload() does not apply.
+        $attach_id = $this->uploads->store_file( $file );
 
-        if ( is_wp_error( $result ) ) {
-            return $result;
+        if ( is_wp_error( $attach_id ) ) {
+            return $attach_id;
         }
 
-        $attach_id = (int) $result['attach_id'];
-        $previous  = $this->photo_id( $kind, $user_id );
+        $previous = $this->photo_id( $kind, $user_id );
 
         $this->set_photo( $kind, $user_id, $attach_id );
         wp_update_post(
@@ -193,23 +193,6 @@ class Account_Photos {
         if ( (int) get_post_field( 'post_author', $attachment_id ) === (int) $user_id ) {
             wp_delete_attachment( $attachment_id, true );
         }
-    }
-
-    /**
-     * A published post form for the upload rules when no profile form is set.
-     *
-     * @return int
-     */
-    protected function any_form_id() {
-        $forms = Stores::forms()->query(
-            [
-                'post_type' => 'wpuf_forms',
-                'status'    => 'publish',
-                'per_page'  => 1,
-            ]
-        );
-
-        return $forms ? (int) $forms[0]->id : 0;
     }
 
     /**

@@ -137,32 +137,11 @@ class Upload_Service {
             }
         }
 
-        $file_name      = pathinfo( $file['name'], PATHINFO_FILENAME );
-        $file_extension = pathinfo( $file['name'], PATHINFO_EXTENSION );
+        $attach_id = $this->store_file( $file );
 
-        // wp_handle_upload() and wp_generate_attachment_metadata() live in the
-        // admin includes, which a REST request does not load (admin-ajax does).
-        foreach ( [ 'file', 'image', 'media' ] as $include ) {
-            if ( ! function_exists( 'file' === $include ? 'wp_handle_upload' : ( 'image' === $include ? 'wp_generate_attachment_metadata' : 'media_handle_upload' ) ) ) {
-                require_once ABSPATH . 'wp-admin/includes/' . $include . '.php';
-            }
+        if ( is_wp_error( $attach_id ) ) {
+            return $attach_id;
         }
-
-        $attach = $this->ajax->handle_upload(
-            [
-                'name'     => $file_name . '.' . $file_extension,
-                'type'     => $file['type'],
-                'tmp_name' => $file['tmp_name'],
-                'error'    => $file['error'],
-                'size'     => $file['size'],
-            ]
-        );
-
-        if ( empty( $attach['success'] ) ) {
-            return new WP_Error( 'wpuf_upload_failed', isset( $attach['error'] ) ? (string) $attach['error'] : __( 'The upload failed.', 'wp-user-frontend' ), [ 'status' => 400 ] );
-        }
-
-        $attach_id = (int) $attach['attach_id'];
 
         if ( $image_only ) {
             $image_size = Stores::settings()->get( 'wpuf_frontend_posting', 'insert_photo_size', 'thumbnail' );
@@ -190,6 +169,57 @@ class Upload_Service {
             'title'     => get_the_title( $attach_id ),
             'mime'      => (string) get_post_mime_type( $attach_id ),
         ];
+    }
+
+    /**
+     * Store one uploaded file as an attachment, with no form behind it: the
+     * caller has already decided the upload is allowed (upload() after its
+     * form checks, Account_Photos after its own photo rules).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $file One `$_FILES` entry (name, type, tmp_name, error, size)
+     *
+     * @return int|WP_Error Attachment id
+     */
+    public function store_file( array $file ) {
+        $file = wp_parse_args(
+            $file,
+            [
+                'name'     => '',
+                'type'     => '',
+                'tmp_name' => '',
+                'error'    => UPLOAD_ERR_NO_FILE,
+                'size'     => 0,
+            ]
+        );
+
+        $file_name      = pathinfo( $file['name'], PATHINFO_FILENAME );
+        $file_extension = pathinfo( $file['name'], PATHINFO_EXTENSION );
+
+        // wp_handle_upload() and wp_generate_attachment_metadata() live in the
+        // admin includes, which a REST request does not load (admin-ajax does).
+        foreach ( [ 'file', 'image', 'media' ] as $include ) {
+            if ( ! function_exists( 'file' === $include ? 'wp_handle_upload' : ( 'image' === $include ? 'wp_generate_attachment_metadata' : 'media_handle_upload' ) ) ) {
+                require_once ABSPATH . 'wp-admin/includes/' . $include . '.php';
+            }
+        }
+
+        $attach = $this->ajax->handle_upload(
+            [
+                'name'     => $file_name . '.' . $file_extension,
+                'type'     => $file['type'],
+                'tmp_name' => $file['tmp_name'],
+                'error'    => $file['error'],
+                'size'     => $file['size'],
+            ]
+        );
+
+        if ( empty( $attach['success'] ) ) {
+            return new WP_Error( 'wpuf_upload_failed', isset( $attach['error'] ) ? (string) $attach['error'] : __( 'The upload failed.', 'wp-user-frontend' ), [ 'status' => 400 ] );
+        }
+
+        return (int) $attach['attach_id'];
     }
 
     /**

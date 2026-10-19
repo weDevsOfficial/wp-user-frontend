@@ -11,8 +11,7 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { useCallback, useEffect, useMemo, useState } from '@wordpress/element';
 import { applyFilters, doAction } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
-import { Avatar, Button, Notice, Pill, ProfileHero, RailItem, ServerHtml, SkeletonLines, api, icons, loadAssets } from '@wpuf/frontend-kit';
-import { AvatarPhoto, CoverPhotoActions } from './PhotoControls';
+import { Avatar, AvatarPhoto, Button, CoverPhotoActions, Notice, Pill, ProfileHero, RailItem, ServerHtml, SkeletonLines, api, icons, loadAssets } from '@wpuf/frontend-kit';
 import { listen, pageOf, urlFor } from './router';
 import Overview from './sections/Overview';
 import Posts from './sections/Posts';
@@ -213,9 +212,9 @@ export default function App( { data, root } ) {
         <div className="wpuf-account-container wpuf-account-shell">
             <ProfileHero
                 person={ person }
-                coverActions={ <CoverPhotoActions person={ person } /> }
+                coverActions={ <CoverPhotoActions person={ person } onChange={ setProfile } /> }
                 avatar={
-                    <AvatarPhoto person={ person }>
+                    <AvatarPhoto person={ person } onChange={ setProfile }>
                         <Avatar url={ person.avatar?.url } initials={ person.avatar?.initials } alt={ person.display_name } size={ 96 } className="wpuf-profile-avatar" />
                     </AvatarPhoto>
                 }

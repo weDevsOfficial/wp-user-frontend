@@ -62,6 +62,15 @@ export function reducer( state = {}, action ) {
         case 'SET_NOTICE':
             return patch( state, action.key, { notice: action.notice } );
 
+        case 'SET_PHOTOS': {
+            const overview = listOf( state, action.key ).overview;
+
+            // Only the photos: the hero keeps the dashboard's own facts (bio setting, plan, posts).
+            return overview?.profile
+                ? patch( state, action.key, { overview: { ...overview, profile: { ...overview.profile, avatar: action.profile.avatar, cover: action.profile.cover } } } )
+                : state;
+        }
+
         default:
             return state;
     }
@@ -170,6 +179,18 @@ export const actions = {
 
     setNotice( key, notice ) {
         return { type: 'SET_NOTICE', key, notice };
+    },
+
+    /**
+     * The fresh profile after a photo upload / removal (PhotoControls).
+     *
+     * @param {string} key     Mount key.
+     * @param {Object} profile Account_Service::profile().
+     *
+     * @return {Object} Action.
+     */
+    setPhotos( key, profile ) {
+        return { type: 'SET_PHOTOS', key, profile: profile || {} };
     },
 };
 

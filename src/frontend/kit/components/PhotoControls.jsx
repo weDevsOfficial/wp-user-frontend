@@ -1,33 +1,33 @@
 /**
- * Change the profile photo and the cover photo from the account header (Pro,
- * `profile.photos_editable`): hover or focus the avatar or the cover band,
- * pick an image, it uploads to `wpuf/v1/account/avatar|cover` with progress;
- * Remove goes back to Gravatar / initials or the plain band. Without Pro the
- * header only shows the photos.
+ * Change the profile photo and the cover photo from the profile hero (Pro,
+ * `profile.photos_editable`), on the account page and the dashboard: hover
+ * or focus the avatar or the cover band, pick an image, it uploads to
+ * `wpuf/v1/account/avatar|cover` with progress; Remove goes back to
+ * Gravatar / initials or the plain band. The page gets the fresh profile
+ * through `onChange`. Without Pro the hero only shows the photos.
  *
  * @since WPUF_SINCE
  */
-import { useDispatch } from '@wordpress/data';
 import { useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Button, alertDialog, api, confirmDialog, icons } from '@wpuf/frontend-kit';
-import { store } from './store';
-
-const { Camera, ImageUp, Trash2 } = icons;
+import * as api from '../api';
+import { Camera, ImageUp, Trash2 } from '../icons';
+import confirmDialog, { alertDialog } from './confirm';
+import { Button } from './primitives';
 
 const ROUTES = { avatar: '/account/avatar', cover: '/account/cover' };
 
 /**
  * One photo's upload / remove state and actions.
  *
- * @param {string} kind avatar|cover
+ * @param {string}   kind       avatar|cover
+ * @param {Function} setProfile Called with the fresh profile.
  * @return {Object} { input, pick, onFile, remove, busy, progress }
  */
-function usePhoto( kind ) {
+function usePhoto( kind, setProfile = () => {} ) {
     const input = useRef( null );
     const [ busy, setBusy ] = useState( false );
     const [ progress, setProgress ] = useState( 0 );
-    const { setProfile } = useDispatch( store );
 
     const fail = ( error ) => alertDialog( { html: ( error && error.message ) || __( 'The photo could not be saved.', 'wp-user-frontend' ) } );
 
@@ -104,12 +104,13 @@ function FileInput( { kind, photo, label } ) {
 /**
  * The avatar with its hover / focus overlay.
  *
- * @param {Object}  props
- * @param {Object}  props.person   Profile
- * @param {*}       props.children The avatar
+ * @param {Object}   props
+ * @param {Object}   props.person     Profile
+ * @param {Function} [props.onChange] Called with the fresh profile
+ * @param {*}        props.children   The avatar
  */
-export function AvatarPhoto( { person, children } ) {
-    const photo = usePhoto( 'avatar' );
+export function AvatarPhoto( { person, onChange, children } ) {
+    const photo = usePhoto( 'avatar', onChange );
 
     if ( ! person.photos_editable ) {
         return children;
@@ -135,11 +136,12 @@ export function AvatarPhoto( { person, children } ) {
 /**
  * The cover band's change / remove buttons (top right, shown on hover / focus).
  *
- * @param {Object} props
- * @param {Object} props.person Profile
+ * @param {Object}   props
+ * @param {Object}   props.person     Profile
+ * @param {Function} [props.onChange] Called with the fresh profile
  */
-export function CoverPhotoActions( { person } ) {
-    const photo = usePhoto( 'cover' );
+export function CoverPhotoActions( { person, onChange } ) {
+    const photo = usePhoto( 'cover', onChange );
 
     if ( ! person.photos_editable ) {
         return null;

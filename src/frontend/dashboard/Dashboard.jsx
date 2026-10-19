@@ -68,7 +68,7 @@ const stateOfLocation = () => {
  */
 export default function Dashboard( { mountKey, signed } ) {
     const list = useSelect( ( select ) => select( store ).getList( mountKey ), [ mountKey ] );
-    const { loadPage, filter, setFilters, deletePost, setError, setNotice } = useDispatch( store );
+    const { loadPage, filter, setFilters, deletePost, setError, setNotice, setPhotos } = useDispatch( store );
     const [ search, setSearch ] = useState( list.filters.search );
     const typing = useRef( 0 );
     const data = list.data;
@@ -143,6 +143,7 @@ export default function Dashboard( { mountKey, signed } ) {
                     total={ data.total }
                     labels={ labels }
                     showCount={ data.show_count }
+                    onPhotos={ ( fresh ) => setPhotos( mountKey, fresh ) }
                 />
             ) }
 

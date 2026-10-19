@@ -80,28 +80,41 @@ class Payment {
             case 'skip':
                 return $content;
 
+            // Returned, not echoed: echo inside `the_content` prints above the
+            // theme's header on block themes.
             case 'login':
                 $this->enqueue_checkout_style();
-                echo '<div class="wpuf-frontend wpuf-form-gate wpuf-checkout-gate"><div class="wpuf-message">';
-                printf(
+
+                return '<div class="wpuf-frontend wpuf-form-gate wpuf-checkout-gate"><div class="wpuf-message">' . sprintf(
                     /* translators: %s: login url */
                     esc_html__( 'This page is restricted. Please %s to view this page.', 'wp-user-frontend' ),
                     wp_loginout( '', false ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WordPress builds this login link.
-                );
-                echo '</div></div>';
+                ) . '</div></div>';
 
-                return;
+            case 'guest_post':
+                $this->enqueue_checkout_style();
+                $pay_link = add_query_arg(
+                    [
+                        'action'  => 'wpuf_pay',
+                        'type'    => 'post',
+                        'post_id' => absint( $resolved['post_id'] ),
+                    ],
+                    get_permalink( $post )
+                );
+
+                return '<div class="wpuf-frontend wpuf-form-gate wpuf-checkout-gate"><div class="wpuf-message">' . sprintf(
+                    /* translators: %s: login link */
+                    esc_html__( 'Please %s to pay for your post. We sent you an email with a link to set your password.', 'wp-user-frontend' ),
+                    '<a href="' . esc_url( wp_login_url( $pay_link ) ) . '">' . esc_html__( 'log in', 'wp-user-frontend' ) . '</a>'
+                ) . '</div></div>';
 
             case 'no_page':
-                esc_html_e( 'Please select your payment page from admin panel', 'wp-user-frontend' );
-
-                return;
+                return esc_html__( 'Please select your payment page from admin panel', 'wp-user-frontend' );
 
             case 'no_pack':
                 $this->enqueue_checkout_style();
-                echo '<div class="wpuf-frontend wpuf-form-gate wpuf-checkout-gate"><div class="wpuf-info">' . esc_html__( 'No subscription pack found.', 'wp-user-frontend' ) . '</div></div>';
 
-                return;
+                return '<div class="wpuf-frontend wpuf-form-gate wpuf-checkout-gate"><div class="wpuf-info">' . esc_html__( 'No subscription pack found.', 'wp-user-frontend' ) . '</div></div>';
         }
 
         $this->enqueue_checkout_style();

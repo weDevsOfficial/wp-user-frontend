@@ -228,6 +228,16 @@ class Checkout_Service {
             $gateways = $this->recurring_gateways( $gateways );
         }
 
+        // A guest paying for a post pays from the account the submission made
+        // for them (they get its password mail): ask them to log in instead
+        // of showing the bare page content.
+        if ( ! is_user_logged_in() && 'post' === $request['type'] && $request['post_id'] > 0 ) {
+            return [
+                'status'  => 'guest_post',
+                'post_id' => $request['post_id'],
+            ];
+        }
+
         if ( ! is_user_logged_in() || ( $request['user_id'] > 0 && get_current_user_id() !== $request['user_id'] ) ) {
             return [ 'status' => 'skip' ];
         }

@@ -100,6 +100,11 @@ class CheckoutServiceTest extends WP_UnitTestCase {
         wp_set_current_user( 0 );
         $this->assertSame( 'login', $this->resolve()['status'], 'a guest paying for a pack logs in first' );
 
+        $this->request( [ 'type' => 'post', 'post_id' => 3 ] );
+        $this->assertSame( 'guest_post', $this->resolve()['status'], 'a guest paying for a post is asked to log in' );
+
+        $this->request( [ 'type' => 'pack', 'pack_id' => $pack ] );
+
         wp_set_current_user( $this->user );
         $this->assertSame( 'open', $this->resolve()['status'] );
 

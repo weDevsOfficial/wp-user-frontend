@@ -21,6 +21,7 @@ import { findRecommendations } from '../../utils/settingsRecommendations';
  */
 export default function SettingsRecommendations( { onSection } ) {
     const settings = useSelect( ( select ) => select( STORE_NAME ).getSettings(), [] );
+    const fields = useSelect( ( select ) => select( STORE_NAME ).getFormFields(), [] );
     const { updateFormSetting } = useDispatch( STORE_NAME );
     const data = builderData();
 
@@ -28,7 +29,7 @@ export default function SettingsRecommendations( { onSection } ) {
         return null;
     }
 
-    const items = findRecommendations( settings || {}, data );
+    const items = findRecommendations( settings || {}, data, fields || [] );
 
     if ( ! items.length ) {
         return null;

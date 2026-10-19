@@ -1,9 +1,16 @@
 import { findRecommendations } from './settingsRecommendations';
 
 const site = { enabled: true, gateways: 1, payment_page: true, settings_url: 'pay', plans_url: 'plans' };
-const keys = ( settings, data = { site_payments: site, subscriptions: [ { id: 1 } ] } ) => findRecommendations( settings, data ).map( ( item ) => item.key );
+const keys = ( settings, data = { site_payments: site, subscriptions: [ { id: 1 } ] }, fields = [] ) => findRecommendations( { post_permission: 'role_base', ...settings }, data, fields ).map( ( item ) => item.key );
 
 describe( 'findRecommendations', () => {
+    it( 'asks who can post when Post Permission is empty', () => {
+        const found = findRecommendations( { post_permission: '' }, { site_payments: site } );
+
+        expect( found.map( ( item ) => item.key ) ).toEqual( [ 'post_permission' ] );
+        expect( found[ 0 ].action.set ).toEqual( { post_permission: 'role_base' } );
+    } );
+
     it( 'is quiet for a form that does not charge', () => {
         expect( keys( { payment_options: 'off', post_permission: 'guest_post' } ) ).toEqual( [] );
     } );
@@ -33,5 +40,13 @@ describe( 'findRecommendations', () => {
 
         expect( keys( settings, { site_payments: site, subscriptions: [] } ) ).toEqual( [ 'plans' ] );
         expect( keys( settings ) ).toEqual( [] );
+    } );
+
+    it( 'asks to turn on Multi-Step when the form has Step Start fields', () => {
+        const fields = [ { template: 'step_start' }, { template: 'post_title' } ];
+
+        expect( keys( {}, { site_payments: site }, fields ) ).toEqual( [ 'multistep' ] );
+        expect( keys( { enable_multistep: 'on' }, { site_payments: site }, fields ) ).toEqual( [] );
+        expect( keys( {}, { site_payments: site }, [ { template: 'post_title' } ] ) ).toEqual( [] );
     } );
 } );

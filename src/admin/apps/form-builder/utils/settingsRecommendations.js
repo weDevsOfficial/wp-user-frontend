@@ -21,10 +21,11 @@ const isOn = ( value ) => [ true, 'on', 'yes', 'true', '1', 1 ].includes( value 
  *
  * @param {Object} settings Form settings (unsaved state).
  * @param {Object} data     Builder boot data.
+ * @param {Array}  fields   Form fields (unsaved state).
  *
  * @return {Array<Object>} { key, title, message (with <b> tags), action: { label, set | section | href, external } }
  */
-export function findRecommendations( settings, data ) {
+export function findRecommendations( settings, data, fields = [] ) {
     const found = [];
     const site = data.site_payments || {};
     const payments = isOn( settings.payment_options );
@@ -33,6 +34,29 @@ export function findRecommendations( settings, data ) {
     const forcePack = payments && 'force_pack_purchase' === option;
     const cost = parseFloat( settings.pay_per_post_cost );
     const charges = payPerPost ? cost > 0 : forcePack;
+
+    // An empty Post Permission shows the form to logged-out visitors, but the
+    // submit endpoint only accepts them on a Guest Post form.
+    if ( ! settings.post_permission ) {
+        found.push( {
+            key: 'post_permission',
+            title: __( 'Nobody chose who can post', 'wp-user-frontend' ),
+            message: __( '<b>Post Permission</b> is not set, so visitors who are not logged in see the form but can not send it. Choose who can post.', 'wp-user-frontend' ),
+            action: { label: __( 'Logged-in users only', 'wp-user-frontend' ), set: { post_permission: 'role_base' }, section: 'general' },
+        } );
+    }
+
+    // Step Start fields only split the form when Multi-Step is on.
+    const hasSteps = ( fields || [] ).some( ( field ) => field && ( 'step_start' === field.template || 'step_start' === field.input_type ) );
+
+    if ( hasSteps && ! isOn( settings.enable_multistep ) ) {
+        found.push( {
+            key: 'multistep',
+            title: __( 'The form is not split into steps', 'wp-user-frontend' ),
+            message: __( 'The form has <b>Step Start</b> fields, but <b>Enable Multi-Step</b> is off, so visitors see one long page.', 'wp-user-frontend' ),
+            action: { label: __( 'Turn on Multi-Step', 'wp-user-frontend' ), set: { enable_multistep: 'on' }, section: 'general' },
+        } );
+    }
 
     if ( payPerPost && ! ( cost > 0 ) ) {
         found.push( {

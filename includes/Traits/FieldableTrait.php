@@ -256,10 +256,17 @@ trait FieldableTrait {
         $check_recaptcha = $this->search( $post_vars, 'input_type', 'recaptcha' );
 
         if ( ! empty( $check_recaptcha ) ) {
-            $recaptcha_type = $check_recaptcha[0]['recaptcha_type'];
+            $recaptcha_type = isset( $check_recaptcha[0]['recaptcha_type'] ) ? $check_recaptcha[0]['recaptcha_type'] : '';
         }
+
+        // Without the keys the field prints only "API key is missing": there is
+        // nothing to solve, so it guards nothing (as for logins). Checking it
+        // anyway ended in the legacy library's die() and a broken submit.
+        $recaptcha_ready = '' !== (string) wpuf_get_option( 'recaptcha_public', 'wpuf_general' )
+            && '' !== (string) wpuf_get_option( 'recaptcha_private', 'wpuf_general' );
+
         // check recaptcha
-        if ( $check_recaptcha ) {
+        if ( $check_recaptcha && $recaptcha_ready ) {
             // The type decides the check, sent token or not: a request without the token
             // must fail, not skip every branch of validate_re_captcha() ('' == 0 is false on PHP 8).
             $token = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';

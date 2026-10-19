@@ -187,16 +187,10 @@ class Dashboard_Overview {
                 continue;
             }
 
-            $args                   = $this->service->query_args( $atts, 1 );
-            $args['post_status']    = [ $status ];
-            $args['posts_per_page'] = 1;
-            $args['fields']         = 'ids';
-            $query                  = new WP_Query( $args );
-
             $cards[] = [
                 'status' => $status,
                 'label'  => $this->status_label( $status ),
-                'count'  => (int) $query->found_posts,
+                'count'  => $this->count_status( $atts, $status ),
                 'tone'   => $tone,
             ];
         }
@@ -252,16 +246,18 @@ class Dashboard_Overview {
     }
 
     /**
-     * What needs the member's attention: posts waiting for payment, posts
-     * that expire within a week, a plan that expired or has no posts left,
-     * editing locked by an admin.
+     * What needs the member's attention, each with what they can do about it:
+     * editing locked by an admin, posts waiting for payment (Pay now), posts
+     * that go offline within a week (View), drafts not submitted yet (Show
+     * drafts), and, only when posting needs a plan, no or an expired plan,
+     * a plan payment waiting for the owner, a plan with no posts left.
      *
      * @since WPUF_SINCE
      *
      * @param array      $atts Attributes
      * @param array|null $plan Plan card data
      *
-     * @return array[] [ key, tone, text, action: { label, url } | null ]
+     * @return array[] [ key, tone, text, action: { label, url } | { label, filter } | null ]
      */
     public function attention( array $atts, $plan = null ) {
         $items = [];
@@ -318,43 +314,96 @@ class Dashboard_Overview {
             }
         }
 
-        $expiring = $this->expiring( $atts );
-
-        if ( $expiring ) {
+        foreach ( array_slice( $this->expiring( $atts ), 0, 3 ) as $post_id ) {
+            $date    = (string) get_post_meta( $post_id, 'wpuf-post_expiration_date', true );
             $items[] = [
-                'key'    => 'expiring',
+                'key'    => 'expiring-' . $post_id,
                 'tone'   => 'warning',
                 'text'   => sprintf(
-                    /* translators: 1: number of posts, 2: first post title */
-                    _n( '%1$d post goes offline within 7 days: %2$s', '%1$d posts go offline within 7 days, first: %2$s', count( $expiring ), 'wp-user-frontend' ),
-                    count( $expiring ),
-                    get_the_title( $expiring[0] )
+                    /* translators: 1: post title, 2: date */
+                    __( '"%1$s" goes offline on %2$s.', 'wp-user-frontend' ),
+                    html_entity_decode( wp_strip_all_tags( get_the_title( $post_id ) ), ENT_QUOTES, get_bloginfo( 'charset' ) ),
+                    $date ? date_i18n( get_option( 'date_format' ), strtotime( $date ) ) : ''
                 ),
-                'action' => null,
+                'action' => [
+                    'label' => __( 'View', 'wp-user-frontend' ),
+                    'url'   => (string) get_permalink( $post_id ),
+                ],
             ];
         }
 
-        if ( $plan && 'expired' === $plan['state'] ) {
+        $drafts = in_array( 'draft', $this->service->statuses( $atts ), true ) ? $this->count_status( $atts, 'draft' ) : 0;
+
+        if ( $drafts ) {
             $items[] = [
-                'key'    => 'plan_expired',
-                'tone'   => 'danger',
-                'text'   => __( 'Your subscription has expired. Pick a plan to keep posting.', 'wp-user-frontend' ),
-                'action' => ! empty( $plan['packs_url'] ) ? [
-                    'label' => __( 'Renew subscription', 'wp-user-frontend' ),
-                    'url'   => $plan['packs_url'],
-                ] : null,
-            ];
-        } elseif ( $plan && 'active' === $plan['state'] && $this->plan_used_up( $atts ) ) {
-            $items[] = [
-                'key'    => 'plan_used',
-                'tone'   => 'warning',
-                'text'   => __( 'You have used all the posts your plan allows.', 'wp-user-frontend' ),
-                'action' => ! empty( $plan['packs_url'] ) ? [
-                    'label' => __( 'Change plan', 'wp-user-frontend' ),
-                    'url'   => $plan['packs_url'],
-                ] : null,
+                'key'    => 'drafts',
+                'tone'   => 'info',
+                'text'   => sprintf(
+                    /* translators: %d: number of drafts */
+                    _n( 'You have %d draft that is not submitted yet.', 'You have %d drafts that are not submitted yet.', $drafts, 'wp-user-frontend' ),
+                    $drafts
+                ),
+                // The app filters the list to drafts.
+                'action' => [
+                    'label'  => __( 'Show drafts', 'wp-user-frontend' ),
+                    'filter' => 'draft',
+                ],
             ];
         }
+
+        // Plan messages only matter when posting needs a plan: a form the member
+        // posts with makes a subscription mandatory, with no pay-per-post fallback.
+        if ( $plan && $this->plan_required( $atts ) ) {
+            if ( 'expired' === $plan['state'] || 'none' === $plan['state'] ) {
+                $items[] = [
+                    'key'    => 'plan_needed',
+                    'tone'   => 'danger',
+                    'text'   => 'expired' === $plan['state']
+                        ? __( 'Your subscription has expired. Pick a plan to keep posting.', 'wp-user-frontend' )
+                        : __( 'You need a subscription plan to post.', 'wp-user-frontend' ),
+                    'action' => ! empty( $plan['packs_url'] ) ? [
+                        'label' => 'expired' === $plan['state'] ? __( 'Renew subscription', 'wp-user-frontend' ) : __( 'Browse plans', 'wp-user-frontend' ),
+                        'url'   => $plan['packs_url'],
+                    ] : null,
+                ];
+            } elseif ( 'pending' === $plan['state'] ) {
+                $items[] = [
+                    'key'    => 'plan_pending',
+                    'tone'   => 'info',
+                    'text'   => __( 'Your plan payment is waiting for the site owner. You can post once it is approved.', 'wp-user-frontend' ),
+                    'action' => null,
+                ];
+            } elseif ( 'active' === $plan['state'] && $this->plan_used_up( $atts ) ) {
+                $items[] = [
+                    'key'    => 'plan_used',
+                    'tone'   => 'warning',
+                    'text'   => __( 'You have used all the posts your plan allows.', 'wp-user-frontend' ),
+                    'action' => ! empty( $plan['packs_url'] ) ? [
+                        'label' => __( 'Change plan', 'wp-user-frontend' ),
+                        'url'   => $plan['packs_url'],
+                    ] : null,
+                ];
+            }
+        }
+
+        // Most urgent first (danger, warning, info), in their own order within a tone.
+        $rank  = [
+            'danger'  => 0,
+            'warning' => 1,
+            'info'    => 2,
+        ];
+        $order = array_keys( $items );
+
+        array_multisort(
+            array_map(
+                function ( $item ) use ( $rank ) {
+                    return isset( $rank[ $item['tone'] ] ) ? $rank[ $item['tone'] ] : 3;
+                },
+                $items
+            ),
+            $order,
+            $items
+        );
 
         return $items;
     }
@@ -527,6 +576,67 @@ class Dashboard_Overview {
         );
 
         return array_map( 'intval', ( new WP_Query( $args ) )->posts );
+    }
+
+    /**
+     * How many of the list's posts are in one status.
+     *
+     * @param array  $atts   Attributes
+     * @param string $status Status
+     *
+     * @return int
+     */
+    private function count_status( array $atts, $status ) {
+        $args                   = $this->service->query_args( $atts, 1 );
+        $args['post_status']    = [ $status ];
+        $args['posts_per_page'] = 1;
+        $args['fields']         = 'ids';
+
+        return (int) ( new WP_Query( $args ) )->found_posts;
+    }
+
+    /**
+     * Whether posting needs a plan for this member: one of the forms they
+     * post with (the shortcode's `form_id`, the forms behind their listed
+     * posts, the account page's submission form), and their role may use,
+     * charges with "Mandatory Subscription" and no pay-per-post fallback.
+     *
+     * @param array $atts Attributes
+     *
+     * @return bool
+     */
+    private function plan_required( array $atts ) {
+        $forms = [];
+
+        if ( ! empty( $atts['form_id'] ) && 'off' !== $atts['form_id'] ) {
+            $forms = array_map( 'intval', explode( ',', (string) $atts['form_id'] ) );
+        } else {
+            $args                   = $this->service->query_args( $atts, 1 );
+            $args['posts_per_page'] = 50;
+            $args['fields']         = 'ids';
+
+            foreach ( ( new WP_Query( $args ) )->posts as $post_id ) {
+                $forms[] = (int) Stores::submissions()->form_id( $post_id );
+            }
+
+            $forms[] = (int) Stores::settings()->get( 'wpuf_my_account', 'post_submission_form' );
+        }
+
+        foreach ( array_unique( array_filter( $forms ) ) as $form_id ) {
+            $form     = new \WeDevs\Wpuf\Admin\Forms\Form( $form_id );
+            $settings = (array) $form->get_settings();
+
+            // A form the member's role may not post with does not count.
+            if ( isset( $settings['post_permission'] ) && 'role_base' === $settings['post_permission'] && ! empty( $settings['roles'] ) && ! wpuf_user_has_roles( $settings['roles'] ) ) {
+                continue;
+            }
+
+            if ( $form->is_charging_enabled() && $form->is_enabled_force_pack() && ! $form->is_enabled_fallback_cost() ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

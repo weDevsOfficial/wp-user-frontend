@@ -151,7 +151,7 @@ export default function Dashboard( { mountKey, signed } ) {
                 <StatusCards stats={ stats } active={ list.filters.status } onSelect={ ( status ) => applyFilter( { status } ) } />
             ) }
 
-            { ( overview.attention || [] ).length > 0 && <Attention items={ overview.attention } /> }
+            { ( overview.attention || [] ).length > 0 && <Attention items={ overview.attention } onFilter={ ( status ) => applyFilter( { status } ) } /> }
 
             { list.notice && <Notice kind="success" onClose={ () => setNotice( mountKey, '' ) }>{ list.notice }</Notice> }
             { list.error && <Notice kind="error" onClose={ () => setError( mountKey, '' ) }>{ list.error }</Notice> }

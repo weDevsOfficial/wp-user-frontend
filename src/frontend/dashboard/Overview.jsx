@@ -50,10 +50,11 @@ export function StatusCards( { stats, active, onSelect } ) {
 const TONE_ICON = { danger: Lock, warning: AlertCircle, info: AlertCircle };
 
 /**
- * @param {Object} props
- * @param {Array}  props.items Attention items.
+ * @param {Object}   props
+ * @param {Array}    props.items    Attention items.
+ * @param {Function} props.onFilter Called with a status for an item that filters the list.
  */
-export function Attention( { items } ) {
+export function Attention( { items, onFilter } ) {
     return (
         <Card className="wpuf-dashboard-attention" title={ __( 'Needs your attention', 'wp-user-frontend' ) }>
             <ul className="wpuf-dashboard-attention__list">
@@ -65,6 +66,7 @@ export function Attention( { items } ) {
                             <span className="wpuf-dashboard-attention__icon" aria-hidden="true"><Icon size={ 16 } /></span>
                             <span className="wpuf-dashboard-attention__text">{ item.text }</span>
                             { item.action?.url && <Button size="sm" variant="secondary" href={ item.action.url }>{ item.action.label }</Button> }
+                            { item.action?.filter && <Button size="sm" variant="secondary" onClick={ () => onFilter( item.action.filter ) }>{ item.action.label }</Button> }
                         </li>
                     );
                 } ) }

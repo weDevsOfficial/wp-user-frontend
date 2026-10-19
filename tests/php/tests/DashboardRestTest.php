@@ -211,4 +211,47 @@ class DashboardRestTest extends WP_UnitTestCase {
 
         delete_option( 'wpuf_payment' );
     }
+
+    public function test_plan_messages_only_when_posting_needs_a_plan() {
+        $free = self::factory()->post->create( [ 'post_type' => 'wpuf_forms', 'post_status' => 'publish' ] );
+        $paid = self::factory()->post->create( [ 'post_type' => 'wpuf_forms', 'post_status' => 'publish' ] );
+
+        update_post_meta( $free, 'wpuf_form_settings', [ 'post_type' => 'post' ] );
+        update_post_meta(
+            $paid, 'wpuf_form_settings', [
+                'post_type'             => 'post',
+                'payment_options'       => 'true',
+                'choose_payment_option' => 'force_pack_purchase',
+            ]
+        );
+
+        $post = self::factory()->post->create( [ 'post_author' => $this->author ] );
+        update_post_meta( $post, '_wpuf_form_id', $free );
+        wp_set_current_user( $this->author );
+
+        $overview = wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Dashboard\Dashboard_Overview::class );
+        $atts     = $this->service()->attributes( [] );
+        $keys     = function () use ( $overview, $atts ) {
+            return wp_list_pluck( $overview->attention( $atts, [ 'state' => 'none', 'packs_url' => 'http://example.org/plans/' ] ), 'key' );
+        };
+
+        $this->assertNotContains( 'plan_needed', $keys(), 'a free form needs no plan' );
+
+        update_post_meta( $post, '_wpuf_form_id', $paid );
+        $this->assertContains( 'plan_needed', $keys(), 'a mandatory subscription form does' );
+
+        $settings                        = get_post_meta( $paid, 'wpuf_form_settings', true );
+        $settings['fallback_ppp_enable'] = 'true';
+        update_post_meta( $paid, 'wpuf_form_settings', $settings );
+        $this->assertNotContains( 'plan_needed', $keys(), 'pay per post as a fallback: no plan needed' );
+
+        $settings['fallback_ppp_enable'] = 'false';
+        $settings['post_permission']     = 'role_base';
+        $settings['roles']               = [ 'administrator', 'subscriber' ];
+        update_post_meta( $paid, 'wpuf_form_settings', $settings );
+        $this->assertNotContains( 'plan_needed', $keys(), 'a form the role may not use does not count' );
+
+        self::factory()->post->create( [ 'post_author' => $this->author, 'post_status' => 'draft' ] );
+        $this->assertContains( 'drafts', $keys() );
+    }
 }

@@ -519,7 +519,8 @@ class Account_Service {
     }
 
     /**
-     * One row of the posts table.
+     * One row of the posts table (the account Posts section and the
+     * `[wpuf_dashboard]` list share it).
      *
      * @since WPUF_SINCE
      *
@@ -527,7 +528,7 @@ class Account_Service {
      *
      * @return array
      */
-    private function post_row( WP_Post $post ) {
+    public function post_row( WP_Post $post ) {
         $status      = (string) $post->post_status;
         $viewable    = ! in_array( $status, [ 'draft', 'future', 'pending' ], true );
         $payment     = (string) Stores::submissions()->payment_status( $post->ID );

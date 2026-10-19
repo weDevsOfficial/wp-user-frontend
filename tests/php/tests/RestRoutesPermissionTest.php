@@ -38,6 +38,8 @@ class RestRoutesPermissionTest extends WP_UnitTestCase {
      */
     const USER_SCOPED = [
         '/wpuf/v1/account',
+        // The [wpuf_dashboard] list: logged-in users, signed shortcode attributes (DashboardRestTest).
+        '/wpuf/v1/dashboard',
         '/wpuf/v1/forms/(?P<id>\\d+)',
         '/wpuf/v1/uploads',
         '/wpuf/v1/registration',

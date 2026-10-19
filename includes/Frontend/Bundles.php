@@ -61,6 +61,7 @@ class Bundles {
         $frontend_login   = $this->asset( 'login', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
         $frontend_plans   = $this->asset( 'plans', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
         $frontend_pay     = $this->asset( 'checkout', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
+        $frontend_dash    = $this->asset( 'dashboard', array_merge( $frontend_deps, [ 'wpuf-frontend-runtime' ] ) );
 
         return [
             'frontend-runtime'          => [
@@ -102,6 +103,13 @@ class Bundles {
                 'src'       => WPUF_ASSET_URI . '/js/frontend/checkout.js',
                 'deps'      => array_values( array_unique( array_merge( [ 'wpuf-frontend-runtime', 'jquery', 'wpuf-rest' ], $frontend_pay['dependencies'] ) ) ),
                 'version'   => $frontend_pay['version'],
+                'in_footer' => true,
+            ],
+            // The `[wpuf_dashboard]` posts list.
+            'frontend-dashboard'        => [
+                'src'       => WPUF_ASSET_URI . '/js/frontend/dashboard.js',
+                'deps'      => array_values( array_unique( array_merge( [ 'wpuf-frontend-runtime' ], $frontend_dash['dependencies'] ) ) ),
+                'version'   => $frontend_dash['version'],
                 'in_footer' => true,
             ],
         ];
@@ -174,6 +182,11 @@ class Bundles {
             'frontend-checkout-style' => [
                 'src'     => WPUF_ASSET_URI . '/css/frontend/checkout.css',
                 'version' => $this->css_version( 'css/frontend/checkout.css' ),
+                'rtl'     => true,
+            ],
+            'frontend-dashboard-style' => [
+                'src'     => WPUF_ASSET_URI . '/css/frontend/dashboard.css',
+                'version' => $this->css_version( 'css/frontend/dashboard.css' ),
                 'rtl'     => true,
             ],
             // The classic account sheet scoped to the PHP sections of the React account (tools/frontend-css/account-sections.mjs).

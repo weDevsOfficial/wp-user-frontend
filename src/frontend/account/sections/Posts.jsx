@@ -1,6 +1,6 @@
 /**
- * The posts of one type: the FlyHR table idiom, status pill, the actions
- * (view, edit, pay, delete with a confirm), `?pagenum=` honoured and
+ * The posts of one type: the kit's PostsTable (status pill, the actions:
+ * view, edit, pay, delete with a confirm), `?pagenum=` honoured and
  * written, the "deleted" notice after a delete.
  *
  * @since WPUF_SINCE
@@ -8,18 +8,8 @@
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
-import { Button, Card, Notice, Pagination, Pill, SkeletonRows, confirmDialog, icons } from '@wpuf/frontend-kit';
+import { Card, Notice, Pagination, PostsTable, SkeletonRows, confirmDialog } from '@wpuf/frontend-kit';
 import { store } from '../store';
-
-const { Eye, Pencil, Trash2 } = icons;
-
-const TONE = {
-    publish: 'green',
-    pending: 'amber',
-    draft: 'gray',
-    future: 'blue',
-    private: 'gray',
-};
 
 /**
  * A page link of the table that also works with plain permalinks
@@ -120,78 +110,7 @@ export default function Posts( { type, label, pageUrl } ) {
                         { sprintf( __( 'No %s found', 'wp-user-frontend' ), data?.post_type?.label || label ) }
                     </p>
                 ) : (
-                    <div className="wpuf-table-wrap" aria-busy={ state.loading || undefined }>
-                        <table className={ `items-table ${ type } wpuf-table` }>
-                            <thead>
-                                <tr className="items-list-header">
-                                    { columns.thumbnail && <th scope="col">{ __( 'Featured Image', 'wp-user-frontend' ) }</th> }
-                                    <th scope="col">{ __( 'Title', 'wp-user-frontend' ) }</th>
-                                    <th scope="col">{ __( 'Status', 'wp-user-frontend' ) }</th>
-                                    <th scope="col">{ __( 'Date', 'wp-user-frontend' ) }</th>
-                                    { columns.payment && <th scope="col">{ __( 'Payment', 'wp-user-frontend' ) }</th> }
-                                    <th scope="col" className="wpuf-table__actions">{ __( 'Options', 'wp-user-frontend' ) }</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                { data.items.map( ( post ) => (
-                                    <tr key={ post.id }>
-                                        { columns.thumbnail && (
-                                            <td data-label={ __( 'Featured Image', 'wp-user-frontend' ) }>
-                                                { /* Linked to the post like the classic table's picture. */ }
-                                                { post.thumbnail && post.permalink ? (
-                                                    <a href={ post.permalink } tabIndex={ -1 } aria-hidden="true"><img className="wpuf-table__thumb" src={ post.thumbnail } alt="" /></a>
-                                                ) : post.thumbnail ? <img className="wpuf-table__thumb" src={ post.thumbnail } alt="" /> : <span className="wpuf-table__thumb wpuf-table__thumb--empty" /> }
-                                            </td>
-                                        ) }
-                                        <td data-label={ __( 'Title', 'wp-user-frontend' ) } className="wpuf-table__title">
-                                            { post.permalink ? <a href={ post.permalink }>{ post.title }</a> : post.title }
-                                            { post.featured && <Pill tone="amber">{ __( 'Featured', 'wp-user-frontend' ) }</Pill> }
-                                        </td>
-                                        <td data-label={ __( 'Status', 'wp-user-frontend' ) }>
-                                            <Pill tone={ TONE[ post.status ] || 'gray' }>{ post.status_label }</Pill>
-                                        </td>
-                                        <td data-label={ __( 'Date', 'wp-user-frontend' ) }>{ post.date.slice( 0, 10 ) }</td>
-                                        { columns.payment && (
-                                            <td data-label={ __( 'Payment', 'wp-user-frontend' ) }>
-                                                { /* The classic column: no payment -> Not Applicable, unpaid -> Pay Now, paid -> Completed. */ }
-                                                { ! post.payment_status ? (
-                                                    <span className="wpuf-muted">{ __( 'Not Applicable', 'wp-user-frontend' ) }</span>
-                                                ) : 'completed' === post.payment_status ? (
-                                                    <Pill tone="green">{ __( 'Completed', 'wp-user-frontend' ) }</Pill>
-                                                ) : post.pay_url ? (
-                                                    <Button variant="secondary" size="sm" href={ post.pay_url }>{ __( 'Pay Now', 'wp-user-frontend' ) }</Button>
-                                                ) : (
-                                                    <Pill tone="amber">{ __( 'Pending', 'wp-user-frontend' ) }</Pill>
-                                                ) }
-                                            </td>
-                                        ) }
-                                        <td data-label={ __( 'Options', 'wp-user-frontend' ) } className="wpuf-table__actions">
-                                            <div className="wpuf-row-actions">
-                                                { ( post.permalink || post.preview_url ) && (
-                                                    <Button variant="ghost" size="sm" href={ post.permalink || post.preview_url } target="_blank" rel="noopener noreferrer" title={ __( 'View', 'wp-user-frontend' ) }>
-                                                        <Eye size={ 16 } aria-hidden="true" />
-                                                        <span className="wpuf-sr-only">{ __( 'View', 'wp-user-frontend' ) }</span>
-                                                    </Button>
-                                                ) }
-                                                { post.edit_url && (
-                                                    <Button variant="ghost" size="sm" href={ post.edit_url } title={ __( 'Edit', 'wp-user-frontend' ) }>
-                                                        <Pencil size={ 16 } aria-hidden="true" />
-                                                        <span className="wpuf-sr-only">{ __( 'Edit', 'wp-user-frontend' ) }</span>
-                                                    </Button>
-                                                ) }
-                                                { post.can_delete && (
-                                                    <Button variant="ghost" size="sm" className="wpuf-row-actions__delete" busy={ deleting === post.id } onClick={ () => remove( post ) } title={ __( 'Delete', 'wp-user-frontend' ) }>
-                                                        <Trash2 size={ 16 } aria-hidden="true" />
-                                                        <span className="wpuf-sr-only">{ __( 'Delete', 'wp-user-frontend' ) }</span>
-                                                    </Button>
-                                                ) }
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ) ) }
-                            </tbody>
-                        </table>
-                    </div>
+                    <PostsTable type={ type } items={ data.items } columns={ columns } deleting={ deleting } onDelete={ remove } busy={ state.loading } />
                 ) }
                 { data && <Pagination page={ data.page } pages={ data.pages } onChange={ changePage } hrefFor={ ( n ) => pageHref( pageUrl, type, n ) } /> }
             </Card>

@@ -43,6 +43,8 @@ class Renderer implements App_Renderer {
         // The pay page (Payment::payment_page(), Checkout_Service): no template to override.
         'checkout'       => [ 'checkout', [] ],
         'plan_info'      => [ 'plans', [ 'dashboard/subscription.php' ] ],
+        // `[wpuf_dashboard]`: the list a theme can override in dashboard.php / dashboard/list.php.
+        'dashboard'      => [ 'dashboard', [ 'dashboard.php', 'dashboard/list.php' ] ],
         'account'        => [ 'account', [ 'account.php', 'unauthorized.php', 'submit-post.php', 'dashboard/dashboard.php', 'dashboard/posts.php', 'dashboard/edit-profile.php', 'dashboard/change-password.php', 'dashboard/billing-address.php', 'dashboard/subscription.php' ] ],
     ];
 

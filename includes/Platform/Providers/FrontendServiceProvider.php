@@ -19,6 +19,7 @@ use WeDevs\Wpuf\Platform\Contracts\App_Renderer;
 use WeDevs\Wpuf\Platform\Contracts\Form_Schema_Provider;
 use WeDevs\Wpuf\Platform\Contracts\Rate_Limiter;
 use WeDevs\Wpuf\Platform\REST\Controllers\AccountController;
+use WeDevs\Wpuf\Platform\REST\Controllers\DashboardController;
 use WeDevs\Wpuf\Platform\REST\Controllers\AuthController;
 use WeDevs\Wpuf\Platform\REST\Controllers\LoginController;
 use WeDevs\Wpuf\Platform\REST\Controllers\FormsPublicController;
@@ -213,6 +214,18 @@ class FrontendServiceProvider extends ServiceProvider {
             AccountController::class,
             function ( $container ) {
                 return new AccountController( $container->get( Account_Service::class ), $container->get( Account_Photos::class ), $container->get( \WeDevs\Wpuf\Frontend\Subscriptions\Subscription_Schema::class ) );
+            }
+        );
+        $this->container->share(
+            \WeDevs\Wpuf\Frontend\Dashboard\Dashboard_Service::class,
+            function ( $container ) {
+                return new \WeDevs\Wpuf\Frontend\Dashboard\Dashboard_Service( $container->get( Account_Service::class ) );
+            }
+        );
+        $this->share_tagged(
+            DashboardController::class,
+            function ( $container ) {
+                return new DashboardController( $container->get( \WeDevs\Wpuf\Frontend\Dashboard\Dashboard_Service::class ) );
             }
         );
         $this->share_tagged(

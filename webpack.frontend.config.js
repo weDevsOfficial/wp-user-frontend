@@ -3,7 +3,7 @@
  *
  * Entries: `runtime` (the kit, published on window.wpuf.frontend together with
  * lucide-react), `forms` (post form, edit form) and `account-page` (the account
- * shortcode), `login` (the `[wpuf-login]` form). Output: assets/js/frontend/<name>.js + .asset.php (not .min.js:
+ * shortcode), `login` (the `[wpuf-login]` form), `dashboard` (the `[wpuf_dashboard]` list). Output: assets/js/frontend/<name>.js + .asset.php (not .min.js:
  * `wp i18n make-pot` skips *.min.js), assets/css/frontend/<name>.css + -rtl.css
  * from the CSS each entry imports. Build one with `WPUF_ENTRY=<name>`.
  */
@@ -19,6 +19,7 @@ const apps = {
     login: './src/frontend/login/index.jsx',
     plans: './src/frontend/plans/index.jsx',
     checkout: './src/frontend/checkout/index.jsx',
+    dashboard: './src/frontend/dashboard/index.jsx',
 };
 
 // The kit: bundles @wpuf/frontend-kit sources and lucide-react, no frontend externals.

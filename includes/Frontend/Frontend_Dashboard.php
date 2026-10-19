@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf\Frontend;
 
+use WeDevs\Wpuf\Frontend\Dashboard\Dashboard_Service;
 use WP_Query;
 
 /**
@@ -37,6 +38,11 @@ class Frontend_Dashboard {
             ], $atts
         );
         $attributes = array_merge( $attributes, $atts );
+
+        if ( is_user_logged_in() && $this->renderer()->mounts( 'dashboard' ) && ! $this->dashboard()->classic_only() ) {
+            return $this->mount_dashboard( $attributes );
+        }
+
         ob_start();
         if ( is_user_logged_in() ) {
             $this->post_listing( $attributes );
@@ -210,5 +216,74 @@ class Frontend_Dashboard {
                 ) . '</div>'
             );
         }
+    }
+
+    /**
+     * The markup the React dashboard mounts into: the first page of the list
+     * as boot data (no request on load), the signed attributes the app sends
+     * back for other pages and deletes, and a skeleton of the list.
+     *
+     * A Delete link of the classic list (`?action=del`, bookmarked or from an
+     * old page) is still handled first, with the same rules.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $attributes Shortcode attributes
+     *
+     * @return string
+     */
+    protected function mount_dashboard( array $attributes ) {
+        $action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- delete_post() verifies its nonce.
+
+        ob_start();
+
+        if ( 'del' === $action ) {
+            $this->delete_post();
+        }
+
+        // delete_post() redirects when it deletes, so anything it printed is a refusal.
+        $refusal = ob_get_clean();
+        $service = $this->dashboard();
+        $atts    = $service->attributes( $attributes );
+        $pagenum = isset( $_GET['pagenum'] ) ? absint( wp_unslash( $_GET['pagenum'] ) ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $boot    = array_merge(
+            [
+                'id'       => get_current_user_id(),
+                'initial'  => $service->page( $atts, max( 1, $pagenum ) ),
+                // The classic `?msg=deleted` notice after a classic Delete link.
+                'deleted'  => isset( $_GET['msg'] ) && 'deleted' === sanitize_key( wp_unslash( $_GET['msg'] ) ), // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                'error'    => trim( wp_strip_all_tags( $refusal ) ),
+            ],
+            $service->sign( $atts )
+        );
+
+        $skeleton = '<div class="wpuf-dashboard wpuf-dashboard-boot" aria-busy="true"><span class="wpuf-skeleton wpuf-skeleton-label"></span><span class="wpuf-skeleton wpuf-skeleton-card"></span></div>';
+
+        /** This filter is documented in includes/Frontend/Frontend_Account.php */
+        $align_wide = (bool) apply_filters( 'wpuf_account_align_wide', function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() );
+
+        return $this->renderer()->markup( 'dashboard', $boot, $skeleton, 'wpuf-dashboard-root' . ( $align_wide ? ' alignwide' : '' ) );
+    }
+
+    /**
+     * The React app renderer.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return Renderer
+     */
+    protected function renderer() {
+        return wpuf()->platform()->get( Renderer::class );
+    }
+
+    /**
+     * The dashboard list data and actions.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return Dashboard_Service
+     */
+    protected function dashboard() {
+        return wpuf()->platform()->get( Dashboard_Service::class );
     }
 }

@@ -81,6 +81,11 @@ export const getAccountPosts = ( type, page = 1, perPage = 0 ) => apiFetch( { pa
     .catch( fail );
 export const deleteAccountPost = ( postId ) => send( `/account/posts/${ postId }`, 'DELETE' );
 export const getSubscription = () => get( '/account/subscription' );
+
+// `[wpuf_dashboard]`: the shortcode attributes go back exactly as the page
+// rendered them, with their signature (DashboardController).
+export const getDashboardPosts = ( { atts, sig }, page = 1 ) => get( '/dashboard/posts', { atts, sig, page } );
+export const deleteDashboardPost = ( { atts, sig }, postId ) => send( `/dashboard/posts/${ postId }` + query( { atts, sig } ), 'DELETE' );
 export const getSection = ( slug, pagenum = 1 ) => get( `/account/sections/${ encodeURIComponent( slug ) }`, { pagenum } );
 export const updateProfile = ( data ) => send( '/account/profile', 'PUT', data );
 export const updatePassword = ( data ) => send( '/account/password', 'PUT', data );

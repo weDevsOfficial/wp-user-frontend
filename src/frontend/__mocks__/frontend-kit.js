@@ -4,5 +4,7 @@ module.exports = {
         getAccount: jest.fn(),
         getAccountPosts: jest.fn(),
         deleteAccountPost: jest.fn(),
+        getDashboardPosts: jest.fn(),
+        deleteDashboardPost: jest.fn(),
     },
 };

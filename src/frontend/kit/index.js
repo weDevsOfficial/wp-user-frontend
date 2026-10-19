@@ -12,6 +12,7 @@ import { Card, DetailList, Pagination, RailItem, StatCard, StateCard } from './c
 import { CancelPlanForm, PlanCard, SubscriptionCard } from './components/plans';
 import Field, { FieldLabel, isRequired } from './components/Field';
 import ServerHtml, { loadAssets } from './components/ServerHtml';
+import PostsTable from './components/PostsTable';
 import Select, { SelectModeContext } from './components/Select';
 import confirmDialog, { alertDialog, loginDialog } from './components/confirm';
 import FormRenderer from './form/FormRenderer';
@@ -81,6 +82,7 @@ export {
     Card,
     DetailList,
     Pagination,
+    PostsTable,
     RailItem,
     StatCard,
     StateCard,

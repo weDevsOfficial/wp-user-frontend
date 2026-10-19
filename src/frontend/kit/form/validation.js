@@ -95,8 +95,30 @@ export function validateField( field, value, context = {} ) {
         return sprintf( __( '%s is not valid', 'wp-user-frontend' ), label );
     }
 
-    // Numbers: frontend-form.js has no min / max check; the input's own min / max / step
-    // (type="number") stop the submit in the browser, as on the classic form.
+    // Numbers: the input's own min / max stop a one-page form in the browser, but on a
+    // multi-step form the field is hidden by the time Submit runs and the browser blocks
+    // the submit without showing why. Check the range here, with the same rules as the
+    // input (an empty or 0 max means no maximum).
+    if ( 'numeric_text_field' === field.template && '' !== String( value ?? '' ).trim() ) {
+        const number = Number( value );
+        const min = '' !== ( field.min_value_field ?? '' ) ? Number( field.min_value_field ) : null;
+        const max = '' !== ( field.max_value_field ?? '' ) && 0 !== Number( field.max_value_field ) ? Number( field.max_value_field ) : null;
+
+        if ( Number.isNaN( number ) ) {
+            /* translators: %s: field label */
+            return sprintf( __( '%s is not valid', 'wp-user-frontend' ), label );
+        }
+
+        if ( null !== min && number < min ) {
+            /* translators: 1: field label, 2: minimum */
+            return sprintf( __( '%1$s must be at least %2$s', 'wp-user-frontend' ), label, min );
+        }
+
+        if ( null !== max && number > max ) {
+            /* translators: 1: field label, 2: maximum */
+            return sprintf( __( '%1$s must be at most %2$s', 'wp-user-frontend' ), label, max );
+        }
+    }
 
     // A rich editor using a protected shortcode (classic: "Using [shortcode] is restricted").
     if ( ( 'post_content' === field.template || ( 'textarea_field' === field.template && field.rich && 'no' !== field.rich ) ) ) {

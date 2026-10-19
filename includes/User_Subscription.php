@@ -517,13 +517,17 @@ class User_Subscription {
         $featured_count = ! empty( $sub_info['total_feature_item'] ) ? intval( $sub_info['total_feature_item'] ) : 0;
         $stickies       = get_option( 'sticky_posts' );
         $is_featured    = in_array( intval( $post_id ), $stickies, true );
+        // Ticked only when the checkbox value is there: an empty value (a client
+        // that always sends the key) is "not ticked", like a missing key.
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the form submit checked the nonce before this runs.
+        $wants_featured = isset( $_POST['is_featured_item'] ) && '' !== sanitize_text_field( wp_unslash( $_POST['is_featured_item'] ) );
 
-        if ( $featured_count > 0 && array_key_exists( 'is_featured_item', $_POST ) && ! $is_featured ) {
+        if ( $featured_count > 0 && $wants_featured && ! $is_featured ) {
             stick_post( $post_id );
             $sub_info['total_feature_item'] = $featured_count - 1;
         }
 
-        if ( $featured_count > 0 && ! array_key_exists( 'is_featured_item', $_POST ) && $is_featured ) {
+        if ( $featured_count > 0 && ! $wants_featured && $is_featured ) {
             $sub_info['total_feature_item'] = $featured_count + 1;
             unstick_post( $post_id );
         }

@@ -81,8 +81,10 @@ export default function PostForm( { schema: boot, root } ) {
     const extras = () => {
         const out = { ...guest, ...extraValues };
 
-        if ( schema.featured?.enabled ) {
-            out.is_featured_item = featured ? '1' : '';
+        // Like the classic checkbox: the key is only sent when ticked. The
+        // server treats a present key as "featured" (handle_featured_item()).
+        if ( schema.featured?.enabled && featured ) {
+            out.is_featured_item = '1';
         }
 
         if ( deleted.length ) {

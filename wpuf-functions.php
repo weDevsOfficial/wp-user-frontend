@@ -222,4 +222,6 @@ add_filter( 'the_content', 'wpuf_modify_shortcodes' );
 
 add_filter( 'wp_nav_menu_objects', 'wpuf_filter_logout_menu_items', 10, 1 );
 
+add_filter( 'render_block_core/navigation-link', 'wpuf_refresh_logout_navigation_link', 10, 2 );
+
 add_action( 'wp_head', 'wpuf_logout_visibility_css', 100 );

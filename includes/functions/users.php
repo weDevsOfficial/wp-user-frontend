@@ -986,23 +986,54 @@ function wpuf_add_logout_to_menu( $menu_id, $menu_label = '', $parent_id = 0 ) {
  * @return array Filtered menu items.
  */
 function wpuf_filter_logout_menu_items( $items ) {
-    // If user is logged in, show all items
-    if ( is_user_logged_in() ) {
-        return $items;
-    }
-
-    // Remove logout items for non-logged-in users
     foreach ( $items as $key => $item ) {
         // Check if this is a logout link by URL or CSS class
-        if (
-            strpos( $item->url, 'action=logout' ) !== false ||
-            ( is_array( $item->classes ) && in_array( 'wpuf-logout-link', $item->classes, true ) )
-        ) {
-            unset( $items[ $key ] );
+        $is_logout = strpos( $item->url, 'action=logout' ) !== false
+            || ( is_array( $item->classes ) && in_array( 'wpuf-logout-link', $item->classes, true ) );
+
+        if ( ! $is_logout ) {
+            continue;
         }
+
+        if ( ! is_user_logged_in() ) {
+            // Remove logout items for non-logged-in users
+            unset( $items[ $key ] );
+            continue;
+        }
+
+        // The stored link carries the nonce of whoever added it to the menu;
+        // give every member a logout link made for their own session.
+        $items[ $key ]->url = wpuf_get_logout_url();
     }
 
     return $items;
+}
+
+/**
+ * Give a block navigation logout link a fresh nonce
+ *
+ * "Add a logout link to the main menu" stores the link with the nonce of the
+ * admin who ran it, so every other member got WordPress's "Do you really want
+ * to log out?" screen. Logged-in visitors get a link made for their own
+ * session; logged-out visitors keep the CSS hiding below.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $block_content Rendered block.
+ * @param array  $block         Parsed block.
+ *
+ * @return string
+ */
+function wpuf_refresh_logout_navigation_link( $block_content, $block ) {
+    $url = isset( $block['attrs']['url'] ) ? (string) $block['attrs']['url'] : '';
+
+    if ( ! is_user_logged_in() || false === strpos( $url, 'action=logout' ) ) {
+        return $block_content;
+    }
+
+    $fresh = esc_url( wpuf_get_logout_url() );
+
+    return (string) preg_replace( '/href="[^"]*action=logout[^"]*"/', 'href="' . $fresh . '"', $block_content, 1 );
 }
 
 /**

@@ -21,7 +21,7 @@ describe( 'wpuf/dashboard', () => {
 
         await dispatch( STORE_NAME ).loadPage( 'one', signed, 2 );
 
-        expect( api.getDashboardPosts ).toHaveBeenCalledWith( signed, 2 );
+        expect( api.getDashboardPosts ).toHaveBeenCalledWith( signed, 2, { status: '', search: '', type: '', overview: '' } );
         expect( select( STORE_NAME ).getList( 'one' ).data.items[ 0 ].title ).toBe( 'C' );
         expect( select( STORE_NAME ).getList( 'one' ).loading ).toBe( false );
     } );
@@ -34,9 +34,27 @@ describe( 'wpuf/dashboard', () => {
 
         expect( ok ).toBe( true );
         expect( api.deleteDashboardPost ).toHaveBeenCalledWith( signed, 20 );
-        expect( api.getDashboardPosts ).toHaveBeenLastCalledWith( signed, 1 );
+        // The page before, with the overview (the counts change).
+        expect( api.getDashboardPosts ).toHaveBeenLastCalledWith( signed, 1, { status: '', search: '', type: '', overview: 1 } );
         expect( select( STORE_NAME ).getList( 'one' ).notice ).toBe( 'Post Deleted' );
         expect( select( STORE_NAME ).getList( 'one' ).deleting ).toBe( 0 );
+    } );
+
+    test( 'filters go to the server and the overview from a reload replaces the old one', async () => {
+        dispatch( STORE_NAME ).init( 'three', page( 1, [ 'A' ] ), '', { stats: [ { status: 'publish', count: 1 } ] } );
+        api.getDashboardPosts.mockResolvedValueOnce( { ...page( 1, [ 'B' ] ), filters: { status: 'draft', search: 'b', type: '' } } );
+
+        await dispatch( STORE_NAME ).filter( 'three', signed, { status: 'draft', search: 'b' } );
+
+        expect( api.getDashboardPosts ).toHaveBeenLastCalledWith( signed, 1, { status: 'draft', search: 'b', type: '', overview: '' } );
+        expect( select( STORE_NAME ).getList( 'three' ).filters.status ).toBe( 'draft' );
+        expect( select( STORE_NAME ).getList( 'three' ).overview.stats[ 0 ].count ).toBe( 1 );
+
+        api.getDashboardPosts.mockResolvedValueOnce( { ...page( 1, [ 'B' ] ), overview: { stats: [ { status: 'publish', count: 0 } ] } } );
+        await dispatch( STORE_NAME ).loadPage( 'three', signed, 1, true );
+
+        expect( select( STORE_NAME ).getList( 'three' ).overview.stats[ 0 ].count ).toBe( 0 );
+        expect( select( STORE_NAME ).getList( 'three' ).data.overview ).toBeUndefined();
     } );
 
     test( 'a refused delete shows the server message and keeps the list', async () => {

@@ -220,7 +220,8 @@ class Frontend_Dashboard {
 
     /**
      * The markup the React dashboard mounts into: the first page of the list
-     * as boot data (no request on load), the signed attributes the app sends
+     * (with `?status=`, `?q=`, `?type=` filters) and the overview blocks as boot
+     * data (no request on load), the signed attributes the app sends
      * back for other pages and deletes, and a skeleton of the list.
      *
      * A Delete link of the classic list (`?action=del`, bookmarked or from an
@@ -249,7 +250,16 @@ class Frontend_Dashboard {
         $boot    = array_merge(
             [
                 'id'       => get_current_user_id(),
-                'initial'  => $service->page( $atts, max( 1, $pagenum ) ),
+                'initial'  => $service->page(
+                    $atts,
+                    max( 1, $pagenum ),
+                    [
+                        'status' => isset( $_GET['status'] ) ? sanitize_key( wp_unslash( $_GET['status'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                        'search' => isset( $_GET['q'] ) ? sanitize_text_field( wp_unslash( $_GET['q'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                        'type'   => isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    ]
+                ),
+                'overview' => wpuf()->platform()->get( Dashboard\Dashboard_Overview::class )->build( $atts ),
                 // The classic `?msg=deleted` notice after a classic Delete link.
                 'deleted'  => isset( $_GET['msg'] ) && 'deleted' === sanitize_key( wp_unslash( $_GET['msg'] ) ), // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                 'error'    => trim( wp_strip_all_tags( $refusal ) ),

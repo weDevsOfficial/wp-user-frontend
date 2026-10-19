@@ -1,30 +1,49 @@
 /**
- * One `[wpuf_dashboard]` list: the author card on top ("<name>'s Dashboard",
- * avatar, bio, post count), then the kit's PostsTable in a card with
- * pagination (`?pagenum=`, as the classic list). Rows, columns and the settings
- * they follow come from Dashboard_Service.
+ * One `[wpuf_dashboard]`, laid out like the FlyHR employee profile: the
+ * header card (avatar, name, actions, meta chips), the status cards, what
+ * needs attention, then the posts card (status tabs, search, the kit's
+ * PostsTable, pagination) beside the plan, comments and payments cards.
+ * Rows, columns, blocks and the settings behind them come from the server
+ * (Dashboard_Service, Dashboard_Overview). Filters and page live in the
+ * URL (`?status=`, `?q=`, `?type=`, `?pagenum=`), so a reload or a shared
+ * link opens the same list.
  *
  * @since WPUF_SINCE
  */
 import { useDispatch, useSelect } from '@wordpress/data';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
-import { Avatar, Card, Notice, Pagination, PostsTable, SkeletonRows, confirmDialog } from '@wpuf/frontend-kit';
+import { Card, Notice, Pagination, PostsTable, SkeletonRows, confirmDialog, cx, icons } from '@wpuf/frontend-kit';
+import ProfileHeader from './ProfileHeader';
+import { Attention, CommentsCard, PaymentsCard, PlanCard, StatusCards } from './Overview';
 import { store } from './store';
 
+const { Search } = icons;
+
+const PARAMS = { status: 'status', search: 'q', type: 'type' };
+
 /**
- * The URL of a page of the list (`?pagenum=`, kept off for page 1).
+ * The URL of a list state.
  *
- * @param {number} n Page number.
+ * @param {Object} filters status, search, type.
+ * @param {number} page    Page number.
  * @return {string} URL.
  */
-const pageHref = ( n ) => {
+const urlFor = ( filters, page ) => {
     const url = new URL( window.location.href );
 
     url.searchParams.delete( 'msg' );
 
-    if ( n > 1 ) {
-        url.searchParams.set( 'pagenum', String( n ) );
+    Object.entries( PARAMS ).forEach( ( [ key, param ] ) => {
+        if ( filters[ key ] ) {
+            url.searchParams.set( param, filters[ key ] );
+        } else {
+            url.searchParams.delete( param );
+        }
+    } );
+
+    if ( page > 1 ) {
+        url.searchParams.set( 'pagenum', String( page ) );
     } else {
         url.searchParams.delete( 'pagenum' );
     }
@@ -32,7 +51,15 @@ const pageHref = ( n ) => {
     return url.toString();
 };
 
-const pageOfLocation = () => Math.max( 1, parseInt( new URLSearchParams( window.location.search ).get( 'pagenum' ) || '1', 10 ) || 1 );
+/** The list state of the current URL. */
+const stateOfLocation = () => {
+    const params = new URLSearchParams( window.location.search );
+
+    return {
+        filters: { status: params.get( 'status' ) || '', search: params.get( 'q' ) || '', type: params.get( 'type' ) || '' },
+        page: Math.max( 1, parseInt( params.get( 'pagenum' ) || '1', 10 ) || 1 ),
+    };
+};
 
 /**
  * @param {Object} props
@@ -41,21 +68,44 @@ const pageOfLocation = () => Math.max( 1, parseInt( new URLSearchParams( window.
  */
 export default function Dashboard( { mountKey, signed } ) {
     const list = useSelect( ( select ) => select( store ).getList( mountKey ), [ mountKey ] );
-    const { loadPage, deletePost, setError, setNotice } = useDispatch( store );
+    const { loadPage, filter, setFilters, deletePost, setError, setNotice } = useDispatch( store );
+    const [ search, setSearch ] = useState( list.filters.search );
+    const typing = useRef( 0 );
     const data = list.data;
+    const overview = list.overview || {};
+    const blocks = overview.blocks || {};
 
-    // Back / forward between pages of the list.
+    // Back / forward between list states.
     useEffect( () => {
-        const onPop = () => loadPage( mountKey, signed, pageOfLocation() );
+        const onPop = () => {
+            const { filters, page } = stateOfLocation();
+
+            setFilters( mountKey, filters );
+            setSearch( filters.search );
+            loadPage( mountKey, signed, page );
+        };
 
         window.addEventListener( 'popstate', onPop );
 
         return () => window.removeEventListener( 'popstate', onPop );
-    }, [ mountKey, signed, loadPage ] );
+    }, [ mountKey, signed, loadPage, setFilters ] );
+
+    const applyFilter = ( change ) => {
+        const next = { ...list.filters, ...change };
+
+        window.history.pushState( {}, '', urlFor( next, 1 ) );
+        filter( mountKey, signed, change );
+    };
 
     const changePage = ( next ) => {
-        window.history.pushState( {}, '', pageHref( next ) );
+        window.history.pushState( {}, '', urlFor( list.filters, next ) );
         loadPage( mountKey, signed, next );
+    };
+
+    const onSearch = ( value ) => {
+        setSearch( value );
+        window.clearTimeout( typing.current );
+        typing.current = window.setTimeout( () => applyFilter( { search: value.trim() } ), 400 );
     };
 
     const remove = async ( post ) => {
@@ -75,51 +125,104 @@ export default function Dashboard( { mountKey, signed } ) {
     }
 
     const labels = data.labels.join( ', ' );
-    /* translators: %1$d: number of posts, %2$s: post type labels */
-    const count = data.show_count && labels ? sprintf( __( 'You have created %1$d (%2$s)', 'wp-user-frontend' ), data.total, labels ) : '';
+    const stats = overview.stats || [];
+    const filtered = !! ( list.filters.status || list.filters.search || list.filters.type );
+    const side = [
+        overview.plan && <PlanCard key="plan" plan={ overview.plan } />,
+        overview.comments && <CommentsCard key="comments" comments={ overview.comments } />,
+        overview.payments && <PaymentsCard key="payments" payments={ overview.payments } />,
+    ].filter( Boolean );
+    const statusTabs = [ { status: '', label: __( 'All', 'wp-user-frontend' ) }, ...stats ];
 
     return (
         <div className="wpuf-dashboard">
-            { /* The classic "Author Info" box, now the head of the list (Settings > Dashboard > Show user bio). */ }
-            { data.author ? (
-                <Card className="wpuf-author wpuf-dashboard__hero">
-                    <Avatar url={ data.author.avatar } alt="" size={ 64 } />
-                    <div className="wpuf-dashboard__hero-text">
-                        <h2 className="wpuf-section-head__title page-head">{ data.title }</h2>
-                        { data.author.bio && <p className="wpuf-muted wpuf-dashboard__author-bio">{ data.author.bio }</p> }
-                        <a className="wpuf-dashboard__author-link" href={ data.author.url }>{ __( 'View your public posts', 'wp-user-frontend' ) }</a>
-                    </div>
-                    { count && <p className="wpuf-dashboard__count post_count">{ count }</p> }
-                </Card>
-            ) : (
-                <header className="wpuf-section-head wpuf-dashboard__head">
-                    <h2 className="wpuf-section-head__title page-head">{ data.title }</h2>
-                    { count && <p className="wpuf-section-head__lead post_count">{ count }</p> }
-                </header>
+            { overview.profile && (
+                <ProfileHeader
+                    profile={ overview.profile }
+                    actions={ overview.actions }
+                    total={ data.total }
+                    labels={ labels }
+                    showCount={ data.show_count }
+                />
             ) }
+
+            { blocks.status_cards && stats.length > 0 && (
+                <StatusCards stats={ stats } active={ list.filters.status } onSelect={ ( status ) => applyFilter( { status } ) } />
+            ) }
+
+            { ( overview.attention || [] ).length > 0 && <Attention items={ overview.attention } /> }
 
             { list.notice && <Notice kind="success" onClose={ () => setNotice( mountKey, '' ) }>{ list.notice }</Notice> }
             { list.error && <Notice kind="error" onClose={ () => setError( mountKey, '' ) }>{ list.error }</Notice> }
 
-            <Card className="wpuf-posts-card">
-                { list.loading && ! data.items.length ? (
-                    <SkeletonRows rows={ 5 } cols={ 4 } />
-                ) : ! data.items.length ? (
-                    <p className="wpuf-muted wpuf-empty">
-                        { sprintf( /* translators: %s: post type labels */ __( 'No %s found', 'wp-user-frontend' ), labels ) }
-                    </p>
-                ) : (
-                    <PostsTable
-                        type={ data.post_types.join( ' ' ) }
-                        items={ data.items }
-                        columns={ data.columns }
-                        deleting={ list.deleting }
-                        onDelete={ remove }
-                        busy={ list.loading }
-                    />
-                ) }
-                <Pagination page={ data.page } pages={ data.pages } onChange={ changePage } hrefFor={ pageHref } />
-            </Card>
+            <div className={ cx( 'wpuf-dashboard__body', side.length > 0 && 'has-side' ) }>
+                <Card className="wpuf-posts-card wpuf-dashboard-posts">
+                    <header className="wpuf-dashboard-posts__head">
+                        <h3 className="wpuf-dashboard-posts__title">{ sprintf( /* translators: %s: post type labels */ __( 'My %s', 'wp-user-frontend' ), labels ) }</h3>
+                        { blocks.table_filters && (
+                            <label className="wpuf-dashboard-search">
+                                <Search size={ 16 } aria-hidden="true" />
+                                <span className="wpuf-sr-only">{ __( 'Search posts', 'wp-user-frontend' ) }</span>
+                                <input type="search" value={ search } placeholder={ __( 'Search posts', 'wp-user-frontend' ) } onChange={ ( event ) => onSearch( event.target.value ) } />
+                            </label>
+                        ) }
+                    </header>
+
+                    { blocks.table_filters && ( stats.length > 0 || data.post_types.length > 1 ) && (
+                        <div className="wpuf-dashboard-tabs">
+                            { stats.length > 0 && (
+                                <div className="wpuf-dashboard-tabs__group" role="group" aria-label={ __( 'Status', 'wp-user-frontend' ) }>
+                                    { statusTabs.map( ( tab ) => (
+                                        <button
+                                            key={ tab.status || 'all' }
+                                            type="button"
+                                            aria-pressed={ list.filters.status === tab.status }
+                                            className={ cx( 'wpuf-dashboard-tabs__tab', list.filters.status === tab.status && 'is-active' ) }
+                                            onClick={ () => applyFilter( { status: tab.status } ) }
+                                        >
+                                            { tab.label }
+                                            { undefined !== tab.count && <span className="wpuf-dashboard-tabs__count">{ tab.count }</span> }
+                                        </button>
+                                    ) ) }
+                                </div>
+                            ) }
+                            { data.post_types.length > 1 && (
+                                <select
+                                    className="wpuf-dashboard-tabs__type"
+                                    value={ list.filters.type }
+                                    onChange={ ( event ) => applyFilter( { type: event.target.value } ) }
+                                    aria-label={ __( 'Post type', 'wp-user-frontend' ) }
+                                >
+                                    <option value="">{ __( 'All types', 'wp-user-frontend' ) }</option>
+                                    { data.post_types.map( ( type, index ) => <option key={ type } value={ type }>{ data.labels[ index ] || type }</option> ) }
+                                </select>
+                            ) }
+                        </div>
+                    ) }
+
+                    { list.loading && ! data.items.length ? (
+                        <SkeletonRows rows={ 5 } cols={ 4 } />
+                    ) : ! data.items.length ? (
+                        <p className="wpuf-muted wpuf-empty">
+                            { filtered
+                                ? __( 'No posts match these filters.', 'wp-user-frontend' )
+                                : sprintf( /* translators: %s: post type labels */ __( 'No %s found', 'wp-user-frontend' ), labels ) }
+                        </p>
+                    ) : (
+                        <PostsTable
+                            type={ data.post_types.join( ' ' ) }
+                            items={ data.items }
+                            columns={ data.columns }
+                            deleting={ list.deleting }
+                            onDelete={ remove }
+                            busy={ list.loading }
+                        />
+                    ) }
+                    <Pagination page={ data.page } pages={ data.pages } onChange={ changePage } hrefFor={ ( n ) => urlFor( list.filters, n ) } />
+                </Card>
+
+                { side.length > 0 && <aside className="wpuf-dashboard__side">{ side }</aside> }
+            </div>
         </div>
     );
 }

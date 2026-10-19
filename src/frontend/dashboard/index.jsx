@@ -19,7 +19,7 @@ mountAll( 'dashboard', ( root, boot ) => {
     const mountKey = root.id;
     const signed = { atts: data.atts, sig: data.sig };
 
-    dispatch( store ).init( mountKey, data.initial, data.deleted ? __( 'Post Deleted', 'wp-user-frontend' ) : '' );
+    dispatch( store ).init( mountKey, data.initial, data.deleted ? __( 'Post Deleted', 'wp-user-frontend' ) : '', data.overview );
 
     if ( data.error ) {
         dispatch( store ).setError( mountKey, data.error );

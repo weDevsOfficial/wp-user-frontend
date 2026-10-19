@@ -18,7 +18,8 @@ use WP_Query;
  * Everything the React dashboard shows, built the way the classic
  * `Frontend_Dashboard::post_listing()` and `templates/dashboard.php` build it:
  * the same shortcode attributes, the same `wpuf_dashboard_query` filter, the
- * same columns, the same settings (post count, author box, edit / delete).
+ * same columns, the same settings (post count, edit / delete). The blocks
+ * around the list (header, cards) come from Dashboard_Overview.
  *
  * The attributes come from the shortcode the site owner wrote and may widen
  * the query (`author__in`, any `WP_Query` key), so the REST routes only take
@@ -153,19 +154,21 @@ class Dashboard_Service {
     }
 
     /**
-     * One page of the dashboard: header, columns, rows, paging, author box.
+     * One page of the dashboard: title, columns, rows, paging, the filters in use.
      *
      * @since WPUF_SINCE
      *
-     * @param array $atts Attributes (attributes())
-     * @param int   $page Page number
+     * @param array $atts    Attributes (attributes())
+     * @param int   $page    Page number
+     * @param array $filters The member's filters: status, search, type (filters())
      *
      * @return array
      */
-    public function page( array $atts, $page = 1 ) {
+    public function page( array $atts, $page = 1, array $filters = [] ) {
         $page       = max( 1, (int) $page );
         $types      = $this->post_types( $atts );
-        $query      = new WP_Query( $this->query_args( $atts, $page ) );
+        $filters    = $this->filters( $atts, $filters );
+        $query      = new WP_Query( $this->query_args( $atts, $page, $filters ) );
         $columns    = $this->columns( $atts );
         $user       = wp_get_current_user();
         $labels     = [];
@@ -202,7 +205,7 @@ class Dashboard_Service {
             'total'      => (int) $query->found_posts,
             'pages'      => (int) $query->max_num_pages,
             'page'       => $page,
-            'author'     => $this->author_box( $user ),
+            'filters'    => $filters,
         ];
     }
 
@@ -241,6 +244,45 @@ class Dashboard_Service {
     }
 
     /**
+     * The member's filters, kept only where they narrow the owner's list: a
+     * status the list shows, a post type of the list, a search string.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $atts    Attributes
+     * @param array $filters Raw filters (status, search, type)
+     *
+     * @return array status, search, type ('' when not set)
+     */
+    public function filters( array $atts, array $filters ) {
+        $status = isset( $filters['status'] ) ? sanitize_key( (string) $filters['status'] ) : '';
+        $type   = isset( $filters['type'] ) ? sanitize_key( (string) $filters['type'] ) : '';
+        $search = isset( $filters['search'] ) ? sanitize_text_field( (string) $filters['search'] ) : '';
+
+        return [
+            'status' => in_array( $status, $this->statuses( $atts ), true ) ? $status : '',
+            'type'   => in_array( $type, $this->post_types( $atts ), true ) ? $type : '',
+            'search' => function_exists( 'mb_substr' ) ? mb_substr( $search, 0, 100 ) : substr( $search, 0, 100 ),
+        ];
+    }
+
+    /**
+     * The statuses the list shows (`post_status="publish,pending"`).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $atts Attributes
+     *
+     * @return string[]
+     */
+    public function statuses( array $atts ) {
+        $status = $atts['post_status'] ? $atts['post_status'] : self::DEFAULTS['post_status'];
+        $status = is_array( $status ) ? $status : explode( ',', (string) $status );
+
+        return array_values( array_filter( array_map( 'trim', $status ) ) );
+    }
+
+    /**
      * The post types of the list (`post_type="post,product"`).
      *
      * @since WPUF_SINCE
@@ -260,21 +302,20 @@ class Dashboard_Service {
      *
      * @since WPUF_SINCE
      *
-     * @param array $atts Attributes
-     * @param int   $page Page number
+     * @param array $atts    Attributes
+     * @param int   $page    Page number
+     * @param array $filters Checked filters (filters()), optional
      *
      * @return array
      */
-    public function query_args( array $atts, $page ) {
+    public function query_args( array $atts, $page, array $filters = [] ) {
         $attributes = $atts;
-        $status     = $attributes['post_status'] ? $attributes['post_status'] : self::DEFAULTS['post_status'];
-        $status     = is_array( $status ) ? $status : explode( ',', $status );
 
         unset( $attributes['post_type'], $attributes['post_status'] );
 
         $args = [
             'author'         => get_current_user_id(),
-            'post_status'    => array_map( 'trim', $status ),
+            'post_status'    => $this->statuses( $atts ),
             'post_type'      => $this->post_types( $atts ),
             'posts_per_page' => (int) Stores::settings()->get( 'wpuf_dashboard', 'per_page', 10 ),
             'paged'          => max( 1, (int) $page ),
@@ -316,8 +357,22 @@ class Dashboard_Service {
             unset( $args['author'] );
         }
 
+        $args = array_merge( $args, $attributes );
+
+        if ( ! empty( $filters['status'] ) ) {
+            $args['post_status'] = [ $filters['status'] ];
+        }
+
+        if ( ! empty( $filters['type'] ) ) {
+            $args['post_type'] = [ $filters['type'] ];
+        }
+
+        if ( ! empty( $filters['search'] ) ) {
+            $args['s'] = $filters['search'];
+        }
+
         // The classic list's filter (Frontend_Dashboard::post_listing()), same arguments.
-        return apply_filters( 'wpuf_dashboard_query', array_merge( $args, $attributes ), $attributes );
+        return apply_filters( 'wpuf_dashboard_query', $args, $attributes );
     }
 
     /**
@@ -451,28 +506,6 @@ class Dashboard_Service {
         }
 
         return $row;
-    }
-
-    /**
-     * The "Author Info" box under the list (Settings > Dashboard > Show user bio).
-     *
-     * @since WPUF_SINCE
-     *
-     * @param \WP_User $user User
-     *
-     * @return array|null
-     */
-    private function author_box( $user ) {
-        if ( 'on' !== Stores::settings()->get( 'wpuf_dashboard', 'show_user_bio', 'on' ) || ! $user->exists() ) {
-            return null;
-        }
-
-        return [
-            'name'   => (string) $user->display_name,
-            'url'    => (string) get_author_posts_url( $user->ID ),
-            'avatar' => (string) get_avatar_url( $user->ID, [ 'size' => 160 ] ),
-            'bio'    => (string) $user->description,
-        ];
     }
 
     /**

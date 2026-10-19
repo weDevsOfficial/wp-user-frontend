@@ -84,7 +84,7 @@ export const getSubscription = () => get( '/account/subscription' );
 
 // `[wpuf_dashboard]`: the shortcode attributes go back exactly as the page
 // rendered them, with their signature (DashboardController).
-export const getDashboardPosts = ( { atts, sig }, page = 1 ) => get( '/dashboard/posts', { atts, sig, page } );
+export const getDashboardPosts = ( { atts, sig }, page = 1, { status = '', search = '', type = '', overview = '' } = {} ) => get( '/dashboard/posts', { atts, sig, page, status, search, type, overview } );
 export const deleteDashboardPost = ( { atts, sig }, postId ) => send( `/dashboard/posts/${ postId }` + query( { atts, sig } ), 'DELETE' );
 export const getSection = ( slug, pagenum = 1 ) => get( `/account/sections/${ encodeURIComponent( slug ) }`, { pagenum } );
 export const updateProfile = ( data ) => send( '/account/profile', 'PUT', data );

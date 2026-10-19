@@ -222,10 +222,16 @@ class FrontendServiceProvider extends ServiceProvider {
                 return new \WeDevs\Wpuf\Frontend\Dashboard\Dashboard_Service( $container->get( Account_Service::class ) );
             }
         );
+        $this->container->share(
+            \WeDevs\Wpuf\Frontend\Dashboard\Dashboard_Overview::class,
+            function ( $container ) {
+                return new \WeDevs\Wpuf\Frontend\Dashboard\Dashboard_Overview( $container->get( \WeDevs\Wpuf\Frontend\Dashboard\Dashboard_Service::class ), $container->get( Account_Service::class ), $container->get( \WeDevs\Wpuf\Frontend\Subscriptions\Subscription_Schema::class ) );
+            }
+        );
         $this->share_tagged(
             DashboardController::class,
             function ( $container ) {
-                return new DashboardController( $container->get( \WeDevs\Wpuf\Frontend\Dashboard\Dashboard_Service::class ) );
+                return new DashboardController( $container->get( \WeDevs\Wpuf\Frontend\Dashboard\Dashboard_Service::class ), $container->get( \WeDevs\Wpuf\Frontend\Dashboard\Dashboard_Overview::class ) );
             }
         );
         $this->share_tagged(

@@ -22,6 +22,9 @@ class DashboardRestTest extends WP_UnitTestCase {
         $wp_rest_server = new WP_REST_Server();
         do_action( 'rest_api_init' );
 
+        // The payments block reads wpuf_transaction.
+        ( new \WeDevs\Wpuf\Installer() )->create_tables();
+
         $this->author = self::factory()->user->create( [ 'role' => 'author' ] );
         $this->other  = self::factory()->user->create( [ 'role' => 'author' ] );
     }
@@ -151,5 +154,61 @@ class DashboardRestTest extends WP_UnitTestCase {
         $this->assertStringNotContainsString( 'data-wpuf-mount="dashboard"', $classic );
         $this->assertStringContainsString( '<td>extra</td>', $classic );
         $this->assertSame( 2, $fired );
+    }
+
+    public function test_member_filters_only_narrow_the_owners_list() {
+        self::factory()->post->create( [ 'post_author' => $this->author, 'post_title' => 'Live one' ] );
+        self::factory()->post->create( [ 'post_author' => $this->author, 'post_title' => 'Draft one', 'post_status' => 'draft' ] );
+        self::factory()->post->create( [ 'post_author' => $this->author, 'post_title' => 'Gone', 'post_status' => 'trash' ] );
+        wp_set_current_user( $this->author );
+
+        $signed = $this->service()->sign( $this->service()->attributes( [ 'post_status' => 'publish,draft' ] ) );
+        $titles = function ( array $params ) use ( $signed ) {
+            return wp_list_pluck( $this->request( 'GET', '/wpuf/v1/dashboard/posts', array_merge( $signed, $params ) )->get_data()['items'], 'title' );
+        };
+
+        $this->assertSame( [ 'Draft one' ], $titles( [ 'status' => 'draft' ] ) );
+        $this->assertSame( [ 'Live one' ], $titles( [ 'search' => 'Live' ] ) );
+        // A status or type outside the owner's list is dropped, not obeyed.
+        $this->assertNotContains( 'Gone', $titles( [ 'status' => 'trash' ] ) );
+        $this->assertCount( 2, $titles( [ 'type' => 'page' ] ) );
+    }
+
+    public function test_overview_blocks_follow_their_settings() {
+        self::factory()->post->create( [ 'post_author' => $this->author ] );
+        self::factory()->post->create( [ 'post_author' => $this->author, 'post_status' => 'draft' ] );
+        wp_set_current_user( $this->author );
+
+        $overview = wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Dashboard\Dashboard_Overview::class );
+        $atts     = $this->service()->attributes( [] );
+        $data     = $overview->build( $atts );
+        $counts   = wp_list_pluck( $data['stats'], 'count', 'status' );
+
+        $this->assertSame( 1, $counts['publish'] );
+        $this->assertSame( 1, $counts['draft'] );
+        $this->assertNotEmpty( $data['profile']['avatar']['initials'], 'the account hero data' );
+        $this->assertIsArray( $data['comments'] );
+
+        update_option(
+            'wpuf_dashboard', [
+                'dashboard_status_cards'    => 'off',
+                'dashboard_table_filters'   => 'off',
+                'dashboard_recent_comments' => 'off',
+                'dashboard_quick_actions'   => 'off',
+                'dashboard_attention'       => 'off',
+            ]
+        );
+        update_option( 'wpuf_payment', [ 'enable_payment' => 'off' ] );
+
+        $off = $overview->build( $atts );
+
+        $this->assertSame( [], $off['stats'] );
+        $this->assertNull( $off['comments'] );
+        $this->assertSame( [], $off['actions'] );
+        $this->assertSame( [], $off['attention'] );
+        $this->assertNull( $off['plan'], 'no plan card without payments' );
+        $this->assertNull( $off['payments'] );
+
+        delete_option( 'wpuf_payment' );
     }
 }

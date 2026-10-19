@@ -11,7 +11,7 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { useCallback, useEffect, useMemo, useState } from '@wordpress/element';
 import { applyFilters, doAction } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
-import { Avatar, Button, Notice, Pill, RailItem, ServerHtml, SkeletonLines, api, icons, loadAssets } from '@wpuf/frontend-kit';
+import { Avatar, Button, Notice, Pill, ProfileHero, RailItem, ServerHtml, SkeletonLines, api, icons, loadAssets } from '@wpuf/frontend-kit';
 import { AvatarPhoto, CoverPhotoActions } from './PhotoControls';
 import { listen, pageOf, urlFor } from './router';
 import Overview from './sections/Overview';
@@ -211,37 +211,35 @@ export default function App( { data, root } ) {
 
     return (
         <div className="wpuf-account-container wpuf-account-shell">
-            <section className="wpuf-profile-section wpuf-profile-header">
-                <div className={ 'wpuf-profile-cover' + ( person.cover?.url ? ' has-image' : '' ) } aria-hidden="true">
-                    { person.cover?.url && <img src={ person.cover.url } alt="" /> }
-                </div>
-                <CoverPhotoActions person={ person } />
-                <div className="wpuf-profile-header__main">
+            <ProfileHero
+                person={ person }
+                coverActions={ <CoverPhotoActions person={ person } /> }
+                avatar={
                     <AvatarPhoto person={ person }>
                         <Avatar url={ person.avatar?.url } initials={ person.avatar?.initials } alt={ person.display_name } size={ 96 } className="wpuf-profile-avatar" />
                     </AvatarPhoto>
-                    <div className="wpuf-profile-header__text">
-                        <div className="wpuf-profile-header__name-row">
-                            <h1 className="wpuf-profile-name">{ person.display_name }</h1>
-                            { person.username && <span className="wpuf-profile-username">@{ person.username }</span> }
-                            { since && (
-                                <span className="wpuf-meta-pill">
-                                    <CalendarDays size={ 14 } aria-hidden="true" />
-                                    { /* translators: %s: date */ }
-                                    { sprintf( __( 'Member since %s', 'wp-user-frontend' ), since.toLocaleDateString( undefined, { year: 'numeric', month: 'short', day: 'numeric' } ) ) }
-                                </span>
-                            ) }
-                            { person.email && (
-                                <span className="wpuf-meta-pill">
-                                    <Mail size={ 14 } aria-hidden="true" /> { person.email }
-                                </span>
-                            ) }
-                            { person.website && (
-                                <a className="wpuf-meta-pill" href={ person.website } target="_blank" rel="noopener noreferrer">{ person.website.replace( /^https?:\/\//, '' ) }</a>
-                            ) }
-                        </div>
-                    </div>
-                    <div className="wpuf-profile-header__actions">
+                }
+                meta={
+                    <>
+                        { since && (
+                            <span className="wpuf-meta-pill">
+                                <CalendarDays size={ 14 } aria-hidden="true" />
+                                { /* translators: %s: date */ }
+                                { sprintf( __( 'Member since %s', 'wp-user-frontend' ), since.toLocaleDateString( undefined, { year: 'numeric', month: 'short', day: 'numeric' } ) ) }
+                            </span>
+                        ) }
+                        { person.email && (
+                            <span className="wpuf-meta-pill">
+                                <Mail size={ 14 } aria-hidden="true" /> { person.email }
+                            </span>
+                        ) }
+                        { person.website && (
+                            <a className="wpuf-meta-pill" href={ person.website } target="_blank" rel="noopener noreferrer">{ person.website.replace( /^https?:\/\//, '' ) }</a>
+                        ) }
+                    </>
+                }
+                actions={
+                    <>
                         { person.role_label && <Pill tone="green" className="wpuf-profile-role">{ person.role_label }</Pill> }
                         { sections.some( ( item ) => 'edit-profile' === item.slug ) && (
                             <Button className="wpuf-edit-profile-btn" onClick={ () => go( 'edit-profile' ) }>
@@ -249,9 +247,9 @@ export default function App( { data, root } ) {
                                 { __( 'Edit Profile', 'wp-user-frontend' ) }
                             </Button>
                         ) }
-                    </div>
-                </div>
-            </section>
+                    </>
+                }
+            />
 
             <div className="wpuf-account-body">
                 <aside className="wpuf-account-sidebar">

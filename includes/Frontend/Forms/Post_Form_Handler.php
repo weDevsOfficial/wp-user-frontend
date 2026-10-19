@@ -537,6 +537,11 @@ class Post_Form_Handler {
             $redirect_to = $this->form_settings['url'];
         } elseif ( $this->form_settings['redirect_to'] === 'same' ) {
             $show_message = true;
+        } elseif ( 'publish' !== get_post_status( $post_id ) && ! current_user_can( 'read_post', $post_id ) ) {
+            // "Newly created post" for a post the submitter can not open yet
+            // (a guest's pending post): show the success message instead of
+            // sending them to a "Page not found".
+            $show_message = true;
         } else {
             $redirect_to = get_permalink( $post_id );
         }

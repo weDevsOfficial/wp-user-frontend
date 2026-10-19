@@ -89,6 +89,44 @@ class LegacyScriptRestRoutesTest extends WP_UnitTestCase {
         $this->assertNotFalse( has_action( 'wp_ajax_wpuf_account_change_password' ) );
     }
 
+    public function test_child_terms_returns_the_next_level_select() {
+        $form_id = self::factory()->post->create( [ 'post_type' => 'wpuf_forms', 'post_status' => 'publish' ] );
+        $parent  = self::factory()->category->create( [ 'name' => 'Parent' ] );
+        $child   = self::factory()->category->create( [ 'name' => 'Child', 'parent' => $parent ] );
+
+        wp_insert_post(
+            [
+                'post_type'    => 'wpuf_input',
+                'post_parent'  => $form_id,
+                'post_status'  => 'publish',
+                'post_content' => maybe_serialize(
+                    [
+                        'input_type'   => 'taxonomy',
+                        'template'     => 'taxonomy',
+                        'name'         => 'category',
+                        'type'         => 'ajax',
+                        'required'     => 'yes',
+                        'exclude_type' => 'exclude',
+                        'exclude'      => [],
+                        'orderby'      => 'name',
+                        'order'        => 'ASC',
+                    ]
+                ),
+            ]
+        );
+
+        wp_set_current_user( self::factory()->user->create( [ 'role' => 'subscriber' ] ) );
+
+        ob_start();
+        $response = $this->request( 'GET', '/wpuf/v1/forms/' . $form_id . '/child-terms', [ 'field' => 'category', 'parent' => $parent ] );
+        $printed  = ob_get_clean();
+
+        $this->assertSame( 200, $response->get_status() );
+        $this->assertSame( '', $printed, 'nothing is printed outside the JSON' );
+        $this->assertStringContainsString( 'data-required="yes"', $response->get_data()['html'] );
+        $this->assertStringContainsString( 'value="' . $child . '"', str_replace( "'", '"', $response->get_data()['html'] ) );
+    }
+
     public function test_widget_login_is_for_visitors_with_the_widget_nonce() {
         $user = self::factory()->user->create(
             [

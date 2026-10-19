@@ -514,7 +514,12 @@ class FormsPublicController extends RestController {
         $field['parent_cat'] = $parent;
         $field['form_id']    = $form_id;
 
-        return rest_ensure_response( [ 'html' => wp_kses( taxnomy_select( '', $field ), wp_kses_allowed_html( 'post' ) + $this->select_tags() ) ] );
+        // taxnomy_select() prints its markup (the old AJAX handler sent it as is).
+        ob_start();
+        taxnomy_select( '', $field );
+        $html = ob_get_clean();
+
+        return rest_ensure_response( [ 'html' => wp_kses( $html, wp_kses_allowed_html( 'post' ) + $this->select_tags() ) ] );
     }
 
     /**

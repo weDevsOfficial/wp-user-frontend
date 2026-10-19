@@ -556,8 +556,8 @@ class Form_Schema implements Form_Schema_Provider {
     }
 
     /**
-     * The gate of a new submission (`is_submission_open`, the login and role
-     * checks of `render_form`), as `open` + the message to show instead.
+     * The gate of a new submission (the login and role checks of `render_form`,
+     * then `is_submission_open`), as `open` + the message to show instead.
      *
      * @since WPUF_SINCE
      *
@@ -568,18 +568,6 @@ class Form_Schema implements Form_Schema_Provider {
      */
     private function create_state( Form $form, $form_id ) {
         $settings = $this->form_settings;
-
-        [ $user_can_post, $info ] = $form->is_submission_open( $form, $settings );
-        $info                     = apply_filters( 'wpuf_addpost_notice', $info, $form_id, $settings );
-        $user_can_post            = apply_filters( 'wpuf_can_post', $user_can_post, $form_id, $settings );
-
-        if ( 'yes' !== $user_can_post ) {
-            return [
-                'open'    => false,
-                'reason'  => 'closed',
-                'message' => wp_kses_post( (string) $info ),
-            ];
-        }
 
         if ( ! is_user_logged_in() && ! empty( $settings['post_permission'] ) && 'guest_post' !== $settings['post_permission'] ) {
             $login    = wpuf()->frontend->simple_login->get_login_url();
@@ -602,6 +590,20 @@ class Form_Schema implements Form_Schema_Provider {
                 'open'    => false,
                 'reason'  => 'role',
                 'message' => __( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ),
+            ];
+        }
+
+        // Plan and payment notices come after who may post: a visitor who has to log in, or a role
+        // the form does not allow, would otherwise be told to buy a plan that would not help.
+        [ $user_can_post, $info ] = $form->is_submission_open( $form, $settings );
+        $info                     = apply_filters( 'wpuf_addpost_notice', $info, $form_id, $settings );
+        $user_can_post            = apply_filters( 'wpuf_can_post', $user_can_post, $form_id, $settings );
+
+        if ( 'yes' !== $user_can_post ) {
+            return [
+                'open'    => false,
+                'reason'  => 'closed',
+                'message' => wp_kses_post( (string) $info ),
             ];
         }
 

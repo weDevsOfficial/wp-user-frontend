@@ -299,6 +299,16 @@ class Frontend_Form extends Frontend_Render_Form {
             return $this->mount_form( (int) $id, 0, $atts );
         }
         $this->generate_auth_link(); // Translate tag %login% %registration% to login registartion url
+
+        // Who may post comes before plan and payment notices: render_form() prints the
+        // login or role message, instead of telling them to buy a plan that would not help.
+        if ( ! $this->may_post( $this->form_settings ) ) {
+            wp_enqueue_style( 'wpuf-font-awesome' );
+            $this->render_form( $id, null, $atts, $form );
+
+            return ob_get_clean();
+        }
+
         [ $user_can_post, $info ]     = $form->is_submission_open( $form, $this->form_settings );
         $info                         = apply_filters( 'wpuf_addpost_notice', $info, $id, $this->form_settings );
         $user_can_post                = apply_filters( 'wpuf_can_post', $user_can_post, $id, $this->form_settings );
@@ -315,6 +325,26 @@ class Frontend_Form extends Frontend_Render_Form {
         ob_end_clean();
 
         return $content;
+    }
+
+    /**
+     * Whether the current visitor passes the form's login and role rules (the
+     * checks render_form() makes before printing the form).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $form_settings Form settings
+     *
+     * @return bool
+     */
+    private function may_post( $form_settings ) {
+        $permission = ! empty( $form_settings['post_permission'] ) ? $form_settings['post_permission'] : '';
+
+        if ( ! is_user_logged_in() && $permission && 'guest_post' !== $permission ) {
+            return false;
+        }
+
+        return ! ( 'role_base' === $permission && ! empty( $form_settings['roles'] ) && ! wpuf_user_has_roles( $form_settings['roles'] ) );
     }
 
     /**

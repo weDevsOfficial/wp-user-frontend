@@ -164,4 +164,32 @@ class DashboardAndInvoicesTest extends WP_UnitTestCase {
 
         $this->assertSame( 0, $mails, 'Pro\'s invoice is the customer email' );
     }
+
+    public function test_delete_link_is_refused_while_deleting_is_turned_off() {
+        $post = self::factory()->post->create( [ 'post_author' => $this->user ] );
+
+        update_option( 'wpuf_dashboard', [ 'enable_post_del' => 'no' ] );
+
+        $GLOBALS['userdata'] = get_userdata( $this->user );
+        $_REQUEST['pid']      = (string) $post;
+        $_REQUEST['_wpnonce'] = wp_create_nonce( 'wpuf_del' );
+
+        add_filter(
+            'wp_redirect',
+            function () {
+                throw new Exception( 'deleted and redirected' );
+            }
+        );
+
+        ob_start();
+        wpuf()->frontend->frontend_dashboard->delete_post();
+        $html = ob_get_clean();
+
+        unset( $_REQUEST['pid'], $_REQUEST['_wpnonce'] );
+        remove_all_filters( 'wp_redirect' );
+        delete_option( 'wpuf_dashboard' );
+
+        $this->assertStringContainsString( 'Deleting posts is turned off.', $html );
+        $this->assertSame( 'publish', get_post_status( $post ), 'the post is not trashed' );
+    }
 }

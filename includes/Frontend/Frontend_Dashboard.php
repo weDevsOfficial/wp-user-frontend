@@ -186,6 +186,12 @@ class Frontend_Dashboard {
         if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_del' ) ) {
             return;
         }
+        // The list hides Delete when deleting is turned off; the link obeys the same setting.
+        if ( 'yes' !== wpuf_get_option( 'enable_post_del', 'wpuf_dashboard', 'yes' ) ) {
+            echo wp_kses_post( '<div class="error">' . __( 'Deleting posts is turned off.', 'wp-user-frontend' ) . '</div>' );
+
+            return;
+        }
         //check, if the requested user is the post author
         $maybe_delete = get_post( $pid );
         $is_author    = $maybe_delete instanceof \WP_Post && (int) $maybe_delete->post_author === (int) $userdata->ID;

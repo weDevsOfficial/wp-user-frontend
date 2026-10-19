@@ -57,18 +57,13 @@ class Frontend_Form extends Frontend_Render_Form {
         extract( shortcode_atts( [ 'id' => 0 ], $atts ) );
 
         // @codingStandardsIgnoreEnd
-        ob_start();
-
         global $userdata;
 
-        ob_start();
-
+        // Returned, not printed: printed output escaped the shortcode's place (on
+        // block themes it landed before <!DOCTYPE html>).
         if ( ! is_user_logged_in() ) {
-            echo wp_kses_post( '<div class="wpuf-message">' . __( 'You are not logged in', 'wp-user-frontend' ) . '</div>' ),
-
-            wp_login_form();
-
-            return '';
+            return wp_kses_post( '<div class="wpuf-message">' . __( 'You are not logged in', 'wp-user-frontend' ) . '</div>' )
+                . wp_login_form( [ 'echo' => false ] );
         }
 
         $nonce = isset( $_GET['_wpnonce'] ) ? sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ) : '';
@@ -110,7 +105,7 @@ class Frontend_Form extends Frontend_Render_Form {
         $curpost = get_post( $post_id );
 
         if ( ! $curpost ) {
-            return '<div class="wpuf-info">' . __( 'Invalid post', 'wp-user-frontend' );
+            return '<div class="wpuf-info">' . __( 'Invalid post', 'wp-user-frontend' ) . '</div>';
         }
 
         // has permission?
@@ -138,12 +133,15 @@ class Frontend_Form extends Frontend_Render_Form {
         $disable_publish_edit = wpuf_get_option( 'disable_publish_edit', 'wpuf_dashboard', 'off' );
 
         if ( 'pending' === $curpost->post_status && 'on' === $disable_pending_edit ) {
-            return '<div class="wpuf-info">' . __( 'You can\'t edit a post while in pending mode.', 'wp-user-frontend' );
+            return '<div class="wpuf-info">' . __( 'You can\'t edit a post while in pending mode.', 'wp-user-frontend' ) . '</div>';
         }
 
         if ( 'publish' === $curpost->post_status && 'off' !== $disable_publish_edit ) {
-            return '<div class="wpuf-info">' . __( 'You\'re not allowed to edit this post.', 'wp-user-frontend' );
+            return '<div class="wpuf-info">' . __( 'You\'re not allowed to edit this post.', 'wp-user-frontend' ) . '</div>';
         }
+
+        // One buffer, opened after every early return (each closes nothing then).
+        ob_start();
 
         $msg = isset( $_GET['msg'] ) ? sanitize_text_field( wp_unslash( $_GET['msg'] ) ) : '';
 

@@ -268,7 +268,8 @@ class Pack_Display {
         if ( ! is_user_logged_in() ) {
             $label       = wpuf_get_option( 'logged_out_label', 'wpuf_subscription_settings', false );
             $button_name = $label ? $label : __( 'Sign Up', 'wp-user-frontend' );
-        } elseif ( $billing_amount === '0.00' ) {
+        } elseif ( 0.0 === (float) $billing_amount ) {
+            // wpuf_payment_amount (tax, Pro pricing fields) can turn '0.00' into 0.0.
             $label       = wpuf_get_option( 'free_label', 'wpuf_subscription_settings', false );
             $button_name = $label ? $label : __( 'Free', 'wp-user-frontend' );
         }

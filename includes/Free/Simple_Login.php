@@ -1242,7 +1242,11 @@ class Simple_Login {
 
         $message = __( 'Your account has been activated', 'wp-user-frontend' );
 
-        if ( $wpuf_user_status !== 'approved' ) {
+        // Only a form with "Required Approval After Registration" stores a
+        // status (pending, then approved or denied); an empty one needs none.
+        $awaits_approval = in_array( $wpuf_user_status, [ 'pending', 'denied' ], true );
+
+        if ( $awaits_approval ) {
             $message = __( "Your account has been verified , but you can't login until manually approved your account by an administrator.", 'wp-user-frontend' );
         }
 
@@ -1285,7 +1289,8 @@ class Simple_Login {
         $autologin_after_registration = wpuf_get_option( 'autologin_after_registration', 'wpuf_profile', 'on' );
         $pack_id                      = ! empty( $_GET['pack_id'] ) ? sanitize_key( wp_unslash( $_GET['pack_id'] ) ) : '';
 
-        if ( $autologin_after_registration === 'on'
+        // Never log in an account that still waits for (or was refused) approval.
+        if ( $autologin_after_registration === 'on' && ! $awaits_approval
              && $pack_id !== null && is_integer( (int) $pack_id ) ) {
             wp_set_current_user( $user_id );
             wp_set_auth_cookie( $user_id );

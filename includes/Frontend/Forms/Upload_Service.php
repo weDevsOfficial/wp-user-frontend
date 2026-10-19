@@ -127,6 +127,16 @@ class Upload_Service {
             ]
         );
 
+        // The field's own limits (size, allowed file groups) were only checked
+        // in the browser; enforce them here too.
+        if ( ! ( $image_only || 'insert_image' === $field_type ) ) {
+            $limit_error = $this->check_field_limits( $file, $form_id, $field_type );
+
+            if ( is_wp_error( $limit_error ) ) {
+                return $limit_error;
+            }
+        }
+
         $file_name      = pathinfo( $file['name'], PATHINFO_FILENAME );
         $file_extension = pathinfo( $file['name'], PATHINFO_EXTENSION );
 
@@ -263,6 +273,125 @@ class Upload_Service {
         $allowed_names = apply_filters( 'wpuf_upload_allowed_field_names', $allowed_names, $form_id, $field_type );
 
         return in_array( (string) $field_type, (array) $allowed_names, true );
+    }
+
+    /**
+     * Check a file against the size and file types its field allows
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array  $file       One `$_FILES` entry
+     * @param int    $form_id    Form id
+     * @param string $field_type Field name
+     *
+     * @return true|WP_Error
+     */
+    public function check_field_limits( array $file, $form_id, $field_type ) {
+        $field = $this->find_field( wpuf_get_form_fields( $form_id ), (string) $field_type );
+
+        if ( ! $field ) {
+            return true;
+        }
+
+        $type       = ! empty( $field['input_type'] ) ? $field['input_type'] : ( ! empty( $field['template'] ) ? $field['template'] : '' );
+        $max_size   = isset( $field['max_size'] ) ? (int) $field['max_size'] : 0;
+        $extensions = 'file_upload' === $type
+            ? ( isset( $field['extension'] ) ? (array) $field['extension'] : [] )
+            : [ 'images' ];
+
+        /**
+         * Limits enforced for one upload: `max_size` in kB (0 = none) and the
+         * allowed groups of wpuf_allowed_extensions() (empty = any).
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $limits  `max_size`, `extensions`
+         * @param array $field   Field settings
+         * @param int   $form_id Form id
+         */
+        $limits = apply_filters(
+            'wpuf_upload_field_limits',
+            [
+                'max_size'   => $max_size,
+                'extensions' => $extensions,
+            ],
+            $field,
+            $form_id
+        );
+
+        if ( ! empty( $limits['max_size'] ) && (int) $file['size'] > (int) $limits['max_size'] * 1024 ) {
+            return new WP_Error(
+                'wpuf_upload_too_big',
+                /* translators: %d: size limit in kB */
+                sprintf( __( 'File size is too big. The limit is %d kB.', 'wp-user-frontend' ), (int) $limits['max_size'] ),
+                [ 'status' => 400 ]
+            );
+        }
+
+        if ( ! empty( $limits['extensions'] ) ) {
+            $groups  = wpuf_allowed_extensions();
+            $allowed = [];
+
+            foreach ( (array) $limits['extensions'] as $group ) {
+                if ( isset( $groups[ $group ]['ext'] ) ) {
+                    $allowed = array_merge( $allowed, explode( ',', $groups[ $group ]['ext'] ) );
+                }
+            }
+
+            $ext = strtolower( (string) pathinfo( (string) $file['name'], PATHINFO_EXTENSION ) );
+
+            if ( $allowed && ! in_array( $ext, $allowed, true ) ) {
+                return new WP_Error( 'wpuf_upload_bad_type', __( 'File extension not allowed.', 'wp-user-frontend' ), [ 'status' => 400 ] );
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * A field by name, including ones inside Column / Repeat fields.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array  $fields Form fields or a nested field list
+     * @param string $name   Field name
+     *
+     * @return array|null
+     */
+    protected function find_field( $fields, $name ) {
+        if ( ! is_array( $fields ) || '' === $name ) {
+            return null;
+        }
+
+        foreach ( $fields as $field ) {
+            if ( ! is_array( $field ) ) {
+                continue;
+            }
+
+            if ( ! isset( $field['input_type'] ) && ! isset( $field['template'] ) ) {
+                $found = $this->find_field( $field, $name );
+
+                if ( $found ) {
+                    return $found;
+                }
+
+                continue;
+            }
+
+            if ( isset( $field['name'] ) && $name === $field['name'] ) {
+                return $field;
+            }
+
+            if ( ! empty( $field['inner_fields'] ) ) {
+                $found = $this->find_field( $field['inner_fields'], $name );
+
+                if ( $found ) {
+                    return $found;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**

@@ -96,4 +96,35 @@ class UploadsRestTest extends WP_UnitTestCase {
         wp_set_current_user( self::factory()->user->create() );
         $this->assertSame( 'user:' . get_current_user_id(), $limiter->actor() );
     }
+
+    private function upload_field( $form_id, array $field ) {
+        wp_insert_post(
+            [
+                'post_type'    => 'wpuf_input',
+                'post_parent'  => $form_id,
+                'post_status'  => 'publish',
+                'post_content' => maybe_serialize( $field ),
+            ]
+        );
+    }
+
+    public function test_the_server_enforces_the_field_size_and_file_types() {
+        $service = wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Forms\Upload_Service::class );
+        $form_id = self::factory()->post->create( [ 'post_type' => 'wpuf_forms' ] );
+
+        $this->upload_field( $form_id, [ 'input_type' => 'file_upload', 'template' => 'file_upload', 'name' => 'logo', 'max_size' => '50', 'extension' => [ 'images' ] ] );
+        $this->upload_field( $form_id, [ 'input_type' => 'image_upload', 'template' => 'image_upload', 'name' => 'photo', 'max_size' => '0' ] );
+        $this->upload_field( $form_id, [ 'input_type' => 'file_upload', 'template' => 'file_upload', 'name' => 'any', 'max_size' => '', 'extension' => [] ] );
+
+        $big = $service->check_field_limits( [ 'name' => 'a.png', 'size' => 60 * 1024 ], $form_id, 'logo' );
+        $this->assertWPError( $big );
+        $this->assertSame( 'wpuf_upload_too_big', $big->get_error_code() );
+
+        $pdf = $service->check_field_limits( [ 'name' => 'a.pdf', 'size' => 10 ], $form_id, 'logo' );
+        $this->assertSame( 'wpuf_upload_bad_type', $pdf->get_error_code() );
+
+        $this->assertTrue( $service->check_field_limits( [ 'name' => 'a.PNG', 'size' => 50 * 1024 ], $form_id, 'logo' ), 'at the limit, extension case-insensitive' );
+        $this->assertSame( 'wpuf_upload_bad_type', $service->check_field_limits( [ 'name' => 'a.pdf', 'size' => 10 ], $form_id, 'photo' )->get_error_code(), 'image fields take images only' );
+        $this->assertTrue( $service->check_field_limits( [ 'name' => 'a.zip', 'size' => 99999999 ], $form_id, 'any' ), 'no limits set: WordPress rules only' );
+    }
 }

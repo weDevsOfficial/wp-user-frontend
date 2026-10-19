@@ -432,10 +432,19 @@ class Pack_Display {
             return $text;
         }
 
+        // has_user_error() is only true for a member who has a pack: either it
+        // expired or its posts for this post type are used up (members with no
+        // pack get the "purchase a subscription package" notice elsewhere).
         if ( $force_pack && Subscription::has_user_error( $form_settings ) ) {
             $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
-            /* translators: %s: subscription link */
-            $text = sprintf( __( 'You must <a href="%s">purchase a pack</a> before posting', 'wp-user-frontend' ), $pack_page );
+
+            if ( wpuf_get_user()->subscription()->expired() ) {
+                /* translators: %s: subscription page link */
+                $text = sprintf( __( 'Your subscription has expired. <a href="%s">Renew or change your plan</a> to keep posting.', 'wp-user-frontend' ), $pack_page );
+            } else {
+                /* translators: %s: subscription page link */
+                $text = sprintf( __( 'You have used all the posts your plan allows. <a href="%s">Change your plan</a> to post more.', 'wp-user-frontend' ), $pack_page );
+            }
         }
 
         return apply_filters( 'wpuf_pack_notice', $text, $id, $form_settings );

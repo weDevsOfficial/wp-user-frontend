@@ -1030,7 +1030,7 @@ function taxnomy_select( $terms, $attr ) {
 
     $dataset = sprintf(
         'data-required="%s" data-type="select" data-form-id="%d"',
-        $attr['required'],
+        esc_attr( $attr['required'] ),
         $attr['form_id']
     );
 

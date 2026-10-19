@@ -104,6 +104,18 @@ class Upload_Service {
             return new WP_Error( 'wpuf_upload_forbidden', __( 'You are not allowed to upload files to this form.', 'wp-user-frontend' ), [ 'status' => 403 ] );
         }
 
+        // Bind the upload to a real field of the form. The editor's "Insert
+        // Photo" (image_only, or type `insert_image` from the React editor)
+        // needs a content field with Insert Photo on; every other upload
+        // must name a configured upload-capable field.
+        $allowed = ( $image_only || 'insert_image' === $field_type )
+            ? $this->form_allows_insert_image( $form_id )
+            : $this->is_valid_upload_field( $form_id, $field_type );
+
+        if ( ! $allowed ) {
+            return new WP_Error( 'wpuf_upload_forbidden', __( 'You are not allowed to upload files to this form.', 'wp-user-frontend' ), [ 'status' => 403 ] );
+        }
+
         $file = wp_parse_args(
             $file,
             [
@@ -201,5 +213,161 @@ class Upload_Service {
         }
 
         return true;
+    }
+
+    /**
+     * Whether the requested field is a real upload-capable field of the form.
+     *
+     * The client-supplied field name must not authorize an upload on its own:
+     * it has to name a field that exists in the form and takes files.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int    $form_id    Form id
+     * @param string $field_type Client-supplied field name
+     *
+     * @return bool
+     */
+    public function is_valid_upload_field( $form_id, $field_type ) {
+        if ( '' === (string) $field_type ) {
+            return false;
+        }
+
+        /**
+         * Field input types / templates that may receive uploads.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array  $upload_types
+         * @param int    $form_id
+         * @param string $field_type
+         */
+        $upload_types = apply_filters(
+            'wpuf_upload_capable_field_types',
+            [ 'image_upload', 'file_upload', 'featured_image', 'avatar', 'cover_photo', 'profile_photo' ],
+            $form_id,
+            $field_type
+        );
+
+        $allowed_names = $this->collect_upload_field_names( wpuf_get_form_fields( $form_id ), (array) $upload_types );
+
+        /**
+         * Final allow-list of field names that may receive an upload for this form.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array  $allowed_names
+         * @param int    $form_id
+         * @param string $field_type
+         */
+        $allowed_names = apply_filters( 'wpuf_upload_allowed_field_names', $allowed_names, $form_id, $field_type );
+
+        return in_array( (string) $field_type, (array) $allowed_names, true );
+    }
+
+    /**
+     * Whether the form has a field with "Insert Photo" turned on.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $form_id Form id
+     *
+     * @return bool
+     */
+    public function form_allows_insert_image( $form_id ) {
+        $allowed = $this->has_insert_image_field( wpuf_get_form_fields( $form_id ) );
+
+        /**
+         * Whether an "Insert Photo" upload is allowed for this form.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param bool $allowed
+         * @param int  $form_id
+         */
+        return (bool) apply_filters( 'wpuf_upload_allow_insert_image', $allowed, $form_id );
+    }
+
+    /**
+     * Names of upload-capable fields, including ones inside Column / Repeat fields.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $fields       Form fields or a nested field list
+     * @param array $upload_types Upload-capable input types / templates
+     *
+     * @return array
+     */
+    protected function collect_upload_field_names( $fields, $upload_types ) {
+        $names = [];
+
+        if ( ! is_array( $fields ) ) {
+            return $names;
+        }
+
+        foreach ( $fields as $field ) {
+            if ( ! is_array( $field ) ) {
+                continue;
+            }
+
+            // A column bucket (list of fields) has no field keys of its own.
+            if ( ! isset( $field['input_type'] ) && ! isset( $field['template'] ) ) {
+                $names = array_merge( $names, $this->collect_upload_field_names( $field, $upload_types ) );
+                continue;
+            }
+
+            $input_type = isset( $field['input_type'] ) ? $field['input_type'] : '';
+            $template   = isset( $field['template'] ) ? $field['template'] : '';
+            $name       = isset( $field['name'] ) ? $field['name'] : '';
+
+            if ( '' !== $name && ( in_array( $input_type, $upload_types, true ) || in_array( $template, $upload_types, true ) ) ) {
+                $names[] = $name;
+            }
+
+            if ( ! empty( $field['inner_fields'] ) ) {
+                $names = array_merge( $names, $this->collect_upload_field_names( $field['inner_fields'], $upload_types ) );
+            }
+        }
+
+        return $names;
+    }
+
+    /**
+     * Find a field with "Insert Photo" turned on, including nested ones.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $fields Form fields or a nested field list
+     *
+     * @return bool
+     */
+    protected function has_insert_image_field( $fields ) {
+        if ( ! is_array( $fields ) ) {
+            return false;
+        }
+
+        foreach ( $fields as $field ) {
+            if ( ! is_array( $field ) ) {
+                continue;
+            }
+
+            if ( isset( $field['insert_image'] ) && 'yes' === $field['insert_image'] ) {
+                return true;
+            }
+
+            if ( ! empty( $field['inner_fields'] ) ) {
+                $nested = $field['inner_fields'];
+            } elseif ( ! isset( $field['input_type'] ) && ! isset( $field['template'] ) ) {
+                $nested = $field;
+            } else {
+                $nested = [];
+            }
+
+            if ( $nested && $this->has_insert_image_field( $nested ) ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

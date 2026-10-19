@@ -100,8 +100,15 @@ class CheckoutServiceTest extends WP_UnitTestCase {
         wp_set_current_user( 0 );
         $this->assertSame( 'login', $this->resolve()['status'], 'a guest paying for a pack logs in first' );
 
-        $this->request( [ 'type' => 'post', 'post_id' => 3 ] );
-        $this->assertSame( 'guest_post', $this->resolve()['status'], 'a guest paying for a post is asked to log in' );
+        $guest_post = self::factory()->post->create( [ 'post_author' => $this->user ] );
+        $this->request( [ 'type' => 'post', 'post_id' => $guest_post ] );
+        $resolved = $this->resolve();
+        $this->assertSame( 'guest_post', $resolved['status'], 'a guest paying for a post is asked to log in' );
+        $this->assertTrue( $resolved['has_account'], 'the post has its own author account' );
+
+        $owner_post = self::factory()->post->create( [ 'post_author' => (int) wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 ) ] );
+        $this->request( [ 'type' => 'post', 'post_id' => $owner_post ] );
+        $this->assertFalse( $this->resolve()['has_account'], 'a post of the default owner has no guest account' );
 
         $this->request( [ 'type' => 'pack', 'pack_id' => $pack ] );
 

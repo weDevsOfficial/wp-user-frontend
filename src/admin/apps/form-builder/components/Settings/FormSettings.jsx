@@ -8,6 +8,7 @@ import SettingsNav from './SettingsNav';
 import SettingsSection from './SettingsSection';
 import LegacySlot, { getLegacySlots } from '../../common/LegacySlot';
 import ModulesEmptyState from './ModulesEmptyState';
+import SettingsRecommendations from './SettingsRecommendations';
 import useFormSave from '../../hooks/useFormSave';
 import { BuilderSlot, settingsSlotName } from '../../slots';
 import { getRouteQuery, inApp, setRouteQuery } from '../../../../app/client';
@@ -97,6 +98,9 @@ export default function FormSettings() {
                     </Button>
                 </div>
             </div>
+
+            { /* Settings that depend on each other, with a quick action each. */ }
+            <SettingsRecommendations onSection={ setActiveTab } />
 
             <div className="flex items-start gap-6">
                 <SettingsNav

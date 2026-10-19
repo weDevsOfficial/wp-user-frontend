@@ -232,9 +232,14 @@ class Checkout_Service {
         // for them (they get its password mail): ask them to log in instead
         // of showing the bare page content.
         if ( ! is_user_logged_in() && 'post' === $request['type'] && $request['post_id'] > 0 ) {
+            // Without "Require Name and Email" no account is made and the post
+            // goes to the default post owner: the guest has nothing to log in to.
+            $owner = (int) get_post_field( 'post_author', $request['post_id'] );
+
             return [
-                'status'  => 'guest_post',
-                'post_id' => $request['post_id'],
+                'status'      => 'guest_post',
+                'post_id'     => $request['post_id'],
+                'has_account' => $owner > 0 && (int) wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 ) !== $owner,
             ];
         }
 

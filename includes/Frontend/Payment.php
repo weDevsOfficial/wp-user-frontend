@@ -93,6 +93,11 @@ class Payment {
 
             case 'guest_post':
                 $this->enqueue_checkout_style();
+
+                if ( empty( $resolved['has_account'] ) ) {
+                    return '<div class="wpuf-frontend wpuf-form-gate wpuf-checkout-gate"><div class="wpuf-message">' . esc_html__( 'This post can not be paid for online. Please contact the site owner.', 'wp-user-frontend' ) . '</div></div>';
+                }
+
                 $pay_link = add_query_arg(
                     [
                         'action'  => 'wpuf_pay',

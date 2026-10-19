@@ -333,6 +333,15 @@ class Admin_Form_Builder {
                 'registration_url'      => is_multisite() ? network_admin_url( 'settings.php#registration' ) : admin_url( 'options-general.php#users_can_register' ),
                 'account_post_types'    => array_values( array_filter( array_map( 'strval', (array) wpuf_get_option( 'cp_on_acc_page', 'wpuf_my_account', [ 'post' ] ) ) ) ),
                 'admin_url'             => admin_url(),
+                // Site payment setup, for the settings recommendations: a form
+                // that charges needs payments on, a gateway and a payment page.
+                'site_payments'         => [
+                    'enabled'      => wpuf_is_checkbox_or_toggle_on( wpuf_get_option( 'enable_payment', 'wpuf_payment', 'off' ) ),
+                    'gateways'     => count( array_filter( (array) wpuf_get_option( 'active_gateways', 'wpuf_payment', [] ) ) ),
+                    'payment_page' => (bool) wpuf_get_option( 'payment_page', 'wpuf_payment', 0 ),
+                    'settings_url' => wpuf_admin_app_url( '/settings', [ 'tab' => 'wpuf_payment' ] ),
+                    'plans_url'    => wpuf_admin_app_url( '/subscriptions', [ 'action' => 'new' ] ),
+                ],
             ]
         );
         $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );

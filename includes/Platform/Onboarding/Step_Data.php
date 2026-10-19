@@ -56,7 +56,7 @@ class Step_Data {
         return [
             'definitions'      => $features,
             'picked'           => array_values( $this->wizard->get_features() ),
-            'directory_in_use' => $this->wizard->directory_active(),
+            'directory_in_use' => $this->wizard->directory_in_use(),
         ];
     }
 

@@ -8,6 +8,7 @@
 
 namespace WeDevs\Wpuf\Platform\Onboarding;
 
+use WeDevs\Wpuf\Admin\Admin_Installer;
 use WeDevs\Wpuf\Admin\Onboarding as Onboarding_Page;
 use WeDevs\Wpuf\Admin\Screens\Welcome;
 use WeDevs\Wpuf\Platform\Stores\Stores;
@@ -345,6 +346,41 @@ class Wizard {
         }
 
         return function_exists( 'wpuf_free_is_module_active' ) && wpuf_free_is_module_active( 'user_directory' );
+    }
+
+    /**
+     * Whether a running user directory is really used: a directory was made
+     * or a page shows one. A module that is only switched on is not "in use".
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    public function directory_in_use() {
+        if ( ! $this->directory_active() ) {
+            return false;
+        }
+
+        $directories = get_posts(
+            [
+                'post_type'      => 'wpuf_user_listing',
+                'post_status'    => 'any',
+                'posts_per_page' => 1,
+                'fields'         => 'ids',
+            ]
+        );
+
+        if ( ! empty( $directories ) ) {
+            return true;
+        }
+
+        foreach ( Admin_Installer::USER_DIRECTORY_MARKERS as $marker ) {
+            if ( $this->pages()->page_exists( $marker ) ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

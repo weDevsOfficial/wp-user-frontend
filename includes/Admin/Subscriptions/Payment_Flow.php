@@ -105,10 +105,12 @@ class Payment_Flow {
             $old_status = $post->post_status;
             wp_transition_post_status( $post_status, $old_status, $post );
 
-            // decrease the post count, if not unlimited
+            // decrease the post count, if not unlimited. `published` means the
+            // post was already counted: the submit handler fires this hook after
+            // edits too, and an edit must not use up another post.
             $wpuf_post_status = Stores::submissions()->quota_flag( $post_id );
 
-            if ( $wpuf_post_status !== 'new_draft' ) {
+            if ( ! in_array( $wpuf_post_status, [ 'new_draft', 'published' ], true ) ) {
                 if ( $count > 0 ) {
                     $sub_info['posts'][ $post_type ] = $count - 1;
                 }

@@ -244,6 +244,19 @@ class SubmissionStore implements DataStore {
     }
 
     /**
+     * Drop the payment status of a submission that has nothing to pay.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $post_id Post id
+     *
+     * @return void
+     */
+    public function clear_payment_status( $post_id ) {
+        delete_post_meta( $post_id, self::PAYMENT_STATUS );
+    }
+
+    /**
      * The quota flag of a submission ('', new_draft or published).
      *
      * @since WPUF_SINCE

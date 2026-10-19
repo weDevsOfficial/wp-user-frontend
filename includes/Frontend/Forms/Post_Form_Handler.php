@@ -590,7 +590,7 @@ class Post_Form_Handler {
             $response['redirect_to']  = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
             $response['message']      = __( 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!', 'wp-user-frontend' );
 
-            Stores::submissions()->set_payment_status( $post_id, 'pending' );
+            // Nothing to pay: only the verification link is awaited (the marker).
             update_post_meta( $post_id, Frontend_Form::$guest_verify_id, 'yes' );
             wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, 'no', 2 );
         }

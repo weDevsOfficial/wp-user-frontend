@@ -453,6 +453,13 @@ class Frontend_Form extends Frontend_Render_Form {
 
                 update_post_meta( $post_id, self::$guest_verify_id, 'no' );
 
+                // Posts sent before WPUF_SINCE were marked unpaid although their
+                // form charges nothing: the account showed Pay Now and an edit
+                // put the post back to pending.
+                if ( ! $form->is_charging_enabled() && 'pending' === Stores::submissions()->payment_status( $post_id ) ) {
+                    Stores::submissions()->clear_payment_status( $post_id );
+                }
+
                 echo wp_kses_post( "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wp-user-frontend' ) . '</div>' );
             }
         }

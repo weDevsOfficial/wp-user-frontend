@@ -26,14 +26,21 @@ const { Eye, EyeOff } = icons;
 export const proLogin = ( data ) => ( data && data.pro ) || ( 'undefined' !== typeof window && window.wpufLoginForm ) || null;
 
 /**
- * The texts of a screen: the free defaults, then each text Pro has a value for.
+ * The texts of a screen: the free defaults, then, on the login screen only,
+ * each text Pro has a value for (Pro customises the login form; the lost and
+ * reset password screens keep their own labels, as Pro's classic script did).
  *
  * @param {Object} data Boot data.
  * @return {Object} Texts.
  */
 export function textsOf( data ) {
-    const pro = proLogin( data );
     const texts = { ...( data.texts || {} ) };
+
+    if ( data.view && 'login' !== data.view ) {
+        return texts;
+    }
+
+    const pro = proLogin( data );
 
     Object.entries( ( pro && pro.texts ) || {} ).forEach( ( [ key, value ] ) => {
         if ( value ) {

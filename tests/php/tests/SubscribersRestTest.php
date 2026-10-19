@@ -99,8 +99,17 @@ class SubscribersRestTest extends WP_UnitTestCase {
         $this->assertSame( 'Cancel', $cancel['status'] );
         $this->assertSame( mysql2date( get_option( 'date_format' ), '2026-12-01 10:00:00' ), $cancel['expire'] );
         $this->assertStringEndsWith( '/images/bank.svg', $cancel['gateway_logo'] );
-        $this->assertSame( 'unlimited', $data['items'][1]['expire'], 'a non-date stays as stored' );
+        $this->assertSame( 'Unlimited', $data['items'][1]['expire'], 'a pack with no end date' );
         $this->assertNotEmpty( $data['items'][1]['edit_url'] );
+    }
+
+    public function test_free_pack_row_saved_as_1970_reads_unlimited() {
+        wp_set_current_user( $this->admin );
+        $this->subscriber( [ 'subscribtion_status' => 'Free', 'transaction_id' => 'Free', 'gateway' => 'Free', 'expire' => '1970-01-01 00:00:00' ] );
+
+        $data = $this->call( $this->pack )->get_data();
+
+        $this->assertSame( 'Unlimited', $data['items'][0]['expire'] );
     }
 
     public function test_status_sort_and_paging() {

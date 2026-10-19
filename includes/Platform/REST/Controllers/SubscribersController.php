@@ -351,7 +351,9 @@ class SubscribersController extends RestController {
 
     /**
      * A stored date in the site's date format; a value that is not a date
-     * ("unlimited", empty) comes back as stored.
+     * (empty, "recurring") comes back as stored. A pack with no end date is
+     * "Unlimited": stored as "unlimited", or as 1970-01-01 when the free pack
+     * row converted "unlimited" with wpuf_date2mysql().
      *
      * @since WPUF_SINCE
      *
@@ -361,6 +363,10 @@ class SubscribersController extends RestController {
      */
     private function format_date( $value ) {
         $value = sanitize_text_field( $value );
+
+        if ( 'unlimited' === strtolower( $value ) || 0 === strpos( $value, '1970-01-01' ) ) {
+            return __( 'Unlimited', 'wp-user-frontend' );
+        }
 
         if ( '' === $value || false === strtotime( $value ) || 0 === strpos( $value, '0000-00-00' ) ) {
             return $value;

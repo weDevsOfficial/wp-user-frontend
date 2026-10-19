@@ -53,7 +53,44 @@ class SubmissionValidatorTest extends WP_UnitTestCase {
         $this->assertSame( '', $validator->validate( [ $email, $url ], [ 'contact' => 'a@example.com', 'site' => 'https://example.com' ] ) );
     }
 
+    /**
+     * Register a field type the way Pro does (Pro is not loaded in these tests).
+     */
+    private function with_field_type( $type, callable $run ) {
+        $manager  = wpuf()->fields;
+        $manager->get_fields();
+        $property = new ReflectionProperty( $manager, 'fields' );
+        $property->setAccessible( true );
+        $saved = $property->getValue( $manager );
+
+        $property->setValue( $manager, array_merge( $saved, [ $type => new stdClass() ] ) );
+
+        try {
+            $run();
+        } finally {
+            $property->setValue( $manager, $saved );
+        }
+    }
+
+    public function test_unregistered_field_types_are_not_required() {
+        $validator = new Submission_Validator();
+        $logo      = $this->field( 'logo', 'file_upload', [ 'input_type' => 'file_upload', 'required' => 'yes' ] );
+
+        $this->assertSame( '', $validator->validate( [ $logo ], [] ), 'a Pro field while Pro is off is not on the form, so it can not be required' );
+
+        $this->with_field_type(
+            'file_upload',
+            function () use ( $validator, $logo ) {
+                $this->assertNotSame( '', $validator->validate( [ $logo ], [] ), 'registered (Pro on): required again' );
+            }
+        );
+    }
+
     public function test_number_range() {
+        $this->with_field_type( 'numeric_text_field', [ $this, 'number_range_checks' ] );
+    }
+
+    public function number_range_checks() {
         $validator = new Submission_Validator();
         $number    = $this->field( 'age', 'numeric_text_field', [ 'input_type' => 'numeric_text', 'min_value_field' => '18', 'max_value_field' => '0' ] );
 

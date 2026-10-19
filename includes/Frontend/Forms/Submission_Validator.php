@@ -256,7 +256,17 @@ class Submission_Validator {
     private function is_shown( array $field ) {
         $manager = function_exists( 'wpuf' ) ? wpuf()->fields : null;
 
-        return ! is_object( $manager ) || ! method_exists( $manager, 'check_field_visibility' ) || $manager->check_field_visibility( $field );
+        if ( ! is_object( $manager ) ) {
+            return true;
+        }
+
+        // A field type that is not registered (a Pro field while Pro is off) is
+        // left out of the form by Form_Schema, so it can not be required here.
+        if ( ! empty( $field['template'] ) && method_exists( $manager, 'field_exists' ) && ! $manager->field_exists( $field['template'] ) ) {
+            return false;
+        }
+
+        return ! method_exists( $manager, 'check_field_visibility' ) || $manager->check_field_visibility( $field );
     }
 
     /**

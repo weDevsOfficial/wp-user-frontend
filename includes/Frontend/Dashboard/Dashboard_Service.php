@@ -43,6 +43,7 @@ class Dashboard_Service {
         'excerpt'        => 'off',
         'payment_column' => 'on',
         'post_status'    => 'draft,future,pending,publish,private',
+        'layout'         => 'full',
     ];
 
     /**
@@ -92,6 +93,20 @@ class Dashboard_Service {
         $atts = is_array( $atts ) ? $atts : [];
 
         return array_merge( shortcode_atts( self::DEFAULTS, $atts ), $atts );
+    }
+
+    /**
+     * Whether the shortcode asks for the posts card only (`layout="list"`),
+     * as the Dokan, WC Vendors and WCMp dashboards do.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $atts Attributes (attributes())
+     *
+     * @return bool
+     */
+    public function list_only( array $atts ) {
+        return isset( $atts['layout'] ) && 'list' === $atts['layout'];
     }
 
     /**
@@ -311,7 +326,7 @@ class Dashboard_Service {
     public function query_args( array $atts, $page, array $filters = [] ) {
         $attributes = $atts;
 
-        unset( $attributes['post_type'], $attributes['post_status'] );
+        unset( $attributes['post_type'], $attributes['post_status'], $attributes['layout'] );
 
         $args = [
             'author'         => get_current_user_id(),

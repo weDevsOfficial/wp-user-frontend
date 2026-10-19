@@ -254,4 +254,34 @@ class DashboardRestTest extends WP_UnitTestCase {
         self::factory()->post->create( [ 'post_author' => $this->author, 'post_status' => 'draft' ] );
         $this->assertContains( 'drafts', $keys() );
     }
+
+    public function test_list_layout_shows_only_the_posts_card() {
+        self::factory()->post->create( [ 'post_author' => $this->author, 'post_title' => 'Mine' ] );
+        wp_set_current_user( $this->author );
+
+        $overview = wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Dashboard\Dashboard_Overview::class );
+        $list     = $overview->build( $this->service()->attributes( [ 'layout' => 'list' ] ) );
+
+        $this->assertNull( $list['profile'], 'the host dashboard has its own profile' );
+        $this->assertSame( [], $list['actions'] );
+        $this->assertSame( [], $list['attention'] );
+        $this->assertNull( $list['plan'] );
+        $this->assertNull( $list['comments'] );
+        $this->assertNull( $list['payments'] );
+        $this->assertFalse( $list['blocks']['status_cards'] );
+        $this->assertTrue( $list['blocks']['table_filters'], 'the list keeps its own filters' );
+        $this->assertNotEmpty( $list['stats'], 'status tabs still have their counts' );
+
+        $page = $this->service()->page( $this->service()->attributes( [ 'layout' => 'list' ] ) );
+        $this->assertSame( [ 'Mine' ], wp_list_pluck( $page['items'], 'title' ), 'layout is not a query var' );
+
+        $full = $overview->build( $this->service()->attributes( [] ) );
+        $this->assertNotNull( $full['profile'] );
+    }
+
+    public function test_vendor_templates_embed_the_list_layout() {
+        foreach ( [ 'dokan', 'wc-vendors', 'wc-marketplace' ] as $host ) {
+            $this->assertStringContainsString( '[wpuf_dashboard layout="list"]', file_get_contents( WPUF_ROOT . '/templates/' . $host . '/post-listing.php' ), $host );
+        }
+    }
 }

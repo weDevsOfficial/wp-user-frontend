@@ -270,7 +270,7 @@ class Frontend_Dashboard {
         $skeleton = '<div class="wpuf-dashboard wpuf-dashboard-boot" aria-busy="true"><span class="wpuf-skeleton wpuf-skeleton-label"></span><span class="wpuf-skeleton wpuf-skeleton-card"></span></div>';
 
         /** This filter is documented in includes/Frontend/Frontend_Account.php */
-        $align_wide = (bool) apply_filters( 'wpuf_account_align_wide', function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() );
+        $align_wide = ! $service->list_only( $atts ) && (bool) apply_filters( 'wpuf_account_align_wide', function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() );
 
         return $this->renderer()->markup( 'dashboard', $boot, $skeleton, 'wpuf-dashboard-root' . ( $align_wide ? ' alignwide' : '' ) );
     }

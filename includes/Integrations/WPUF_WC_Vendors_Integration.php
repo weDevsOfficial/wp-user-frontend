@@ -92,9 +92,11 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WC_Vendors_Integration' ) ) 
             $allow_wpuf_post = get_option( 'allow_wcvendors_wpuf_post', 'no' );
             if ( $allow_wpuf_post === 'yes' ) {
                 $dashboard_url = get_permalink( get_option( 'wcvendors_vendor_dashboard_page_id' ) );
-                $post_page_url = add_query_arg( [
-                    'action' => 'post-listing',
-                ], $dashboard_url );
+                $post_page_url = add_query_arg(
+                    [
+						'action' => 'post-listing',
+					], $dashboard_url
+                );
                 $output = '<a href="' . $post_page_url . '" class="button">';
                 $output .= __( 'Posts', 'wp-user-frontend' );
                 $output .= '</a>';
@@ -117,7 +119,7 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WC_Vendors_Integration' ) ) 
                 <style type="text/css">
                     .table-vendor-sales-report,
                     .wpuf-wc-vendors-submit-post-page .page-head,
-                    .hide-if-wpuf-page h2,
+                    .hide-if-wpuf-page h2:not(.wpuf-frontend h2):not(.wpuf-form-add h2),
                     .hide-if-wpuf-page > form {
                         display: none;
                     }
@@ -167,10 +169,12 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WC_Vendors_Integration' ) ) 
             global $post;
             $posts_page_url = get_permalink( get_option( 'wcvendors_vendor_dashboard_page_id' ) );
             if ( is_page( get_option( 'wcvendors_vendor_dashboard_page_id' ) ) ) {
-                $url = add_query_arg( [
-                    'action' => 'edit-post',
-                    'pid'    => $post->ID,
-                ], $posts_page_url );
+                $url = add_query_arg(
+                    [
+						'action' => 'edit-post',
+						'pid'    => $post->ID,
+					], $posts_page_url
+                );
             }
 
             return $url;
@@ -185,12 +189,14 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WC_Vendors_Integration' ) ) 
             $selected_form = get_option( 'wcvendors_wpuf_allowed_post_form', '' );
             if ( $role[0] === 'vendor' && $form_id === $selected_form && $form_settings['edit_redirect_to'] === 'same' ) {
                 $post_page_url = get_permalink( get_option( 'wcvendors_vendor_dashboard_page_id' ) );
-                $redirect_url = add_query_arg( [
-                    'action'   => 'edit-post',
-                    'pid'      => $post_id,
-                    '_wpnonce' => wp_create_nonce( 'wpuf_edit' ),
-                    'msg'      => 'post_updated',
-                ], $post_page_url );
+                $redirect_url = add_query_arg(
+                    [
+						'action'   => 'edit-post',
+						'pid'      => $post_id,
+						'_wpnonce' => wp_create_nonce( 'wpuf_edit' ),
+						'msg'      => 'post_updated',
+					], $post_page_url
+                );
                 $response['redirect_to'] = $redirect_url;
             }
 
@@ -203,10 +209,12 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WC_Vendors_Integration' ) ) 
         public function update_delete_post_redirect_url( $redirect_url ) {
             if ( is_page( get_option( 'wcvendors_vendor_dashboard_page_id' ) ) ) {
                 $post_page_url = get_permalink( get_option( 'wcvendors_vendor_dashboard_page_id' ) );
-                $redirect_url = add_query_arg( [
-                    'action' => 'post-listing',
-                    'msg'    => 'deleted',
-                ], $post_page_url );
+                $redirect_url = add_query_arg(
+                    [
+						'action' => 'post-listing',
+						'msg'    => 'deleted',
+					], $post_page_url
+                );
             }
 
             return $redirect_url;

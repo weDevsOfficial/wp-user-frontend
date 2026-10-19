@@ -118,11 +118,19 @@ class Dashboard_Overview {
      */
     public function build( array $atts ) {
         $blocks = $this->blocks();
-        $plan   = $blocks['plan'] || $blocks['attention'] ? $this->plan( $atts ) : null;
+        $list   = $this->service->list_only( $atts );
+
+        // `layout="list"`: inside another dashboard (Dokan, WC Vendors, WCMp)
+        // only the posts card shows; the host has its own profile and menus.
+        if ( $list ) {
+            $blocks = array_merge( array_fill_keys( array_keys( $blocks ), false ), [ 'table_filters' => $blocks['table_filters'] ] );
+        }
+
+        $plan = $blocks['plan'] || $blocks['attention'] ? $this->plan( $atts ) : null;
 
         $data = [
             'blocks'    => $blocks,
-            'profile'   => $this->profile( $plan ),
+            'profile'   => $list ? null : $this->profile( $plan ),
             'stats'     => $blocks['status_cards'] || $blocks['table_filters'] ? $this->stats( $atts ) : [],
             'actions'   => $blocks['quick_actions'] ? $this->actions() : [],
             'attention' => $blocks['attention'] ? $this->attention( $atts, $plan ) : [],

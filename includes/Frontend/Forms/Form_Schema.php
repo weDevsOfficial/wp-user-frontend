@@ -808,8 +808,8 @@ class Form_Schema implements Form_Schema_Provider {
         return [
             'enabled'     => $guest,
             'fields'      => $details && ! is_user_logged_in(),
-            'name_label'  => isset( $settings['name_label'] ) ? $settings['name_label'] : __( 'Name', 'wp-user-frontend' ),
-            'email_label' => isset( $settings['email_label'] ) ? $settings['email_label'] : __( 'Email', 'wp-user-frontend' ),
+            'name_label'  => ! empty( $settings['name_label'] ) ? $settings['name_label'] : __( 'Name', 'wp-user-frontend' ),
+            'email_label' => ! empty( $settings['email_label'] ) ? $settings['email_label'] : __( 'Email', 'wp-user-frontend' ),
             'verify'      => $guest && isset( $settings['guest_email_verify'] ) && wpuf_is_checkbox_or_toggle_on( $settings['guest_email_verify'] ),
         ];
     }

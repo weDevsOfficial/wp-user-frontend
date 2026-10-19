@@ -89,10 +89,13 @@ class Frontend_Render_Form {
      * @param [type] $form_settings [description]
      */
     public function guest_fields( $form_settings ) {
+        // Forms saved without the labels (the Post Form template has none) fall back like the React form.
+        $name_label  = ! empty( $form_settings['name_label'] ) ? $form_settings['name_label'] : __( 'Name', 'wp-user-frontend' );
+        $email_label = ! empty( $form_settings['email_label'] ) ? $form_settings['email_label'] : __( 'Email', 'wp-user-frontend' );
         ?>
         <li class="el-name">
             <div class="wpuf-label">
-                <label><?php echo esc_html( $form_settings['name_label'] ); ?> <span class="required">*</span></label>
+                <label><?php echo esc_html( $name_label ); ?> <span class="required">*</span></label>
             </div>
 
             <div class="wpuf-fields">
@@ -102,7 +105,7 @@ class Frontend_Render_Form {
 
         <li class="el-email">
             <div class="wpuf-label">
-                <label><?php echo esc_html( $form_settings['email_label'] ); ?> <span class="required">*</span></label>
+                <label><?php echo esc_html( $email_label ); ?> <span class="required">*</span></label>
             </div>
 
             <div class="wpuf-fields">

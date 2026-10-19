@@ -5,11 +5,11 @@
  *
  * @since WPUF_SINCE
  */
-import { useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { Badge, Button, Modal, Notice, Progress, Select, Spinner, dialogs } from '@wpuf/components';
 
-import { installPlugin } from './api';
+import { api, installPlugin } from './api';
 
 import { ActionBar, ChoiceCard, Field, ProBadgeImage, StepShell, SwitchRow, Tick, TickCircle } from './parts';
 
@@ -146,7 +146,26 @@ export function RegistrationStep( { data, nav, save, busy, state } ) {
     const [ autologin, setAutologin ] = useState( !! data.autologin );
     const [ layout, setLayout ] = useState( data.layout );
     const [ picking, setPicking ] = useState( false );
+    const [ registrationOpen, setRegistrationOpen ] = useState( data.registration_open );
     const layouts = data.layouts || [];
+
+    // "Allow sign-ups" opens the WordPress settings in another tab: check
+    // again when the owner comes back, so the warning goes once it is on.
+    useEffect( () => {
+        if ( false !== registrationOpen ) {
+            return undefined;
+        }
+
+        const recheck = () => {
+            api( '/onboarding' )
+                .then( ( fresh ) => setRegistrationOpen( fresh?.data?.registration?.registration_open ) )
+                .catch( () => {} );
+        };
+
+        window.addEventListener( 'focus', recheck );
+
+        return () => window.removeEventListener( 'focus', recheck );
+    }, [ registrationOpen ] );
     const shown = layouts.find( ( item ) => item.value === layout ) || layouts[ 0 ] || {};
 
     const values = {
@@ -164,7 +183,7 @@ export function RegistrationStep( { data, nav, save, busy, state } ) {
     return (
         <>
             <StepShell title={ __( 'Login & Registration', 'wp-user-frontend' ) } subtitle={ __( 'Visitors sign up and log in on your own site, in your own theme.', 'wp-user-frontend' ) }>
-                { false === data.registration_open && (
+                { false === registrationOpen && (
                     <Notice
                         tone="warning"
                         className="mb-6"

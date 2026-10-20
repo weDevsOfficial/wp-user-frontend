@@ -1,7 +1,7 @@
 /**
  * Payments table (FlyHR list-table structure, as the forms lists): select
- * column, sortable ID and Date, a status badge, the tax part of the amount
- * and a row menu.
+ * column, sortable ID and Date, a status badge, the discount and tax of the
+ * amount and a row menu.
  *
  * @since WPUF_SINCE
  */
@@ -78,6 +78,7 @@ export default function TransactionsTable( { rows, selected, onSelect, sort, onS
                         <th scope="col" className={ TH }>{ __( 'Status', 'wp-user-frontend' ) }</th>
                         <th scope="col" className={ TH }>{ __( 'User', 'wp-user-frontend' ) }</th>
                         <th scope="col" className={ TH }>{ __( 'Item', 'wp-user-frontend' ) }</th>
+                        <th scope="col" className={ TH }>{ __( 'Discount', 'wp-user-frontend' ) }</th>
                         <th scope="col" className={ TH }>{ __( 'Tax', 'wp-user-frontend' ) }</th>
                         <th scope="col" className={ TH }>{ __( 'Amount', 'wp-user-frontend' ) }</th>
                         <th scope="col" className={ TH }>{ __( 'Gateway', 'wp-user-frontend' ) }</th>
@@ -117,11 +118,14 @@ export default function TransactionsTable( { rows, selected, onSelect, sort, onS
                                 { row.pack && <span className="block text-xs text-gray-400">{ __( 'Subscription', 'wp-user-frontend' ) }</span> }
                                 { row.post && <span className="block text-xs text-gray-400">{ __( 'Post', 'wp-user-frontend' ) }</span> }
                             </td>
-                            { /* The tax part of the amount, as the classic table's Tax column. */ }
+                            { /* Discount and tax of the amount, as the classic table's columns. */ }
+                            <td className={ TD + ' whitespace-nowrap text-gray-500' }>
+                                { row.amounts.discount ? <span>−{ row.amounts.discount }</span> : ( ! row.coupon && '–' ) }
+                                { row.coupon && <span className="block text-xs text-gray-400">{ row.coupon.code }</span> }
+                            </td>
                             <td className={ TD + ' whitespace-nowrap text-gray-500' }>{ parseFloat( row.tax ) > 0 ? row.amounts.tax : '–' }</td>
                             <td className={ TD + ' whitespace-nowrap' }>
                                 <span className="font-medium text-gray-900">{ row.amounts.cost }</span>
-                                { row.coupon && <span className="block text-xs text-gray-400">{ row.coupon.code }</span> }
                             </td>
                             <td className={ TD + ' whitespace-nowrap text-gray-500' }>
                                 <span className="inline-flex items-center gap-2">

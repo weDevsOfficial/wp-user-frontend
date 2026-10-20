@@ -32,7 +32,8 @@ export default function ProfileHero( { person, avatar, coverActions, meta, actio
                 <div className="wpuf-profile-header__text">
                     <div className="wpuf-profile-header__name-row">
                         <Heading className="wpuf-profile-name">{ person.display_name }</Heading>
-                        { person.username && <span className="wpuf-profile-username">@{ person.username }</span> }
+                        { /* A handle reads left to right in an RTL page too. */ }
+                        { person.username && <span className="wpuf-profile-username" dir="ltr">@{ person.username }</span> }
                         { meta }
                     </div>
                     { children }

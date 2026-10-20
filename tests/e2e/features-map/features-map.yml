@@ -373,7 +373,7 @@ features:
   - id: RFS0001
     name: Admin is setting newly registered user role to administrator
   - id: RFS0002
-    name: Admin is validating newly registered user role to administrator
+    name: An administrator role on the form registers the member with the default role (never administrator)
   - id: RFS0003
     name: Admin is setting newly registered user role to editor
   - id: RFS0004

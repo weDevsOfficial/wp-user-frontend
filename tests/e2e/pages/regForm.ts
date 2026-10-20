@@ -788,10 +788,11 @@ export class RegFormPage extends Base {
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.emailField, VendorRegistrationForm.wcfmMemberEmail = faker.internet.email());
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.storeNameField, VendorRegistrationForm.wcfmMemberStoreName = faker.word.words(2));
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.phoneField, VendorRegistrationForm.wcfmMemberPhone = `88016${faker.string.numeric(8)}`);
+        // Next refuses a required upload still on its way: wait for each stored attachment.
         await this.page.setInputFiles(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.storeLogoField, VendorRegistrationForm.wcfmMemberStoreLogo);
-        await this.page.waitForTimeout(2000);
+        await expect(this.page.locator(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.uploadedFile('_vendor_image'))).toHaveCount(1, { timeout: 30000 });
         await this.page.setInputFiles(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.storeBannerField, VendorRegistrationForm.wcfmMemberStoreBanner);
-        await this.page.waitForTimeout(2000);
+        await expect(this.page.locator(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.uploadedFile('_vendor_banner'))).toHaveCount(1, { timeout: 30000 });
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.descriptionField, VendorRegistrationForm.description = faker.lorem.paragraph());
         await this.validateAndClick(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.nextButton);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.addressLine1Field, VendorRegistrationForm.wcfmMemberAddress = faker.location.streetAddress());

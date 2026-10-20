@@ -770,11 +770,19 @@ test.describe('Admin app', () => {
     });
 
     /** Hover a seam / cell and pick a field type from its "+" list (real mouse: the "+" shows on hover). */
+    // The builder scrolls a new field into view smoothly, which can move the target
+    // away from the mouse: hover again until the + shows.
+    const hoverUntilShown = async (hoverTarget: import('@playwright/test').Locator, button: import('@playwright/test').Locator) => {
+        await expect.poll(async () => {
+            await hoverTarget.scrollIntoViewIfNeeded();
+            await hoverTarget.hover();
+            return button.evaluate((b) => getComputedStyle(b).opacity);
+        }).toBe('1');
+    };
+
     const pickFromPlus = async (hoverTarget: import('@playwright/test').Locator, button: import('@playwright/test').Locator, search: string, template: string) => {
-        await hoverTarget.scrollIntoViewIfNeeded();
-        await hoverTarget.hover();
-        await expect(button).toBeVisible();
-        await expect.poll(() => button.evaluate((b) => getComputedStyle(b).opacity)).toBe('1');
+        await expect(button).toHaveCount(1);
+        await hoverUntilShown(hoverTarget, button);
         await button.click();
         await page.locator('input[type="search"][placeholder="Search fields"]').fill(search);
         await page.locator(`[data-insert-field="${template}"]`).click();
@@ -828,9 +836,7 @@ test.describe('Admin app', () => {
         const cell = column.locator('[data-column="column-2"]');
         const plus = cell.locator('button[aria-label="Add a field to this column"]');
 
-        await cell.scrollIntoViewIfNeeded();
-        await cell.hover();
-        await expect.poll(() => plus.evaluate((b) => getComputedStyle(b).opacity)).toBe('1');
+        await hoverUntilShown(cell, plus);
         await plus.click();
         // A column refuses columns: not in its list.
         await expect(page.locator('[data-insert-field="column_field"]')).toHaveCount(0);

@@ -96,15 +96,8 @@ export class PostFormSettingsPage extends Base {
         // Go to post forms page
         await this.navigateToURL(this.wpufPostFormPage);
 
-        // Wait for form list to load and click on the form
-        try {
-            // Find the row containing the form name
-            await this.checkElementText(Selectors.postFormSettings.postTypeColumn(formName, expectedPostType.toLowerCase()), expectedPostType.toLowerCase());
-        } catch (error) {
-            await this.navigateToURL(this.wpufPostFormPage);
-            // Find the row containing the form name
-            await this.checkElementText(Selectors.postFormSettings.postTypeColumn(formName, expectedPostType.toLowerCase()), expectedPostType.toLowerCase());
-        }
+        // The row's Post Type column shows the type's label, its slug in the title.
+        await expect(this.page.locator(Selectors.postFormSettings.postTypeLabel(formName, expectedPostType.toLowerCase()))).toBeVisible({ timeout: 30000 });
     }
 
 

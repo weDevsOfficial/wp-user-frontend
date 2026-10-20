@@ -1137,6 +1137,8 @@ export const Selectors = {
         formNameInput: '//input[@name="post_title"]',
         addNewButton: '(//*[self::a or self::button][contains(@class,"new-wpuf-form")])[1]',
         saveButton: '//button[normalize-space(text())="Save"]',
+        // The list shows the post type's label ("Pages") with the slug as its title.
+        postTypeLabel: (formName: string, postType: string) => `(//tr[.//*[normalize-space()="${formName}"]]//td//span[@title="${postType}"])[1]`,
         postTypeColumn: (formName: string, postType: string) => `(//tr[.//td//a[normalize-space()="${formName}"]]//td[normalize-space()="${postType}"] | //span[normalize-space()="${formName}"]//..//..//td[normalize-space()="${postType}"])[1]`,
         postSubmissionStatusColumn: (formName: string, status: string) => `(//tr[.//td//a[normalize-space()="${formName}"]]//td[normalize-space()="${status}"] | //span[normalize-space()="${formName}"]//..//..//td[normalize-space()="${status}"])[1]`,
         clickFormEditor: '//a[contains(text(),"Form Editor")]',
@@ -1702,6 +1704,7 @@ export const Selectors = {
                 zipField: '//input[@name="_vendor_address[zip]"]',
                 countryField: '//select[@name="_vendor_address[country_select]"]',
                 storeLogoField: '//li[@data-label="Store Logo"]//input[@type="file"]',
+                uploadedFile: (name: string) => `//input[@type="hidden" and @name="wpuf_files[${name}][]"]`,
                 storeBannerField: '//li[@data-label="Store Banner"]//input[@type="file"]',
                 facebookField: '//input[@name="_vendor_fb_profile"]',
                 twitterField: '//input[@name="_vendor_twitter_profile"]',
@@ -2217,7 +2220,8 @@ export const Selectors = {
             validateRecurringPackPaid: (packName: string, packPrice: string, packExpirationNumber:string, packExpirationPeriod:string, installments:string)=> `//article[contains(@class,"wpuf-plan-card")][.//h3[normalize-space()='${packName}']]//div[contains(@class,"wpuf-plan-card__price")][span[contains(@class,"wpuf-plan-card__amount")][normalize-space()='$${packPrice}.00']][span[contains(@class,"wpuf-plan-card__cycle")][normalize-space()='Every ${packExpirationNumber} ${packExpirationPeriod.charAt(0).toUpperCase() + packExpirationPeriod.slice(1)}s, for ${installments} installments']]`,
             packDescriptionFE: (packName: string, packDescription: string) => `//h3[normalize-space(text())='${packName}']//..//..//p[normalize-space(text())='${packDescription}']`,
             freePackButton: (packName: string)=>  `//h3[normalize-space(text())='${packName}']//..//..//span[normalize-space(text())='Free']`,
-            buyNowButton: (packName:string) =>`//h3[normalize-space(text())='${packName}']//..//..//a[normalize-space(text())='Buy Now']`,
+            // A free plan's button reads "Free" for a logged-in member (develop's free_label default).
+            buyNowButton: (packName:string) =>`//h3[normalize-space(text())='${packName}']//..//..//a[normalize-space(text())='Buy Now' or normalize-space(text())='Free']`,
             expandFeaturesButton: (packName: string) => `//h3[normalize-space(text())='${packName}']//..//..//button[contains(text(),"more features")]`,
             lessFeaturesButton: (packName: string) => `//h3[normalize-space(text())='${packName}']//..//..//button[contains(text(),"See less")]`,
             signUpButton: (packName: string) => `//div[contains(@class,"wpuf-pricing-box")]//h3[contains(text(),"${packName}")]//..//..//a[contains(text(),"Sign Up")]`,

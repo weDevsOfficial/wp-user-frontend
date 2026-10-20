@@ -55,7 +55,7 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.page.waitForTimeout(2000);
+        // With auto login the form opens its redirect 1.5 s after the message: check it at once.
         await this.assertionValidate(Selectors.regFormSettings.successMessage);
 
         if (role === 'subscriber') {

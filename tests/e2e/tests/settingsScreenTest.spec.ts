@@ -223,6 +223,23 @@ async function gateOnPro( probe: import('@playwright/test').Locator, reason: str
     test.skip( ! visible, reason );
 }
 
+/**
+ * A switched-off Pro module shows "The <module> module is off" with Open Modules
+ * in place of its settings; a switched-on one shows its provider cards.
+ */
+async function expectProvidersOrModuleOff( module: string, providers: string[] ) {
+    const off = page.getByText(`The ${module} module is off`, { exact: false });
+
+    if ( await off.first().waitFor({ state: 'visible', timeout: 4000 }).then( () => true ).catch( () => false ) ) {
+        await expect(page.getByRole('button', { name: 'Open Modules' }).first()).toBeVisible();
+        return;
+    }
+
+    for ( const provider of providers ) {
+        await expect(page.getByText(provider, { exact: false }).first()).toBeVisible();
+    }
+}
+
 test.describe('React Settings Screen — Pro Tests', () => {
 
     configureSpecFailFast();
@@ -244,8 +261,7 @@ test.describe('React Settings Screen — Pro Tests', () => {
         await settings.openTab('Login & Registration');
         await gateOnPro( page.locator('#wpuf-settings-root').getByText('Social Login', { exact: false }), 'Social Login module inactive' );
         await settings.openSubTab('Social Login');
-        await expect(page.getByText('Facebook', { exact: false }).first()).toBeVisible();
-        await expect(page.getByText('Google', { exact: false }).first()).toBeVisible();
+        await expectProvidersOrModuleOff('Social Login', ['Facebook', 'Google']);
     });
 
     test('@Test_SR0025 : Tax UI (enable + base country + rates)', async () => {
@@ -272,7 +288,7 @@ test.describe('React Settings Screen — Pro Tests', () => {
         await settings.goto();
         await gateOnPro( page.locator(Selectors.settingsScreen.nav).first().getByText('SMS', { exact: false }), 'SMS module inactive' );
         await settings.openTab('SMS');
-        await expect(page.getByText('Twilio', { exact: false }).first()).toBeVisible();
+        await expectProvidersOrModuleOff('SMS Notification', ['Twilio']);
     });
 
     test('@Test_SR0028 : AI Settings provider cards + model', async () => {

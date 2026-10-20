@@ -61,6 +61,7 @@ async function confirmLeave() {
 
     return dialogs.confirm( {
         tone: 'danger',
+        icon: 'warning',
         title: __( 'Unsaved Changes', 'wp-user-frontend' ),
         message: __( 'You have unsaved changes. Are you sure you want to leave?', 'wp-user-frontend' ),
         confirmText: __( 'Discard Changes', 'wp-user-frontend' ),

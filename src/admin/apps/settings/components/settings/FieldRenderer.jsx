@@ -261,7 +261,8 @@ export default function FieldRenderer( { sectionId, field, value, onChange, forc
             { ! isProInactive && <KeyLink name={ field.name } /> }
             { ! isProInactive && field.requires && <SettingRequirement requires={ field.requires } /> }
             { ! isProInactive && [ 'post_form', 'profile_form' ].includes( QUICK_LINKS[ field.name ] ) && <FormPrerequisite value={ value } /> }
-            { normalized.__descHtml && (
+            { /* HtmlField prints the description itself (help texts with links). */ }
+            { normalized.__descHtml && HtmlField !== Component && (
                 <RawHTML className="mt-1 text-sm text-gray-500">{ normalized.__descHtml }</RawHTML>
             ) }
         </div>

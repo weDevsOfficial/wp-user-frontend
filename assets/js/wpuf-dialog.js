@@ -240,7 +240,8 @@
                 root: o.root,
                 tone: o.tone || 'danger',
                 buttons: [
-                    { label: o.cancelText || labels().cancel || 'Cancel', value: false, variant: 'outline' },
+                    // A destructive question starts on Cancel: Enter pressed by reflex keeps the data.
+                    { label: o.cancelText || labels().cancel || 'Cancel', value: false, variant: 'outline', focus: danger },
                     { label: o.confirmText || labels().confirm || 'Yes', value: true, variant: danger ? 'danger' : 'primary' },
                 ],
             } ).then( Boolean );

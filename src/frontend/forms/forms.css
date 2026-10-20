@@ -709,6 +709,11 @@
     outline: none;
 }
 
+/* Keyboard focus: the accent ring the inputs get, not only the hover colour. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-attachment-upload-filelist a.file-selector:focus-visible {
+    box-shadow: 0 0 0 3px var(--wpuf-m-ring) !important;
+}
+
 /* Choices follow the accent. */
 .wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li input[type="checkbox"],
 .wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li input[type="radio"] {

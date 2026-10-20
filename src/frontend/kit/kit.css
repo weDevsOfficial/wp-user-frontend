@@ -85,6 +85,13 @@
     transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
+/* Keyboard focus for every link and control: the kit's neutral ring, not the
+   browser's blue outline. :where() keeps it below component rules. */
+.wpuf-frontend :where(a, button, summary, [role="button"], [role="tab"], [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: none;
+    box-shadow: var(--wpuf-fe-focus);
+}
+
 .wpuf-frontend .wpuf-btn:focus-visible {
     outline: none;
     box-shadow: var(--wpuf-fe-focus);
@@ -1153,6 +1160,12 @@
 .wpuf-frontend a.wpuf-stat:hover,
 .wpuf-frontend button.wpuf-stat:hover {
     border-color: #d1d5db;
+}
+
+.wpuf-frontend a.wpuf-stat:focus-visible,
+.wpuf-frontend button.wpuf-stat:focus-visible {
+    outline: none;
+    box-shadow: var(--wpuf-fe-focus), var(--wpuf-fe-shadow);
 }
 
 .wpuf-frontend .wpuf-stat__icon {

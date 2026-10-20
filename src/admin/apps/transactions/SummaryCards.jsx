@@ -5,6 +5,7 @@
  * @since WPUF_SINCE
  */
 import { __ } from '@wordpress/i18n';
+import { SkeletonBar } from '@wpuf/components';
 import { CircleCheck, Clock, Landmark, Wallet } from 'lucide-react';
 
 /**
@@ -31,7 +32,10 @@ export default function SummaryCards( { counts } ) {
                         </span>
                         <div className="min-w-0">
                             <p className="m-0 text-sm text-gray-500">{ card.label }</p>
-                            <p className="m-0 mt-1 truncate text-xl font-semibold text-gray-900">{ card.value ?? '–' }</p>
+                            { /* Until the first answer: a placeholder, not a dash that reads as "none". */ }
+                            { undefined === card.value || null === card.value
+                                ? <SkeletonBar className="mt-2 h-6 w-20" />
+                                : <p className="m-0 mt-1 truncate text-xl font-semibold text-gray-900">{ card.value }</p> }
                         </div>
                     </div>
                 );

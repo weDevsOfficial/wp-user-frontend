@@ -172,11 +172,13 @@ const SubscriptionList = ( { onStatusClick } ) => {
 	} ), [] );
 
 	// The former sidebar items as the list card's status tabs.
+	const countsLoaded = !! allCount && undefined !== allCount.all;
 	const tabs = [
-		{ id: 'all', label: __( 'All Subscriptions', 'wp-user-frontend' ), count: allCount?.all || 0 },
-		{ id: 'publish', label: __( 'Published', 'wp-user-frontend' ), count: allCount?.publish || 0 },
-		{ id: 'draft', label: __( 'Drafts', 'wp-user-frontend' ), count: allCount?.draft || 0 },
-		{ id: 'trash', label: __( 'Trash', 'wp-user-frontend' ), count: allCount?.trash || 0 },
+		// No count until the counts arrive: "(0)" while loading reads as "no plans".
+		{ id: 'all', label: __( 'All Subscriptions', 'wp-user-frontend' ), count: countsLoaded ? allCount.all || 0 : undefined },
+		{ id: 'publish', label: __( 'Published', 'wp-user-frontend' ), count: countsLoaded ? allCount.publish || 0 : undefined },
+		{ id: 'draft', label: __( 'Drafts', 'wp-user-frontend' ), count: countsLoaded ? allCount.draft || 0 : undefined },
+		{ id: 'trash', label: __( 'Trash', 'wp-user-frontend' ), count: countsLoaded ? allCount.trash || 0 : undefined },
 	];
 
 	let content;

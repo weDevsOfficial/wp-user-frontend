@@ -237,7 +237,9 @@ class TransactionService {
             'cost'     => $this->money( $row['cost'] ),
         ];
         $row['date']     = $row['created'] ? mysql2date( Stores::settings()->wp_option( 'date_format' ), $row['created'] ) : '';
-        $row['gateway_logo'] = $this->gateway_logo( (string) $row['gateway'] );
+        $row['gateway_logo']    = $this->gateway_logo( (string) $row['gateway'] );
+        $row['gateway_label']   = function_exists( 'wpuf_get_payment_type_label' ) && '' !== (string) $row['gateway'] ? wpuf_get_payment_type_label( $row['gateway'] ) : (string) $row['gateway'];
+        $row['transaction_url'] = $this->transaction_url( (string) $row['gateway'], (string) $row['transaction_id'] );
 
         return $row;
     }
@@ -253,6 +255,14 @@ class TransactionService {
      * @return string Image URL
      */
     public function gateway_logo( $gateway ) {
+        $id         = $this->gateway_id( $gateway );
+        $registered = $id && class_exists( Payment::class ) ? Payment::get_payment_gateways() : [];
+
+        // A gateway that brings its own icon (Pro Stripe, a third-party gateway) shows it.
+        if ( $id && 'bank' !== $id && 'paypal' !== $id && ! empty( $registered[ $id ]['icon'] ) ) {
+            return (string) $registered[ $id ]['icon'];
+        }
+
         $gateway = strtolower( $gateway );
         $file    = 'credit-card.svg';
 
@@ -263,6 +273,77 @@ class TransactionService {
         }
 
         return WPUF_ASSET_URI . '/images/' . $file;
+    }
+
+    /**
+     * The registered gateway id of a stored payment type ("Paypal", "Bank/Manual",
+     * "Stripe"), matched without case.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $gateway Stored payment type
+     *
+     * @return string Gateway id, or '' when no gateway matches
+     */
+    public function gateway_id( $gateway ) {
+        $gateway = strtolower( trim( (string) $gateway ) );
+
+        if ( '' === $gateway ) {
+            return '';
+        }
+
+        if ( 'bank/manual' === $gateway || 'bank' === $gateway ) {
+            return 'bank';
+        }
+
+        foreach ( array_keys( class_exists( Payment::class ) ? Payment::get_payment_gateways() : [] ) as $id ) {
+            if ( strtolower( (string) $id ) === $gateway ) {
+                return (string) $id;
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * Where the payment can be looked up at the gateway: PayPal activity, the
+     * Stripe dashboard (test or live by the stored key). Other gateways add
+     * theirs with `wpuf_transaction_gateway_url`.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $gateway        Stored payment type
+     * @param string $transaction_id Gateway transaction id
+     *
+     * @return string URL, or ''
+     */
+    public function transaction_url( $gateway, $transaction_id ) {
+        $id  = $this->gateway_id( $gateway );
+        $url = '';
+
+        if ( '' !== $transaction_id && preg_match( '/^[A-Za-z0-9_-]+$/', $transaction_id ) ) {
+            if ( 'paypal' === $id ) {
+                $sandbox = 'test' === Stores::settings()->get( 'wpuf_payment', 'paypal_test_mode', '' );
+                $url     = ( $sandbox ? 'https://www.sandbox.paypal.com' : 'https://www.paypal.com' ) . '/activity/payment/' . rawurlencode( $transaction_id );
+            } elseif ( 'stripe' === $id && 0 === strpos( $transaction_id, 'pi_' ) ) {
+                $test = 0 === strpos( (string) Stores::settings()->get( 'wpuf_payment', 'stripe_api_secret', '' ), 'sk_test_' );
+                $url  = 'https://dashboard.stripe.com/' . ( $test ? 'test/' : '' ) . 'payments/' . rawurlencode( $transaction_id );
+            }
+        }
+
+        /**
+         * The gateway page of a payment, shown as a link on its transaction ID.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param string $url            URL, or '' for none
+         * @param string $gateway_id     Registered gateway id ('' when unknown)
+         * @param string $transaction_id Gateway transaction id
+         * @param string $gateway        Stored payment type
+         */
+        $url = (string) apply_filters( 'wpuf_transaction_gateway_url', $url, $id, $transaction_id, $gateway );
+
+        return $url ? esc_url_raw( $url ) : '';
     }
 
     /**

@@ -126,7 +126,7 @@ export default function TransactionsTable( { rows, selected, onSelect, sort, onS
                             <td className={ TD + ' whitespace-nowrap text-gray-500' }>
                                 <span className="inline-flex items-center gap-2">
                                     { row.gateway_logo && <img src={ row.gateway_logo } alt="" className="h-4 w-5 object-contain" /> }
-                                    { row.gateway || '–' }
+                                    { row.gateway_label || row.gateway || '–' }
                                 </span>
                             </td>
                             <td className={ TD }>

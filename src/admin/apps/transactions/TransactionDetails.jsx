@@ -6,7 +6,7 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { Button, Modal } from '@wpuf/components';
-import { CalendarDays, CircleCheck, Clock, FileText, Hash, Mail, MapPin, Package, Percent, Receipt, Tag, User, UserRound } from 'lucide-react';
+import { CalendarDays, CircleCheck, Clock, CreditCard, ExternalLink, FileText, Hash, Mail, MapPin, Package, Percent, Receipt, Tag, User, UserRound, Wallet } from 'lucide-react';
 
 import StatusBadge from './StatusBadge';
 
@@ -44,6 +44,15 @@ const ScopeLink = ( { onClick, children } ) => (
 );
 
 /**
+ * Whether a row has something to show (a list of parts may hold only `false`).
+ *
+ * @param {*} value Children.
+ *
+ * @return {boolean} Has a value.
+ */
+const hasValue = ( value ) => ( Array.isArray( value ) ? value.some( hasValue ) : Boolean( value ) || 0 === value );
+
+/**
  * @param {Object}   props
  * @param {Function} props.icon     lucide icon.
  * @param {*}        props.label    Label.
@@ -53,18 +62,22 @@ const Row = ( { icon: Icon, label, children } ) => (
     <div className="flex items-start gap-3 py-2 text-sm">
         <Icon size={ 16 } strokeWidth={ 1.75 } className="mt-0.5 shrink-0 text-gray-400" aria-hidden="true" />
         <dt className="w-32 shrink-0 text-gray-500">{ label }</dt>
-        <dd className="m-0 min-w-0 flex-1 break-words text-gray-900">{ children || <span className="text-gray-400">–</span> }</dd>
+        <dd className="m-0 min-w-0 flex-1 break-words text-gray-900">{ hasValue( children ) ? children : <span className="text-gray-400">–</span> }</dd>
     </div>
 );
 
 /**
  * @param {Object} props
  * @param {*}      props.title    Section title.
+ * @param {*}      [props.action] Link at the right of the title.
  * @param {*}      props.children Rows.
  */
-const Group = ( { title, children } ) => (
+const Group = ( { title, action, children } ) => (
     <section className="rounded-lg border border-solid border-gray-200 px-4 py-2">
-        <h3 className="m-0 pt-2 text-xs font-semibold uppercase tracking-wide text-gray-500">{ title }</h3>
+        <div className="flex items-center justify-between gap-3 pt-2">
+            <h3 className="m-0 text-xs font-semibold uppercase tracking-wide text-gray-500">{ title }</h3>
+            { action }
+        </div>
         <dl className="m-0">{ children }</dl>
     </section>
 );
@@ -107,12 +120,19 @@ export default function TransactionDetails( { row, onClose, onAction, canManage,
             <div className="mt-4 grid gap-3">
                 <Group title={ __( 'Payment', 'wp-user-frontend' ) }>
                     <Row icon={ Receipt } label={ __( 'Subtotal', 'wp-user-frontend' ) }>{ row.amounts.subtotal }</Row>
-                    <Row icon={ Tag } label={ __( 'Coupon', 'wp-user-frontend' ) }>
-                        { row.coupon && <Linked item={ row.coupon } /> }
-                        { row.coupon && onScope && <ScopeLink onClick={ () => onScope( 'coupon_id', row.coupon.id ) }>{ __( 'All payments with it', 'wp-user-frontend' ) }</ScopeLink> }
-                        { row.amounts.discount && <span className="ms-2 text-gray-500">−{ row.amounts.discount }</span> }
-                    </Row>
-                    <Row icon={ Percent } label={ __( 'Tax', 'wp-user-frontend' ) }>{ row.amounts.tax }</Row>
+                    { ( row.coupon || row.amounts.discount ) && (
+                        <Row icon={ Tag } label={ __( 'Coupon', 'wp-user-frontend' ) }>
+                            { row.coupon && <Linked item={ row.coupon } /> }
+                            { row.amounts.discount && <span className="ms-2 text-gray-500">−{ row.amounts.discount }</span> }
+                            { row.coupon && onScope && <ScopeLink onClick={ () => onScope( 'coupon_id', row.coupon.id ) }>{ __( 'All payments with it', 'wp-user-frontend' ) }</ScopeLink> }
+                        </Row>
+                    ) }
+                    { parseFloat( row.tax ) > 0 && <Row icon={ Percent } label={ __( 'Tax', 'wp-user-frontend' ) }>{ row.amounts.tax }</Row> }
+                    <div className="mt-1 flex items-center gap-3 border-0 border-t border-solid border-gray-100 py-2.5 text-sm">
+                        <Wallet size={ 16 } strokeWidth={ 1.75 } className="shrink-0 text-gray-400" aria-hidden="true" />
+                        <dt className="w-32 shrink-0 font-medium text-gray-900">{ __( 'Total', 'wp-user-frontend' ) }</dt>
+                        <dd className="m-0 flex-1 font-semibold text-gray-900">{ row.amounts.cost }</dd>
+                    </div>
                 </Group>
 
                 <Group title={ __( 'Buyer', 'wp-user-frontend' ) }>
@@ -120,9 +140,9 @@ export default function TransactionDetails( { row, onClose, onAction, canManage,
                         { row.user && <Linked item={ row.user } /> }
                         { row.user && onScope && <ScopeLink onClick={ () => onScope( 'user_id', row.user.id ) }>{ __( 'All payments by this user', 'wp-user-frontend' ) }</ScopeLink> }
                     </Row>
-                    <Row icon={ UserRound } label={ __( 'Payer', 'wp-user-frontend' ) }>{ row.payer }</Row>
+                    { row.payer && <Row icon={ UserRound } label={ __( 'Payer', 'wp-user-frontend' ) }>{ row.payer }</Row> }
                     <Row icon={ Mail } label={ __( 'Email', 'wp-user-frontend' ) }>{ row.payer_email }</Row>
-                    <Row icon={ MapPin } label={ __( 'Address', 'wp-user-frontend' ) }>{ address }</Row>
+                    { address && <Row icon={ MapPin } label={ __( 'Address', 'wp-user-frontend' ) }>{ address }</Row> }
                 </Group>
 
                 <Group title={ __( 'Item', 'wp-user-frontend' ) }>
@@ -136,17 +156,28 @@ export default function TransactionDetails( { row, onClose, onAction, canManage,
                     { ! row.pack && ! row.post && <Row icon={ Package } label={ __( 'Item', 'wp-user-frontend' ) } /> }
                 </Group>
 
-                <Group title={ __( 'Gateway', 'wp-user-frontend' ) }>
-                    <div className="flex items-center gap-3 py-2 text-sm">
-                        { row.gateway_logo && (
-                            <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-solid border-gray-200 bg-white">
-                                <img src={ row.gateway_logo } alt="" className="max-h-6 max-w-7" />
-                            </span>
-                        ) }
-                        <span className="font-medium text-gray-900">{ row.gateway || '–' }</span>
-                        { onGatewaySettings && <ScopeLink onClick={ onGatewaySettings }>{ __( 'Gateway settings', 'wp-user-frontend' ) }</ScopeLink> }
-                    </div>
-                    <Row icon={ Hash } label={ __( 'Transaction ID', 'wp-user-frontend' ) }>{ row.transaction_id }</Row>
+                <Group
+                    title={ __( 'Gateway', 'wp-user-frontend' ) }
+                    action={ onGatewaySettings && <ScopeLink onClick={ onGatewaySettings }>{ __( 'Gateway settings', 'wp-user-frontend' ) }</ScopeLink> }
+                >
+                    <Row icon={ CreditCard } label={ __( 'Method', 'wp-user-frontend' ) }>
+                        <span className="inline-flex items-center gap-2">
+                            { row.gateway_logo && <img src={ row.gateway_logo } alt="" className="h-4 w-5 object-contain" /> }
+                            <span className="font-medium">{ row.gateway_label || row.gateway }</span>
+                        </span>
+                    </Row>
+                    { row.transaction_id && (
+                        <Row icon={ Hash } label={ __( 'Transaction ID', 'wp-user-frontend' ) }>
+                            { row.transaction_id && row.transaction_url ? (
+                                /* The payment at the gateway (PayPal activity, Stripe dashboard). */
+                                <a href={ row.transaction_url } target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-primary no-underline hover:underline">
+                                    { row.transaction_id }
+                                    <ExternalLink size={ 14 } aria-hidden="true" />
+                                    <span className="sr-only">{ __( '(opens the payment at the gateway)', 'wp-user-frontend' ) }</span>
+                                </a>
+                            ) : row.transaction_id }
+                        </Row>
+                    ) }
                 </Group>
             </div>
 

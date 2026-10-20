@@ -73,6 +73,14 @@ function wpuf_get_payment_type_label( $payment_method ) {
         return $gateways[ $payment_method ];
     }
 
+    // Gateways store their own spelling ("Paypal", "PayPal", "Stripe"): match the id
+    // without case, so the registered name shows.
+    foreach ( $gateways as $id => $label ) {
+        if ( 0 === strcasecmp( (string) $id, $payment_method ) ) {
+            return $label;
+        }
+    }
+
     // A gateway that is switched off, or that belongs to a plugin that is not active
     // right now, is no longer registered: keep showing the stored name for those old
     // transactions. It is sanitized above, so it can never carry markup.

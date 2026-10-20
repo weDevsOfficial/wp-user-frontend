@@ -34,12 +34,28 @@ export default function PostForm( { schema: boot, root } ) {
     // Enter cannot post the entry again while the next page loads.
     const leaving = useRef( false );
     const initial = useRef( null );
+    const touched = useRef( false );
+
+    // A key or pointer press, or a browser input / change event (autofill), in
+    // the form is the visitor at work. Until then, values fields set on their
+    // own after mounting (a computed total, a default country code) are part
+    // of the starting point, not a change.
+    useEffect( () => {
+        const events = [ 'keydown', 'pointerdown', 'input', 'change' ];
+        const mark = () => {
+            touched.current = true;
+        };
+
+        events.forEach( ( name ) => root.addEventListener( name, mark, true ) );
+
+        return () => events.forEach( ( name ) => root.removeEventListener( name, mark, true ) );
+    }, [ root ] );
 
     // Like the classic warningOnExit(): only a real change arms the exit warning (a focus or blur does not).
     useEffect( () => {
         const snapshot = JSON.stringify( form.values );
 
-        if ( null === initial.current ) {
+        if ( null === initial.current || ! touched.current ) {
             initial.current = snapshot;
 
             return;

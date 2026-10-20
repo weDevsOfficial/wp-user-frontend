@@ -219,6 +219,15 @@ export function afterSubmit( response, schema, showMessage ) {
     if ( response.show_message ) {
         showMessage( response.message || __( 'Thank you.', 'wp-user-frontend' ) );
 
+        // Logged in by the submit (auto login after registration): the page,
+        // header and admin bar were rendered for a visitor, so open it again
+        // once the message was read.
+        if ( response.logged_in ) {
+            window.setTimeout( () => window.location.assign( response.redirect_to || window.location.href ), 1500 );
+
+            return true;
+        }
+
         return false;
     }
 

@@ -59,4 +59,23 @@ describe( 'afterSubmit', () => {
         expect( afterSubmit( { redirect_to: 'https://example.com/post/' }, schema, shown ) ).toBe( true );
         expect( assign ).toHaveBeenCalledWith( 'https://example.com/post/' );
     } );
+
+    test( 'a registration that logged the member in shows the message, then opens the page again', () => {
+        jest.useFakeTimers();
+
+        const assign = jest.fn();
+        const shown = jest.fn();
+
+        global.window = { location: { href: 'https://example.com/join/', assign }, setTimeout };
+
+        expect( afterSubmit( { show_message: true, message: 'Registration successful', logged_in: true, redirect_to: 'https://example.com/join/?msg=profile_update' }, schema, shown ) ).toBe( true );
+        expect( shown ).toHaveBeenCalledWith( 'Registration successful' );
+        expect( assign ).not.toHaveBeenCalled();
+
+        jest.advanceTimersByTime( 1500 );
+
+        expect( assign ).toHaveBeenCalledWith( 'https://example.com/join/?msg=profile_update' );
+
+        jest.useRealTimers();
+    } );
 } );

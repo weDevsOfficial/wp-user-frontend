@@ -13,6 +13,7 @@
  * - every failure rejects with `{ code, message, status, data }`.
  */
 import apiFetch from '@wordpress/api-fetch';
+import { __ } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
 
 import { isResponseLike, readJsonResponse } from './parse';
@@ -41,7 +42,8 @@ export function normalizeError( raw ) {
     }
 
     if ( raw && 'AbortError' === raw.name ) {
-        return { code: 'timeout', message: raw.message || 'The request was aborted.', status: 0 };
+        // The browser's own text ("signal is aborted without reason") means nothing to a person.
+        return { code: 'timeout', message: __( 'The server took too long to answer. Reload the page to try again.', 'wp-user-frontend' ), status: 0 };
     }
 
     const status = Number( raw?.data?.status ?? raw?.status ?? 0 ) || 0;

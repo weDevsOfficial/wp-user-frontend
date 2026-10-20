@@ -29,6 +29,7 @@ test( 'normalizeError gives one shape', () => {
     const abort = new Error( 'aborted' );
     abort.name = 'AbortError';
     expect( normalizeError( abort ) ).toMatchObject( { code: 'timeout', status: 0 } );
+    expect( normalizeError( abort ).message ).toBe( 'The server took too long to answer. Reload the page to try again.' );
 } );
 
 test( 'GET is retried on a 5xx, then resolves', async () => {

@@ -335,7 +335,8 @@ class Account_Service {
                 'url' => $cover_url ? (string) $cover_url : '',
             ],
             'edit_url'     => add_query_arg( [ 'section' => 'edit-profile' ], $this->page_url() ),
-            'logout_url'   => wp_logout_url( $this->page_url() ),
+            // wp_logout_url() escapes & as &amp; for markup; in JSON the browser would read `amp;_wpnonce` and log nobody out.
+            'logout_url'   => html_entity_decode( wp_logout_url( $this->page_url() ), ENT_QUOTES, 'UTF-8' ),
         ];
 
         /**

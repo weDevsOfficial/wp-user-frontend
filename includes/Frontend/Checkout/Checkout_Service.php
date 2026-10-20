@@ -372,7 +372,15 @@ class Checkout_Service {
             }
         }
 
-        return $gateways;
+        /**
+         * The gateways offered at checkout: ticked in Settings > Payments. A gateway
+         * that cannot take a payment yet (Pro Stripe without its keys) leaves itself out.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $gateways id => gateway (`label`, `icon`, ...)
+         */
+        return (array) apply_filters( 'wpuf_checkout_gateways', $gateways );
     }
 
     /**

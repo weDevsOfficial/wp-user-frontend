@@ -485,7 +485,9 @@ class TransactionService {
             'discount'         => ! empty( $info['discount'] ) ? $info['discount'] : 0,
             'coupon_id'        => ! empty( $info['post_data']['coupon_id'] ) ? absint( $info['post_data']['coupon_id'] ) : 0,
             'tax'              => isset( $info['tax'] ) ? $info['tax'] : 0,
-            'cost'             => isset( $info['price'] ) ? $info['price'] : 0,
+            // What the buyer paid: the order price plus its tax (the pending row and
+            // the PayPal / Stripe rows record the same total).
+            'cost'             => ( isset( $info['price'] ) ? floatval( $info['price'] ) : 0 ) + ( ! empty( $info['tax'] ) ? floatval( $info['tax'] ) : 0 ),
             'post_id'          => 'post' === $info['type'] ? $item : 0,
             'pack_id'          => 'pack' === $info['type'] ? $item : 0,
             'payer_first_name' => isset( $info['user_info']['first_name'] ) ? $info['user_info']['first_name'] : '',

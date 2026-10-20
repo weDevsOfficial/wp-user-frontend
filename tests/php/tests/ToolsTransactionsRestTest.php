@@ -91,7 +91,7 @@ class ToolsTransactionsRestTest extends WP_UnitTestCase {
      *
      * @return int Order post ID
      */
-    private function order( $pack_id ) {
+    private function order( $pack_id, $tax = 0 ) {
         $order = self::factory()->post->create( [ 'post_type' => 'wpuf_order', 'post_status' => 'publish' ] );
 
         update_post_meta(
@@ -102,7 +102,7 @@ class ToolsTransactionsRestTest extends WP_UnitTestCase {
                 'item_number' => $pack_id,
                 'price'       => 15,
                 'subtotal'    => 15,
-                'tax'         => 0,
+                'tax'         => $tax,
                 'date'        => current_time( 'mysql' ),
                 'user_info'   => [
                     'id'         => $this->admin,
@@ -261,6 +261,21 @@ class ToolsTransactionsRestTest extends WP_UnitTestCase {
         $this->assertGreaterThanOrEqual( 1, $received );
         $this->assertSame( 'buyer@example.com', $wpdb->get_var( $wpdb->prepare( "SELECT payer_email FROM {$wpdb->prefix}wpuf_transaction WHERE transaction_id = %s", (string) $order ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         $this->assertSame( 'old@example.com', $wpdb->get_var( $wpdb->prepare( "SELECT payer_email FROM {$wpdb->prefix}wpuf_transaction WHERE id = %d", $old ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+    }
+
+    public function test_accept_records_the_amount_paid_with_tax() {
+        global $wpdb;
+
+        wp_set_current_user( $this->admin );
+        $order = $this->order( 0, 1.5 );
+
+        $this->call( 'POST', 'admin/transactions/accept', [ 'items' => [ [ 'kind' => 'order', 'id' => $order ] ] ] );
+
+        // The buyer paid price + tax (as the pending row and PayPal / Stripe record it).
+        $row = $wpdb->get_row( $wpdb->prepare( "SELECT subtotal, tax, cost FROM {$wpdb->prefix}wpuf_transaction WHERE transaction_id = %s", (string) $order ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        $this->assertEquals( 15, (float) $row->subtotal );
+        $this->assertEquals( 1.5, (float) $row->tax );
+        $this->assertEquals( 16.5, (float) $row->cost );
     }
 
     public function test_transaction_actions_need_manage_options() {

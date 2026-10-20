@@ -24,6 +24,7 @@ export default function UnsavedGuard( { dirty, open, onDiscard, onContinue, mess
         <ConfirmDialog
             open={ open }
             tone="danger"
+            icon="warning"
             title={ __( 'Unsaved Changes', 'wp-user-frontend' ) }
             message={ message || (
                 <>

@@ -1,11 +1,10 @@
 /**
  * UnsavedChanges: confirm dialog shown when leaving a tab with unsaved edits,
- * on the shared ConfirmDialog (its unsaved-changes picture on top). "Continue
- * Editing" (the safe choice) has focus.
+ * on the shared ConfirmDialog with its warning icon, like the other unsaved
+ * changes dialogs. "Continue Editing" (the safe choice) has focus.
  */
 import { __ } from '@wordpress/i18n';
 import { ConfirmDialog } from '@wpuf/components';
-import { settingsData } from '../../boot';
 
 const UnsavedChanges = ( { onDiscard, onContinue } ) => (
     <ConfirmDialog
@@ -16,7 +15,7 @@ const UnsavedChanges = ( { onDiscard, onContinue } ) => (
         confirmText={ __( 'Discard Changes', 'wp-user-frontend' ) }
         tone="danger"
         focusCancel
-        media={ <img src={ `${ settingsData().asset_url || '' }/images/modal/unsaved-changes.svg` } alt="" className="size-[100px]" /> }
+        icon="warning"
         onConfirm={ onDiscard }
         onCancel={ onContinue }
     />

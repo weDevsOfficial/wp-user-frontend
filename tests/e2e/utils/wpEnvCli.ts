@@ -25,7 +25,10 @@ export function wpCli(command: string): string {
     // Use the current package name: `wp-env` is a deprecated shim that only prints
     // "Please run npx @wordpress/env instead" and exits 0 without running wp-cli, which
     // made every wpCli() call return that message and throw when parsing its result.
-    const full = `npx @wordpress/env run ${wpEnvCliContainer()} wp --skip-plugins --skip-themes ${command}`;
+    // WPUF_E2E_WP_CLI runs plain wp-cli instead (e.g. `wp --path=/path/to/site`), for a local
+    // run against a Herd/Valet site rather than wp-env. CI does not set it.
+    const wp = process.env.WPUF_E2E_WP_CLI || `npx @wordpress/env run ${wpEnvCliContainer()} wp`;
+    const full = `${wp} --skip-plugins --skip-themes ${command}`;
     // `@wordpress/env` resolves the instance from its working directory. In CI the suite and
     // the wp-env instance share this directory, so the default cwd is correct. For a local
     // setup where the wp-env project lives elsewhere (its .wp-env.json is not under tests/e2e),

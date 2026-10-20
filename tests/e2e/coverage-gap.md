@@ -359,6 +359,12 @@ provider **API stub/sandbox** or provider API assertion; avoid hitting live prov
   and the post is deleted (accepting the confirm) from `/account/?section=post`. POM `postForm.ts`
   `editFirstPostFromDashboard` / `validatePostEdited` / `validateMathCaptchaEnforced` /
   `deletePostFromDashboard`.
+- **Business QA round (BS-17 / BS-18)**, `businessQaTest.spec.ts` + `api/businessQaApi.spec.ts`:
+  `[wpuf_dashboard layout=list]` shows the posts card only (`BQ0001`), the post form's exit prompt
+  needs a real edit (`BQ0002`), the delete question starts on Cancel (`BQ0003`), keyboard focus
+  shows the neutral ring (`BQ0004`), the account logout link is a plain URL (`AP0017`), Pro auto
+  login after registration answers `logged_in` (`AP0018`), every post form template stores its own
+  key (`AP0016`). Each one fails on the code before its fix.
 
 **Gaps:**
 - 🔴 Posts tab: **pagination** and **status filter** (only edit/delete of the first post is covered).

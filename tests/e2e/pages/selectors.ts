@@ -2522,4 +2522,17 @@ export const Selectors = {
         optionsAiList: '.wpuf-ai-modal .wpuf-ai-options-list',
         optionsAiImport: '.wpuf-ai-modal button:has-text("Import Selected")',
     },
+
+    // Business QA round (qa-stories business BS-17 / BS-18): React dashboard, post form, dialog.
+    businessQa: {
+        dashboardRoot: '.wpuf-dashboard',
+        dashboardHero: '.wpuf-dashboard-hero',
+        dashboardPostsCard: '.wpuf-dashboard-posts',
+        dashboardSide: '.wpuf-dashboard__side',
+        dashboardStatusCards: '.wpuf-dashboard .wpuf-stat',
+        rowDelete: '.wpuf-row-actions__delete',
+        dialog: '.wpuf-dialog',
+        dialogCancel: '.wpuf-dialog .wpuf-dialog__btn--outline',
+        postTitleInput: 'input[name="post_title"]',
+    },
 };

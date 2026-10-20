@@ -838,6 +838,13 @@ features:
     name: GET /wpuf_form pagination contract (per_page/page echoed, capped)
   - id: AP0015
     name: GET /wpuf_form search with no match returns an empty result
+  # Business QA rules (qa-stories business BS-17 / BS-18) — api/businessQaApi.spec.ts
+  - id: AP0016
+    name: Every post form template stores its own key (EDD stored the Events Calendar key)
+  - id: AP0017
+    name: The account logout link is a plain URL (no &amp;) with action + _wpnonce
+  - id: AP0018
+    name: Auto login after a Pro registration answers logged_in and sets the login cookie
   # Frontend login ([wpuf-login] shortcode) — frontendLoginTest.spec.ts
   - id: FL0001
     name: Login form renders with all controls on the shortcode page
@@ -914,3 +921,12 @@ features:
     name: Admin screens keep the develop runtime contract
   - id: PAR0014
     name: Untouched subscription save leaves the pack byte-identical
+  # Business QA on the React frontend (qa-stories business BS-17 / BS-18) — businessQaTest.spec.ts
+  - id: BQ0001
+    name: "[wpuf_dashboard layout=list] shows the posts card only; the full layout keeps the member blocks"
+  - id: BQ0002
+    name: An untouched post form leaves without "leave page?"; a real edit asks
+  - id: BQ0003
+    name: The delete question opened by keyboard starts on Cancel; Enter keeps the post
+  - id: BQ0004
+    name: Keyboard focus on a dashboard link shows the neutral ring, not the browser blue outline

@@ -1,6 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { ACTION_TYPES } from './constants';
 import { fetchSettings, saveSettings } from '../../api/settings';
+import { paymentProblems } from './validation';
 import { changedValues, changedExtra } from './diff';
 
 export function setData( data ) {
@@ -101,8 +102,20 @@ export function save() {
         try {
             const values = select.getValues();
             const extra = select.getExtra();
+            const changed = changedValues( values, select.getSavedValues() );
+
+            // A payment setup being changed must be complete (validation.js).
+            const problems = changed.wpuf_payment ? paymentProblems( values.wpuf_payment ) : [];
+
+            if ( problems.length ) {
+                dispatch.setError( __( 'Finish the payment settings before saving:', 'wp-user-frontend' ) + '\n• ' + problems.join( '\n• ' ) );
+                dispatch.setIsSaving( false );
+
+                return false;
+            }
+
             const response = await saveSettings(
-                changedValues( values, select.getSavedValues() ),
+                changed,
                 changedExtra( extra, select.getSavedExtra() )
             );
             if ( response && response.success ) {

@@ -146,11 +146,8 @@ class FrontendFormRestTest extends WP_UnitTestCase {
     public function test_third_party_field_types_render_their_own_markup() {
         wp_set_current_user( self::factory()->user->create( [ 'role' => 'subscriber' ] ) );
         $form_id = $this->form();
-        $field   = new class() extends \WeDevs\Wpuf\Fields\Form_Field_Text {
-            public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
-                echo '<li class="acme-color-picker"><input name="acme_color" type="color"></li>';
-            }
-        };
+        // A named class: on PHP 8 an anonymous one is named after its WPUF parent.
+        $field   = new Acme_Color_Field();
 
         $manager = wpuf()->fields;
         $prop    = new ReflectionProperty( $manager, 'fields' );
@@ -421,5 +418,15 @@ class FrontendFormRestTest extends WP_UnitTestCase {
 
         $this->assertSame( 200, $response->get_status() );
         $this->assertStringContainsString( 'iframe', $response->get_data()['html'] );
+    }
+}
+
+/**
+ * A field type another plugin adds (class outside WPUF).
+ */
+class Acme_Color_Field extends \WeDevs\Wpuf\Fields\Form_Field_Text {
+
+    public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
+        echo '<li class="acme-color-picker"><input name="acme_color" type="color"></li>';
     }
 }

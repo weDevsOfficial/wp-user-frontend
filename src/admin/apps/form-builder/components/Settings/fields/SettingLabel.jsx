@@ -7,7 +7,7 @@ import { HelpTextIcon } from '@wpuf/components';
  * badge).
  *
  * @param {Object} props
- * @param {Object} props.field   Field definition (label, help_text, link).
+ * @param {Object} props.field   Field definition (label, help_text, link, required).
  * @param {string} [props.htmlFor] Control id.
  */
 export default function SettingLabel( { field, htmlFor, children } ) {
@@ -16,6 +16,7 @@ export default function SettingLabel( { field, htmlFor, children } ) {
             { field.label && (
                 <label htmlFor={ htmlFor } className="text-sm font-medium leading-5 text-gray-700 my-1.5">
                     { field.label }
+                    { field.required && <span className="ml-0.5 text-red-600" aria-hidden="true">*</span> }
                 </label>
             ) }
             { field.help_text && <HelpTextIcon text={ field.help_text } /> }

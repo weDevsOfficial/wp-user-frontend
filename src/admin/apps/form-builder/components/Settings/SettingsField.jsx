@@ -24,6 +24,7 @@ import SettingInfo from './fields/SettingInfo';
 import FieldHelp from './FieldHelp';
 import { Notice } from '@wpuf/components';
 import { builderData } from '../../utils/boot';
+import { requiredSettings, settingProblem } from '../../utils/requiredSettings';
 
 const FIELD_MAP = {
     toggle: ToggleField,
@@ -176,17 +177,23 @@ function SettingsFieldControl( { fieldKey, field, name, value, onChange, setting
         return null;
     }
 
+    // A required setting (utils/requiredSettings.js) is marked and says what is
+    // missing while it is shown; the save is refused until it is filled.
+    const required = requiredSettings( builderData().form_type ).includes( fieldKey );
+    const problem = required ? settingProblem( fieldKey, value ) : '';
+
     // Vue wraps every field in <div class="mt-6 wpuf-input-container"> and
     // prints `long_help` under any field. `note` and `long_help` are filtered
     // with wp_kses_post before they leave PHP.
     return (
         <div className="mt-5 wpuf-input-container">
             <FieldComponent
-                field={ field }
+                field={ required ? { ...field, required: true } : field }
                 name={ name }
                 value={ value }
                 onChange={ onChange }
             />
+            { problem && <p className="m-0 mt-1.5 text-sm text-red-600" role="alert">{ problem }</p> }
             { /* What the setting depends on elsewhere (pages, packs, payments). */ }
             <FieldHelp name={ name } field={ field } value={ value } />
             { /* `info` (structured help) wins over the classic builder's `long_help` HTML. */ }

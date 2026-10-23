@@ -172,6 +172,22 @@ export function isFieldVisible( fieldName, settings ) {
 }
 
 /**
+ * isFieldVisible() with the dependencies Pro adds (`wpuf.formBuilder.fieldDependencies`),
+ * for code outside React components (the save checks).
+ *
+ * @since WPUF_SINCE
+ *
+ * @param {string} fieldName Field key.
+ * @param {Object} settings  Current form settings.
+ * @return {boolean} Whether the field is shown.
+ */
+export function isFieldShown( fieldName, settings ) {
+    const deps = applyFilters( 'wpuf.formBuilder.fieldDependencies', FIELD_DEPENDENCIES )[ fieldName ];
+
+    return ! deps || deps.dependsOn.every( ( dep ) => isConditionMet( dep, settings ) );
+}
+
+/**
  * Hook that returns a visibility checker function bound to current settings.
  * Also allows Pro extensions to add dependencies via wp.hooks filter.
  *

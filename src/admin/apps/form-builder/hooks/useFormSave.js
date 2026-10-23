@@ -11,6 +11,8 @@ import { request, restPath } from '@wpuf/api';
 import { setPendingClean } from '../common/saveState';
 import { withShownFirstOptions } from '../components/Settings/shownFirstOptions';
 import { isOn, validatePaymentSettings, validateRequiredFields } from '../utils/saveValidation';
+import { invalidRequiredSettings, invalidSettingsMessage } from '../utils/requiredSettings';
+import { isFieldShown } from '../components/Settings/useFieldDependencies';
 
 /**
  * Hook for handling form save over REST (`wpuf/v1/admin/forms/{id}`).
@@ -53,6 +55,20 @@ export default function useFormSave() {
         // Selects shown with develop's first option are stored (and validated) with
         // it on an edited save; an untouched save changes nothing stored (G3).
         const saveSettings = isDirty ? withShownFirstOptions( settings, ( window.wpuf_form_builder || {} ).settings_items ) : settings;
+
+        // Required settings left empty (button texts, redirect page / URL / message,
+        // registration e-mails): say which and where instead of storing them empty.
+        const invalidSettings = invalidRequiredSettings( {
+            settings: saveSettings,
+            formType,
+            items: ( window.wpuf_form_builder || {} ).settings_items || {},
+            isVisible: ( key ) => isFieldShown( key, saveSettings ),
+        } );
+
+        if ( invalidSettings.length ) {
+            openSaveValidationError( invalidSettingsMessage( invalidSettings ) );
+            return;
+        }
 
         // Client-side payment validation
         const paymentError = validatePaymentSettings( saveSettings );

@@ -370,6 +370,49 @@ export function populateTaxonomyRestrictionData(item) {
     };
 }
 
+/**
+ * Price and cycle rules of a plan: no negative price; a recurring plan needs a
+ * price above 0 and a cycle of at least 1; a billing limit and a trial need at
+ * least 1 when they are on. A 0 cycle reached PayPal as a 0 interval.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param {Object} meta Plan meta values.
+ * @return {Array<Array<string>>} [ [ field id, message ] ]
+ */
+export function planAmountErrors(meta) {
+    const on = (value) => ['on', 'yes', 'true', '1', true, 1].includes(value);
+    const number = (value) => ('' === value || undefined === value || null === value ? NaN : Number(value));
+    // The editor writes the `_` meta keys; plans read from the list carry both spellings.
+    const get = (key) => (undefined !== meta['_' + key] ? meta['_' + key] : meta[key]);
+    const errors = [];
+    const rawAmount = get('billing_amount');
+    const amount = number(rawAmount);
+    const recurring = on(get('recurring_pay'));
+
+    if ('' !== (rawAmount ?? '') && (Number.isNaN(amount) || amount < 0)) {
+        errors.push(['billing-amount', __('Enter a price of 0 or more.', 'wp-user-frontend')]);
+    } else if (recurring && !(amount > 0)) {
+        errors.push(['billing-amount', __('A recurring plan needs a price above 0.', 'wp-user-frontend')]);
+    }
+
+    if (recurring) {
+        if (!(number(get('billing_cycle_number')) >= 1)) {
+            errors.push(['wpuf-billing-cycle-number', __('Enter a billing cycle of 1 or more.', 'wp-user-frontend')]);
+        }
+
+        if (on(get('enable_billing_limit')) && !(number(get('billing_limit')) >= 1)) {
+            errors.push(['billing-limit', __('Enter a billing limit of 1 or more.', 'wp-user-frontend')]);
+        }
+
+        if (on(get('trial_status')) && !(number(get('trial_duration')) >= 1)) {
+            errors.push(['trial-period-value', __('Enter a trial length of 1 or more.', 'wp-user-frontend')]);
+        }
+    }
+
+    return errors;
+}
+
 export function validateFields(mode = 'update') {
     return ({ select, dispatch }) => {
         dispatch.resetErrors();
@@ -420,6 +463,8 @@ export function validateFields(mode = 'update') {
                     dispatch.setError(fieldData.id, __(fieldData.label + ' is required', 'wp-user-frontend'));
                 }
             }
+
+            planAmountErrors(item.meta_value || {}).forEach(([id, message]) => dispatch.setError(id, message));
         }
 
         return applyFilters( 'wpuf.subscription.validateFields', !select.hasError(), item, mode );

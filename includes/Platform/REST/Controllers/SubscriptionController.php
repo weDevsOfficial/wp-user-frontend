@@ -560,6 +560,17 @@ class SubscriptionController extends RestController {
             );
         }
 
+        $invalid = $this->invalid_plan_values( $name, $subscription );
+
+        if ( $invalid ) {
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => $invalid,
+                ]
+            );
+        }
+
         // The subscription store writes the pack and its meta and fires the
         // pack hooks (task 2.4b); the responses stay as they were.
         $saved = Stores::subscriptions()->save_from_rest( $subscription, $request );
@@ -579,6 +590,56 @@ class SubscriptionController extends RestController {
                 'message' => $id ? __( 'Subscription updated successfully', 'wp-user-frontend' ) : __( 'Subscription added successfully', 'wp-user-frontend' ),
             ]
         );
+    }
+
+    /**
+     * Plan values the editor refuses, checked again for direct REST calls: a
+     * name, no negative price, and for a recurring plan a price above 0 and a
+     * billing cycle of at least 1 (a 0 cycle reached PayPal as a 0 interval).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $name         Sanitized plan name.
+     * @param array  $subscription Posted plan.
+     *
+     * @return string Message, or '' when the values are fine
+     */
+    private function invalid_plan_values( $name, $subscription ) {
+        if ( '' === trim( $name ) ) {
+            return __( 'Plan name is required.', 'wp-user-frontend' );
+        }
+
+        $meta = isset( $subscription['meta_value'] ) && is_array( $subscription['meta_value'] ) ? $subscription['meta_value'] : [];
+
+        if ( ! $meta ) {
+            return '';
+        }
+
+        // The editor writes the `_` keys; older payloads carry the plain ones.
+        $get = function ( $key ) use ( $meta ) {
+            if ( isset( $meta[ '_' . $key ] ) ) {
+                return $meta[ '_' . $key ];
+            }
+
+            return isset( $meta[ $key ] ) ? $meta[ $key ] : '';
+        };
+
+        $amount    = $get( 'billing_amount' );
+        $recurring = in_array( $get( 'recurring_pay' ), [ true, 1, 'on', 'yes', 'true', '1' ], true );
+
+        if ( '' !== (string) $amount && ( ! is_numeric( $amount ) || (float) $amount < 0 ) ) {
+            return __( 'Enter a price of 0 or more.', 'wp-user-frontend' );
+        }
+
+        if ( $recurring && (float) $amount <= 0 ) {
+            return __( 'A recurring plan needs a price above 0.', 'wp-user-frontend' );
+        }
+
+        if ( $recurring && (int) $get( 'billing_cycle_number' ) < 1 ) {
+            return __( 'Enter a billing cycle of 1 or more.', 'wp-user-frontend' );
+        }
+
+        return '';
     }
 
     /**

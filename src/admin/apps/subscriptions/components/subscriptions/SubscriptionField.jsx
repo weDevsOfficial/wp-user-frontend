@@ -391,6 +391,9 @@ const SubscriptionField = ( { field, fieldId, subscription, onFieldChange } ) =>
 								onFieldChange( subField, newValue );
 							};
 
+							// A sub-field's own error (planAmountErrors: cycle, trial length).
+							const subError = errors[ subField.id ] || errors[ subField.name ];
+
 							if ( subField.type === 'input-number' ) {
 								return (
 									<div key={ subFieldKey } className="py-4 pl-3 pr-4 w-1/2">
@@ -403,7 +406,9 @@ const SubscriptionField = ( { field, fieldId, subscription, onFieldChange } ) =>
 										step={ subField.step }
 										onChange={ handleSubFieldChange }
 										disabled={ isPro }
+										aria-invalid={ subError ? 'true' : undefined }
 									/>
+									{ subError && <span className="mt-1 block text-sm text-red-500">{ subError.message }</span> }
 									</div>
 								);
 							}

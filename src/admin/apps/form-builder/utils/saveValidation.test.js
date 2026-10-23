@@ -46,3 +46,27 @@ describe( 'validatePaymentSettings', () => {
         expect( validatePaymentSettings( { payment_options: 'on', choose_payment_option: 'force_pack_purchase', fallback_ppp_enable: 'off' } ) ).toBeNull();
     } );
 } );
+
+describe( 'validateFieldMetaKeys', () => {
+    const { validateFieldMetaKeys } = require( './saveValidation' );
+
+    test( 'a custom field without a meta key, or two sharing one, is refused', () => {
+        expect( validateFieldMetaKeys( [ { template: 'text_field', is_meta: 'yes', name: '', label: 'Phone' } ] ) ).toContain( 'Phone has no meta key.' );
+        expect( validateFieldMetaKeys( [
+            { template: 'text_field', is_meta: 'yes', name: 'phone', label: 'Phone' },
+            { template: 'column_field', is_meta: 'no', inner_fields: { 'column-1': [ { template: 'text_field', is_meta: 'yes', name: 'phone', label: 'Mobile' } ] } },
+        ] ) ).toContain( 'Phone, Mobile use the same meta key' );
+        expect( validateFieldMetaKeys( [
+            { template: 'date_field', is_meta: 'yes', name: '_EventStartDate', label: 'Start' },
+            { template: 'text_field', is_meta: 'yes', name: '_eventstartdate', label: 'Text' },
+        ] ) ).toContain( 'Start, Text use the same meta key' );
+    } );
+
+    test( 'post fields, distinct keys and repeat-field inner keys are fine', () => {
+        expect( validateFieldMetaKeys( [
+            { template: 'post_title', is_meta: 'no', name: 'post_title' },
+            { template: 'text_field', is_meta: 'yes', name: 'phone', label: 'Phone' },
+            { template: 'repeat_field', is_meta: 'yes', name: 'rows', label: 'Rows', inner_fields: [ { template: 'text_field', is_meta: 'yes', name: 'phone', label: 'Row phone' } ] },
+        ] ) ).toBeNull();
+    } );
+} );

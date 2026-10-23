@@ -10,7 +10,7 @@ import { getLegacySettingsPayload } from '../common/LegacySlot';
 import { request, restPath } from '@wpuf/api';
 import { setPendingClean } from '../common/saveState';
 import { withShownFirstOptions } from '../components/Settings/shownFirstOptions';
-import { isOn, validatePaymentSettings, validateRequiredFields } from '../utils/saveValidation';
+import { isOn, validateFieldMetaKeys, validatePaymentSettings, validateRequiredFields } from '../utils/saveValidation';
 import { invalidRequiredSettings, invalidSettingsMessage } from '../utils/requiredSettings';
 import { isFieldShown } from '../components/Settings/useFieldDependencies';
 
@@ -45,7 +45,7 @@ export default function useFormSave() {
         }
 
         // Validate required fields exist
-        const fieldsError = validateRequiredFields( formFields, formType );
+        const fieldsError = validateRequiredFields( formFields, formType ) || validateFieldMetaKeys( formFields );
 
         if ( fieldsError ) {
             openSaveValidationError( fieldsError );

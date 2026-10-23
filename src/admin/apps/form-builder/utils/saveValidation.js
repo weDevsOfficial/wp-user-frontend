@@ -5,7 +5,7 @@
  *
  * @since WPUF_SINCE
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 
 /**
  * Check if a toggle/checkbox value is considered "on" (wpuf_is_checkbox_or_toggle_on():
@@ -115,3 +115,109 @@ export function validatePaymentSettings( settings ) {
     return null;
 }
 
+/**
+ * Custom fields need a meta key, and two fields of one form must not share one
+ * (the second overwrites the first's value; keys match without case). Fields of a repeat field are their
+ * own group; column fields belong to the form.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param {Array} formFields Form fields.
+ * @return {string|null} Error message (HTML, escaped) or null if valid.
+ */
+export function validateFieldMetaKeys( formFields ) {
+    const escape = ( text ) => String( text ).replace( /[&<>"']/g, ( c ) => ( { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ c ] ) );
+    const missing = [];
+    const groups = { form: {} };
+
+    const collect = ( fields, group ) => {
+        ( Array.isArray( fields ) ? fields : [] ).forEach( ( field ) => {
+            if ( ! field || 'object' !== typeof field ) {
+                return;
+            }
+
+            if ( field.inner_fields && 'object' === typeof field.inner_fields ) {
+                const inner = Array.isArray( field.inner_fields ) ? [ field.inner_fields ] : Object.values( field.inner_fields );
+                const innerGroup = 'repeat_field' === field.template ? 'repeat:' + ( field.name || field.id ) : group;
+
+                groups[ innerGroup ] = groups[ innerGroup ] || {};
+                inner.forEach( ( list ) => collect( list, innerGroup ) );
+            }
+
+            if ( 'yes' !== field.is_meta ) {
+                return;
+            }
+
+            const name = String( field.name || '' ).trim();
+            const label = field.label || field.template || __( 'A field', 'wp-user-frontend' );
+
+            if ( ! name ) {
+                missing.push( label );
+                return;
+            }
+
+            // WordPress matches meta keys without case (the meta_key column's collation).
+            ( groups[ group ][ name.toLowerCase() ] = groups[ group ][ name.toLowerCase() ] || [] ).push( label );
+        } );
+    };
+
+    collect( formFields, 'form' );
+
+    const rows = missing.map( ( label ) => '<li>' + escape(
+        /* translators: %s: field label */
+        sprintf( __( '%s has no meta key.', 'wp-user-frontend' ), label )
+    ) + '</li>' );
+
+    Object.values( groups ).forEach( ( names ) => Object.entries( names ).forEach( ( [ name, labels ] ) => {
+        if ( labels.length > 1 ) {
+            rows.push( '<li>' + escape(
+                /* translators: 1: field labels, 2: meta key */
+                sprintf( __( '%1$s use the same meta key "%2$s".', 'wp-user-frontend' ), labels.join( ', ' ), name )
+            ) + '</li>' );
+        }
+    } ) );
+
+    if ( ! rows.length ) {
+        return null;
+    }
+
+    return '<p>' + escape( __( 'Each custom field needs its own meta key (field options, Meta Key):', 'wp-user-frontend' ) ) + '</p><ul style="list-style:disc;padding-left:1.25rem;margin:0">' + rows.join( '' ) + '</ul>';
+}
+
+/**
+ * Warnings for option values that would lose options when saved (the field
+ * stores its options keyed by value).
+ *
+ * @since WPUF_SINCE
+ *
+ * @param {Array<Object>} options [ { label, value } ]
+ * @return {string[]} Messages.
+ */
+export function optionProblems( options ) {
+    const problems = [];
+    const seen = new Set();
+    const repeated = new Set();
+
+    options.forEach( ( opt ) => {
+        const value = String( opt.value ?? '' ).trim();
+
+        if ( seen.has( value ) ) {
+            repeated.add( value );
+        }
+
+        seen.add( value );
+    } );
+
+    if ( seen.has( '' ) ) {
+        problems.push( __( 'An option has no value. Give every option a value: options without one are not saved properly.', 'wp-user-frontend' ) );
+    }
+
+    repeated.forEach( ( value ) => {
+        if ( '' !== value ) {
+            /* translators: %s: option value */
+            problems.push( sprintf( __( 'Options share the value "%s": only the last one is kept when you save. Give each option its own value.', 'wp-user-frontend' ), value ) );
+        }
+    } );
+
+    return problems;
+}

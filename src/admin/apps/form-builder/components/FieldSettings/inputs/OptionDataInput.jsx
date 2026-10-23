@@ -25,6 +25,7 @@ import SettingHelpText from './SettingHelpText';
 import { BUILDER_SLOTS, BuilderSlot } from '../../../slots';
 import { openRoute } from '../../../../../app/client';
 import { builderData } from '../../../utils/boot';
+import { optionProblems } from '../../../utils/saveValidation';
 
 /**
  * Generate a random ID for option rows.
@@ -402,6 +403,11 @@ export default function OptionDataInput( { optionField, field } ) {
                     </SortableContext>
                 </DndContext>
             </div>
+
+            { /* Options are stored keyed by value: an empty or repeated value loses options on save. */ }
+            { optionProblems( options ).map( ( problem ) => (
+                <Notice key={ problem } tone="warning" className="mt-3">{ problem }</Notice>
+            ) ) }
 
             <BuilderSlot name={ BUILDER_SLOTS.OPTION_DATA_AFTER } fillProps={ { field, options, setOptions } } />
 

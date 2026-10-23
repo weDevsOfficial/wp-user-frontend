@@ -150,6 +150,21 @@ class FormSave {
             }
         }
 
+        // Required settings the builder checks too (direct REST saves): an edited
+        // React save never stores them empty.
+        if ( $touched && isset( $post_data['settings'] ) ) {
+            $missing = $this->missing_required_settings( $settings, get_post_type( $form_id ) );
+
+            if ( $missing ) {
+                return new WP_Error(
+                    'wpuf_form_required_settings',
+                    /* translators: %s: setting keys */
+                    sprintf( __( 'These form settings are required: %s', 'wp-user-frontend' ), implode( ', ', $missing ) ),
+                    [ 'status' => 400 ]
+                );
+            }
+        }
+
         // Server-side validation for fallback PPP cost
         if ( $this->fallback_ppp_cost_missing( $settings ) ) {
             return new WP_Error( 'wpuf_form_ppp_cost_required', __( 'Cost for each additional post after pack limit is reached is required when Pay-per-post billing when limit exceeds is enabled.', 'wp-user-frontend' ) );
@@ -283,6 +298,76 @@ class FormSave {
         }
 
         return false;
+    }
+
+    /**
+     * Required settings that are shown and empty or wrong, as the builder's
+     * requiredSettings.js checks them: button texts, the message / page / URL
+     * of the chosen redirect, and the registration e-mail of the chosen type.
+     * A key the payload does not carry is not checked.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array  $settings  Form settings
+     * @param string $post_type Form post type
+     *
+     * @return string[] Setting keys
+     */
+    private function missing_required_settings( $settings, $post_type ) {
+        $is_profile = 'wpuf_profile' === $post_type;
+        $required   = [ 'submit_text', 'update_text' ];
+        $redirects  = $is_profile
+            ? [
+                'reg_redirect_to'     => [ 'message', 'reg_page_id', 'registration_url' ],
+                'profile_redirect_to' => [ 'update_message', 'profile_page_id', 'profile_url' ],
+            ]
+            : [
+                'redirect_to'      => [ 'message', 'page_id', 'url' ],
+                'edit_redirect_to' => [ 'update_message', 'edit_page_id', 'edit_url' ],
+            ];
+
+        foreach ( $redirects as $selector => $keys ) {
+            $choice = isset( $settings[ $selector ] ) ? $settings[ $selector ] : '';
+            $index  = array_search( $choice, [ 'same', 'page', 'url' ], true );
+
+            if ( false !== $index ) {
+                $required[] = $keys[ $index ];
+            }
+        }
+
+        if ( $is_profile && ! empty( $settings['user_notification'] ) && wpuf_is_checkbox_or_toggle_on( $settings['user_notification'] ) ) {
+            $type = isset( $settings['notification_type'] ) ? $settings['notification_type'] : '';
+
+            if ( 'email_verification' === $type ) {
+                array_push( $required, 'verification_subject', 'verification_body' );
+            } elseif ( 'welcome_email' === $type ) {
+                array_push( $required, 'welcome_email_subject', 'welcome_email_body' );
+            }
+        }
+
+        $missing = [];
+
+        foreach ( $required as $key ) {
+            if ( ! array_key_exists( $key, $settings ) ) {
+                continue;
+            }
+
+            $value = is_scalar( $settings[ $key ] ) ? trim( (string) $settings[ $key ] ) : '';
+
+            if ( preg_match( '/_page_id$|^page_id$/', $key ) ) {
+                $bad = (int) $value <= 0;
+            } elseif ( preg_match( '/(^|_)url$/', $key ) ) {
+                $bad = ! preg_match( '#^https?://\S+$#i', $value );
+            } else {
+                $bad = '' === trim( wp_strip_all_tags( $value ) );
+            }
+
+            if ( $bad ) {
+                $missing[] = $key;
+            }
+        }
+
+        return $missing;
     }
 
     /**

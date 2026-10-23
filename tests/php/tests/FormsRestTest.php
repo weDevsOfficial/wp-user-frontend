@@ -298,6 +298,36 @@ class FormsRestTest extends WP_UnitTestCase {
         $this->assertNotInstanceOf( WP_Error::class, $saver->save( $payload, $form_data ) );
     }
 
+    public function test_edited_save_refuses_empty_required_settings() {
+        $form_id = $this->make_form();
+        $saver   = new FormSave();
+        $save    = function ( $settings, $touched = '1' ) use ( $form_id, $saver ) {
+            $payload = array_merge( $this->payload( $form_id, $settings ), [ 'touched' => $touched ] );
+            parse_str( $payload['form_data'], $form_data );
+
+            return $saver->save( $payload, $form_data );
+        };
+
+        $cases = [
+            [ [ 'submit_text' => ' ' ], 'submit_text' ],
+            [ [ 'submit_text' => 'Go', 'redirect_to' => 'page', 'page_id' => '0' ], 'page_id' ],
+            [ [ 'submit_text' => 'Go', 'redirect_to' => 'url', 'url' => 'example.com' ], 'url' ],
+            [ [ 'submit_text' => 'Go', 'edit_redirect_to' => 'same', 'update_message' => '<p></p>' ], 'update_message' ],
+        ];
+
+        foreach ( $cases as $case ) {
+            $result = $save( $case[0] );
+            $this->assertInstanceOf( WP_Error::class, $result, $case[1] );
+            $this->assertSame( 'wpuf_form_required_settings', $result->get_error_code() );
+            $this->assertStringContainsString( $case[1], $result->get_error_message() );
+        }
+
+        // A hidden setting (other redirect choice) and an untouched save are not checked.
+        $this->assertNotInstanceOf( WP_Error::class, $save( [ 'submit_text' => 'Go', 'redirect_to' => 'post', 'page_id' => '' ] ) );
+        $this->assertNotInstanceOf( WP_Error::class, $save( [ 'submit_text' => '' ], '' ) );
+        $this->assertNotInstanceOf( WP_Error::class, $save( [ 'submit_text' => 'Go', 'redirect_to' => 'url', 'url' => 'https://example.com/thanks' ] ) );
+    }
+
     public function test_pay_per_post_with_no_cost_charges_nothing() {
         $form_id = $this->make_form();
         $charge  = function ( $settings ) use ( $form_id ) {

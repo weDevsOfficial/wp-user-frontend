@@ -173,11 +173,11 @@ class WPUF_Frontend_Render_Form {
                 <input type="hidden" name="post_date" value="<?php echo esc_attr( $cur_post->post_date ); ?>">
                 <input type="hidden" name="comment_status" value="<?php echo esc_attr( $cur_post->comment_status ); ?>">
                 <input type="hidden" name="post_author" value="<?php echo esc_attr( $cur_post->post_author ); ?>">
-                <input type="submit" class="wpuf-submit-button wpuf_submit_<?php echo esc_attr( $form_id ); ?>" name="submit" value="<?php echo esc_attr( $form_settings['update_text'] ); ?>" />
+                <input type="submit" class="wpuf-submit-button wpuf_submit_<?php echo esc_attr( $form_id ); ?>" name="submit" value="<?php echo esc_attr( ! empty( $form_settings['update_text'] ) ? $form_settings['update_text'] : __( 'Update', 'wp-user-frontend' ) ); ?>" />
                 <?php
             } else {
                 ?>
-                <input type="submit" class="wpuf-submit-button wpuf_submit_<?php echo esc_attr( $form_id ); ?>" name="submit" value="<?php echo esc_attr( $form_settings['submit_text'] ); ?>" />
+                <input type="submit" class="wpuf-submit-button wpuf_submit_<?php echo esc_attr( $form_id ); ?>" name="submit" value="<?php echo esc_attr( ! empty( $form_settings['submit_text'] ) ? $form_settings['submit_text'] : __( 'Submit', 'wp-user-frontend' ) ); ?>" />
             <?php } ?>
 
             <?php if ( isset( $form_settings['draft_post'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['draft_post'] ) ) { ?>
@@ -347,7 +347,7 @@ class WPUF_Frontend_Render_Form {
                     }
                     ?>
 
-                   <script type="text/javascript">
+                    <script type="text/javascript">
                         if ( typeof wpuf_conditional_items === 'undefined' ) {
                             wpuf_conditional_items = [];
                         }
@@ -611,7 +611,7 @@ class WPUF_Frontend_Render_Form {
                             $term = get_term_by( 'name', $term_name, $taxonomy['name'] );
 
                             if ( empty( $term_name ) ) {
-                                  return null;
+                                    return null;
                             }
 
                             if ( $term instanceof WP_Term ) {
@@ -945,16 +945,16 @@ class WPUF_Frontend_Render_Form {
                 </div>
                 <div >
                     <label >
-                         <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
-                         <span class="wpuf-message-box" id="remaining-feature-item"> 
-                         <?php
+                        <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
+                        <span class="wpuf-message-box" id="remaining-feature-item"> 
+                        <?php
                             printf(
                                 /* translators: %1$s: post type name, %2$d: number of featured items remaining */
                                 wp_kses_post( __( 'Mark the %1$s as featured (remaining %2$d)', 'wp-user-frontend' ) ),
                                 esc_html( $this->form_settings['post_type'] ),
                                 esc_html( isset( $user_sub['total_feature_item'] ) ? $user_sub['total_feature_item'] : 0 )
                             );
-                            ?>
+						?>
                             </span>
                     </label>
                 </div>

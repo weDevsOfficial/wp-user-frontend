@@ -109,12 +109,12 @@ class Admin_Form_Builder_Ajax {
                     'taxonomy'     => $tax->name,
                 ];
 
-                $cat .= '<tr class="wpuf_settings_taxonomy"> <th>' . __( 'Default ', 'wp-user-frontend' ) . $post_type . ' ' . $tax->name . '</th> <td>
-                <select multiple name="wpuf_settings[default_' . $tax->name . '][]">';
+                $cat .= '<tr class="wpuf_settings_taxonomy"> <th>' . esc_html__( 'Default ', 'wp-user-frontend' ) . esc_html( $post_type ) . ' ' . esc_html( $tax->name ) . '</th> <td>
+                <select multiple v-pre name="wpuf_settings[default_' . esc_attr( $tax->name ) . '][]">';
                 $categories = get_terms( $args );
 
                 foreach ( $categories as $category ) {
-                    $cat .= '<option value="' . $category->term_id . '">' . $category->name . '</option>';
+                    $cat .= '<option value="' . esc_attr( $category->term_id ) . '">' . esc_html( wpuf_neutralize_template_delimiters( $category->name ) ) . '</option>';
                 }
 
                 $cat .= '</select></td>';
@@ -178,7 +178,8 @@ class Admin_Form_Builder_Ajax {
                 $cat .= '<div class="wpuf-mt-6 wpuf-input-container taxonomy-container" data-taxonomy="' . esc_attr( $tax->name ) . '">';
                 $cat .= '<div class="wpuf-flex wpuf-items-center">';
                 $cat .= '<label for="' . esc_attr( $select_id ) . '" class="wpuf-text-sm wpuf-text-gray-700 wpuf-my-2">';
-                $cat .= sprintf( __( 'Default %s', 'wp-user-frontend' ), $tax->label );
+                /* translators: %s: taxonomy label */
+                $cat .= sprintf( esc_html__( 'Default %s', 'wp-user-frontend' ), esc_html( $tax->label ) );
                 $cat .= '</label></div>';
 
                 $cat .= '<select
@@ -192,9 +193,14 @@ class Admin_Form_Builder_Ajax {
                 $categories = get_terms( $args );
 
                 if ( ! is_wp_error( $categories ) && ! empty( $categories ) ) {
+                    // The stored setting comes back from the serialized form as strings while
+                    // term_id is an int, so both sides are compared as strings: a strict
+                    // comparison on the raw values never matches and loses the selection.
+                    $selected_terms = array_map( 'strval', (array) $current_value );
+
                     foreach ( $categories as $category ) {
-                        $selected = in_array( $category->term_id, (array) $current_value ) ? 'selected="selected"' : '';
-                        $cat .= '<option value="' . esc_attr( $category->term_id ) . '" ' . $selected . '>' . esc_html( $category->name ) . '</option>';
+                        $selected = in_array( (string) $category->term_id, $selected_terms, true ) ? 'selected="selected"' : '';
+                        $cat .= '<option value="' . esc_attr( $category->term_id ) . '" ' . $selected . '>' . esc_html( wpuf_neutralize_template_delimiters( $category->name ) ) . '</option>';
                     }
                 }
 

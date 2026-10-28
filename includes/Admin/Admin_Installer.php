@@ -163,11 +163,14 @@ class Admin_Installer {
         }
         // save the settings
         if ( $edit_page ) {
+            // merge, so settings the admin already saved are kept
             update_option(
-                'wpuf_frontend_posting', [
-					'edit_page_id'      => $edit_page,
-					'default_post_form' => $post_form,
-				]
+                'wpuf_frontend_posting', array_merge(
+                    (array) get_option( 'wpuf_frontend_posting', [] ), [
+						'edit_page_id'      => $edit_page,
+						'default_post_form' => $post_form,
+					]
+                )
             );
         }
         // profile pages
@@ -188,16 +191,18 @@ class Admin_Installer {
         if ( $login_page && $reg_page ) {
             $profile_options['register_link_override'] = 'on';
         }
-        update_option( 'wpuf_profile', $profile_options );
+        update_option( 'wpuf_profile', array_merge( (array) get_option( 'wpuf_profile', [] ), $profile_options ) );
         if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
             // payment pages
             update_option(
-                'wpuf_payment', [
-					'subscription_page' => $subscr_page,
-					'payment_page'      => $payment_page,
-					'payment_success'   => $thank_page,
-					'bank_success'      => $bank_page,
-				]
+                'wpuf_payment', array_merge(
+                    (array) get_option( 'wpuf_payment', [] ), [
+						'subscription_page' => $subscr_page,
+						'payment_page'      => $payment_page,
+						'payment_success'   => $thank_page,
+						'bank_success'      => $bank_page,
+					]
+                )
             );
         }
         update_option( '_wpuf_page_created', '1' );

@@ -14,10 +14,10 @@ use WeDevs\Wpuf\Admin\Admin_Installer;
  */
 class Setup_Wizard {
     /** @var string Currenct Step */
-    protected $step   = '';
+    protected $step = '';
 
     /** @var array Steps for the setup wizard */
-    protected $steps  = [];
+    protected $steps = [];
 
     /**
      * Hook in tabs.
@@ -26,7 +26,7 @@ class Setup_Wizard {
         add_action( 'admin_menu', [ $this, 'admin_menus' ] );
         add_action( 'admin_init', [ $this, 'setup_wizard' ], 99 );
         add_action( 'admin_init', [ $this, 'redirect_to_page' ], 9999 );
-        add_action( 'admin_init', [ $this, 'add_custom_menu_class'] );
+        add_action( 'admin_init', [ $this, 'add_custom_menu_class' ] );
         add_filter( 'safe_style_css', [ $this, 'wpuf_safe_style_css' ] );
         add_action( 'admin_init', [ $this, 'custom_admin_bar_styles' ] );
     }
@@ -105,11 +105,11 @@ class Setup_Wizard {
     public function add_custom_menu_class() {
         global $submenu;
 
-        if ( !empty( $submenu ) ) {
+        if ( ! empty( $submenu ) ) {
             foreach ( $submenu as $key => $items ) {
                 foreach ( $items as $index => $item ) {
                     if ( 'wpuf-setup' == $item[2] ) {
-                        $submenu['index.php'][$index][4] = 'wpuf-setup-menu-link';
+                        $submenu['index.php'][ $index ][4] = 'wpuf-setup-menu-link'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- adds a CSS class to the existing menu item.
                     }
                 }
             }
@@ -122,7 +122,7 @@ class Setup_Wizard {
      * @return void
      */
     public function redirect_to_page() {
-        if ( !get_transient( 'wpuf_activation_redirect' ) || get_option( 'wpuf_setup_wizard' ) ) {
+        if ( ! get_transient( 'wpuf_activation_redirect' ) || get_option( 'wpuf_setup_wizard' ) ) {
             return;
         }
 
@@ -146,6 +146,10 @@ class Setup_Wizard {
         if ( empty( $page ) || 'wpuf-setup' !== $page ) {
             return;
         }
+        // admin_init also fires on logged-out admin-ajax.php requests, so the menu cap alone does not protect this.
+        if ( wp_doing_ajax() || ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
         $this->steps = [
             'introduction' => [
                 'name'    => __( 'Introduction', 'wp-user-frontend' ),
@@ -167,7 +171,7 @@ class Setup_Wizard {
 
         $this->enqueue_scripts();
 
-        if ( !empty( $_POST['save_step'] ) && isset( $this->steps[ $this->step ]['handler'] ) ) { // WPCS: CSRF ok.
+        if ( ! empty( $_POST['save_step'] ) && isset( $this->steps[ $this->step ]['handler'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the step handler verifies the nonce.
             call_user_func( $this->steps[ $this->step ]['handler'] );
         }
 
@@ -182,7 +186,7 @@ class Setup_Wizard {
     public function get_next_step_link() {
         $keys = array_keys( $this->steps );
 
-        return add_query_arg( 'step', $keys[ array_search( $this->step, array_keys( $this->steps ) ) + 1 ] );
+        return add_query_arg( 'step', $keys[ array_search( $this->step, array_keys( $this->steps ), true ) + 1 ] );
     }
 
     /**
@@ -201,9 +205,9 @@ class Setup_Wizard {
             <?php
                 global $current_screen;
 
-                if ( empty( $current_screen ) &&  function_exists('set_current_screen') ) {
-                    set_current_screen();
-                }
+			if ( empty( $current_screen ) && function_exists( 'set_current_screen' ) ) {
+				set_current_screen();
+			}
 
                 do_action( 'admin_head' );
             ?>
@@ -280,16 +284,19 @@ class Setup_Wizard {
      */
     public function setup_wizard_steps() {
         $ouput_steps = $this->steps;
-        array_shift( $ouput_steps ); ?>
+        array_shift( $ouput_steps );
+        ?>
         <ol class="wpuf-setup-steps">
             <?php foreach ( $ouput_steps as $step_key => $step ) { ?>
-                <li class="<?php
-                    if ( $step_key === $this->step ) {
-                        echo 'active';
-                    } elseif ( array_search( $this->step, array_keys( $this->steps ) ) > array_search( $step_key, array_keys( $this->steps ) ) ) {
-                        echo 'done';
-                    }
-                ?>"><?php echo esc_html( $step['name'] ); ?></li>
+                <li class="
+                <?php
+				if ( $step_key === $this->step ) {
+					echo 'active';
+				} elseif ( array_search( $this->step, array_keys( $this->steps ), true ) > array_search( $step_key, array_keys( $this->steps ), true ) ) {
+					echo 'done';
+				}
+                ?>
+                "><?php echo esc_html( $step['name'] ); ?></li>
             <?php } ?>
         </ol>
         <?php
@@ -331,7 +338,8 @@ class Setup_Wizard {
      */
     public function wpuf_setup_basic() {
         $enable_payment           = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
-        $install_wpuf_pages       = wpuf_get_option( 'install_wpuf_pages', 'wpuf_general', 'on' ); ?>
+        $install_wpuf_pages       = wpuf_get_option( 'install_wpuf_pages', 'wpuf_general', 'on' );
+        ?>
         <h1><?php esc_html_e( 'Basic Setting', 'wp-user-frontend' ); ?></h1>
         <form method="post">
             <table class="form-table">
@@ -347,38 +355,45 @@ class Setup_Wizard {
                     <td>
                         <input type="checkbox" name="install_wpuf_pages" id="install_wpuf_pages" class="input-checkbox" value="1" <?php echo ( $install_wpuf_pages == 'on' ) ? 'checked="checked"' : ''; ?>/>
                         <label for="install_wpuf_pages"><?php esc_html_e( 'Install neccessery pages on your site frontend.', 'wp-user-frontend' ); ?></label>
-                        <?php wp_nonce_field('wpuf_setup','wpuf-setup');?>
+                        <?php wp_nonce_field( 'wpuf_setup', 'wpuf-setup' ); ?>
                     </td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="share_wpuf_essentials"><?php esc_html_e( 'Share Essentials ', 'wp-user-frontend' ); ?></label></th>
                     <td>
                         <input type="checkbox" name="share_wpuf_essentials" id="share_wpuf_essentials" class="input-checkbox" value="1"/>
-                     <?php   $share = '<span class="description">
+                    <?php
+                    $share = '<span class="description">
                     Want to help make <b> WP User Frontend </b> even more awesome? Allow WP User Frontend to collect non-sensitive diagnostic data and usage information
                     <a class="wpuf-insights-data-we-collect" href="#">What we collect</a>                </span>
                 <p id="collection-info" class="description" style="display:none;">
-                    Server environment details (php, mysql, server, WordPress versions), Number of users in your site, Site language, Number of active and inactive plugins, Site name and url, Your name and email address. No sensitive data is tracked.                    We are using <a href="https://appsero.com" target="_blank">Appsero</a> to collect your data. <a href="https://appsero.com/privacy-policy/" target="_blank">Learn more</a> about how <a href="https://appsero.com" target="_blank">Appsero</a> collects and handle your data.                </p>'; ?>
-                        <label for="share_wpuf_essentials"><?php echo wp_kses( $share,
+                    Server environment details (php, mysql, server, WordPress versions), Number of users in your site, Site language, Number of active and inactive plugins, Site name and url, Your name and email address. No sensitive data is tracked.                    We are using <a href="https://appsero.com" target="_blank">Appsero</a> to collect your data. <a href="https://appsero.com/privacy-policy/" target="_blank">Learn more</a> about how <a href="https://appsero.com" target="_blank">Appsero</a> collects and handle your data.                </p>';
+					?>
+                        <label for="share_wpuf_essentials">
+                        <?php
+                        echo wp_kses(
+                            $share,
                             [
                                 'span'      => [
-                                    'class' => []
+                                    'class' => [],
                                 ],
                                 'a'  => [
                                     'class'  => [],
                                     'href'   => [],
-                                    'target' => []
+                                    'target' => [],
                                 ],
                                 'p'     => [
                                     'id'    => [],
                                     'class' => [],
-                                    'style' => []
+                                    'style' => [],
                                 ],
                                 'strong' => [],
-                                'b' => []
-                            ])
-                        //esc_html_e( $share , 'wp-user-frontend' );
-                        ?></label>
+                                'b' => [],
+							]
+                        )
+															//esc_html_e( $share , 'wp-user-frontend' );
+						?>
+                        </label>
                     </td>
                 </tr>
             </table>
@@ -404,12 +419,16 @@ class Setup_Wizard {
     public function wpuf_setup_basic_save() {
         check_admin_referer( 'wpuf-setup' );
 
-        $enable_payment          = isset( $_POST['enable_payment'] ) ? 'on' : 'off';
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_die( esc_html__( 'You do not have permission to change these settings.', 'wp-user-frontend' ) );
+        }
+
+        $enable_payment         = isset( $_POST['enable_payment'] ) ? 'on' : 'off';
         $install_wpuf_pages      = isset( $_POST['install_wpuf_pages'] ) ? 'on' : 'off';
         $share_wpuf_essentials   = isset( $_POST['share_wpuf_essentials'] ) ? 'on' : 'off';
 
         update_option( 'enable_payment', $enable_payment, 'on' );
-        wpuf_update_option( 'install_wpuf_pages','wpuf_general', $install_wpuf_pages );
+        wpuf_update_option( 'install_wpuf_pages', 'wpuf_general', $install_wpuf_pages );
         wpuf_update_option( 'share_wpuf_essentials', 'wpuf_general', $share_wpuf_essentials );
 
         if ( 'on' == $share_wpuf_essentials ) {
@@ -438,11 +457,11 @@ class Setup_Wizard {
         <div class="wpuf-setup-next-steps">
             <div class="wpuf-setup-next-steps-first">
                 <ul>
-                    <li class="setup-product"><a class="button button-primary button-large" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-welcome&wpuf_steup='. wp_create_nonce('wpuf-setup') ) ); ?>"><?php esc_html_e( 'Welcome to Awesomeness!', 'wp-user-frontend' ); ?></a></li>
+                    <li class="setup-product"><a class="button button-primary button-large" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-welcome&wpuf_steup=' . wp_create_nonce( 'wpuf-setup' ) ) ); ?>"><?php esc_html_e( 'Welcome to Awesomeness!', 'wp-user-frontend' ); ?></a></li>
                 </ul>
             </div>
             <div class="wpuf-setup-next-steps-last">
-                <h2><a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-settings&wpuf_steup='. wp_create_nonce('wpuf-setup') ) ); ?>"><?php esc_html_e( 'Go to Full Settings', 'wp-user-frontend' ); ?></a></h2>
+                <h2><a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-settings&wpuf_steup=' . wp_create_nonce( 'wpuf-setup' ) ) ); ?>"><?php esc_html_e( 'Go to Full Settings', 'wp-user-frontend' ); ?></a></h2>
             </div>
         </div>
 
@@ -459,7 +478,7 @@ class Setup_Wizard {
     }
 
     /**
-     * update safe styles
+     * Update safe styles
      *
      * @params $styles
      *

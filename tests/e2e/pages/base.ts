@@ -77,7 +77,24 @@ export class Base {
     async navigateToURL(url: string) {
         try {
             await this.waitForLoading();
-            await this.page.goto(url);
+            // The document, then up to 15s for "load": goto() alone waited for "load" with no
+            // limit (no navigation timeout in the config), so one request on the page that
+            // never finished held the test until its 3-minute timeout.
+            const go = async () => {
+                await this.page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+                await this.page.waitForLoadState('load', { timeout: 15000 }).catch(() => {});
+            };
+            try {
+                await go();
+            } catch (error) {
+                // Leaving a screen while its last request is still running cancels this
+                // navigation once (net::ERR_ABORTED): let it settle, then go again.
+                if (!String(error).includes('ERR_ABORTED')) {
+                    throw error;
+                }
+                await this.page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+                await go();
+            }
             await this.waitForLoading();
             console.log('\x1b[34m%s\x1b[0m', `✅ Navigated to ${url}`);
             return true;

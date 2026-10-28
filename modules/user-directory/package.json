@@ -23,9 +23,9 @@
     "webpack-cli": "^5.1.4"
   },
   "scripts": {
-    "build": "NODE_ENV=production webpack --config webpack.config.js --mode=production",
-    "dev": "NODE_ENV=development webpack --config webpack.config.js --watch --mode=development",
-    "start": "NODE_ENV=development webpack --config webpack.config.js --watch --mode=development"
+    "build": "node init && NODE_ENV=production webpack --config webpack.config.js --mode=production",
+    "dev": "node init && NODE_ENV=development webpack --config webpack.config.js --watch --mode=development",
+    "start": "node init && NODE_ENV=development webpack --config webpack.config.js --watch --mode=development"
   },
   "dependencies": {
     "@wordpress/i18n": "^4.52.0"

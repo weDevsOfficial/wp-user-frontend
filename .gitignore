@@ -3,7 +3,6 @@ plugin-deploy.sh
 config.codekit
 export.sh
 .idea
-.vscode
 .github/prompts
 .cursor
 /.DS_Store
@@ -96,3 +95,4 @@ openspec/
 # wp-env local test plugins scaffold (mounted by tests/e2e/.wp-env.json)
 /plugins/
 /assets/*
+config.bat

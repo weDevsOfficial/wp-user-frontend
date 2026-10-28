@@ -189,12 +189,18 @@ jobs:
         if: success()
         uses: nick-fields/retry@v3
         with:
-            timeout_minutes: 4
+            timeout_minutes: 8
             max_attempts: 2
             retry_on: error
             command: |
               cd tests/e2e
               npx wp-env start
+              # Reset the database that plugin activation just populated. The WPUF
+              # installer creates its pages (Dashboard, Account, Login ...) on
+              # activation, and the setup wizard's "install pages" step creates them
+              # again, leaving a second "dashboard-2" that breaks strict locators.
+              # The local runbook has always done this; CI did not.
+              echo y | npx wp-env clean all
 
       # Cache browser binaries, cache key is based on Playwright version and OS
       - name: Cache playwright binaries

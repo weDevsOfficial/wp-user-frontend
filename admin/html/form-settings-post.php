@@ -113,9 +113,15 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                         <select multiple v-pre name="wpuf_settings[default_' . esc_attr( $tax->name ) . '][]">';
                     $categories = get_terms( $args );
 
+                    // The stored setting comes back from the serialized form as strings while
+                    // term_id is an int, so both sides are compared as strings: a strict
+                    // comparison on the raw values never matches and the saved default is lost
+                    // on the next save.
+                    $selected_terms = array_map( 'strval', $default_category );
+
                     foreach ( $categories as $category ) {
                         $selected = '';
-                        if ( in_array( $category->term_id, $default_category, true ) ) {
+                        if ( in_array( (string) $category->term_id, $selected_terms, true ) ) {
                             $selected = 'selected ';
                         }
 

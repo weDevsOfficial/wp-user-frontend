@@ -193,8 +193,13 @@ class Admin_Form_Builder_Ajax {
                 $categories = get_terms( $args );
 
                 if ( ! is_wp_error( $categories ) && ! empty( $categories ) ) {
+                    // The stored setting comes back from the serialized form as strings while
+                    // term_id is an int, so both sides are compared as strings: a strict
+                    // comparison on the raw values never matches and loses the selection.
+                    $selected_terms = array_map( 'strval', (array) $current_value );
+
                     foreach ( $categories as $category ) {
-                        $selected = in_array( $category->term_id, (array) $current_value, true ) ? 'selected="selected"' : '';
+                        $selected = in_array( (string) $category->term_id, $selected_terms, true ) ? 'selected="selected"' : '';
                         $cat .= '<option value="' . esc_attr( $category->term_id ) . '" ' . $selected . '>' . esc_html( wpuf_neutralize_template_delimiters( $category->name ) ) . '</option>';
                     }
                 }

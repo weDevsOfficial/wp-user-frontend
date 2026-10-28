@@ -201,7 +201,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         ];
         $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr );
         ?>
-        <span data-taxonomy=<?php echo esc_attr( wp_json_encode( $attr ) ); ?>></span>
+        <span data-taxonomy="<?php echo esc_attr( wp_json_encode( $attr ) ); ?>"></span>
         <?php
     }
 
@@ -325,7 +325,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
                         ];
                         $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr );
                         ?>
-           <span data-taxonomy=<?php echo esc_attr( wp_json_encode( $attr ) ); ?>></span>
+           <span data-taxonomy="<?php echo esc_attr( wp_json_encode( $attr ) ); ?>"></span>
                                </div>
                     <?php
                     $found = in_array( $this->terms[0]->parent, $this->field_settings['exclude'], true );

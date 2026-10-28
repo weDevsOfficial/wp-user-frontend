@@ -229,7 +229,15 @@ class FormStore implements DataStore {
 
         $saved_fields = $this->fields->save( $form_id, (array) $payload['form_fields'] );
 
-        update_post_meta( $form_id, $payload['form_settings_key'], Normalizers::form_settings( $payload['form_settings'] ) );
+        $settings_key = ! empty( $payload['form_settings_key'] ) ? $payload['form_settings_key'] : 'wpuf_form_settings';
+
+        // A payload with no settings means they were not posted, not that the form should
+        // lose the settings it has. Writing the empty array left the form with `a:0:{}`
+        // and an unlabelled submit button (wpuf-pro#1767). FormSave refuses such a save,
+        // this keeps the store safe for any other caller.
+        if ( ! empty( $payload['form_settings'] ) || empty( get_post_meta( $form_id, $settings_key, true ) ) ) {
+            update_post_meta( $form_id, $settings_key, Normalizers::form_settings( $payload['form_settings'] ) );
+        }
         $this->update_list_meta( $form_id, 'notifications', $payload['notifications'] );
 
         if ( null !== $payload['integrations'] ) {

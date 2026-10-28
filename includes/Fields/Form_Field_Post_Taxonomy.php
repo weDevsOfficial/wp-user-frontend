@@ -167,7 +167,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         $selected = $terms ? $terms : '';
         $dataset  = sprintf(
             'data-required="%s" data-type="select" data-form-id="%d"',
-            $attr['required'],
+            esc_attr( $attr['required'] ),
             trim( $this->form_id )
         );
 
@@ -206,7 +206,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         ];
         $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr );
         ?>
-        <span data-taxonomy=<?php echo esc_attr( wp_json_encode( $attr ) ); ?>></span>
+        <span data-taxonomy="<?php echo esc_attr( wp_json_encode( $attr ) ); ?>"></span>
         <?php
     }
 
@@ -297,7 +297,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
                     $attr = $this->field_settings;
                     $dataset  = sprintf(
                         'data-required="%s" data-type="select" data-form-id="%d"',
-                        $attr['required'],
+                        esc_attr( $attr['required'] ),
                         trim( $this->form_id )
                     );
 
@@ -330,7 +330,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
                         ];
                         $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr );
                         ?>
-           <span data-taxonomy=<?php echo esc_attr( wp_json_encode( $attr ) ); ?>></span>
+           <span data-taxonomy="<?php echo esc_attr( wp_json_encode( $attr ) ); ?>"></span>
                                </div>
                     <?php
                     $found = in_array( $this->terms[0]->parent, $this->field_settings['exclude'], true );
@@ -375,7 +375,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
     public function tax_select( $post_id = null ) {
         $attr     = $this->field_settings;
         $selected = $this->terms ? $this->terms[0] : '';
-        $required = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
+        $required = sprintf( 'data-required="%s" data-type="select"', esc_attr( $attr['required'] ) );
 
         $exclude = wpuf_get_field_settings_excludes( $this->field_settings, $this->exclude_type );
 
@@ -422,7 +422,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
 
         $selected = $this->terms ? $this->terms : [];
 
-        $required = sprintf( 'data-required="%s" data-type="multiselect"', $attr['required'] );
+        $required = sprintf( 'data-required="%s" data-type="multiselect"', esc_attr( $attr['required'] ) );
 
         $walker = new WPUF_Walker_Category_Multi();
 

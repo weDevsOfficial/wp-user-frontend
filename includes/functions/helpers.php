@@ -845,3 +845,34 @@ function wpuf_render_login_settings_section_header( $args = null ) {
 function wpuf_settings_field_profile( $form = null ) {
     _deprecated_function( __FUNCTION__, 'WPUF_SINCE' );
 }
+
+/**
+ * Neutralize Vue/mustache template delimiters in a display string
+ *
+ * Any text node inside a Vue-compiled root that contains {{ }} is compiled as an
+ * expression, so a stored, lower-privilege string such as a term name could run
+ * as JavaScript. HTML escaping does not help: the browser decodes entities
+ * before Vue reads the template, and { } are not escaped.
+ *
+ * Inserting a zero-width space between the braces breaks the delimiter match
+ * while keeping the visible text identical. Display only; the stored term or
+ * post data is never touched.
+ *
+ * Kept on the React branch because the frontend render path still calls it
+ * (Traits\FieldableTrait) and the free plugin can run alongside screens that
+ * mount Vue.
+ *
+ * @since 4.3.14
+ *
+ * @param string $value
+ *
+ * @return string
+ */
+function wpuf_neutralize_template_delimiters( $value ) {
+    if ( ! is_string( $value ) || '' === $value ) {
+        return $value;
+    }
+
+    // Zero-width space (U+200B) between each pair of braces.
+    return str_replace( [ '{{', '}}' ], [ "{\xE2\x80\x8B{", "}\xE2\x80\x8B}" ], $value );
+}

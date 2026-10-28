@@ -7,6 +7,7 @@ import { Base } from './base';
 import { OnboardingPage } from './onboarding';
 import { waitForSiteReady } from '../utils/siteReady';
 import { clearSavedSession } from '../utils/authSession';
+import { wpufPageSlug } from '../utils/wpufPages';
 export class SettingsSetupPage extends Base {
 
     constructor(page: Page) {
@@ -263,16 +264,45 @@ export class SettingsSetupPage extends Base {
         console.log('WPUF Pages are validated. all pages created successfully');
     }
 
+    /**
+     * Resolve a WPUF page by the shortcode it contains, not by its title.
+     *
+     * Other plugins ship pages with the same title: dokan-lite installs its own
+     * "Dashboard" with the slug `dashboard`, so WordPress slugs WPUF's `dashboard-2`
+     * and a title-only locator matches both links and trips Playwright strict mode.
+     * Which plugin wins the plain slug depends on activation order, so the slug can
+     * not be hard-coded either. The shortcode is the stable identity of a WPUF page.
+     *
+     * Returns the page's nav link locator, or null when no page holds the shortcode
+     * (the caller then falls back to the title-based selector).
+     */
+    wpufPageLinkByShortcode(shortcode: string): string | null {
+        const slug = wpufPageSlug(shortcode);
+
+        return slug ? `//ul[@class="wp-block-page-list"]//li//a[contains(@href,"/${slug}/")]` : null;
+    }
+
+    /**
+     * Validate a WPUF page link, preferring the shortcode-resolved locator and
+     * falling back to the title-based selector when the page cannot be resolved.
+     */
+    async validateWPUFPageLink(shortcode: string, fallbackSelector: string) {
+        await this.validateAndClick(this.wpufPageLinkByShortcode(shortcode) ?? fallbackSelector);
+    }
+
     async validateWPUFpagesFE() {
         //Go to FrontEnd
         await this.navigateToURL(Urls.baseUrl);
 
-        //Validate WPUF Pages
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.dashboardPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.editPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.loginPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.subscriptionPageFE);
+        // Validate WPUF Pages. Identify each page by the shortcode it holds rather than
+        // its title: other active plugins ship pages with the same titles (dokan-lite
+        // installs its own "Dashboard"), which makes a title-only locator ambiguous and
+        // trips Playwright strict mode.
+        await this.validateWPUFPageLink('[wpuf_account]', Selectors.settingsSetup.wpufPagesFE.accountPageFE);
+        await this.validateWPUFPageLink('[wpuf_dashboard]', Selectors.settingsSetup.wpufPagesFE.dashboardPageFE);
+        await this.validateWPUFPageLink('[wpuf_edit]', Selectors.settingsSetup.wpufPagesFE.editPageFE);
+        await this.validateWPUFPageLink('[wpuf-login]', Selectors.settingsSetup.wpufPagesFE.loginPageFE);
+        await this.validateWPUFPageLink('[wpuf_sub_pack]', Selectors.settingsSetup.wpufPagesFE.subscriptionPageFE);
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.orderReceivedPageFE);
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.thankYouPageFE);
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.paymentPageFE);

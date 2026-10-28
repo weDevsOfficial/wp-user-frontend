@@ -8,6 +8,7 @@ import { RegFormPage } from '../pages/regForm';
 import { configureSpecFailFast } from '../utils/specFailFast';
 import { waitForSiteReady } from '../utils/siteReady';
 
+import { wpufPageUrl } from '../utils/wpufPages';
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
@@ -289,7 +290,10 @@ test.describe('Reg Form Settings Tests', () => {
 
     test('RFS0030 : Admin is setting after profile update redirection to custom URL', { tag: ['@Pro'] }, async () => {
         const regFormSettings = new RegFormSettingsPage(page);
-        const customUrl = Urls.baseUrl + '/dashboard/';
+        // Resolve WPUF's own dashboard by its shortcode: dokan-lite owns the plain
+        // `/dashboard/` slug once active, and it redirects non-vendors to the home page,
+        // so a hard-coded /dashboard/ never lands where this test expects.
+        const customUrl = wpufPageUrl(Urls.baseUrl, '[wpuf_dashboard]', 'dashboard');
         await regFormSettings.setAfterProfileUpdateRedirectionToUrl(formName, customUrl);
     });
 
@@ -297,7 +301,7 @@ test.describe('Reg Form Settings Tests', () => {
         const regFormSettings = new RegFormSettingsPage(page);
         const firstName = faker.person.firstName();
         const displayName = faker.word.words(1);
-        const expectedUrl = Urls.baseUrl + '/dashboard/';
+        const expectedUrl = wpufPageUrl(Urls.baseUrl, '[wpuf_dashboard]', 'dashboard');
         await regFormSettings.validateAfterProfileUpdateRedirectionToUrl(firstName, displayName, expectedUrl);
         await regFormSettings.setAfterProfileUpdateRedirectionToSamePage(formName);
     });

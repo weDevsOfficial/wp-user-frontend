@@ -1525,7 +1525,10 @@ class Paypal {
 
             // Handle free payments
             if ( $billing_amount == 0 ) {
-                wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], null, false, 'Free' );
+                // a free checkout may only grant a real subscription pack, never an id sent as another type
+                if ( 'pack' === $data['type'] && 'wpuf_subscription' === get_post_type( $data['item_number'] ) ) {
+                    wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], null, false, 'Free' );
+                }
                 wp_safe_redirect( $return_url );
                 exit();
             }

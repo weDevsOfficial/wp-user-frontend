@@ -38,7 +38,7 @@
 | 12 | Content / menu / taxonomy restriction | 🟡 field-visibility only | **P0** |
 | 13 | User dashboard & account page | 🟡 posts edit/delete | P1 (profile/subscription/billing) |
 | 14 | Frontend login / lost-password / social login | 🟡 `[wpuf-login]` + lost-pass built (`FL0001`–`FL0006`) | P2 (reset-link completion, social) |
-| 15 | AI form builder & AI Review | 🔴 enable-only | P2 |
+| 15 | AI form builder & AI Review | 🟡 builder covered (AI0001-AI0021, mock provider), AI Review open | P2 |
 | 16 | Pro modules (directory, PM, SMS, reports, analytics, QR, BuddyPress, PMPro, comments, SEO, Zapier) | 🔴 | P2 |
 | 17 | Integrations (Elementor, Events Calendar, ACF, n8n) | 🔴 | P2 |
 | 18 | reCaptcha / Turnstile / Math captcha (functional) | 🟡 Math enforced (`PF0027`); reCaptcha/Turnstile 🔴 | P1 |
@@ -359,6 +359,12 @@ provider **API stub/sandbox** or provider API assertion; avoid hitting live prov
   and the post is deleted (accepting the confirm) from `/account/?section=post`. POM `postForm.ts`
   `editFirstPostFromDashboard` / `validatePostEdited` / `validateMathCaptchaEnforced` /
   `deletePostFromDashboard`.
+- **Business QA round (BS-17 / BS-18)**, `businessQaTest.spec.ts` + `api/businessQaApi.spec.ts`:
+  `[wpuf_dashboard layout=list]` shows the posts card only (`BQ0001`), the post form's exit prompt
+  needs a real edit (`BQ0002`), the delete question starts on Cancel (`BQ0003`), keyboard focus
+  shows the neutral ring (`BQ0004`), the account logout link is a plain URL (`AP0017`), Pro auto
+  login after registration answers `logged_in` (`AP0018`), every post form template stores its own
+  key (`AP0016`). Each one fails on the code before its fix.
 
 **Gaps:**
 - 🔴 Posts tab: **pagination** and **status filter** (only edit/delete of the first post is covered).
@@ -402,9 +408,13 @@ the form.
 
 **Covered:** `LS0027`/`LS0028` enable Google AI / OpenAI keys only.
 
+**Covered (2026-10-07):** `tests/aiFormBuilderTest.spec.ts` AI0001-AI0021 (not configured modal + "Go to Settings" lands on the AI section from both lists, generate without a key, settings Test Connection, Google "Fetch latest models", builder "AI Generate Options", input stage, generate, chat
+Accept / Reject / checkpoints, canned answers without a request, Regenerate, Edit with Builder stored fields, provider error,
+refusal, registration form, free-only Pro-field dialog, XSS-safe chat, WooCommerce / Dokan integrations) against the mock
+provider `wp/wpuf-ai-mock.php`; parity PAR0040 (develop Vue vs React store the same form).
+
 **Gaps:**
-- 🔴 **AI form generation** — prompt → generated form → fields present. `includes/AI_Manager.php`,
-  `../wpuf-pro/includes/AI`.
+- 🟡 **AI form generation with a real provider** — only the mock answers in tests (by design: no live LLM in CI).
 - 🔴 **AI Review** (`../wpuf-pro/includes/AI_Review`, REST `REST_API_Controller.php`) — submit → AI
   review verdict. Best mocked (don't call live LLM in CI).
 

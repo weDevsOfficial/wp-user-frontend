@@ -269,26 +269,38 @@ trait FieldableTrait {
         $check_recaptcha = $this->search( $post_vars, 'input_type', 'recaptcha' );
 
         if ( ! empty( $check_recaptcha ) ) {
-            $recaptcha_type = $check_recaptcha[0]['recaptcha_type'];
+            $recaptcha_type = isset( $check_recaptcha[0]['recaptcha_type'] ) ? $check_recaptcha[0]['recaptcha_type'] : '';
         }
-        // check recaptcha
-        if ( $check_recaptcha ) {
-            if ( isset( $_POST['g-recaptcha-response'] ) ) {
-                if ( empty( $_POST['g-recaptcha-response'] ) && $check_recaptcha[0]['recaptcha_type'] !== 'invisible_recaptcha' ) {
-                    wpuf()->ajax->send_error( __( 'Empty reCaptcha Field', 'wp-user-frontend' ) );
-                }
 
-                if ( $recaptcha_type == 'enable_no_captcha' ) {
-                    $no_captcha        = 1;
-                    $invisible_captcha = 0;
-                } elseif ( $recaptcha_type == 'invisible_recaptcha' ) {
-                    $invisible_captcha = 1;
-                    $no_captcha        = 0;
-                } else {
-                    $invisible_captcha = 0;
-                    $no_captcha        = 0;
-                }
+        // Without the keys the field prints only "API key is missing": there is
+        // nothing to solve, so it guards nothing (as for logins). Checking it
+        // anyway ended in the legacy library's die() and a broken submit.
+        $recaptcha_ready = '' !== (string) wpuf_get_option( 'recaptcha_public', 'wpuf_general' )
+            && '' !== (string) wpuf_get_option( 'recaptcha_private', 'wpuf_general' );
+
+        // check recaptcha
+        if ( $check_recaptcha && $recaptcha_ready ) {
+            // The type decides the check, sent token or not: a request without the token
+            // must fail, not skip every branch of validate_re_captcha() ('' == 0 is false on PHP 8).
+            $token = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
+
+            // v2 checkbox: no token, no check. Invisible fails in verifyResponse(); the legacy
+            // type posts its own challenge fields.
+            if ( '' === $token && 'enable_no_captcha' === $recaptcha_type ) {
+                $this->captcha_error( __( 'Empty reCaptcha Field', 'wp-user-frontend' ) );
             }
+
+            if ( 'enable_no_captcha' === $recaptcha_type ) {
+                $no_captcha        = 1;
+                $invisible_captcha = 0;
+            } elseif ( 'invisible_recaptcha' === $recaptcha_type ) {
+                $invisible_captcha = 1;
+                $no_captcha        = 0;
+            } else {
+                $invisible_captcha = 0;
+                $no_captcha        = 0;
+            }
+
             $this->validate_re_captcha( $no_captcha, $invisible_captcha );
         }
     }
@@ -356,7 +368,9 @@ trait FieldableTrait {
     public function validate_rs_captcha() {
         $nonce = isset( $_REQUEST['wpuf-login-nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf-login-nonce'] ) ) : '';
 
-        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+        // The login form posts its nonce; a post form has none (it is checked by
+        // check_ajax_referer() before this), so the captcha is checked there too.
+        if ( '' !== $nonce && ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
             return;
         }
 
@@ -390,7 +404,7 @@ trait FieldableTrait {
         $remote_addr          = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
         $g_recaptcha_response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
 
-        if ( $no_captcha == 1 && 0 == $invisible ) {
+        if ( 1 === (int) $no_captcha && 0 === (int) $invisible ) {
             if ( ! class_exists( 'WPUF_ReCaptcha' ) ) {
                 require_once WPUF_ROOT . '/Lib/recaptchalib_noCaptcha.php';
             }
@@ -404,28 +418,46 @@ trait FieldableTrait {
             );
 
             if ( ! $resp->success ) {
-                $this->send_error( __( 'noCaptcha reCAPTCHA validation failed', 'wp-user-frontend' ) );
+                $this->captcha_error( __( 'noCaptcha reCAPTCHA validation failed', 'wp-user-frontend' ) );
             }
-        } elseif ( $no_captcha == 0 && 0 == $invisible ) {
+        } elseif ( 0 === (int) $no_captcha && 0 === (int) $invisible ) {
             $recap_challenge = isset( $_POST['recaptcha_challenge_field'] ) ? sanitize_text_field( wp_unslash( $_POST['recaptcha_challenge_field'] ) ) : '';
             $recap_response  = isset( $_POST['recaptcha_response_field'] ) ? sanitize_text_field( wp_unslash( $_POST['recaptcha_response_field'] ) ) : '';
 
             $resp = recaptcha_check_answer( $private_key, $remote_addr, $recap_challenge, $recap_response );
 
             if ( ! $resp->is_valid ) {
-                $this->send_error( __( 'reCAPTCHA validation failed', 'wp-user-frontend' ) );
+                $this->captcha_error( __( 'reCAPTCHA validation failed', 'wp-user-frontend' ) );
             }
-        } elseif ( $no_captcha == 0 && 1 == $invisible ) {
+        } elseif ( 0 === (int) $no_captcha && 1 === (int) $invisible ) {
             $response  = null;
             $recaptcha = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
             $object    = new Invisible_Recaptcha( $site_key, $private_key );
 
             $response = $object->verifyResponse( $recaptcha );
 
-            if ( isset( $response['success'] ) && $response['success'] != true ) {
-                $this->send_error( __( 'Invisible reCAPTCHA validation failed', 'wp-user-frontend' ) );
+            if ( empty( $response['success'] ) ) {
+                $this->captcha_error( __( 'Invisible reCAPTCHA validation failed', 'wp-user-frontend' ) );
             }
         }
+    }
+
+    /**
+     * Stop the submission with a captcha error: the class's own send_error()
+     * when it has one, otherwise the request handler's (Post_Form_Handler has none).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $message Error message
+     *
+     * @return void
+     */
+    protected function captcha_error( $message ) {
+        if ( method_exists( $this, 'send_error' ) ) {
+            $this->send_error( $message );
+        }
+
+        wpuf()->ajax->send_error( $message );
     }
 
     /**
@@ -734,6 +766,10 @@ trait FieldableTrait {
         $woo_attr = [];
 
         foreach ( $taxonomy_vars as $taxonomy ) {
+            // Each taxonomy reads its own input: one that posts nothing must not reuse
+            // the previous one's (a WooCommerce attribute nobody filled was added).
+            unset( $taxonomy_name );
+
             if ( isset( $_POST[ $taxonomy['name'] ] ) && is_array( $_POST[ $taxonomy['name'] ] ) ) {
                 $taxonomy_name = array_map( 'sanitize_text_field', wp_unslash( $_POST[ $taxonomy['name'] ] ) );
             }

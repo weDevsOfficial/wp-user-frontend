@@ -373,7 +373,7 @@ features:
   - id: RFS0001
     name: Admin is setting newly registered user role to administrator
   - id: RFS0002
-    name: Admin is validating newly registered user role to administrator
+    name: An administrator role on the form registers the member with the default role (never administrator)
   - id: RFS0003
     name: Admin is setting newly registered user role to editor
   - id: RFS0004
@@ -838,6 +838,13 @@ features:
     name: GET /wpuf_form pagination contract (per_page/page echoed, capped)
   - id: AP0015
     name: GET /wpuf_form search with no match returns an empty result
+  # Business QA rules (qa-stories business BS-17 / BS-18) — api/businessQaApi.spec.ts
+  - id: AP0016
+    name: Every post form template stores its own key (EDD stored the Events Calendar key)
+  - id: AP0017
+    name: The account logout link is a plain URL (no &amp;) with action + _wpnonce
+  - id: AP0018
+    name: Auto login after a Pro registration answers logged_in and sets the login cookie
   # Frontend login ([wpuf-login] shortcode) — frontendLoginTest.spec.ts
   - id: FL0001
     name: Login form renders with all controls on the shortcode page
@@ -851,3 +858,75 @@ features:
     name: Lost password for a known user reaches the mailer (env-gated skip without SMTP)
   - id: FL0006
     name: Valid credentials log the user in (logged-in view shown)
+  # Parity suite (develop vs branch) — parity/*.spec.ts, project `parity`
+  - id: PAR0001
+    name: Seeding a form fixture stores identical data on develop and branch
+  - id: PAR0002
+    name: Untouched builder save keeps the stored form byte-identical (G3)
+  - id: PAR0004
+    name: Filling every builder field option stores the same values on branch as on develop (G2)
+  - id: SEC0001
+    name: Builder page never prints the reCAPTCHA / Turnstile secret keys
+  - id: SEC0002
+    name: Builder save rejects a foreign settings meta key, a non-form post and a missing nonce
+  - id: SEC0003
+    name: Settings REST never returns secrets; masked values keep the stored secret
+  - id: SEC0004
+    name: Subscription REST only acts on packs, limits single-row edits, filters term ids
+  - id: SEC0005
+    name: Profile subscription update only assigns to the saved user, by users who may edit them
+  - id: SEC0006
+    name: Pro tax save and registration template creation need an admin, not just a nonce
+  - id: HLT0001
+    name: Builders and form lists load with no page errors or missing assets
+  - id: SET0001
+    name: Settings save keeps the legacy shapes and untouched data
+  - id: SET0002
+    name: Settings screen posts only the edited field and writes nothing else
+  - id: PAR0005
+    name: Read only stores the develop shape; integrations kept
+  - id: HLT0002
+    name: Registration list shows the Pro shortcode pair and the AI entry
+  - id: HLT0003
+    name: Old subscriptions script handle still prints data localized on it
+  - id: SET0003
+    name: Login colors store nothing by default and preview the chosen layout
+  - id: PAR0006
+    name: Without Pro a builder save keeps hidden custom taxonomy fields
+  - id: PAR0007
+    name: Duplicate copies integrations and version; delete removes the field posts
+  - id: PAR0008
+    name: Forms list REST limits post types and sorts newest first; pack hook fires once
+  - id: PAR0009
+    name: Registration toggle off leaves the key out so the module stops
+  - id: SET0004
+    name: First save stores missing defaults; desc HTML is filtered
+  - id: SET0005
+    name: React settings apply the legacy section hooks, tax and role filters
+  - id: HLT0004
+    name: Builders print the wpuf_single_objects global like develop
+  - id: PAR0010
+    name: Visibility for subscribed users stores the pack id like develop
+  - id: PAR0012
+    name: Registration email body edits through TinyMCE and saves under notification
+  - id: PAR0013
+    name: Opening field options writes nothing
+  - id: PAR0011
+    name: Both subscription save paths store one shape and fire the pack hooks
+  - id: HLT0005
+    name: Subscription notices render and clear
+  - id: SET0006
+    name: Pro settings and Feature_Lock reach WPUF REST routes without a request URL
+  - id: CTR0001
+    name: Admin screens keep the develop runtime contract
+  - id: PAR0014
+    name: Untouched subscription save leaves the pack byte-identical
+  # Business QA on the React frontend (qa-stories business BS-17 / BS-18) — businessQaTest.spec.ts
+  - id: BQ0001
+    name: "[wpuf_dashboard layout=list] shows the posts card only; the full layout keeps the member blocks"
+  - id: BQ0002
+    name: An untouched post form leaves without "leave page?"; a real edit asks
+  - id: BQ0003
+    name: The delete question opened by keyboard starts on Cancel; Enter keeps the post
+  - id: BQ0004
+    name: Keyboard focus on a dashboard link shows the neutral ring, not the browser blue outline

@@ -15,7 +15,7 @@ class Post_Form_Template_Video extends Form_Template {
         $this->enabled     = true;
         $this->title       = __( 'Video Content Submission', 'wp-user-frontend' );
         $this->description = __( 'Form for submitting video content with embed links and descriptions.', 'wp-user-frontend' );
-        $this->image       = WPUF_ASSET_URI . '/images/templates/video.svg';
+        $this->image       = WPUF_ASSET_URI . '/images/templates/video.webp';
         $this->form_fields = [
             [
                 'input_type'       => 'text',

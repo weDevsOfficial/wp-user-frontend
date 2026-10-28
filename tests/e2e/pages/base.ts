@@ -3,6 +3,7 @@ dotenv.config({ quiet: true });
 import { expect, type Page } from '@playwright/test';
 import { Urls } from '../utils/testData';
 import { faker } from '@faker-js/faker';
+import { builderFormId } from '../utils/builderUrl';
 
 // Keep the terminal readable: page-object step logs ("✅ Clicked on //...") are
 // suppressed by default so only Playwright's own test-title lines show. Set
@@ -87,8 +88,8 @@ export class Base {
             try {
                 await go();
             } catch (error) {
-                // Leaving a screen while its last request is still running cancels this
-                // navigation once (net::ERR_ABORTED): let it settle, then go again.
+                // Leaving a React screen while its last request (e.g. a builder save) is still
+                // running is cancelled once by the screen's leave guard: let it settle, go again.
                 if (!String(error).includes('ERR_ABORTED')) {
                     throw error;
                 }
@@ -107,6 +108,29 @@ export class Base {
     // Validate an element is present in the DOM without requiring visibility.
     // Use when the *value/text is already encoded in the selector* (so presence
     // proves the data), but the element may sit in a collapsed/inactive panel —
+    /**
+     * Close the block editor's own modals when they open: the welcome guide (once per
+     * user, the dismissal is saved, so a later test sees none) and the "Choose a pattern"
+     * start screen of a new page. Waits a moment for one, never fails when none shows.
+     */
+    async dismissEditorModals(timeout: number = 5000) {
+        const modal = this.page.locator('.components-modal__frame').first();
+        for (let round = 0; round < 2; round++) {
+            const shown = await modal.waitFor({ state: 'visible', timeout: 0 === round ? timeout : 1500 }).then(() => true, () => false);
+            if (!shown) {
+                return;
+            }
+            await modal.locator('button[aria-label="Close"]').first().click().catch(() => {});
+            await modal.waitFor({ state: 'detached', timeout: 5000 }).catch(() => {});
+        }
+        // Keep the guide off for the rest of this user's session.
+        await this.page.evaluate(() => {
+            try {
+                (window as unknown as { wp: { data: { dispatch: (s: string) => { set: (a: string, b: string, c: boolean) => void } } } }).wp.data.dispatch('core/preferences').set('core/edit-post', 'welcomeGuide', false);
+            } catch (e) { /* not the block editor */ }
+        }).catch(() => {});
+    }
+
     // e.g. the EDD `edd_price` input on the block-editor download page renders
     // correct-but-hidden inside a collapsed price panel, so a visibility wait
     // (assertionValidate) would hang for the full test timeout.
@@ -138,13 +162,17 @@ export class Base {
         }
     }
 
+    // Whether an element shows within the timeout. The React lists (and the
+    // admin app, which loads a route's stylesheet before it renders) appear a
+    // moment after the page load, so an instant isVisible() can miss them.
+    async isVisibleSoon(locator: string, timeout = 15000): Promise<boolean> {
+        return this.page.locator(locator).first().waitFor({ state: 'visible', timeout }).then(() => true, () => false);
+    }
+
     // Extract form ID from URL (can be current page URL or provided URL)
     async getFormId(): Promise<string> {
         try {
-            const targetUrl = this.page.url();
-            const urlObj = new URL(targetUrl);
-            const idParam = urlObj.searchParams.get('id');
-            return idParam;
+            return builderFormId(this.page.url()) || null;
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to extract form ID from URL: ${error}`);
             return null;
@@ -152,12 +180,31 @@ export class Base {
     }
 
     // Validate and Click
+    /**
+     * Click a WP User Frontend submenu link of the WordPress admin menu. The form
+     * builder folds the menu to its icon rail, where submenus are hover flyouts:
+     * hover the top-level item first so the link is visible.
+     */
+    async clickWpufSubmenu(locator: string) {
+        const folded = await this.page.evaluate(() => document.body.classList.contains('folded'));
+        if (folded) {
+            await this.page.locator('#toplevel_page_wp-user-frontend').hover();
+        }
+        await this.validateAndClick(locator);
+    }
+
     async validateAndClick(locator: string) {
         try {
             await this.waitForLoading();
             const element = this.page.locator(locator);
             await element.waitFor();
             expect(element.isVisible).toBeTruthy();
+            // The builder keeps Save disabled while nothing changed (title "No changes to
+            // save", owner decision): a step that changed nothing has nothing to save.
+            if (await this.isUnchangedSave(element)) {
+                console.log('\x1b[33m%s\x1b[0m', `⏭️ Save not clicked (no changes) ${locator}`);
+                return;
+            }
             await element.click();
             await this.waitForLoading();
             console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on ${locator}`);
@@ -211,6 +258,25 @@ export class Base {
     }
 
     // Validate and Fill Strings
+    /**
+     * Fill a frontend rich text field: the React form's TipTap editor when it is
+     * on the page, the TinyMCE iframe (classic form, or a field that opened in
+     * TinyMCE) otherwise.
+     */
+    async fillRichEditor(frameSelector: string, bodySelector: string, value: string) {
+        await this.page.waitForSelector('.wpuf-tiptap-content, iframe[id$="_ifr"]', { timeout: 15000 });
+        const tiptap = this.page.locator('.wpuf-tiptap-content').first();
+
+        if (await tiptap.count()) {
+            await tiptap.click();
+            await this.page.keyboard.press('ControlOrMeta+a');
+            await this.page.keyboard.type(value);
+            return;
+        }
+
+        await this.page.frameLocator(frameSelector).locator(bodySelector).fill(value);
+    }
+
     async validateAndFillStrings(locator: string, value: string) {
         try {
             await this.waitForLoading();
@@ -314,6 +380,12 @@ export class Base {
         }
     }
 
+    /** The list button of a React frontend select whose hidden classic <select> the locator found, or null. */
+    async selectProxyButton(element: import('@playwright/test').Locator) {
+        const isProxy = await element.first().evaluate((el) => el.tagName === 'SELECT' && el.classList.contains('wpuf-select__native')).catch(() => false);
+        return isProxy ? element.first().locator('xpath=following-sibling::*[@role="combobox"][1]') : null;
+    }
+
     //SelectOptionWithLabel
     async selectOptionWithLabel(locator: string, label: string) {
         try {
@@ -321,7 +393,18 @@ export class Base {
             const element = this.page.locator(locator);
             await element.waitFor();
             expect(element.isVisible).toBeTruthy();
-            await this.page.selectOption(locator, { label: label });
+            // React screens use a plugin-ui combobox, not a native <select>; the React
+            // frontend forms keep the classic <select> hidden beside their list button.
+            const proxy = await this.selectProxyButton(element);
+            if (proxy) {
+                await proxy.click();
+                await this.page.locator('.wpuf-select.is-open [role="option"]', { hasText: label }).first().click();
+            } else if ((await element.first().getAttribute('role')) === 'combobox') {
+                await element.first().click();
+                await this.page.locator('[role="option"]', { hasText: label }).filter({ visible: true }).first().click();
+            } else {
+                await this.page.selectOption(locator, { label: label });
+            }
             await this.waitForLoading();
             console.log('\x1b[33m%s\x1b[0m', `✅ Selected ${locator} with ${label}`);
         } catch (error) {
@@ -337,7 +420,18 @@ export class Base {
             const element = this.page.locator(locator);
             await element.waitFor();
             expect(element.isVisible).toBeTruthy();
-            await this.page.selectOption(locator, { value: value });
+            // React screens use a plugin-ui combobox, not a native <select>; the React
+            // frontend forms keep the classic <select> hidden beside their list button.
+            const proxy = await this.selectProxyButton(element);
+            if (proxy) {
+                await proxy.click();
+                await this.page.locator(`.wpuf-select.is-open [role="option"][data-value="${value}"]`).first().click();
+            } else if ((await element.first().getAttribute('role')) === 'combobox') {
+                await element.first().click();
+                await this.page.locator(`xpath=//*[@role="option"][@data-value="${value}"] >> visible=true`).first().click();
+            } else {
+                await this.page.selectOption(locator, { value: value });
+            }
             await this.waitForLoading();
             console.log('\x1b[33m%s\x1b[0m', `✅ Selected ${locator} with ${value}`);
         } catch (error) {
@@ -354,6 +448,18 @@ export class Base {
     async selectMultiSelectByValue(locator: string, value: string) {
         try {
             await this.waitForLoading();
+            // React forms: no native select, the field's combobox (li.wpuf-el.<name>) with options.
+            const name = (locator.match(/name="([^"\[]+)/) || [])[1];
+            if (name && !(await this.page.locator(locator).count())) {
+                const field = this.page.locator(`li.wpuf-el.${name}`).first();
+                await field.locator('[role="combobox"]').first().click();
+                const option = field.locator(`[role="option"][data-value="${value}"]`).or(field.locator('[role="option"]', { hasText: value })).first();
+                await option.click();
+                await this.page.keyboard.press('Escape');
+                await expect(field.locator('.wpuf-select__chips')).toContainText(value);
+                console.log('\x1b[33m%s\x1b[0m', `✅ Multiselected ${name} (React) with ${value}`);
+                return;
+            }
             const element = this.page.locator(locator).first();
             await element.waitFor({ state: 'attached' });
             const matched = await element.evaluate((select: HTMLSelectElement, val: string) => {
@@ -385,6 +491,12 @@ export class Base {
         await this.page.waitForLoadState('domcontentloaded');
     }
 
+    /** A builder Save button that is disabled because nothing changed. */
+    async isUnchangedSave(element: import('@playwright/test').Locator): Promise<boolean> {
+        const first = element.first();
+        return 'No changes to save' === (await first.getAttribute('title').catch(() => null)) && (await first.isDisabled().catch(() => false));
+    }
+
     async waitForFormSaved(formSavedLocator: string, saveButtonLocator: string) {
         // Detect the transient "Saved form data" toast with a generous timeout.
         // IMPORTANT: always return false ("saved – stop") so callers that loop
@@ -392,6 +504,11 @@ export class Base {
         // exactly once. Returning true on a flaky false-negative made those loops
         // re-enter and create DUPLICATE forms, which then broke unscoped
         // form-name selectors with Playwright strict-mode violations.
+        // Nothing changed: Save stayed disabled and no request was sent (see validateAndClick).
+        if (await this.isUnchangedSave(this.page.locator(saveButtonLocator))) {
+            console.log('\x1b[32m%s\x1b[0m', `✅ Nothing to save`);
+            return false;
+        }
         try {
             await this.waitForLoading();
             await this.page.locator(formSavedLocator).first().waitFor({ timeout: 15000 });

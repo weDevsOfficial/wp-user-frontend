@@ -18,12 +18,12 @@ Read before adding or modifying end-to-end tests.
 
 ```bash
 cd tests/e2e
-npm i
+pnpm install --frozen-lockfile
 npx playwright install chromium
 
-npm run test:setup       # run setup suite first (alphaSetupTest)
-npm run test:parallel    # run the 3 native shards sequentially
-npm run test:sharded     # setup + shards in sequence
+pnpm run test:setup       # run setup suite first (alphaSetupTest)
+pnpm run test:parallel    # run the 4 native shards sequentially
+pnpm run test:sharded     # setup + shards in sequence
 ```
 
 CI variants append `:ci` (`test:setup:ci`, `test:parallel:ci`, `test:sharded:ci`) and drop `--headed`.
@@ -37,10 +37,11 @@ configs are gone — phases are now **projects** selected with `--project`:
 - `--project=setup` → `alphaSetupTest.spec.ts` (run first, once)
 - `--project=e2e` → the stateful UI suite, split via native `--shard=i/n`
 - `--project=api` → REST layer (`tests/api/`, no browser)
+- `--project=parity` → develop vs branch comparison (`parity/`, needs `PARITY_*` in `.env`, see `utils/paritySites.ts`); local gate, not in CI shards
 
 `workers: 1` + `fullyParallel: false`, so no two stateful specs hit the shared site
-at once. `npm run test:parallel` invokes `--project=e2e` three times
-(`--shard=1/3`, `2/3`, `3/3`) **sequentially** against the single wp-env.
+at once. `pnpm run test:parallel` invokes `--project=e2e` four times
+(`--shard=1/4` to `4/4`) **sequentially** against the single wp-env.
 
 - We deliberately do **not** wire `dependencies: ['setup']` — under `--shard` a setup
   dependency reruns the heavy, destructive site reset once per shard. Setup stays a
@@ -107,3 +108,167 @@ Two areas need external services configured or they fail regardless of code:
 
 Both are QA-environment config, not WPUF bugs. Failures here mean "configure the service,"
 not "fix the code."
+
+**AI form builder** — no real provider in tests. `wp/wpuf-ai-mock.php` (mu-plugin, mapped by
+`.wp-env.json`; on a Herd site copy it into `wp-content/mu-plugins/`) answers the OpenAI /
+Anthropic / Google calls ONLY when the stored key is `sk-wpuf-e2e-mock`
+(`AiFormBuilderPage.configureMock()` sets it and `restore()` puts the old `wpuf_ai` back).
+Prompts pick the answer: "mock-error" (provider 500), "not-a-form" (refusal), "pro-fields"
+(phone + date), chat "website" / "date" / "remove the message"; integrations add
+" (<id>)" to the title. It also answers Settings "Test Connection" (HTTP 200), the Google
+model list (`gemini-mock-flash`, `configureMock(key, 'google')`) and the builder's
+"AI Generate Options" AJAX (Mock Red / Green / Blue). Pro is detected by class
+(`AiFormBuilderPage.proActive()`), so the specs work on a dev checkout (`wpuf-pro`) and on the
+release zip (`wp-user-frontend-pro`).
+
+**Release smoke** — `tests/releaseSmokeTest.spec.ts` (RS0001-RS0006) opens every React admin
+screen and fails on a JS error, a 4xx/5xx plugin asset, a Vue runtime or Vue app, or an asset of
+the removed Vue admin (`VUE_ASSETS` in the spec). Run it on a site with the release
+packages installed (steps in `docs/build-and-test.md`, "Release build check"). Run against a local site with
+`QA_BASE_URL=http://site.test WPUF_E2E_WP_PATH=/path/to/site`. AI0015 / AI0016 need
+WooCommerce / Dokan active, AI0013 needs Pro off.
+
+## React screens: locator patterns
+
+The builders, forms lists, subscriptions and settings screens are React on
+plugin-ui (base-ui). Native inputs became ARIA widgets; locate them this way
+(all in `pages/selectors.ts`, never inline in specs):
+
+| Control | Locator |
+|---|---|
+| Select (plugin-ui) | `//*[@role="combobox"][@id="X"]` or `label/following::*[@role="combobox"][1]`; pick with `base.ts::selectOptionWithValue/Label` (combobox-aware: opens it, clicks `[@role="option"][@data-value="v"]`) |
+| Switch / toggle | `//label[normalize-space()="Label"]/following::*[@role="switch"][1]` (ids are generated, `base-ui-:r12:`), or `input#id/preceding-sibling::*[@role="switch"][1]` where a hidden input keeps the id |
+| Radio | `//*[@role="radio"][following-sibling::input[1][@value="v"]]` or `role=radio[name="Label"s]` (exact) |
+| Checkbox | `[@role="checkbox"]`; `.check()` works on it |
+| Multi-select | `[@role="combobox"]`, options `[@role="option"][normalize-space()="Name"]` (no data-value) |
+| Menus (card "⋯", Save/Publish) | trigger `button[@aria-label="Actions"]` or the button; items `[@role="menuitem"]`. Menus open on **click** (develop opened some on hover) |
+| Tabs with counts | subscriptions list card: `role=tab[name=/^All Subscriptions\s*\(1\)$/]` (count as "(n)", also 0); the form views keep the sidebar buttons |
+| Confirm dialogs | scope to `//*[@role="alertdialog" or @role="dialog"]//button[...]` (the "Trash" tab is also a button) |
+| Builder canvas labels | `//label[@for="x" or @for="wpuf-x"]` |
+| Forms list rows | `//tr[.//td//a[normalize-space()="Name"]]` |
+
+Traps:
+- **Union XPath picks the first match in document order**, not the first branch:
+  a fallback like `(//label[text()="Country List"]/following::input)[2]` can hit
+  the canvas preview before the options panel. Anchor to the panel container
+  (`panel-field-opt-*`) or drop the fallback.
+- **Strict mode**: text such as "Enable time input" exists on a wrapper div,
+  the label and a span. Target the `label` only.
+- **React unmounts switched-off sections** (develop only hid them), so
+  index-based locators like `(//span[@data-clipboard-text="x"])[2]` break.
+  Anchor to the section heading instead.
+- Single-use palette fields (Username, First Name...) answer a second add with
+  an "Oops... already have this field" alert; close it (`alreadyAddedOk`).
+- Save toast text is "Saved form data" (as develop).
+
+## The admin app (one page, hash routes)
+
+The React screens run as one admin app on `admin.php?page=wp-user-frontend`
+(`#/post-forms`, `#/post-forms/:id/edit`, `#/post-forms/new`, `#/post-forms/ai`,
+`#/registration-forms…` with Pro, `#/subscriptions`, `#/settings?tab=&sub=`).
+Old URLs still work: the old page's load step runs (row actions, template
+actions, add-new), then it redirects to the route. There is no switch back to
+per-page screens (they were removed). App tests: `adminAppTest.spec.ts`
+(APP0001-APP0014); release smoke RS0007 (no reload across menu rows) and RS0008
+(reload on each route).
+
+- **Builder URLs have two shapes**: the old builder page (`action=edit&id=N`,
+  redirects) and the route (`#/post-forms/N/edit`). Wait with `BUILDER_URL` and read the id
+  with `builderFormId()` (`utils/builderUrl.ts`); `Base::getFormId()` reads both.
+- **Menu rows are route changes**, not page loads: after a click, wait for the
+  screen, not for a navigation. Reloading right after a menu click can reload the
+  previous route (the shell restores the old URL while a screen asks about unsaved
+  changes).
+- **A hash route's stylesheet loads before the screen renders**, a moment after
+  the page `load` event: use `Base::isVisibleSoon()` (or an expect with a
+  timeout), never an instant `isVisible()`, for list checks after a load.
+- **Third-party code that checks the page slug** (`$_GET['page'] === 'wpuf-post-forms'`)
+  sees `wp-user-frontend` on the app page; `wpuf_is_admin_app()` /
+  `wpuf_is_admin_screen( $slug )` answer for the app (the parity fixture
+  `parity/wp/third-party-retired-hooks.php` shows the change).
+- **CTR0001** follows the app's redirect chain: the recorder (`tests/contracts/runtime-recorder.php`)
+  merges an old URL's load step and the builder's REST boot into the screen the app
+  page shows. Run with `CONTRACT_ALLOW=<allow file> CONTRACT_BASELINE=278`.
+
+## Reruns and local runs: what breaks and why
+
+- **Partial runs (`--grep`) must include the tests that create state**: a spec's
+  first test logs in and creates the form (FOS0001, PFS0001, PF0001, RFS0001).
+  Some tests continue on the page the previous one left (FOS0084 needs FOS0083
+  open; FOS0083 needs FOS0082's second form; PFS0069+ needs PFS0063-66 that set
+  the notification subject). A "not found" right at the start of a test is
+  usually this, not a selector problem.
+  `postFormSettingsTest`: PFS0001 creates "PF Settings" and makes it the account
+  page's default form by name; with older "PF Settings" copies on the site the
+  account page can keep an old one. Delete old copies before rerunning.
+  PFS0094 expects the admin to still get the form with role-based "Subscriber":
+  Administrator is an always-selected role on the React builder (develop dropped
+  it and locked admins out, a develop bug fixed on this branch).
+  `regFormTestPro`: RF0004 logs the admin out before RF0005 registers a visitor
+  (else "You are already logged in!"), and RF0002 re-adds non-single fields on
+  every rerun; rerun from RF0004 without RF0002.
+  `regFormSettingsTestPro` chains settings through the whole spec (approval from
+  RFS0011, user notification from RFS0036, welcome mail from RFS0043): run it in full.
+- **The site keeps data between runs.** Reruns create duplicates (two products
+  with one title → strict-mode error; extra subscription packs → wrong counts;
+  fields already on the "Registration" form → Oops alert). Clean before rerunning:
+  `npx @wordpress/env run cli wp post delete $(npx @wordpress/env run cli wp post list --post_type=<type> --post_status=any --format=ids) --force`
+  (`cli` = 8888, `tests-cli` = 8889).
+- **Specs change global settings for later specs**: the settings spec can switch
+  off `wpuf_profile[autologin_after_registration]` (RFS0002 then lands on the
+  login screen); the onboarding "what you need" step can switch off Pro modules
+  (email-templates → SR0029). In a full sharded run the order is alphabetical;
+  after ad-hoc runs restore the option / module first.
+- A test failing in a few **milliseconds** with "Target page, context or browser
+  has been closed" means the browser window was closed; just rerun. Same for a
+  one-off `page.goto: net::ERR_ABORTED` (navigation interrupted, seen on PFS0040).
+- **Builder save goes over REST on the branch** (`POST wpuf/v1/admin/forms/{id}`), AJAX on develop:
+  wait for either (`ParityPage.doSaveBuilder()`), never only `admin-ajax.php`.
+- **Parity specs that change site options must restore them** (SEC0001 restores
+  `wpuf_general`): a leftover key changed CTR0001's count from 65 to 78.
+- **CTR0001 with an odd count**: list `wp-content/uploads/wpuf-contracts/ctr-*` with
+  their times first; a crawl that recorded nothing now fails instead of passing with 0.
+- **Fresh local site (`wp-env clean all`)**: skip RS0001 (`--grep-invert RS0001`; it resets an
+  existing site through the WP Reset plugin, which a clean site does not have) and seed the
+  Pro license first (`wp option update wpuf_license "$(cat <license json>)" --format=json` on
+  `cli` and `tests-cli`), else LS0005 waits on the license screen and setup stops there.
+- **Never run two Playwright processes on the same output dir** (they delete each
+  other's artifacts: `ENOENT ... .playwright-artifacts`). Give parallel runs their
+  own `TEST_PARALLEL_INDEX` + `SHARD_INDEX` (and base URL); run parity alone.
+- With the `list` reporter the **error text prints at the end of the run**; for a
+  failure mid-run read `test-results/**/error-context.md` (page snapshot),
+  `test-failed-1.png`, or the `trace.zip` (actions + errors).
+- A test that "hangs" for its full timeout is usually a locator that never
+  resolves (`page.textContent()` and `locator.waitFor()` wait without limit);
+  check the last action in the trace.
+- Builder / settings / subscriptions dialogs are the shared React ConfirmDialog
+  (`[data-wpuf-dialog]`, buttons `[data-slot="alert-dialog-action"]` /
+  `[data-slot="alert-dialog-cancel"]`), no SweetAlert. They open one render after
+  the click: wait for them (`dismissPromptIfShown()` in `pages/fieldAdd.ts`), never
+  a one-shot `isVisible()`. The custom field tooltip's "Don't show again" is the
+  cancel slot; "Okay" alone lets it reopen for the next custom field.
+- Leftover subscription packs restrict post content ("Access Restricted"): run the
+  post form specs before, or on a different site than, the subscription spec.
+
+## Full parallel run in one go (2026-10-16, branch `feature/react-admin-revamp`)
+
+The method that took a full local 4-shard run from 7 failures to a clean run on
+`feature/react-admin-revamp` (free PR #1993, Pro PR #1732). Full runbook with
+commands, ratio script and failure table: openspec
+`revamp-admin-react-flyhr/testing.md`, section "Full parallel run in one go".
+
+- One wp-env copy per shard, `wp-env clean all` before every run, setup project,
+  then `--shard=N/4 --global-timeout=3600000` (no hang). Sync code only between runs.
+- Triage each failure while the run goes (screenshot, `error-context.md`, a probe on an
+  idle copy, the saved data via wp-cli); compare with develop before calling it a bug.
+- "Target page, context or browser has been closed" means the test timeout fired:
+  find the step that waited.
+- Helpers to reuse: `utils/wpLoginForm.ts` (wp-login empties the password ~200 ms after
+  load), `Base.dismissEditorModals()` (block editor welcome guide / pattern chooser),
+  `navigateToURL` (document, then up to 15 s for load), `frontendLogin` (waits for the
+  REST login and the redirect), `wpCli` (one retry when the wp-env wrapper fails).
+- React markup: select by `name` or stable classes, not classic ids (taxonomy selects,
+  price inputs, plan card `section.wpuf-plan-status`, badge `span`); set text with
+  `fill()`, not key by key; one dialog handler per page.
+- Verify fixes on idle copies before the next full run; clear duplicate packs / products
+  first, a used site adds its own failures.

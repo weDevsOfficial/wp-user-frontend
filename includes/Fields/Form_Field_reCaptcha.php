@@ -5,6 +5,7 @@ namespace WeDevs\Wpuf\Fields;
 /**
  * Recaptcha Field Class
  */
+// phpcs:ignore PEAR.NamingConventions.ValidClassName.Invalid -- public class name, kept for back compat.
 class Form_Field_reCaptcha extends Field_Contract {
 
     public function __construct() {
@@ -37,19 +38,25 @@ class Form_Field_reCaptcha extends Field_Contract {
             $is_invisible = $field_settings['recaptcha_type'] == 'invisible_recaptcha' ? true : false;
         }
 
-        $invisible_css   = $is_invisible ? ' style="margin: 0; padding: 0" ' : ''; ?> <li <?php $this->print_list_attributes( $field_settings );
-        echo esc_attr( $invisible_css ); ?>>
+        $invisible_css = $is_invisible ? ' style="margin: 0; padding: 0" ' : '';
+        ?>
+        <li
+        <?php
+        $this->print_list_attributes( $field_settings );
+        echo esc_attr( $invisible_css );
+        ?>
+        >
 
             <?php
 
-            if ( !$is_invisible ) {
+            if ( ! $is_invisible ) {
                 $this->print_label( $field_settings );
             }
 
-        if ( !$public_key ) {
-            esc_html_e( 'reCaptcha API key is missing.', 'wp-user-frontend' );
-        } else {
-            ?>
+            if ( ! $public_key ) {
+                esc_html_e( 'reCaptcha API key is missing.', 'wp-user-frontend' );
+            } else {
+                ?>
 
                 <div class="wpuf-fields <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>">
                     <script>
@@ -67,7 +74,8 @@ class Form_Field_reCaptcha extends Field_Contract {
                     <input type="hidden" name="g-recaptcha-response">
                 <?php
 
-                if ( $is_invisible ) { ?>
+                if ( $is_invisible ) {
+                    ?>
 
                     <?php wp_enqueue_script( 'wpuf-recaptcha-invisible', 'https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en', array(), null, true ); ?>
 
@@ -108,8 +116,9 @@ class Form_Field_reCaptcha extends Field_Contract {
 
                 </div>
 
-            <?php
-        } ?>
+                <?php
+            }
+            ?>
 
         </li>
 
@@ -129,17 +138,14 @@ class Form_Field_reCaptcha extends Field_Contract {
             'msg_title'     => __( 'Site key and Secret key', 'wp-user-frontend' ),
             'msg'           => sprintf(
                 // translators: %1$s wpuf admin settings url and %2$s is recaptcha url
-                __( 'You need to set Site key and Secret key in <a class="wpuf-text-primary wpuf-italic wpuf-font-bold" style="text-decoration: underline;" href="%1$s" target="_blank">Settings</a> in order to use "Recaptcha" field. <a class="wpuf-text-primary" href="%2$s" target="_blank">Click here to get the these key</a>.', 'wp-user-frontend' ),
-                admin_url( 'admin.php?page=wpuf-settings' ),
-                __( 'Settings', 'wp-user-frontend' ),
-                __( 'in order to use "Recaptcha" field.', 'wp-user-frontend' ),
-                'https://www.google.com/recaptcha/',
-                __( 'Click here to get the these key', 'wp-user-frontend' )
+                __( 'You need to set Site key and Secret key in <a class="wpuf-text-primary wpuf-italic wpuf-font-bold" style="text-decoration: underline;" href="%1$s" target="_blank">Settings</a> in order to use "Recaptcha" field. <a class="wpuf-text-primary" href="%2$s" target="_blank">Get your keys</a>.', 'wp-user-frontend' ),
+                esc_url( wpuf_admin_app_url( '/settings', [ 'tab' => 'wpuf_general' ] ) ),
+                'https://www.google.com/recaptcha/admin'
             ),
             'cta' => sprintf(
                 '<a class="%1$s" href="%2$s" target="_blank">%3$s</a>',
                 'wpuf-px-[20px] wpuf-py-[10px] !wpuf-border !wpuf-border-solid !wpuf-border-gray-300 !wpuf-rounded-md hover:!wpuf-bg-gray-50 !wpuf-text-black',
-                admin_url( 'admin.php?page=wpuf-settings' ),
+                esc_url( wpuf_admin_app_url( '/settings', [ 'tab' => 'wpuf_general' ] ) ),
                 __( 'Go to Setting', 'wp-user-frontend' )
             ),
         ];

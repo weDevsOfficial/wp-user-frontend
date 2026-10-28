@@ -960,7 +960,12 @@ class Account_Widget extends Widget_Base {
         // Reset container padding and gap so Elementor's Advanced tab controls take over
         echo '<style>.elementor-widget-wpuf-account .wpuf-account-container { padding: 0; gap: 0; }</style>';
 
-        echo do_shortcode( '[wpuf_account]' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- shortcode output
+        echo \WeDevs\Wpuf\Frontend\Renderer::with_source( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- shortcode output
+            'elementor',
+            function () {
+                return do_shortcode( '[wpuf_account]' );
+            }
+        );
 
         /**
          * Fires after the account widget has rendered its output.

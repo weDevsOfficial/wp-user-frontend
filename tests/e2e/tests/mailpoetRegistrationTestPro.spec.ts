@@ -20,7 +20,8 @@ let userPassword: string = '';
 let mailpoetRegistered = false;
 
 test.beforeAll(async () => {
-    browser = await chromium.launch();
+    // HEADED=1 shows the browser (this spec launches its own).
+    browser = await chromium.launch({ headless: ! process.env.HEADED });
     context = await browser.newContext();
     page = await context.newPage();
 });

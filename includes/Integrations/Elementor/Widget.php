@@ -165,11 +165,13 @@ class Widget extends Widget_Base {
      * @return array Array of forms formatted as select options
      */
     protected function get_wpuf_forms() {
-        $forms = get_posts( [
-            'post_type'      => 'wpuf_forms',
-            'posts_per_page' => -1,
-            'post_status'    => 'publish',
-        ] );
+        $forms = get_posts(
+            [
+                'post_type'      => 'wpuf_forms',
+                'posts_per_page' => -1,
+                'post_status'    => 'publish',
+            ]
+        );
 
         $options = [ '' => __( 'Select a Form', 'wp-user-frontend' ) ];
 
@@ -1505,7 +1507,12 @@ class Widget extends Widget_Base {
         }
 
         $shortcode_str = '[wpuf_form id="' . $form_id . '"]';
-        $output        = do_shortcode( $shortcode_str );
+        $output        = \WeDevs\Wpuf\Frontend\Renderer::with_source(
+            'elementor',
+            function () use ( $shortcode_str ) {
+                return do_shortcode( $shortcode_str );
+            }
+        );
 
         $is_elementor = class_exists( '\Elementor\Plugin' ) && (
             ( isset( \Elementor\Plugin::$instance->editor ) && \Elementor\Plugin::$instance->editor->is_edit_mode() )

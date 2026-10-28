@@ -2,7 +2,12 @@
 
 namespace WeDevs\Wpuf\Admin\Forms;
 
+use WeDevs\Wpuf\AI\Services\Provider_Settings;
+use WeDevs\Wpuf\Admin\BootPayload;
 use WeDevs\Wpuf\Free\Pro_Prompt;
+use WeDevs\Wpuf\Builder\HookBridge;
+use WeDevs\Wpuf\Builder\HookDeprecations;
+use WeDevs\Wpuf\Platform\Stores\Stores;
 
 /**
  * Form Builder framework
@@ -27,6 +32,23 @@ class Admin_Form_Builder {
     private $settings = [];
 
     /**
+     * The builder created for the current request (the builder screen, or the
+     * builder boot of the React admin app).
+     *
+     * @since WPUF_SINCE
+     *
+     * @var Admin_Form_Builder|null
+     */
+    public static $current = null;
+
+    /**
+     * Stylesheets enqueue_app_assets() enqueued, null before it ran.
+     *
+     * @var string[]|null
+     */
+    private static $app_styles = null;
+
+    /**
      * Class contructor
      *
      * @since 2.5
@@ -46,43 +68,20 @@ class Admin_Form_Builder {
             // [ [ 'name' => 'wpuf_form', 'type' => 'profile' ], [ 'name' => 'wpuf_form', 'type' => 'registration' ] ]
         ];
         $this->settings = wp_parse_args( $settings, $defaults );
-        // set post data to global $post
-        $post = get_post( $this->settings['post_id'] ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- the builder renders against this form's post, as before.
+        self::$current  = $this;
+        // Set the form as the global $post: builder code in free and pro
+        // (Post_Form, Fields_Manager) reads it on this screen.
+        $post = get_post( $this->settings['post_id'] ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
         // if we have an existing post, then let's start
         if ( ! empty( $post->ID ) ) {
             add_action( 'in_admin_header', 'wpuf_remove_admin_notices' );
             add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
-            add_action( 'admin_print_scripts', [ $this, 'admin_print_scripts' ] );
             add_action( 'admin_footer', [ $this, 'custom_dequeue' ] );
             add_action( 'admin_footer', [ $this, 'admin_footer' ] );
-            add_action( 'wpuf_admin_form_builder', [ $this, 'include_form_builder' ] );
-            add_action( 'wpuf_admin_form_builder_view', [ $this, 'include_form_builder' ] );
         }
 
-        add_action( 'wpuf_form_builder_template_builder_stage_submit_area', [ $this, 'add_form_submit_area' ] );
-    }
-
-    /**
-     * Add buttons in form submit area
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function add_form_submit_area() {
-        ?>
-        <input @click.prevent="" type="submit" name="submit" :value="post_form_settings.submit_text">
-
-        <a
-            v-if="post_form_settings.draft_post"
-            @click.prevent=""
-            href="#"
-            class="btn"
-            id="wpuf-post-draft"
-        >
-            <?php esc_html_e( 'Save Draft', 'wp-user-frontend' ); ?>
-        </a>
-        <?php
+        // The stage submit area hook is retired (Builder\HookDeprecations); develop's
+        // submit preview was hidden, so the React stage has no counterpart.
     }
 
     /**
@@ -93,82 +92,184 @@ class Admin_Form_Builder {
      * @return void
      */
     public function admin_enqueue_scripts() {
-        global $post;
+        $this->enqueue_builder_assets();
 
+        // React form builder bundle, registered in the shared Assets registry (task 2.5b).
+        wp_enqueue_script( 'wpuf-form-builder-screen' );
+        wpuf()->platform()->get( BootPayload::class )->attach( 'form_builder', 'wpuf-form-builder-screen' );
+
+        $data = $this->localize_data();
+
+        wp_localize_script( 'wpuf-form-builder-screen', 'wpuf_form_builder', $data['wpuf_form_builder'] );
+        // Develop printed the single-instance field list as its own global; scripts
+        // that read window.wpuf_single_objects keep working.
+        wp_localize_script( 'wpuf-form-builder-screen', 'wpuf_single_objects', $data['wpuf_single_objects'] );
+        // Retired Vue mixin filters still fire (deprecated when an outside plugin
+        // listens) and window.wpuf_mixins stays defined (4.4g).
+        wp_localize_script( 'wpuf-form-builder-screen', 'wpuf_mixins', $data['wpuf_mixins'] );
+    }
+
+    /**
+     * Enqueue the builder's libraries and fire the builder enqueue hooks, in
+     * develop's order. Pro, modules and add-ons enqueue their builder assets on
+     * these hooks.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function enqueue_builder_assets() {
+        self::enqueue_libraries();
+    }
+
+    /**
+     * The builder's libraries and enqueue hooks (enqueue_builder_assets()),
+     * without a builder: the React admin app page loads them once and opens
+     * any form's builder without a page load.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public static function enqueue_libraries() {
         wp_enqueue_style( 'wpuf-font-awesome' );
-        wp_enqueue_style( 'wpuf-sweetalert2' );
+        wp_enqueue_style( 'wpuf-dialog' );
         wp_enqueue_style( 'wpuf-selectize' );
-        wp_enqueue_style( 'wpuf-toastr' );
         wp_enqueue_style( 'wpuf-tooltip' );
         wp_enqueue_style( 'wpuf-jquery-ui' );
         wp_enqueue_style( 'wp-color-picker' );
+        wp_enqueue_style( 'wpuf-admin-form-builder' );
         do_action( 'wpuf_form_builder_enqueue_style' );
 
         wp_enqueue_media();
+        // Rich text settings (registration email bodies) use the WordPress editor,
+        // as develop's wp_editor() did.
+        wp_enqueue_editor();
 
-        wp_enqueue_script( 'wpuf-vue' );
-        wp_enqueue_script( 'wpuf-vuex' );
         wp_enqueue_script( 'wpuf-subscriptions' );
-        wp_enqueue_script( 'wpuf-sweetalert2' );
-        wp_enqueue_script( 'wpuf-jquery-scrollTo' );
+        wp_enqueue_script( 'wpuf-dialog' );
         wp_enqueue_script( 'wpuf-selectize' );
-        wp_enqueue_script( 'wpuf-toastr' );
-        wp_enqueue_script( 'wpuf-clipboard' );
         wp_enqueue_script( 'wpuf-tooltip' );
         wp_enqueue_script( 'wpuf-timepicker' );
         wp_enqueue_script( 'wpuf-admin' );
         wp_enqueue_script( 'zxcvbn' );
         wp_enqueue_script( 'password-strength-meter' );
-        wp_enqueue_script( 'wpuf-form-builder-wpuf-forms' );
-        /**
-         * Unique fields list. Only 1 field can be added in a form.
-         */
-        $single_objects[] = 'profile_photo';
+        wp_enqueue_script( 'wp-color-picker' );
 
+        // The stage's rich text previews are a static TinyMCE mockup: they need the
+        // editor and skin styles, which the Vue text-editor template enqueued.
+        wp_enqueue_style( 'editor-css', includes_url( 'css/editor.css' ), [], get_bloginfo( 'version' ) );
+        wp_enqueue_style( 'skin-css', includes_url( 'js/tinymce/skins/lightgray/skin.min.css' ), [], get_bloginfo( 'version' ) );
+
+        do_action( 'wpuf_form_builder_enqueue_after_mixins' );
+        do_action( 'wpuf_form_builder_enqueue_after_components' );
+
+        do_action( 'wpuf_form_builder_enqueue_after_main_instance' );
+    }
+
+    /**
+     * The builder on the React admin app page: its libraries, bundle and
+     * footer steps, as the builder screen loads them. Each form's data comes
+     * over REST when its builder opens (Builder\BuilderBoot).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array Window globals before the first builder opens.
+     */
+    public static function enqueue_app_assets() {
+        if ( null === self::$app_styles ) {
+            $before = wp_styles()->queue;
+
+            self::enqueue_libraries();
+            wp_enqueue_script( 'wpuf-form-builder-screen' );
+                add_action( 'admin_footer', [ __CLASS__, 'custom_dequeue' ] );
+            add_action( 'admin_footer', [ __CLASS__, 'retired_footer' ] );
+
+            self::$app_styles = array_values( array_diff( wp_styles()->queue, $before ) );
+        } else {
+            // The hooks fire once; a second builder group (registration forms)
+            // gets the same stylesheets.
+            array_map( 'wp_enqueue_style', self::$app_styles );
+        }
+
+        // Scripts that read these at load time find them; a builder's own
+        // values replace them when it opens.
+        return [
+            'wpuf_form_builder'   => new \stdClass(),
+            'wpuf_single_objects' => array_values( self::single_objects() ),
+        ];
+    }
+
+    /**
+     * The builder's hidden form inputs: form ID, form type, settings key and
+     * the save nonce; the app builds the form with them.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    public function form_attributes() {
+        return [
+            'form_id'           => (int) $this->settings['post_id'],
+            'form_type'         => $this->settings['form_type'],
+            'post_type'         => $this->settings['post_type'],
+            'form_settings_key' => $this->settings['form_settings_key'],
+            'nonce'             => wp_create_nonce( 'wpuf_form_builder_save_form' ),
+        ];
+    }
+
+    /**
+     * Unique fields: only one of each can be added to a form.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    public static function single_objects() {
         $single_objects = apply_filters(
             'wpuf_single_form_field',
             [
-				'post_title',
-				'post_content',
-				'post_excerpt',
-				'featured_image',
-				'user_login',
-				'first_name',
-				'last_name',
-				'nickname',
-				'user_email',
-				'user_url',
-				'user_bio',
-				'password',
-				'user_avatar',
-				'taxonomy',
-				'cloudflare_turnstile',
-				'recaptcha',
-				'signature_field',
-			]
+                'post_title',
+                'post_content',
+                'post_excerpt',
+                'featured_image',
+                'user_login',
+                'first_name',
+                'last_name',
+                'nickname',
+                'user_email',
+                'user_url',
+                'user_bio',
+                'password',
+                'user_avatar',
+                'taxonomy',
+                'cloudflare_turnstile',
+                'recaptcha',
+                'signature_field',
+            ]
         );
-        $taxonomy_terms = array_keys( get_taxonomies() );
-        $single_objects = array_merge( $single_objects, $taxonomy_terms );
-        wp_enqueue_script( 'wpuf-form-builder-mixins' );
 
-        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_single_objects', $single_objects );
+        return array_merge( $single_objects, array_keys( get_taxonomies() ) );
+    }
 
-        do_action( 'wpuf_form_builder_enqueue_after_mixins' );
+    /**
+     * The data the builder reads: `wpuf_form_builder`, `wpuf_single_objects`
+     * and `wpuf_mixins`. Printed by the builder screen, and returned over REST
+     * by the React admin app's builder boot (Builder\BuilderBoot).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array { wpuf_form_builder, wpuf_single_objects, wpuf_mixins }
+     */
+    public function localize_data() {
+        global $post;
 
-        wp_enqueue_script( 'wpuf-form-builder-components' );
+        $single_objects = self::single_objects();
 
-        do_action( 'wpuf_form_builder_enqueue_after_components' );
-
-        wp_enqueue_script( 'wpuf-form-builder' );
-        wp_enqueue_script( 'wp-color-picker' );
-
-        do_action( 'wpuf_form_builder_enqueue_after_main_instance' );
         /*
          * Data required for building the form
          */
-        wpuf_require_once( WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php' );
         wpuf_require_once( WPUF_ROOT . '/includes/Free/Pro_Prompt.php' );
-
         $lock_icon = WPUF_ASSET_URI . '/images/crown-circle.svg';
         $free_icon = WPUF_ASSET_URI . '/images/free-circle.svg';
 
@@ -181,14 +282,9 @@ class Admin_Form_Builder {
         // Load icon configuration
         $icon_config = $this->get_icon_config();
 
-        // Check AI configuration directly
-        $ai_settings   = get_option( 'wpuf_ai', [] );
-        $ai_provider   = isset( $ai_settings['ai_provider'] ) ? $ai_settings['ai_provider'] : '';
-        $ai_model      = isset( $ai_settings['ai_model'] ) ? $ai_settings['ai_model'] : '';
-        $provider_key  = $ai_provider . '_api_key';
-        $ai_api_key    = isset( $ai_settings[ $provider_key ] ) ? $ai_settings[ $provider_key ] : '';
-        $ai_configured = ! empty( $ai_provider ) && ! empty( $ai_api_key ) && ! empty( $ai_model );
-        $ai_settings_url = admin_url( 'admin.php?page=wpuf-settings#/ai' );
+        // AI configuration: one answer for every screen (Provider_Settings::status()).
+        $ai_configured = wpuf()->platform()->get( Provider_Settings::class )->status()['configured'];
+        $ai_settings_url = admin_url( 'admin.php?page=wpuf-settings#wpuf_ai' );
 
         $wpuf_form_builder = apply_filters(
             'wpuf_form_builder_localize_script',
@@ -208,9 +304,11 @@ class Admin_Form_Builder {
                 'asset_url'        => WPUF_ASSET_URI,
                 'root_dir'         => WPUF_ROOT,
                 'recaptcha_site'   => wpuf_get_option( 'recaptcha_public', 'wpuf_general' ),
-                'recaptcha_secret' => wpuf_get_option( 'recaptcha_private', 'wpuf_general' ),
+                // Secret keys are never printed: the builder only needs to know a key
+                // is set, so these carry a marker ('1') instead of the value.
+                'recaptcha_secret' => '' !== (string) wpuf_get_option( 'recaptcha_private', 'wpuf_general' ) ? '1' : '',
                 'turnstile_site'   => wpuf_get_option( 'turnstile_site_key', 'wpuf_general' ),
-                'turnstile_secret' => wpuf_get_option( 'turnstile_secret_key', 'wpuf_general' ),
+                'turnstile_secret' => '' !== (string) wpuf_get_option( 'turnstile_secret_key', 'wpuf_general' ) ? '1' : '',
                 'nonce'            => wp_create_nonce( 'form-builder-setting-nonce' ),
                 'is_pro_active'    => wpuf_is_pro_active(),
                 'pro_asset_url'    => defined( 'WPUF_PRO_ASSET_URI' ) ? WPUF_PRO_ASSET_URI : '',
@@ -222,52 +320,73 @@ class Admin_Form_Builder {
                 'defaultIcons'     => $icon_config['defaultIcons'],
                 'ai_configured'    => $ai_configured,
                 'ai_settings_url'  => $ai_settings_url,
+                'forms'            => $this->get_form_list(),
+                'shortcodes'       => $this->settings['shortcodes'],
+                // Roles the current user may assign, as the Vue visibility template listed.
+                'roles'            => wp_list_pluck( get_editable_roles(), 'name' ),
+                'subscriptions'    => $this->get_subscriptions(),
+                'preview_url'      => get_wpuf_preview_page(),
+                // Prerequisites the builder points out (WPUF_SINCE): the Turnstile
+                // switch, WordPress registration, the Account page post types.
+                'turnstile_enabled'     => wpuf_is_checkbox_or_toggle_on( wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' ) ),
+                'registration_open'     => is_multisite() ? in_array( get_site_option( 'registration' ), [ 'user', 'all' ], true ) : (bool) get_option( 'users_can_register' ),
+                'registration_url'      => is_multisite() ? network_admin_url( 'settings.php#registration' ) : admin_url( 'options-general.php#users_can_register' ),
+                'account_post_types'    => array_values( array_filter( array_map( 'strval', (array) wpuf_get_option( 'cp_on_acc_page', 'wpuf_my_account', [ 'post' ] ) ) ) ),
+                'admin_url'             => admin_url(),
+                // Site payment setup, for the settings recommendations: a form
+                // that charges needs payments on, a gateway and a payment page.
+                'site_payments'         => [
+                    'enabled'      => wpuf_is_checkbox_or_toggle_on( wpuf_get_option( 'enable_payment', 'wpuf_payment', 'off' ) ),
+                    'gateways'     => count( array_filter( (array) wpuf_get_option( 'active_gateways', 'wpuf_payment', [] ) ) ),
+                    'payment_page' => (bool) wpuf_get_option( 'payment_page', 'wpuf_payment', 0 ),
+                    'settings_url' => wpuf_admin_app_url( '/settings', [ 'tab' => 'wpuf_payment' ] ),
+                    'plans_url'    => wpuf_admin_app_url( '/subscriptions', [ 'action' => 'new' ] ),
+                ],
             ]
         );
         $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
-        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_form_builder', $wpuf_form_builder );
-        // mixins
-        $wpuf_mixins = [
-            'root'          => apply_filters( 'wpuf_form_builder_js_root_mixins', [] ),
-            'builder_stage' => apply_filters( 'wpuf_form_builder_js_builder_stage_mixins', [] ),
-            'form_fields'   => apply_filters( 'wpuf_form_builder_js_form_fields_mixins', [] ),
-            'field_options' => apply_filters( 'wpuf_form_builder_js_field_options_mixins', [] ),
+
+        // Fire the PHP hooks the Vue builder views fired (settings rows, tabs, Vue
+        // slots) and hand other plugins' output to the React builder per slot.
+        $hook_bridge                       = wpuf()->platform()->get(
+            HookBridge::class,
+            $this->settings['form_type'],
+            isset( $wpuf_form_builder['form_settings'] ) ? $wpuf_form_builder['form_settings'] : []
+        );
+        $wpuf_form_builder['legacy_slots'] = $hook_bridge->collect(
+            isset( $wpuf_form_builder['settings_items'] ) ? $wpuf_form_builder['settings_items'] : []
+        );
+
+        // The builder prints these setting texts as HTML, like develop's views did
+        // (`wp_kses_post`), so they are filtered the same way before they leave PHP.
+        if ( isset( $wpuf_form_builder['settings_items'] ) && is_array( $wpuf_form_builder['settings_items'] ) ) {
+            $wpuf_form_builder['settings_items'] = self::kses_setting_texts( $wpuf_form_builder['settings_items'] );
+        }
+        $wpuf_form_builder['wpuf_single_objects'] = $single_objects;
+
+        // Retired Vue mixin filters still fire (deprecated when an outside plugin
+        // listens).
+        $retired = wpuf()->platform()->get( HookDeprecations::class );
+
+        // The retired script-dependency filter still fires too; the React bundle
+        // declares its own dependencies, so the result is not used.
+        $deps = $retired->filter( 'wpuf_form_builder_js_deps', [ 'jquery', 'jquery-ui-sortable', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-resizable', 'underscore', 'wpuf-sweetalert2', 'wpuf-selectize', 'wpuf-tooltip' ] );
+
+        // Develop's post form builder ran its own filter inside that one (Admin_Form::js_dependencies()).
+        if ( 'wpuf_forms' === $this->settings['post_type'] ) {
+            $retired->filter( 'wpuf_form_builder_wpuf_forms_js_deps', $deps );
+        }
+
+        return [
+            'wpuf_form_builder'   => $wpuf_form_builder,
+            'wpuf_single_objects' => array_values( $single_objects ),
+            'wpuf_mixins'         => [
+                'root'          => $retired->filter( 'wpuf_form_builder_js_root_mixins', [] ),
+                'builder_stage' => $retired->filter( 'wpuf_form_builder_js_builder_stage_mixins', [] ),
+                'form_fields'   => $retired->filter( 'wpuf_form_builder_js_form_fields_mixins', [] ),
+                'field_options' => $retired->filter( 'wpuf_form_builder_js_field_options_mixins', [] ),
+            ],
         ];
-        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_mixins', $wpuf_mixins );
-    }
-
-    /**
-     * Print js scripts in admin head
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function admin_print_scripts() {
-        ?>
-        <script>
-            if (!window.Promise) {
-                var promise_polyfill = document.createElement( 'script' );
-                promise_polyfill.setAttribute( 'src', 'https://cdnjs.cloudflare.com/polyfill/v3/polyfill.js?version=4.8.0&features=default' );
-                document.head.appendChild( promise_polyfill );
-            }
-        </script>
-        <script>
-            var wpuf_form_builder_mixins = function ( mixins, mixin_parent ) {
-                if (!mixins || !mixins.length) {
-                    return [];
-                }
-
-                if (!mixin_parent) {
-                    mixin_parent = window;
-                }
-
-                return mixins.map( function ( mixin ) {
-                    return mixin_parent[mixin];
-                } );
-            };
-        </script>
-        <?php
     }
 
     /**
@@ -278,9 +397,22 @@ class Admin_Form_Builder {
      * @return void
      */
     public function admin_footer() {
-        // get all vue component names
-        include WPUF_ROOT . '/assets/js-templates/form-components.php';
-        do_action( 'wpuf_form_builder_add_js_templates' );
+        self::retired_footer();
+    }
+
+    /**
+     * Vue cleanup: x-template includes removed (React renders all components).
+     * The retired template hooks still fire once per builder page; their Vue
+     * output is discarded (Builder\HookDeprecations, 4.4g).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public static function retired_footer() {
+        $retired = wpuf()->platform()->get( HookDeprecations::class );
+        $retired->action( 'wpuf_form_builder_add_js_templates' );
+        $retired->fire_template_actions();
     }
 
     /**
@@ -298,29 +430,6 @@ class Admin_Form_Builder {
         wp_deregister_style( 'imagify-css-sweetalert' );
         wp_dequeue_script( 'imagify-js-sweetalert' );
         wp_deregister_script( 'imagify-js-sweetalert' );
-    }
-
-    /**
-     * Include form builder view template
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function include_form_builder() {
-        $form_id           = $this->settings['post_id'];
-        $form_type         = $this->settings['form_type'];
-        $post_type         = $this->settings['post_type'];
-        $form_settings_key = $this->settings['form_settings_key'];
-        $shortcodes        = $this->settings['shortcodes'];
-        $forms             = get_posts(
-            [
-                'post_type'   => $post_type,
-                'post_status' => 'any',
-            ]
-        );
-
-        include WPUF_ROOT . '/admin/form-builder/views/form-builder-v4.1.php';
     }
 
     /**
@@ -383,84 +492,44 @@ class Admin_Form_Builder {
      * @return array
      */
     public static function save_form( $data ) {
-        $saved_wpuf_inputs = [];
-        wp_update_post(
+        // Forwards to the form store (task 2.4a). The store refuses a post that is
+        // not a form or a settings key outside the allowlist; nothing is written
+        // then and no fields come back.
+        $saved = Stores::forms()->save(
+            isset( $data['form_id'] ) ? $data['form_id'] : 0,
             [
-				'ID' => $data['form_id'],
-				'post_status' => 'publish',
-				'post_title' => $data['post_title'],
-			]
+                'post_title'        => isset( $data['post_title'] ) ? $data['post_title'] : '',
+                'form_fields'       => isset( $data['form_fields'] ) ? $data['form_fields'] : [],
+                'form_settings'     => isset( $data['form_settings'] ) ? $data['form_settings'] : [],
+                'form_settings_key' => isset( $data['form_settings_key'] ) ? $data['form_settings_key'] : 'wpuf_form_settings',
+                'notifications'     => isset( $data['notifications'] ) ? $data['notifications'] : [],
+                'integrations'      => isset( $data['integrations'] ) ? $data['integrations'] : null,
+            ]
         );
-        $existing_wpuf_input_ids = get_children(
-            [
-				'post_parent' => $data['form_id'],
-				'post_status' => 'publish',
-				'post_type'   => 'wpuf_input',
-				'numberposts' => '-1',
-				'orderby'     => 'menu_order',
-				'order'       => 'ASC',
-				'fields'      => 'ids',
-			]
-        );
-        $new_wpuf_input_ids = [];
-        if ( ! empty( $data['form_fields'] ) ) {
-            foreach ( $data['form_fields'] as $order => $field ) {
-                if ( ! empty( $field['is_new'] ) ) {
-                    unset( $field['is_new'] );
-                    unset( $field['id'] );
-                    $field_id = 0;
-                } else {
-                    $field_id = $field['id'];
-                }
-                $field_id = wpuf_insert_form_field( $data['form_id'], $field, $field_id, $order );
-                $new_wpuf_input_ids[] = $field_id;
-                $field['id'] = $field_id;
-                $field['is_new'] = false;  // Mark as saved field
-                $saved_wpuf_inputs[] = $field;
-            }
-        }
-        $inputs_to_delete = array_diff( $existing_wpuf_input_ids, $new_wpuf_input_ids );
-        if ( ! empty( $inputs_to_delete ) ) {
-            foreach ( $inputs_to_delete as $delete_id ) {
-                wp_delete_post( $delete_id, true );
+
+        return is_wp_error( $saved ) ? [] : $saved;
+    }
+
+    /**
+     * Run `wp_kses_post` on the setting texts the builder renders as HTML
+     * (`note`, `long_help`) anywhere in the settings items tree.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $items Builder settings items.
+     *
+     * @return array
+     */
+    protected static function kses_setting_texts( $items ) {
+        foreach ( $items as $key => $item ) {
+            if ( is_array( $item ) ) {
+                $items[ $key ] = self::kses_setting_texts( $item );
+            } elseif ( is_string( $item ) && in_array( $key, [ 'note', 'long_help' ], true ) ) {
+                $items[ $key ] = wp_kses_post( $item );
             }
         }
 
-        // Filter out pro notification settings if pro version is not active
-        if ( ! wpuf_is_pro_active() && isset( $data['form_settings']['notification'] ) ) {
-            // Remove update post notification settings for free version
-            if ( isset( $data['form_settings']['notification']['edit'] ) ) {
-                unset( $data['form_settings']['notification']['edit'] );
-            }
-            if ( isset( $data['form_settings']['notification']['edit_to'] ) ) {
-                unset( $data['form_settings']['notification']['edit_to'] );
-            }
-            if ( isset( $data['form_settings']['notification']['edit_subject'] ) ) {
-                unset( $data['form_settings']['notification']['edit_subject'] );
-            }
-            if ( isset( $data['form_settings']['notification']['edit_body'] ) ) {
-                unset( $data['form_settings']['notification']['edit_body'] );
-            }
-        }
-
-        // Also filter out standalone notification_edit field if it exists
-        if ( ! wpuf_is_pro_active() && isset( $data['form_settings']['notification_edit'] ) ) {
-            unset( $data['form_settings']['notification_edit'] );
-        }
-
-        $settings_key = ! empty( $data['form_settings_key'] ) ? $data['form_settings_key'] : 'wpuf_form_settings';
-
-        // A save that carries no settings means the settings panel was not posted, not that
-        // the form should lose the settings it already has. Writing the empty array here left
-        // the form with `a:0:{}` and an unlabelled submit button.
-        if ( ! empty( $data['form_settings'] ) || empty( get_post_meta( $data['form_id'], $settings_key, true ) ) ) {
-            update_post_meta( $data['form_id'], $settings_key, $data['form_settings'] );
-        }
-
-        update_post_meta( $data['form_id'], 'notifications', $data['notifications'] );
-        update_post_meta( $data['form_id'], 'integrations', $data['integrations'] );
-
-        return $saved_wpuf_inputs;
+        return $items;
     }
 
     /**
@@ -510,6 +579,58 @@ class Admin_Form_Builder {
          *                           - defaultIcons: array of default icons
          */
         return apply_filters( 'wpuf_form_builder_icon_config', $icon_config );
+    }
+
+    /**
+     * Get list of forms for the form switcher dropdown.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    protected function get_form_list() {
+        $forms = get_posts(
+            [
+                'post_type'   => $this->settings['post_type'],
+                'post_status' => 'any',
+                'numberposts' => -1,
+                'orderby'     => 'title',
+                'order'       => 'ASC',
+            ]
+        );
+
+        return array_map(
+            function ( $form ) {
+                return [
+                    'id'    => $form->ID,
+                    'title' => '' !== $form->post_title ? $form->post_title : __( '(no title)', 'wp-user-frontend' ),
+                ];
+            },
+            $forms
+        );
+    }
+
+    /**
+     * Get subscription packs for visibility settings.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    protected function get_subscriptions() {
+        // Same list and order (`_sort_order`) the Vue visibility setting used.
+        $packs = wpuf()->subscription->get_subscriptions();
+        $packs = is_array( $packs ) ? $packs : [];
+
+        return array_map(
+            function ( $pack ) {
+                return [
+                    'id'    => $pack->ID,
+                    'title' => $pack->post_title,
+                ];
+            },
+            $packs
+        );
     }
 
     /**

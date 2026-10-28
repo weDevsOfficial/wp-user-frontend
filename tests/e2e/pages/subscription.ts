@@ -153,11 +153,20 @@ export class SubscriptionPage extends Base {
         
     }
 
+    // develop opened the Publish / Save as Draft menu on hover; the React menu
+    // opens on click. Click the button only while the menu item is not shown.
+    async openSaveMenu(buttonLocator: string, itemLocator: string) {
+        if (!(await this.page.locator(itemLocator).isVisible())) {
+            await this.validateAndClick(buttonLocator);
+        }
+    }
+
     async publishPack() {
         // Publish Pack
         await this.page.locator(Selectors.subscription.newPackPage.savePackButton).hover();
         await this.waitForLoading();
         await this.page.waitForTimeout(500);
+        await this.openSaveMenu(Selectors.subscription.newPackPage.savePackButton, Selectors.subscription.newPackPage.publishPackButton);
         await this.validateAndClick(Selectors.subscription.newPackPage.publishPackButton);
         SubscriptionPacks.packCounts.publishedPackCount++;
 
@@ -168,6 +177,7 @@ export class SubscriptionPage extends Base {
         await this.page.locator(Selectors.subscription.newPackPage.updatePackButton).hover();
         await this.waitForLoading();
         await this.page.waitForTimeout(500);
+        await this.openSaveMenu(Selectors.subscription.newPackPage.updatePackButton, Selectors.subscription.newPackPage.publishPackButton);
         await this.validateAndClick(Selectors.subscription.newPackPage.publishPackButton);
     }
 
@@ -175,6 +185,7 @@ export class SubscriptionPage extends Base {
         // Publish Pack
         await this.page.locator(Selectors.subscription.newPackPage.updatePackButton).hover();
         await this.waitForLoading();
+        await this.openSaveMenu(Selectors.subscription.newPackPage.updatePackButton, Selectors.subscription.newPackPage.draftPackButton);
         await this.validateAndClick(Selectors.subscription.newPackPage.draftPackButton);
         SubscriptionPacks.packCounts.draftPackCount++;
     }
@@ -443,8 +454,7 @@ export class SubscriptionPage extends Base {
         while (limit <= packData.maxPosts) {
             await this.validateAndClick(Selectors.subscription.newPackPage.featuredItemCheckbox);
             await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, `Test Post title ${limit}`);
-            await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-                .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(`Test Post Description ${limit}`);
+            await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, `Test Post Description ${limit}`);
             await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
             await this.page.waitForTimeout(2000);
             console.log('\x1b[32m%s\x1b[0m', `✅ Post submitted: ${`Test Post title ${limit}`}`);
@@ -452,7 +462,9 @@ export class SubscriptionPage extends Base {
         }
         if (limit > packData.maxPosts) {
             await this.navigateToPostSubmissionPage();
-            await this.checkElementText(Selectors.postFormSettings.wpufInfo, `Your Subscription pack is exhausted. There is a $0.00 charge to add a new post`);
+            // No "$0.00 charge" sentence for a charge of 0 (owner); the pack-exhausted note stays.
+            await this.checkElementText(Selectors.postFormSettings.wpufInfo, 'Your Subscription pack is exhausted.');
+            await expect(this.page.locator(Selectors.postFormSettings.wpufInfo)).not.toContainText('$0.00');
         }
         console.log('\x1b[32m%s\x1b[0m', `✅ Max posts limit validated: ${packData.maxPosts}`);
     }
@@ -630,11 +642,16 @@ export class SubscriptionPage extends Base {
     }
 
     async editPreferances(buttonColor: string) {
+        // Preferences live in Settings > Payments > Subscriptions (the list's quick link).
         await this.validateAndClick(Selectors.subscription.newPackPage.packPreferences);
         await this.waitForLoading();
         await this.validateAndFillStrings(Selectors.subscription.newPackPage.inputColor, buttonColor);
         await this.waitForLoading();
+        // The save is a REST call: wait for it, or the next test can load the
+        // packs page before the colour is stored.
+        const saved = this.page.waitForResponse((response) => /wpuf\/v1\/settings/.test(response.url()) && response.request().method() === 'POST');
         await this.validateAndClick(Selectors.subscription.newPackPage.savePreferencesButton);
+        await saved;
         await this.waitForLoading();
         console.log('\x1b[32m%s\x1b[0m', `✅ Button color set to ${buttonColor}`);
     }

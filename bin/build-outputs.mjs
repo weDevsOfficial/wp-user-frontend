@@ -1,0 +1,33 @@
+/**
+ * Generated assets: what `pnpm build` (and the POT step) must produce.
+ * Shared by verify-build.mjs and sanitize-dist.mjs.
+ */
+// Output of `pnpm build`. React bundles also need their `.asset.php`
+// (dependencies + content hash, read by includes/Assets.php).
+export const react = [ 'form-builder', 'forms-list-screen', 'settings-screen', 'subscriptions', 'ai-form-builder', 'admin-runtime', 'admin-ui', 'admin-app', 'registration-promo', 'onboarding', 'welcome', 'help', 'tools', 'transactions', 'coupons-promo', 'modules-preview' ];
+export const frontend = [ 'runtime', 'forms', 'account-page', 'login', 'plans', 'checkout' ];
+export const built = [
+    ...react.flatMap( ( name ) => [ `assets/js/screens/${ name }.js`, `assets/js/screens/${ name }.asset.php` ] ),
+    ...frontend.flatMap( ( name ) => [ `assets/js/frontend/${ name }.js`, `assets/js/frontend/${ name }.asset.php`, `assets/css/frontend/${ name }.css`, `assets/css/frontend/${ name }-rtl.css` ] ),
+    'assets/css/frontend/account-sections.css',
+    'assets/js/wpuf-user-directory-free.js',
+    'assets/js/wpuf-user-directory-free.asset.php',
+    'assets/css/admin/forms-screen.css',
+    'assets/css/admin/forms-screen-rtl.css',
+    'assets/css/admin/forms-list-screen.css',
+    'assets/css/admin/forms-list-screen-rtl.css',
+    'assets/css/admin/onboarding-screen.css',
+    'assets/css/admin/onboarding-screen-rtl.css',
+    'assets/css/admin/pages-screen.css',
+    'assets/css/admin/pages-screen-rtl.css',
+    'assets/css/ai-form-builder-screen.css',
+    'assets/css/ai-form-builder-screen-rtl.css',
+    'assets/css/frontend/account.css',
+    'assets/css/frontend-subscriptions.min.css',
+    'assets/css/settings-screen.css',
+    'assets/css/settings-screen-rtl.css',
+    'assets/css/subscriptions.css',
+    'assets/css/subscriptions-rtl.css',
+];
+export const release = [ 'languages/wp-user-frontend.pot' ];
+

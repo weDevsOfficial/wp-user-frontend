@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Fields;
 
+// phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound -- legacy: one file holds every Pro placeholder field class
+
 class Form_Pro_Upgrade_Fields {
     private $fields = [];
     public function __construct() {
@@ -66,14 +68,14 @@ class Form_Field_Date extends Form_Field_Pro {
         $is_events_calendar = class_exists( '\WeDevs\Wpuf\Integrations\Events_Calendar\Utils\Events_Calendar_Context' )
             ? \WeDevs\Wpuf\Integrations\Events_Calendar\Utils\Events_Calendar_Context::is_current_context()
             : false;
-        
+
         // Set the appropriate name based on context with filter for customization
-        $default_label = $is_events_calendar 
-            ? __( 'Event Date / Event Time', 'wp-user-frontend' ) 
+        $default_label = $is_events_calendar
+            ? __( 'Event Date / Event Time', 'wp-user-frontend' )
             : __( 'Date / Time', 'wp-user-frontend' );
-            
+
         $this->name = apply_filters( 'wpuf_date_field_label', $default_label, $is_events_calendar );
-        
+
         $this->input_type = 'date_field';
         $this->icon       = 'clock';
     }
@@ -165,39 +167,6 @@ class Form_Field_Rating extends Form_Field_Pro {
         $this->name       = __( 'Ratings', 'wp-user-frontend' );
         $this->input_type = 'ratings';
         $this->icon       = 'star';
-    }
-}
-
-/**
- * Rating Field Class
- */
-class Form_Field_Linear_Scale extends Form_Field_Pro {
-    public function __construct() {
-        $this->name       = __( 'Linear Scale', 'wp-user-frontend' );
-        $this->input_type = 'linear_scale';
-        $this->icon       = 'ellipsis-h';
-    }
-}
-
-/**
- * Checkbox Grids Field Class
- */
-class Form_Field_Checkbox_Grid extends Form_Field_Pro {
-    public function __construct() {
-        $this->name       = __( 'Checkbox Grid', 'wp-user-frontend' );
-        $this->input_type = 'checkbox_grid';
-        $this->icon       = 'th';
-    }
-}
-
-/**
- * Multiple Choice Grids Field Class
- */
-class Form_Field_Multiple_Choice_Grid extends Form_Field_Pro {
-    public function __construct() {
-        $this->name       = __( 'Multiple Choice Grid', 'wp-user-frontend' );
-        $this->input_type = 'multiple_choice_grid';
-        $this->icon       = 'braille';
     }
 }
 

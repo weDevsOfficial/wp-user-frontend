@@ -6,6 +6,7 @@ import metadata from './block.json';
 import Edit from './edit';
 import Save from './save';
 import './editor.css';
+import './legacy';
 
 registerBlockType( metadata.name, {
     edit: Edit,

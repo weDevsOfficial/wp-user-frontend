@@ -96,15 +96,8 @@ export class PostFormSettingsPage extends Base {
         // Go to post forms page
         await this.navigateToURL(this.wpufPostFormPage);
 
-        // Wait for form list to load and click on the form
-        try {
-            // Find the row containing the form name
-            await this.checkElementText(Selectors.postFormSettings.postTypeColumn(formName, expectedPostType.toLowerCase()), expectedPostType.toLowerCase());
-        } catch (error) {
-            await this.navigateToURL(this.wpufPostFormPage);
-            // Find the row containing the form name
-            await this.checkElementText(Selectors.postFormSettings.postTypeColumn(formName, expectedPostType.toLowerCase()), expectedPostType.toLowerCase());
-        }
+        // The row's Post Type column shows the type's label, its slug in the title.
+        await expect(this.page.locator(Selectors.postFormSettings.postTypeLabel(formName, expectedPostType.toLowerCase()))).toBeVisible({ timeout: 30000 });
     }
 
 
@@ -118,8 +111,7 @@ export class PostFormSettingsPage extends Base {
 
         //Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -220,8 +212,7 @@ export class PostFormSettingsPage extends Base {
 
         //Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -442,8 +433,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -463,8 +453,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -486,8 +475,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -509,8 +497,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -581,8 +568,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -647,8 +633,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -969,7 +954,6 @@ export class PostFormSettingsPage extends Base {
         if (flag == false) {
             await this.navigateToURL(this.wpufPostPage);
 
-            await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
             await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -981,7 +965,6 @@ export class PostFormSettingsPage extends Base {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
 
-        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -990,8 +973,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -1048,7 +1030,6 @@ export class PostFormSettingsPage extends Base {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
 
-        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -1057,8 +1038,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -1221,7 +1201,6 @@ export class PostFormSettingsPage extends Base {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
 
-        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -1231,8 +1210,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -1247,7 +1225,6 @@ export class PostFormSettingsPage extends Base {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
 
-        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -1256,8 +1233,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -1272,7 +1248,6 @@ export class PostFormSettingsPage extends Base {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
 
-        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -1281,8 +1256,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -1298,7 +1272,6 @@ export class PostFormSettingsPage extends Base {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostPage);
 
-        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -1308,8 +1281,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -1405,8 +1377,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter Post Description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -1424,14 +1395,18 @@ export class PostFormSettingsPage extends Base {
     }
 
     async acceptPayment() {
-        // Go to form edit page
+        // React Transactions route (#/transactions): Pending tab, the newest row's Actions
+        // menu, Accept, then the confirm dialog.
         await this.navigateToURL(this.wpufTransactionPage);
-
-        await this.page.hover(Selectors.postFormSettings.transactionTableRow);
-
+        await this.validateAndClick(Selectors.postFormSettings.transactionsPendingTab);
+        await this.validateAndClick(Selectors.postFormSettings.transactionRowActions);
         await this.validateAndClick(Selectors.postFormSettings.acceptPayment);
-
-
+        const confirm = this.page.locator(Selectors.postFormSettings.acceptPaymentConfirm);
+        if (await confirm.waitFor({ state: 'visible', timeout: 3000 }).then(() => true).catch(() => false)) {
+            await confirm.click();
+        }
+        await this.page.waitForResponse((r) => /wpuf\/v1\/admin\/transactions/.test(r.url()) && 'GET' !== r.request().method(), { timeout: 15000 }).catch(() => null);
+        await this.waitForLoading();
     }
 
     async validatePayPerPost(postTitle: string) {
@@ -1678,6 +1653,12 @@ export class PostFormSettingsPage extends Base {
             }
 
             // Save settings
+            // Copying a tag changes nothing, so Save stays disabled (the builder saves only
+            // with changes, owner decision): nothing to save then.
+            if (await this.page.locator(Selectors.postFormSettings.saveButton).first().isDisabled().catch(() => false)) {
+                flag = false;
+                break;
+            }
             await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
             // Wait for save message
@@ -1724,8 +1705,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter post description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -2033,6 +2013,12 @@ export class PostFormSettingsPage extends Base {
             }
 
             // Save settings
+            // Copying a tag changes nothing, so Save stays disabled (the builder saves only
+            // with changes, owner decision): nothing to save then.
+            if (await this.page.locator(Selectors.postFormSettings.saveButton).first().isDisabled().catch(() => false)) {
+                flag = false;
+                break;
+            }
             await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
             // Wait for save message
@@ -2075,7 +2061,6 @@ export class PostFormSettingsPage extends Base {
         // Go to frontend post submission page
         await this.navigateToURL(this.wpufPostPage);
 
-        await this.validateAndClick(Selectors.postFormSettings.threeDotButton);
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
 
@@ -2085,8 +2070,7 @@ export class PostFormSettingsPage extends Base {
 
         // Enter post description
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -2201,8 +2185,7 @@ export class PostFormSettingsPage extends Base {
             await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
 
             await this.page.waitForTimeout(1000);
-            await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-                .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+            await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, postContent);
 
             await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
@@ -2678,51 +2661,15 @@ export class PostFormSettingsPage extends Base {
     }
 
     async validatePostPermissionRoleBased(formName: string) {
-
-        let flag = true;
-
-        while (flag == true) {
-            // Go to form edit page
-            await this.navigateToURL(this.wpufPostSubmitPage);
-
-            // Click on the form
-            await this.checkElementText(Selectors.postFormSettings.wpufMessage, 'You do not have sufficient permissions to access this form.');
-
-            await this.navigateToURL(this.wpufPostFormPage);
-
-            // Click on the form
-            try {
-                await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            } catch (error) {
-                await this.navigateToURL(this.wpufPostFormPage);
-                await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }
-
-
-            // Click Settings tab
-            await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
-
-            // Click Post Settings section
-            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
-
-            await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionContainer);
-            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postPermissionDropdown);
-            await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionOption('role_base'));
-
-            await this.page.waitForTimeout(300);
-
-            await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionContainer);
-            
-            await this.page.waitForTimeout(500);
-            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
-            await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionOption('administrator'));
-
-            // Save settings
-            await this.validateAndClick(Selectors.postFormSettings.saveButton);
-
-            // Wait for save message
-            flag = await this.waitForFormSaved(Selectors.postFormSettings.messages.formSaved, Selectors.postFormSettings.saveButton);
-
-        }
+        // Role-based permission with "Subscriber" picked. Administrator is an
+        // always-selected role (the field's `always_selected`): develop's screen
+        // ignored it, so an admin could lock every admin out of the form (the
+        // frontend check has no admin bypass). The React builder keeps it, so the
+        // admin still gets the form instead of "You do not have sufficient
+        // permissions" (agreed deviation 4.4e, owner 2026-10-05).
+        await this.navigateToURL(this.wpufPostSubmitPage);
+        await this.assertionValidate(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE);
+        await expect(this.page.locator(Selectors.postFormSettings.wpufMessage)).toHaveCount(0);
     }
+
 }

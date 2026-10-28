@@ -1,5 +1,5 @@
 <div class="items-table-container">
-    <table class="items-table <?php echo implode( ' ', array_map('esc_attr', $post_type ) ); ?>">
+    <table class="items-table <?php echo implode( ' ', array_map( 'esc_attr', $post_type ) ); ?>">
         <thead>
             <tr class="items-list-header">
                 <?php
@@ -8,8 +8,22 @@
                 }
                 ?>
                 <th><?php esc_html_e( 'Title', 'wp-user-frontend' ); ?></th>
+
+                <?php if ( isset( $category ) && 'on' === $category ) { ?>
+                    <th><?php esc_html_e( 'Category', 'wp-user-frontend' ); ?></th>
+                <?php } ?>
+
+                <?php foreach ( ( isset( $meta_columns ) ? (array) $meta_columns : [] ) as $meta_label ) { ?>
+                    <th><?php echo esc_html( $meta_label ); ?></th>
+                <?php } ?>
+
+                <?php if ( isset( $excerpt ) && 'on' === $excerpt ) { ?>
+                    <th><?php esc_html_e( 'Excerpt', 'wp-user-frontend' ); ?></th>
+                <?php } ?>
+
                 <th><?php esc_html_e( 'Status', 'wp-user-frontend' ); ?></th>
 
+                <?php do_action( 'wpuf_dashboard_head_col', $args ); ?>
                 <?php do_action( 'wpuf_account_posts_head_col', $args ); ?>
 
                 <?php if ( 'on' === $enable_payment && 'off' !== $payment_column ) { ?>
@@ -23,22 +37,22 @@
             <?php
                 global $post;
 
-                while ( $dashboard_query->have_posts() ) {
-                    $dashboard_query->the_post();
-                    $show_link        = ! in_array( $post->post_status, ['draft', 'future', 'pending'] );
-                    $payment_status   = get_post_meta( $post->ID, '_wpuf_payment_status', true );
-            ?>
+			while ( $dashboard_query->have_posts() ) {
+				$dashboard_query->the_post();
+				$show_link        = ! in_array( $post->post_status, [ 'draft', 'future', 'pending' ], true );
+				$payment_status   = \WeDevs\Wpuf\Platform\Stores\Stores::submissions()->payment_status( $post->ID );
+				?>
             <tr>
                 <?php if ( 'on' === $featured_img ) { ?>
                     <td data-label="<?php esc_attr_e( 'Featured Image: ', 'wp-user-frontend' ); ?>">
                     <?php
                         echo $show_link ? wp_kses_post( '<a href="' . get_permalink( $post->ID ) . '">' ) : '';
 
-                        if ( has_post_thumbnail() ) {
-                            the_post_thumbnail( $featured_img_size );
-                        } else {
-                            printf( '<img src="%1$s" class="attachment-thumbnail wp-post-image" alt="%2$s" title="%2$s" />', esc_attr( apply_filters( 'wpuf_no_image', plugins_url( '../assets/images/no-image.png', __DIR__ ) ) ), esc_html( __( 'No Image', 'wp-user-frontend' ) ) );
-                        }
+					if ( has_post_thumbnail() ) {
+						the_post_thumbnail( $featured_img_size );
+					} else {
+						printf( '<img src="%1$s" class="attachment-thumbnail wp-post-image" alt="%2$s" title="%2$s" />', esc_attr( apply_filters( 'wpuf_no_image', plugins_url( '../assets/images/no-image.png', __DIR__ ) ) ), esc_html( __( 'No Image', 'wp-user-frontend' ) ) );
+					}
 
                         echo $show_link ? '</a>' : '';
                     ?>
@@ -47,16 +61,21 @@
                         </span>
                     </td>
                 <?php } ?>
-                <td data-label="<?php esc_attr_e( 'Title: ', 'wp-user-frontend' ); ?>" class="<?php echo 'on' === $featured_img ? 'data-column' : '' ; ?>">
+                <td data-label="<?php esc_attr_e( 'Title: ', 'wp-user-frontend' ); ?>" class="<?php echo 'on' === $featured_img ? 'data-column' : ''; ?>">
                     <?php if ( ! $show_link ) { ?>
 
                         <?php echo esc_html( wp_trim_words( get_the_title(), 5 ) ); ?>
 
                     <?php } else { ?>
 
-                        <a href="<?php the_permalink(); ?>" title="<?php printf( 
+                        <a href="<?php the_permalink(); ?>" title="
+                        <?php
+                        printf(
                             // translators: %s: is permalink
-                            esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php echo esc_html( wp_trim_words( get_the_title(), 5 ) ); ?></a>
+                            esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' )
+                        );
+						?>
+                            " rel="bookmark"><?php echo esc_html( wp_trim_words( get_the_title(), 5 ) ); ?></a>
 
                     <?php } ?>
                     <?php if ( 'on' !== $featured_img ) { ?>
@@ -65,21 +84,68 @@
                         </span>
                     <?php } ?>
                 </td>
+                <?php if ( isset( $category ) && 'on' === $category ) { ?>
+                    <td data-label="<?php esc_attr_e( 'Category: ', 'wp-user-frontend' ); ?>" class="data-column">
+                        <?php
+                        $post_tax_terms = [];
+
+                        foreach ( get_object_taxonomies( get_post_type(), 'objects' ) as $taxonomy_slug => $tax_object ) {
+                            if ( ! $tax_object->hierarchical ) {
+                                continue;
+                            }
+
+                            foreach ( (array) get_the_terms( $post->ID, $taxonomy_slug ) as $tax_term ) {
+                                if ( $tax_term instanceof WP_Term ) {
+                                    $post_tax_terms[] = sprintf( '<a href="%1$s">%2$s</a>', esc_url( get_term_link( $tax_term ) ), esc_html( $tax_term->name ) );
+                                }
+                            }
+                        }
+
+                        echo wp_kses_post( apply_filters( 'wpuf_dashboard_post_taxonomy', implode( ', ', $post_tax_terms ) ) );
+                        ?>
+                    </td>
+                <?php } ?>
+
+                <?php foreach ( ( isset( $meta_columns ) ? (array) $meta_columns : [] ) as $meta_name => $meta_label ) { ?>
+                    <td data-label="<?php echo esc_attr( $meta_label . ': ' ); ?>" class="data-column">
+                        <?php
+                        $meta_value = get_post_meta( $post->ID, $meta_name, true );
+
+                        echo esc_html( is_array( $meta_value ) ? implode( ', ', array_filter( array_map( 'strval', $meta_value ) ) ) : (string) $meta_value );
+                        ?>
+                    </td>
+                <?php } ?>
+
+                <?php if ( isset( $excerpt ) && 'on' === $excerpt ) { ?>
+                    <td data-label="<?php esc_attr_e( 'Excerpt: ', 'wp-user-frontend' ); ?>" class="data-column">
+                        <?php the_excerpt(); ?>
+                    </td>
+                <?php } ?>
+
                 <td data-label="<?php esc_attr_e( 'Status: ', 'wp-user-frontend' ); ?>" class="data-column">
                     <?php wpuf_show_post_status( $post->post_status ); ?>
                 </td>
 
                 <?php
+                do_action( 'wpuf_dashboard_row_col', $args, $post );
                 do_action( 'wpuf_account_posts_row_col', $args, $post );
 
-                if ( 'on' === $enable_payment && 'off' != $payment_column ) {
+                if ( 'on' === $enable_payment && 'off' !== $payment_column ) {
                     echo '<td data-label="' . esc_attr( 'Payment: ' ) . '" class="data-column">';
 
                     if ( empty( $payment_status ) ) {
                         esc_html_e( 'Not Applicable', 'wp-user-frontend' );
                     } elseif ( $payment_status !== 'completed' ) {
-                        echo '<a href="' . esc_attr( trailingslashit( get_permalink( wpuf_get_option( 'payment_page',
-                                                                                                      'wpuf_payment' ) ) ) ) . '?action=wpuf_pay&type=post&post_id=' . esc_attr( $post->ID ) . '">' . esc_html__( 'Pay Now', 'wp-user-frontend' ) . '</a>';
+                        echo '<a href="' . esc_attr(
+                            trailingslashit(
+                                get_permalink(
+                                    wpuf_get_option(
+                                        'payment_page',
+                                        'wpuf_payment'
+                                    )
+                                )
+                            )
+                        ) . '?action=wpuf_pay&type=post&post_id=' . esc_attr( $post->ID ) . '">' . esc_html__( 'Pay Now', 'wp-user-frontend' ) . '</a>';
                     } elseif ( 'completed' === $payment_status ) {
                         esc_html_e( 'Completed', 'wp-user-frontend' );
                     }
@@ -89,34 +155,81 @@
                 ?>
 
                         <td data-label="<?php esc_attr_e( 'Options: ', 'wp-user-frontend' ); ?>" class="data-column">
-                            <?php
-                            if ( wpuf_is_post_editable( $post ) ) {
-                                $edit_page = (int) wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' );
-                                $url = add_query_arg( [ 'pid' => $post->ID ], get_permalink( $edit_page ) );
-                                ?>
+						<?php
+						if ( wpuf_is_post_editable( $post ) ) {
+							$edit_page = (int) wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' );
+							$url = add_query_arg( [ 'pid' => $post->ID ], get_permalink( $edit_page ) );
+							?>
                                 <a class="wpuf-posts-options wpuf-posts-edit" href="<?php echo esc_url( wp_nonce_url( $url, 'wpuf_edit' ) ); ?>">
-                                    <img src="<?php echo wp_kses( WPUF_ASSET_URI . '/images/edit.svg', array('svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,], 'path' => ['d' => true, 'fill' => true, 'fill-rule' => true, 'clip-rule' => true ] ) ); ?>" alt="Edit">
+                                    <img src="
+                                    <?php
+                                    echo wp_kses(
+                                        WPUF_ASSET_URI . '/images/edit.svg', array(
+											'svg' => [
+												'xmlns' => true,
+												'width' => true,
+												'height' => true,
+												'viewBox' => true,
+												'fill' => true,
+											],
+											'path' => [
+												'd' => true,
+												'fill' => true,
+												'fill-rule' => true,
+												'clip-rule' => true,
+											],
+                                        )
+                                    );
+									?>
+                                                " alt="Edit">
                                 </a>
                                 <?php
-                                }
-                             ?>
+						}
+						?>
 
                             <?php
                             if ( 'yes' === wpuf_get_option( 'enable_post_del', 'wpuf_dashboard', 'yes' ) ) {
-                                $del_url = add_query_arg( ['action' => 'del', 'pid' => $post->ID] );
-                                $message = __( 'Are you sure to delete?', 'wp-user-frontend' ); ?>
+                                $del_url = add_query_arg(
+                                    [
+										'action' => 'del',
+										'pid' => $post->ID,
+									]
+                                );
+                                $message = __( 'Are you sure to delete?', 'wp-user-frontend' );
+                                ?>
                                 <a class="wpuf-posts-options wpuf-posts-delete" style="color: red;" href="<?php echo esc_url_raw( wp_nonce_url( $del_url, 'wpuf_del' ) ); ?>" onclick="return confirm('<?php echo esc_attr( $message ); ?>');">
-                                    <img src="<?php echo wp_kses( WPUF_ASSET_URI . '/images/trash.svg', array('svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,], 'path' => ['d' => true, 'fill' => true, 'fill-rule' => true, 'clip-rule' => true ] ) ); ?>" alt="Delete">
+                                    <img src="
+                                    <?php
+                                    echo wp_kses(
+                                        WPUF_ASSET_URI . '/images/trash.svg', array(
+											'svg' => [
+												'xmlns' => true,
+												'width' => true,
+												'height' => true,
+												'viewBox' => true,
+												'fill' => true,
+											],
+											'path' => [
+												'd' => true,
+												'fill' => true,
+												'fill-rule' => true,
+												'clip-rule' => true,
+											],
+                                        )
+                                    );
+									?>
+                                                " alt="Delete">
                                 </a>
-                            <?php
-                            } ?>
+								<?php
+                            }
+                            ?>
                         </td>
                     </tr>
                 <?php
-                }
+			}
 
             wp_reset_postdata();
-        ?>
+			?>
         </tbody>
     </table>
 </div>

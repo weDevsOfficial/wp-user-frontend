@@ -2,6 +2,10 @@
 
 namespace WeDevs\Wpuf\AI;
 
+use WeDevs\Wpuf\Platform\Stores\Stores;
+
+use WeDevs\Wpuf\AI\Services\Provider_Settings;
+
 /**
  * AI Form Generator Service
  *
@@ -68,15 +72,14 @@ class FormGenerator {
      */
     private function load_settings() {
         // Get settings from WPUF settings system
-        $settings = get_option( 'wpuf_ai', [] );
+        $settings = Stores::settings()->read( Provider_Settings::SECTION );
 
         // Get individual settings
         $this->current_provider = isset( $settings['ai_provider'] ) ? $settings['ai_provider'] : 'openai';
         $this->current_model = isset( $settings['ai_model'] ) ? $settings['ai_model'] : 'gpt-3.5-turbo';
 
         // Get provider-specific API key
-        $provider_key = $this->current_provider . '_api_key';
-        $this->api_key = isset( $settings[ $provider_key ] ) ? $settings[ $provider_key ] : '';
+        $this->api_key = Provider_Settings::api_key_for( $settings, $this->current_provider );
     }
 
     /**
@@ -96,15 +99,14 @@ class FormGenerator {
             $original_api_key = $this->api_key;
 
             // Load settings for defaults
-            $settings = get_option( 'wpuf_ai', [] );
+            $settings = Stores::settings()->read( Provider_Settings::SECTION );
 
             // Apply per-request overrides if provided
             if ( isset( $options['provider'] ) && ! empty( $options['provider'] ) ) {
                 $this->current_provider = $options['provider'];
 
                 // Update API key to match the new provider
-                $provider_key = $this->current_provider . '_api_key';
-                $this->api_key = isset( $settings[ $provider_key ] ) ? $settings[ $provider_key ] : '';
+                $this->api_key = Provider_Settings::api_key_for( $settings, $this->current_provider );
             }
             if ( isset( $options['model'] ) && ! empty( $options['model'] ) ) {
                 $this->current_model = $options['model'];
@@ -136,7 +138,7 @@ class FormGenerator {
                     break;
 
                 default:
-                    throw new \Exception('Unsupported AI provider: ' . $this->current_provider);
+                    throw new \Exception( 'Unsupported AI provider: ' . $this->current_provider ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
             }
 
             // Restore original provider, model, and API key
@@ -145,7 +147,6 @@ class FormGenerator {
             $this->api_key = $original_api_key;
 
             return $result;
-
         } catch ( \Exception $e ) {
             // Ensure full restoration even on exception
             $this->current_provider = isset( $original_provider ) ? $original_provider : $this->current_provider;
@@ -156,7 +157,7 @@ class FormGenerator {
                 'success' => false,
                 'error' => true,
                 'message' => $e->getMessage(),
-                'provider' => $this->current_provider
+                'provider' => $this->current_provider,
             ];
         }
     }
@@ -192,20 +193,20 @@ class FormGenerator {
                 'token_param' => 'max_tokens',
                 'token_location' => 'body',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
+                'supports_custom_temperature' => true,
             ],
             'anthropic' => [
                 'token_param' => 'max_tokens',
                 'token_location' => 'body',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
+                'supports_custom_temperature' => true,
             ],
             'google' => [
                 'token_param' => 'maxOutputTokens',
                 'token_location' => 'generationConfig',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
-            ]
+                'supports_custom_temperature' => true,
+            ],
         ];
 
         return isset( $defaults[ $provider ] ) ? $defaults[ $provider ] : $defaults['openai'];
@@ -245,7 +246,7 @@ class FormGenerator {
                     'role' => 'user',
                     'content' => $prompt,
                 ],
-            ]
+            ],
         ];
 
         // Set temperature based on model capabilities
@@ -287,10 +288,10 @@ class FormGenerator {
             'method' => 'POST',
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->api_key,
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
             ],
             'body' => wp_json_encode( $body ),
-            'timeout' => 120
+            'timeout' => 120,
         ];
 
         $response = wp_safe_remote_request( $this->provider_configs['openai']['endpoint'], $args );
@@ -300,16 +301,16 @@ class FormGenerator {
 
             // Check for specific timeout errors
             if ( strpos( $error_message, 'timeout' ) !== false || strpos( $error_message, 'timed out' ) !== false ) {
-                throw new \Exception( 'OpenAI API request timed out. Please try again later.' );
+                throw new \Exception( 'OpenAI API request timed out. Please try again later.' ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
             }
 
-            throw new \Exception( 'OpenAI API request failed: ' . $error_message );
+            throw new \Exception( 'OpenAI API request failed: ' . $error_message ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         $status_code = wp_remote_retrieve_response_code( $response );
         if ( $status_code !== 200 ) {
             $error_body = wp_remote_retrieve_body( $response );
-            throw new \Exception( "OpenAI API returned HTTP {$status_code}: {$error_body}" );
+            throw new \Exception( "OpenAI API returned HTTP {$status_code}: {$error_body}" ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         $body = wp_remote_retrieve_body( $response );
@@ -317,15 +318,15 @@ class FormGenerator {
 
         // Validate JSON response
         if ( json_last_error() !== JSON_ERROR_NONE ) {
-            throw new \Exception( 'Invalid JSON response from AI provider: ' . json_last_error_msg() );
+            throw new \Exception( 'Invalid JSON response from AI provider: ' . json_last_error_msg() ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         if ( isset( $data['error'] ) ) {
-            throw new \Exception( 'OpenAI API Error: ' . $data['error']['message'] );
+            throw new \Exception( 'OpenAI API Error: ' . $data['error']['message'] ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         if ( ! isset( $data['choices'][0]['message']['content'] ) ) {
-            throw new \Exception( 'Invalid OpenAI response format. Response: ' . wp_json_encode( $data ) );
+            throw new \Exception( 'Invalid OpenAI response format. Response: ' . wp_json_encode( $data ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         $content = $data['choices'][0]['message']['content'];
@@ -338,38 +339,38 @@ class FormGenerator {
                 'error' => true,
                 'message' => 'AI model returned empty response. Please try again.',
                 'provider' => 'openai',
-                'model' => $this->current_model
+                'model' => $this->current_model,
             ];
         }
 
         // Clean and extract JSON from the response
-        $json_content = trim($content);
+        $json_content = trim( $content );
 
         // Remove any markdown code blocks if present
-        $json_content = preg_replace('/^```(?:json)?\s*|\s*```$/m', '', $json_content);
+        $json_content = preg_replace( '/^```(?:json)?\s*|\s*```$/m', '', $json_content );
 
         // Remove any text before the first { or after the last }
-        $json_content = preg_replace('/^[^{]*/', '', $json_content);
-        $json_content = preg_replace('/[^}]*$/', '', $json_content);
+        $json_content = preg_replace( '/^[^{]*/', '', $json_content );
+        $json_content = preg_replace( '/[^}]*$/', '', $json_content );
 
         // Try to find the JSON object (handle nested braces properly)
-        $start = strpos($json_content, '{');
-        $end = strrpos($json_content, '}');
+        $start = strpos( $json_content, '{' );
+        $end = strrpos( $json_content, '}' );
 
-        if ($start !== false && $end !== false && $end > $start) {
-            $json_content = substr($json_content, $start, $end - $start + 1);
+        if ( $start !== false && $end !== false && $end > $start ) {
+            $json_content = substr( $json_content, $start, $end - $start + 1 );
         }
 
         // Attempt to decode JSON
-        $ai_response = json_decode($json_content, true);
+        $ai_response = json_decode( $json_content, true );
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if ( json_last_error() !== JSON_ERROR_NONE ) {
             return [
                 'success' => false,
                 'error' => true,
                 'message' => 'Unable to generate form. Please try again or rephrase your request.',
                 'provider' => 'openai',
-                'model' => $this->current_model
+                'model' => $this->current_model,
             ];
         }
 
@@ -380,7 +381,7 @@ class FormGenerator {
                 'error' => true,
                 'message' => isset( $ai_response['message'] ) ? $ai_response['message'] : 'AI returned an error response',
                 'provider' => 'openai',
-                'model' => $this->current_model
+                'model' => $this->current_model,
             ];
         }
 
@@ -394,7 +395,7 @@ class FormGenerator {
                 'error' => true,
                 'message' => isset( $form_data['message'] ) ? $form_data['message'] : 'Failed to build form structure',
                 'provider' => 'openai',
-                'model' => $this->current_model
+                'model' => $this->current_model,
             ];
         }
 
@@ -441,7 +442,7 @@ class FormGenerator {
                     'role' => 'user',
                     'content' => $prompt,
                 ],
-            ]
+            ],
         ];
 
         // Set temperature based on model capabilities
@@ -469,22 +470,22 @@ class FormGenerator {
             'headers' => [
                 'x-api-key' => $this->api_key,
                 'anthropic-version' => '2023-06-01',
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
             ],
             'body' => wp_json_encode( $body ),
-            'timeout' => 120
+            'timeout' => 120,
         ];
 
         $response = wp_safe_remote_request( $this->provider_configs['anthropic']['endpoint'], $args );
 
         if ( is_wp_error( $response ) ) {
-            throw new \Exception( 'Anthropic API request failed: ' . $response->get_error_message() );
+            throw new \Exception( 'Anthropic API request failed: ' . $response->get_error_message() ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         $status_code = wp_remote_retrieve_response_code( $response );
         if ( $status_code !== 200 ) {
             $error_body = wp_remote_retrieve_body( $response );
-            throw new \Exception( "Anthropic API returned HTTP {$status_code}: {$error_body}" );
+            throw new \Exception( "Anthropic API returned HTTP {$status_code}: {$error_body}" ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         $body = wp_remote_retrieve_body( $response );
@@ -492,24 +493,24 @@ class FormGenerator {
 
         // Validate JSON response
         if ( json_last_error() !== JSON_ERROR_NONE ) {
-            throw new \Exception( 'Invalid JSON response from Anthropic API: ' . json_last_error_msg() );
+            throw new \Exception( 'Invalid JSON response from Anthropic API: ' . json_last_error_msg() ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         if ( isset( $data['error'] ) ) {
-            throw new \Exception( 'Anthropic API Error: ' . $data['error']['message'] );
+            throw new \Exception( 'Anthropic API Error: ' . $data['error']['message'] ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         if ( ! isset( $data['content'][0]['text'] ) ) {
-            throw new \Exception( 'Invalid Anthropic response format' );
+            throw new \Exception( 'Invalid Anthropic response format' ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         $content = $data['content'][0]['text'];
 
         // Clean and extract JSON from the response (Claude may include explanatory text)
-        $json_content = trim($content);
-        $json_content = preg_replace('/^```(?:json)?\s*|\s*```$/m', '', $json_content);
-        $json_content = preg_replace('/^[^{]*/', '', $json_content);
-        $json_content = preg_replace('/[^}]*$/', '', $json_content);
+        $json_content = trim( $content );
+        $json_content = preg_replace( '/^```(?:json)?\s*|\s*```$/m', '', $json_content );
+        $json_content = preg_replace( '/^[^{]*/', '', $json_content );
+        $json_content = preg_replace( '/[^}]*$/', '', $json_content );
 
         $start = strpos( $json_content, '{' );
         $end = strrpos( $json_content, '}' );
@@ -520,7 +521,7 @@ class FormGenerator {
         // Decode JSON
         $ai_response = json_decode( $json_content, true );
         if ( json_last_error() !== JSON_ERROR_NONE ) {
-            throw new \Exception( 'Unable to generate form. Please try again or rephrase your request.' );
+            throw new \Exception( 'Unable to generate form. Please try again or rephrase your request.' ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         // Check for error response from AI
@@ -530,7 +531,7 @@ class FormGenerator {
                 'error' => true,
                 'message' => isset( $ai_response['message'] ) ? $ai_response['message'] : 'AI returned an error response',
                 'provider' => 'anthropic',
-                'model' => $this->current_model
+                'model' => $this->current_model,
             ];
         }
 
@@ -544,7 +545,7 @@ class FormGenerator {
                 'error' => true,
                 'message' => isset( $form_data['message'] ) ? $form_data['message'] : 'Failed to build form structure',
                 'provider' => 'anthropic',
-                'model' => $this->current_model
+                'model' => $this->current_model,
             ];
         }
 
@@ -598,7 +599,7 @@ class FormGenerator {
                     ],
                 ],
             ],
-            'generationConfig' => []
+            'generationConfig' => [],
         ];
 
         // Set temperature based on model capabilities
@@ -629,22 +630,22 @@ class FormGenerator {
         $args = [
             'method' => 'POST',
             'headers' => [
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
             ],
             'body' => wp_json_encode( $body ),
-            'timeout' => 120
+            'timeout' => 120,
         ];
 
         $response = wp_safe_remote_request( $endpoint, $args );
 
         if ( is_wp_error( $response ) ) {
-            throw new \Exception( 'Google API request failed: ' . $response->get_error_message() );
+            throw new \Exception( 'Google API request failed: ' . $response->get_error_message() ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         $status_code = wp_remote_retrieve_response_code( $response );
         if ( $status_code !== 200 ) {
             $error_body = wp_remote_retrieve_body( $response );
-            throw new \Exception( "Google API returned HTTP {$status_code}: {$error_body}" );
+            throw new \Exception( "Google API returned HTTP {$status_code}: {$error_body}" ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         $body = wp_remote_retrieve_body( $response );
@@ -652,28 +653,28 @@ class FormGenerator {
 
         // Validate JSON response
         if ( json_last_error() !== JSON_ERROR_NONE ) {
-            throw new \Exception( 'Invalid JSON response from Google API: ' . json_last_error_msg() );
+            throw new \Exception( 'Invalid JSON response from Google API: ' . json_last_error_msg() ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         if ( isset( $data['error'] ) ) {
-            throw new \Exception( 'Google API Error: ' . ( isset( $data['error']['message'] ) ? $data['error']['message'] : 'Unknown error' ) );
+            throw new \Exception( 'Google API Error: ' . ( isset( $data['error']['message'] ) ? $data['error']['message'] : 'Unknown error' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         if ( ! isset( $data['candidates'][0]['content']['parts'][0]['text'] ) ) {
-            throw new \Exception( 'Invalid Google response format' );
+            throw new \Exception( 'Invalid Google response format' ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         $content = $data['candidates'][0]['content']['parts'][0]['text'];
 
         // Clean and extract JSON from content
-        $json_content = trim($content);
+        $json_content = trim( $content );
 
         // Remove any markdown code blocks if present
-        $json_content = preg_replace('/^```(?:json)?\s*|\s*```$/m', '', $json_content);
+        $json_content = preg_replace( '/^```(?:json)?\s*|\s*```$/m', '', $json_content );
 
         // Remove any text before the first { or after the last }
-        $json_content = preg_replace('/^[^{]*/', '', $json_content);
-        $json_content = preg_replace('/[^}]*$/', '', $json_content);
+        $json_content = preg_replace( '/^[^{]*/', '', $json_content );
+        $json_content = preg_replace( '/[^}]*$/', '', $json_content );
 
         // Try to find the JSON object (handle nested braces properly)
         $start = strpos( $json_content, '{' );
@@ -687,7 +688,7 @@ class FormGenerator {
         $ai_response = json_decode( $json_content, true );
 
         if ( json_last_error() !== JSON_ERROR_NONE ) {
-            throw new \Exception( 'Unable to generate form. Please try again or rephrase your request.' );
+            throw new \Exception( 'Unable to generate form. Please try again or rephrase your request.' ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         // Check for error response from AI
@@ -697,7 +698,7 @@ class FormGenerator {
                 'error' => true,
                 'message' => isset( $ai_response['message'] ) ? $ai_response['message'] : 'AI returned an error response',
                 'provider' => 'google',
-                'model' => $this->current_model
+                'model' => $this->current_model,
             ];
         }
 
@@ -711,7 +712,7 @@ class FormGenerator {
                 'error' => true,
                 'message' => isset( $form_data['message'] ) ? $form_data['message'] : 'Failed to build form structure',
                 'provider' => 'google',
-                'model' => $this->current_model
+                'model' => $this->current_model,
             ];
         }
 
@@ -783,7 +784,7 @@ class FormGenerator {
 
         // Check if file exists
         if ( ! file_exists( $prompt_file ) ) {
-            throw new \Exception( 'System prompt file not found: ' . $prompt_file );
+            throw new \Exception( 'System prompt file not found: ' . $prompt_file ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
         // Load the prompt file (local file, not remote URL)
@@ -934,7 +935,7 @@ class FormGenerator {
                 $system_prompt .= "- 'add email field' with 3 existing fields → return ALL 4 fields\n";
                 $system_prompt .= "- 'change skills from checkbox to dropdown' → return all fields with skills field having template: 'dropdown_field' instead of 'checkbox_field'\n";
             } else {
-                $system_prompt .= "The user is asking a question. Return an error response with helpful message.";
+                $system_prompt .= 'The user is asking a question. Return an error response with helpful message.';
             }
         }
 
@@ -1018,7 +1019,6 @@ class FormGenerator {
             $this->api_key          = $original_key;
 
             return $result;
-
         } catch ( \Exception $e ) {
             return [
                 'success'  => false,
@@ -1236,7 +1236,7 @@ class FormGenerator {
      * @param array $options Additional options
      * @return array Generated options
      */
-    public function generate_field_options($prompt, $options = []) {
+    public function generate_field_options( $prompt, $options = [] ) {
         try {
             $field_type = $options['field_type'] ?? 'dropdown_field';
             $output_format = $options['output_format'] ?? 'one_per_line';
@@ -1244,7 +1244,7 @@ class FormGenerator {
             $max_options = $options['max_options'] ?? 20;
 
             // Build system prompt for option generation
-            $system_prompt = $this->get_field_options_system_prompt($field_type, $output_format, $tone, $max_options);
+            $system_prompt = $this->get_field_options_system_prompt( $field_type, $output_format, $tone, $max_options );
 
             // Store original provider settings
             $original_provider = $this->current_provider;
@@ -1253,29 +1253,29 @@ class FormGenerator {
 
             // Call AI provider
             $ai_response = null;
-            switch ($this->current_provider) {
+            switch ( $this->current_provider ) {
                 case 'openai':
-                    $ai_response = $this->call_openai_for_options($system_prompt, $prompt, $options);
+                    $ai_response = $this->call_openai_for_options( $system_prompt, $prompt, $options );
                     break;
 
                 case 'anthropic':
-                    $ai_response = $this->call_anthropic_for_options($system_prompt, $prompt, $options);
+                    $ai_response = $this->call_anthropic_for_options( $system_prompt, $prompt, $options );
                     break;
 
                 case 'google':
-                    $ai_response = $this->call_google_for_options($system_prompt, $prompt, $options);
+                    $ai_response = $this->call_google_for_options( $system_prompt, $prompt, $options );
                     break;
 
                 default:
-                    throw new \Exception('Unsupported AI provider: ' . $this->current_provider);
+                    throw new \Exception( 'Unsupported AI provider: ' . $this->current_provider ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
             }
 
-            if (isset($ai_response['error']) && $ai_response['error']) {
+            if ( isset( $ai_response['error'] ) && $ai_response['error'] ) {
                 return [
                     'success' => false,
                     'error' => true,
                     'message' => $ai_response['message'] ?? 'Failed to generate options',
-                    'provider' => $this->current_provider
+                    'provider' => $this->current_provider,
                 ];
             }
 
@@ -1283,15 +1283,14 @@ class FormGenerator {
                 'success' => true,
                 'options' => $ai_response['options'] ?? [],
                 'provider' => $this->current_provider,
-                'model' => $this->current_model
+                'model' => $this->current_model,
             ];
-
-        } catch (\Exception $e) {
+        } catch ( \Exception $e ) {
             return [
                 'success' => false,
                 'error' => true,
                 'message' => $e->getMessage(),
-                'provider' => $this->current_provider
+                'provider' => $this->current_provider,
             ];
         } finally {
             // Always restore original provider settings
@@ -1310,7 +1309,7 @@ class FormGenerator {
      * @param int $max_options Maximum number of options
      * @return string System prompt
      */
-    private function get_field_options_system_prompt($field_type, $output_format, $tone, $max_options) {
+    private function get_field_options_system_prompt( $field_type, $output_format, $tone, $max_options ) {
         $prompt = "You are an AI assistant helping to generate field options for a WordPress form.\n\n";
         $prompt .= "**Task:** Generate a list of options based on the user's request.\n\n";
         $prompt .= "**Field Type:** {$field_type}\n";
@@ -1325,7 +1324,7 @@ class FormGenerator {
         $prompt .= "4. Avoid duplicate or very similar options\n";
         $prompt .= "5. Use proper capitalization and formatting\n\n";
 
-        if ($output_format === 'value_label') {
+        if ( $output_format === 'value_label' ) {
             $prompt .= "**Output Format:** Return a JSON object with 'options' array containing objects with 'value' and 'label' keys.\n";
             $prompt .= "Example:\n";
             $prompt .= "{\n";
@@ -1355,14 +1354,20 @@ class FormGenerator {
      * @param array $options Additional options
      * @return array Result
      */
-    private function call_openai_for_options($system_prompt, $user_prompt, $options = []) {
-        $model_config = $this->get_model_config('openai', $this->current_model);
+    private function call_openai_for_options( $system_prompt, $user_prompt, $options = [] ) {
+        $model_config = $this->get_model_config( 'openai', $this->current_model );
 
         $body = [
             'model'       => $this->current_model,
             'messages'    => [
-                [ 'role' => 'system', 'content' => $system_prompt ],
-                [ 'role' => 'user', 'content' => $user_prompt ],
+                [
+                    'role' => 'system',
+                    'content' => $system_prompt,
+                ],
+                [
+                    'role' => 'user',
+                    'content' => $user_prompt,
+                ],
             ],
             'temperature' => 0.7,
             'max_tokens'  => Config::MAX_TOKENS_OPTIONS,
@@ -1384,32 +1389,32 @@ class FormGenerator {
 
         $response = wp_safe_remote_request( $this->provider_configs['openai']['endpoint'], $args );
 
-        if (is_wp_error($response)) {
-            throw new \Exception('OpenAI API request failed: ' . $response->get_error_message());
+        if ( is_wp_error( $response ) ) {
+            throw new \Exception( 'OpenAI API request failed: ' . $response->get_error_message() ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
-        $status_code = wp_remote_retrieve_response_code($response);
-        if ($status_code !== 200) {
-            $error_body = wp_remote_retrieve_body($response);
-            throw new \Exception("OpenAI API returned HTTP {$status_code}: {$error_body}");
+        $status_code = wp_remote_retrieve_response_code( $response );
+        if ( $status_code !== 200 ) {
+            $error_body = wp_remote_retrieve_body( $response );
+            throw new \Exception( "OpenAI API returned HTTP {$status_code}: {$error_body}" ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
+        $body = wp_remote_retrieve_body( $response );
+        $data = json_decode( $body, true );
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception('Invalid JSON response from OpenAI API');
+        if ( json_last_error() !== JSON_ERROR_NONE ) {
+            throw new \Exception( 'Invalid JSON response from OpenAI API' ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
-        if (isset($data['error'])) {
-            throw new \Exception('OpenAI API Error: ' . $data['error']['message']);
+        if ( isset( $data['error'] ) ) {
+            throw new \Exception( 'OpenAI API Error: ' . $data['error']['message'] ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
-        if (!isset($data['choices'][0]['message']['content'])) {
-            throw new \Exception('Invalid OpenAI response format');
+        if ( ! isset( $data['choices'][0]['message']['content'] ) ) {
+            throw new \Exception( 'Invalid OpenAI response format' ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
-        return $this->parse_options_response($data['choices'][0]['message']['content'], $options);
+        return $this->parse_options_response( $data['choices'][0]['message']['content'], $options );
     }
 
     /**
@@ -1425,7 +1430,10 @@ class FormGenerator {
             'model'       => $this->current_model,
             'system'      => $system_prompt,
             'messages'    => [
-                [ 'role' => 'user', 'content' => $user_prompt ],
+                [
+                    'role' => 'user',
+                    'content' => $user_prompt,
+                ],
             ],
             'temperature' => 0.7,
             'max_tokens'  => Config::MAX_TOKENS_OPTIONS,
@@ -1444,32 +1452,32 @@ class FormGenerator {
 
         $response = wp_safe_remote_request( $this->provider_configs['anthropic']['endpoint'], $args );
 
-        if (is_wp_error($response)) {
-            throw new \Exception('Anthropic API request failed: ' . $response->get_error_message());
+        if ( is_wp_error( $response ) ) {
+            throw new \Exception( 'Anthropic API request failed: ' . $response->get_error_message() ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
-        $status_code = wp_remote_retrieve_response_code($response);
-        if ($status_code !== 200) {
-            $error_body = wp_remote_retrieve_body($response);
-            throw new \Exception("Anthropic API returned HTTP {$status_code}: {$error_body}");
+        $status_code = wp_remote_retrieve_response_code( $response );
+        if ( $status_code !== 200 ) {
+            $error_body = wp_remote_retrieve_body( $response );
+            throw new \Exception( "Anthropic API returned HTTP {$status_code}: {$error_body}" ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
+        $body = wp_remote_retrieve_body( $response );
+        $data = json_decode( $body, true );
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception('Invalid JSON response from Anthropic API');
+        if ( json_last_error() !== JSON_ERROR_NONE ) {
+            throw new \Exception( 'Invalid JSON response from Anthropic API' ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
-        if (isset($data['error'])) {
-            throw new \Exception('Anthropic API Error: ' . $data['error']['message']);
+        if ( isset( $data['error'] ) ) {
+            throw new \Exception( 'Anthropic API Error: ' . $data['error']['message'] ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
-        if (!isset($data['content'][0]['text'])) {
-            throw new \Exception('Invalid Anthropic response format');
+        if ( ! isset( $data['content'][0]['text'] ) ) {
+            throw new \Exception( 'Invalid Anthropic response format' ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
-        return $this->parse_options_response($data['content'][0]['text'], $options);
+        return $this->parse_options_response( $data['content'][0]['text'], $options );
     }
 
     /**
@@ -1480,26 +1488,26 @@ class FormGenerator {
      * @param array $options Additional options
      * @return array Result
      */
-    private function call_google_for_options($system_prompt, $user_prompt, $options = []) {
-        $model_config = $this->get_model_config('google', $this->current_model);
+    private function call_google_for_options( $system_prompt, $user_prompt, $options = [] ) {
+        $model_config = $this->get_model_config( 'google', $this->current_model );
 
-        $endpoint = str_replace('{model}', $this->current_model, $this->provider_configs['google']['endpoint']);
+        $endpoint = str_replace( '{model}', $this->current_model, $this->provider_configs['google']['endpoint'] );
 
         $body = [
             'contents' => [
                 [
                     'parts' => [
-                        ['text' => $system_prompt . "\n\nUser request: " . $user_prompt]
-                    ]
-                ]
+                        [ 'text' => $system_prompt . "\n\nUser request: " . $user_prompt ],
+                    ],
+                ],
             ],
             'generationConfig' => [
                 'temperature' => 0.7,
-                'maxOutputTokens' => 1000
-            ]
+                'maxOutputTokens' => 1000,
+            ],
         ];
 
-        if ($model_config['supports_json_mode']) {
+        if ( $model_config['supports_json_mode'] ) {
             $body['generationConfig']['responseMimeType'] = 'application/json';
         }
 
@@ -1507,40 +1515,40 @@ class FormGenerator {
             'method' => 'POST',
             'headers' => [
                 'Content-Type' => 'application/json',
-                'x-goog-api-key' => $this->api_key
+                'x-goog-api-key' => $this->api_key,
             ],
-            'body' => json_encode($body),
-            'timeout' => 60
+            'body' => json_encode( $body ),
+            'timeout' => 60,
         ];
 
-        $response = wp_safe_remote_request($endpoint, $args);
+        $response = wp_safe_remote_request( $endpoint, $args );
 
-        if (is_wp_error($response)) {
-            throw new \Exception('Google API request failed: ' . $response->get_error_message());
+        if ( is_wp_error( $response ) ) {
+            throw new \Exception( 'Google API request failed: ' . $response->get_error_message() ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
-        $status_code = wp_remote_retrieve_response_code($response);
-        if ($status_code !== 200) {
-            $error_body = wp_remote_retrieve_body($response);
-            throw new \Exception("Google API returned HTTP {$status_code}: {$error_body}");
+        $status_code = wp_remote_retrieve_response_code( $response );
+        if ( $status_code !== 200 ) {
+            $error_body = wp_remote_retrieve_body( $response );
+            throw new \Exception( "Google API returned HTTP {$status_code}: {$error_body}" ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
+        $body = wp_remote_retrieve_body( $response );
+        $data = json_decode( $body, true );
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception('Invalid JSON response from Google API');
+        if ( json_last_error() !== JSON_ERROR_NONE ) {
+            throw new \Exception( 'Invalid JSON response from Google API' ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
-        if (isset($data['error'])) {
-            throw new \Exception('Google API Error: ' . ($data['error']['message'] ?? 'Unknown error'));
+        if ( isset( $data['error'] ) ) {
+            throw new \Exception( 'Google API Error: ' . ( $data['error']['message'] ?? 'Unknown error' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
-        if (!isset($data['candidates'][0]['content']['parts'][0]['text'])) {
-            throw new \Exception('Invalid Google response format');
+        if ( ! isset( $data['candidates'][0]['content']['parts'][0]['text'] ) ) {
+            throw new \Exception( 'Invalid Google response format' ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not output
         }
 
-        return $this->parse_options_response($data['candidates'][0]['content']['parts'][0]['text'], $options);
+        return $this->parse_options_response( $data['candidates'][0]['content']['parts'][0]['text'], $options );
     }
 
     /**
@@ -1550,32 +1558,32 @@ class FormGenerator {
      * @param array $options Request options
      * @return array Parsed options
      */
-    private function parse_options_response($content, $options = []) {
+    private function parse_options_response( $content, $options = [] ) {
         // Clean and extract JSON from the response
-        $json_content = trim($content);
+        $json_content = trim( $content );
 
         // Remove any markdown code blocks if present
-        $json_content = preg_replace('/^```(?:json)?\s*|\s*```$/m', '', $json_content);
+        $json_content = preg_replace( '/^```(?:json)?\s*|\s*```$/m', '', $json_content );
 
         // Remove any text before the first { or after the last }
-        $json_content = preg_replace('/^[^{]*/', '', $json_content);
-        $json_content = preg_replace('/[^}]*$/', '', $json_content);
+        $json_content = preg_replace( '/^[^{]*/', '', $json_content );
+        $json_content = preg_replace( '/[^}]*$/', '', $json_content );
 
         // Try to find the JSON object
-        $start = strpos($json_content, '{');
-        $end = strrpos($json_content, '}');
+        $start = strpos( $json_content, '{' );
+        $end = strrpos( $json_content, '}' );
 
-        if ($start !== false && $end !== false && $end > $start) {
-            $json_content = substr($json_content, $start, $end - $start + 1);
+        if ( $start !== false && $end !== false && $end > $start ) {
+            $json_content = substr( $json_content, $start, $end - $start + 1 );
         }
 
         // Attempt to decode JSON
-        $parsed = json_decode($json_content, true);
+        $parsed = json_decode( $json_content, true );
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if ( json_last_error() !== JSON_ERROR_NONE ) {
             return [
                 'error' => true,
-                'message' => 'Unable to parse AI response. Please try again.'
+                'message' => 'Unable to parse AI response. Please try again.',
             ];
         }
 
@@ -1583,24 +1591,24 @@ class FormGenerator {
         $field_options = [];
         $output_format = $options['output_format'] ?? 'one_per_line';
 
-        if (isset($parsed['options']) && is_array($parsed['options'])) {
-            if ($output_format === 'value_label') {
+        if ( isset( $parsed['options'] ) && is_array( $parsed['options'] ) ) {
+            if ( $output_format === 'value_label' ) {
                 // Expecting array of objects with 'value' and 'label'
-                foreach ($parsed['options'] as $option) {
-                    if (is_array($option) && isset($option['value']) && isset($option['label'])) {
+                foreach ( $parsed['options'] as $option ) {
+                    if ( is_array( $option ) && isset( $option['value'] ) && isset( $option['label'] ) ) {
                         $field_options[] = [
                             'label' => $option['label'],
-                            'value' => $option['value']
+                            'value' => $option['value'],
                         ];
                     }
                 }
             } else {
                 // Expecting array of strings (one per line)
-                foreach ($parsed['options'] as $index => $option) {
-                    if (is_string($option)) {
+                foreach ( $parsed['options'] as $index => $option ) {
+                    if ( is_string( $option ) ) {
                         $field_options[] = [
                             'label' => $option,
-                            'value' => sanitize_title( $option )
+                            'value' => sanitize_title( $option ),
                         ];
                     }
                 }
@@ -1609,7 +1617,7 @@ class FormGenerator {
 
         return [
             'error' => false,
-            'options' => $field_options
+            'options' => $field_options,
         ];
     }
 }

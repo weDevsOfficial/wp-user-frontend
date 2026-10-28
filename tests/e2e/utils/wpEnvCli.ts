@@ -25,14 +25,30 @@ export function wpCli(command: string): string {
     // Use the current package name: `wp-env` is a deprecated shim that only prints
     // "Please run npx @wordpress/env instead" and exits 0 without running wp-cli, which
     // made every wpCli() call return that message and throw when parsing its result.
-    const full = `npx @wordpress/env run ${wpEnvCliContainer()} wp --skip-plugins --skip-themes ${command}`;
+    // WPUF_E2E_WP_CLI runs plain wp-cli instead (e.g. `wp --path=/path/to/site`), for a local
+    // run against a Herd/Valet site rather than wp-env. CI does not set it.
+    const wp = process.env.WPUF_E2E_WP_CLI || `npx @wordpress/env run ${wpEnvCliContainer()} wp`;
+    const full = `${wp} --skip-plugins --skip-themes ${command}`;
     // `@wordpress/env` resolves the instance from its working directory. In CI the suite and
     // the wp-env instance share this directory, so the default cwd is correct. For a local
     // setup where the wp-env project lives elsewhere (its .wp-env.json is not under tests/e2e),
     // point WPUF_E2E_WP_ENV_DIR at that project dir so DB assertions hit the running instance
     // instead of an unstarted one in the test cwd.
     const cwd = process.env.WPUF_E2E_WP_ENV_DIR || process.cwd();
-    return execSync(full, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'], cwd } );
+    const run = () => execSync(full, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'], cwd } );
+
+    try {
+        return run();
+    } catch ( error ) {
+        // A wp-cli answer ("Error: No data exists for key ...") is the real result: callers
+        // read it. Anything else is the wrapper failing under load (npx / docker run), which
+        // made a full parallel run read '' for stored values: try once more.
+        const stderr = String( ( error as { stderr?: unknown } ).stderr || '' );
+        if ( /^Error: /m.test( stderr ) ) {
+            throw error;
+        }
+        return run();
+    }
 }
 
 /**

@@ -36,19 +36,18 @@
             $( 'body.post-type-wpuf_subscription #post' ).submit( function( event ) {
                 if ( document.activeElement.value === 'Update' ) {
                     event.preventDefault();
-                    Swal.fire({
+                    var form = this;
+
+                    window.wpufDialog.confirm( {
                         title: 'Are you sure to update the subscription?',
                         text: 'The changes you made will be applied only to the new subscriptions and pending recurring payments.',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Update'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $( this ).unbind('submit').submit()
+                        tone: 'warning',
+                        confirmText: 'Update'
+                    } ).then( function ( confirmed ) {
+                        if ( confirmed ) {
+                            $( form ).unbind( 'submit' ).submit();
                         }
-                    });
+                    } );
                 }
             } );
 
@@ -91,24 +90,19 @@
 
             wrap.find('.wpuf-delete-pack-btn').attr('disabled', true);
             wrap.css('opacity', 0.5);
-            $.post(
-                ajaxurl,
-                {
-                    'action' : 'wpuf_delete_user_package',
-                    'userid' : userid,
-                    'packid' : packid,
-                    'wpuf_subscription_delete_nonce': wpuf_subs_vars.wpuf_subscription_delete_nonce
-                },
-                function(data){
-                    if(data){
-                        wrap.css( 'opacity', 1 );
-                        $('.wpuf-user-sub-info').remove();
-                        $(e.target).remove();
-                        selected_sub.val(-1);
-                        sub_dropdown.show();
-                    }
+            // REST DELETE wpuf/v1/admin/users/{id}/pack.
+            window.wpufRest.request( wpuf_subs_vars.rest, 'admin/users/' + parseInt( userid, 10 ) + '/pack', {
+                method: 'DELETE',
+                data: { pack_id: parseInt( packid, 10 ) || 0 }
+            } ).then( function( data ) {
+                if ( data && data.deleted ) {
+                    wrap.css( 'opacity', 1 );
+                    $('.wpuf-user-sub-info').remove();
+                    $(e.target).remove();
+                    selected_sub.val(-1);
+                    sub_dropdown.show();
                 }
-            );
+            } );
 
         },
 
@@ -117,38 +111,25 @@
             e.preventDefault();
 
             var self = $(this),
-
-                data = {
-
-                    action: 'wpuf_coupon_cancel',
-
-                    _wpnonce: wpuf_frontend.nonce,
-
-                    pack_id: self.data('pack_id'),
-
-                    type: $( '#wpuf_type' ).text() || 'pack'
-
-                },
-
                 coupon_field = self.closest('.wpuf-order-summary').find('input.wpuf-coupon-field');
-
-
 
             coupon_field.addClass('wpuf-coupon-field-spinner');
 
-            $.post( wpuf_frontend.ajaxurl, data, function( res ) {
-
+            // REST POST wpuf/v1/coupons/cancel (Pro).
+            window.wpufRest.request( wpuf_frontend.rest, 'coupons/cancel', {
+                method: 'POST',
+                data: { pack_id: parseInt( self.data('pack_id'), 10 ), wpuf_nonce: wpuf_frontend.nonce }
+            } ).then( function( res ) {
                 coupon_field.removeClass('wpuf-coupon-field-spinner');
 
-                if ( res.success ) {
-                    var orderSummary = self.closest('.wpuf-order-summary');
-                    orderSummary.find('.wpuf-pack-inner').html( res.data.append_data );
-                    orderSummary.find('.wpuf-coupon-id-field').val('');
-                    orderSummary.find('.wpuf-coupon-applied').remove();
-                    orderSummary.find('.wpuf-coupon-show').show();
-                }
-
-            });
+                var orderSummary = self.closest('.wpuf-order-summary');
+                orderSummary.find('.wpuf-pack-inner').html( res.append_data );
+                orderSummary.find('.wpuf-coupon-id-field').val('');
+                orderSummary.find('.wpuf-coupon-applied').remove();
+                orderSummary.find('.wpuf-coupon-show').show();
+            } ).catch( function() {
+                coupon_field.removeClass('wpuf-coupon-field-spinner');
+            } );
         },
 
         couponRemove: function(e) {
@@ -156,22 +137,18 @@
             e.preventDefault();
 
             var self = $(this),
-                orderSummary = self.closest('.wpuf-order-summary'),
-                data = {
-                    action: 'wpuf_coupon_cancel',
-                    _wpnonce: wpuf_frontend.nonce,
-                    pack_id: self.data('pack_id'),
-                    type: $( '#wpuf_type' ).text() || 'pack'
-                };
+                orderSummary = self.closest('.wpuf-order-summary');
 
-            $.post( wpuf_frontend.ajaxurl, data, function( res ) {
-                if ( res.success ) {
-                    orderSummary.find('.wpuf-pack-inner').html( res.data.append_data );
-                    orderSummary.find('.wpuf-coupon-id-field').val('');
-                    orderSummary.find('.wpuf-coupon-applied').remove();
-                    orderSummary.find('.wpuf-coupon-show').show();
-                }
-            });
+            // REST POST wpuf/v1/coupons/cancel (Pro).
+            window.wpufRest.request( wpuf_frontend.rest, 'coupons/cancel', {
+                method: 'POST',
+                data: { pack_id: parseInt( self.data('pack_id'), 10 ), wpuf_nonce: wpuf_frontend.nonce }
+            } ).then( function( res ) {
+                orderSummary.find('.wpuf-pack-inner').html( res.append_data );
+                orderSummary.find('.wpuf-coupon-id-field').val('');
+                orderSummary.find('.wpuf-coupon-applied').remove();
+                orderSummary.find('.wpuf-coupon-show').show();
+            } );
 
         },
 
@@ -207,21 +184,6 @@
 
             }
 
-            var data = {
-
-                    action: 'wpuf_coupon_apply',
-
-                    _wpnonce: wpuf_frontend.nonce,
-
-                    coupon: coupon,
-
-                    pack_id: self.data('pack_id'),
-
-                    type: $( '#wpuf_type' ).text() || 'pack'
-
-                };
-
-
             if ( self.attr('disabled') === 'disabled' ) {
 
                 //return;
@@ -232,34 +194,36 @@
 
             coupon_field.addClass('wpuf-coupon-field-spinner');
 
-            $.post( wpuf_frontend.ajaxurl, data, function( res ) {
+            // REST POST wpuf/v1/coupons/apply (Pro).
+            window.wpufRest.request( wpuf_frontend.rest, 'coupons/apply', {
+                method: 'POST',
+                data: { coupon: coupon, pack_id: parseInt( self.data('pack_id'), 10 ), wpuf_nonce: wpuf_frontend.nonce }
+            } ).then( function( res ) {
                 coupon_field.removeClass('wpuf-coupon-field-spinner');
 
-                if ( res.success ) {
-                    orderSummary.find('.wpuf-pack-inner').html( res.data.append_data );
-                    orderSummary.find('.wpuf-coupon-id-field').val( res.data.coupon_id );
-                    orderSummary.find('.wpuf-coupon-error').html('');
+                orderSummary.find('.wpuf-pack-inner').html( res.append_data );
+                orderSummary.find('.wpuf-coupon-id-field').val( res.coupon_id );
+                orderSummary.find('.wpuf-coupon-error').html('');
 
-                    if ( res.data.amount <= 0 ) {
-                        $('.wpuf-nullamount-hide').hide();
-                    }
-
-                    // Hide the coupon input wrap and show the applied bar
-                    var coponWrap = orderSummary.find('.wpuf-coupon-wrap');
-                    coponWrap.hide();
-                    orderSummary.find('.wpuf-coupon-applied').remove();
-                    orderSummary.append(
-                        '<div class="wpuf-coupon-applied">' +
-                            '<span class="wpuf-coupon-applied-label">Coupon code applied</span>' +
-                            '<button type="button" class="wpuf-coupon-remove" data-pack_id="' + self.data('pack_id') + '">&times;</button>' +
-                        '</div>'
-                    );
-                } else {
-                    self.attr( 'disabled', false );
-                    orderSummary.find('.wpuf-coupon-error').html( res.data.message );
+                if ( res.amount <= 0 ) {
+                    $('.wpuf-nullamount-hide').hide();
                 }
 
-            });
+                // Hide the coupon input wrap and show the applied bar
+                var coponWrap = orderSummary.find('.wpuf-coupon-wrap');
+                coponWrap.hide();
+                orderSummary.find('.wpuf-coupon-applied').remove();
+                orderSummary.append(
+                    '<div class="wpuf-coupon-applied">' +
+                        '<span class="wpuf-coupon-applied-label">Coupon code applied</span>' +
+                        '<button type="button" class="wpuf-coupon-remove" data-pack_id="' + parseInt( self.data('pack_id'), 10 ) + '">&times;</button>' +
+                    '</div>'
+                );
+            } ).catch( function( error ) {
+                coupon_field.removeClass('wpuf-coupon-field-spinner');
+                self.attr( 'disabled', false );
+                orderSummary.find('.wpuf-coupon-error').text( error && error.message ? error.message : '' );
+            } );
 
         },
 

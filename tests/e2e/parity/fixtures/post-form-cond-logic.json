@@ -1,0 +1,438 @@
+{
+    "post_type": "wpuf_forms",
+    "post_status": "publish",
+    "post_title": "Parity Field Conditions",
+    "meta": {
+        "integrations": [],
+        "notifications": [],
+        "wpuf_form_settings": {
+            "show_form_title": "off",
+            "form_description": "",
+            "post_type": "post",
+            "redirect_to": "post",
+            "message": "Post saved",
+            "page_id": "",
+            "url": "",
+            "post_status": "publish",
+            "draft_post": "off",
+            "submit_text": "Submit",
+            "form_template": "",
+            "enable_multistep": "off",
+            "multistep_progressbar_type": "progressive",
+            "ms_ac_txt_color": "#000000",
+            "ms_active_bgcolor": "#00a0d2",
+            "ms_bgcolor": "#e4e4e4",
+            "edit_post_status": "publish",
+            "edit_redirect_to": "same",
+            "update_message": "Post updated successfully",
+            "edit_page_id": "",
+            "edit_url": "",
+            "lock_edit_post": "",
+            "update_text": "Update",
+            "post_permission": "everyone",
+            "name_label": "Name",
+            "email_label": "Email",
+            "message_restrict": "This page is restricted. Please {login} / {register} to view this page.",
+            "view_control_role_enabled": "off",
+            "view_control_role_message": "This post is restricted. Please {login}/{register} to view this post.",
+            "view_control_subscription_enabled": "off",
+            "view_control_subscription_message": "You need to have one of the {subscriptions} to view this post. Have not subscribed yet? Please {login}/{register} to subscribe.",
+            "payment_options": "off",
+            "choose_payment_option": "force_pack_purchase",
+            "fallback_ppp_cost": "",
+            "pay_per_post_cost": "",
+            "ppp_payment_success_page": "",
+            "enable_pricing_payment": "off",
+            "notification": {
+                "new": "on",
+                "new_to": "admin@example.com",
+                "new_subject": "New post created",
+                "new_body": "Hi Admin, \r\n\r\nA new post has been created in your site {sitename} ({siteurl}). \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}"
+            },
+            "notification_edit": "off",
+            "notification_edit_to": "admin@example.com",
+            "notification_edit_subject": "A post has been edited",
+            "notification_edit_body": "Hi Admin, \r\n\r\nThe post \"{post_title}\" has been updated. \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
+            "use_theme_css": "off",
+            "label_position": "above",
+            "comment_status": "open",
+            "schedule_form": "off",
+            "schedule_start": "",
+            "schedule_end": "",
+            "form_pending_message": "",
+            "form_expired_message": "",
+            "limit_entries": "off",
+            "limit_number": "100",
+            "limit_message": "",
+            "submit_button_cond": {
+                "condition_status": "no",
+                "cond_logic": "any",
+                "conditions": [
+                    {
+                        "name": "",
+                        "operator": "=",
+                        "option": "",
+                        "input_type": ""
+                    }
+                ]
+            },
+            "expiration_settings": {
+                "enable_post_expiration": "on",
+                "expiration_time_value": "7",
+                "expiration_time_type": "day",
+                "expired_post_status": "draft",
+                "post_expiration_message": ""
+            },
+            "enable_n8n": "off",
+            "n8n_webhook_url": "",
+            "ai_review_enabled": "off",
+            "ai_review_prompt": "",
+            "sms_enable": "off",
+            "mob_number": "",
+            "sms_sender_name": "",
+            "sms_body": ""
+        },
+        "wpuf_form_version": "4.3.13"
+    },
+    "fields": [
+        {
+            "menu_order": 0,
+            "post_status": "publish",
+            "post_content": {
+                "required": "no",
+                "help": "",
+                "css": "",
+                "width": "large",
+                "is_meta": "no",
+                "show_icon": "no",
+                "wpuf_cond": {
+                    "condition_status": "no",
+                    "cond_field": [],
+                    "cond_operator": [
+                        "="
+                    ],
+                    "cond_option": [
+                        "- Select -"
+                    ],
+                    "cond_logic": "all"
+                },
+                "input_type": "text",
+                "template": "post_title",
+                "label": "Post Title",
+                "name": "post_title",
+                "size": 40,
+                "default": "",
+                "id": "@self:int",
+                "field_icon": "",
+                "icon_position": "left_label"
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 1,
+            "post_status": "publish",
+            "post_content": {
+                "required": "no",
+                "help": "",
+                "css": "",
+                "width": "large",
+                "is_meta": "yes",
+                "show_icon": "no",
+                "wpuf_cond": {
+                    "condition_status": "no",
+                    "cond_field": [],
+                    "cond_operator": [
+                        "="
+                    ],
+                    "cond_option": [
+                        "- Select -"
+                    ],
+                    "cond_logic": "all"
+                },
+                "input_type": "text",
+                "template": "text_field",
+                "label": "City",
+                "name": "qa_city",
+                "size": 40,
+                "default": "",
+                "id": "@self:int",
+                "field_icon": "",
+                "icon_position": "left_label"
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 2,
+            "post_status": "publish",
+            "post_content": {
+                "required": "no",
+                "help": "",
+                "css": "",
+                "width": "large",
+                "is_meta": "yes",
+                "show_icon": "no",
+                "wpuf_cond": {
+                    "condition_status": "no",
+                    "cond_field": [],
+                    "cond_operator": [
+                        "="
+                    ],
+                    "cond_option": [
+                        "- Select -"
+                    ],
+                    "cond_logic": "all"
+                },
+                "input_type": "radio",
+                "template": "radio_field",
+                "label": "Color",
+                "name": "qa_color",
+                "options": {
+                    "red": "Red",
+                    "blue": "Blue"
+                },
+                "selected": "",
+                "inline": "no",
+                "id": "@self:int",
+                "field_icon": "",
+                "icon_position": "left_label"
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 3,
+            "post_status": "publish",
+            "post_content": {
+                "required": "no",
+                "help": "",
+                "css": "",
+                "width": "large",
+                "is_meta": "yes",
+                "show_icon": "no",
+                "wpuf_cond": {
+                    "condition_status": "no",
+                    "cond_field": [],
+                    "cond_operator": [
+                        "="
+                    ],
+                    "cond_option": [
+                        "- Select -"
+                    ],
+                    "cond_logic": "all"
+                },
+                "input_type": "select",
+                "template": "dropdown_field",
+                "label": "Size",
+                "name": "qa_size",
+                "options": {
+                    "s": "Small",
+                    "l": "Large"
+                },
+                "selected": "",
+                "first": "- Select -",
+                "id": "@self:int",
+                "field_icon": "",
+                "icon_position": "left_label"
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 4,
+            "post_status": "publish",
+            "post_content": {
+                "required": "no",
+                "help": "",
+                "css": "",
+                "width": "large",
+                "is_meta": "yes",
+                "show_icon": "no",
+                "wpuf_cond": {
+                    "condition_status": "no",
+                    "cond_field": [],
+                    "cond_operator": [
+                        "="
+                    ],
+                    "cond_option": [
+                        "- Select -"
+                    ],
+                    "cond_logic": "all"
+                },
+                "input_type": "numeric_text",
+                "template": "numeric_text_field",
+                "label": "Age",
+                "name": "qa_age",
+                "size": 40,
+                "default": "",
+                "step_text_field": "1",
+                "min_value_field": "0",
+                "max_value_field": "",
+                "id": "@self:int",
+                "field_icon": "",
+                "icon_position": "left_label"
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 5,
+            "post_status": "publish",
+            "post_content": {
+                "required": "no",
+                "help": "",
+                "css": "",
+                "width": "large",
+                "is_meta": "yes",
+                "show_icon": "no",
+                "wpuf_cond": {
+                    "condition_status": "no",
+                    "cond_field": [],
+                    "cond_operator": [
+                        "="
+                    ],
+                    "cond_option": [
+                        "- Select -"
+                    ],
+                    "cond_logic": "all"
+                },
+                "input_type": "textarea",
+                "template": "textarea_field",
+                "label": "Bio",
+                "name": "qa_bio",
+                "rows": 5,
+                "cols": 25,
+                "rich": "teeny",
+                "default": "",
+                "id": "@self:int",
+                "field_icon": "",
+                "icon_position": "left_label"
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 6,
+            "post_status": "publish",
+            "post_content": {
+                "required": "no",
+                "help": "",
+                "css": "",
+                "width": "large",
+                "is_meta": "no",
+                "show_icon": "no",
+                "wpuf_cond": {
+                    "condition_status": "no",
+                    "cond_field": [],
+                    "cond_operator": [
+                        "="
+                    ],
+                    "cond_option": [
+                        "- Select -"
+                    ],
+                    "cond_logic": "all"
+                },
+                "input_type": "taxonomy",
+                "template": "taxonomy",
+                "label": "Category",
+                "name": "category",
+                "type": "select",
+                "orderby": "name",
+                "order": "ASC",
+                "exclude_type": "exclude",
+                "exclude": [],
+                "woo_attr": "no",
+                "woo_attr_vis": "no",
+                "show_inline": "no",
+                "id": "@self:int",
+                "field_icon": "",
+                "icon_position": "left_label"
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 7,
+            "post_status": "publish",
+            "post_content": {
+                "required": "no",
+                "help": "",
+                "css": "",
+                "width": "large",
+                "is_meta": "yes",
+                "show_icon": "no",
+                "wpuf_cond": {
+                    "condition_status": "no",
+                    "cond_field": [],
+                    "cond_operator": [
+                        "="
+                    ],
+                    "cond_option": [
+                        "- Select -"
+                    ],
+                    "cond_logic": "all"
+                },
+                "input_type": "text",
+                "template": "text_field",
+                "label": "Target",
+                "name": "qa_target",
+                "size": 40,
+                "default": "",
+                "id": "@self:int",
+                "field_icon": "",
+                "icon_position": "left_label"
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 8,
+            "post_status": "publish",
+            "post_content": {
+                "required": "no",
+                "help": "",
+                "css": "",
+                "width": "large",
+                "is_meta": "yes",
+                "show_icon": "no",
+                "wpuf_cond": {
+                    "condition_status": "yes",
+                    "cond_logic": "any",
+                    "cond_field": [
+                        "qa_color",
+                        "qa_city",
+                        ""
+                    ],
+                    "cond_operator": [
+                        "=",
+                        "==contains",
+                        ""
+                    ],
+                    "cond_option": [
+                        "blue",
+                        "Dha",
+                        ""
+                    ],
+                    "input_type": [
+                        "radio",
+                        "text",
+                        null
+                    ],
+                    "field_type": [
+                        "radio",
+                        "text",
+                        null
+                    ],
+                    "option_title": [
+                        "Blue",
+                        "",
+                        null
+                    ]
+                },
+                "input_type": "text",
+                "template": "text_field",
+                "label": "Has Rules",
+                "name": "qa_rules",
+                "size": 40,
+                "default": "",
+                "id": "@self:int",
+                "field_icon": "",
+                "icon_position": "left_label"
+            },
+            "meta": []
+        }
+    ]
+}

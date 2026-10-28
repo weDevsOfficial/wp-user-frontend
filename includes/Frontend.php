@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf;
 
+use WeDevs\Wpuf\Platform\Providers\FrontendServiceProvider;
 use WeDevs\WpUtils\ContainerTrait;
 
 /**
@@ -14,14 +15,14 @@ class Frontend {
     use ContainerTrait;
 
     public function __construct() {
-        $this->container['frontend_form']      = new Frontend\Frontend_Form();
-        $this->container['registration']       = new Frontend\Registration();
-        $this->container['simple_login']       = new Free\Simple_Login();
-        $this->container['frontend_account']   = new Frontend\Frontend_Account();
-        $this->container['frontend_dashboard'] = new Frontend\Frontend_Dashboard();
-        $this->container['shortcode']          = new Frontend\Shortcode();
-        $this->container['payment']            = new Frontend\Payment();
-        $this->container['form_preview']       = new Frontend\Form_Preview();
+        // Every frontend service comes from the platform container
+        // (FrontendServiceProvider): one instance per request, built here in the
+        // old order so the constructors add their hooks as before.
+        $platform = wpuf()->platform();
+
+        foreach ( array_keys( FrontendServiceProvider::SERVICES ) as $key ) {
+            $this->container[ $key ] = $platform->get( FrontendServiceProvider::class_of( $key ) );
+        }
 
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 
@@ -30,11 +31,12 @@ class Frontend {
         // data, Oxygen, do_shortcode() in a template), so load the bundle the moment
         // a WPUF shortcode or form actually renders. Scripts print in the footer,
         // styles go through print_late_styles(), so this is safe after wp_head.
-        add_filter( 'pre_do_shortcode_tag', [ $this, 'enqueue_on_shortcode_render' ], 10, 2 );
+        add_filter( 'pre_do_shortcode_tag', [ $this, 'enqueue_on_shortcode_render' ], 10, 3 );
         add_action( 'wpuf_before_form_render', [ $this, 'enqueue_form_assets' ] );
 
         // show admin bar as per wpuf settings
         add_filter( 'show_admin_bar', [ $this, 'show_admin_bar' ] );
+        add_action( 'wp_head', [ $this, 'print_custom_css' ], 100 );
     }
 
     /**
@@ -45,14 +47,104 @@ class Frontend {
      * @return void
      */
     public function enqueue_scripts() {
-        if ( $this->should_load_form_assets() ) {
+        if ( $this->should_load_form_assets() && ! $this->mounts_the_forms() ) {
             $this->enqueue_form_assets();
         }
 
         // Enqueue account page Tailwind CSS and JS
-        if ( wpuf_has_shortcode( 'wpuf_account' ) || wpuf_has_shortcode( 'wpuf_editprofile' ) ) {
+        if ( wpuf_has_shortcode( 'wpuf_editprofile' ) || ( wpuf_has_shortcode( 'wpuf_account' ) && ! $this->renderer()->mounts( 'account' ) ) ) {
             $this->enqueue_account_assets();
         }
+    }
+
+    /**
+     * The React or classic decision for this request.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return \WeDevs\Wpuf\Frontend\Renderer
+     */
+    private function renderer() {
+        return wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Renderer::class );
+    }
+
+    /**
+     * Whether this request is the pay page's React checkout.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param \WP_Post|null $post The queried page
+     *
+     * @return bool
+     */
+    private function react_checkout( $post ) {
+        $checkout = wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Checkout\Checkout_Service::class );
+
+        return $checkout->is_checkout( $post ) && $checkout->renders_react( $post );
+    }
+
+    /**
+     * Whether this request's `[wpuf-login]` screen renders as an app (the
+     * logged-in view and a theme-overridden screen stay classic).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    private function login_renders_app() {
+        $part = \WeDevs\Wpuf\Free\Simple_Login::screen_part();
+
+        return '' !== $part && $this->renderer()->mounts( $part );
+    }
+
+    /**
+     * Whether the only reason to load the classic form bundle on this page is
+     * a post form the React app will render. Every other trigger (payment
+     * page, preview, Dokan, the block, Elementor, the other shortcodes) keeps
+     * the classic bundle; a form the render-time filter sends back to classic
+     * gets the bundle from enqueue_on_shortcode_render().
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    private function mounts_the_forms() {
+        global $post;
+
+        if ( ! $this->renderer()->mounts( 'post_form' ) ) {
+            return false;
+        }
+
+        $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
+
+        // The pay page's checkout is the React app (Checkout_Service); it stays
+        // classic on a pay page built with Elementor or when the page has no checkout.
+        if ( ( isset( $post->ID ) && $pay_page === (int) $post->ID && ! $this->react_checkout( $post ) )
+            || isset( $_GET['wpuf_preview'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            || $this->dokan_is_seller_dashboard()
+            || ( isset( $post->post_content ) && has_block( 'wpuf/post-form', $post ) )
+            || $this->elementor_needs_form_assets() ) {
+            return false;
+        }
+
+        // The Pro registration / profile shortcode renders on React too.
+        $mount_tags = [ 'wpuf_form', 'wpuf_edit', 'wpuf_account' ];
+
+        if ( $this->renderer()->mounts( 'registration' ) ) {
+            $mount_tags[] = 'wpuf_profile';
+        }
+
+        if ( $this->login_renders_app() ) {
+            $mount_tags[] = 'wpuf-login';
+        }
+
+        foreach ( $this->get_asset_shortcodes() as $shortcode ) {
+            if ( ! in_array( $shortcode, $mount_tags, true ) && wpuf_has_shortcode( $shortcode ) ) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -201,7 +293,37 @@ class Frontend {
      *
      * @return false|string
      */
-    public function enqueue_on_shortcode_render( $output, $tag ) {
+    public function enqueue_on_shortcode_render( $output, $tag, $attr = [] ) {
+        // This runs before the handler (pre_do_shortcode_tag): a shortcode the
+        // React app is about to render gets its assets from Renderer,
+        // not the classic bundle. Same decision, same inputs as the handler.
+        $renderer = $this->renderer();
+        $atts     = is_array( $attr ) ? $attr : [];
+
+        if ( 'wpuf_form' === $tag && $renderer->mounts( 'post_form' ) ) {
+            return $output;
+        }
+
+        if ( 'wpuf_edit' === $tag && $renderer->mounts( 'edit_form' ) ) {
+            return $output;
+        }
+
+        if ( 'wpuf_account' === $tag && is_user_logged_in() && $renderer->mounts( 'account' ) ) {
+            return $output;
+        }
+
+        if ( 'wpuf-login' === $tag && $this->login_renders_app() ) {
+            return $output;
+        }
+
+        if ( 'wpuf_profile' === $tag ) {
+            $part = isset( $atts['type'] ) && 'profile' === $atts['type'] ? 'profile' : 'registration';
+
+            if ( $renderer->mounts( $part ) ) {
+                return $output;
+            }
+        }
+
         if ( in_array( $tag, $this->get_asset_shortcodes(), true ) ) {
             $this->enqueue_form_assets();
         }
@@ -237,32 +359,37 @@ class Frontend {
      * @return void
      */
     public function enqueue_form_assets() {
-        global $post;
-
-        static $enqueued = false;
-
-        if ( $enqueued ) {
+        // The schema of a React form fires the render hooks this method listens to; the classic bundle stays off then.
+        if ( $this->renderer()->building() ) {
             return;
         }
 
-        $enqueued = true;
+        global $post;
+
+        // Once per request: the queue itself is the flag (a static survived across PHPUnit tests).
+        if ( wp_script_is( 'wpuf-frontend-form', 'enqueued' ) ) {
+            return;
+        }
 
         wp_enqueue_style( 'wpuf-layout1' );
         wp_enqueue_style( 'wpuf-frontend-forms' );
-        wp_enqueue_style( 'wpuf-sweetalert2' );
+        wp_enqueue_style( 'wpuf-dialog' );
         wp_enqueue_style( 'wpuf-jquery-ui' );
 
         wp_enqueue_script( 'suggest' );
         wp_enqueue_script( 'wpuf-billing-address' );
         wp_enqueue_script( 'wpuf-upload' );
         wp_enqueue_script( 'wpuf-frontend-form' );
-        wp_enqueue_script( 'wpuf-sweetalert2' );
+        wp_enqueue_script( 'wpuf-dialog' );
 
         // Load appropriate subscription script based on shortcode
         if ( wpuf_has_shortcode( 'wpuf_sub_pack' ) ) {
             // Skip loading frontend-subscriptions CSS on Elementor pages (Elementor widget has its own CSS)
             $is_elementor_page = did_action( 'elementor/loaded' ) && isset( $post->ID ) && \Elementor\Plugin::$instance->db->is_built_with_elementor( $post->ID );
-            if ( ! $is_elementor_page ) {
+            // The React plans app has its own sheet (Pack_Display::react_markup() decides the same way).
+            $renderer   = wpuf()->platform()->has( \WeDevs\Wpuf\Frontend\Renderer::class ) ? wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Renderer::class ) : null;
+            $react_plan = $renderer && $renderer->mounts( 'plans' ) && ! has_filter( 'wpuf_subscription_packs' );
+            if ( ! $is_elementor_page && ! $react_plan ) {
                 wp_enqueue_style( 'wpuf-frontend-subscriptions' );
             }
             wp_enqueue_script( 'wpuf-frontend-subscriptions' );
@@ -276,6 +403,8 @@ class Frontend {
                 'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
                 'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
                 'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
+                'rest'        => wpuf_rest_script_data(),
+                'upload_nonce' => wp_create_nonce( 'wpuf-upload-nonce' ),
                 'ajaxurl'    => admin_url( 'admin-ajax.php' ),
                 'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
                 'plupload'   => [
@@ -306,6 +435,7 @@ class Frontend {
             'wpuf-frontend-form', 'wpuf_frontend', apply_filters(
                 'wpuf_frontend_object', [
                     'asset_url'                    => WPUF_ASSET_URI,
+                    'rest'                          => wpuf_rest_script_data(),
                     'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
                     'error_message'                => __( 'Please fix the errors to proceed', 'wp-user-frontend' ),
                     'nonce'                        => wp_create_nonce( 'wpuf_nonce' ),
@@ -369,14 +499,8 @@ class Frontend {
             )
         );
 
-        wp_localize_script(
-            'wpuf-billing-address',
-            'ajax_object',
-            [
-                'ajaxurl'     => admin_url( 'admin-ajax.php' ),
-                'fill_notice' => __( 'Some Required Fields are not filled!', 'wp-user-frontend' ),
-            ]
-        );
+        // billing-address.js data (`wpufBillingAddress`, `ajax_object` kept for add-ons).
+        wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Billing\Billing_Address::class )->localize( 'wpuf-billing-address' );
 
         /**
          * Fires right after the WPUF frontend form bundle has been enqueued.
@@ -400,6 +524,28 @@ class Frontend {
         return class_exists( 'WeDevs_Dokan' )
                 && function_exists( 'dokan_is_seller_dashboard' )
                 && dokan_is_seller_dashboard();
+    }
+
+    /**
+     * Settings > General > "Custom CSS codes": printed in the page head in a
+     * style tag, as the setting says (the old output line had been commented
+     * out since 2018, so the setting did nothing). Only when it has a value.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function print_custom_css() {
+        $css = trim( wp_strip_all_tags( (string) wpuf_get_option( 'custom_css', 'wpuf_general', '' ) ) );
+
+        if ( '' === $css ) {
+            return;
+        }
+
+        // Admin-entered CSS (manage options); `</` could still close the tag.
+        $css = str_replace( '</', '<\\/', $css );
+
+        echo "<style id=\"wpuf-custom-css\">\n" . $css . "\n</style>\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CSS context: tags stripped, `</` neutralised.
     }
 
     /**

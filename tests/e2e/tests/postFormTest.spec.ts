@@ -16,7 +16,8 @@ let page: Page;
 
 test.beforeAll(async () => {
     // Launch browser
-    browser = await chromium.launch();
+    // HEADED=1 shows the browser (this spec launches its own).
+    browser = await chromium.launch({ headless: ! process.env.HEADED });
 
     // Create a single context
     context = await browser.newContext();
@@ -70,6 +71,8 @@ test.describe('Post-Forms', () => {
     let dashNewTitle: string;
 
     test('PF0001 : Admin is creating a Blank Post Form with all Fields', { tag: ['@Lite'] }, async () => {
+        // Adds and checks every field type in one test: needs more than the default timeout.
+        test.slow();
         await waitForSiteReady(page, 15000);
         await new BasicLoginPage(page).basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
         const PostFormClass = new PostFormPage(page);

@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Lib\Gateway;
 
+use WeDevs\Wpuf\Platform\Stores\Stores;
+
 use WeDevs\Wpuf\Frontend\Payment;
 
 /**
@@ -26,7 +28,7 @@ class Paypal {
         $this->webhook_id = wpuf_get_option( 'paypal_webhook_id', 'wpuf_payment' );
 
         // Initialize URL properties
-        $this->settings_url = admin_url( 'admin.php?page=wpuf-settings&tab=wpuf_payment' );
+        $this->settings_url = admin_url( 'admin.php?page=wpuf-settings#wpuf_payment' );
         $this->setup_guide_url = 'https://wedevs.com/docs/wp-user-frontend-pro/settings/paypal-payement-gateway/';
         $this->paypal_icon_url = WPUF_ASSET_URI . '/images/wpuf_paypal.png';
 
@@ -41,9 +43,8 @@ class Paypal {
         add_action( 'wpuf_paypal_webhook', [ $this, 'process_webhook' ] );
         add_action( 'template_redirect', [ $this, 'handle_webhook_request' ] );
 
-        // Add admin notice for PayPal settings update
-        add_action( 'admin_notices', [ $this, 'paypal_settings_update_notice' ] );
-        add_action( 'wp_ajax_wpuf_dismiss_paypal_notice', [ $this, 'dismiss_paypal_notice' ] );
+        // The "WPUF PayPal Integration Enhanced" notice is no longer shown (owner request);
+        // paypal_settings_update_notice() stays for extensions that call it.
 
         // Add CSS for webhook configuration section
         add_action( 'admin_head', [ $this, 'inject_webhook_css' ] );
@@ -121,19 +122,8 @@ class Paypal {
         <script type="text/javascript">
         jQuery(document).ready(function($) {
             $(document).on('click', '.wpuf-paypal-notice .notice-dismiss', function() {
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'wpuf_dismiss_paypal_notice',
-                        nonce: '<?php echo esc_js( wp_create_nonce( 'wpuf_dismiss_paypal_notice' ) ); ?>'
-                    },
-                    success: function(response) {
-                        // Handle success if needed
-                    },
-                    error: function(xhr, status, error) {
+                <?php echo wpuf_rest_post_js( 'admin/notices/paypal/dismiss' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON-encoded JS. ?>.catch(function(error) {
                     console.error('Failed to dismiss notice:', error);
-                    }
                 });
             });
         });
@@ -169,26 +159,6 @@ class Paypal {
         }
         </style>
         <?php
-    }
-
-    /**
-     * Handle dismissal of PayPal settings notice
-     */
-    public function dismiss_paypal_notice() {
-        // Verify nonce
-        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'wpuf_dismiss_paypal_notice' ) ) {
-            wp_die( 'Security check failed' );
-        }
-
-        // Check user capabilities
-        if ( ! current_user_can( 'manage_options' ) ) {
-            wp_die( 'Insufficient permissions' );
-        }
-
-        // Mark notice as dismissed
-        update_option( 'wpuf_paypal_settings_notice_dismissed', true );
-
-        wp_die();
     }
 
     /**
@@ -307,13 +277,7 @@ class Paypal {
             }
 
             // Check if transaction already exists
-            $existing = $wpdb->get_var(
-                $wpdb->prepare(
-                    "SELECT id FROM {$wpdb->prefix}wpuf_transaction
-                WHERE transaction_id = %s",
-                    $payment['id']
-                )
-            );
+            $existing = Stores::transactions()->find_by_transaction_id( $payment['id'] );
 
             if ( $existing ) {
                 return; // Exit if transaction already processed
@@ -764,7 +728,7 @@ class Paypal {
             }
 
             // Update user meta with complete subscription data
-            update_user_meta( $user_id, '_wpuf_subscription_pack', $subscription_data );
+            Stores::user_packs()->write( $user_id, $subscription_data );
 
             // Create a trial payment record if this is a trial
             if ( $is_in_trial ) {
@@ -853,8 +817,8 @@ class Paypal {
                 throw new \Exception( 'Invalid user ID provided for cancellation' );
             }
 
-            $subscription = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
-            $subscription_id = get_user_meta( $user_id, '_wpuf_paypal_subscription_id', true );
+            $subscription = Stores::user_packs()->read( $user_id );
+            $subscription_id = Stores::user_packs()->paypal_subscription_id( $user_id );
 
             // If we have a profile ID and subscription is recurring
             if ( ! empty( $subscription_id ) && $subscription['recurring'] === 'yes' ) {
@@ -929,7 +893,7 @@ class Paypal {
                 'updated' => gmdate( 'Y-m-d H:i:s' ),
             ];
 
-            update_user_meta( $user_id, '_wpuf_subscription_pack', $updated_subscription );
+            Stores::user_packs()->write( $user_id, $updated_subscription );
             update_user_meta( $user_id, '_wpuf_paypal_subscription_status', 'cancel' );
 
             // Update subscriber table
@@ -972,13 +936,7 @@ class Paypal {
             }
 
             // Check if transaction already exists
-            $existing = $wpdb->get_var(
-                $wpdb->prepare(
-                    "SELECT id FROM {$wpdb->prefix}wpuf_transaction
-                WHERE transaction_id = %s",
-                    $transaction_id
-                )
-            );
+            $existing = Stores::transactions()->find_by_transaction_id( $transaction_id );
 
             if ( $existing ) {
                 // Even if transaction exists, clean up any transients
@@ -1240,7 +1198,7 @@ class Paypal {
         }
 
         // Then try to get from user meta
-        $subscription = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
+        $subscription = Stores::user_packs()->read( $user_id );
         if ( $subscription && isset( $subscription['pack_id'] ) ) {
             return $subscription['pack_id'];
         }
@@ -1447,11 +1405,7 @@ class Paypal {
             return;
         }
 
-        $pre_usage = get_post_meta( $coupon_id, '_coupon_used', true );
-        $pre_usage = empty( $pre_usage ) ? 0 : $pre_usage;
-        $new_use = $pre_usage + 1;
-
-        update_post_meta( $coupon_id, '_coupon_used', $new_use );
+        Stores::transactions()->record_coupon_use( $coupon_id );
     }
 
 
@@ -1487,7 +1441,7 @@ class Paypal {
             // Check if pricing fields payment is enabled and update price accordingly
             $post_id = isset( $data['item_number'] ) && $data['type'] === 'post' ? $data['item_number'] : 0;
             if ( $post_id && $data['type'] === 'post' ) {
-                $form_id = get_post_meta( $post_id, '_wpuf_form_id', true );
+                $form_id = Stores::submissions()->form_id( $post_id );
                 if ( $form_id ) {
                     $form_settings = wpuf_get_form_settings( $form_id );
                     $pricing_enabled = isset( $form_settings['enable_pricing_payment'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['enable_pricing_payment'] );
@@ -1503,7 +1457,7 @@ class Paypal {
             // Handle coupon if present. Coupons are a Pro feature, so only run when Pro is
             // available to avoid a fatal on wpuf_pro() in free-only installs.
             $coupon_discount = 0;
-            if ( function_exists( 'wpuf_pro' ) && wpuf_pro() &&
+            if ( wpuf_is_pro_active() && function_exists( 'wpuf_pro' ) && wpuf_pro() && ! empty( wpuf_pro()->coupon ) &&
                 isset( $_POST['coupon_id'] ) && ! empty( $_POST['coupon_id'] ) &&
                 isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_payment_gateway' ) &&
                 is_numeric( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) ) ) {
@@ -1851,7 +1805,9 @@ class Paypal {
                 exit();
             }
         } catch ( \Exception $e ) {
-            wp_die( esc_html( $e->getMessage() ) );
+            // The reason is for the site owner (credentials, PayPal's answer): logged,
+            // the customer goes back to the checkout with a caution.
+            wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Checkout\Checkout_Service::class )->return_with_error( 'paypal', $e->getMessage() );
         }
     }
 
@@ -2285,7 +2241,7 @@ class Paypal {
         $return_token = isset( $_GET['token'] ) ? sanitize_text_field( wp_unslash( $_GET['token'] ) ) : '';
 
         $is_subscription_return = isset( $_GET['subscription_id'] ) || isset( $_GET['ba_token'] ) ||
-                                 ( 'pack' === $return_type && 0 === strpos( $return_token, 'I-' ) );
+                                ( 'pack' === $return_type && 0 === strpos( $return_token, 'I-' ) );
 
         // For subscription returns, nonce verification might fail due to PayPal's redirect process
         // So we'll be more lenient with subscription returns
@@ -2358,7 +2314,7 @@ class Paypal {
                 'updated' => gmdate( 'Y-m-d H:i:s' ),
             ];
 
-            update_user_meta( $user_id, '_wpuf_subscription_pack', $subscription_data );
+            Stores::user_packs()->write( $user_id, $subscription_data );
 
             // Update subscriber table
             global $wpdb;
@@ -2415,14 +2371,13 @@ class Paypal {
             $subscription_id = isset( $subscription['id'] ) ? $subscription['id'] : '';
             $status          = 'BILLING.SUBSCRIPTION.EXPIRED' === $event_type ? 'expired' : 'suspended';
 
-            update_user_meta(
+            Stores::user_packs()->write(
                 $user_id,
-                '_wpuf_subscription_pack',
                 [
                     'profile_id' => $subscription_id,
                     'status'     => $status,
                     'updated'    => gmdate( 'Y-m-d H:i:s' ),
-                ]
+				]
             );
 
             global $wpdb;
@@ -2500,7 +2455,7 @@ class Paypal {
             }
 
             // Get user pack to check status and trial
-            $user_pack = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
+            $user_pack = Stores::user_packs()->read( $user_id );
             $user_pack = is_array( $user_pack ) ? $user_pack : [];
 
             // PayPal only ever sends BILLING.SUBSCRIPTION.CREATED while the
@@ -2528,7 +2483,7 @@ class Paypal {
                     wpuf_get_user( $user_id )->subscription()->add_pack( $pack_id, $subscription_id, true, 'completed' );
                 }
 
-                $user_pack = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
+                $user_pack = Stores::user_packs()->read( $user_id );
                 $user_pack = is_array( $user_pack ) ? $user_pack : [];
 
                 if ( $is_trial && ! empty( $user_pack ) ) {
@@ -2550,8 +2505,8 @@ class Paypal {
             }
 
             // Update user meta with subscription pack and PayPal subscription ID
-            update_user_meta( $user_id, '_wpuf_subscription_pack', $user_pack );
-            update_user_meta( $user_id, '_wpuf_paypal_subscription_id', $subscription_id );
+            Stores::user_packs()->write( $user_id, $user_pack );
+            Stores::user_packs()->set_paypal_subscription_id( $user_id, $subscription_id );
 
             // If this is the first payment after a trial, create a payment record
             if ( isset( $user_pack['trial'] ) && 'yes' === $user_pack['trial'] ) {

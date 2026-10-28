@@ -17,7 +17,7 @@ class Post_Form_Template_Guest_Post_Recurring extends Form_Template {
         $this->enabled     = true;
         $this->title       = __( 'Guest Post (Recurring Subscription)', 'wp-user-frontend' );
         $this->description = __( 'Accept guest post submissions with a mandatory recurring subscription. Collects title, content, excerpt, featured image, category, and tags.', 'wp-user-frontend' );
-        $this->image       = WPUF_ASSET_URI . '/images/templates/guest-post-recurring.svg';
+        $this->image       = WPUF_ASSET_URI . '/images/templates/guest-post-recurring.webp';
 
         $this->form_fields = [
             [

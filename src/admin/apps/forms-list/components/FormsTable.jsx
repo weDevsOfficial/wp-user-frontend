@@ -1,0 +1,362 @@
+/**
+ * FormsTable component — renders the forms data table with columns and rows.
+ *
+ * Columns are a filter contract (`wpuf.formsList.tableColumns`): each has a
+ * `key`, `label`, `thClassName`, optional `renderHeader()` and
+ * `render( form )` returning the row's `<td>`; Pro swaps columns on the
+ * registration list. So the list stays a plain table (not DataTable),
+ * in FlyHR's list-table structure (owner, 4.2), inside the list card:
+ * uppercase 12px gray header row (40px), 72px rows with a hover tint, the
+ * selection checkbox in its own first column (drawn by the table, outside
+ * the filterable columns) and a vertical-dots actions menu.
+ *
+ * @since WPUF_SINCE
+ */
+import { useMemo } from '@wordpress/element';
+import { __, sprintf } from '@wordpress/i18n';
+import { applyFilters } from '@wordpress/hooks';
+import { ActionMenu, Badge, Checkbox, SortHeader } from '@wpuf/components';
+
+import ShortcodeCopy from './ShortcodeCopy';
+import FormPages from './FormPages';
+import { openRoute } from '../../../app/client';
+import { adminScript } from '../boot';
+
+const openSubmissions = ( form ) => openRoute(
+    `/post-forms/${ form.ID }/submissions`,
+    `${ adminScript().admin_url }admin.php?page=wp-user-frontend#/post-forms/${ form.ID }/submissions`
+);
+
+// In-app links (hash routes of the admin app page).
+const appUrl = ( route ) => `${ adminScript().admin_url }admin.php?page=wp-user-frontend#${ route }`;
+
+const SMALL_LINK = 'text-xs font-medium no-underline hover:underline';
+
+// FlyHR list-table cells: header text comes from the row (uppercase 12px gray).
+const TH = 'px-2 font-normal';
+const TD = 'px-2 py-2.5 align-middle text-[13px]';
+
+const statusLabel = ( status ) => {
+    const labels = {
+        publish: __( 'Published', 'wp-user-frontend' ),
+        pending: __( 'Pending Review', 'wp-user-frontend' ),
+        private: __( 'Private', 'wp-user-frontend' ),
+        draft: __( 'Draft', 'wp-user-frontend' ),
+    };
+
+    return labels[ status ] || status;
+};
+
+const FormsTable = ( {
+    forms,
+    selectedForms,
+    selectAllChecked,
+    onSelectAll,
+    onSelectForm,
+    onAction,
+    editUrl,
+    postType,
+    formType,
+    getShortcode,
+    copiedKey,
+    onCopyShortcode,
+    menuItems,
+    sort,
+    onSort,
+} ) => {
+    const indeterminate = selectedForms.length > 0 && selectedForms.length < forms.length;
+
+    const defaultColumns = useMemo( () => [
+        {
+            key: 'form_name',
+            sortable: 'title',
+            label: __( 'Form Name', 'wp-user-frontend' ),
+            thClassName: TH,
+            render: ( form ) => (
+                <td key="form_name" className={ TD + ' text-gray-900' }>
+                    <a
+                        href={ editUrl( form.ID ) }
+                        className="font-medium text-gray-900 no-underline hover:text-primary hover:underline focus:text-primary"
+                    >
+                        { form.post_title }
+                    </a>
+                    { /* What else depends on this form: settings that pick it, approval. */ }
+                    { ( ( form.settings_roles && form.settings_roles.length ) || form.approval_required ) ? (
+                        <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                            { ( form.settings_roles || [] ).map( ( ref ) => (
+                                <a
+                                    key={ ref.key }
+                                    href={ appUrl( `/settings?tab=${ ref.section }` ) }
+                                    className="no-underline"
+                                    /* translators: %s: what the form is used as, e.g. Default post form */
+                                    title={ sprintf( __( '%s (open the setting)', 'wp-user-frontend' ), ref.label ) }
+                                >
+                                    <Badge tone="neutral">{ ref.label }</Badge>
+                                </a>
+                            ) ) }
+                            { form.approval_required && (
+                                <Badge tone="warning">{ __( 'Admin approval', 'wp-user-frontend' ) }</Badge>
+                            ) }
+                        </div>
+                    ) : null }
+                </td>
+            ),
+        },
+        {
+            // The form's own status (the Saved / Drafts tabs), not its posts' status.
+            key: 'form_status',
+            label: __( 'Status', 'wp-user-frontend' ),
+            thClassName: TH,
+            render: ( form ) => (
+                <td key="form_status" className={ TD + ' whitespace-nowrap' }>
+                    <Badge tone={ 'publish' === form.form_status ? 'primary' : 'neutral' }>
+                        { 'publish' === form.form_status ? __( 'Saved', 'wp-user-frontend' ) : statusLabel( form.form_status ) }
+                    </Badge>
+                </td>
+            ),
+        },
+        {
+            key: 'post_type',
+            label: __( 'Post Type', 'wp-user-frontend' ),
+            thClassName: TH,
+            render: ( form ) => (
+                <td key="post_type" className={ TD + ' whitespace-nowrap text-gray-500' }>
+                    { null === form.post_type_label ? (
+                        // The type's plugin is off: the form makes nothing.
+                        <span className="flex flex-col items-start gap-1">
+                            <Badge tone="danger">
+                                { /* translators: %s: post type slug */ }
+                                { sprintf( __( '"%s" is not registered', 'wp-user-frontend' ), form.settings_post_type || 'post' ) }
+                            </Badge>
+                            <a href={ `${ editUrl( form.ID ) }${ editUrl( form.ID ).includes( '#' ) ? '?tab=settings&section=general' : '' }` } className={ SMALL_LINK + ' text-red-700' }>
+                                { __( 'Fix in form settings', 'wp-user-frontend' ) }
+                            </a>
+                        </span>
+                    ) : (
+                        <span title={ form.settings_post_type }>{ form.post_type_label || form.settings_post_type }</span>
+                    ) }
+                </td>
+            ),
+        },
+        {
+            key: 'post_status',
+            // The status the form gives the posts it creates (form setting).
+            label: __( 'New Post Status', 'wp-user-frontend' ),
+            thClassName: TH,
+            render: ( form ) => (
+                // Plain text like Post Type: a setting, not a state (the Status badge is the form's).
+                <td key="post_status" className={ TD + ' whitespace-nowrap text-gray-500' }>
+                    { statusLabel( form.post_status ) }
+                </td>
+            ),
+        },
+        {
+            // How the form charges (form Payment settings).
+            key: 'payment',
+            label: __( 'Payment', 'wp-user-frontend' ),
+            thClassName: TH,
+            render: ( form ) => {
+                const mode = form.payment && form.payment.mode;
+
+                return (
+                    <td key="payment" className={ TD + ' whitespace-nowrap text-gray-500' }>
+                        { 'pack' === mode && (
+                            <a href={ appUrl( '/subscriptions' ) } className="no-underline" title={ __( 'Posting needs a subscription pack. Manage packs', 'wp-user-frontend' ) }>
+                                <Badge tone="neutral">{ __( 'Subscription', 'wp-user-frontend' ) }</Badge>
+                            </a>
+                        ) }
+                        { 'ppp' === mode && (
+                            <Badge tone="neutral">
+                                { /* translators: %s: price per post */ }
+                                { sprintf( __( 'Pay per post %s', 'wp-user-frontend' ), form.payment.cost ) }
+                            </Badge>
+                        ) }
+                        { ! mode && <span className="text-gray-400">{ __( 'Free', 'wp-user-frontend' ) }</span> }
+                    </td>
+                );
+            },
+        },
+        {
+            key: 'submissions',
+            label: __( 'Submissions', 'wp-user-frontend' ),
+            thClassName: TH,
+            render: ( form ) => {
+                const total = Number( form.post_count ) || 0;
+                const pending = Number( form.pending_count ) || 0;
+
+                return (
+                    <td key="submissions" className={ TD + ' whitespace-nowrap text-gray-500' }>
+                        { total ? (
+                            <span className="inline-flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    onClick={ () => openSubmissions( form ) }
+                                    className="cursor-pointer border-0 bg-transparent p-0 text-[13px] font-medium text-gray-900 hover:text-primary hover:underline focus-visible:text-primary"
+                                    /* translators: %s: form name */
+                                    title={ sprintf( __( 'View posts submitted through %s', 'wp-user-frontend' ), form.post_title ) }
+                                >
+                                    { total }
+                                </button>
+                                { pending ? (
+                                    <button
+                                        type="button"
+                                        onClick={ () => openSubmissions( form ) }
+                                        className="cursor-pointer border-0 bg-transparent p-0"
+                                    >
+                                        <Badge tone="warning" className="px-2">
+                                            { /* translators: %d: number of posts waiting for review */ }
+                                            { sprintf( __( '%d pending', 'wp-user-frontend' ), pending ) }
+                                        </Badge>
+                                    </button>
+                                ) : null }
+                            </span>
+                        ) : (
+                            <span>0</span>
+                        ) }
+                    </td>
+                );
+            },
+        },
+        {
+            key: 'shortcode',
+            label: __( 'Shortcode', 'wp-user-frontend' ),
+            thClassName: TH,
+            render: ( form ) => (
+                <td key="shortcode" className={ TD + ' whitespace-nowrap font-medium text-gray-500' }>
+                    { /* Pro swaps in the registration + edit profile pair on profile forms. */ }
+                    { applyFilters(
+                        'wpuf.formsList.shortcodeRender',
+                        <ShortcodeCopy
+                            shortcode={ getShortcode( form.ID ) }
+                            copiedKey={ `shortcode-${ form.ID }` }
+                            currentCopiedKey={ copiedKey }
+                            onCopy={ onCopyShortcode }
+                        />,
+                        form,
+                        formType,
+                        ShortcodeCopy,
+                        copiedKey,
+                        onCopyShortcode
+                    ) }
+                </td>
+            ),
+        },
+        {
+            // The posts and pages that show the form, or a link to put it on a new page.
+            key: 'pages',
+            label: __( 'Used on', 'wp-user-frontend' ),
+            thClassName: TH,
+            render: ( form ) => (
+                <td key="pages" className={ TD }>
+                    <FormPages
+                        form={ form }
+                        shortcode={ 'wpuf_profile' === postType ? `[wpuf_profile type="registration" id="${ form.ID }"]` : getShortcode( form.ID ) }
+                    />
+                </td>
+            ),
+        },
+        {
+            key: 'guest_post',
+            label: __( 'Guest Post', 'wp-user-frontend' ),
+            thClassName: TH,
+            render: ( form ) => (
+                <td key="guest_post" className={ TD + ' whitespace-nowrap text-gray-500' }>
+                    { form.settings_guest_post ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" className="size-4 w-6" role="img" aria-label={ __( 'Yes', 'wp-user-frontend' ) }>
+                            <path fill="#059669" fillRule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clipRule="evenodd" />
+                        </svg>
+                    ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" className="size-4 w-6" role="img" aria-label={ __( 'No', 'wp-user-frontend' ) }>
+                            <path fill="#ef4444" d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z" />
+                        </svg>
+                    ) }
+                </td>
+            ),
+        },
+        {
+            key: 'menu',
+            label: '',
+            thClassName: 'w-20 px-4',
+            renderHeader: () => (
+                <th key="menu" scope="col" className="w-20 px-4">
+                    <span className="sr-only">{ __( 'Actions', 'wp-user-frontend' ) }</span>
+                </th>
+            ),
+            render: ( form ) => (
+                <td key="menu" className="px-4 align-middle">
+                    <div className="flex justify-end">
+                        <ActionMenu
+                            vertical
+                            /* translators: %s: form name */
+                            label={ sprintf( __( 'Actions for %s', 'wp-user-frontend' ), form.post_title ) }
+                            items={ menuItems
+                                // `when( form )`: an item only for some rows (Publish on drafts).
+                                .filter( ( item ) => ! item.when || item.when( form ) )
+                                .map( ( { when, ...item } ) => ( { // eslint-disable-line no-unused-vars
+                                    ...item,
+                                    onClick: () => onAction( item.key, form ),
+                                } ) ) }
+                        />
+                    </div>
+                </td>
+            ),
+        },
+    ], [ onAction, editUrl, formType, postType, getShortcode, copiedKey, onCopyShortcode, menuItems ] );
+
+    // Submissions count posts made with a post form; registration forms make users.
+    // Payment is a post form setting too.
+    const baseColumns = 'wpuf_profile' === postType ? defaultColumns.filter( ( col ) => ! [ 'submissions', 'payment' ].includes( col.key ) ) : defaultColumns;
+    const columns = applyFilters( 'wpuf.formsList.tableColumns', baseColumns, postType );
+
+    return (
+        <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+                <thead className="border-0 border-b border-solid border-gray-200 bg-white">
+                    <tr className="h-10 text-xs font-normal uppercase leading-[1.4] text-[#828282]">
+                        <th scope="col" className="w-10 px-4">
+                            <Checkbox
+                                value={ selectAllChecked }
+                                onChange={ onSelectAll }
+                                indeterminate={ indeterminate }
+                                aria-label={ __( 'Select all', 'wp-user-frontend' ) }
+                                className="align-middle"
+                            />
+                        </th>
+                        { columns.map( ( col ) => {
+                            if ( col.renderHeader ) {
+                                return col.renderHeader();
+                            }
+
+                            // A column sorts when it names the server column (`sortable`).
+                            return col.sortable && onSort ? (
+                                <SortHeader key={ col.key } className={ col.thClassName || TH } column={ col.sortable } label={ col.label } sort={ sort || {} } onSort={ onSort } />
+                            ) : (
+                                <th key={ col.key } scope="col" className={ col.thClassName || TH }>
+                                    { col.label }
+                                </th>
+                            );
+                        } ) }
+                    </tr>
+                </thead>
+                <tbody>
+                    { forms.map( ( form ) => (
+                        <tr key={ form.ID } className="h-14 border-0 border-b border-solid border-gray-200 bg-white last:border-b-0 hover:bg-gray-50">
+                            <td className="w-10 px-4 align-middle">
+                                <Checkbox
+                                    value={ selectedForms.includes( form.ID ) }
+                                    onChange={ () => onSelectForm( form.ID ) }
+                                    /* translators: %s: form name */
+                                    aria-label={ sprintf( __( 'Select %s', 'wp-user-frontend' ), form.post_title ) }
+                                    className="align-middle"
+                                />
+                            </td>
+                            { columns.map( ( col ) => col.render( form ) ) }
+                        </tr>
+                    ) ) }
+                </tbody>
+            </table>
+        </div>
+    );
+};
+
+export default FormsTable;

@@ -10,11 +10,11 @@ dotenv.config({ quiet: true });
  * phases are now `projects`, selected from the CLI:
  *
  *   npx playwright test --project=setup                  # site reset + config (run first)
- *   npx playwright test --project=e2e --shard=1/3        # sharded UI suite
+ *   npx playwright test --project=e2e --shard=1/4        # sharded UI suite
  *   npx playwright test --project=api                    # REST API layer (no browser)
  *
- * `npm run test:sharded` chains these: `--project=setup`, then the three
- * `--project=e2e --shard=i/3` invocations sequentially. We deliberately do NOT
+ * `npm run test:sharded` chains these: `--project=setup`, then the four
+ * `--project=e2e --shard=i/4` invocations sequentially. We deliberately do NOT
  * use `dependencies: ['setup']` — under `--shard` a setup dependency reruns the
  * heavy, destructive site reset once per shard. Keeping setup as its own script
  * step preserves the "reset once, then shard" semantics from a single config.
@@ -115,6 +115,14 @@ export default defineConfig({
             testDir: './tests',
             testMatch: '**/*.spec.ts',
             testIgnore: ['**/alphaSetupTest.spec.ts', '**/api/**'],
+            use: { ...devices['Desktop Chrome'] },
+        },
+        // Parity suite: compares a develop site with the branch site (needs the
+        // PARITY_* env, see utils/paritySites.ts). Local gate, not part of CI shards.
+        {
+            name: 'parity',
+            testDir: './parity',
+            testMatch: '**/*.spec.ts',
             use: { ...devices['Desktop Chrome'] },
         },
         // REST layer (wpuf/v1) — no browser launched.

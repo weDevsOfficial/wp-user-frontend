@@ -1,0 +1,12 @@
+/**
+ * WPUF React forms lists (post + registration): the forms entry, plus their
+ * root containers on the shared gray page (the PHP views give them a white
+ * background class). The page look itself comes from the plugin-ui part
+ * (src/pui.css, every screen on the shared layer).
+ */
+@import "./forms.css";
+
+#wpuf-post-forms-list-table-view,
+#wpuf-profile-forms-list-table-view {
+    background-color: #f0f0f1;
+}

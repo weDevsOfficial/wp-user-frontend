@@ -11,7 +11,6 @@ class Menu {
         add_action( 'admin_menu', [ $this, 'admin_menu' ] );
 
         add_filter( 'parent_file', [ $this, 'fix_parent_menu' ] );
-        add_filter( 'submenu_file', [ $this, 'fix_submenu_file' ] );
         add_filter( 'script_loader_tag', [ $this , 'add_async_attribute' ], 10, 3 );
         add_action( 'admin_head', [ $this, 'premium_menu_styles' ] );
     }
@@ -22,7 +21,11 @@ class Menu {
         $capability = wpuf_admin_role();
         $wpuf_icon  = 'data:image/svg+xml;base64,' . base64_encode( '<svg width="83px" height="76px" viewBox="0 0 83 76" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="wpuf-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="ufp" fill-rule="nonzero" fill="#9EA3A8"><path d="M49.38,51.88 C49.503348,56.4604553 45.8999295,60.2784694 41.32,60.42 C36.7400705,60.2784694 33.136652,56.4604553 33.26,51.88 L33.26,40.23 L19,40.23 L19,51.88 C19,64.77 29,75.25 41.36,75.26 L41.36,75.26 C47.3622079,75.2559227 53.0954073,72.7693647 57.2,68.39 C61.4213559,63.9375842 63.7575868,58.0253435 63.72,51.89 L63.72,40.23 L49.38,40.23 L49.38,51.88 Z" id="Shape"></path><polygon id="Shape" points="32.96 0.59 0 0.59 3.77 16.68 32.96 16.68"></polygon><path d="M68,0 L49.75,0 L49.75,16.1 L68,16.1 C68.74,16.1 69.39,17.1 69.39,18.24 C69.39,19.38 68.74,20.38 68,20.38 L49.75,20.38 L49.75,36.5 L68,36.5 C76,36.5 82.5,28.31 82.5,18.25 C82.5,8.19 76,0 68,0 Z" id="Shape"></path><polygon id="Shape" points="32.96 20.41 5.31 20.41 9.07 36.5 32.96 36.5"></polygon></g></g></svg>' );
 
-        add_menu_page( __( 'WP User Frontend', 'wp-user-frontend' ), __( 'User Frontend', 'wp-user-frontend' ), $capability, $this->parent_slug, [ $this, 'wpuf_post_forms_page' ], $wpuf_icon, '54.2' );
+        $app_hook = add_menu_page( __( 'WP User Frontend', 'wp-user-frontend' ), __( 'User Frontend', 'wp-user-frontend' ), $capability, $this->parent_slug, [ $this, 'wpuf_post_forms_page' ], $wpuf_icon, '54.2' );
+
+        // The single React admin app runs on the top-level page (task 5d).
+        $this->all_submenu_hooks['app'] = $app_hook;
+        wpuf()->platform()->get( App\AppPage::class )->register( $app_hook );
 
         $post_forms_hook = add_submenu_page(
             $this->parent_slug,
@@ -73,7 +76,7 @@ class Menu {
 
         do_action( 'wpuf_admin_menu_bottom' );
 
-        if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
+        if ( ! wpuf_is_pro_active() ) {
             $premium_hook = add_submenu_page( $this->parent_slug, __( 'Premium', 'wp-user-frontend' ), $this->get_premium_menu_title(), $capability, 'wpuf_premium', [ $this, 'premium_page' ] );
 
             $this->all_submenu_hooks['premium'] = $premium_hook;
@@ -92,11 +95,25 @@ class Menu {
 
         $this->all_submenu_hooks['subscribers_hook'] = $subscribers_page_hook;
 
+        // The old Subscribers URL opens the pack's React Subscribers view.
+        add_action( 'load-' . $subscribers_page_hook, [ $this, 'subscribers_menu_action' ] );
+
         $settings_page_hook = add_submenu_page( $this->parent_slug, __( 'Settings', 'wp-user-frontend' ), __( 'Settings', 'wp-user-frontend' ), $capability, 'wpuf-settings', [ $this, 'plugin_settings_page' ] );
 
         $this->all_submenu_hooks['settings_hook'] = $settings_page_hook;
 
         add_action( 'load-' . $settings_page_hook, [ $this, 'enqueue_settings_page_scripts' ] );
+    }
+
+    /**
+     * The admin screen registry (Admin\Screens).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return Screens\Registry
+     */
+    protected function screens() {
+        return wpuf()->platform()->get( Screens\Registry::class );
     }
 
     /**
@@ -127,7 +144,7 @@ class Menu {
      * @return void
      */
     public function premium_menu_styles() {
-        if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
+        if ( wpuf_is_pro_active() ) {
             return;
         }
         ?>
@@ -184,74 +201,22 @@ class Menu {
      * @return void
      */
     public function wpuf_post_forms_page() {
-        if ( wpuf_is_pro_active() && defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1.0', '<' ) ) {
-            require_once WPUF_INCLUDES . '/Admin/views/need-to-update.php';
+        // The top-level page is the React admin app when it is on (task 5d).
+        if ( wpuf_is_admin_app() ) {
+            wpuf()->platform()->get( App\AppPage::class )->render();
 
             return;
         }
 
-        // phpcs:ignore WordPress.Security.NonceVerification
-        $action           = ! empty( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : null;
-        $add_new_page_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
-        $form_type        = __( 'Post Form', 'wp-user-frontend' );
-
-        switch ( $action ) {
-            case 'edit':
-            case 'add-new':
-                require_once WPUF_INCLUDES . '/Admin/views/post-form.php';
-                break;
-
-            default:
-                wp_enqueue_style( 'wpuf-admin' );
-                wp_enqueue_style( 'wpuf-forms-list' );
-                wp_enqueue_script( 'wpuf-forms-list' );
-                // Check AI configuration status
-                $ai_settings = get_option( 'wpuf_ai', [] );
-                $ai_provider = isset( $ai_settings['ai_provider'] ) ? $ai_settings['ai_provider'] : '';
-                $ai_model    = isset( $ai_settings['ai_model'] ) ? $ai_settings['ai_model'] : '';
-                $provider_key_field = $ai_provider . '_api_key';
-                $ai_api_key = isset( $ai_settings[$provider_key_field] ) ? $ai_settings[$provider_key_field] : '';
-                $ai_configured = !empty( $ai_provider ) && !empty( $ai_api_key ) && !empty( $ai_model );
-
-                wp_localize_script('wpuf-forms-list', 'wpuf_forms_list',
-                    [
-                        'post_counts'            => wpuf_get_forms_counts_with_status(),
-                        'rest_nonce'             => wp_create_nonce( 'wp_rest' ),
-                        'rest_url'               => esc_url_raw( rest_url() ),
-                        'bulk_nonce'             => wp_create_nonce( 'bulk-post-forms' ),
-                        'template_nonce'         => wp_create_nonce( 'wpuf_create_from_template' ),
-                        'is_plain_permalink'     => empty( get_option( 'permalink_structure' ) ),
-                        'permalink_settings_url' => admin_url( 'options-permalink.php' ),
-                        'ai_configured'          => $ai_configured,
-                        'ai_settings_url'        => admin_url( 'admin.php?page=wpuf-settings#wpuf_ai' ),
-                    ]
-                );
-                require_once WPUF_INCLUDES . '/Admin/views/post-forms-list-table-view.php';
-
-                $registry       = wpuf_get_post_form_templates();
-                $pro_templates  = wpuf_get_pro_form_previews();
-                $blank_form_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
-                $action_name    = 'post_form_template';
-                $footer_help    = sprintf(
-                    // translators: %s: mailto link
-                    __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.', 'wp-user-frontend' ), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request'
-                );
-
-                if ( ! $registry ) {
-                    break;
-                }
-
-                include WPUF_ROOT . '/includes/Admin/template-parts/modal-v4.2.php';
-
-                break;
-        }
+        // Rendered by Admin\Screens\PostFormsList (task 2.5a).
+        $this->screens()->render( 'wpuf-post-forms' );
     }
 
     /**
     * Mark headway as async. Because nothing depends on it, it can run at any time
     */
     public function add_async_attribute( $tag, $handle, $src ) {
-        if ('wpuf-headway-script' === $handle) {
+        if ( 'wpuf-headway-script' === $handle ) {
             return str_replace( ' src', ' async src', $tag );
         }
 
@@ -266,19 +231,13 @@ class Menu {
      * @return void
      */
     public function post_form_menu_action() {
-        /**
-         * Backdoor for calling the menu hook.
-         * This hook won't get translated even the site language is changed
-         */
-        do_action( 'wpuf_load_post_forms' );
+        // Fires wpuf_load_post_forms (Admin\Screens\PostFormsList, task 2.5a).
+        $this->screens()->load( 'wpuf-post-forms' );
     }
 
     public function subscription_menu_action() {
-        /**
-         * Backdoor for calling the menu hook.
-         * This hook won't get translated even the site language is changed
-         */
-        do_action( 'wpuf_load_subscription_page' );
+        // Fires wpuf_load_subscription_page (Admin\Screens\Subscriptions, task 2.5a).
+        $this->screens()->load( 'wpuf_subscription' );
     }
 
     /**
@@ -289,9 +248,8 @@ class Menu {
      * @return void
      */
     public function subscription_menu_page() {
-        $page = WPUF_INCLUDES . '/Admin/views/subscriptions.php';
-
-        wpuf_require_once( $page );
+        // Rendered by Admin\Screens\Subscriptions (task 2.5a).
+        $this->screens()->render( 'wpuf_subscription' );
     }
 
     /**
@@ -300,22 +258,25 @@ class Menu {
      * @return void
      */
     public function transactions_screen_option() {
-        $option = 'per_page';
-        $args   = [
-            'label'   => __( 'Number of items per page:', 'wp-user-frontend' ),
-            'default' => 20,
-            'option'  => 'transactions_per_page',
-        ];
-
-        add_screen_option( $option, $args );
-
-        wpuf()->admin->transaction_list_table = new List_Table_Transactions();
+        // Admin\Screens\Transactions (task 5b.6).
+        $this->screens()->load( 'wpuf_transaction' );
     }
 
     public function transactions_page() {
-        $page = WPUF_INCLUDES . '/Admin/views/transactions-list-table-view.php';
+        // Admin\Screens\Transactions (task 5b.6).
+        $this->screens()->render( 'wpuf_transaction' );
+    }
 
-        wpuf_require_once( $page );
+    /**
+     * Load step of the old Subscribers page: redirects to the subscriptions
+     * app's Subscribers view (Admin\Screens\Subscribers).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function subscribers_menu_action() {
+        $this->screens()->load( 'wpuf_subscribers' );
     }
 
     /**
@@ -326,9 +287,8 @@ class Menu {
      * @return void
      */
     public function subscribers_page( $post_ID ) {
-        $page = WPUF_INCLUDES . '/Admin/views/subscribers.php';
-
-        wpuf_require_once( $page );
+        // Admin\Screens\Subscribers (task 5b.6).
+        $this->screens()->render( 'wpuf_subscribers' );
     }
 
     /**
@@ -374,56 +334,13 @@ class Menu {
     }
 
     /**
-     * Fix the submenu class in admin menu
-     *
-     * @since 2.6.0
-     *
-     * @param string $submenu_file
-     *
-     * @return string
-     */
-    public function fix_submenu_file( $submenu_file ) {
-        $current_screen = get_current_screen();
-
-        if ( 'wpuf_subscription' === $current_screen->post_type && $current_screen->base === 'admin_page_wpuf_subscribers' ) {
-            $submenu_file = 'edit.php?post_type=wpuf_subscription';
-        }
-
-        return $submenu_file;
-    }
-
-    /**
      * Enqueue scripts required for tools page
      *
      * @return void
      */
     public function enqueue_tools_script() {
-        /**
-         * Backdoor for calling the menu hook.
-         * This hook won't get translated even the site language is changed
-         */
-        do_action( 'wpuf_load_tools' );
-
-        wp_enqueue_media(); // for uploading JSON
-
-        wp_enqueue_script( 'wpuf-vue' );
-        wp_enqueue_script( 'wpuf-admin-tools' );
-
-        wp_localize_script(
-            'wpuf-admin-tools',
-            'wpuf_admin_tools',
-            [
-                'url'   => [
-                    'ajax' => admin_url( 'admin-ajax.php' ),
-                ],
-                'nonce' => wp_create_nonce( 'wpuf_admin_tools' ),
-                'i18n'  => [
-                    'wpuf_import_forms'      => __( 'WPUF Import Forms', 'wp-user-frontend' ),
-                    'add_json_file'          => __( 'Add JSON file', 'wp-user-frontend' ),
-                    'could_not_import_forms' => __( 'Could not import forms.', 'wp-user-frontend' ),
-                ],
-            ]
-        );
+        // Fires wpuf_load_tools (Admin\Screens\Tools, task 5b.6).
+        $this->screens()->load( 'wpuf_tools' );
     }
 
     /**
@@ -432,11 +349,8 @@ class Menu {
      * @return void
      */
     public function tools_page() {
-        wpuf()->admin->tools = new Admin_Tools();
-
-        $tools_page = WPUF_INCLUDES . '/Admin/views/tools.php';
-
-        wpuf_include_once( $tools_page );
+        // Admin\Screens\Tools (task 5b.6).
+        $this->screens()->render( 'wpuf_tools' );
     }
 
     /**
@@ -445,8 +359,8 @@ class Menu {
      * @return void
      */
     public function enqueue_settings_page_scripts() {
-        wp_enqueue_script( 'wpuf-subscriptions' );
-        wp_enqueue_script( 'wpuf-settings' );
+        // Enqueued by Admin\Screens\Settings (task 2.5a).
+        $this->screens()->load( 'wpuf-settings' );
     }
 
     /**
@@ -455,32 +369,8 @@ class Menu {
      * @return void
      */
     public function plugin_settings_page() {
-        ?>
-        <div class="wrap">
-            <h2 class="with-headway-icon">
-                <span class="title-area">
-                    <?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?>
-                </span>
-                <span class="flex-end">
-                    <span
-                        id="wpuf-headway-icon"
-                        class="wpuf-border wpuf-border-gray-100 wpuf-mr-[16px] wpuf-rounded-full wpuf-p-1 wpuf-shadow-sm hover:wpuf-bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                    ></span>
-                    <a class="feedback-link" target="_blank" href="<?php echo esc_url( 'https://feedback.wedevs.com/b/user-frontend' ); ?>">💡 <?php esc_html_e(
-                    'Submit Ideas', 'wp-user-frontend'
-                    ); ?></a>
-                </span>
-            </h2>
-            <div class="wpuf-settings-wrap">
-                <?php
-                settings_errors();
-
-                wpuf()->admin->settings->get_settings_api()->show_navigation();
-                wpuf()->admin->settings->get_settings_api()->show_forms();
-                ?>
-            </div>
-        </div>
-        <?php
+        // Rendered by Admin\Screens\Settings (task 2.5a).
+        $this->screens()->render( 'wpuf-settings' );
     }
 
     /**
@@ -491,21 +381,8 @@ class Menu {
      * @return void
      */
     public function enqueue_premium_script() {
-        // Inter is self-hosted via @font-face inside premium.css; no CDN needed.
-        wp_enqueue_style(
-            'wpuf-premium',
-            WPUF_ASSET_URI . '/css/admin/premium.css',
-            [],
-            WPUF_VERSION
-        );
-
-        wp_enqueue_script(
-            'wpuf-premium',
-            WPUF_ASSET_URI . '/js/admin/premium.js',
-            [],
-            WPUF_VERSION,
-            true
-        );
+        // Admin\Screens\Premium (task 5b.6).
+        $this->screens()->load( 'wpuf_premium' );
     }
 
     /**
@@ -514,7 +391,8 @@ class Menu {
      * @return void
      */
     public function premium_page() {
-        require_once WPUF_INCLUDES . '/Admin/views/premium.php';
+        // Admin\Screens\Premium (task 5b.6).
+        $this->screens()->render( 'wpuf_premium' );
     }
 
     /**
@@ -523,7 +401,8 @@ class Menu {
      * @return void
      */
     public function support_page() {
-        require_once WPUF_INCLUDES . '/Admin/views/support.php';
+        // Admin\Screens\Help (task 5b.6).
+        $this->screens()->render( 'wpuf-support' );
     }
 
     /**
@@ -534,7 +413,7 @@ class Menu {
      * @return void
      */
     public function enqueue_help_script() {
-        wp_enqueue_script( 'wpuf-admin' );
-        wp_enqueue_style( 'wpuf-admin' );
+        // Admin\Screens\Help (task 5b.6).
+        $this->screens()->load( 'wpuf-support' );
     }
 }

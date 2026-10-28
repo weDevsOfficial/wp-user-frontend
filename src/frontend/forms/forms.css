@@ -1,0 +1,1548 @@
+/**
+ * The React forms keep the classic markup, so the classic template sheets
+ * (frontend-forms.css, frontend-form/layout1-5.css, Pro reg-template-*,
+ * custom-multiselect, css-stars, intl-tel-input, ...) style them exactly as
+ * they style the PHP forms: every layout, focus ring, border and colour
+ * the owner picked. This sheet only covers what has no classic markup:
+ * the boot skeleton, upload progress, the inline slots. Every rule stays
+ * under `.wpuf-frontend`.
+ */
+
+/* The form root follows the theme like the classic form does (no kit font size or colour). */
+.wpuf-frontend.wpuf-form-root {
+    box-sizing: content-box;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+/*
+ * In a block theme the content width (`.is-layout-constrained > *`) lands on
+ * the classic form itself, so the form's padding sits outside the content
+ * width. The React root is that child now: it hands the constraint down to
+ * its own children so the form keeps the classic width and position.
+ */
+.wpuf-frontend.wpuf-form-root:where(.is-layout-constrained > *) {
+    max-width: none;
+}
+
+.wpuf-frontend.wpuf-form-root:where(.is-layout-constrained > *) > :not(script) {
+    max-width: var(--wp--style--global--content-size);
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.wpuf-frontend .wpuf-slot-inline {
+    display: contents;
+}
+
+/* Upload in progress: a tile with the picked image's preview (or a file icon),
+   the file name, "Uploading… n%" and a progress bar (the classic form shows
+   plupload's own progress). */
+.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form.wpuf-form li .wpuf-attachment-list li.wpuf-uploading.wpuf-uploading {
+    position: relative;
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 360px;
+    min-height: 56px;
+    margin: 8px 0 0 !important;
+    padding: 8px 12px 14px !important;
+    overflow: hidden;
+    border: 1px solid var(--wpuf-m-border, #e5e7eb) !important;
+    border-radius: var(--wpuf-m-radius, 8px) !important;
+    background: var(--wpuf-m-input-bg, #ffffff) !important;
+    list-style: none !important;
+}
+
+.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading::before {
+    content: none !important;
+}
+
+.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading .wpuf-upload-preview {
+    flex: none;
+    width: 40px !important;
+    height: 40px !important;
+    max-width: none !important;
+    margin: 0 !important;
+    border-radius: 6px;
+    object-fit: cover;
+    opacity: 0.7;
+}
+
+.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading .wpuf-upload-file-icon {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    background: var(--wpuf-m-hover, #f3f4f6) no-repeat center / 20px 20px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%236b7280' stroke-width='1.5'%3E%3Cpath d='M11.5 2.75H6A1.75 1.75 0 0 0 4.25 4.5v11A1.75 1.75 0 0 0 6 17.25h8a1.75 1.75 0 0 0 1.75-1.75V7l-4.25-4.25Z'/%3E%3Cpath d='M11.25 2.75V7.25h4.5'/%3E%3C/svg%3E");
+}
+
+.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading .wpuf-upload-meta {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading .wpuf-upload-name {
+    overflow: hidden;
+    color: var(--wpuf-m-input-text, #111827);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.wpuf-frontend .wpuf-attachment-list .wpuf-upload-percent {
+    display: block;
+    padding: 0;
+    color: var(--wpuf-m-muted, #6b7280);
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.wpuf-frontend .wpuf-attachment-list li.wpuf-uploading .wpuf-upload-track {
+    position: absolute;
+    right: 12px;
+    bottom: 6px;
+    left: 12px;
+    height: 4px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--wpuf-m-hover, #f3f4f6);
+}
+
+.wpuf-frontend .wpuf-attachment-list .wpuf-upload-progress {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--wpuf-m-accent, #0088bb);
+    transition: width 0.2s ease;
+}
+
+/* The hidden file input behind the classic "Select Image" button. */
+.wpuf-frontend .wpuf-file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* The draft notice after a saved draft. */
+.wpuf-frontend .wpuf-draft-saved {
+    display: inline-block;
+    margin-left: 12px;
+    font-size: 14px;
+}
+
+/* Boot skeleton rows (server-rendered until the app mounts). */
+.wpuf-frontend .wpuf-form-boot .wpuf-skeleton-row {
+    display: block;
+    margin: 0 0 24px;
+}
+
+.wpuf-frontend .wpuf-form-boot .wpuf-skeleton-row .wpuf-label,
+.wpuf-frontend .wpuf-form-boot .wpuf-skeleton-row .wpuf-fields {
+    display: block;
+}
+
+.wpuf-frontend .wpuf-form-boot .wpuf-skeleton-label {
+    display: block;
+    width: 140px;
+    height: 16px;
+    margin-bottom: 10px;
+}
+
+.wpuf-frontend .wpuf-form-boot .wpuf-skeleton-input {
+    display: block;
+    width: 100%;
+    height: 42px;
+}
+
+/* Native date picker opened from the classic text input. */
+.wpuf-frontend .wpuf-date-native {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    border: 0;
+    padding: 0;
+}
+
+.wpuf-frontend .wpuf-date-wrap {
+    position: relative;
+}
+
+/* Select arrow: one chevron in every layout (a reset elsewhere on the page
+   must not let the layout sheets' arrow image tile). */
+.wpuf-frontend form.wpuf-form-add select:not([multiple]) {
+    background-repeat: no-repeat !important;
+}
+
+/* ---- Submit states in the new design ----
+   The classic look (WordPress spinner gif, a fixed blue "disabled" button)
+   is replaced: the button keeps its layout colour and dims, a token spinner
+   turns next to it, the success / draft notices use the kit colours. */
+.wpuf-frontend form.wpuf-form-add .wpuf-submit .wpuf-submit-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.wpuf-frontend form.wpuf-form-add .wpuf-submit .wpuf-submit-button.is-busy {
+    opacity: 0.7;
+    cursor: progress;
+    pointer-events: none;
+}
+
+/* Submitting: the fields dim and take no input (the list is `inert`); the submit row
+   keeps its spinner. Restored as soon as the answer comes back (an error keeps the values). */
+.wpuf-frontend form.wpuf-form-add.is-submitting {
+    cursor: progress;
+}
+
+.wpuf-frontend form.wpuf-form-add.is-submitting > ul.wpuf-form > li:not(.wpuf-submit),
+.wpuf-frontend form.wpuf-form-add.is-submitting > ul.wpuf-form > fieldset > li:not(.wpuf-submit) {
+    opacity: 0.55;
+    transition: opacity 0.15s ease;
+}
+
+.wpuf-frontend .wpuf-loading {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-inline-start: 10px;
+    vertical-align: middle;
+    background: none !important;
+    border: 2px solid var(--wpuf-fe-border);
+    border-top-color: var(--wpuf-fe-primary);
+    border-radius: 50%;
+    animation: wpuf-fe-spin 0.7s linear infinite;
+}
+
+@keyframes wpuf-fe-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wpuf-frontend .wpuf-loading {
+        animation-duration: 2s;
+    }
+}
+
+.wpuf-frontend .wpuf-success {
+    margin: 0 0 20px;
+    padding: 12px 16px;
+    background: var(--wpuf-fe-success-soft);
+    border: 1px solid #a7f3d0;
+    border-radius: var(--wpuf-fe-radius);
+    color: #065f46;
+    font-size: var(--wpuf-fe-size);
+    line-height: 1.5;
+}
+
+.wpuf-frontend .wpuf-success a {
+    color: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.wpuf-frontend .wpuf-draft-saved {
+    color: var(--wpuf-fe-success);
+    font-weight: 500;
+}
+
+/* The layouts 3-5 style every `.wpuf-fields input`, which showed the hidden file
+   input as a native "Choose File" next to the classic button (the classic form
+   has no such input, plupload adds its own). Hidden in every layout. */
+.wpuf-frontend form.wpuf-form-add ul.wpuf-form li .wpuf-fields input.wpuf-file-input,
+.wpuf-frontend form.wpuf-form-add .wpuf-fields input.wpuf-file-input,
+.wpuf-frontend input.wpuf-file-input[type="file"] {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    min-height: 0 !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    opacity: 0 !important;
+}
+
+/*
+ * Modern design of the React forms (owner 2026-10-14: "frontend form need
+ * modern design enhancement"), post and registration / profile forms, every
+ * template. Each layout keeps its own colours (the palette below, measured
+ * from frontend-form/layout1-5.css and Pro reg-template-1-5.css); the rhythm,
+ * sizes and states are shared: rows 24px apart, 14px labels, 44px controls
+ * with a soft shadow and an accent focus ring, 13px help text, a 44px button.
+ * Only for the plugin's own design: "Use Theme CSS" forms are left to the
+ * theme. The selectors stay one class under the invalid-field rules below, so
+ * the validation look keeps winning; `!important` where the layout sheets
+ * set the same property with it.
+ */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) {
+    --wpuf-m-text: #374151;
+    --wpuf-m-muted: #6b7280;
+    --wpuf-m-input-bg: #ffffff;
+    --wpuf-m-input-text: #111827;
+    --wpuf-m-border: #d1d5db;
+    --wpuf-m-accent: #0088bb;
+    --wpuf-m-accent-text: #ffffff;
+    --wpuf-m-ring: rgba(0, 136, 187, 0.2);
+    --wpuf-m-radius: 10px;
+    --wpuf-m-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+    --wpuf-m-card: 0 0 0 1px rgba(16, 24, 40, 0.06), 0 4px 16px -4px rgba(16, 24, 40, 0.08);
+    --wpuf-m-pop: #ffffff;
+    --wpuf-m-hover: #f3f4f6;
+    box-shadow: var(--wpuf-m-card);
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 {
+    --wpuf-m-text: #c7d2e3;
+    --wpuf-m-muted: #8d9bb3;
+    --wpuf-m-input-bg: #222c3c;
+    --wpuf-m-input-text: #ffffff;
+    --wpuf-m-border: #344156;
+    --wpuf-m-accent: #3b82f6;
+    --wpuf-m-ring: rgba(59, 130, 246, 0.35);
+    --wpuf-m-shadow: none;
+    --wpuf-m-card: none;
+    --wpuf-m-pop: #222c3c;
+    --wpuf-m-hover: #2d3a4f;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 {
+    --wpuf-m-text: #1e002b;
+    --wpuf-m-muted: #7b6a84;
+    --wpuf-m-input-bg: transparent;
+    --wpuf-m-input-text: #1e002b;
+    --wpuf-m-border: #d7c3dd;
+    --wpuf-m-accent: #8726d3;
+    --wpuf-m-ring: rgba(135, 38, 211, 0.18);
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout4 {
+    --wpuf-m-text: #1f7a86;
+    --wpuf-m-muted: #5f7f84;
+    --wpuf-m-input-bg: #fafafa;
+    --wpuf-m-border: #d5dfe1;
+    --wpuf-m-accent: #2b95a3;
+    --wpuf-m-ring: rgba(60, 166, 180, 0.22);
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 {
+    --wpuf-m-text: #ffffff;
+    --wpuf-m-muted: #b5bec3;
+    --wpuf-m-input-bg: #394141;
+    --wpuf-m-input-text: #ffffff;
+    --wpuf-m-border: #6b7a6e;
+    --wpuf-m-accent: #7bc087;
+    --wpuf-m-accent-text: #1f2626;
+    --wpuf-m-ring: rgba(123, 192, 135, 0.35);
+    --wpuf-m-shadow: none;
+    --wpuf-m-card: none;
+    --wpuf-m-pop: #394141;
+    --wpuf-m-hover: #465050;
+}
+
+/* Rows (server-rendered fields sit in `div.wpuf-slot-inline` slots) */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > .wpuf-slot-inline > li {
+    margin: 0 0 24px !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li.wpuf-submit {
+    margin: 8px 0 0 !important;
+}
+
+/* Labels */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label {
+    margin-bottom: 6px !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label label,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label > span {
+    color: var(--wpuf-m-text) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    line-height: 20px !important;
+}
+
+/* Controls */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"])),
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields select,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields textarea {
+    box-sizing: border-box;
+    min-height: 44px;
+    padding: 10px 14px !important;
+    border: 1px solid var(--wpuf-m-border) !important;
+    border-radius: var(--wpuf-m-radius) !important;
+    background-color: var(--wpuf-m-input-bg) !important;
+    box-shadow: var(--wpuf-m-shadow) !important;
+    color: var(--wpuf-m-input-text) !important;
+    font-size: 15px !important;
+    line-height: 22px !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"])),
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields select {
+    height: 44px !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields select {
+    padding-right: 36px !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields textarea {
+    min-height: 120px;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"]))::placeholder,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields textarea::placeholder {
+    color: var(--wpuf-m-muted) !important;
+    opacity: 0.8;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"])):focus,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields select:focus,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields textarea:focus {
+    border-color: var(--wpuf-m-accent) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px var(--wpuf-m-ring) !important;
+}
+
+/* Template 3 keeps its underline fields. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"])),
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 ul.wpuf-form.wpuf-form li .wpuf-fields select {
+    padding-left: 0 !important;
+    border-width: 0 0 1px !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"])):focus,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 ul.wpuf-form.wpuf-form li .wpuf-fields select:focus {
+    box-shadow: 0 1px 0 0 var(--wpuf-m-accent) !important;
+}
+
+/* Help text */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-help {
+    margin-top: 6px !important;
+    color: var(--wpuf-m-muted) !important;
+    font-size: 13px !important;
+    font-style: normal !important;
+    line-height: 18px !important;
+}
+
+/* Label row: no extra height from the layout sheets' line-height. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-label {
+    min-height: 0 !important;
+    line-height: 20px !important;
+}
+
+/* Rich editor (TinyMCE's container): one rounded border. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce {
+    overflow: hidden;
+    border: 1px solid var(--wpuf-m-border) !important;
+    border-radius: var(--wpuf-m-radius) !important;
+    box-shadow: var(--wpuf-m-shadow) !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce .mce-panel,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce .mce-edit-area,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce .mce-statusbar {
+    border-color: var(--wpuf-m-border) !important;
+    box-shadow: none !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce > .mce-container-body > .mce-panel:first-child,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .mce-tinymce .mce-top-part::before {
+    box-shadow: none !important;
+}
+
+/* Dark templates (2, 5): light eye icon and editor bars. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .wpuf-eye,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .wpuf-eye {
+    filter: invert(1);
+    opacity: 0.75;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .mce-tinymce .mce-panel,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .mce-tinymce .mce-panel {
+    background: var(--wpuf-m-input-bg) !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .mce-tinymce .mce-ico,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .mce-tinymce .mce-ico,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .mce-tinymce .mce-path-item,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .mce-tinymce .mce-path-item {
+    color: var(--wpuf-m-text) !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .mce-tinymce .mce-btn:hover,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .mce-tinymce .mce-btn:hover,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2 ul.wpuf-form li .mce-tinymce .mce-btn.mce-active,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 ul.wpuf-form li .mce-tinymce .mce-btn.mce-active {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: transparent !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields select.wpuf-select__native.wpuf-select__native {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    min-height: 0 !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important;
+    border: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-select input.wpuf-select__search {
+    display: block;
+    box-sizing: border-box;
+    width: 100% !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    margin: 0 0 4px !important;
+    padding: 6px 10px !important;
+    border: 1px solid var(--wpuf-m-border, #e5e7eb) !important;
+    border-radius: 6px !important;
+    background: var(--wpuf-m-input-bg, #ffffff) !important;
+    box-shadow: none !important;
+    color: var(--wpuf-m-input-text, #111827) !important;
+    font-size: 14px !important;
+}
+
+/* Doubled classes: the layout sheets set every `ul.wpuf-form li` margin / padding with !important. */
+/* Template 3 keeps its underline fields. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 .wpuf-select:not(.wpuf-select--sm) .wpuf-select__trigger {
+    padding-left: 0;
+    border-width: 0 0 1px;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 .wpuf-select:not(.wpuf-select--sm) .wpuf-select__trigger:focus-visible,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout3 .wpuf-select.is-open:not(.wpuf-select--sm) .wpuf-select__trigger {
+    box-shadow: 0 1px 0 0 var(--wpuf-m-accent);
+}
+
+/* Compact: the editor toolbar and the calendar header. */
+/* Phone with the country list: the number starts after the flag (the underline rule of template 3 zeroed it). */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti.iti--allow-dropdown input[type="tel"],
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti.iti--allow-dropdown input[type="text"] {
+    padding-left: 52px !important;
+}
+
+/* Label icons: a gap to the text, the muted colour. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-label .wpuf-field-icon {
+    color: var(--wpuf-m-muted);
+    font-size: 0.9em;
+}
+
+
+/* Cart total: the table at the form's text size. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-summary {
+    border: 1px solid var(--wpuf-m-border) !important;
+    border-radius: var(--wpuf-m-radius) !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table th,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table td {
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
+    color: var(--wpuf-m-muted) !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-cart-table .wpuf-cart-empty td {
+    color: var(--wpuf-m-muted) !important;
+}
+
+/* Term suggestions (tags, text / ajax taxonomy): a popover under the input like the select's list. */
+.wpuf-frontend .wpuf-suggest {
+    position: relative;
+    display: block;
+}
+
+.wpuf-frontend .wpuf-suggest ul.ac_results {
+    display: block !important;
+    position: absolute;
+    z-index: 1000;
+    top: calc(100% + 6px);
+    left: 0;
+    box-sizing: border-box;
+    max-height: 264px;
+    margin: 0 !important;
+    padding: 4px !important;
+    overflow-y: auto;
+    border: 1px solid var(--wpuf-m-border, #e5e7eb);
+    border-radius: var(--wpuf-m-radius, 8px);
+    /* frontend-forms.css forces a white 390px list with !important. */
+    background: var(--wpuf-m-pop, #ffffff) !important;
+    color: var(--wpuf-m-input-text, #111827) !important;
+    width: 100% !important;
+    box-shadow: 0 12px 24px -6px rgba(16, 24, 40, 0.18), 0 4px 8px -4px rgba(16, 24, 40, 0.08);
+    list-style: none !important;
+}
+
+.wpuf-frontend .wpuf-suggest ul.ac_results > li {
+    margin: 0 !important;
+    padding: 8px 12px !important;
+    border: 0 !important;
+    border-radius: 6px;
+    text-align: left;
+    background: transparent;
+    color: var(--wpuf-m-input-text, #111827);
+    font-size: 14px;
+    line-height: 20px;
+    list-style: none !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.wpuf-frontend .wpuf-suggest ul.ac_results > li::before {
+    content: none !important;
+}
+
+.wpuf-frontend .wpuf-suggest ul.ac_results > li.ac_over {
+    background: var(--wpuf-m-hover, #f3f4f6);
+}
+
+.wpuf-frontend .wpuf-suggest ul.ac_results .ac_match {
+    color: var(--wpuf-m-accent, #2563eb);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.wpuf-frontend .wpuf-suggest ul.ac_results > li.wpuf-suggest-loading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--wpuf-m-muted, #6b7280);
+    cursor: default;
+}
+
+.wpuf-frontend .wpuf-suggest .wpuf-suggest-spinner {
+    flex: none;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--wpuf-m-border, #e5e7eb);
+    border-top-color: var(--wpuf-m-accent, #2563eb);
+    border-radius: 50%;
+    animation: wpuf-suggest-spin 0.7s linear infinite;
+}
+
+@keyframes wpuf-suggest-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wpuf-frontend .wpuf-suggest .wpuf-suggest-spinner {
+        animation-duration: 2s;
+    }
+}
+
+/* Doubled class: the layout sheets set every `ul.wpuf-form li` margin / padding with !important. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form.wpuf-form li .wpuf-suggest ul.ac_results.ac_results > li {
+    margin: 0 !important;
+    padding: 8px 12px !important;
+}
+
+/* Upload buttons: a drop-area look. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-attachment-upload-filelist a.file-selector {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 16px !important;
+    border: 1px dashed var(--wpuf-m-border) !important;
+    border-radius: var(--wpuf-m-radius) !important;
+    background-color: var(--wpuf-m-input-bg) !important;
+    box-shadow: none !important;
+    color: var(--wpuf-m-text) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-attachment-upload-filelist a.file-selector:hover,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-attachment-upload-filelist a.file-selector:focus-visible {
+    border-color: var(--wpuf-m-accent) !important;
+    color: var(--wpuf-m-accent) !important;
+    outline: none;
+}
+
+/* Keyboard focus: the accent ring the inputs get, not only the hover colour. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-attachment-upload-filelist a.file-selector:focus-visible {
+    box-shadow: 0 0 0 3px var(--wpuf-m-ring) !important;
+}
+
+/* Choices follow the accent. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li input[type="checkbox"],
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li input[type="radio"] {
+    accent-color: var(--wpuf-m-accent);
+}
+
+/* Section break */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-section-wrap {
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid var(--wpuf-m-border) !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-section-wrap .wpuf-section-title {
+    margin: 0 0 4px !important;
+    color: var(--wpuf-m-text) !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    line-height: 26px !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-section-wrap .wpuf-section-details {
+    color: var(--wpuf-m-muted) !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+}
+
+/* Submit */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit .wpuf-submit-button,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit input[type="submit"] {
+    min-height: 44px;
+    height: auto !important;
+    padding: 11px 24px !important;
+    border: 0 !important;
+    border-radius: var(--wpuf-m-radius) !important;
+    background-color: var(--wpuf-m-accent) !important;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.12) !important;
+    color: var(--wpuf-m-accent-text) !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    line-height: 22px !important;
+    cursor: pointer;
+    transition: filter 0.15s ease, box-shadow 0.15s ease;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit .wpuf-submit-button:hover {
+    filter: brightness(0.94);
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit .wpuf-submit-button:focus-visible {
+    outline: none !important;
+    box-shadow: 0 0 0 3px var(--wpuf-m-ring) !important;
+}
+
+/* Registration "Already have an account? Login" line */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit {
+    color: var(--wpuf-m-muted);
+    font-size: 14px;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit > a {
+    color: var(--wpuf-m-accent) !important;
+    font-weight: 500;
+}
+
+@media (max-width: 600px) {
+    .wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) {
+        padding: 24px !important;
+    }
+}
+
+/*
+ * Validation look of the React forms (owner 2026-10-14: "the react frontend
+ * form validation design should update"). The classic sheets paint the whole
+ * row pink (`.has-error { background: #FFE4E4 }`) and the message as a pink
+ * box; the React form shows the field itself as invalid instead: red border
+ * with a soft ring, a small red message with an icon under it, the summary as
+ * a light alert, a red required mark. Scoped to the React root, so the
+ * classic PHP forms keep their look. `!important` where a layout sheet sets
+ * the same property with it (layouts 3-5 border colours).
+ */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add ul.wpuf-form li.has-error,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add ul.wpuf-form .wpuf-fields.has-error {
+    background: transparent !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add ul.wpuf-form .wpuf-fields.has-error {
+    padding: 0 !important;
+}
+
+/* Invalid controls: red border + soft ring, also while focused (the layout
+   sheets' focus colours would win otherwise). The selector repeats
+   `.wpuf-form-add` to outrank the layout rules. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]),
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error select,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error textarea,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .selectize-input,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wpuf-select:not(.wpuf-select--sm) .wpuf-select__trigger {
+    border-color: #dc2626 !important;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12) !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):focus,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):focus-visible,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error select:focus,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error select:focus-visible,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error textarea:focus,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error textarea:focus-visible,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wpuf-select:not(.wpuf-select--sm) .wpuf-select__trigger:focus-visible,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wpuf-select.is-open:not(.wpuf-select--sm) .wpuf-select__trigger {
+    border-color: #dc2626 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.24) !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wp-editor-wrap,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .mce-tinymce,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .wp-editor-container,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add ul.wpuf-form li .wpuf-fields.has-error .mce-panel {
+    border-color: #dc2626 !important;
+    border-radius: 6px;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12) !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-error-msg {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 6px;
+    margin: 6px 0 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0;
+    background: transparent !important;
+    color: #dc2626 !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    line-height: 18px !important;
+}
+
+/* Circle with "!" (inline SVG, follows the message colour). */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-error-msg::before {
+    content: "";
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+    margin-top: 2px;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Form / step summary ("Please fix the errors to proceed", server errors). */
+.wpuf-frontend.wpuf-form-root .wpuf-errors {
+    margin: 12px 0 !important;
+    padding: 10px 12px !important;
+    border: 1px solid #fecaca !important;
+    border-radius: 8px !important;
+    background: #fef2f2 !important;
+    color: #991b1b !important;
+    font-size: 14px !important;
+    line-height: 20px;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-label .required {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+/*
+ * Password field in the new design. The strength indicator (WordPress'
+ * meter, Pro's `div.pass-strength-result` with the short / bad / good /
+ * strong / empty state class) becomes a thin bar that fills with the
+ * strength and a small label under it, in place of the big centred box of
+ * the layout sheets. Only for the plugin's own design: with "Use Theme CSS"
+ * the theme keeps styling it. Same markup and state classes, so the meter
+ * script and theme overrides keep working.
+ */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result {
+    --wpuf-pw-fill: 0%;
+    --wpuf-pw-color: #6b7280;
+    --wpuf-pw-track: #e5e7eb;
+    display: block !important;
+    float: none !important;
+    box-sizing: border-box;
+    width: 100% !important;
+    max-width: 320px;
+    margin: 4px 0 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: var(--wpuf-pw-color) !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    line-height: 18px !important;
+    text-align: left !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result::before {
+    content: "";
+    display: block;
+    height: 6px;
+    margin-bottom: 6px;
+    border-radius: 999px;
+    background:
+        linear-gradient(var(--wpuf-pw-color), var(--wpuf-pw-color)) left center / var(--wpuf-pw-fill) 100% no-repeat,
+        var(--wpuf-pw-track);
+    transition: background-size 0.2s ease;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.short {
+    --wpuf-pw-fill: 25%;
+    --wpuf-pw-color: #dc2626;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.bad {
+    --wpuf-pw-fill: 50%;
+    --wpuf-pw-color: #ea580c;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.good {
+    --wpuf-pw-fill: 75%;
+    --wpuf-pw-color: #ca8a04;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.strong {
+    --wpuf-pw-fill: 100%;
+    --wpuf-pw-color: #16a34a;
+}
+
+/* Dark layouts (2, 5): light track and colours. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout2:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout5:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result {
+    --wpuf-pw-color: #9ca3af;
+    --wpuf-pw-track: rgba(255, 255, 255, 0.16);
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout2:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.short,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout5:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.short {
+    --wpuf-pw-color: #f87171;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout2:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.bad,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout5:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.bad {
+    --wpuf-pw-color: #fb923c;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout2:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.good,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout5:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.good {
+    --wpuf-pw-color: #facc15;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout2:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.strong,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-layout5:not(.wpuf-theme-style) ul.wpuf-form li .pass-strength-result.strong {
+    --wpuf-pw-color: #4ade80;
+}
+
+/* Confirm password match line: the field message look (13px, icon). */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-matched,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-mismatch {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin: 6px 0 0;
+    padding: 0;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-matched {
+    color: #16a34a;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-mismatch {
+    color: #dc2626;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-matched::before,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-mismatch::before {
+    content: "";
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+    margin-top: 2px;
+    background-color: currentColor;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-matched::before {
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpolyline points='8 12.5 11 15.5 16 9.5'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpolyline points='8 12.5 11 15.5 16 9.5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-match-message.wpuf-password-mismatch::before {
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Requirement checklist: the message size and colours. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-requirements {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 18px;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-req-item {
+    margin-bottom: 4px;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-req-item .wpuf-req-icon.wpuf-req-unmet {
+    color: #dc2626;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-req-item .wpuf-req-icon.wpuf-req-met,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-password-req-item .wpuf-req-icon.wpuf-req-met + .wpuf-req-text {
+    color: #16a34a;
+}
+
+/*
+ * Modern design, field by field (audit 2026-10-14): address, phone,
+ * social prefix, choices, ratings, repeat field, insert photo, columns.
+ * Plugin design only; markup unchanged.
+ */
+
+/* Address: labels above their inputs, city / zip and country / state side by side. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 16px;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .wpuf-address-field {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 6px;
+    min-width: 0;
+    margin: 0 !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .street_address,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .street_address2 {
+    grid-column: 1 / -1;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .wpuf-address-field .wpuf-sub-fields {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address .wpuf-form-sub-label {
+    display: block;
+    margin: 0 !important;
+    color: var(--wpuf-m-muted) !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    line-height: 18px;
+}
+
+@media (max-width: 600px) {
+    .wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields-address {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Phone: full width like the other controls. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti {
+    display: block;
+    width: 100%;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti input[type="tel"],
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .iti input[type="text"] {
+    width: 100% !important;
+}
+
+/* Social handle prefix ("@") sits inside the input. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-social-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-social-input-wrapper .wpuf-at-prefix {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    z-index: 1;
+    transform: translateY(-50%);
+    color: var(--wpuf-m-muted);
+    font-size: 15px;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-social-input-wrapper input.wpuf-twitter-with-prefix.wpuf-twitter-with-prefix {
+    padding-left: 30px !important;
+}
+
+/* Choices: native controls in the accent colour, label beside them. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label:has(> input[type="radio"]),
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label:has(> input[type="checkbox"]) {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    margin: 0 16px 8px 0 !important;
+    padding: 0 !important;
+    color: var(--wpuf-m-input-text);
+    font-size: 15px;
+    line-height: 22px;
+    cursor: pointer;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-radio-block,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-checkbox-block,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-pricing-radio-item,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-pricing-checkbox-item {
+    display: flex !important;
+    margin: 0 0 8px !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"],
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"] {
+    flex: none;
+    width: 18px !important;
+    height: 18px !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    -webkit-appearance: auto !important;
+    appearance: auto !important;
+    accent-color: var(--wpuf-m-accent);
+    cursor: pointer;
+}
+
+/* Pro's registration templates hide the checkbox and draw a box on the label; the native control replaces it. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-block::before,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-block::after,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-inline::before,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label.wpuf-checkbox-inline::after {
+    content: none !important;
+    display: none !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"] {
+    position: static !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    clip: auto !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"]::before,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"]::after,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"]::before,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"]::after {
+    content: none !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="radio"]:focus-visible,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields label > input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--wpuf-m-accent);
+    outline-offset: 2px;
+}
+
+/* Ratings: larger stars, amber when chosen, no dropdown arrow from the hidden select. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields:has(.br-wrapper)::after {
+    content: none !important;
+    display: none !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget {
+    display: inline-flex;
+    gap: 4px;
+    height: auto;
+    padding: 0 !important;
+    border: 0 !important;
+    background: none !important;
+    white-space: nowrap;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a {
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    font-size: 26px;
+    line-height: 28px;
+    text-decoration: none;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a::after {
+    color: var(--wpuf-m-border) !important;
+    font-size: 26px;
+    line-height: 28px;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a.br-active::after,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget a.br-selected::after {
+    color: #f59e0b !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .br-theme-css-stars .br-widget:focus-visible {
+    outline: 2px solid var(--wpuf-m-accent);
+    outline-offset: 4px;
+    border-radius: 6px;
+}
+
+/* Repeat field: a list of entries, each input with its remove / add icon
+   buttons in line at the right (the layout is in Pro's frontend-fields.css);
+   entries of several fields sit in a light box. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container > p {
+    margin: 0 0 4px !important;
+    color: var(--wpuf-m-text);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container > hr {
+    margin: 0 0 12px !important;
+    border: 0 !important;
+    border-top: 1px solid var(--wpuf-m-border) !important;
+    background: none !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-instance {
+    margin: 0 0 8px;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-instance--group {
+    padding: 12px;
+    border: 1px solid var(--wpuf-m-border);
+    border-radius: var(--wpuf-m-radius);
+    background: color-mix(in srgb, var(--wpuf-m-input-bg) 60%, transparent);
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-instance li {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls .wpuf-repeat-btn {
+    width: 42px;
+    height: 42px;
+    min-height: 42px;
+    padding: 0 !important;
+    border: 1px solid var(--wpuf-m-border) !important;
+    border-radius: var(--wpuf-m-radius) !important;
+    background: var(--wpuf-m-input-bg) !important;
+    box-shadow: none !important;
+    color: var(--wpuf-m-muted) !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls .wpuf-repeat-btn:hover:not(:disabled),
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls .wpuf-repeat-btn:focus-visible {
+    border-color: var(--wpuf-m-accent) !important;
+    color: var(--wpuf-m-accent) !important;
+    outline: none;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls .wpuf-repeat-btn:focus-visible {
+    box-shadow: 0 0 0 3px var(--wpuf-m-ring) !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form .wpuf-repeat-container .wpuf-repeat-controls .wpuf-remove-repeat:hover:not(:disabled) {
+    border-color: #dc2626 !important;
+    color: #dc2626 !important;
+}
+
+/* Insert Photo: a small ghost button above the editor. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container {
+    margin: 0 0 8px;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 6px 12px !important;
+    border: 1px solid var(--wpuf-m-border) !important;
+    border-radius: 8px !important;
+    background: var(--wpuf-m-input-bg) !important;
+    box-shadow: none !important;
+    color: var(--wpuf-m-text) !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    line-height: 20px !important;
+    text-decoration: none !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image:hover,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image:focus-visible {
+    border-color: var(--wpuf-m-accent) !important;
+    color: var(--wpuf-m-accent) !important;
+    outline: none;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image .wpuf-media-icon {
+    display: inline-flex !important;
+    flex: none;
+    width: 16px !important;
+    height: 16px !important;
+    background: none !important;
+}
+
+/* Columns: the classic clearfix (`overflow: hidden`) clipped the focus ring of the
+   first column's controls; flow-root contains the floated columns without clipping. */
+.wpuf-frontend ul.wpuf-form .wpuf-field-columns {
+    display: flow-root;
+    overflow: visible;
+}
+
+/* Columns: controls fill their column, even gaps. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-inner-fields {
+    box-sizing: border-box;
+    padding-right: 16px !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-inner-fields:last-child {
+    padding-right: 0 !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields > li {
+    margin: 0 !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields .wpuf-fields input:where(:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"])),
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields .wpuf-fields select,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-field-columns .wpuf-column-fields .wpuf-fields textarea {
+    width: 100% !important;
+}
+
+/* Dark templates: native controls (checkbox, radio, date picker) in their dark look. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout2,
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add.wpuf-form-add:not(.wpuf-theme-style).wpuf-form-layout5 {
+    color-scheme: dark;
+}
+
+/*
+ * Multistep (owner 2026-10-14: "update design of multistep form"). React root
+ * only; the classic forms keep their look. The step-by-step header is equal
+ * columns: circle, label centred under it (wraps, never past the form edge),
+ * the connector drawn from the previous circle. Pro's colour settings
+ * (Fields_Manager inline CSS: active background / text, inactive colour) still
+ * paint the circles and lines; only the inactive number and label move from
+ * the inactive colour (light grey by default, unreadable as text) to the kit's
+ * muted text. A done step shows a check.
+ */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar {
+    overflow: visible;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-wizard {
+    display: flex;
+    align-items: flex-start;
+    justify-content: stretch;
+    margin: 8px 0 32px;
+    padding: 0;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item {
+    position: relative;
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+    text-align: center;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-line {
+    position: absolute;
+    top: 17px;
+    right: calc(50% + 24px);
+    left: calc(-50% + 24px);
+    flex: none;
+    min-width: 0;
+    height: 2px;
+    margin: 0;
+    border-radius: 2px;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-circle {
+    position: relative;
+    z-index: 1;
+    flex: 0 0 auto;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item:not(.active-step):not(.completed-step) .wpuf-step-circle {
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item.active-step .wpuf-step-circle {
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06);
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-circle svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 3;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-label {
+    max-width: 100%;
+    margin-top: 8px;
+    padding: 0 4px;
+    color: var(--wpuf-fe-muted);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.35;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item.active-step .wpuf-step-label {
+    color: var(--wpuf-fe-text);
+    font-weight: 600;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add .wpuf-multistep-progressbar .wpuf-step-item.completed-step .wpuf-step-label {
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend.wpuf-form-root .screen-reader-text {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Actions under the fields, in the flow (the classic sheet pins them absolutely to
+   the fieldset bottom): Previous left, Next right; on the last step Previous sits
+   in the submit row, left of the submit button. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset {
+    padding-bottom: 0;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset .multistep-button-area {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset .multistep-button-area--next-only {
+    justify-content: flex-end;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-nav-btn {
+    position: static !important;
+    margin: 0 !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset li.wpuf-submit.wpuf-submit--with-prev {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset li.wpuf-submit.wpuf-submit--with-prev input.wpuf-submit-button {
+    margin: 0 0 0 auto !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset li.wpuf-submit.wpuf-submit--with-prev > .wpuf-errors {
+    flex-basis: 100%;
+}
+
+/* Previous is the secondary action: outline in the kit's neutral colours (the
+   layout sheets paint it like Next with !important); size and shape stay the layout's. */
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-prev-btn {
+    color: var(--wpuf-fe-text) !important;
+    background: var(--wpuf-fe-surface) !important;
+    border: 1px solid var(--wpuf-fe-border) !important;
+    box-shadow: var(--wpuf-fe-shadow) !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-prev-btn:hover {
+    background: var(--wpuf-fe-hover) !important;
+}
+
+.wpuf-frontend.wpuf-form-root form.wpuf-form-add fieldset.wpuf-multistep-fieldset button.wpuf-multistep-nav-btn:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+/* Classic notices printed by hooks into the React form (pay per post charge,
+   subscription messages, `wpuf_add_post_form_top`): the kit notice look. */
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-info,
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-message,
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-success,
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-error,
+.wpuf-frontend.wpuf-form-root > .wpuf-info,
+.wpuf-frontend.wpuf-form-root > .wpuf-message {
+    display: block !important;
+    margin: 0 0 20px !important;
+    padding: 12px 16px !important;
+    border: 1px solid #bfdbfe !important;
+    border-radius: var(--wpuf-fe-radius, 8px) !important;
+    background: var(--wpuf-fe-info-soft, #eff6ff) !important;
+    color: #1e40af !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    text-align: start !important;
+    box-shadow: none !important;
+}
+
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-success {
+    border-color: #a7f3d0 !important;
+    background: var(--wpuf-fe-success-soft, #ecfdf5) !important;
+    color: #065f46 !important;
+}
+
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-error {
+    border-color: #fecaca !important;
+    background: var(--wpuf-fe-danger-soft, #fef2f2) !important;
+    color: #991b1b !important;
+}
+
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-info strong,
+.wpuf-frontend.wpuf-form-root .wpuf-slot-inline .wpuf-message strong {
+    font-weight: 600;
+    color: inherit;
+}
+
+/* "Use theme CSS" forms keep the theme's font. */
+.wpuf-frontend.wpuf-form-root:has(form.wpuf-theme-style) {
+    --wpuf-fe-font: inherit;
+}

@@ -19,7 +19,8 @@ let dokanVendorRegistered = false;
 
 test.beforeAll(async () => {
     // Launch browser
-    browser = await chromium.launch();
+    // HEADED=1 shows the browser (this spec launches its own).
+    browser = await chromium.launch({ headless: ! process.env.HEADED });
 
     // Create a single context
     context = await browser.newContext();
@@ -145,7 +146,7 @@ test.describe('Registration-Forms', () => {
         // Complete Dokan Vendor Registration Frontend. Returns false when the required
         // Google Maps store location can't be set (Maps unavailable in this env).
         dokanVendorRegistered = await RegForm.completeDokanVendorRegistrationFrontend();
-        test.skip(!dokanVendorRegistered, 'Dokan vendor store location requires Google Maps, unavailable in this environment (configure the Maps key referer allowlist to enable RF0009–RF0011).');
+        test.skip(!dokanVendorRegistered, 'Dokan vendor store location requires Google Maps, unavailable in this environment (the Maps key needs billing on its Cloud project and this site in its referer allowlist to enable RF0009–RF0011).');
     });
 
     test('RF0010 : Admin validating Dokan Vendor registration as default', { tag: ['@Pro', '@Vendor'] }, async () => {

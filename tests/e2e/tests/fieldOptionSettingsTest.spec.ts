@@ -11,7 +11,8 @@ let page: Page;
 
 test.beforeAll(async () => {
     // Launch browser
-    browser = await chromium.launch();
+    // HEADED=1 shows the browser (this spec launches its own).
+    browser = await chromium.launch({ headless: ! process.env.HEADED });
 
     // Create a single context
     context = await browser.newContext();

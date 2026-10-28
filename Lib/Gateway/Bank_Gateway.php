@@ -91,6 +91,13 @@ class Bank_Gateway extends Payment_Gateway {
      */
     public function order_notify_admin( $info ) {
         $legacy_bank = isset( wpuf()->bank ) ? wpuf()->bank : null;
+
+        // The legacy Bank hooks this mail itself; calling it again sent the
+        // admin two "New Bank Order Received" mails per order.
+        if ( $legacy_bank && false !== has_action( 'wpuf_gateway_bank_order_submit', [ $legacy_bank, 'order_notify_admin' ] ) ) {
+            return;
+        }
+
         if ( $legacy_bank && method_exists( $legacy_bank, 'order_notify_admin' ) ) {
             $legacy_bank->order_notify_admin( $info );
         }
@@ -108,6 +115,12 @@ class Bank_Gateway extends Payment_Gateway {
      */
     public function order_notify_user( $transaction, $order_id ) {
         $legacy_bank = isset( wpuf()->bank ) ? wpuf()->bank : null;
+
+        // Same as order_notify_admin(): the legacy Bank already hooks this mail.
+        if ( $legacy_bank && false !== has_action( 'wpuf_gateway_bank_order_complete', [ $legacy_bank, 'order_notify_user' ] ) ) {
+            return;
+        }
+
         if ( $legacy_bank && method_exists( $legacy_bank, 'order_notify_user' ) ) {
             $legacy_bank->order_notify_user( $transaction, $order_id );
         }

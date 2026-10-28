@@ -17,7 +17,7 @@ class Post_Form_Template_Paid_Guest_Post extends Form_Template {
         $this->enabled     = true;
         $this->title       = __( 'Paid Guest Post', 'wp-user-frontend' );
         $this->description = __( 'Accept guest post submissions with one-time payment. Collects title, content, excerpt, featured image, category, and tags.', 'wp-user-frontend' );
-        $this->image       = WPUF_ASSET_URI . '/images/templates/paid-guest-post.svg';
+        $this->image       = WPUF_ASSET_URI . '/images/templates/paid-guest-post.webp';
 
         $this->form_fields = [
             [

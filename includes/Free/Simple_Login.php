@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Free;
 
+use WeDevs\Wpuf\Frontend\Login\Login_Schema;
+use WeDevs\Wpuf\Frontend\Renderer;
 use WeDevs\Wpuf\Render_Form;
 use WeDevs\Wpuf\WPUF_User;
 use WP_Error;
@@ -380,18 +382,18 @@ class Simple_Login {
                     $checkemail = isset( $getdata['checkemail'] ) ? sanitize_text_field( $getdata['checkemail'] ) : '';
 
                     if ( $this->login_errors ) {
-                        wpuf_load_template( 'lost-pass-form.php', $args );
+                        $this->render_lost_password_form( $args );
                         break;
                     }
                     if ( 'confirm' === $checkemail ) {
-                        $this->messages[] = __( 'Check your e-mail for the confirmation link.', 'wp-user-frontend' );
+                        $this->messages[] = __( 'If an account matches what you entered, an e-mail with a link to reset your password is on its way. Check your inbox.', 'wp-user-frontend' );
                     }
 
                     if ( ! $checkemail ) {
                         $this->messages[] = __( 'Please enter your username or email address. You will receive a link to create a new password via email.', 'wp-user-frontend' );
                     }
 
-                    wpuf_load_template( 'lost-pass-form.php', $args );
+                    $this->render_lost_password_form( $args );
                     break;
 
                 case 'rp':
@@ -399,13 +401,17 @@ class Simple_Login {
                     if ( $reset === 'true' ) {
                         $this->messages[] = __( 'Your password has been reset successfully', 'wp-user-frontend' );
 
-                        wpuf_load_template( 'login-form.php', $args );
+                        $this->render_login_form( $args );
 
                         break;
+                    } elseif ( ! self::reset_key_is_valid() ) {
+                        $this->login_errors[] = $this->invalid_key_message();
+
+                        $this->render_lost_password_form( $args );
                     } else {
                         $this->messages[] = __( 'Enter your new password below.', 'wp-user-frontend' );
 
-                        wpuf_load_template( 'reset-pass-form.php', $args );
+                        $this->render_reset_password_form( $args );
                     }
 
                     break;
@@ -424,13 +430,150 @@ class Simple_Login {
 
                     $args['redirect_to'] = $this->get_login_redirect_link( $args['redirect_to'] );
 
-                    wpuf_load_template( 'login-form.php', $args );
+                    $this->render_login_form( $args );
 
                     break;
             }
         }
 
         return ob_get_clean();
+    }
+
+    /**
+     * The `[wpuf-login]` screen this request shows, as a renderer part:
+     * `login`, `lost_password` (`?action=lostpassword`), `reset_password`
+     * (`?action=rp|resetpass`, the login form again once `reset=true`), or ''
+     * for a logged-in visitor (the logged-in view). The same rules as
+     * login_form(), for the code that decides assets before it runs.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string
+     */
+    public static function screen_part() {
+        if ( is_user_logged_in() ) {
+            return '';
+        }
+
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only routing, as login_form().
+        $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : 'login';
+        $reset  = isset( $_GET['reset'] ) ? sanitize_text_field( wp_unslash( $_GET['reset'] ) ) : '';
+        // phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+        if ( 'lostpassword' === $action ) {
+            return 'lost_password';
+        }
+
+        if ( in_array( $action, [ 'rp', 'resetpass' ], true ) && 'true' !== $reset ) {
+            // A bad or expired link shows the lost password form with the notice.
+            return self::reset_key_is_valid() ? 'reset_password' : 'lost_password';
+        }
+
+        return 'login';
+    }
+
+    /**
+     * Print the login form (login-form.php).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $args action_url, redirect_to
+     *
+     * @return void
+     */
+    private function render_login_form( array $args ) {
+        $this->render_screen( 'login', 'login-form.php', 'login', $args );
+    }
+
+    /**
+     * Print the lost password form (lost-pass-form.php, `?action=lostpassword`).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $args action_url, redirect_to
+     *
+     * @return void
+     */
+    private function render_lost_password_form( array $args ) {
+        $this->render_screen( 'lost_password', 'lost-pass-form.php', 'lost_password', $args );
+    }
+
+    /**
+     * Print the reset password form (reset-pass-form.php, `?action=rp`).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $args action_url, redirect_to
+     *
+     * @return void
+     */
+    private function render_reset_password_form( array $args ) {
+        $this->render_screen( 'reset_password', 'reset-pass-form.php', 'reset_password', $args );
+    }
+
+    /**
+     * Print a `[wpuf-login]` screen: the React form when the frontend runs on
+     * React (and no theme overrides the screen's template), else the classic
+     * template. The React forms send the same fields to the login REST
+     * routes (LoginController), which run sign_in() / request_reset() /
+     * apply_reset(), the code behind the classic post; Login_Schema builds
+     * their boot data.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $part     Renderer part (login, lost_password, reset_password)
+     * @param string $template Classic template
+     * @param string $schema   Login_Schema method building the boot data
+     * @param array  $args     action_url, redirect_to
+     *
+     * @return void
+     */
+    private function render_screen( $part, $template, $schema, array $args ) {
+        $platform = function_exists( 'wpuf' ) && method_exists( wpuf(), 'platform' ) ? wpuf()->platform() : null;
+        $renderer = $platform ? $platform->get( Renderer::class ) : null;
+
+        if ( ! $renderer || ! $renderer->mounts( $part ) ) {
+            wpuf_load_template( $template, $args );
+
+            /**
+             * A classic `[wpuf-login]` screen rendered (the scripts written for
+             * its markup are needed on this page).
+             *
+             * @since WPUF_SINCE
+             *
+             * @param string $part login, lost_password or reset_password
+             */
+            do_action( 'wpuf_login_screen_template', $part );
+
+            return;
+        }
+
+        $data = $platform->get( Login_Schema::class )->{$schema}( $args );
+
+        /**
+         * Whether the React login screens get the designed card (the
+         * registration form's look). Off in free: the screens follow the
+         * theme, as the classic template did; Pro's login layout settings
+         * turn it on.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param bool   $styled Designed card
+         * @param string $part   login, lost_password or reset_password
+         */
+        $styled  = (bool) apply_filters( 'wpuf_login_screen_styled', false, $part );
+        $classes = 'wpuf-login-root';
+
+        if ( $styled ) {
+            // Built like the registration form: its sheets give the card the same look.
+            wp_enqueue_style( 'wpuf-layout1' );
+            wp_enqueue_style( 'wpuf-frontend-forms' );
+            wp_enqueue_style( 'wpuf-frontend-forms-style' );
+
+            $classes .= ' wpuf-form-root wpuf-login-styled';
+        }
+
+        echo $renderer->markup( $part, $data, '', $classes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup() escapes its attributes and JSON-encodes the data.
     }
 
     /**
@@ -445,7 +588,9 @@ class Simple_Login {
 
         $enable_turnstile = wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' );
 
-        if ( 'on' !== $enable_turnstile ) {
+        // The login form shows the widget only with "Turnstile in login form"
+        // on (login-form.php, Login_Schema): without it there is no token to check.
+        if ( 'on' !== $enable_turnstile || 'on' !== wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' ) ) {
             return true;
         }
 
@@ -505,21 +650,40 @@ class Simple_Login {
      * @return void
      */
     public function process_login() {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- presence check only; sign_in() verifies the nonce.
         if ( empty( $_POST['wpuf_login'] ) || empty( $_POST['wpuf-login-nonce'] ) ) {
             return;
         }
 
+        $redirect = $this->sign_in();
+
+        if ( null !== $redirect ) {
+            wp_safe_redirect( $redirect );
+            exit;
+        }
+    }
+
+    /**
+     * Log in from the posted login form (`$_POST`: the classic form, or the
+     * React form's fields put there by the REST route), with every check and
+     * hook of the classic handler.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string|null Where to go after logging in; null on failure (get_errors())
+     */
+    public function sign_in() {
         // unset the specific cookie to fix WooCommerce Stripe Gateway plugin conflict
         add_action( 'set_logged_in_cookie', [ $this, 'unset_logged_in_cookie' ], 11 );
 
         $creds = [];
 
-        $nonce = sanitize_key( wp_unslash( $_POST['wpuf-login-nonce'] ) );
+        $nonce = isset( $_POST['wpuf-login-nonce'] ) ? sanitize_key( wp_unslash( $_POST['wpuf-login-nonce'] ) ) : '';
 
-        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
-            $this->login_errors[] = __( 'Nonce is invalid', 'wp-user-frontend' );
+        if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+            $this->login_errors[] = __( 'Your session has expired. Please reload the page and try again.', 'wp-user-frontend' );
 
-            return;
+            return null;
         }
 
         $log = isset( $_POST['log'] ) ? sanitize_text_field( wp_unslash( $_POST['log'] ) ) : '';
@@ -538,7 +702,8 @@ class Simple_Login {
                     '</strong>',
                     $errors
                 );
-            '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Cloudflare Turnstile verification failed. Reasons: [', 'wp-user-frontend' );
+
+            return null;
         }
 
         $validation_error = new WP_Error();
@@ -547,25 +712,31 @@ class Simple_Login {
         if ( $validation_error->get_error_code() ) {
             $this->login_errors[] = $validation_error->get_error_message();
 
-            return;
+            return null;
         }
 
         if ( empty( $log ) ) {
             $this->login_errors[] = __( 'Username is required.', 'wp-user-frontend' );
 
-            return;
+            return null;
         }
 
         if ( empty( $pwd ) ) {
             $this->login_errors[] = __( 'Password is required.', 'wp-user-frontend' );
 
-            return;
+            return null;
         }
 
-        if ( isset( $_POST['g-recaptcha-response'] ) ) {
+        // The login forms print reCAPTCHA when it is on, so a request without
+        // the token skipped it (the REST route makes that a plain JSON POST).
+        $recaptcha_on = 'on' === wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' )
+            && '' !== (string) wpuf_get_option( 'recaptcha_public', 'wpuf_general', '' )
+            && '' !== (string) wpuf_get_option( 'recaptcha_private', 'wpuf_general', '' );
+
+        if ( isset( $_POST['g-recaptcha-response'] ) || $recaptcha_on ) {
             if ( empty( $_POST['g-recaptcha-response'] ) ) {
                 $this->login_errors[] = __( 'Empty reCaptcha Field', 'wp-user-frontend' );
-                return;
+                return null;
             } else {
                 $no_captcha = 1;
                 $invisible_captcha = 0;
@@ -579,9 +750,9 @@ class Simple_Login {
             if ( isset( $user->user_login ) ) {
                 $creds['user_login'] = $user->user_login;
             } else {
-                $this->login_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wp-user-frontend' );
+                $this->login_errors[] = $this->wrong_credentials_message();
 
-                return;
+                return null;
             }
         } else {
             $creds['user_login'] = $log;
@@ -594,8 +765,11 @@ class Simple_Login {
             $validate = wp_authenticate_email_password( null, trim( $log ), $creds['user_password'] );
 
             if ( is_wp_error( $validate ) ) {
-                $this->login_errors[] = $validate->get_error_message();
-                return;
+                $this->login_errors[] = in_array( $validate->get_error_code(), [ 'invalid_username', 'invalid_email', 'incorrect_password' ], true )
+                    ? $this->wrong_credentials_message()
+                    : $validate->get_error_message();
+
+                return null;
             }
         }
 
@@ -611,14 +785,17 @@ class Simple_Login {
         }
 
         if ( is_wp_error( $user ) ) {
-            $this->login_errors[] = $user->get_error_message();
+            // A wrong username, email or password: one message, so the form does not tell
+            // which accounts exist (WordPress' own text names the user and links lost
+            // password, which the form already has). Other errors keep their text.
+            $this->login_errors[] = in_array( $user->get_error_code(), [ 'invalid_username', 'invalid_email', 'incorrect_password' ], true )
+                ? $this->wrong_credentials_message()
+                : $user->get_error_message();
 
-            return;
-        } else {
-            $redirect = $this->login_redirect();
-            wp_safe_redirect( apply_filters( 'wpuf_login_redirect', $redirect, $user ) );
-            exit;
+            return null;
         }
+
+        return apply_filters( 'wpuf_login_redirect', $this->login_redirect(), $user );
     }
 
     /**
@@ -727,6 +904,7 @@ class Simple_Login {
      * @return void
      */
     public function process_reset_password() {
+        // phpcs:disable WordPress.Security.NonceVerification.Missing -- routing only; request_reset() and apply_reset() verify the nonces.
         if ( ! isset( $_POST['wpuf_reset_password'] ) ) {
             return;
         }
@@ -738,75 +916,183 @@ class Simple_Login {
 
         // process lost password form
         if ( isset( $_POST['user_login'] ) && isset( $_POST['_wpnonce'] ) ) {
-            $nonce = ! empty( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
-
-            if ( ! empty( $nonce) && ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
-                return ;
-            }
-
-            if ( $this->retrieve_password() ) {
-                $url = add_query_arg(
-                    [
-                        'action' => 'lostpassword',
-                        'checkemail' => 'confirm',
-                    ], $this->get_login_url()
-                );
-                wp_redirect( $url );
+            // phpcs:enable WordPress.Security.NonceVerification.Missing
+            if ( $this->request_reset() ) {
+                wp_redirect( $this->reset_requested_url() );
                 exit;
             }
+
+            return;
         }
 
         // process reset password form
-        if ( isset( $_POST['pass1'] ) && isset( $_POST['pass2'] ) && isset( $_POST['key'] ) && isset( $_POST['login'] ) && isset( $_POST['_wpnonce'] ) ) {
-            $pass1 = sanitize_text_field( wp_unslash( $_POST['pass1'] ) );
-            $pass2 = sanitize_text_field( wp_unslash( $_POST['pass2'] ) );
-            $key = sanitize_text_field( wp_unslash( $_POST['key'] ) );
-            $login = sanitize_text_field( wp_unslash( $_POST['login'] ) );
-            $nonce = sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) );
+        $redirect = $this->apply_reset();
 
-            // verify reset key again
-            $user = check_password_reset_key( $key, $login );
-
-            if ( $user instanceof WP_User ) {
-
-                // save these values into the form again in case of errors
-                $args['key']   = $key;
-                $args['login'] = $login;
-
-                if ( empty( $pass1 ) || empty( $pass2 ) ) {
-                    $this->login_errors[] = __( 'Please enter your password.', 'wp-user-frontend' );
-
-                    return;
-                }
-
-                if ( $pass1 !== $pass2 ) {
-                    $this->login_errors[] = __( 'Passwords do not match.', 'wp-user-frontend' );
-
-                    return;
-                }
-
-                $errors = new WP_Error();
-
-                do_action( 'validate_password_reset', $errors, $user );
-
-                if ( $errors->get_error_messages() ) {
-                    foreach ( $errors->get_error_messages() as $error ) {
-                        $this->login_errors[] = $error;
-                    }
-
-                    return;
-                }
-
-                if ( ! $this->login_errors ) {
-                    $this->reset_password( $user, $pass1 );
-
-                    do_action( 'wpuf_customer_reset_password', $user );
-
-                    wp_redirect( add_query_arg( 'reset', 'true', remove_query_arg( [ 'key', 'login' ] ) ) );
-                    exit;
-                }
-            }
+        if ( null !== $redirect ) {
+            wp_redirect( $redirect );
+            exit;
         }
+    }
+
+    /**
+     * The lost password page after a reset link was requested.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string
+     */
+    public function reset_requested_url() {
+        return add_query_arg(
+            [
+                'action'     => 'lostpassword',
+                'checkemail' => 'confirm',
+            ],
+            $this->get_login_url()
+        );
+    }
+
+    /**
+     * Send a reset link for the posted username / email (`$_POST`: user_login,
+     * _wpnonce `wpuf_lost_pass`).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool True when the request is done (also for an unknown account:
+     *              the answer does not tell which accounts exist); false with get_errors()
+     */
+    public function request_reset() {
+        $nonce = ! empty( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+
+        if ( ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
+            $this->login_errors[] = __( 'Your session has expired. Please reload the page and try again.', 'wp-user-frontend' );
+
+            return false;
+        }
+
+        return (bool) $this->retrieve_password();
+    }
+
+    /**
+     * Set the new password from the posted reset form (`$_POST`: pass1, pass2,
+     * key, login, _wpnonce).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string|null The login page with the "reset" notice; null on failure (get_errors())
+     */
+    public function apply_reset() {
+        $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+
+        if ( ! wp_verify_nonce( $nonce, 'wpuf_reset_pass' ) ) {
+            $this->login_errors[] = __( 'Your session has expired. Please reload the page and try again.', 'wp-user-frontend' );
+
+            return null;
+        }
+
+        if ( ! isset( $_POST['pass1'], $_POST['pass2'], $_POST['key'], $_POST['login'] ) ) {
+            return null;
+        }
+
+        $pass1 = sanitize_text_field( wp_unslash( $_POST['pass1'] ) );
+        $pass2 = sanitize_text_field( wp_unslash( $_POST['pass2'] ) );
+        $key   = sanitize_text_field( wp_unslash( $_POST['key'] ) );
+        $login = sanitize_text_field( wp_unslash( $_POST['login'] ) );
+
+        // verify reset key again
+        $user = check_password_reset_key( $key, $login );
+
+        if ( ! $user instanceof WP_User ) {
+            $this->login_errors[] = $this->invalid_key_message();
+
+            return null;
+        }
+
+        if ( empty( $pass1 ) || empty( $pass2 ) ) {
+            $this->login_errors[] = __( 'Please enter your password.', 'wp-user-frontend' );
+
+            return null;
+        }
+
+        if ( $pass1 !== $pass2 ) {
+            $this->login_errors[] = __( 'Passwords do not match.', 'wp-user-frontend' );
+
+            return null;
+        }
+
+        $errors = new WP_Error();
+
+        do_action( 'validate_password_reset', $errors, $user );
+
+        if ( $errors->get_error_messages() ) {
+            foreach ( $errors->get_error_messages() as $error ) {
+                $this->login_errors[] = $error;
+            }
+
+            return null;
+        }
+
+        $this->reset_password( $user, $pass1 );
+
+        do_action( 'wpuf_customer_reset_password', $user );
+
+        return add_query_arg(
+            [
+                'action' => 'rp',
+                'reset'  => 'true',
+            ],
+            $this->get_login_url()
+        );
+    }
+
+    /**
+     * Whether the reset link of this request (`key`, `login`) is valid.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    public static function reset_key_is_valid() {
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only check of the link.
+        $key   = isset( $_GET['key'] ) ? sanitize_text_field( wp_unslash( $_GET['key'] ) ) : '';
+        $login = isset( $_GET['login'] ) ? sanitize_text_field( wp_unslash( $_GET['login'] ) ) : '';
+        // phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+        return '' !== $key && '' !== $login && check_password_reset_key( $key, $login ) instanceof WP_User;
+    }
+
+    /**
+     * The message for an invalid or expired reset link.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string
+     */
+    public function invalid_key_message() {
+        return __( 'This password reset link is invalid or has expired. Please request a new one.', 'wp-user-frontend' );
+    }
+
+    /**
+     * Forget the errors and messages collected so far (a REST call handles
+     * one form; the handler is shared).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function clear_errors() {
+        $this->login_errors = [];
+        $this->messages     = [];
+    }
+
+    /**
+     * The errors of this request's login / reset (after `wpuf_login_errors`).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string[]
+     */
+    public function get_errors() {
+        return array_values( (array) apply_filters( 'wpuf_login_errors', $this->login_errors ) );
     }
 
     /**
@@ -835,9 +1121,8 @@ class Simple_Login {
             $user_data = get_user_by( 'email', trim( $user_login ) );
 
             if ( empty( $user_data ) ) {
-                $this->login_errors[] = __( 'There is no user registered with that email address.', 'wp-user-frontend' );
-
-                return;
+                // No account: the same answer as for one, so the form does not tell which exist.
+                return true;
             }
         } else {
             $login = trim( $user_login );
@@ -852,9 +1137,7 @@ class Simple_Login {
         }
 
         if ( ! $user_data ) {
-            $this->login_errors[] = __( 'Invalid username or e-mail.', 'wp-user-frontend' );
-
-            return false;
+            return true;
         }
 
         // redefining user_login ensures we return the right case in the email
@@ -882,9 +1165,7 @@ class Simple_Login {
         }
 
         // Send email notification
-        $this->email_reset_pass( $user_login, $user_email, $key );
-
-        return true;
+        return false !== $this->email_reset_pass( $user_login, $user_email, $key );
     }
 
     /**
@@ -961,7 +1242,11 @@ class Simple_Login {
 
         $message = __( 'Your account has been activated', 'wp-user-frontend' );
 
-        if ( $wpuf_user_status !== 'approved' ) {
+        // Only a form with "Required Approval After Registration" stores a
+        // status (pending, then approved or denied); an empty one needs none.
+        $awaits_approval = in_array( $wpuf_user_status, [ 'pending', 'denied' ], true );
+
+        if ( $awaits_approval ) {
             $message = __( "Your account has been verified , but you can't login until manually approved your account by an administrator.", 'wp-user-frontend' );
         }
 
@@ -1004,7 +1289,8 @@ class Simple_Login {
         $autologin_after_registration = wpuf_get_option( 'autologin_after_registration', 'wpuf_profile', 'on' );
         $pack_id                      = ! empty( $_GET['pack_id'] ) ? sanitize_key( wp_unslash( $_GET['pack_id'] ) ) : '';
 
-        if ( $autologin_after_registration === 'on'
+        // Never log in an account that still waits for (or was refused) approval.
+        if ( $autologin_after_registration === 'on' && ! $awaits_approval
              && $pack_id !== null && is_integer( (int) $pack_id ) ) {
             wp_set_current_user( $user_id );
             wp_set_auth_cookie( $user_id );
@@ -1106,8 +1392,14 @@ class Simple_Login {
         $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
 
         if ( $message && ! wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
-            wp_die( esc_html( __( 'The e-mail could not be sent.', 'wp-user-frontend' ) ) . "<br />\n" . esc_html( __( 'Possible reason: your host may have disabled the mail() function.', 'wp-user-frontend' ) ) );
+            // The reason (mail setup) is for the site owner: logged; the visitor gets a notice in the form.
+            \WP_User_Frontend::log( 'password-reset', 'The password reset e-mail could not be sent to user ' . $user_login . ' (wp_mail() failed).' );
+            $this->login_errors[] = __( 'We could not send the e-mail right now. Please try again later or contact the site administrator.', 'wp-user-frontend' );
+
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -1137,6 +1429,24 @@ class Simple_Login {
      *
      * @return void
      */
+    /**
+     * The message for a login with a wrong username, email or password.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string
+     */
+    private function wrong_credentials_message() {
+        /**
+         * Filters the message of a login with wrong credentials.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param string $message Message
+         */
+        return apply_filters( 'wpuf_login_wrong_credentials_message', __( 'The username/email or password is incorrect. Please try again.', 'wp-user-frontend' ) );
+    }
+
     public function show_errors() {
         $errors = apply_filters( 'wpuf_login_errors', $this->login_errors );
         if ( $errors ) {

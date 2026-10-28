@@ -18,5 +18,8 @@
     "../../plugins/wc-vendors",
     "../../plugins/wc-multivendor-membership",
     "../../plugins/mailpoet"
-  ]
+  ],
+  "mappings": {
+    "wp-content/mu-plugins/wpuf-ai-mock.php": "./wp/wpuf-ai-mock.php"
+  }
 }

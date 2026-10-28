@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf\Admin\Forms;
 
+use WeDevs\Wpuf\Platform\Stores\Stores;
 use WP_Error;
 use WP_Post;
 use WP_Query;
@@ -77,28 +78,16 @@ class Form_Manager {
      * @return int|WP_Error
      */
     public function create( $form_name, $fields = [] ) {
-        $form_id = wp_insert_post( [
-            'post_title'  => $form_name,
-            'post_type'   => 'wpuf_forms',
-            'post_status' => 'publish',
-        ] );
-        if ( is_wp_error( $form_id ) ) {
-            return $form_id;
-        }
-        if ( $fields ) {
-            foreach ( $fields as $order => $field ) {
-                $args = [
-                    'post_type'    => 'wpuf_input',
-                    'post_parent'  => $form_id,
-                    'post_status'  => 'publish',
-                    'post_content' => maybe_serialize( wp_unslash( $field ) ),
-                    'menu_order'   => $order,
-                ];
-                wp_insert_post( $args );
-            }
-        }
-
-        return $form_id;
+        // Forwards to the form store (task 2.4a): post, then fields (unslashed);
+        // no settings or version meta, as before.
+        return Stores::forms()->create(
+            [
+                'post_title' => $form_name,
+                'post_type'  => 'wpuf_forms',
+                'fields'     => $fields ? $fields : [],
+                'version'    => false,
+            ]
+        );
     }
 
     /**
@@ -110,13 +99,7 @@ class Form_Manager {
      * @return void
      */
     public function delete( $form_id, $force = true ) {
-        global $wpdb;
-        wp_delete_post( $form_id, $force );
-        // delete form inputs as WP doesn't know the relationship
-        $wpdb->delete( $wpdb->posts, [
-            'post_parent' => $form_id,
-            'post_type'   => 'wpuf_input',
-        ] );
+        Stores::forms()->delete( $form_id, $force );
     }
 
     /**
@@ -127,6 +110,6 @@ class Form_Manager {
      * @return int New duplicated form id
      */
     public function duplicate( $_form_id ) {
-        return wpuf_duplicate_form( $_form_id );
+        return Stores::forms()->duplicate( $_form_id );
     }
 }

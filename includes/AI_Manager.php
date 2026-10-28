@@ -16,13 +16,6 @@ use WeDevs\Wpuf\AI\FormGenerator;
 class AI_Manager {
 
     /**
-     * REST Controller instance
-     *
-     * @var RestController
-     */
-    private $rest_controller;
-
-    /**
      * Form Generator instance
      *
      * @var FormGenerator
@@ -42,9 +35,9 @@ class AI_Manager {
      * Initialize hooks
      */
     private function init_hooks() {
-        add_action( 'rest_api_init', [ $this, 'init_rest_api' ] );
-        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ] );
+        // The REST routes register through the platform (Platform\Providers\AiServiceProvider, REST\Manager).
+        // The React AI form builder screen localizes its own `wpufAIFormBuilder`
+        // (Admin\Screens\AiFormBuilder); the Vue builder's copies are gone.
     }
 
     /**
@@ -53,135 +46,42 @@ class AI_Manager {
     private function init_classes() {
         // Initialize Form Generator
         $this->form_generator = new FormGenerator();
-
-        // Initialize REST Controller
-        $this->rest_controller = new RestController();
     }
 
     /**
      * Initialize REST API
+     *
+     * @since WPUF_SINCE No longer hooked: REST\Manager registers the same
+     *                   controller (AiServiceProvider). Kept for direct callers.
      */
     public function init_rest_api() {
         // Register REST API routes for AI form builder
-        $this->rest_controller->register_routes();
+        $this->get_rest_controller()->register_routes();
     }
 
     /**
-     * Enqueue frontend scripts
-     */
-    public function enqueue_scripts() {
-        // Safe fetch of AI settings
-        $wpuf_ai = get_option( 'wpuf_ai', [] );
-
-        // Localize the data for Vue components to the main form builder script
-        wp_localize_script(
-            'wpuf-form-builder-mixins',
-            'wpufAIFormBuilder',
-            [
-                'rest_url'    => get_rest_url( null, '/' ),
-                'nonce'       => wp_create_nonce( 'wp_rest' ),
-                'provider'    => $wpuf_ai['ai_provider'] ?? 'openai',
-                'temperature' => $wpuf_ai['temperature'] ?? 0.7,
-                'maxTokens'   => $wpuf_ai['max_tokens'] ?? 2000,
-                'assetUrl'    => WPUF_ASSET_URI,
-                'isProActive' => class_exists( 'WP_User_Frontend_Pro' ),
-                'strings'     => [
-                    'generating' => __( 'Generating form...', 'wp-user-frontend' ),
-                    'error'      => __( 'Error occurred while generating form', 'wp-user-frontend' ),
-                    'success'    => __( 'Form generated successfully', 'wp-user-frontend' ),
-                ],
-            ]
-        );
-    }
-
-    /**
-     * Enqueue admin scripts
-     */
-    public function enqueue_admin_scripts( $hook ) {
-        // Fetch AI settings once and cast to array to avoid "array offset on bool" notices
-        $wpuf_ai = (array) get_option( 'wpuf_ai', [] );
-
-        // Get provider with fallback
-        $provider = $wpuf_ai['ai_provider'] ?? 'openai';
-
-        // Check if API key is available
-        $has_api_key = ! empty( $wpuf_ai['ai_api_key'] );
-
-        // Determine form type based on current admin page
-        $form_type = 'post'; // Default to post
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only screen detection, no state change.
-        if ( isset( $_GET['page'] ) ) {
-            $page = sanitize_text_field( wp_unslash( $_GET['page'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-            if ( 'wpuf-profile-forms' === $page ) {
-                $form_type = 'profile';
-            } elseif ( 'wpuf-post-forms' === $page ) {
-                $form_type = 'post';
-            }
-        }
-
-        $localization_data = [
-            'rest_url'              => get_rest_url( null, '/' ),
-            'nonce'                 => wp_create_nonce( 'wp_rest' ),
-            'ajaxUrl'               => admin_url( 'admin-ajax.php' ),
-            'provider'              => $provider,
-            'hasApiKey'             => $has_api_key,
-            'formType'              => $form_type,
-            'isProActive'           => class_exists( 'WP_User_Frontend_Pro' ),
-            'promptTemplates'       => $this->get_all_prompt_templates(),
-            'promptAIInstructions'  => $this->get_all_prompt_ai_instructions(),
-            'strings'               => [
-                'testConnection'    => __( 'Test Connection', 'wp-user-frontend' ),
-                'connectionSuccess' => __( 'Connection successful', 'wp-user-frontend' ),
-                'connectionFailed'  => __( 'Connection failed', 'wp-user-frontend' ),
-            ],
-        ];
-
-        // Localize to the main form builder script
-        wp_localize_script( 'wpuf-form-builder-mixins', 'wpufAIFormBuilder', $localization_data );
-
-        // Also add a fallback by injecting directly into the page
-        if ( $this->is_ai_form_builder_admin_page( $hook ) ) {
-            add_action(
-                'admin_footer',
-                function () use ( $localization_data ) {
-                    echo '<script type="text/javascript">';
-                    echo 'window.wpufAIFormBuilder = ' . wp_json_encode( $localization_data ) . ';';
-                    echo '</script>';
-                }
-            );
-        }
-    }
-
-    /**
-     * Check if current admin page should load AI form builder assets
+     * Localized `wpufAIFormBuilder` onto the Vue builder's script on every
+     * frontend page. Nothing reads it there; no longer hooked, kept for callers.
      *
-     * @param string $hook Current admin page hook
-     * @return bool
+     * @since 4.2.1
+     * @since WPUF_SINCE Does nothing.
+     *
+     * @return void
      */
-    private function is_ai_form_builder_admin_page( $hook ) {
-        // Check if we're on form builder admin pages
-        $ai_pages = [
-            'wpuf-post-forms', // Forms page
-            'wpuf_page_wpuf-post-forms', // Forms page variations
-            'toplevel_page_wpuf-post-forms',
-        ];
+    public function enqueue_scripts() {}
 
-        // Check by hook suffix
-        if ( in_array( $hook, $ai_pages, true ) ) {
-            return true;
-        }
-
-        // Check by page parameter
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only screen detection, no state change.
-        if ( isset( $_GET['page'] ) ) {
-            $page = sanitize_text_field( wp_unslash( $_GET['page'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-            if ( strpos( $page, 'wpuf' ) !== false ) {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    /**
+     * Localized `wpufAIFormBuilder` for the Vue form builder. The React AI form
+     * builder screen localizes its own copy; no longer hooked, kept for callers.
+     *
+     * @since 4.2.1
+     * @since WPUF_SINCE Does nothing.
+     *
+     * @param string $hook Admin page hook.
+     *
+     * @return void
+     */
+    public function enqueue_admin_scripts( $hook = '' ) {}
 
     /**
      * Get AI settings
@@ -189,14 +89,14 @@ class AI_Manager {
      * @return array
      */
     public function get_ai_settings() {
-        $settings = get_option( 'wpuf_ai', [] );
+        $status = wpuf()->platform()->get( \WeDevs\Wpuf\AI\Services\Provider_Settings::class )->status();
 
         return [
-            'provider'   => $settings['ai_provider'] ?? 'openai',
-            'model'      => $settings['ai_model'] ?? 'gpt-3.5-turbo',
-            'temperature' => isset( $settings['temperature'] ) ? floatval( $settings['temperature'] ) : 0.7,
-            'max_tokens' => isset( $settings['max_tokens'] ) ? intval( $settings['max_tokens'] ) : 2000,
-            'has_api_key' => ! empty( $settings['ai_api_key'] ),
+            'provider'    => '' !== $status['provider'] ? $status['provider'] : 'openai',
+            'model'       => '' !== $status['model'] ? $status['model'] : 'gpt-3.5-turbo',
+            'temperature' => $status['temperature'],
+            'max_tokens'  => $status['max_tokens'],
+            'has_api_key' => $status['has_api_key'],
         ];
     }
 
@@ -227,7 +127,8 @@ class AI_Manager {
      * @return RestController
      */
     public function get_rest_controller() {
-        return $this->rest_controller;
+        // The platform builds it with its services (AiServiceProvider).
+        return wpuf()->platform()->get( RestController::class );
     }
 
     /**

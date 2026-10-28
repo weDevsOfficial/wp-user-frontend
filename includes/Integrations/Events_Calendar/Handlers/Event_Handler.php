@@ -53,15 +53,4 @@ class Event_Handler {
         // All the complex logic is handled by TEC_V5_Compatibility or TEC_V6_Compatibility
         return $compatibility_handler->save_event( $postarr, $meta_vars, $form_id, $form_settings );
     }
-
-    /**
-     * Get the compatibility manager instance
-     *
-     * @since 4.1.9
-     *
-     * @return TEC_Compatibility_Manager
-     */
-    public function get_compatibility_manager() {
-        return $this->compatibility_manager;
-    }
 }

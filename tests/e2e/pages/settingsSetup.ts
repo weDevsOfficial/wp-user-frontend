@@ -4,6 +4,7 @@ import { expect, type Page, type Dialog } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls, Users } from '../utils/testData';
 import { Base } from './base';
+import { OnboardingPage } from './onboarding';
 import { waitForSiteReady } from '../utils/siteReady';
 import { clearSavedSession } from '../utils/authSession';
 import { wpufPageSlug } from '../utils/wpufPages';
@@ -12,6 +13,76 @@ export class SettingsSetupPage extends Base {
     constructor(page: Page) {
         super(page);
 
+    }
+
+    // Settings are written through the React screen's REST route (wpuf/v1/settings),
+    // with wp.apiFetch on the admin page (its nonce, the same sanitising store as the
+    // screen's Save). The classic settings screen is gone.
+    private settingsCache: any = null;
+
+    async settingsPayload(fresh = false): Promise<any> {
+        if (!fresh && this.settingsCache) {
+            return this.settingsCache;
+        }
+        if (!this.page.url().includes('/wp-admin/')) {
+            await this.navigateToURL(this.wpufSettingsPage);
+        }
+        await this.page.waitForFunction(() => !!(window as any).wp?.apiFetch);
+        const res = await this.page.evaluate(() => (window as any).wp.apiFetch({ path: '/wpuf/v1/settings' }));
+        this.settingsCache = res.data;
+        return this.settingsCache;
+    }
+
+    // A field by its label (or description, for checkboxes labelled by their desc).
+    async settingsField(label: string, section?: string): Promise<{ section: string; name: string; field: any }> {
+        const data = await this.settingsPayload();
+        const clean = (t: any) => String(t || '').replace(/<[^>]*>/g, '').trim();
+        for (const sid of Object.keys(data.fields || {})) {
+            if (section && sid !== section) {
+                continue;
+            }
+            for (const field of data.fields[sid] || []) {
+                if (clean(field.label) === label || clean(field.desc) === label) {
+                    return { section: sid, name: field.name, field };
+                }
+            }
+        }
+        throw new Error(`Settings field not found: ${label}`);
+    }
+
+    // The stored key of an option by its label (select / radio options).
+    optionKey(field: any, label: string): string {
+        const options = field.options || {};
+        const entries = Array.isArray(options) ? options.map((o: any) => [o.value, o.label]) : Object.entries(options).map(([k, v]: any) => [k, typeof v === 'object' ? v.label : v]);
+        const hit = entries.find(([, l]: any) => String(l).trim() === label);
+        if (!hit) {
+            throw new Error(`Option "${label}" not found in ${field.name}`);
+        }
+        return String(hit[0]);
+    }
+
+    async saveSettings(settings: Record<string, Record<string, any>>) {
+        await this.settingsPayload();
+        const res = await this.page.evaluate((body) => (window as any).wp.apiFetch({ path: '/wpuf/v1/settings', method: 'POST', data: { settings: body } }), settings);
+        expect(res.success).toBeTruthy();
+        this.settingsCache = null;
+        return res;
+    }
+
+    async settingValue(section: string, name: string): Promise<any> {
+        const data = await this.settingsPayload(true);
+        return (data.values[section] || {})[name];
+    }
+
+    // Set fields by label: { 'Login Page': value } with option labels resolved.
+    async setSettingsByLabel(values: Record<string, { value: any; option?: boolean; section?: string }>) {
+        const body: Record<string, Record<string, any>> = {};
+        for (const [label, spec] of Object.entries(values)) {
+            const { section, name, field } = await this.settingsField(label, spec.section);
+            body[section] = body[section] || {};
+            body[section][name] = spec.option ? this.optionKey(field, String(spec.value)) : spec.value;
+        }
+        return this.saveSettings(body);
     }
 
 
@@ -30,8 +101,43 @@ export class SettingsSetupPage extends Base {
             await this.validateAndClick(Selectors.settingsSetup.wpufSetup.clickWPUFSetupLetsGo);
             await this.validateAndClick(Selectors.settingsSetup.wpufSetup.clickWPUFSetupContinue);
             await this.validateAndClick(Selectors.settingsSetup.wpufSetup.clickWPUFSetupEnd);
+            return;
         }
 
+        // The old setup wizard is retired: its URL opens the onboarding wizard,
+        // which installs the pages and the sample forms the suite relies on.
+        await this.completeOnboarding();
+    }
+
+    // Walk the onboarding wizard (React app route #/onboarding/:step): every
+    // feature, no post form template (the page installer then builds the
+    // "Sample Form" the suite uses), pages installed, no extra plugins.
+    async completeOnboarding() {
+        const onboarding = new OnboardingPage(this.page);
+        const stepOf = () => (this.page.url().match(/#\/onboarding\/([a-z_]+)/) || [])[1] || '';
+
+        await onboarding.gotoWizard();
+
+        for (let i = 0; i < 10; i++) {
+            const step = stepOf();
+            if (!step || 'ready' === step) {
+                break;
+            }
+            if ('plugins' === step) {
+                // Other weDevs plugins are not part of this suite.
+                await onboarding.skipStep();
+            } else {
+                if ('post_form' === step) {
+                    await this.page.locator('#wpuf-onboarding-template').click();
+                    await this.page.getByRole('option', { name: 'Do not create a form' }).click();
+                }
+                if ('common' === step) {
+                    await onboarding.setCommonOptions({ installPages: true });
+                }
+                await onboarding.continueStep();
+            }
+            await expect.poll(stepOf, { timeout: 30000 }).not.toBe(step);
+        }
     }
 
 
@@ -347,9 +453,10 @@ export class SettingsSetupPage extends Base {
         }
         await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
 
-        // Already activated? The key input renders readonly with a masked value and
-        // "Activations Remaining" is shown. Filling it then blocks until the test
-        // timeout ("element is not editable"), so short-circuit instead.
+        // Already activated? The React License page shows the "Active" status pill
+        // and no key input, so filling would block until the test timeout:
+        // wait for the page to render, then short-circuit.
+        await this.page.locator(Selectors.settingsSetup.pluginStatusCheck.licenseStatus).first().waitFor({ timeout: 30000 });
         const alreadyActivated = await this.page
             .locator(Selectors.settingsSetup.pluginStatusCheck.activationRemaining)
             .first()
@@ -424,139 +531,44 @@ export class SettingsSetupPage extends Base {
 
     //Change Settings - Login Page
     async changeSettingsSetLoginPageDefault() {
-        // Go to post forms page
-        await this.navigateToURL(this.wpufPostFormPage);
-
-        // Wait for form list to load and click on the form
-        try {
-            //Change Settings
-            await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
-        } catch (error) {
-            await this.navigateToURL(this.wpufPostFormPage);
-            //Change Settings
-            await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
-        }
-        await this.page.reload();
-        //Validate Login/Registration
-        await this.assertionValidate(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile1);
-        //Click Login/Registration
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile2);
-        //Set Login Page to default
-        expect(await this.page.waitForSelector(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage)).toBeTruthy();
-        //Again - Click Login/Registration
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile2);
-        await this.page.locator(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage).selectOption({ index: 0 });
-        //Save Login/Registration
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
-
-
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPosting);
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.showCustomFields);
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPostingSave);
-
-
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccount);
-        await this.page.waitForTimeout(200);
-        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountPage, 'Account');
-
-        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountActiveTab, 'Dashboard');
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountSave);
-
-
+        // Login page back to "-- Select --", custom fields shown on the post, the
+        // account page on "Account" with the Dashboard tab active.
+        await this.navigateToURL(this.wpufSettingsPage);
+        const login = await this.settingsField('Login Page', 'wpuf_profile');
+        // "-- Select --" is the '' key; JS lists integer keys (page ids) before it.
+        const loginOptions = login.field.options || {};
+        const firstLogin = '' in loginOptions ? '' : (Object.keys(loginOptions)[0] ?? '');
+        const custom = await this.settingsField('Show custom fields on post content area');
+        await this.saveSettings({
+            wpuf_profile: { [login.name]: firstLogin },
+            [custom.section]: { [custom.name]: 'on' },
+        });
+        await this.setSettingsByLabel({
+            'Account Page': { value: 'Account', option: true, section: 'wpuf_my_account' },
+            'Active Tab': { value: 'Dashboard', option: true, section: 'wpuf_my_account' },
+        });
     }
+
 
     async changeSettingsSetEditProfilePageDefault(label: string) {
-        await this.navigateToURL(this.wpufRegFormPage);
-        await this.page.reload();
-
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
-
-
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccount);
-        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabEditProfile, `${label}`);
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountSave);
+        await this.navigateToURL(this.wpufSettingsPage);
+        const field = await this.settingsField('Profile Form', 'wpuf_my_account').catch(() => this.settingsField('Edit Profile Form', 'wpuf_my_account'));
+        await this.saveSettings({ wpuf_my_account: { [field.name]: this.optionKey(field.field, label) } });
     }
 
 
-    /*********************************************************/
-    /******* @Change WPUF-Settings > Reset page *************/
-    /*******************************************************/
-
-    //Change Settings - Login Page
     async changeSettingsSetDefaultPostForm(postFormPresetFrontEndTitle: string) {
-        // Go to post forms page
-        await this.navigateToURL(this.wpufPostFormPage);
-
-        // Wait for form list to load and click on the form
-        try {
-            //Change Settings
-            await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
-        } catch (error) {
-            await this.navigateToURL(this.wpufPostFormPage);
-            //Change Settings
-            await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
-        }
-
-        //Change Settings
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
-        await this.page.reload();
-        //Click Frontend Posting
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPosting);
-        //Set Default Post Form 
-        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.setDefaultPostForm, postFormPresetFrontEndTitle);
-        //Save FrontEnd Posting
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPostingSave);
-
-        await this.page.waitForLoadState('domcontentloaded');
+        await this.navigateToURL(this.wpufSettingsPage);
+        await this.setSettingsByLabel({ 'Default Post Form': { value: postFormPresetFrontEndTitle, option: true, section: 'wpuf_frontend_posting' } });
     }
 
 
-
-
-    /*********************************************************/
-    /******* @Change WPUF-Settings > Registration ***********/
-    /*******************************************************/
-
-    //Change Settings - Registration Page
     async changeSettingsSetRegistrationPage(registrationFormPageTitle: string) {
-        // Go to post forms page
-        await this.navigateToURL(this.wpufPostFormPage);
-
-        // Wait for form list to load and click on the form
-        try {
-            //Change Settings
-            await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
-        } catch (error) {
-            await this.navigateToURL(this.wpufPostFormPage);
-            //Change Settings
-            await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
-        }
-
-        //Change Settings
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
-        await this.page.reload();
-        //Validate Login/Registration
-        await this.assertionValidate(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile1);
-        //Click Login/Registration
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile2);
-        //Set Registration Page Form
-        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileRegistrationPage, registrationFormPageTitle);
-        //Save Login/Registration
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
-
-        await this.page.waitForLoadState('domcontentloaded');
-
+        await this.navigateToURL(this.wpufSettingsPage);
+        await this.setSettingsByLabel({ 'Registration Page': { value: registrationFormPageTitle, option: true, section: 'wpuf_profile' } });
     }
 
 
-
-
-
-    /********************************************/
-    /************ @Set Permalink ***************/
-    /******************************************/
-
-    //Set Permalink
     async setPermalink() {
         //Go to Settings - Permalink page
         await this.navigateToURL(this.settingsPermalinkPage);
@@ -681,94 +693,62 @@ export class SettingsSetupPage extends Base {
     }
 
     async addGoogleMapAPIKey(googleMapAPIKey: string) {
-        //Go to Settings - General page
         await this.navigateToURL(this.wpufSettingsPage);
-
-        await this.page.reload();
-
-        await this.validateAndClick(Selectors.settingsSetup.keys.clickSettingsTabGeneral);
-        //Google Map API Key
-        await this.validateAndFillStrings(Selectors.settingsSetup.keys.fillGoogleMapAPIKey, googleMapAPIKey);
-        //Save Settings
-        await this.validateAndClick(Selectors.settingsSetup.keys.settingsTabGeneralSave);
+        await this.saveSettings({ wpuf_general: { gmap_api_key: googleMapAPIKey } });
     }
+
 
     async addReCaptchaKeys(recaptchaSiteKey: string, recaptchaSecretKey: string) {
-        //Go to Settings - General page
         await this.navigateToURL(this.wpufSettingsPage);
-
-        await this.page.reload();
-
-        await this.validateAndClick(Selectors.settingsSetup.keys.clickSettingsTabGeneral);
-        //ReCaptcha site & secret Key
-        await this.validateAndFillStrings(Selectors.settingsSetup.keys.fillReCaptchaSiteKey, recaptchaSiteKey);
-        await this.validateAndFillStrings(Selectors.settingsSetup.keys.fillReCaptchaSecretKey, recaptchaSecretKey);
-        //Save Settings
-        await this.validateAndClick(Selectors.settingsSetup.keys.settingsTabGeneralSave);
+        await this.saveSettings({ wpuf_general: { recaptcha_public: recaptchaSiteKey, recaptcha_private: recaptchaSecretKey } });
     }
+
 
     async addCloudflareTurnstileKeys(turnstileSiteKey: string, turnstileSecretKey: string) {
-        //Go to Settings - General page
         await this.navigateToURL(this.wpufSettingsPage);
-
-        await this.page.reload();
-
-        await this.validateAndClick(Selectors.settingsSetup.keys.clickSettingsTabGeneral);
-        // Cloudflare Turnstile enable
-        await this.validateAndClick(Selectors.settingsSetup.keys.enableCloudflareTurnstile);
-        // Cloudflare Turnstile site & secret Key
-        await this.validateAndFillStrings(Selectors.settingsSetup.keys.fillCloudflareTurnstileSiteKey, turnstileSiteKey);
-        await this.validateAndFillStrings(Selectors.settingsSetup.keys.fillCloudflareTurnstileSecretKey, turnstileSecretKey);
-        //Save Settings
-        await this.validateAndClick(Selectors.settingsSetup.keys.settingsTabGeneralSave);
-        // Go to Settings - Login/Registration page
-        //await this.validateAndClick(Selectors.settingsSetup.keys.clickLoginOrRegistration);
-        // Cloudflare Turnstile enable
-        //await this.validateAndClick(Selectors.settingsSetup.keys.enableCloudflareTurnstileLogin);
-        //Save Settings
-        //await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
+        await this.saveSettings({ wpuf_general: { enable_turnstile: 'on', turnstile_site_key: turnstileSiteKey, turnstile_secret_key: turnstileSecretKey } });
     }
+
+
+    // Adds a gateway to the active ones (the onboarding wizard may have turned some on already).
+    async turnOnGateway(gateway: string, extra: Record<string, any> = {}) {
+        await this.navigateToURL(this.wpufSettingsPage);
+        const active = (await this.settingValue('wpuf_payment', 'active_gateways')) || {};
+        const gateways = Array.isArray(active) ? Object.fromEntries(active.map((g: string) => [g, g])) : { ...active };
+        gateways[gateway] = gateway;
+        await this.saveSettings({ wpuf_payment: { enable_payment: 'on', active_gateways: gateways, ...extra } });
+    }
+
 
     async enablePaymentGatewayBank() {
-        //Go to Settings - General page
-        await this.navigateToURL(this.wpufSettingsPage);
-        await this.page.reload();
-        await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentTab);
-        await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentGatewayBank);
-        await this.validateAndClick(Selectors.settingsSetup.payment.enablePaymentGatewayBank);
-        await this.validateAndClick(Selectors.settingsSetup.payment.settingsTabPaymentSave);
+        await this.turnOnGateway('bank');
     }
+
 
     async enablePaymentGatewayStripe() {
-        //Go to Settings - General page
-        await this.navigateToURL(this.wpufSettingsPage);
-        await this.page.reload();
-        await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentTab);
-        await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentGatewayStripe);
-        await this.validateAndClick(Selectors.settingsSetup.payment.enablePaymentGatewayStripe);
-        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillStripePublishableKey, process.env.STRIPE_PUBLISHABLE_KEY || '');
-        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillStripeSecretKey, process.env.STRIPE_SECRET_KEY || '');
-        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillStripeSigningKey, process.env.STRIPE_SIGNING_KEY || '');
-        await this.validateAndClick(Selectors.settingsSetup.payment.settingsTabPaymentSave);
+        const keys: Record<string, any> = {};
+        for (const [label, env] of [['Stripe Publishable Key', 'STRIPE_PUBLISHABLE_KEY'], ['Stripe Secret Key', 'STRIPE_SECRET_KEY'], ['Stripe Signing Secret', 'STRIPE_SIGNING_KEY']]) {
+            const f = await this.settingsField(label, 'wpuf_payment').catch(() => null);
+            if (f) {
+                keys[f.name] = process.env[env] || '';
+            }
+        }
+        await this.turnOnGateway('stripe', keys);
     }
 
+
     async enablePaymentGatewayPaypal() {
-        //Go to Settings - General page
-        await this.navigateToURL(this.wpufSettingsPage);
-        await this.page.reload();
-        await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentTab);
-        await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentGatewayPaypal);
-        await this.validateAndClick(Selectors.settingsSetup.payment.enablePaymentGatewayPaypal);
-        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillPaypalEmail, process.env.PAYPAL_EMAIL || '');
-        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillPaypalClientId, process.env.PAYPAL_CLIENT_ID || '');
-        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillPaypalClientSecret, process.env.PAYPAL_CLIENT_SECRET || '');
-        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillPaypalWebhookId, process.env.PAYPAL_WEBHOOK_ID || '');
-        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillPaypalApiUsername, process.env.PAYPAL_API_USERNAME || '');
-        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillPaypalApiPassword, process.env.PAYPAL_API_PASSWORD || '');
-        await this.validateAndFillStrings(Selectors.settingsSetup.payment.fillPaypalApiSignature, process.env.PAYPAL_API_SIGNATURE || '');
-        await this.validateAndClick(Selectors.settingsSetup.payment.selectPaypalTest);
-        await this.validateAndClick(Selectors.settingsSetup.payment.settingsTabPaymentSave);
+        const keys: Record<string, any> = {};
+        for (const [label, env] of [['PayPal Email', 'PAYPAL_EMAIL'], ['PayPal Client ID', 'PAYPAL_CLIENT_ID'], ['PayPal Client Secret', 'PAYPAL_CLIENT_SECRET'], ['PayPal Webhook ID', 'PAYPAL_WEBHOOK_ID'], ['PayPal API username', 'PAYPAL_API_USERNAME'], ['PayPal API password', 'PAYPAL_API_PASSWORD'], ['PayPal API signature', 'PAYPAL_API_SIGNATURE']]) {
+            const f = await this.settingsField(label, 'wpuf_payment').catch(() => null);
+            if (f) {
+                keys[f.name] = process.env[env] || '';
+            }
+        }
+        keys.sandbox_mode = 'on';
+        await this.turnOnGateway('paypal', keys);
     }
+
 
     async enableModules(moduleName: string[]) {
         //Go to Settings - General page
@@ -786,6 +766,8 @@ export class SettingsSetupPage extends Base {
         //Go to Settings - General page
         await this.navigateToURL(this.wpufModulesPage);
         await this.validateAndClick(Selectors.settingsSetup.modules.clickDeactivateAll);
+        // The React page asks first (shared ConfirmDialog).
+        await this.validateAndClick(Selectors.settingsSetup.modules.confirmDeactivateAll);
         await this.page.waitForTimeout(2000);
         for (let i = 0; i < moduleName.length; i++) {
             if (moduleName[i] != '') {
@@ -803,44 +785,26 @@ export class SettingsSetupPage extends Base {
     }
 
     async enableGoogleAI() {
-        //Go to Settings - AI page
         await this.navigateToURL(this.wpufSettingsPage);
-        await this.page.reload();
-        await this.validateAndClick(Selectors.settingsSetup.AI.clickAITab);
-        await this.validateAndClick(Selectors.settingsSetup.AI.googleButton);
-        await this.validateAndFillStrings(Selectors.settingsSetup.AI.inputAPIKey, process.env.GEMINI_AI_API_KEY || '');
-        await this.validateAndClick(Selectors.settingsSetup.AI.settingsTabAISave);
+        const key = await this.settingsField('API Key', 'wpuf_ai').catch(() => ({ name: 'ai_api_key' }) as any);
+        await this.saveSettings({ wpuf_ai: { ai_provider: 'google', [key.name]: process.env.GEMINI_AI_API_KEY || '' } });
     }
+
 
     async enableOpenAI() {
-        //Go to Settings - AI page
         await this.navigateToURL(this.wpufSettingsPage);
-        await this.page.reload();
-        await this.validateAndClick(Selectors.settingsSetup.AI.clickAITab);
-        await this.validateAndClick(Selectors.settingsSetup.AI.openAIButton);
-        await this.validateAndFillStrings(Selectors.settingsSetup.AI.inputAPIKey, process.env.OPEN_AI_API_KEY || '');
-        await this.validateAndClick(Selectors.settingsSetup.AI.settingsTabAISave);
+        const key = await this.settingsField('API Key', 'wpuf_ai').catch(() => ({ name: 'ai_api_key' }) as any);
+        await this.saveSettings({ wpuf_ai: { ai_provider: 'openai', [key.name]: process.env.OPEN_AI_API_KEY || '' } });
     }
+
 
     async enableAnthropicAI() {
-        //Go to Settings - AI page
         await this.navigateToURL(this.wpufSettingsPage);
-        await this.page.reload();
-        await this.validateAndClick(Selectors.settingsSetup.AI.clickAITab);
-        await this.validateAndClick(Selectors.settingsSetup.AI.anthropicButton);
-        await this.validateAndFillStrings(Selectors.settingsSetup.AI.inputAPIKey, process.env.ANTHROPIC_API_KEY || '');
-        await this.validateAndClick(Selectors.settingsSetup.AI.settingsTabAISave);
+        const key = await this.settingsField('API Key', 'wpuf_ai').catch(() => ({ name: 'ai_api_key' }) as any);
+        await this.saveSettings({ wpuf_ai: { ai_provider: 'anthropic', [key.name]: process.env.ANTHROPIC_API_KEY || '' } });
     }
 
-    /*****************************************************************/
-    /********** @Settings Persistence Verification *******************/
-    /*** Reload each settings surface and assert the config saved  ***/
-    /*** during LS setup actually persisted server-side. Closes the **/
-    /*** "config toggles, not behavior / no persistence assertion"  **/
-    /*** gap for section 1 of coverage-gap.md.                       **/
-    /*****************************************************************/
 
-    // Reload Permalinks and assert the post-name structure set by setPermalink() stuck.
     async validatePermalinkPersistence() {
         await this.navigateToURL(this.settingsPermalinkPage);
         await this.page.reload();
@@ -862,57 +826,41 @@ export class SettingsSetupPage extends Base {
     // gateways enabled during setup persisted (incl. PayPal sandbox/test mode).
     async validatePaymentGatewayPersistence() {
         await this.navigateToURL(this.wpufSettingsPage);
-        await this.page.reload();
-        await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentTab);
-        const p = Selectors.settingsSetup.persistence;
-        await expect(this.page.locator(p.enablePaymentCheckbox)).toBeChecked();
-        await expect(this.page.locator(p.gatewayBankCheckbox)).toBeChecked();
-        await expect(this.page.locator(p.gatewayStripeCheckbox)).toBeChecked();
-        await expect(this.page.locator(p.gatewayPaypalCheckbox)).toBeChecked();
-        await expect(this.page.locator(p.paypalSandboxCheckbox)).toBeChecked();
+        const on = (v: any) => ['on', 'yes', 'true', '1', true].includes(v);
+        expect(on(await this.settingValue('wpuf_payment', 'enable_payment'))).toBeTruthy();
+        const active = (await this.settingValue('wpuf_payment', 'active_gateways')) || {};
+        const list = Array.isArray(active) ? active : Object.keys(active);
+        for (const gateway of ['bank', 'stripe', 'paypal']) {
+            expect(list).toContain(gateway);
+        }
+        expect(on(await this.settingValue('wpuf_payment', 'sandbox_mode'))).toBeTruthy();
         console.log('\x1b[32m%s\x1b[0m', '✅ Payment gateways (bank/stripe/paypal) + sandbox persisted');
     }
 
-    // Reload WPUF > Settings > AI and assert the active provider selection persisted.
-    // @param provider one of 'openai' | 'google' | 'anthropic'
+
     async validateAIProviderPersistence(provider: string) {
         await this.navigateToURL(this.wpufSettingsPage);
-        await this.page.reload();
-        await this.validateAndClick(Selectors.settingsSetup.AI.clickAITab);
-        await expect(this.page.locator(Selectors.settingsSetup.persistence.aiProviderRadio(provider)))
-            .toBeChecked();
+        expect(await this.settingValue('wpuf_ai', 'ai_provider')).toBe(provider);
         console.log('\x1b[32m%s\x1b[0m', `✅ AI provider persisted: ${provider}`);
     }
 
-    // Prove WPUF general settings persist end-to-end via a deterministic round-trip:
-    // write a sentinel Google Map API key, save, reload, assert it stuck, then restore
-    // the original value. Env-independent (the .env keys are stubs), so this is the real
-    // "does a setting persist" assertion. Also asserts the Turnstile enable toggle
-    // (set in LS0020) persisted.
+
     async validateGeneralSettingsPersistenceRoundTrip() {
         const sentinel = 'wpuf-qa-gmap-persist-check';
         await this.navigateToURL(this.wpufSettingsPage);
-        await this.page.reload();
-        await this.validateAndClick(Selectors.settingsSetup.keys.clickSettingsTabGeneral);
+        const on = (v: any) => ['on', 'yes', 'true', '1', true].includes(v);
 
         // Turnstile enable toggle from setup persisted.
-        await expect(this.page.locator(Selectors.settingsSetup.persistence.turnstileEnableCheckbox))
-            .toBeChecked();
+        expect(on(await this.settingValue('wpuf_general', 'enable_turnstile'))).toBeTruthy();
 
-        // Round-trip a text setting: capture original -> write sentinel -> save -> reload -> assert.
-        const gmapField = Selectors.settingsSetup.keys.fillGoogleMapAPIKey;
-        const original = await this.page.locator(gmapField).inputValue();
-        await this.page.locator(gmapField).fill(sentinel);
-        await this.validateAndClick(Selectors.settingsSetup.keys.settingsTabGeneralSave);
-        await this.page.reload();
-        await this.validateAndClick(Selectors.settingsSetup.keys.clickSettingsTabGeneral);
-        await expect(this.page.locator(gmapField)).toHaveValue(sentinel);
+        // Round-trip a text setting: capture original -> write sentinel -> save -> read back.
+        const original = (await this.settingValue('wpuf_general', 'gmap_api_key')) || '';
+        await this.saveSettings({ wpuf_general: { gmap_api_key: sentinel } });
+        expect(await this.settingValue('wpuf_general', 'gmap_api_key')).toBe(sentinel);
         console.log('\x1b[32m%s\x1b[0m', '✅ WPUF general setting round-trip persisted (Google Map API key)');
 
         // Restore the original value so downstream tests see the pre-existing state.
-        await this.page.locator(gmapField).fill(original);
-        await this.validateAndClick(Selectors.settingsSetup.keys.settingsTabGeneralSave);
-        await this.page.reload();
+        await this.saveSettings({ wpuf_general: { gmap_api_key: original } });
     }
 
     /***********************************************/

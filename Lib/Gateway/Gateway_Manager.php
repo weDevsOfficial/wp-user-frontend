@@ -143,17 +143,6 @@ class Gateway_Manager {
     }
 
     /**
-     * Get all gateway instances
-     *
-     * @since WPUF_PRO_SINCE
-     *
-     * @return Payment_Gateway[]
-     */
-    public function get_gateway_instances() {
-        return $this->gateways;
-    }
-
-    /**
      * Check if a gateway is registered
      *
      * @since WPUF_PRO_SINCE

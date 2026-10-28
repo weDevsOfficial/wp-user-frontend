@@ -1,0 +1,258 @@
+{
+    "post_type": "wpuf_profile",
+    "post_status": "publish",
+    "post_title": "Registration Form Choices",
+    "meta": {
+        "wpuf_form_settings": {
+            "user_notification": "on",
+            "admin_notification": "on",
+            "notification_type": "welcome_email",
+            "role": "subscriber",
+            "redirect_to": "same",
+            "message": "Registration successful",
+            "update_message": "Profile updated successfully",
+            "submit_text": "Register",
+            "update_text": "Update Profile"
+        }
+    },
+    "fields": [
+        {
+            "menu_order": 0,
+            "post_status": "publish",
+            "post_content": {
+                "input_type": "text",
+                "template": "first_name",
+                "required": "no",
+                "label": "First Name",
+                "name": "first_name",
+                "is_meta": "no",
+                "help": "",
+                "css": "",
+                "placeholder": "",
+                "default": "",
+                "size": 40,
+                "id": 0,
+                "is_new": true
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 1,
+            "post_status": "publish",
+            "post_content": {
+                "input_type": "text",
+                "template": "last_name",
+                "required": "no",
+                "label": "Last Name",
+                "name": "last_name",
+                "is_meta": "no",
+                "help": "",
+                "css": "",
+                "placeholder": "",
+                "default": "",
+                "size": 40,
+                "id": 0,
+                "is_new": true
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 2,
+            "post_status": "publish",
+            "post_content": {
+                "input_type": "text",
+                "template": "user_login",
+                "required": "no",
+                "label": "Username",
+                "name": "user_login",
+                "is_meta": "no",
+                "help": "",
+                "css": "",
+                "placeholder": "",
+                "default": "",
+                "size": 40,
+                "id": 0,
+                "is_new": true,
+                "restriction_to": "max",
+                "restriction_type": "character"
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 3,
+            "post_status": "publish",
+            "post_content": {
+                "input_type": "email",
+                "template": "user_email",
+                "required": "yes",
+                "label": "Email Address",
+                "name": "user_email",
+                "is_meta": "no",
+                "help": "",
+                "css": "",
+                "placeholder": "",
+                "default": "",
+                "size": 40,
+                "id": 0,
+                "is_new": true
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 4,
+            "post_status": "publish",
+            "post_content": {
+                "input_type": "password",
+                "template": "password",
+                "required": "yes",
+                "label": "Password",
+                "name": "password",
+                "is_meta": "no",
+                "help": "",
+                "css": "",
+                "placeholder": "",
+                "default": "",
+                "size": 40,
+                "min_length": 5,
+                "repeat_pass": "yes",
+                "re_pass_label": "Confirm Password",
+                "pass_strength": "no",
+                "id": 0,
+                "is_new": true
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 5,
+            "post_status": "publish",
+            "post_content": {
+                "input_type": "profile_photo",
+                "template": "profile_photo",
+                "required": "no",
+                "label": "Profile Photo",
+                "button_label": "Select Profile Photo",
+                "name": "wpuf_profile_photo",
+                "is_meta": "yes",
+                "help": "",
+                "width": "",
+                "css": "",
+                "max_size": "1024",
+                "count": "1",
+                "id": 0,
+                "is_new": true
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 6,
+            "post_status": "publish",
+            "post_content": {
+                "required": "no",
+                "help": "",
+                "css": "",
+                "width": "large",
+                "is_meta": "yes",
+                "show_icon": "no",
+                "wpuf_cond": {
+                    "condition_status": "no",
+                    "cond_field": [],
+                    "cond_operator": [
+                        "="
+                    ],
+                    "cond_option": [
+                        "- Select -"
+                    ],
+                    "cond_logic": "all"
+                },
+                "input_type": "radio",
+                "template": "radio_field",
+                "label": "Color",
+                "name": "qa_color",
+                "options": {
+                    "red": "Red",
+                    "blue": "Blue"
+                },
+                "selected": "",
+                "inline": "no",
+                "id": "@self:int",
+                "field_icon": "",
+                "icon_position": "left_label"
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 7,
+            "post_status": "publish",
+            "post_content": {
+                "required": "no",
+                "help": "",
+                "css": "",
+                "width": "large",
+                "is_meta": "yes",
+                "show_icon": "no",
+                "wpuf_cond": {
+                    "condition_status": "no",
+                    "cond_field": [],
+                    "cond_operator": [
+                        "="
+                    ],
+                    "cond_option": [
+                        "- Select -"
+                    ],
+                    "cond_logic": "all"
+                },
+                "input_type": "select",
+                "template": "dropdown_field",
+                "label": "Size",
+                "name": "qa_size",
+                "options": {
+                    "s": "Small",
+                    "l": "Large"
+                },
+                "selected": "",
+                "first": "- Select -",
+                "id": "@self:int",
+                "field_icon": "",
+                "icon_position": "left_label"
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 8,
+            "post_status": "publish",
+            "post_content": {
+                "required": "no",
+                "help": "",
+                "css": "",
+                "width": "large",
+                "is_meta": "yes",
+                "show_icon": "no",
+                "wpuf_cond": {
+                    "condition_status": "no",
+                    "cond_field": [],
+                    "cond_operator": [
+                        "="
+                    ],
+                    "cond_option": [
+                        "- Select -"
+                    ],
+                    "cond_logic": "all"
+                },
+                "input_type": "checkbox",
+                "template": "checkbox_field",
+                "label": "Topics",
+                "name": "qa_topics",
+                "options": {
+                    "news": "News",
+                    "deals": "Deals"
+                },
+                "selected": [],
+                "inline": "no",
+                "id": "@self:int",
+                "field_icon": "",
+                "icon_position": "left_label"
+            },
+            "meta": []
+        }
+    ]
+}

@@ -178,7 +178,21 @@ export class BasicLoginPage extends Base {
         await this.validateAndFillStrings(Selectors.login.basicLogin.loginPasswordField2, password);
         await this.page.waitForTimeout(500);
         await this.assertionValidate(Selectors.login.basicLogin.loginButton2);
+        // The React login signs in over REST, then redirects: wait for the answer, and
+        // on success for the redirect, so callers (and the saved session) see the result.
+        // A classic form posts and navigates instead: whichever comes first.
+        const before = this.page.url();
+        const answered = this.page.waitForResponse(
+            (response) => response.url().includes('wpuf/v1/login') && 'POST' === response.request().method(),
+            { timeout: 30000 }
+        ).then((response) => response, () => null);
+        const navigated = this.page.waitForURL((url) => url.href !== before, { timeout: 30000 }).then(() => 'navigated', () => null);
         await this.validateAndClick(Selectors.login.basicLogin.loginButton2);
+        const first = await Promise.race([answered, navigated]);
+        if (first && 'navigated' !== first && first.ok()) {
+            await navigated;
+        }
+        await this.page.waitForLoadState('load').catch(() => {});
     }
 
 

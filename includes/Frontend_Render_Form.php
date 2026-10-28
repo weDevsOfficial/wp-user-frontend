@@ -37,8 +37,6 @@ class Frontend_Render_Form {
         die();
     }
 
-
-
     /**
      * Render submit button
      *
@@ -91,10 +89,13 @@ class Frontend_Render_Form {
      * @param [type] $form_settings [description]
      */
     public function guest_fields( $form_settings ) {
+        // Forms saved without the labels (the Post Form template has none) fall back like the React form.
+        $name_label  = ! empty( $form_settings['name_label'] ) ? $form_settings['name_label'] : __( 'Name', 'wp-user-frontend' );
+        $email_label = ! empty( $form_settings['email_label'] ) ? $form_settings['email_label'] : __( 'Email', 'wp-user-frontend' );
         ?>
         <li class="el-name">
             <div class="wpuf-label">
-                <label><?php echo esc_html( $form_settings['name_label'] ); ?> <span class="required">*</span></label>
+                <label><?php echo esc_html( $name_label ); ?> <span class="required">*</span></label>
             </div>
 
             <div class="wpuf-fields">
@@ -104,7 +105,7 @@ class Frontend_Render_Form {
 
         <li class="el-email">
             <div class="wpuf-label">
-                <label><?php echo esc_html( $form_settings['email_label'] ); ?> <span class="required">*</span></label>
+                <label><?php echo esc_html( $email_label ); ?> <span class="required">*</span></label>
             </div>
 
             <div class="wpuf-fields">
@@ -112,67 +113,6 @@ class Frontend_Render_Form {
             </div>
         </li>
         <?php
-    }
-
-    /**
-     * Form preview handler
-     *
-     * @return void
-     */
-    public function preview_form() {
-        // Security: Check user has proper admin capabilities
-        if ( ! current_user_can( wpuf_admin_role() ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
-        $form_id = isset( $_GET['form_id'] ) ? intval( wp_unslash( $_GET['form_id'] ) ) : 0;
-
-        if ( $form_id ) {
-            wp_enqueue_script( 'jquery' );
-            wp_register_style( 'wpuf-frontend-forms', plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) );
-            wp_enqueue_style( 'wpuf-frontend-forms' );
-            ?>
-
-            <!doctype html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <title><?php echo esc_html( __( 'Form Preview', 'wp-user-frontend' ) ); ?></title>
-                <?php wp_head(); ?>
-
-                <style type="text/css">
-                    body {
-                        margin: 0;
-                        padding: 0;
-                        background: #eee;
-                    }
-                    .container {
-                        width: 700px;
-                        margin: 0 auto;
-                        margin-top: 20px;
-                        padding: 20px;
-                        background: #fff;
-                        border: 1px solid #DFDFDF;
-                        -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-                        box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-                    }
-                </style>
-
-                <?php wp_enqueue_script( 'jquery' ); ?>
-            </head>
-            <body>
-            <div class="container">
-                <?php $this->render_form( $form_id, null, null, null ); ?>
-            </div>
-            </body>
-            </html>
-
-            <?php
-        } else {
-            wp_die( 'Error generating the form preview' );
-        }
-
-        exit;
     }
 
     /**
@@ -202,12 +142,15 @@ class Frontend_Render_Form {
 
         $layout    = 'layout1';
         $use_theme_css = isset( $this->form_settings['use_theme_css'] ) ? $this->form_settings['use_theme_css'] : '';
+        // A toggle: 'on' from the classic settings, 'true' from the React form builder
+        // (or the old stored class `wpuf-theme-style`).
+        $theme_css_on  = 'wpuf-theme-style' === wpuf_form_style_class( $use_theme_css );
 
         do_action( 'wpuf_before_form_render', $form_id );
 
         $form = new Form( $form_id );
 
-        if ( 'wpuf_profile' === $form->data->post_type && 'on' !== $use_theme_css ) {
+        if ( 'wpuf_profile' === $form->data->post_type && ! $theme_css_on ) {
             $layout = isset( $this->form_settings['profile_form_layout'] ) ? $this->form_settings['profile_form_layout'] : 'layout1';
             switch ( $layout ) {
                 case 'layout2':
@@ -233,7 +176,7 @@ class Frontend_Render_Form {
         } else {
             $layout = isset( $this->form_settings['form_layout'] ) ? $this->form_settings['form_layout'] : 'layout1';
 
-            if ( ! empty( $layout ) && 'on' !== $use_theme_css ) {
+            if ( ! empty( $layout ) && ! $theme_css_on ) {
                 // Reuse the shared layout handle so WordPress dedupes it against the
                 // blanket enqueue in Frontend.php and Elementor's dequeue list covers it.
                 wp_enqueue_style( 'wpuf-' . $layout );
@@ -246,7 +189,7 @@ class Frontend_Render_Form {
         // never bleeds onto other editors on the page and never persists after render.
         $wpuf_dark_editor_style = null;
 
-        if ( 'on' !== $use_theme_css && in_array( $layout, [ 'layout2', 'layout5' ], true ) ) {
+        if ( ! $theme_css_on && in_array( $layout, [ 'layout2', 'layout5' ], true ) ) {
             $editor_bg = 'layout2' === $layout ? '#222C3C' : '#394141';
 
             $wpuf_dark_editor_style = function ( $mce_init ) use ( $editor_bg ) {
@@ -287,7 +230,7 @@ class Frontend_Render_Form {
         if ( $this->form_fields ) {
             ?>
 
-            <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?><?php echo ( 'layout1' === $layout && 'on' === $use_theme_css ) ? ' wpuf-theme-style' : ''; ?>" action="" method="post">
+            <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?><?php echo ( 'layout1' === $layout && $theme_css_on ) ? ' wpuf-theme-style' : ''; ?>" action="" method="post">
 
                 <?php
                 // Display form title if enabled
@@ -422,81 +365,5 @@ class Frontend_Render_Form {
             </script>
             <?php
         }
-    }
-
-    /**
-     * Get Input fields
-     *
-     * @param array $form_vars
-     *
-     * @return array
-     */
-    public function get_input_fields( $form_vars ) {
-        $ignore_lists = [ 'section_break', 'html' ];
-        $post_vars    = [];
-        $meta_vars    = [];
-        $taxonomy_vars = [];
-
-        foreach ( $form_vars as $key => $value ) {
-            // get column field input fields
-            if ( $value['input_type'] == 'column_field' ) {
-                $inner_fields = $value['inner_fields'];
-
-                foreach ( $inner_fields as $column_key => $column_fields ) {
-                    if ( ! empty( $column_fields ) ) {
-                        // ignore section break and HTML input type
-                        foreach ( $column_fields as $column_field_key => $column_field ) {
-                            if ( in_array( $column_field['input_type'], $ignore_lists, true ) ) {
-                                continue;
-                            }
-
-                            //separate the post and custom fields
-                            if ( isset( $column_field['is_meta'] ) && $column_field['is_meta'] == 'yes' ) {
-                                $meta_vars[] = $column_field;
-                                continue;
-                            }
-
-                            if ( $column_field['input_type'] == 'taxonomy' ) {
-
-                                // don't add "category"
-                                // if ( $column_field['name'] == 'category' ) {
-                                //     continue;
-                                // }
-
-                                $taxonomy_vars[] = $column_field;
-                            } else {
-                                $post_vars[] = $column_field;
-                            }
-                        }
-                    }
-                }
-                continue;
-            }
-
-            // ignore section break and HTML input type
-            if ( in_array( $value['input_type'], $ignore_lists, true ) ) {
-                continue;
-            }
-
-            //separate the post and custom fields
-            if ( isset( $value['is_meta'] ) && $value['is_meta'] == 'yes' ) {
-                $meta_vars[] = $value;
-                continue;
-            }
-
-            if ( $value['input_type'] == 'taxonomy' ) {
-
-                // don't add "category"
-                // if ( $value['name'] == 'category' ) {
-                //     continue;
-                // }
-
-                $taxonomy_vars[] = $value;
-            } else {
-                $post_vars[] = $value;
-            }
-        }
-
-        return [ $post_vars, $taxonomy_vars, $meta_vars ];
     }
 }

@@ -1,10 +1,11 @@
 import * as dotenv from 'dotenv';
 dotenv.config({ quiet: true });
-import { expect, request, type Page, type Dialog } from '@playwright/test';
+import { expect, request, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Base } from './base';
 import { faker } from '@faker-js/faker';
 import { DownloadsForm, PostForm, ProductForm, Urls } from '../utils/testData';
+import { BUILDER_URL } from '../utils/builderUrl';
 //import { TestData } from '../tests/testdata';
 
 export class PostFormPage extends Base {
@@ -37,6 +38,9 @@ export class PostFormPage extends Base {
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickBlankForm);
 
         //EnterName
+        // The new form route creates the form, then switches to its edit URL:
+        // reloading before that would create a second (empty "Sample Form").
+        await this.page.waitForURL(BUILDER_URL, { timeout: 30000 }).catch(() => {});
         await this.page.reload();
         //Click Form Name Box
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.editNewFormName);
@@ -67,6 +71,9 @@ export class PostFormPage extends Base {
         await this.validateAndClick(Selectors.postForms.createPreset_PF.clickPresetForm);
 
         //EnterName
+        // The new form route creates the form, then switches to its edit URL:
+        // reloading before that would create a second (empty "Sample Form").
+        await this.page.waitForURL(BUILDER_URL, { timeout: 30000 }).catch(() => {});
         await this.page.reload();
         //Click Form Name Box
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.editNewFormName);
@@ -154,13 +161,20 @@ export class PostFormPage extends Base {
         await this.validateAndClick(Selectors.postForms.createProduct_PF.clickProductForm);
 
         //EnterName
+        // The new form route creates the form, then switches to its edit URL:
+        // reloading before that would create a second (empty "Sample Form").
+        await this.page.waitForURL(BUILDER_URL, { timeout: 30000 }).catch(() => {});
         await this.page.reload();
         //Click Form Name Box
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.editNewFormName);
-        // Save Form
+        // Save Form: a form fresh from a template has nothing unsaved, so Save stays
+        // disabled ("No changes to save") and no "saved" toast comes.
+        const unchanged = await this.isUnchangedSave(this.page.locator(Selectors.postForms.formSettings.saveFormSettings));
         await this.validateAndClick(Selectors.postForms.formSettings.saveFormSettings);
         // Confirm Save
-        await this.assertionValidate(Selectors.postForms.formSettings.validateFormSettingsSaved);
+        if (!unchanged) {
+            await this.assertionValidate(Selectors.postForms.formSettings.validateFormSettingsSaved);
+        }
 
     }
 
@@ -180,13 +194,20 @@ export class PostFormPage extends Base {
         //Click Product Form  
         await this.validateAndClick(Selectors.postForms.createDownloads_PF.clickDownloadsForm);
         //EnterName
+        // The new form route creates the form, then switches to its edit URL:
+        // reloading before that would create a second (empty "Sample Form").
+        await this.page.waitForURL(BUILDER_URL, { timeout: 30000 }).catch(() => {});
         await this.page.reload();
         //Click Form Name Box
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.editNewFormName);
-        // Save Form
+        // Save Form: a form fresh from a template has nothing unsaved, so Save stays
+        // disabled ("No changes to save") and no "saved" toast comes.
+        const unchanged = await this.isUnchangedSave(this.page.locator(Selectors.postForms.formSettings.saveFormSettings));
         await this.validateAndClick(Selectors.postForms.formSettings.saveFormSettings);
         // Confirm Save
-        await this.assertionValidate(Selectors.postForms.formSettings.validateFormSettingsSaved);
+        if (!unchanged) {
+            await this.assertionValidate(Selectors.postForms.formSettings.validateFormSettingsSaved);
+        }
 
     }
 
@@ -202,8 +223,7 @@ export class PostFormPage extends Base {
         console.log(PostForm.title);
         await this.page.waitForTimeout(1000);
         //Enter Post Description
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(PostForm.description = faker.lorem.sentence(1));
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, PostForm.description = faker.lorem.sentence(1));
         console.log(PostForm.description);
         //Enter Excerpt
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, PostForm.excerpt = faker.lorem.sentence(1));
@@ -293,11 +313,13 @@ export class PostFormPage extends Base {
                 result = Number(operand1) + Number(operand2);
                 break;
             case '-':
+            case '−':
                 result = Number(operand1) - Number(operand2);
                 break;
             case 'X':
                 result = Number(operand1) * Number(operand2);
                 break;
+            case '×':
             case 'x':
                 result = Number(operand1) * Number(operand2);
                 break;
@@ -509,8 +531,7 @@ export class PostFormPage extends Base {
         console.log(PostForm.title);
         await this.page.waitForTimeout(1000);
         //Enter Post Description
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(PostForm.description = faker.lorem.sentence(1));
+        await this.fillRichEditor(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1, Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2, PostForm.description = faker.lorem.sentence(1));
         console.log(PostForm.description);
         //Enter Excerpt
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, PostForm.excerpt = faker.lorem.sentence(1));
@@ -595,8 +616,7 @@ export class PostFormPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productTitleFE, ProductForm.title);
         await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectCategory, ProductForm.category);
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.productFrontendCreate.productDescription1)
-            .locator(Selectors.postForms.productFrontendCreate.productDescription2).fill(ProductForm.description = faker.lorem.sentence(1));
+        await this.fillRichEditor(Selectors.postForms.productFrontendCreate.productDescription1, Selectors.postForms.productFrontendCreate.productDescription2, ProductForm.description = faker.lorem.sentence(1));
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productExcerpt, ProductForm.excerpt = faker.lorem.sentence(1));
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productRegularPrice, ProductForm.regularPrice);
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productSalePrice, ProductForm.salePrice);
@@ -634,8 +654,7 @@ export class PostFormPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsTitleFE, DownloadsForm.title);
         await this.selectOptionWithLabel(Selectors.postForms.downloadsFrontendCreate.downloadCategory, DownloadsForm.category);
         await this.page.waitForTimeout(1000);
-        await this.page.frameLocator(Selectors.postForms.downloadsFrontendCreate.downloadsDescription1)
-            .locator(Selectors.postForms.downloadsFrontendCreate.downloadsDescription2).fill(DownloadsForm.description = faker.lorem.sentence(1));
+        await this.fillRichEditor(Selectors.postForms.downloadsFrontendCreate.downloadsDescription1, Selectors.postForms.downloadsFrontendCreate.downloadsDescription2, DownloadsForm.description = faker.lorem.sentence(1));
         await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsExcerpt, DownloadsForm.excerpt = faker.lorem.sentence(1));
         await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsRegularPrice, DownloadsForm.regularPrice);
         await this.page.setInputFiles(Selectors.postForms.downloadsFrontendCreate.downloadsImage, DownloadsForm.downloadsImage);
@@ -721,16 +740,8 @@ export class PostFormPage extends Base {
         await this.navigateToURL(this.downloadsPage);
         //Validate Product Title
         await this.validateAndClick(Selectors.postForms.downloadsFormData.titleBE(DownloadsForm.title));
-        await this.page.waitForTimeout(200);
-        try {
-            await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
-        } catch (error) {
-            await this.navigateToURL(this.downloadsPage);
-            //Validate Product Title
-            await this.validateAndClick(Selectors.postForms.downloadsFormData.titleBE(DownloadsForm.title));
-            await this.page.waitForTimeout(200);
-            await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
-        }
+        // The welcome guide shows once per user: close it when it opens, go on when it does not.
+        await this.dismissEditorModals();
         //Validate Product Price — the edd_price input renders correct-but-hidden inside a
         //collapsed price panel, so assert it is present (value is encoded in the selector)
         //rather than visible (which would hang the full test timeout).
@@ -740,7 +751,12 @@ export class PostFormPage extends Base {
         //Validate Product Category
         await this.validateAndClick(Selectors.postForms.downloadsFormData.clickDownload);
         await this.page.waitForTimeout(300);
-        await this.validateAndClick(Selectors.postForms.downloadsFormData.clickCategory);
+        // The panel toggles and the editor remembers it open: open it only when closed.
+        const categories = this.page.locator(Selectors.postForms.downloadsFormData.clickCategory).first();
+        await categories.waitFor();
+        if ('true' !== await categories.getAttribute('aria-expanded')) {
+            await categories.click();
+        }
         await this.assertionValidate(Selectors.postForms.downloadsFormData.categoryBE(DownloadsForm.category));
         //Validate Product Tags
         //await this.validateAndClick(Selectors.postForms.downloadsFormData.clickTag);
@@ -773,8 +789,6 @@ export class PostFormPage extends Base {
     async editFirstPostFromDashboard(newTitle: string): Promise<string> {
         await this.openPostsDashboard();
         const oldTitle = ((await this.page.locator(Selectors.postForms.dashboardManage.allPostTitles).first().textContent()) || '').trim();
-        // Open the row's "⋮" options menu, then click Edit.
-        await this.validateAndClick(Selectors.postForms.dashboardManage.optionsMenuTrigger(oldTitle));
         await this.validateAndClick(Selectors.postForms.dashboardManage.editLinkForPost(oldTitle));
         // Same post form in edit mode — overwrite the title and save the update.
         await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE).fill(newTitle);
@@ -809,9 +823,11 @@ export class PostFormPage extends Base {
                 result = Number(operand1) + Number(operand2);
                 break;
             case '-':
+            case '−':
                 result = Number(operand1) - Number(operand2);
                 break;
             case 'X':
+            case '×':
             case 'x':
                 result = Number(operand1) * Number(operand2);
                 break;
@@ -844,7 +860,6 @@ export class PostFormPage extends Base {
         const title = ((await this.page.locator(S.dashboardManage.allPostTitles).first().textContent()) || '').trim();
 
         // Open the edit form for that post.
-        await this.validateAndClick(S.dashboardManage.optionsMenuTrigger(title));
         await this.validateAndClick(S.dashboardManage.editLinkForPost(title));
 
         // --- Negative: type a decoy title, leave the captcha blank, submit. ---
@@ -864,7 +879,6 @@ export class PostFormPage extends Base {
         console.log('\x1b[32m%s\x1b[0m', `✅ Math Captcha enforced: unanswered submit blocked ("${decoyTitle}" not saved)`);
 
         // --- Positive: reopen, answer the captcha, resubmit the SAME title → success. ---
-        await this.validateAndClick(S.dashboardManage.optionsMenuTrigger(title));
         await this.validateAndClick(S.dashboardManage.editLinkForPost(title));
         await this.page.locator(S.postFormsFrontendCreate.postTitleFormsFE).fill(title);
         await this.solveMathCaptchaIfPresent();
@@ -877,13 +891,10 @@ export class PostFormPage extends Base {
     // delete?" confirm dialog, and assert it is removed from the list.
     async deletePostFromDashboard(title: string) {
         await this.openPostsDashboard();
-        const dialogHandler = async (dialog: Dialog) => { await dialog.accept(); };
-        this.page.on('dialog', dialogHandler);
-        // Open the row's "⋮" options menu, then click Delete (fires the confirm).
-        await this.validateAndClick(Selectors.postForms.dashboardManage.optionsMenuTrigger(title));
+        // Delete on the row, then confirm in the WPUF dialog (no browser confirm any more).
         await this.validateAndClick(Selectors.postForms.dashboardManage.deleteLinkForPost(title));
-        this.page.off('dialog', dialogHandler);
-        await this.page.waitForLoadState('domcontentloaded');
+        await this.validateAndClick(Selectors.postForms.dashboardManage.deleteConfirm);
+        await expect(this.page.locator(Selectors.postForms.dashboardManage.postTitleCell(title))).toHaveCount(0, { timeout: 30000 });
         await this.page.reload();
         await expect(this.page.locator(Selectors.postForms.dashboardManage.postTitleCell(title))).toHaveCount(0);
         console.log('\x1b[32m%s\x1b[0m', `✅ Post deleted: "${title}" no longer in dashboard`);

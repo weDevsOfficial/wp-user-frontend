@@ -17,26 +17,38 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      # pnpm builds git-hosted packages inside its store; a store under a
+      # node_modules path makes wp-scripts' `exclude: /node_modules/` skip their
+      # sources (FlyHR e2e.yml). Keep the store elsewhere.
+      - name: Move the pnpm store off a node_modules path
+        run: pnpm config set store-dir "$HOME/.pnpm-store"
+
       - name: Use Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: 'npm'
+          node-version-file: .nvmrc
+          cache: pnpm
 
       - name: Use desired version of PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
+          # bin/make-pot.mjs (grunt i18n) extracts the POT with WP-CLI.
+          tools: wp-cli
 
+      # `pnpm build` ends with bin/verify-build.mjs, so a half-built bundle fails here.
       - name: Install and build
         run: |
-          npm ci
-          npm run build
+          pnpm install --frozen-lockfile
+          pnpm build
 
-      # POT + legacy assets (less/concat/uglify/tailwind) + readme.md.
-      # grunt-wp-i18n generates the POT, so no separate WP-CLI install is needed.
-      - name: Build legacy assets + POT
-        run: npx grunt release
+      # The POT (bin/make-pot.mjs, WP-CLI set up with PHP above). Everything else
+      # was built once by `pnpm build`; nothing is rebuilt after this point.
+      - name: POT
+        run: pnpm run i18n
 
       - name: Composer install (no dev)
         run: composer install --no-dev --optimize-autoloader
@@ -45,52 +57,28 @@ jobs:
       # them from the working tree. Hard gate: if any build output is missing the
       # package would ship broken (the failure mode this whole model guards against).
       - name: Verify built assets exist on disk
-        run: |
-          for f in \
-            assets/js/account.min.js \
-            assets/js/ai-form-builder.min.js \
-            assets/js/forms-list.min.js \
-            assets/js/forms-list.min.js.map \
-            assets/js/frontend-form.min.js \
-            assets/js/frontend-subscriptions.min.js \
-            assets/js/subscriptions.min.js \
-            assets/js/upload.min.js \
-            assets/js/wpuf-form-builder.js \
-            assets/js/wpuf-form-builder-mixins.js \
-            assets/js/wpuf-form-builder-components.js \
-            assets/js-templates/form-components.php \
-            assets/css/admin.css \
-            assets/css/elementor-frontend-forms.css \
-            assets/css/frontend-forms.css \
-            assets/css/registration-forms.css \
-            assets/css/wpuf-form-builder.css \
-            languages/wp-user-frontend.pot; do
-            test -f "$f" || { echo "::error::$f missing — build failed"; exit 1; }
-          done
-          echo "OK: all generated assets present on disk"
+        run: node bin/verify-build.mjs --release
 
-      # Distributable zip (mirrors what ships to wp.org, via .distignore).
-      - name: Generate plugin zip
-        run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          rm -rf /tmp/pkg && mkdir -p /tmp/pkg/wp-user-frontend
-          rsync -a --exclude-from=.distignore ./ /tmp/pkg/wp-user-frontend/
-          ( cd /tmp/pkg && zip -rq "$GITHUB_WORKSPACE/wp-user-frontend-v${VERSION}.zip" wp-user-frontend )
-          echo "Built wp-user-frontend-v${VERSION}.zip"
+      # Distributable zip, the same file set the deploy below ships (.distignore).
+      # bin/zip.mjs checks tag = WPUF_VERSION = header = Stable tag, then the
+      # unpacked zip: one folder, every generated asset, no sources / dev files /
+      # maps, every PHP file lints. Written outside the working tree so neither
+      # the zip nor the notes can reach SVN.
+      - name: Generate and check the plugin zip
+        run: node bin/zip.mjs --out "$RUNNER_TEMP/release" --skip-verify --keep-vendor
 
-      # Pull this version's changelog block out of readme.txt for the release notes.
       - name: Extract changelog
         run: |
           { echo "## Changelog"; echo ""; \
-            awk '/^= v?[0-9]/{n++; if(n>1) exit} n>=1{print}' readme.txt; } > RELEASE_NOTES.md
-          echo "---- release notes ----"; cat RELEASE_NOTES.md
+            awk '/^= v?[0-9]/{n++; if(n>1) exit} n>=1{print}' readme.txt; } > "$RUNNER_TEMP/release/RELEASE_NOTES.md"
+          echo "---- release notes ----"; cat "$RUNNER_TEMP/release/RELEASE_NOTES.md"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ github.ref_name }}
-          files: wp-user-frontend-v*.zip
-          body_path: RELEASE_NOTES.md
+          files: ${{ runner.temp }}/release/wp-user-frontend-v*.zip
+          body_path: ${{ runner.temp }}/release/RELEASE_NOTES.md
 
       # wp.org SVN deploy last — the zip/Release above survive a deploy retry.
       # NO BUILD_DIR: the default 10up flow rsyncs the working tree (with the

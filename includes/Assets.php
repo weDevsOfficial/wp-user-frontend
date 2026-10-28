@@ -37,14 +37,74 @@ class Assets {
             [
                 'wpuf-frontend-forms',
                 'wpuf-font-awesome',
-                'wpuf-sweetalert2',
+                'wpuf-dialog',
                 'wpuf-selectize',
-                'wpuf-toastr',
                 'wpuf-tooltip',
                 'buttons',
             ]
         );
         add_action( 'init', [ $this, 'register_all_scripts' ] );
+        // The React stylesheet switch and body classes are hooked by Admin\Bundles.
+    }
+
+    /**
+     * React admin assets (Admin\Bundles).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return \WeDevs\Wpuf\Admin\Bundles
+     */
+    protected function react() {
+        return wpuf()->platform()->get( \WeDevs\Wpuf\Admin\Bundles::class );
+    }
+
+    /**
+     * Frontend apps assets (Frontend\Bundles).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return \WeDevs\Wpuf\Frontend\Bundles
+     */
+    protected function frontend_bundles() {
+        return wpuf()->platform()->get( \WeDevs\Wpuf\Frontend\Bundles::class );
+    }
+
+    /**
+     * Whether the current admin page is a React forms list or builder.
+     *
+     * @since WPUF_SINCE Forwards to Admin\Bundles.
+     *
+     * @return bool
+     */
+    protected function is_forms_page() {
+        return $this->react()->is_forms_page();
+    }
+
+    /**
+     * Serve the React forms stylesheet under the old handles.
+     *
+     * @since WPUF_SINCE Forwards to Admin\Bundles (which hooks it).
+     *
+     * @param string $src    Stylesheet URL
+     * @param string $handle Handle
+     *
+     * @return string|false
+     */
+    public function use_forms_styles( $src, $handle = '' ) {
+        return $this->react()->use_forms_styles( $src, $handle );
+    }
+
+    /**
+     * Body classes of the React forms list and builder.
+     *
+     * @since WPUF_SINCE Forwards to Admin\Bundles (which hooks it).
+     *
+     * @param string $classes Admin body classes
+     *
+     * @return string
+     */
+    public function forms_body_class( $classes ) {
+        return $this->react()->forms_body_class( $classes );
     }
 
     /**
@@ -60,6 +120,17 @@ class Assets {
         do_action( 'wpuf_before_register_scripts', $scripts, $styles );
         $this->register_styles( $styles );
         $this->register_scripts( $scripts );
+
+        wp_localize_script(
+            'wpuf-dialog', 'wpufDialogL10n', [
+                'css'     => add_query_arg( 'ver', file_exists( WPUF_ROOT . '/assets/css/wpuf-dialog.css' ) ? (string) filemtime( WPUF_ROOT . '/assets/css/wpuf-dialog.css' ) : WPUF_VERSION, WPUF_ASSET_URI . '/css/wpuf-dialog.css' ),
+                'ok'      => __( 'OK', 'wp-user-frontend' ),
+                'cancel'  => __( 'Cancel', 'wp-user-frontend' ),
+                'confirm' => __( 'Yes', 'wp-user-frontend' ),
+                'close'   => __( 'Close', 'wp-user-frontend' ),
+            ]
+        );
+
         do_action( 'wpuf_after_register_scripts', $scripts, $styles );
     }
 
@@ -73,11 +144,42 @@ class Assets {
     public function register_styles( $styles ) {
         foreach ( $styles as $handle => $style ) {
             $deps    = ! empty( $style['deps'] ) ? $style['deps'] : [];
-            $version = ! empty( $style['version'] ) ? $style['version'] : WPUF_VERSION;
+            $version = ! empty( $style['version'] ) ? $style['version'] : $this->local_file_version( $style['src'] );
             $media   = ! empty( $style['media'] ) ? $style['media'] : 'all';
 
-            wp_register_style( 'wpuf-' . $handle, $style['src'], $deps, $version, $media );
+            wp_register_style( 'wpuf-' . $handle, $this->existing_src( $style['src'] ), $deps, $version, $media );
+
+            if ( ! empty( $style['rtl'] ) ) {
+                wp_style_add_data( 'wpuf-' . $handle, 'rtl', 'replace' );
+            }
+
+            if ( ! empty( $style['inline'] ) ) {
+                wp_add_inline_style( 'wpuf-' . $handle, $style['inline'] );
+            }
         }
+    }
+
+    /**
+     * Version of a plugin asset without its own: the file's modification time,
+     * so a rebuilt sheet reaches the browser without a version bump; the plugin
+     * version for anything else.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $src Asset URL.
+     *
+     * @return string
+     */
+    protected function local_file_version( $src ) {
+        if ( is_string( $src ) && 0 === strpos( $src, WPUF_ASSET_URI . '/' ) ) {
+            $path = WPUF_ROOT . '/assets/' . substr( $src, strlen( WPUF_ASSET_URI . '/' ) );
+
+            if ( file_exists( $path ) ) {
+                return (string) filemtime( $path );
+            }
+        }
+
+        return WPUF_VERSION;
     }
 
     /**
@@ -93,8 +195,37 @@ class Assets {
             $in_footer = ! empty( $script['in_footer'] ) ? $script['in_footer'] : true;
             $version   = ! empty( $script['version'] ) ? $script['version'] : WPUF_VERSION;
 
-            wp_register_script( 'wpuf-' . $handle, $script['src'], $deps, $version, $in_footer );
+            wp_register_script( 'wpuf-' . $handle, $this->existing_src( $script['src'] ), $deps, $version, $in_footer );
+
+            // Every React bundle (admin screens, the shared runtime and components,
+            // the frontend apps and their kit) loads its JSON translations, set once
+            // here so no handle is missed.
+            if ( is_string( $script['src'] ) && preg_match( '#/js/(screens|frontend)/[^/]+\.js$#', $script['src'] ) ) {
+                wp_set_script_translations( 'wpuf-' . $handle, 'wp-user-frontend', WPUF_ROOT . '/languages' );
+            }
         }
+    }
+
+    /**
+     * Source URL for a handle, or false when it points to a plugin file that is
+     * not on disk (e.g. a removed legacy build). The handle is then registered
+     * without a file: dependents and localized data keep working and the
+     * browser does not load an HTML 404 page as a script or stylesheet.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string|false $src Source URL.
+     *
+     * @return string|false
+     */
+    protected function existing_src( $src ) {
+        if ( ! is_string( $src ) || 0 !== strpos( $src, WP_PLUGIN_URL ) ) {
+            return $src;
+        }
+
+        $path = WP_PLUGIN_DIR . strtok( substr( $src, strlen( WP_PLUGIN_URL ) ), '?' );
+
+        return file_exists( $path ) ? $src : false;
     }
 
     /**
@@ -109,6 +240,13 @@ class Assets {
             'frontend-forms'      => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-forms.css',
             ],
+        ];
+
+        // React screen stylesheets (Admin\Bundles) and the frontend apps' sheets
+        // (Frontend\Bundles), at their old place in the list.
+        $styles = array_merge( $styles, $this->react()->styles(), $this->frontend_bundles()->styles() );
+
+        $styles += [
             'elementor-frontend-forms'      => [
                 'src' => WPUF_ASSET_URI . '/css/elementor-frontend-forms.css',
             ],
@@ -137,6 +275,10 @@ class Assets {
                 'src'     => WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css',
                 'version' => '1.9.1',
             ],
+            'dialog'             => [
+                'src'     => WPUF_ASSET_URI . '/css/wpuf-dialog.css',
+                'version' => file_exists( WPUF_ROOT . '/assets/css/wpuf-dialog.css' ) ? (string) filemtime( WPUF_ROOT . '/assets/css/wpuf-dialog.css' ) : WPUF_VERSION,
+            ],
             'sweetalert2'        => [
                 'src'     => WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.css',
                 'version' => '11.4.8',
@@ -149,47 +291,31 @@ class Assets {
                 'src'     => WPUF_ASSET_URI . '/vendor/selectize/css/selectize.default.css',
                 'version' => '0.12.4',
             ],
-            'toastr'              => [
-                'src'     => WPUF_ASSET_URI . '/vendor/toastr/toastr.min.css',
-                'version' => '2.1.3',
-            ],
             'tooltip'             => [
                 'src'     => WPUF_ASSET_URI . '/vendor/tooltip/tooltip.css',
                 'version' => '3.3.7',
             ],
+            // The legacy builder sheet is gone (its stage rules live in the React
+            // builder sheet); the handle stays, file-less, for styles that list it
+            // as a dependency.
             'form-builder'        => [
-                'src'  => WPUF_ASSET_URI . '/css/wpuf-form-builder.css',
+                'src'  => false,
                 'deps' => $this->form_builder_css_deps,
             ],
+            // React builder sheet (tools/admin-css), under the old handle that
+            // Pro and modules depend on.
             'admin-form-builder'  => [
-                'src'  => WPUF_ASSET_URI . '/css/admin/form-builder.css',
+                'src'  => WPUF_ASSET_URI . '/css/admin/forms-screen.css',
                 'deps' => $this->form_builder_css_deps,
-            ],
-            'ai-form-builder'     => [
-                'src'  => WPUF_ASSET_URI . '/css/ai-form-builder.css',
+                'rtl'  => true,
             ],
             'admin'               => [
                 'src' => WPUF_ASSET_URI . '/css/admin.css',
             ],
-            'admin-subscriptions' => [
-                'src' => WPUF_ASSET_URI . '/css/admin/subscriptions.min.css',
-            ],
-            'registration-forms'  => [
-                'src' => WPUF_ASSET_URI . '/css/registration-forms.css',
-            ],
-            'module'              => [
-                'src' => WPUF_ASSET_URI . '/css/admin/wpuf-module.css',
-            ],
-            'swiffy-slider'       => [
-                'src'     => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider.min.css',
-                'version' => '1.6.0',
-            ],
-            'setup'               => [
-                'src'  => WPUF_ASSET_URI . '/css/admin/wpuf-setup.css',
-                'deps' => [ 'dashicons', 'install' ],
-            ],
+            // React forms list sheet (tools/admin-css), under the old handle.
             'forms-list'           => [
-                'src' => WPUF_ASSET_URI . '/css/forms-list.min.css',
+                'src' => WPUF_ASSET_URI . '/css/admin/forms-list-screen.css',
+                'rtl' => true,
             ],
             'account'              => [
                 'src' => WPUF_ASSET_URI . '/css/frontend/account.css',
@@ -197,6 +323,21 @@ class Assets {
         ];
 
         return apply_filters( 'wpuf_styles_to_register', $styles );
+    }
+
+    /**
+     * Dependencies and version of a React bundle from its generated
+     * `assets/js/{name}.min.asset.php`, or the fallbacks when it is missing.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $name         Bundle name
+     * @param array  $dependencies Fallback dependencies
+     *
+     * @return array { dependencies, version }
+     */
+    protected function bundle_asset( $name, $dependencies ) {
+        return $this->react()->bundle_asset( $name, $dependencies );
     }
 
     /**
@@ -209,52 +350,14 @@ class Assets {
     public function get_scripts() {
         $this->scheme         = is_ssl() ? 'https' : 'http';
         $api_key              = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
-        $form_builder_js_deps = apply_filters(
-            'wpuf_form_builder_js_deps',
-            [
-                'jquery',
-                'jquery-ui-sortable',
-                'jquery-ui-draggable',
-                'jquery-ui-droppable',
-                'jquery-ui-resizable',
-                'underscore',
-                'wpuf-vue',
-                'wpuf-vuex',
-                'wpuf-sweetalert2',
-                'wpuf-jquery-scrollTo',
-                'wpuf-selectize',
-                'wpuf-toastr',
-                'wpuf-clipboard',
-                'wpuf-tooltip',
-            ]
-        );
+
         $scripts = [
-            'vue'                      => [
-                'src'       => WPUF_ASSET_URI . '/vendor/vue/vue' . $this->suffix . '.js',
-                'in_footer' => true,
-                'version'   => '2.2.4',
-            ],
-            'vue-3'                    => [
-                'src'       => WPUF_ASSET_URI . '/vendor/vue-3/vue.esm-browser.js',
-                'in_footer' => true,
-                'version'   => '3.4.19',
-            ],
-            'vuex'                     => [
-                'src'       => WPUF_ASSET_URI . '/vendor/vuex/vuex' . $this->suffix . '.js',
-                'in_footer' => true,
-                'version'   => '2.2.1',
-            ],
+            // Registered for add-ons that enqueue it; WPUF itself uses wpuf-dialog.
             'sweetalert2'              => [
                 'src'       => WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.js',
                 'in_footer' => true,
                 'version'   => '11.4.8',
                 'deps'      => [ 'jquery' ],
-            ],
-            'jquery-scrollTo'          => [
-                'src'       => WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo' . $this->suffix . '.js',
-                'in_footer' => true,
-                'deps'      => [ 'jquery' ],
-                'version'   => '11.4.19',
             ],
             'selectize'                => [
                 'src'       => WPUF_ASSET_URI . '/vendor/selectize/js/standalone/selectize' . $this->suffix . '.js',
@@ -262,85 +365,43 @@ class Assets {
                 'deps'      => [ 'jquery' ],
                 'version'   => '0.12.4',
             ],
-            'toastr'                   => [
-                'src'       => WPUF_ASSET_URI . '/vendor/toastr/toastr' . $this->suffix . '.js',
-                'in_footer' => true,
-                'version'   => '2.1.3',
-            ],
-            'clipboard'                => [
-                'src'       => WPUF_ASSET_URI . '/vendor/clipboard/clipboard' . $this->suffix . '.js',
-                'in_footer' => true,
-                'version'   => '1.6.0',
-            ],
             'tooltip'                  => [
                 'src'       => WPUF_ASSET_URI . '/vendor/tooltip/tooltip' . $this->suffix . '.js',
                 'in_footer' => true,
                 'version'   => '3.3.7',
             ],
-            'form-builder-mixins'      => [
-                'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-mixins.js',
-                'deps'      => $form_builder_js_deps,
+            // The WPUF dialog (confirm / alert / toast) of the classic scripts and the frontend apps; replaces SweetAlert2.
+            'dialog'                   => [
+                'src'       => WPUF_ASSET_URI . '/js/wpuf-dialog.js',
+                'deps'      => [],
                 'in_footer' => true,
+                'version'   => file_exists( WPUF_ROOT . '/assets/js/wpuf-dialog.js' ) ? (string) filemtime( WPUF_ROOT . '/assets/js/wpuf-dialog.js' ) : WPUF_VERSION,
             ],
-            'form-builder-components'  => [
-                'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-components.js',
-                'deps'      => [ 'wpuf-form-builder-mixins' ],
-                'in_footer' => true,
-            ],
-            'form-builder'             => [
-                'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder.js',
-                'deps'      => [ 'wpuf-form-builder-components' ],
-                'in_footer' => true,
+            // REST client of the classic scripts (wpuf/v1 with the wp_rest nonce, plain fetch).
+            'rest'                     => [
+                'src'  => WPUF_ASSET_URI . '/js/wpuf-rest.js',
+                'deps' => [],
             ],
             'admin'                    => [
                 'src'  => WPUF_ASSET_URI . '/js/wpuf-admin.js',
-                'deps' => [ 'jquery' ],
+                'deps' => [ 'jquery', 'wpuf-rest', 'wpuf-dialog' ],
             ],
             'subscriptions'            => [
                 'src'       => WPUF_ASSET_URI . '/js/subscriptions-old.js',
-                'deps'      => [ 'jquery' ],
+                'deps'      => [ 'jquery', 'wpuf-rest', 'wpuf-dialog' ],
                 'in_footer' => true,
             ],
+            // Alias of the React subscriptions script: data localized or inline
+            // scripts added on this old handle still print on the page.
             'admin-subscriptions'      => [
-                'src'       => WPUF_ASSET_URI . '/js/subscriptions.min.js',
+                'src'       => false,
+                'deps'      => [ 'wpuf-subscriptions-screen' ],
                 'in_footer' => true,
-            ],
-            'ai-form-builder'          => [
-                'src'       => WPUF_ASSET_URI . '/js/ai-form-builder.min.js',
-                'in_footer' => true,
-                'version'   => time(), // Cache busting - force browser to reload
             ],
             'timepicker'               => [
                 'src'       => WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js',
                 'deps'      => [ 'jquery-ui-datepicker' ],
                 'version'   => '1.2',
-            ],
-            'form-builder-wpuf-forms'  => [
-                'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-wpuf-forms.js',
-                'deps'      => [ 'jquery', 'underscore', 'wpuf-vue', 'wpuf-vuex' ],
-                'in_footer' => true,
-            ],
-            'registration-forms'       => [
-                'src'       => WPUF_ASSET_URI . '/js/registration-forms.js',
-                'deps'      => [ 'jquery' ],
-                'in_footer' => true,
-            ],
-            'module'                   => [
-                'src'       => WPUF_ASSET_URI . '/js/admin/wpuf-module.js',
-                'deps'      => [ 'wpuf-swiffy-slider', 'wpuf-swiffy-slider-extensions' ],
-                'in_footer' => true,
-            ],
-            'swiffy-slider'            => [
-                'src'       => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider.min.js',
-                'deps'      => [ 'jquery' ],
-                'version'   => '1.6.0',
-                'in_footer' => true,
-            ],
-            'swiffy-slider-extensions' => [
-                'src'       => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider-extensions.min.js',
-                'deps'      => [ 'jquery' ],
-                'version'   => '1.6.0',
-                'in_footer' => true,
             ],
             'admin-shortcode'          => [
                 'src'  => WPUF_ASSET_URI . '/js/admin-shortcode.js',
@@ -348,60 +409,33 @@ class Assets {
             ],
             'billing-address'          => [
                 'src'  => WPUF_ASSET_URI . '/js/billing-address.js',
-                'deps' => [ 'jquery' ],
-            ],
-            'metabox-tabs'             => [
-                'src'  => WPUF_ASSET_URI . '/js/metabox-tabs.js',
-                'deps' => [ 'jquery' ],
-            ],
-            'admin-tools'              => [
-                'src'  => WPUF_ASSET_URI . '/js/wpuf-admin-tools.js',
-                'deps' => [ 'jquery', 'wpuf-vue' ],
-            ],
-            'settings'                 => [
-                'src' => WPUF_ASSET_URI . '/js/admin/settings.js',
+                'deps' => [ 'jquery', 'wpuf-rest' ],
             ],
             'ajax-script'              => [
                 'src'  => WPUF_ASSET_URI . '/js/billing-address.js',
-                'deps' => [ 'jquery' ],
+                'deps' => [ 'jquery', 'wpuf-rest' ],
             ],
             'jquery-blockui'           => [
                 'src'     => WPUF_ASSET_URI . '/js/jquery-blockui/jquery.blockUI.min.js',
                 'deps'    => [ 'jquery' ],
                 'version' => '2.70',
             ],
-            'selectWoo'                => [
-                'src'     => WPUF_ASSET_URI . '/js/selectWoo/selectWoo.full.min.js',
-                'deps'    => [ 'jquery' ],
-                'version' => '1.0.1',
-            ],
-            'enhanced-select'          => [
-                'src'  => WPUF_ASSET_URI . '/js/admin/wpuf-enhanced-select' . $this->suffix . '.min.js',
-                'deps' => [ 'jquery', 'wpuf-selectWoo' ],
-            ],
-            'setup'                    => [
-                'src'  => WPUF_ASSET_URI . '/js/admin/wpuf-setup' . $this->suffix . '.js',
-                'deps' => [ 'jquery', 'wpuf-enhanced-select', 'wpuf-jquery-blockui' ],
-            ],
             'frontend-form'            => [
-                'src'  => WPUF_ASSET_URI . '/js/frontend-form' . $this->suffix . '.js',
-                'deps' => [ 'jquery' ],
+                'src'  => WPUF_ASSET_URI . '/js/frontend-form.js',
+                'deps' => [ 'jquery', 'wpuf-rest', 'wpuf-dialog' ],
             ],
             'account'                  => [
-                'src'       => WPUF_ASSET_URI . '/js/account' . $this->suffix . '.js',
+                'src'       => WPUF_ASSET_URI . '/js/account.js',
                 'deps'      => [ 'jquery' ],
                 'in_footer' => true,
             ],
             'upload'                   => [
-                'src'  => WPUF_ASSET_URI . '/js/upload' . $this->suffix . '.js',
-                'deps' => [ 'jquery', 'plupload-handlers', 'jquery-ui-sortable' ],
+                'src'  => WPUF_ASSET_URI . '/js/upload.js',
+                'deps' => [ 'jquery', 'plupload-handlers', 'jquery-ui-sortable', 'wpuf-rest', 'wpuf-dialog' ],
             ],
             'ajax_login'               => [
                 'src'  => WPUF_ASSET_URI . '/js/wpuf-login-widget.js',
-                'deps' => [ 'jquery' ],
-            ],
-            'headway'                  => [
-                'src'  => '//cdn.headwayapp.co/widget.js',
+                'deps' => [ 'jquery', 'wpuf-rest' ],
             ],
             'turnstile'                  => [
                 'src'  => 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback',
@@ -410,12 +444,17 @@ class Assets {
                 'src' => WPUF_ASSET_URI . '/vendor/headway.js',
                 'deps' => [ 'jquery' ],
             ],
-            'forms-list'         => [
-                'src'       => WPUF_ASSET_URI . '/js/forms-list.min.js',
-                'in_footer' => true,
-            ],
+        ];
+
+        // React admin bundles (Admin\Bundles), at their old place in the list, so
+        // every screen enqueues by handle and Pro can depend on them.
+        $scripts = array_merge( $scripts, $this->react()->scripts(), $this->frontend_bundles()->scripts() );
+
+        $scripts += [
+            // File-less: the plans page script was only a CSS entry; the handle
+            // stays for `wpuf_subscription` (localized here) and add-ons.
             'frontend-subscriptions' => [
-                'src'       => WPUF_ASSET_URI . '/js/frontend-subscriptions.min.js',
+                'src'       => false,
                 'in_footer' => true,
             ],
             'elementor-subscription-plans' => [

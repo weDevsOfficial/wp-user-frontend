@@ -27,19 +27,6 @@ class Manager {
     }
 
     /**
-     * Check if widget class exists
-     *
-     * @since 4.0.0
-     *
-     * @param string $widget_id
-     *
-     * @return bool
-     */
-    public function is_exists( $widget_id ) {
-        return isset( $this->widgets_list[ $widget_id ] ) && class_exists( $this->widgets_list[ $widget_id ] );
-    }
-
-    /**
      * Get widget id from widget class
      *
      * @since 4.0.0

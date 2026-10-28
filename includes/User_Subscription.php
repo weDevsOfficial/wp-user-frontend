@@ -1,6 +1,9 @@
-<?php declare(strict_types=1); 
+<?php declare(strict_types=1);
 
 namespace WeDevs\Wpuf;
+
+use WeDevs\Wpuf\Platform\Stores\Stores;
+use WeDevs\Wpuf\Platform\Stores\UserPackStore;
 
 use WP_Error;/**
  * User Subscription Class
@@ -41,7 +44,7 @@ class User_Subscription {
      */
     public function populate_data() {
         if ( ! $this->pack ) {
-            $this->pack = get_user_meta( $this->user->id, '_wpuf_subscription_pack', true );
+            $this->pack = Stores::user_packs()->read( $this->user->id );
         }
     }
 
@@ -151,6 +154,12 @@ class User_Subscription {
      * @return string
      */
     public function update_meta( $user_meta, $key = '_wpuf_subscription_pack' ) {
+        if ( UserPackStore::PACK === $key ) {
+            Stores::user_packs()->write( $this->user->id, $user_meta );
+
+            return;
+        }
+
         update_user_meta( $this->user->id, $key, $user_meta );
     }
 
@@ -160,13 +169,7 @@ class User_Subscription {
      * @return int|false
      */
     public function current_pack_id() {
-        $pack = get_user_meta( $this->user->id, '_wpuf_subscription_pack', true );
-
-        if ( isset( $pack['pack_id'] ) ) {
-            return (int) $pack['pack_id'];
-        }
-
-        return false;
+        return Stores::user_packs()->pack_id( $this->user->id );
     }
 
     /**
@@ -178,7 +181,6 @@ class User_Subscription {
         if ( ! $profile_id ) {
             $profile_id = null;
         }
-        global $wpdb;
         $result       = '';
         $subscription = wpuf()->subscription->get_subscription( $pack_id );
 
@@ -221,10 +223,7 @@ class User_Subscription {
             $this->update_meta( $user_meta );
 
             if ( ! $this->is_free_pack( $pack_id ) ) {
-                $result = $wpdb->get_row( $wpdb->prepare(
-                    'SELECT * FROM ' . $wpdb->prefix . 'wpuf_transaction
-                WHERE user_id = %d AND pack_id = %d ORDER BY id DESC LIMIT 1', $this->user->id, $pack_id
-                ) );
+                $result = Stores::transactions()->latest_for_pack( $this->user->id, $pack_id );
             }
 
             if ( $result ) {
@@ -239,7 +238,7 @@ class User_Subscription {
                     'expire'                => $user_meta['expire'] == '' ? 'recurring' : $user_meta['expire'],
                 ];
 
-                $wpdb->insert( $wpdb->prefix . 'wpuf_subscribers', $table_data );
+                Stores::subscribers()->insert( $table_data );
             }
 
             if ( self::is_free_pack( $pack_id ) ) {
@@ -249,19 +248,17 @@ class User_Subscription {
     }
 
     /**
-     * Delete subscription pack from the user
+     * Delete the subscription pack of the user (a recurring PayPal pack is
+     * cancelled at PayPal too).
+     *
+     * @deprecated WPUF_SINCE Use \WeDevs\Wpuf\Admin\Subscriptions\User_Profile::remove_user_pack().
      *
      * @return void
      */
     public function delete_pack() {
+        _deprecated_function( __METHOD__, 'WPUF_SINCE', '\\WeDevs\\Wpuf\\Admin\\Subscriptions\\User_Profile::remove_user_pack()' );
 
-        // cancel is it's a recurring payment
-        if ( $this->recurring() ) {
-            $wpuf_paypal = new Lib\Gateway\Paypal();
-            $wpuf_paypal->recurring_change_status( $this->user->id, 'Cancel' );
-        }
-
-        delete_user_meta( $this->user->id, '_wpuf_subscription_pack' );
+        \WeDevs\Wpuf\Admin\Subscriptions\User_Profile::remove_user_pack( $this->user->id );
     }
 
     /**
@@ -272,17 +269,7 @@ class User_Subscription {
      * @return bool
      */
     public function used_free_pack( $pack_id ) {
-        $has_used = get_user_meta( $this->user->id, 'wpuf_fp_used', true );
-
-        if ( $has_used == '' ) {
-            return false;
-        }
-
-        if ( is_array( $has_used ) && isset( $has_used[ $pack_id ] ) ) {
-            return true;
-        }
-
-        return false;
+        return isset( Stores::user_packs()->free_packs_used( $this->user->id )[ $pack_id ] );
     }
 
     /**
@@ -291,12 +278,7 @@ class User_Subscription {
      * @param int $pack_id
      */
     public function add_free_pack( $user_id, $pack_id ) {
-        $has_used = get_user_meta( $this->user->id, 'wpuf_fp_used', true );
-        $has_used = is_array( $has_used ) ? $has_used : [];
-
-        $has_used[ $pack_id ] = $pack_id;
-
-        update_user_meta( $user_id, 'wpuf_fp_used', $has_used );
+        Stores::user_packs()->mark_free_pack_used( $user_id, $pack_id );
     }
 
     public function pack_info( $form_id ) {
@@ -415,7 +397,7 @@ class User_Subscription {
         $count     = isset( $sub_info['posts'][ $post_type ] ) ? intval( $sub_info['posts'][ $post_type ] ) : 0;
 
         // decrease the post count, if not umlimited
-        $wpuf_post_status = get_post_meta( $post_id, 'wpuf_post_status', true );
+        $wpuf_post_status = Stores::submissions()->quota_flag( $post_id );
 
         if ( $wpuf_post_status != 'published' && $wpuf_post_status != 'new_draft' ) {
             if ( $count > 0 ) {
@@ -426,7 +408,7 @@ class User_Subscription {
 
             $this->update_meta( $sub_info );
 
-            update_post_meta( $post_id, 'wpuf_post_status', 'new_draft' );
+            Stores::submissions()->set_quota_flag( $post_id, 'new_draft' );
         }
     }
 
@@ -535,13 +517,17 @@ class User_Subscription {
         $featured_count = ! empty( $sub_info['total_feature_item'] ) ? intval( $sub_info['total_feature_item'] ) : 0;
         $stickies       = get_option( 'sticky_posts' );
         $is_featured    = in_array( intval( $post_id ), $stickies, true );
+        // Ticked only when the checkbox value is there: an empty value (a client
+        // that always sends the key) is "not ticked", like a missing key.
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the form submit checked the nonce before this runs.
+        $wants_featured = isset( $_POST['is_featured_item'] ) && '' !== sanitize_text_field( wp_unslash( $_POST['is_featured_item'] ) );
 
-        if ( $featured_count > 0 && array_key_exists( 'is_featured_item', $_POST ) && ! $is_featured ) {
+        if ( $featured_count > 0 && $wants_featured && ! $is_featured ) {
             stick_post( $post_id );
             $sub_info['total_feature_item'] = $featured_count - 1;
         }
 
-        if ( $featured_count > 0 && ! array_key_exists( 'is_featured_item', $_POST ) && $is_featured ) {
+        if ( $featured_count > 0 && ! $wants_featured && $is_featured ) {
             $sub_info['total_feature_item'] = $featured_count + 1;
             unstick_post( $post_id );
         }

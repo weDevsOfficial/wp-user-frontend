@@ -27,7 +27,7 @@ class Pro_Form_Preview_Artwork {
 
     public function __construct() {
         $this->title    = __( 'Professional Artwork Submission', 'wp-user-frontend' );
-        $this->image    = WPUF_ASSET_URI . '/images/templates/artwork.svg';
+        $this->image    = WPUF_ASSET_URI . '/images/templates/artwork.webp';
         $this->pro_icon = WPUF_ASSET_URI . '/images/templates/pro-badge.svg';
     }
 

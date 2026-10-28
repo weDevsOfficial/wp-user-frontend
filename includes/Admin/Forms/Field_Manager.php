@@ -215,13 +215,15 @@ class Field_Manager {
      *
      * @return void
      */
-    public function render_fields( $fields, $form_id, $atts = [], $type = 'post', $post_id = NULL ) {
+    public function render_fields( $fields, $form_id, $atts = [], $type = 'post', $post_id = null ) {
         if ( ! $fields ) {
             return;
         }
         $fields = apply_filters( 'wpuf_render_fields', $fields, $form_id );
         foreach ( $fields as $field ) {
-            if ( ! $field_object = $this->field_exists( $field['template'] ) ) {
+            $field_object = $this->field_exists( $field['template'] );
+
+            if ( ! $field_object ) {
                 if ( defined( 'WP_DEBUG' && WP_DEBUG ) ) {
                     echo wp_kses_post( '<h4 style="color: red;"><em>' . $field['template'] . '</em> field not found.</h4>' );
                 }
@@ -271,10 +273,10 @@ class Field_Manager {
                 }
             }
             if ( $visibility_selected == 'subscribed_users' && is_user_logged_in() ) {
-                $user_pack = ( new Subscription() )->get_user_pack( get_current_user_id() );
+                $user_pack = Subscription::get_user_pack( get_current_user_id() );
                 if ( empty( $visibility_choices ) && ! empty( $user_pack ) ) {
                     $show_field = true;
-                } else if ( ! empty( $user_pack ) && ! empty( $visibility_choices ) ) {
+                } elseif ( ! empty( $user_pack ) && ! empty( $visibility_choices ) ) {
                     foreach ( $visibility_choices as $pack => $id ) {
                         if ( $user_pack['pack_id'] == $id ) {
                             $show_field = true;

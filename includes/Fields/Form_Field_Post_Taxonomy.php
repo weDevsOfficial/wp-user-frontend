@@ -154,6 +154,11 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         <span class="wpuf-wordlimit-message wpuf-help"></span>
         <?php
         $this->help_text( $field_settings );
+        ?>
+        </div>
+        <?php
+        // Close the field's list item (the other fields do; the browser repaired the open tags before).
+        $this->after_field_print_label();
     }
 
     public function taxnomy_select( $terms ) {
@@ -448,13 +453,11 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
 
     public function tax_input( $post_id = null, $field_settings = [] ) {
         $attr = $this->field_settings;
-        $nonce = wp_create_nonce( 'wpuf_ajax_tag_search' );
-        $query_string = '?action=wpuf_ajax_tag_search&tax=' . $attr['name'] . '&nonce=' . $nonce;
+        $term_ids = [];
 
         if ( 'child_of' === $this->exclude_type ) {
-            $exclude = wpuf_get_field_settings_excludes( $this->field_settings, $this->exclude_type );
-
-            $query_string .= '&term_ids=' . implode( ',', $exclude['childs'] );
+            $exclude  = wpuf_get_field_settings_excludes( $this->field_settings, $this->exclude_type );
+            $term_ids = (array) $exclude['childs'];
         }
 
         ?>
@@ -464,7 +467,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
-                        $('#<?php echo esc_attr( $attr['name'] ); ?>').suggest( wpuf_frontend.ajaxurl + '<?php echo $query_string; // phpcs:ignore ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                        $('#<?php echo esc_attr( $attr['name'] ); ?>').suggest( <?php echo wp_json_encode( wpuf_tag_suggest_url( $attr['name'], $term_ids ) ); ?>, { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                 });
             })(jQuery);
         </script>

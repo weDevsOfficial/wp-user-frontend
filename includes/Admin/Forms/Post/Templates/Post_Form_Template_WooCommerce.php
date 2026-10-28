@@ -14,7 +14,7 @@ class Post_Form_Template_WooCommerce extends Form_Template {
         $this->enabled     = class_exists( 'WooCommerce' );
         $this->title       = __( 'WooCommerce Product', 'wp-user-frontend' );
         $this->description = __( 'Create a simple product form for WooCommerce.', 'wp-user-frontend' );
-        $this->image       = WPUF_ASSET_URI . '/images/templates/woocommerce.svg';
+        $this->image       = WPUF_ASSET_URI . '/images/templates/woocommerce.webp';
         $this->form_fields = [
             [
                 'input_type'  => 'text',

@@ -6,6 +6,7 @@ import { Base } from './base';
 import { FieldAddPage } from './fieldAdd';
 import { faker } from '@faker-js/faker';
 import { PostForm } from '../utils/testData';
+import { builderFormId } from '../utils/builderUrl';
 
 export class FieldOptionSettingsPage extends Base {
     constructor(page: Page) {
@@ -65,10 +66,7 @@ export class FieldOptionSettingsPage extends Base {
 
     async getFormId(): Promise<string> {
         try {
-            const targetUrl = this.page.url();
-            const urlObj = new URL(targetUrl);
-            const idParam = urlObj.searchParams.get('id');
-            return idParam;
+            return builderFormId(this.page.url()) || null;
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to extract form ID from URL: ${error}`);
             throw error;
@@ -414,10 +412,12 @@ export class FieldOptionSettingsPage extends Base {
     }
 
     async validateReadOnly(fieldType: string, expectedReadOnly: string) {
-        const isReadOnly = await this.page.getAttribute(
+        // A boolean attribute: classic printed disabled="disabled", React prints disabled="".
+        const disabledAttr = await this.page.getAttribute(
             Selectors.fieldOptionsSettings.frontend.fieldInput(fieldType),
             'disabled'
         );
+        const isReadOnly = null === disabledAttr ? null : 'disabled';
         if (expectedReadOnly && isReadOnly === expectedReadOnly) {
             console.log('\x1b[32m%s\x1b[0m', `✅ Validated read-only field`);
         } else if (!expectedReadOnly && isReadOnly !== expectedReadOnly) {
@@ -588,34 +588,44 @@ export class FieldOptionSettingsPage extends Base {
     }
 
     async validateContentRestrictionMinChar() {
-        // Validate content restriction in frontend
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(faker.string.alpha(9), { delay: 100 });
+        // Whole values (fill): key-by-key typing dropped keys in a loaded headed browser.
+        const textarea = this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE);
+        const start = faker.string.alpha(9);
+        await textarea.fill(start);
         await this.assertionValidate(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.minCharMsg);
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(faker.string.alpha(1), { delay: 100 });
+        await textarea.fill(start + faker.string.alpha(1));
         await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.minCharMsg)).not.toBeVisible();
     }
 
     async validateContentRestrictionMaxChar() {
-        // Validate content restriction in frontend
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(faker.string.alpha(10), { delay: 100 });
+        // Whole values (fill): key-by-key typing dropped keys in a loaded headed browser.
+        const textarea = this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE);
+        const start = faker.string.alpha(10);
+        await textarea.fill(start);
         await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.maxCharMsg)).not.toBeVisible();
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(faker.string.alpha(1), { delay: 100 });
+        await textarea.fill(start + faker.string.alpha(1));
         await this.assertionValidate(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.maxCharMsg);
     }
 
     async validateContentRestrictionMinWord() {
-        // Validate content restriction in frontend
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(faker.word.words(9), { delay: 100 });
+        // Whole values (fill): key-by-key typing dropped keys in a loaded headed browser.
+        const textarea = this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE);
+        const start = faker.word.words(9);
+        await textarea.fill(start);
         await this.assertionValidate(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.minWordMsg);
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(' ' + faker.word.words(1), { delay: 100 });
+        await textarea.fill(start + ' ' + faker.word.words(1));
         await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.minWordMsg)).not.toBeVisible();
     }
 
     async validateContentRestrictionMaxWord() {
         // Validate content restriction in frontend
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(faker.word.words(10), { delay: 100 });
+        // Whole values (fill), not key by key: a headed browser under load dropped keys, and
+        // what is checked here is the message at 10 and at 11 words.
+        const textarea = this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE);
+        const tenWords = faker.word.words(10);
+        await textarea.fill(tenWords);
         await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.maxWordMsg)).not.toBeVisible();
-        await this.page.locator(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE).pressSequentially(' ' + faker.word.words(1), { delay: 100 });
+        await textarea.fill(tenWords + ' ' + faker.word.words(1));
         await this.assertionValidate(Selectors.fieldOptionsSettings.fieldOptionsPanel.contentRestriction.maxWordMsg);
     }
 
@@ -801,6 +811,29 @@ export class FieldOptionSettingsPage extends Base {
         console.log('\x1b[32m%s\x1b[0m', `✅ Validated open in new window: ${expectedNewWindow}`);
     }
 
+    /**
+     * Close the jQuery UI date/time picker when it is open (Escape closes it),
+     * so the next click on a date input is not intercepted by its pane.
+     */
+    async closeDatePicker() {
+        const picker = this.page.locator('#ui-datepicker-div');
+        if (!(await picker.isVisible().catch(() => false))) {
+            return;
+        }
+        // The timepicker add-on ignores Escape at times: its Done button closes
+        // it, an outside click is the last resort.
+        const done = picker.locator('button', { hasText: 'Done' }).first();
+        if (await done.isVisible().catch(() => false)) {
+            await done.click().catch(() => {});
+        } else {
+            await this.page.keyboard.press('Escape');
+        }
+        if (!(await picker.waitFor({ state: 'hidden', timeout: 3000 }).then(() => true, () => false))) {
+            await this.page.mouse.click(5, 300);
+            await picker.waitFor({ state: 'hidden', timeout: 3000 }).catch(() => {});
+        }
+    }
+
     async validatePublishTime() {
         let PostTitle: string;
         //Enter Post Title
@@ -808,6 +841,9 @@ export class FieldOptionSettingsPage extends Base {
         console.log(PostForm.title);
         await this.page.waitForTimeout(1000);
         //Enter Date / Time
+        // FOS0089 opened the picker on this input and left it open; its button
+        // pane then covers the input and the click never lands. Close it first.
+        await this.closeDatePicker();
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.dateTimeSelect);
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectYear, '2024');
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectMonth, '7');
@@ -872,16 +908,15 @@ export class FieldOptionSettingsPage extends Base {
     }
 
     async validateMaxImageSize(expectedMaxImageSize: number) {
-        // const dialogHandler = async (dialog: Dialog) => {
-        //     if (dialog.type() === 'confirm') {
-        //         await dialog.accept();
-        //     }
-        // };
-        // this.page.on('dialog', dialogHandler);
-        this.page.on('dialog', dialog => dialog.accept());
+        // One accept-all handler per page: a handler added on every call accepted the
+        // same dialog twice later on ("No dialog is showing") and failed that test.
+        const flagged = this.page as Page & { wpufAcceptDialogs?: boolean };
+        if (!flagged.wpufAcceptDialogs) {
+            flagged.wpufAcceptDialogs = true;
+            this.page.on('dialog', (dialog) => { dialog.accept().catch(() => { /* already handled */ }); });
+        }
         await this.page.setInputFiles(Selectors.postForms.postFormsFrontendCreate.postImageUploadFormsFE, PostForm.imageUpload);
         await this.page.waitForLoadState('domcontentloaded', { timeout: 10000 });
-        // this.page.off('dialog', dialogHandler);
         console.log(`Max image size validated: ${expectedMaxImageSize}KB`);
     }
 
@@ -909,31 +944,49 @@ export class FieldOptionSettingsPage extends Base {
 
     async configureHiddenCountry(countries: Array<string>) {
         await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.hideThese);
-        await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectHiddenCountry);
-        await this.page.waitForTimeout(1000);
-        await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectHiddenCountry);
+        await this.openCountryPicker(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectHiddenCountry);
         for (const country of countries) {
+            // The React multi-select may close after a pick: reopen it when needed.
+            if (!(await this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectCountry(country)).isVisible())) {
+                await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectHiddenCountry);
+            }
             await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectCountry(country));
         }
     }
 
     async configureOnlyShowCountry(countries: Array<string>) {
         await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.showThese);
-        await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectOnlyShowCountry);
-        await this.page.waitForTimeout(1000);
-        await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectOnlyShowCountry);
+        await this.openCountryPicker(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectOnlyShowCountry);
         for (const country of countries) {
+            // The React multi-select may close after a pick: reopen it when needed.
+            if (!(await this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectCountry(country)).isVisible())) {
+                await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectOnlyShowCountry);
+            }
             await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectCountry(country));
         }
     }
 
+    // Open the country picker. The legacy selectize box needed a second click to
+    // open; the React multi-select would close on it, so click again only while closed.
+    async openCountryPicker(locator: string) {
+        await this.validateAndClick(locator);
+        await this.page.waitForTimeout(1000);
+        const open = await this.page.locator('xpath=//*[@role="option"] | //div[contains(@class,"selectize-dropdown-content")]//div[contains(@class,"option")] >> visible=true').count();
+        if (open === 0) {
+            await this.validateAndClick(locator);
+        }
+    }
+
     async validateDefaultCountry(expectedCountry: string) {
-        await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectedCountry(expectedCountry))).toHaveAttribute('selected');
+        // React picks the option through the select's value (no `selected` attribute on the option).
+        await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.openCountryList).first()).toHaveValue(expectedCountry);
         console.log(`Default country validated: ${expectedCountry}`);
     }
 
     async validateHiddenCountry(expectedCountries: Array<string>) {
-        await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.openCountryList);
+        // The options live in the native select either way (React keeps it beside its list
+        // button); opening the list is not needed, and clicking the hidden native select stalls.
+        await this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.openCountryList).first().waitFor({ state: 'attached', timeout: 30000 });
         for (const country of expectedCountries) {
             await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectedCountry(country))).toHaveCount(0);
         }
@@ -941,7 +994,9 @@ export class FieldOptionSettingsPage extends Base {
     }
 
     async validateOnlyShowCountry(expectedCountries: Array<string>) {
-        await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.openCountryList);
+        // The options live in the native select either way (React keeps it beside its list
+        // button); opening the list is not needed, and clicking the hidden native select stalls.
+        await this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.openCountryList).first().waitFor({ state: 'attached', timeout: 30000 });
         for (const country of expectedCountries) {
             await expect(this.page.locator(Selectors.fieldOptionsSettings.fieldOptionsPanel.countryOptions.selectedCountry(country))).toHaveCount(1);
         }

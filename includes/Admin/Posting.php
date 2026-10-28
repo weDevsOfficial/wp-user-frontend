@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf\Admin;
 
+use WeDevs\Wpuf\Platform\Stores\Stores;
 use WeDevs\Wpuf\Traits\FieldableTrait;
 
 /**
@@ -68,31 +69,10 @@ class Posting {
         // Remove global CSS loading to prevent leaks - only load on WPUF pages via hook
         // add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_script'] );
         add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_script' ] );
-        // add_action( 'admin_enqueue_scripts', [ $this, 'dequeue_assets' ] );
         add_action( 'wpuf_load_registration_forms', [ $this, 'enqueue_script' ] );
         add_action( 'save_post', [ $this, 'save_meta'], 100, 2 ); // save the custom fields
         add_action( 'save_post', [ $this, 'form_selection_metabox_save' ], 1, 2 ); // save edit form id
         add_action( 'save_post', [ $this, 'post_lock_metabox_save' ], 1, 2 ); // save post lock option
-    }
-
-    /**
-     * Dequeue assets to avoid conflict
-     *
-     * @since 4.1.0
-     *
-     * @return void
-     */
-    public function dequeue_assets() {
-        $post_form_page = 'wpuf-post-forms';
-
-        if ( strpos( get_current_screen()->id, $post_form_page ) === false ) {
-            return;
-        }
-
-        wp_dequeue_style( 'wpuf-form-builder' );
-        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1', '<' ) ) {
-            wp_dequeue_style( 'wpuf-form-builder-pro' );
-        }
     }
 
     public static function init() {
@@ -122,14 +102,16 @@ class Posting {
             add_action( 'admin_head', 'wpuf_hide_google_map_button' );
         }
 
-        wp_enqueue_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.css', [], '11.4.8' );
-        wp_enqueue_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.js', [], '11.4.8', true );
+        wp_enqueue_style( 'wpuf-dialog' );
+        wp_enqueue_script( 'wpuf-dialog' );
         // wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', ['jquery', 'plupload-handlers'] );
         wp_enqueue_script( 'wpuf-upload' );
         wp_localize_script( 'wpuf-upload', 'wpuf_upload', [
             'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
             'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
             'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
+            'rest'        => wpuf_rest_script_data(),
+            'upload_nonce' => wp_create_nonce( 'wpuf-upload-nonce' ),
             'ajaxurl'    => admin_url( 'admin-ajax.php' ),
             'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
             'plupload'   => [
@@ -196,7 +178,7 @@ class Posting {
         global $post;
 
         $forms    = get_posts( ['post_type' => 'wpuf_forms', 'numberposts' => '-1'] );
-        $selected = get_post_meta( $post->ID, '_wpuf_form_id', true ); ?>
+        $selected = Stores::submissions()->form_id( $post->ID ); ?>
 
         <!-- <input type="hidden" name="wpuf_form_select_nonce" value="<?php // echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>" /> -->
         <?php wp_nonce_field( plugin_basename( __FILE__ ), 'wpuf_form_select_nonce' ); ?>
@@ -237,7 +219,7 @@ class Posting {
         }
         $wpuf_form_select = isset( $_POST['wpuf_form_select'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_form_select'] ) ) : '';
 
-        update_post_meta( $post->ID, '_wpuf_form_id', $wpuf_form_select );
+        Stores::submissions()->set_form_id( $post->ID, $wpuf_form_select );
     }
 
     /**
@@ -271,8 +253,8 @@ class Posting {
         global $post;
 
         $msg                 = '';
-        $edit_post_lock      = get_post_meta( $post->ID, '_wpuf_lock_editing_post', true );
-        $edit_post_lock_time = get_post_meta( $post->ID, '_wpuf_lock_user_editing_post_time', true );
+        $edit_post_lock      = Stores::submissions()->lock( $post->ID );
+        $edit_post_lock_time = Stores::submissions()->lock_time( $post->ID );
 
         if ( empty( $edit_post_lock_time ) ) {
             $is_locked = false;
@@ -356,7 +338,7 @@ class Posting {
         }
         $wpuf_lock_post = isset( $_POST['wpuf_lock_post'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_lock_post'] ) ) : '';
 
-        update_post_meta( $post->ID, '_wpuf_lock_editing_post', $wpuf_lock_post );
+        Stores::submissions()->set_lock( $post->ID, $wpuf_lock_post );
     }
 
     /**
@@ -404,7 +386,7 @@ class Posting {
     public function render_form( $form_id, $post_id = null ) {
         global $post;
 
-        $form_id       = get_post_meta( $post->ID, '_wpuf_form_id', true );
+        $form_id       = Stores::submissions()->form_id( $post->ID );
         $form_settings = wpuf_get_form_settings( $form_id );
 
         /**
@@ -474,7 +456,7 @@ class Posting {
                     if ( isset( $field['template'] ) && $field['template'] === 'repeat_field' &&
                          isset( $field['input_type'] ) && $field['input_type'] === 'repeat' ) {
                         // Use special admin metabox rendering for repeat fields
-                        if ( class_exists( 'WeDevs\Wpuf\Pro\Fields\Field_Repeat' ) ) {
+                        if ( wpuf_is_pro_active() && class_exists( 'WeDevs\Wpuf\Pro\Fields\Field_Repeat' ) ) {
                             $repeat_field_obj = new \WeDevs\Wpuf\Pro\Fields\Field_Repeat();
                             $repeat_field_obj->render_admin_metabox( $field, $form_id, 'post', $post->ID );
                         }
@@ -541,17 +523,13 @@ class Posting {
                     deleteAvatar: function(e) {
                         e.preventDefault();
 
-                        var data = {
-                            action: 'wpuf_delete_avatar',
-                            user_id : $('#profile-page').find('#user_id').val(),
-                            // _wpnonce: '<?php // echo wp_create_nonce( 'wpuf_nonce' ); ?>'
-                            _wpnonce: wpuf_admin_script.nonce
-                        };
+                        var userId = parseInt( $('#profile-page').find('#user_id').val(), 10 ) || 0;
 
                         if ( confirm( $(this).data('confirm') ) ) {
-                            $.post(ajaxurl, data, function() {
+                            // REST DELETE wpuf/v1/profile/avatar (Pro).
+                            window.wpufRest.request( wpuf_admin_script.rest, 'profile/avatar', { method: 'DELETE', data: { user_id: userId } } ).then( function() {
                                 window.location.reload();
-                            });
+                            } );
                         }
                     },
 
@@ -951,27 +929,6 @@ class Posting {
 
         // WPUF_Frontend_Form_Post::update_post_meta( $meta_vars, $post_id );
         $this->update_post_meta( $meta_vars, $post_id );
-    }
-
-    /**
-     * Clear Schedule lock
-     *
-     * @since 3.0.2
-     */
-    public function clear_schedule_lock() {
-        check_ajax_referer( 'wpuf_nonce', 'nonce' );
-
-        if ( ! current_user_can( wpuf_admin_role() ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
-        $post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : '';
-
-        if ( !empty( $post_id ) ) {
-            update_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', '' );
-            update_post_meta( $post_id, '_wpuf_lock_editing_post', 'no' );
-        }
-        exit;
     }
 
     /**

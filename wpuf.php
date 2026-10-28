@@ -6,7 +6,7 @@ Description: Create, edit, delete, manages your post, pages or custom post types
 Author: weDevs
 Version: 4.3.14
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
-Requires at least: 5.0
+Requires at least: 6.6
 Requires PHP: 7.4
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -32,6 +32,8 @@ if ( $wpuf_autoload_loaded ) {
 }
 
 define( 'WPUF_VERSION', '4.3.14' );
+// Platform API version (container, REST manager, React admin runtime); Pro checks it (D10).
+define( 'WPUF_PLATFORM_VERSION', '1.0' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -103,6 +105,25 @@ final class WP_User_Frontend {
     public $container = [];
 
     /**
+     * Platform service container (task 2.1), next to the legacy `$container`
+     * array whose keys stay as they are.
+     *
+     * @since WPUF_SINCE
+     *
+     * @var WeDevs\Wpuf\Platform\Container|null
+     */
+    private $platform = null;
+
+    /**
+     * Platform bootstrap.
+     *
+     * @since WPUF_SINCE
+     *
+     * @var WeDevs\Wpuf\Platform\Bootstrap|null
+     */
+    private $platform_bootstrap = null;
+
+    /**
      * Fire up the plugin
      */
     public function __construct() {
@@ -162,6 +183,8 @@ final class WP_User_Frontend {
      * @return void
      */
     public function init_hooks() {
+        // Stop an older Pro before any plugin's plugins_loaded boot (also when its folder loads before free's).
+        add_action( 'plugins_loaded', [ \WeDevs\Wpuf\Platform\VersionGuard::class, 'stop_outdated_pro' ], 1 );
         add_action( 'plugins_loaded', [ $this, 'init_insights' ], 8 );
         add_action( 'plugins_loaded', [ $this, 'wpuf_loader' ] );
         add_action( 'plugins_loaded', [ $this, 'process_wpuf_pro_version' ] );
@@ -178,7 +201,7 @@ final class WP_User_Frontend {
 
     public function init_insights() {
         // Insight class instantiate
-        $this->container['tracker'] = new WeDevs\Wpuf\Lib\WeDevs_Insights( __FILE__ );
+        $this->legacy( 'tracker' );
     }
 
     /**
@@ -188,7 +211,6 @@ final class WP_User_Frontend {
      */
     public function includes() {
         require_once __DIR__ . '/wpuf-functions.php';
-        require_once __DIR__ . '/includes/class-frontend-render-form.php';
 
         // add reCaptcha library if not found
         if ( ! function_exists( 'recaptcha_get_html' ) ) {
@@ -201,6 +223,16 @@ final class WP_User_Frontend {
 
         // Gateway helper functions
         require_once __DIR__ . '/Lib/Gateway/gateway-functions.php';
+
+        // Old global class names (develop loaded them on every request) resolve
+        // to their namespaced classes when outside code asks for them.
+        spl_autoload_register(
+            function ( $class_name ) {
+                if ( 'WPUF_Frontend_Render_Form' === $class_name ) {
+                    class_alias( \WeDevs\Wpuf\Frontend_Render_Form::class, 'WPUF_Frontend_Render_Form' );
+                }
+            }
+        );
     }
 
     /**
@@ -209,28 +241,28 @@ final class WP_User_Frontend {
      * @return void
      */
     public function instantiate() {
-        $this->container['assets']       = new WeDevs\Wpuf\Assets();
-        $this->container['subscription'] = new WeDevs\Wpuf\Admin\Subscription();
-        $this->container['fields']       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
-        $this->container['customize']    = new WeDevs\Wpuf\Admin\Customizer_Options();
+        // Core services come from the platform container (one instance for
+        // wpuf()->key and the container), built eagerly in this order because
+        // their constructors add hooks.
+        foreach ( [ 'assets', 'subscription', 'fields', 'customize' ] as $key ) {
+            $this->legacy( $key );
+        }
 
         // Initialize legacy gateway classes for backward compatibility
-        $this->container['bank']         = new WeDevs\Wpuf\Lib\Gateway\Bank();
-        $this->container['paypal']       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
+        $this->legacy( 'bank' );
+        $this->legacy( 'paypal' );
 
         // Initialize new gateway manager inside init hook for translation issue
         add_action( 'init', [ $this, 'init_gateway_manager' ] );
 
-        $this->container['api']          = new WeDevs\Wpuf\API();
-        $this->container['integrations'] = new WeDevs\Wpuf\Integrations();
-        $this->container['ai_manager']   = new WeDevs\Wpuf\AI_Manager();
-        $this->container['post_form_block'] = new WeDevs\Wpuf\Blocks\PostForm();
+        foreach ( [ 'api', 'integrations', 'ai_manager', 'post_form_block' ] as $key ) {
+            $this->legacy( $key );
+        }
 
         if ( is_admin() ) {
-            $this->container['admin']        = new WeDevs\Wpuf\Admin();
-            $this->container['setup_wizard'] = new WeDevs\Wpuf\Setup_Wizard();
-            $this->container['pro_upgrades'] = new WeDevs\Wpuf\Pro_Upgrades();
-            $this->container['privacy']      = new WeDevs\Wpuf\WPUF_Privacy();
+            foreach ( [ 'admin', 'setup_wizard', 'pro_upgrades', 'privacy' ] as $key ) {
+                $this->legacy( $key );
+            }
 
             // Load Frontend when in Elementor editor or Elementor AJAX so shortcodes
             // like wpuf_form and wpuf_account are registered and do_shortcode() works.
@@ -243,16 +275,97 @@ final class WP_User_Frontend {
                 || ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) && $request_act === 'elementor_ajax' );
 
             if ( $is_elementor ) {
-                $this->container['frontend'] = new WeDevs\Wpuf\Frontend();
+                $this->legacy( 'frontend' );
             }
         } else {
-            $this->container['frontend'] = new WeDevs\Wpuf\Frontend();
+            $this->legacy( 'frontend' );
         }
 
         if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
             // Initialize the ajax class inside init hook for translation issue
             add_action( 'init', [ $this, 'init_ajax' ] );
         }
+
+        // Platform services boot after every legacy key is filled, so they can
+        // rely on wpuf()->x; fires `wpuf_platform_loaded` once.
+        $this->platform_bootstrap()->boot();
+    }
+
+    /**
+     * The platform service container.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return WeDevs\Wpuf\Platform\Container
+     */
+    public function platform() {
+        if ( null === $this->platform ) {
+            $this->platform = new WeDevs\Wpuf\Platform\Container();
+        }
+
+        return $this->platform;
+    }
+
+    /**
+     * The platform bootstrap (Pro registers its providers through it on
+     * `wpuf_platform_loaded`).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return WeDevs\Wpuf\Platform\Bootstrap
+     */
+    public function platform_bootstrap() {
+        if ( null === $this->platform_bootstrap ) {
+            $this->platform_bootstrap = new WeDevs\Wpuf\Platform\Bootstrap( $this->platform() );
+        }
+
+        return $this->platform_bootstrap;
+    }
+
+    /**
+     * Build a legacy service from the platform container and keep it under its
+     * legacy key (`wpuf()->key`): one instance for both.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $key Service key (see Platform\Providers\PluginServiceProvider::SERVICES)
+     *
+     * @return object
+     */
+    private function legacy( $key ) {
+        $this->platform_bootstrap()->register();
+
+        $this->container[ $key ] = $this->platform()->get( WeDevs\Wpuf\Platform\Providers\PluginServiceProvider::class_of( $key ) );
+
+        return $this->container[ $key ];
+    }
+
+    /**
+     * The services a classic submission gets from the admin layer (admin-ajax is an admin
+     * request), for the React form routes, which run outside wp-admin: the post form
+     * templates' after-insert / after-update hooks, then `wpuf_frontend_submission_hooks`
+     * for add-ons (Pro builds its user approval, notifications, content filter and
+     * registration templates on it). Once per request; nothing to do in wp-admin.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function boot_submission_hooks() {
+        if ( is_admin() || did_action( 'wpuf_frontend_submission_hooks' ) ) {
+            return;
+        }
+
+        $this->platform_bootstrap()->register();
+        $this->platform()->get( WeDevs\Wpuf\Platform\Providers\AdminServiceProvider::class_of( 'form_template' ) );
+
+        /**
+         * Fires once before a React form route submits, so code that hooks the
+         * submission from the admin layer can build itself, as on admin-ajax.
+         *
+         * @since WPUF_SINCE
+         */
+        do_action( 'wpuf_frontend_submission_hooks' );
     }
 
     /**
@@ -263,7 +376,7 @@ final class WP_User_Frontend {
      * @return void
      */
     public function init_ajax() {
-        $this->container['ajax'] = new WeDevs\Wpuf\Ajax();
+        $this->legacy( 'ajax' );
     }
 
     /**
@@ -274,7 +387,7 @@ final class WP_User_Frontend {
      * @return void
      */
     public function init_gateway_manager() {
-        $this->container['gateway_manager'] = new WeDevs\Wpuf\Lib\Gateway\Gateway_Manager();
+        $this->legacy( 'gateway_manager' );
     }
 
     /**
@@ -299,7 +412,7 @@ final class WP_User_Frontend {
             return;
         }
 
-        $this->container['upgrades'] = new WeDevs\Wpuf\Admin\Upgrades();
+        $this->legacy( 'upgrades' );
     }
 
     /**
@@ -349,12 +462,15 @@ final class WP_User_Frontend {
      * @since 2.5.4
      */
     public function wpuf_loader() {
-        $has_pro = class_exists( 'WP_User_Frontend_Pro' );
+        // An older Pro is not started (VersionGuard); free then runs as the free plugin.
+        \WeDevs\Wpuf\Platform\VersionGuard::stop_outdated_pro();
+
+        $has_pro = wpuf_is_pro_active();
 
         if ( $has_pro ) {
             $this->is_pro = true;
         } else {
-            $this->container['free_loader'] = new WeDevs\Wpuf\Free\Free_Loader();
+            $this->legacy( 'free_loader' );
 
             $this->container['free_loader']->includes();
             $this->container['free_loader']->instantiate();
@@ -439,7 +555,7 @@ final class WP_User_Frontend {
      * @return void
      */
     public function register_widgets() {
-        $this->container['widgets'] = new WeDevs\Wpuf\Widgets\Manager();
+        $this->legacy( 'widgets' );
     }
     public function license_expired() {
         echo '<div class="error">';
@@ -459,6 +575,20 @@ final class WP_User_Frontend {
     }
 
     /**
+     * Answer isset( wpuf()->x ): true for a legacy service or a shared platform service.
+     * (Without this, isset() on a magic property is always false.)
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $prop Service key
+     *
+     * @return bool
+     */
+    public function __isset( $prop ) {
+        return array_key_exists( $prop, $this->container ) || ( null !== $this->platform && $this->platform->is_shared( $prop ) );
+    }
+
+    /**
      * Magic getter to bypass referencing objects
      *
      * @since 4.0.9
@@ -471,6 +601,14 @@ final class WP_User_Frontend {
         if ( array_key_exists( $prop, $this->container ) ) {
             return $this->container[ $prop ];
         }
+
+        // New services live in the platform container; only shared ones are
+        // reachable here, anything else (unknown ids included) stays null.
+        if ( null !== $this->platform && $this->platform->is_shared( $prop ) ) {
+            return $this->platform->get( $prop );
+        }
+
+        return null;
     }
 
     /**

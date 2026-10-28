@@ -208,47 +208,10 @@ class Promotion {
                     e.preventDefault();
                     jQuery("#wpuf-review-notice").hide();
 
-                    wp.ajax.post('wpuf_dismiss_review_notice', {
-                        dismissed: true,
-                        _wpnonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_nonce' ) ); ?>'
-                    });
+                    <?php echo wpuf_rest_post_js( 'admin/notices/review/dismiss' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON-encoded JS. ?>;
                 });
             </script>
         <?php
-    }
-
-    /**
-     * Dismiss promotion notice
-     *
-     * @since  2.5
-     *
-     * @return void
-     */
-    public function dismiss_promotional_offer() {
-        if ( empty( $_POST['_wpnonce'] ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
-        if ( ! current_user_can( wpuf_admin_role() ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
-        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_nonce' ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
-        if ( ! empty( $_POST['dismissed'] ) ) {
-            $offer_key = ! empty( $_POST['option_name'] ) ? sanitize_key( wp_unslash( $_POST['option_name'] ) ) : '';
-
-            // The campaign key comes from the remote promotion feed, so it cannot be a fixed
-            // list, but it must stay inside our own namespace: without this the request could
-            // name any option, such as active_plugins, and set it to "hide".
-            if ( ! $offer_key || 0 !== strpos( $offer_key, 'wpuf_' ) ) {
-                wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-            }
-
-            update_option( $offer_key, 'hide' );
-        }
     }
 
     /**
@@ -300,38 +263,9 @@ class Promotion {
             jQuery('body').on('click', '#wpuf-bfcm-notice .notice-dismiss', function (e) {
                 e.preventDefault();
                 jQuery('#wpuf-bfcm-notice').remove();
-                wp.ajax.post('wpuf_dismiss_promotional_offer_notice', {
-                    dismissed: true,
-                    option_name: '<?php echo esc_html( $option_name ); ?>',
-                    _wpnonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_nonce' ) ); ?>'
-                });
+                <?php echo wpuf_rest_post_js( 'admin/notices/promotion/dismiss', [ 'key' => $option_name ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON-encoded JS. ?>;
             });
         </script>
         <?php
-    }
-
-    /**
-     * Dismiss review notice
-     *
-     * @since  3.1.0
-     *
-     * @return void
-     **/
-    public function dismiss_review_notice() {
-        if ( empty( $_POST['_wpnonce'] ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
-        if ( ! current_user_can( wpuf_admin_role() ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
-        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_nonce' ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
-        if ( ! empty( $_POST['dismissed'] ) ) {
-            update_option( 'wpuf_review_notice_dismiss', 'yes' );
-        }
     }
 }

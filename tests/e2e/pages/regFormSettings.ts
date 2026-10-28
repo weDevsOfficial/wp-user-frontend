@@ -55,7 +55,7 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.page.waitForTimeout(2000);
+        // With auto login the form opens its redirect 1.5 s after the message: check it at once.
         await this.assertionValidate(Selectors.regFormSettings.successMessage);
 
         if (role === 'subscriber') {
@@ -151,8 +151,9 @@ export class RegFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.regFormSettings.successMessage);
 
         await this.navigateToURL(this.accountPage);
-        const restrictionMessage = await this.page.innerText(Selectors.regFormSettings.wpufMessage);
-        expect.soft(restrictionMessage).toBe('This page is restricted. Please Log in to view this page.');
+        // Logged out, the account page shows the guest card (unauthorized.php).
+        const restrictionMessage = await this.page.innerText(Selectors.regFormSettings.accountGuestText);
+        expect.soft(restrictionMessage).toBe('This page is restricted. Please log in to view this page.');
     }
 
     async validateLoginDenied(userEmail: string, userPassword: string) {
@@ -161,10 +162,14 @@ export class RegFormSettingsPage extends Base {
         const errorLoginMessage = await this.page.innerText(Selectors.regFormSettings.wpLoginErrorMessage);
         expect(errorLoginMessage).toBe('ERROR: Your account has to be approved by an administrator before you can login.');
 
+        // The WPUF login (React) lists its errors as lines in one alert; with Turnstile on and
+        // no token the Turnstile line comes first, as develop listed both (its check does not stop the login).
         await this.navigateToURL(this.wpufLoginPage);
         await new BasicLoginPage(this.page).frontendLogin(userEmail, userPassword);
-        const errorWPUFLoginMessage = await this.page.innerText(Selectors.regFormSettings.wpLoginErrorMessage);
-        expect(errorWPUFLoginMessage).toBe('ERROR: Your account has to be approved by an administrator before you can login.');
+        await expect(this.page.locator(Selectors.regFormSettings.wpufLoginErrorLines)).toContainText(
+            [ 'ERROR: Your account has to be approved by an administrator before you can login.' ],
+            { timeout: 30000 }
+        );
     }
 
     async approveNewUser(userEmail: string) {
@@ -183,7 +188,8 @@ export class RegFormSettingsPage extends Base {
     async validateLoginAfterApproval(userEmail: string, userPassword: string) {
         await this.navigateToURL(this.wpufLoginPage);
         await new BasicLoginPage(this.page).frontendLogin(userEmail, userPassword);
-        expect(this.page.url()).toBe(this.siteHomePage + '/');
+        // The React login signs in over REST and then redirects: wait for the redirect.
+        await expect(this.page).toHaveURL(this.siteHomePage + '/', { timeout: 30000 });
 
         await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
@@ -750,6 +756,16 @@ export class RegFormSettingsPage extends Base {
         }
     }
 
+    /**
+     * The builder's notification body is its own rich editor (Tiptap, a contenteditable),
+     * not TinyMCE in an iframe: fill the one under the given label.
+     */
+    async fillNotificationBody(label: string, body: string) {
+        const editor = this.page.locator(`xpath=//*[normalize-space()="${label}"]/following::div[contains(@class,"wpuf-rich-editor")][1]//*[@contenteditable="true"]`).first();
+        await editor.waitFor({ timeout: 30000 });
+        await editor.fill(body);
+    }
+
     async setEmailVerificationNotificationBody(formName: string, body: string) {
         let flag = true;
 
@@ -769,9 +785,7 @@ export class RegFormSettingsPage extends Base {
             await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
             await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
 
-            // Handle iframe for rich text editor
-            await this.page.frameLocator(Selectors.regFormSettings.notificationSettingsSection.confirmationEmailBodyTextarea)
-                .locator(Selectors.regFormSettings.notificationSettingsSection.textareaBody).fill(body);
+            await this.fillNotificationBody('Confirmation Email Body', body);
 
             await this.validateAndClick(Selectors.regFormSettings.saveButton);
             flag = await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
@@ -814,7 +828,12 @@ export class RegFormSettingsPage extends Base {
                 }
             }
 
-            // Save settings
+            // Copying a tag changes nothing, so Save stays disabled (the builder saves only
+            // with changes, owner decision): nothing to save then.
+            if (await this.page.locator(Selectors.regFormSettings.saveButton).first().isDisabled().catch(() => false)) {
+                flag = false;
+                break;
+            }
             await this.validateAndClick(Selectors.regFormSettings.saveButton);
             flag = await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
         }
@@ -899,9 +918,7 @@ export class RegFormSettingsPage extends Base {
             await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
             await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
 
-            // Handle iframe for rich text editor
-            await this.page.frameLocator(Selectors.regFormSettings.notificationSettingsSection.welcomeEmailBodyTextarea)
-                .locator(Selectors.regFormSettings.notificationSettingsSection.textareaBody).fill(body);
+            await this.fillNotificationBody('Welcome Email Body', body);
 
             await this.validateAndClick(Selectors.regFormSettings.saveButton);
             flag = await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
@@ -936,6 +953,12 @@ export class RegFormSettingsPage extends Base {
                 }
             }
 
+            // Copying a tag changes nothing, so Save stays disabled (the builder saves only
+            // with changes, owner decision): nothing to save then.
+            if (await this.page.locator(Selectors.regFormSettings.saveButton).first().isDisabled().catch(() => false)) {
+                flag = false;
+                break;
+            }
             await this.validateAndClick(Selectors.regFormSettings.saveButton);
             flag = await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
         }

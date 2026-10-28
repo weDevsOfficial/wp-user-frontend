@@ -76,8 +76,19 @@ class WPUF_ACF_Compatibility {
             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
-        wpuf_update_option( 'wpuf_compatibility_' . $this->id, 'wpuf_general', 'yes' );
+        $this->mark_compatible();
         wp_send_json_success();
+    }
+
+    /**
+     * Turn the compatible option on (REST `wpuf/v1/admin/integrations/acf/compatible`).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function mark_compatible() {
+        wpuf_update_option( 'wpuf_compatibility_' . $this->id, 'wpuf_general', 'yes' );
     }
 
     /**
@@ -94,6 +105,20 @@ class WPUF_ACF_Compatibility {
             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
+        $this->migrate();
+        wp_send_json_success();
+    }
+
+    /**
+     * Store the checkbox / multiselect values of the forms' posts the way ACF
+     * reads them, then turn the compatible option on (REST
+     * `wpuf/v1/admin/integrations/acf/migrate`).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function migrate() {
         $forms = $this->get_post_forms();
         if ( ! empty( $forms ) ) {
             foreach ( $forms as $form ) {
@@ -128,8 +153,7 @@ class WPUF_ACF_Compatibility {
             }
         }
         update_option( 'wpuf_migrate_' . $this->id, 'yes' );
-        wpuf_update_option( 'wpuf_compatibility_' . $this->id, 'wpuf_general', 'yes' );
-        wp_send_json_success();
+        $this->mark_compatible();
     }
 
     /**
@@ -143,7 +167,7 @@ class WPUF_ACF_Compatibility {
             'post_status' => 'publish',
         ];
 
-        return $form_posts = get_posts( $args );
+        return get_posts( $args );
     }
 
     /**
@@ -177,31 +201,83 @@ class WPUF_ACF_Compatibility {
             return;
         } ?>
         <div class="notice notice-info">
-            <p><strong><?php printf( 
+            <p><strong>
+            <?php
+            printf(
                 // translators: %s is Title
                 esc_html( __( '%s Detected', 'wp-user-frontend' ) ),
-                        esc_html( $this->title ) ); ?></strong></p>
-            <p><?php printf( wp_kses_post( 
+                esc_html( $this->title )
+            );
+			?>
+                        </strong></p>
+            <p>
+            <?php
+            printf(
+                wp_kses_post(
                 // translators: %s is Title
-                __( 'Hey, looks like you have <strong>%s</strong> installed. What do you want to do with WPUF?',
-                    'wp-user-frontend' ) ), esc_html( $this->title ) ); ?></p>
+                    __(
+                        'Hey, looks like you have <strong>%s</strong> installed. What do you want to do with WPUF?',
+                        'wp-user-frontend'
+                    )
+                ), esc_html( $this->title )
+            );
+			?>
+                    </p>
             <p><i><strong
-                        style="color:#46b450;">Compatible: </strong><?php printf( esc_html( __( 'It will update compatibility option only, so existing custom fields data format will not change.',
-                        'wp-user-frontend' ) ) ); ?></i></p>
+                        style="color:#46b450;">Compatible: </strong>
+                        <?php
+                        printf(
+                            esc_html(
+                                __(
+                                    'It will update compatibility option only, so existing custom fields data format will not change.',
+                                    'wp-user-frontend'
+                                )
+                            )
+                        );
+						?>
+                        </i></p>
             <p><i><strong style="color:#46b450;">Compatible &
-                        Migrate: </strong><?php printf( esc_html( __( 'It will update existing custom fields data to ACF format and update compatibility option too.',
-                        'wp-user-frontend' ) ) ); ?></i></p>
+                        Migrate: </strong>
+                        <?php
+                        printf(
+                            esc_html(
+                                __(
+                                    'It will update existing custom fields data to ACF format and update compatibility option too.',
+                                    'wp-user-frontend'
+                                )
+                            )
+                        );
+						?>
+                        </i></p>
 
             <p>
                 <a href="#" class="button button-primary"
-                   id="wpuf-compatible-<?php echo esc_attr( $this->id ); ?>"><?php esc_html_e( 'Compatible',
-                        'wp-user-frontend' ); ?></a>
+                    id="wpuf-compatible-<?php echo esc_attr( $this->id ); ?>">
+                    <?php
+					esc_html_e(
+                        'Compatible',
+                        'wp-user-frontend'
+                    );
+					?>
+                        </a>
                 <a href="#" class="button button-primary"
-                   id="wpuf-migrate-<?php echo esc_attr( $this->id ); ?>"><?php esc_html_e( 'Compatible & Migrate',
-                        'wp-user-frontend' ); ?></a>
+                    id="wpuf-migrate-<?php echo esc_attr( $this->id ); ?>">
+                    <?php
+					esc_html_e(
+                        'Compatible & Migrate',
+                        'wp-user-frontend'
+                    );
+					?>
+                        </a>
                 <a href="#" class="button"
-                   id="wpuf-dismiss-<?php echo esc_attr( $this->id ); ?>"><?php esc_html_e( 'No Thanks',
-                        'wp-user-frontend' ); ?></a>
+                    id="wpuf-dismiss-<?php echo esc_attr( $this->id ); ?>">
+                    <?php
+					esc_html_e(
+                        'No Thanks',
+                        'wp-user-frontend'
+                    );
+					?>
+                        </a>
             </p>
         </div>
 
@@ -212,26 +288,24 @@ class WPUF_ACF_Compatibility {
 
                     var self = $(this);
                     self.addClass('updating-message');
-                    wp.ajax.send('wpuf_compatibility_<?php echo esc_attr( $this->id ); ?>', {
-                        data: {
-                            nonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_acf_compatibility' ) ); ?>'
-                        },
-                        success: function() {
+                    <?php echo wpuf_rest_post_js( 'admin/integrations/acf/compatible' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON-encoded JS. ?>
+                        .then( function ( response ) {
+                            if ( ! response.ok ) {
+                                throw new Error( response.statusText );
+                            }
+
                             var html = '<p><strong>Compatible Option Updated</strong></p>';
 
                             self.closest( '.notice' ).removeClass( 'notice-info' ).addClass( 'notice-success' ).html( html );
-                        },
-
-                        error: function () {
+                        } )
+                        .catch( function () {
                             var html = '<p><strong>Something went wrong.</strong></p>';
 
                             self.closest( '.notice' ).removeClass( 'notice-info' ).addClass( 'notice-error' ).html( html );
-                        },
-
-                        complete: function () {
+                        } )
+                        .then( function () {
                             self.removeClass( 'updating-message' );
-                        }
-                    } );
+                        } );
                 } );
 
                 $( '.notice' ).on( 'click', 'a#wpuf-migrate-<?php echo esc_attr( $this->id ); ?>', function ( e ) {
@@ -239,37 +313,31 @@ class WPUF_ACF_Compatibility {
 
                     var self = $(this);
                     self.addClass('updating-message');
-                    wp.ajax.send('wpuf_migrate_<?php echo esc_attr( $this->id ); ?>', {
-                        data: {
-                            nonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_acf_migration' ) ); ?>'
-                        },
-                        success: function() {
+                    <?php echo wpuf_rest_post_js( 'admin/integrations/acf/migrate' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON-encoded JS. ?>
+                        .then( function ( response ) {
+                            if ( ! response.ok ) {
+                                throw new Error( response.statusText );
+                            }
+
                             var html  = '<p><strong>Compatible option and existing custom fields data updated</strong></p>';
 
                             self.closest( '.notice' ).removeClass( 'notice-info' ).addClass( 'notice-success' ).html( html );
-                        },
-
-                        error: function () {
+                        } )
+                        .catch( function () {
                             var html = '<p><strong>Something went wrong.</strong></p>';
 
                             self.closest( '.notice' ).removeClass( 'notice-info' ).addClass( 'notice-error' ).html( html );
-                        },
-
-                        complete: function () {
+                        } )
+                        .then( function () {
                             self.removeClass( 'updating-message' );
-                        }
-                    } );
+                        } );
                 } );
 
                 $( '.notice' ).on( 'click', '#wpuf-dismiss-<?php echo esc_attr( $this->id ); ?>', function ( e ) {
                     e.preventDefault();
 
                     $(this).closest('.notice').remove();
-                    wp.ajax.send('wpuf_dismiss_notice_<?php echo esc_attr( $this->id ); ?>', {
-                        data: {
-                            nonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_dismiss_acf_notice' ) ); ?>'
-                        },
-                    });
+                    <?php echo wpuf_rest_post_js( 'admin/notices/acf/dismiss' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON-encoded JS. ?>;
                 });
 
             } );
@@ -325,9 +393,11 @@ class WPUF_ACF_Compatibility {
                 $meta_key = 'repeater';
             }
             //check key also in meta vars
-            $meta_keys = array_map( function( $meta_var ) {
-                return $meta_var['name'];
-            }, $meta_vars );
+            $meta_keys = array_map(
+                function ( $meta_var ) {
+                    return $meta_var['name'];
+                }, $meta_vars
+            );
             if ( ! array_key_exists( $meta_key, $existing_meta ) && in_array( $name, $meta_keys, true ) ) {
                 update_post_meta( $post_id, $meta_key, $group['key'] );
             }

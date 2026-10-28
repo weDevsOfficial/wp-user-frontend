@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Admin\Forms;
 
+use WeDevs\Wpuf\Admin\Screens\AiFormBuilder;
+
 /**
  * AI Form Handler
  *
@@ -50,62 +52,68 @@ class AI_Form_Handler {
 
     /**
      * Handle AI form template action
+     *
+     * @since 4.2.1
+     * @since WPUF_SINCE Prints the React screen (Admin\Screens\AiFormBuilder).
+     *
+     * @return void
      */
     public function handle_ai_form_template() {
-        // Verify nonce
-        if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_create_from_template' ) ) {
-            wp_die( __( 'Security check failed', 'wp-user-frontend' ) );
-        }
-
-        // Check permissions
-        if ( ! current_user_can( wpuf_admin_role() ) ) {
-            wp_die( __( 'You do not have sufficient permissions to access this page.', 'wp-user-frontend' ) );
-        }
-
-        // Determine form type
-        $form_type = $this->get_form_type_from_referer();
-
-        // Remove admin notices for this page
-        remove_all_actions( 'admin_notices' );
-        remove_all_actions( 'all_admin_notices' );
-
-        // Let Admin enqueue + localize assets consistently
-        do_action( 'wpuf_load_ai_form_builder_page', $form_type );
-
-        // Set up proper admin page variables
-        set_current_screen( 'wpuf-ai-form-generation' );
-        global $title, $parent_file, $submenu_file;
-        $title = __( 'Create Form with AI', 'wp-user-frontend' );
-        $parent_file = ( $form_type === 'profile' ) ? 'wpuf-profile-forms' : 'wpuf-post-forms';
-        $submenu_file = 'wpuf-ai-form-generation';
-
-        // Include admin header
-        require_once ABSPATH . 'wp-admin/admin-header.php';
-
-        // Include the unified AI form builder template
-        include WPUF_ROOT . '/includes/Admin/template-parts/ai-form-builder.php';
-
-        // Include admin footer
-        require_once ABSPATH . 'wp-admin/admin-footer.php';
-        exit;
+        $this->render_page( 'wpuf_create_from_template', 'wpuf-ai-form-generation', __( 'Create Form with AI', 'wp-user-frontend' ), 'wpuf-ai-form-generation' );
     }
 
     /**
      * Handle AI form generating action
+     *
+     * @since 4.2.1
+     *
+     * @return void
      */
     public function handle_ai_form_generating() {
-        // Verify nonce
-        if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_ai_generate_form' ) ) {
-            wp_die( __( 'Security check failed', 'wp-user-frontend' ) );
+        $this->render_page( 'wpuf_ai_generate_form', 'wpuf-ai-form-generating', __( 'Generating Form', 'wp-user-frontend' ), 'wpuf-ai-form-generation' );
+    }
+
+    /**
+     * Handle AI form success action
+     *
+     * @since 4.2.1
+     *
+     * @return void
+     */
+    public function handle_ai_form_success() {
+        $this->render_page( 'wpuf_ai_success', 'wpuf-ai-form-success', __( 'Form Created Successfully', 'wp-user-frontend' ), 'wpuf-ai-form-success' );
+    }
+
+    /**
+     * Verify the request, then print the AI form builder page and exit: nonce
+     * and capability, notices removed, `wpuf_load_ai_form_builder_page` (Admin
+     * enqueues the app there), admin header, the screen, admin footer.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $nonce_action Nonce action of the URL
+     * @param string $screen_id    Current screen id
+     * @param string $page_title   Admin page title
+     * @param string $submenu      Highlighted submenu file
+     *
+     * @return void
+     */
+    private function render_page( $nonce_action, $screen_id, $page_title, $submenu ) {
+        $nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+
+        if ( ! $nonce || ! wp_verify_nonce( $nonce, $nonce_action ) ) {
+            wp_die( esc_html__( 'Security check failed', 'wp-user-frontend' ) );
         }
 
-        // Check permissions
         if ( ! current_user_can( wpuf_admin_role() ) ) {
-            wp_die( __( 'You do not have sufficient permissions to access this page.', 'wp-user-frontend' ) );
+            wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'wp-user-frontend' ) );
         }
 
-        // Determine form type
         $form_type = $this->get_form_type_from_referer();
+
+        // The admin app opens the AI form builder as a route: after the checks
+        // above, go there with the stage keys of this request.
+        $this->redirect_to_app_route( $form_type );
 
         // Remove admin notices for this page
         remove_all_actions( 'admin_notices' );
@@ -115,66 +123,69 @@ class AI_Form_Handler {
         do_action( 'wpuf_load_ai_form_builder_page', $form_type );
 
         // Set up proper admin page variables
-        set_current_screen( 'wpuf-ai-form-generating' );
+        set_current_screen( $screen_id );
         global $title, $parent_file, $submenu_file;
-        $title = __( 'Generating Form', 'wp-user-frontend' );
-        $parent_file = ( $form_type === 'profile' ) ? 'wpuf-profile-forms' : 'wpuf-post-forms';
-        $submenu_file = 'wpuf-ai-form-generation';
+        // phpcs:disable WordPress.WP.GlobalVariablesOverride.Prohibited -- admin-header.php reads these.
+        $title        = $page_title;
+        $parent_file  = ( 'profile' === $form_type ) ? 'wpuf-profile-forms' : 'wpuf-post-forms';
+        $submenu_file = $submenu;
+        // phpcs:enable WordPress.WP.GlobalVariablesOverride.Prohibited
 
-        // Include admin header
         require_once ABSPATH . 'wp-admin/admin-header.php';
 
-        // Include the unified AI form builder template
-        include WPUF_ROOT . '/includes/Admin/template-parts/ai-form-builder.php';
+        $this->screen()->render();
 
-        // Include admin footer
         require_once ABSPATH . 'wp-admin/admin-footer.php';
         exit;
     }
 
     /**
-     * Handle AI form success action
+     * Redirect to the admin app's AI form builder route when the app runs it.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $form_type post|profile
+     *
+     * @return void
      */
-    public function handle_ai_form_success() {
-        // Verify nonce
-        $nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
-        if ( ! $nonce || ! wp_verify_nonce( $nonce, 'wpuf_ai_success' ) ) {
-            wp_die( __( 'Security check failed', 'wp-user-frontend' ) );
+    private function redirect_to_app_route( $form_type ) {
+        $route_id = 'profile' === $form_type ? 'registration-forms-ai' : 'post-forms-ai';
+        $route    = null;
+
+        foreach ( wpuf()->platform()->get( \WeDevs\Wpuf\Admin\App\AppPage::class )->routes() as $item ) {
+            if ( $route_id === $item['id'] && 'app' === $item['mode'] ) {
+                $route = $item;
+            }
         }
 
-        // Check permissions
-        if ( ! current_user_can( wpuf_admin_role() ) ) {
-            wp_die( __( 'You do not have sufficient permissions to access this page.', 'wp-user-frontend' ) );
+        if ( ! $route ) {
+            return;
         }
 
-        // Determine form type
-        $form_type = $this->get_form_type_from_referer();
+        $stage = $this->screen()->stage_data();
+        $args  = array_filter(
+            [
+                'stage'       => 'input' === $stage['stage'] ? '' : $stage['stage'],
+                'description' => $stage['description'],
+                'prompt'      => $stage['prompt'],
+                'form_id'     => $stage['formId'],
+                'form_title'  => $stage['formTitle'],
+            ],
+            'strlen'
+        );
 
-        // Remove admin notices for this page
-        remove_all_actions( 'admin_notices' );
-        remove_all_actions( 'all_admin_notices' );
-
-        // Let Admin enqueue + localize assets consistently
-        do_action( 'wpuf_load_ai_form_builder_page', $form_type );
-
-        // Set up proper admin page variables
-        set_current_screen( 'wpuf-ai-form-success' );
-        global $title, $parent_file, $submenu_file;
-        $title = __( 'Form Created Successfully', 'wp-user-frontend' );
-        $parent_file = ( $form_type === 'profile' ) ? 'wpuf-profile-forms' : 'wpuf-post-forms';
-        $submenu_file = 'wpuf-ai-form-success';
-
-        // Include admin header
-        require_once ABSPATH . 'wp-admin/admin-header.php';
-
-        // Include the unified AI form builder template
-        include WPUF_ROOT . '/includes/Admin/template-parts/ai-form-builder.php';
-
-        // Include admin footer
-        require_once ABSPATH . 'wp-admin/admin-footer.php';
+        wp_safe_redirect( wpuf_admin_app_url( $route['path'], $args ) );
         exit;
     }
-}
 
-// Initialize the handler
-new AI_Form_Handler();
+    /**
+     * The AI form builder screen from the platform container.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return AiFormBuilder
+     */
+    private function screen() {
+        return wpuf()->platform()->get( AiFormBuilder::class );
+    }
+}

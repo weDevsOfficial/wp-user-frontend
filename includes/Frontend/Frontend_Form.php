@@ -2,7 +2,11 @@
 
 namespace WeDevs\Wpuf\Frontend;
 
+use WeDevs\Wpuf\Platform\Stores\Stores;
+
 use WeDevs\Wpuf\Admin\Forms\Form;
+use WeDevs\Wpuf\Frontend\Forms\Form_Schema;
+use WeDevs\Wpuf\Frontend\Forms\Submission_Service;
 use WeDevs\Wpuf\Admin\Subscription;
 use WeDevs\Wpuf\Frontend_Render_Form;
 use WeDevs\Wpuf\Traits\FieldableTrait;
@@ -53,18 +57,13 @@ class Frontend_Form extends Frontend_Render_Form {
         extract( shortcode_atts( [ 'id' => 0 ], $atts ) );
 
         // @codingStandardsIgnoreEnd
-        ob_start();
-
         global $userdata;
 
-        ob_start();
-
+        // Returned, not printed: printed output escaped the shortcode's place (on
+        // block themes it landed before <!DOCTYPE html>).
         if ( ! is_user_logged_in() ) {
-            echo wp_kses_post( '<div class="wpuf-message">' . __( 'You are not logged in', 'wp-user-frontend' ) . '</div>' ),
-
-            wp_login_form();
-
-            return '';
+            return wp_kses_post( '<div class="wpuf-message">' . __( 'You are not logged in', 'wp-user-frontend' ) . '</div>' )
+                . wp_login_form( [ 'echo' => false ] );
         }
 
         $nonce = isset( $_GET['_wpnonce'] ) ? sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ) : '';
@@ -79,8 +78,8 @@ class Frontend_Form extends Frontend_Render_Form {
             return '<div class="wpuf-info">' . __( 'Invalid post', 'wp-user-frontend' ) . '</div>';
         }
 
-        $edit_post_lock      = get_post_meta( $post_id, '_wpuf_lock_editing_post', true );
-        $edit_post_lock_time = get_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', true );
+        $edit_post_lock      = Stores::submissions()->lock( $post_id );
+        $edit_post_lock_time = Stores::submissions()->lock_time( $post_id );
 
         if ( $edit_post_lock === 'yes' ) {
             return '<div class="wpuf-info">' . apply_filters( 'wpuf_edit_post_lock_user_notice', __( 'Your edit access for this post has been locked by an administrator.', 'wp-user-frontend' ) ) . '</div>';
@@ -106,7 +105,7 @@ class Frontend_Form extends Frontend_Render_Form {
         $curpost = get_post( $post_id );
 
         if ( ! $curpost ) {
-            return '<div class="wpuf-info">' . __( 'Invalid post', 'wp-user-frontend' );
+            return '<div class="wpuf-info">' . __( 'Invalid post', 'wp-user-frontend' ) . '</div>';
         }
 
         // has permission?
@@ -134,12 +133,15 @@ class Frontend_Form extends Frontend_Render_Form {
         $disable_publish_edit = wpuf_get_option( 'disable_publish_edit', 'wpuf_dashboard', 'off' );
 
         if ( 'pending' === $curpost->post_status && 'on' === $disable_pending_edit ) {
-            return '<div class="wpuf-info">' . __( 'You can\'t edit a post while in pending mode.', 'wp-user-frontend' );
+            return '<div class="wpuf-info">' . __( 'You can\'t edit a post while in pending mode.', 'wp-user-frontend' ) . '</div>';
         }
 
         if ( 'publish' === $curpost->post_status && 'off' !== $disable_publish_edit ) {
-            return '<div class="wpuf-info">' . __( 'You\'re not allowed to edit this post.', 'wp-user-frontend' );
+            return '<div class="wpuf-info">' . __( 'You\'re not allowed to edit this post.', 'wp-user-frontend' ) . '</div>';
         }
+
+        // One buffer, opened after every early return (each closes nothing then).
+        ob_start();
 
         $msg = isset( $_GET['msg'] ) ? sanitize_text_field( wp_unslash( $_GET['msg'] ) ) : '';
 
@@ -149,6 +151,11 @@ class Frontend_Form extends Frontend_Render_Form {
             echo wp_kses_post( '</div>' );
         }
 
+        if ( $this->renderer()->mounts( 'edit_form' ) ) {
+            // What printed above (the "post updated" notice) stays before the app.
+            return ob_get_clean() . $this->mount_form( (int) $form_id, (int) $post_id, $atts );
+        }
+
         $this->render_form( $form_id, $post_id, $atts, $form );
 
         $content = ob_get_contents();
@@ -156,6 +163,56 @@ class Frontend_Form extends Frontend_Render_Form {
         ob_end_clean();
 
         return $content;
+    }
+
+    /**
+     * The React or classic decision for this request.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return Renderer
+     */
+    protected function renderer() {
+        return wpuf()->platform()->get( Renderer::class );
+    }
+
+    /**
+     * The submissions service (create, update, draft).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return Submission_Service
+     */
+    protected function submissions() {
+        return wpuf()->platform()->get( Submission_Service::class );
+    }
+
+    /**
+     * The markup the React post form mounts into: the classic wrapper classes
+     * (so CSS written for them still applies), the schema as boot data and a
+     * skeleton. A schema error prints the classic notice instead.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int   $form_id Form id
+     * @param int   $post_id Post id (0 for a new post)
+     * @param array $atts    Shortcode attributes
+     *
+     * @return string
+     */
+    protected function mount_form( $form_id, $post_id, $atts ) {
+        $schema = $this->renderer()->build(
+            $post_id ? 'edit_form' : 'post_form',
+            function () use ( $form_id, $post_id ) {
+                return wpuf()->platform()->get( Form_Schema::class )->build( $form_id, $post_id, [ 'page_id' => (int) get_the_ID() ] );
+            }
+        );
+
+        if ( is_wp_error( $schema ) ) {
+            return '<div class="wpuf-info">' . wp_kses_post( $schema->get_error_message() ) . '</div>';
+        }
+
+        return $this->renderer()->form_markup( $schema, $post_id ? 'edit_form' : 'post_form' );
     }
 
     /**
@@ -196,170 +253,19 @@ class Frontend_Form extends Frontend_Render_Form {
      */
     public function draft_post() {
         check_ajax_referer( 'wpuf_form_add' );
-        add_filter( 'wpuf_form_fields', [ $this, 'add_field_settings' ] );
 
         if ( ! headers_sent() ) {
             header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
         }
 
-        $form_id             = isset( $_POST['form_id'] ) ? intval( wp_unslash( $_POST['form_id'] ) ) : 0;
-        $form                = new Form( $form_id );
-        $this->form_settings = $form->get_settings();
-        $this->form_fields   = $form->get_fields();
-        $pay_per_post        = $form->is_enabled_pay_per_post();
+        // The body lives in Submission_Service::draft() (shared with REST); $_POST is passed as PHP delivered it.
+        $response = $this->submissions()->draft( $_POST, true ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- checked above and in the service.
 
-        // Early return: User must be logged in to save drafts
-        $current_user_id = get_current_user_id();
-
-        if ( $current_user_id <= 0 ) {
-            wp_send_json_error( [ 'message' => __( 'You must be logged in to save drafts.', 'wp-user-frontend' ) ] );
+        if ( is_wp_error( $response ) ) {
+            wp_send_json_error( [ 'message' => $response->get_error_message() ] );
         }
-
-        // Saving a new draft is part of the add-post flow, so it has to pass the same
-        // submission gate the renderer applies before it will show the form at all
-        // (Frontend_Form::add_post_shortcode()). Without this, a subscription-gated form
-        // could be driven through the draft endpoint to create a post that never passed
-        // the gate, which submit_post() would then finish.
-        //
-        // Editing an existing draft is deliberately not re-gated: [wpuf_edit] is not
-        // gated either, so re-checking here would stop someone whose pack has since
-        // expired from editing content they already own.
-        if ( ! isset( $_POST['post_id'] ) ) {
-            [ $user_can_post, $submission_info ] = $form->is_submission_open( $form, $this->form_settings );
-            $user_can_post                       = apply_filters( 'wpuf_can_post', $user_can_post, $form_id, $this->form_settings );
-            $submission_info                     = apply_filters( 'wpuf_addpost_notice', $submission_info, $form_id, $this->form_settings );
-
-            if ( ! wpuf_is_option_on( $user_can_post ) ) {
-                wp_send_json_error(
-                    [
-                        'message' => ! empty( $submission_info )
-                            ? $submission_info
-                            : __( 'You are not allowed to submit to this form.', 'wp-user-frontend' ),
-                    ]
-                );
-            }
-        }
-
-        [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
-
-        $entry_fields = $form->prepare_entries();
-        $allowed_tags = wp_kses_allowed_html( 'post' );
-        $post_content = isset( $_POST['post_content'] ) ? wp_kses( wp_unslash( $_POST['post_content'] ), $allowed_tags ) : '';
-        $postarr = [
-            'post_type'    => $this->form_settings['post_type'],
-            'post_status'  => wpuf_get_draft_post_status( $this->form_settings ),
-            'post_author'  => $current_user_id,
-            'post_title'   => isset( $_POST['post_title'] ) ? sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) : '',
-            'post_content' => $post_content,
-            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) : '',
-        ];
-
-        if ( ! empty( $this->form_fields ) ) {
-            foreach ( $this->form_fields as $field ) {
-                if ( $field['template'] === 'taxonomy' ) {
-                    $category_name = $field['name'];
-
-                    if ( isset( $_POST[ $category_name ] ) && is_array( $_POST[ $category_name ] ) ) { // WPCS: sanitization ok.
-                        $category = isset( $_POST[ $category_name ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $category_name ] ) ) : [];
-                    } else {
-                        $category = isset( $_POST[ $category_name ] ) ? sanitize_text_field( wp_unslash( $_POST[ $category_name ] ) ) : '';
-                    }
-
-                    if ( $category !== '' && $category !== '0' && $category[0] !== '-1' ) {
-                        if ( ! is_array( $category ) && is_string( $category ) ) {
-                            $category_strings = explode( ',', $category );
-                            $cat_ids          = [];
-
-                            foreach ( $category_strings as $key => $each_cat_string ) {
-                                $cat_ids[]                = get_cat_ID( trim( $each_cat_string ) );
-                                $postarr['post_category'] = $cat_ids;
-                            }
-                        } else {
-                            $postarr['post_category'] = $category;
-                        }
-                    }
-                }
-            }
-        }
-
-        // set default post category if it's not been set yet and if post type supports
-        if ( ! isset( $postarr['post_category'] ) && isset( $this->form_settings['default_cat'] ) && is_object_in_taxonomy( $this->form_settings['post_type'], 'category' ) ) {
-            if ( is_array( $this->form_settings['default_cat'] ) ) {
-                $postarr['post_category'] = $this->form_settings['default_cat'];
-            } else {
-                $postarr['post_category'] = [ $this->form_settings['default_cat'] ];
-            }
-        }
-
-        if ( isset( $_POST['tags'] ) ) {
-            $postarr['tags_input'] = explode( ',', sanitize_text_field( wp_unslash( $_POST['tags'] ) ) );
-        }
-
-        if ( isset( $_POST['post_id'] ) ) {
-            $update_post_id = intval( wp_unslash( $_POST['post_id'] ) );
-
-            // Verify the post exists and user has permission to edit
-            $can_edit = wpuf_user_can_edit_post( $update_post_id );
-
-            if ( is_wp_error( $can_edit ) ) {
-                wp_send_json_error( [ 'message' => $can_edit->get_error_message() ] );
-            }
-
-            $existing_post = get_post( $update_post_id );
-
-            $is_update                 = true;
-            $postarr['ID']             = $update_post_id;
-            $postarr['post_author']    = (int) $existing_post->post_author; // Preserve original author
-            $postarr['comment_status'] = 'open';
-        }
-
-        $postarr = $this->adjust_thumbnail_id( $postarr );
-
-        $post_id = wp_insert_post( $postarr );
-
-        // add post revision when post edit from the frontend
-        wpuf_frontend_post_revision( $post_id, $this->form_settings );
-
-        if ( $post_id ) {
-            self::update_post_meta( $meta_vars, $post_id );
-
-            // set the post form_id for later usage
-            update_post_meta( $post_id, self::$config_id, $form_id );
-
-            // Mark the draft as still awaiting submission. submit_post() reads this to tell
-            // a draft being finished (which must pass the submission gate) apart from an
-            // edit of a post that was already submitted (which must not be re-gated), so
-            // that it never has to trust a client-supplied "is this new" field. Posts that
-            // predate this meta simply have no flag and are treated as edits, as before.
-            update_post_meta( $post_id, '_wpuf_draft_pending', 1 );
-
-            // save post formats if have any
-            if ( isset( $this->form_settings['post_format'] ) && $this->form_settings['post_format'] !== '0' ) {
-                if ( post_type_supports( $this->form_settings['post_type'], 'post-formats' ) ) {
-                    set_post_format( $post_id, $this->form_settings['post_format'] );
-                }
-            }
-
-            if ( ! empty( $taxonomy_vars ) ) {
-                $this->set_custom_taxonomy( $post_id, $taxonomy_vars );
-            } else {
-                $this->set_default_taxonomy( $post_id );
-            }
-        }
-
-        do_action( 'wpuf_draft_post_after_insert', $post_id, $form_id, $this->form_settings, $this->form_fields );
 
         wpuf_clear_buffer();
-
-        $response = [
-            'post_id'        => $post_id,
-            'action'         => isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '',
-            'date'           => current_time( 'mysql' ),
-            'post_author'    => $current_user_id,
-            'comment_status' => get_option( 'default_comment_status' ),
-            'url'            => add_query_arg( 'preview', 'true', get_permalink( $post_id ) ),
-            'message'        => __( 'Post Saved', 'wp-user-frontend' ),
-        ];
 
         echo wp_json_encode( $response );
 
@@ -384,7 +290,22 @@ class Frontend_Form extends Frontend_Render_Form {
         $form                         = new Form( $id );
         $this->form_fields            = $form->get_fields();
         $this->form_settings          = $form->get_settings();
+
+        if ( $this->renderer()->mounts( 'post_form' ) ) {
+            ob_end_clean();
+
+            return $this->mount_form( (int) $id, 0, $atts );
+        }
         $this->generate_auth_link(); // Translate tag %login% %registration% to login registartion url
+
+        // Who may post comes before plan and payment notices: render_form() prints the
+        // login or role message, instead of telling them to buy a plan that would not help.
+        if ( ! $this->may_post( $this->form_settings ) ) {
+            $this->render_form( $id, null, $atts, $form );
+
+            return ob_get_clean();
+        }
+
         [ $user_can_post, $info ]     = $form->is_submission_open( $form, $this->form_settings );
         $info                         = apply_filters( 'wpuf_addpost_notice', $info, $id, $this->form_settings );
         $user_can_post                = apply_filters( 'wpuf_can_post', $user_can_post, $id, $this->form_settings );
@@ -401,6 +322,26 @@ class Frontend_Form extends Frontend_Render_Form {
         ob_end_clean();
 
         return $content;
+    }
+
+    /**
+     * Whether the current visitor passes the form's login and role rules (the
+     * checks render_form() makes before printing the form).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $form_settings Form settings
+     *
+     * @return bool
+     */
+    private function may_post( $form_settings ) {
+        $permission = ! empty( $form_settings['post_permission'] ) ? $form_settings['post_permission'] : '';
+
+        if ( ! is_user_logged_in() && $permission && 'guest_post' !== $permission ) {
+            return false;
+        }
+
+        return ! ( 'role_base' === $permission && ! empty( $form_settings['roles'] ) && ! wpuf_user_has_roles( $form_settings['roles'] ) );
     }
 
     /**
@@ -444,7 +385,7 @@ class Frontend_Form extends Frontend_Render_Form {
         // read as uncharged and publish the post for free. Trust only the form id
         // the post itself was submitted through, and refuse a f_id that does not
         // match it, so the paywall is always evaluated against the real form.
-        $real_form_id = absint( get_post_meta( $post_id, self::$config_id, true ) );
+        $real_form_id = Stores::submissions()->form_id( $post_id );
         $form_id      = absint( $form_id );
 
         if ( ! $real_form_id || get_post_type( $real_form_id ) !== 'wpuf_forms' ) {
@@ -478,7 +419,7 @@ class Frontend_Form extends Frontend_Render_Form {
             wp_die( esc_html__( 'This post has already been published.', 'wp-user-frontend' ) );
         }
 
-        $payment_status = new Subscription();
+        $payment_status = wpuf()->subscription;
         $form           = new Form( $real_form_id );
         $pay_per_post   = $form->is_enabled_pay_per_post();
         $force_pack     = $form->is_enabled_force_pack();
@@ -511,6 +452,13 @@ class Frontend_Form extends Frontend_Render_Form {
                 );
 
                 update_post_meta( $post_id, self::$guest_verify_id, 'no' );
+
+                // Posts sent before WPUF_SINCE were marked unpaid although their
+                // form charges nothing: the account showed Pay Now and an edit
+                // put the post back to pending.
+                if ( ! $form->is_charging_enabled() && 'pending' === Stores::submissions()->payment_status( $post_id ) ) {
+                    Stores::submissions()->clear_payment_status( $post_id );
+                }
 
                 echo wp_kses_post( "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wp-user-frontend' ) . '</div>' );
             }
@@ -552,7 +500,7 @@ class Frontend_Form extends Frontend_Render_Form {
 
         // Only grant cap for posts genuinely created via a WPUF form.
         // Excludes arbitrary CPTs (page, product, etc.) and admin-created content.
-        $wpuf_form_id = absint( get_post_meta( $post_id, '_wpuf_form_id', true ) );
+        $wpuf_form_id = Stores::submissions()->form_id( $post_id );
 
         if ( empty( $wpuf_form_id ) ) {
             return $allcaps;
@@ -595,7 +543,7 @@ class Frontend_Form extends Frontend_Render_Form {
         ) {
             // phpcs:enable WordPress.WP.Capabilities.RoleFound
             $post    = get_post( $post_id );
-            $form_id = get_post_meta( $post_id, '_wpuf_form_id', true );
+            $form_id = Stores::submissions()->form_id( $post_id );
 
             if ( absint( $post->post_author ) === get_current_user_id() && $form_id ) {
                 return $this->get_frontend_post_edit_link( $post_id );
@@ -668,7 +616,7 @@ class Frontend_Form extends Frontend_Render_Form {
         // Form around a non-form object whose settings are a string, and indexing
         // that string fatals on PHP 8. Bind to the post's own form, exactly as
         // publish_guest_post() does, instead of reading the parameter.
-        $form_id = absint( get_post_meta( $post_id, self::$config_id, true ) );
+        $form_id = Stores::submissions()->form_id( $post_id );
 
         if ( ! $form_id || 'wpuf_forms' !== get_post_type( $form_id ) ) {
             return;

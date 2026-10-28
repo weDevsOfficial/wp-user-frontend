@@ -1,0 +1,13 @@
+{
+  "landingPage": "/wp-admin/admin.php?page=wpuf-post-forms",
+  "preferredVersions": {
+    "php": "8.0",
+    "wp": "latest"
+  },
+  "steps": [
+    {
+      "step": "login",
+      "username": "admin"
+    }
+  ]
+}

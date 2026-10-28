@@ -1,5 +1,5 @@
 {
-  "phpVersion": "7.4",
+  "phpVersion": "8.3",
   "config": {
     "WP_MEMORY_LIMIT": "512M",
     "WP_MAX_MEMORY_LIMIT": "512M",

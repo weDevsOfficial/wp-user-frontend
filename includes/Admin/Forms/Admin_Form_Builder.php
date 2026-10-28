@@ -47,7 +47,7 @@ class Admin_Form_Builder {
         ];
         $this->settings = wp_parse_args( $settings, $defaults );
         // set post data to global $post
-        $post = get_post( $this->settings['post_id'] );
+        $post = get_post( $this->settings['post_id'] ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- the builder renders against this form's post, as before.
         // if we have an existing post, then let's start
         if ( ! empty( $post->ID ) ) {
             add_action( 'in_admin_header', 'wpuf_remove_admin_notices' );
@@ -127,25 +127,25 @@ class Admin_Form_Builder {
 
         $single_objects = apply_filters(
             'wpuf_single_form_field',
-                [
-                'post_title',
-                'post_content',
-                'post_excerpt',
-                'featured_image',
-                'user_login',
-                'first_name',
-                'last_name',
-                'nickname',
-                'user_email',
-                'user_url',
-                'user_bio',
-                'password',
-                'user_avatar',
-                'taxonomy',
-                'cloudflare_turnstile',
-                'recaptcha',
-                'signature_field',
-            ]
+            [
+				'post_title',
+				'post_content',
+				'post_excerpt',
+				'featured_image',
+				'user_login',
+				'first_name',
+				'last_name',
+				'nickname',
+				'user_email',
+				'user_url',
+				'user_bio',
+				'password',
+				'user_avatar',
+				'taxonomy',
+				'cloudflare_turnstile',
+				'recaptcha',
+				'signature_field',
+			]
         );
         $taxonomy_terms = array_keys( get_taxonomies() );
         $single_objects = array_merge( $single_objects, $taxonomy_terms );
@@ -384,16 +384,24 @@ class Admin_Form_Builder {
      */
     public static function save_form( $data ) {
         $saved_wpuf_inputs = [];
-        wp_update_post( [ 'ID' => $data['form_id'], 'post_status' => 'publish', 'post_title' => $data['post_title'] ] );
-        $existing_wpuf_input_ids = get_children( [
-                                                     'post_parent' => $data['form_id'],
-                                                     'post_status' => 'publish',
-                                                     'post_type'   => 'wpuf_input',
-                                                     'numberposts' => '-1',
-                                                     'orderby'     => 'menu_order',
-                                                     'order'       => 'ASC',
-                                                     'fields'      => 'ids',
-                                                 ] );
+        wp_update_post(
+            [
+				'ID' => $data['form_id'],
+				'post_status' => 'publish',
+				'post_title' => $data['post_title'],
+			]
+        );
+        $existing_wpuf_input_ids = get_children(
+            [
+				'post_parent' => $data['form_id'],
+				'post_status' => 'publish',
+				'post_type'   => 'wpuf_input',
+				'numberposts' => '-1',
+				'orderby'     => 'menu_order',
+				'order'       => 'ASC',
+				'fields'      => 'ids',
+			]
+        );
         $new_wpuf_input_ids = [];
         if ( ! empty( $data['form_fields'] ) ) {
             foreach ( $data['form_fields'] as $order => $field ) {
@@ -440,7 +448,15 @@ class Admin_Form_Builder {
             unset( $data['form_settings']['notification_edit'] );
         }
 
-        update_post_meta( $data['form_id'], $data['form_settings_key'], $data['form_settings'] );
+        $settings_key = ! empty( $data['form_settings_key'] ) ? $data['form_settings_key'] : 'wpuf_form_settings';
+
+        // A save that carries no settings means the settings panel was not posted, not that
+        // the form should lose the settings it already has. Writing the empty array here left
+        // the form with `a:0:{}` and an unlabelled submit button.
+        if ( ! empty( $data['form_settings'] ) || empty( get_post_meta( $data['form_id'], $settings_key, true ) ) ) {
+            update_post_meta( $data['form_id'], $settings_key, $data['form_settings'] );
+        }
+
         update_post_meta( $data['form_id'], 'notifications', $data['notifications'] );
         update_post_meta( $data['form_id'], 'integrations', $data['integrations'] );
 
@@ -573,12 +589,12 @@ class Admin_Form_Builder {
         }
         // Get free taxonomies (built-in + taxonomies for post/page)
         $free_taxonomies = wpuf_get_free_taxonomies();
-        $stack = is_array($original_fields) ? $original_fields : [];
+        $stack = is_array( $original_fields ) ? $original_fields : [];
         while ( $stack ) {
             $f = array_pop( $stack );
             if ( isset( $f['template'] ) && $f['template'] === 'column_field' && ! empty( $f['inner_fields'] ) && is_array( $f['inner_fields'] ) ) {
                 foreach ( $f['inner_fields'] as $inner ) {
-                    if ( is_array($inner) ) {
+                    if ( is_array( $inner ) ) {
                         foreach ( $inner as $child ) {
                             $stack[] = $child;
                         }
@@ -590,7 +606,7 @@ class Admin_Form_Builder {
                 }
             }
             if ( isset( $f['input_type'] ) && $f['input_type'] === 'taxonomy' ) {
-                $slug = $f['name'] ?? ($f['taxonomy'] ?? null);
+                $slug = $f['name'] ?? ( $f['taxonomy'] ?? null );
                 if ( $slug && ! in_array( $slug, $free_taxonomies, true ) ) {
                     return true;
                 }

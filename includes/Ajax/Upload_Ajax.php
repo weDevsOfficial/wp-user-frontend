@@ -165,7 +165,7 @@ class Upload_Ajax {
      * authorize an upload. The value has to name a field that actually exists in
      * the form and is of an upload-capable type.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.14
      *
      * @param int    $form_id    the form the upload targets
      * @param string $field_type the client-supplied field name (`type`)
@@ -180,7 +180,7 @@ class Upload_Ajax {
         /**
          * Field input types that are allowed to receive uploads.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.14
          *
          * @param array  $upload_types
          * @param int    $form_id
@@ -203,7 +203,7 @@ class Upload_Ajax {
          * Lets integrations that do not store fields as WPUF form inputs (for
          * example weForms) register their own upload field names.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.14
          *
          * @param array  $allowed_names
          * @param int    $form_id
@@ -217,7 +217,7 @@ class Upload_Ajax {
     /**
      * Check whether the form has a field with "Insert Photo" enabled
      *
-     * @since WPUF_SINCE
+     * @since 4.3.14
      *
      * @param int $form_id the form the upload targets
      *
@@ -231,7 +231,7 @@ class Upload_Ajax {
         /**
          * Whether an "Insert Photo" upload is allowed for this form.
          *
-         * @since WPUF_SINCE
+         * @since 4.3.14
          *
          * @param bool $allowed
          * @param int  $form_id
@@ -242,7 +242,7 @@ class Upload_Ajax {
     /**
      * Find a field with "Insert Photo" enabled, including nested ones
      *
-     * @since WPUF_SINCE
+     * @since 4.3.14
      *
      * @param array $fields form fields or a nested field list
      *
@@ -278,7 +278,7 @@ class Upload_Ajax {
      * Walks column (`inner_fields` keyed by column) and repeat (`inner_fields`
      * list) fields so an upload field placed inside them is still accepted.
      *
-     * @since WPUF_SINCE
+     * @since 4.3.14
      *
      * @param array $fields       form fields or a nested field list
      * @param array $upload_types upload-capable input types / templates

@@ -617,7 +617,7 @@ Please report security bugs found in the source code of the User Frontend plugin
 
 == Changelog ==
 
-= v4.3.14 (28 October, 2026) =
+= 4.3.14 (28 October, 2026) =
 * Security – Fixed an issue where a crafted link could run a script in a visitor's browser through the category field of a frontend form (reported by Wordfence, CVE-2026-103962).
 * Security – Fixed an issue where a guest could submit a category name that ran a script when an administrator later opened that form in the builder (reported by Wordfence, CVE-2026-109214).
 * Security – Fixed an issue where a visitor could attach uploads to a form that has no upload field (reported by Sangho Lee).

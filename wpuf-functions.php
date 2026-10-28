@@ -184,7 +184,7 @@ add_filter( 'media_upload_tabs', 'wpuf_unset_media_tab' );
  * while keeping the visible text identical. This is display-only and never
  * touches the stored term/post data.
  *
- * @since WPUF_SINCE
+ * @since 4.3.14
  *
  * @param string $value
  *
@@ -5565,7 +5565,7 @@ function wpuf_clear_schedule_lock() {
  * saved, then removes NUL and other control bytes, so the text that is
  * checked matches the text that ends up stored.
  *
- * @since WPUF_SINCE
+ * @since 4.3.14
  *
  * @param string $value raw (unslashed) submitted value
  *

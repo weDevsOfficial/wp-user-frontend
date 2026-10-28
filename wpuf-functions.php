@@ -970,16 +970,20 @@ function wpuf_is_same_origin_request() {
     $source = '';
 
     if ( ! empty( $_SERVER['HTTP_ORIGIN'] ) ) {
-        $source = esc_url_raw( wp_unslash( $_SERVER['HTTP_ORIGIN'] ) );
+        $source = trim( wp_unslash( $_SERVER['HTTP_ORIGIN'] ) );
     } elseif ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
-        $source = esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) );
+        $source = trim( wp_unslash( $_SERVER['HTTP_REFERER'] ) );
     }
 
-    if ( empty( $source ) ) {
+    // A browser sends a serialised origin, so anything without an explicit
+    // http or https scheme did not come from one and is not trusted. Checking
+    // this before esc_url_raw() matters: that function would prepend a scheme
+    // to a bare host and make a malformed value look like one of ours.
+    if ( ! preg_match( '#^https?://#i', $source ) ) {
         return false;
     }
 
-    $source_host = wp_parse_url( $source, PHP_URL_HOST );
+    $source_host = wp_parse_url( esc_url_raw( $source ), PHP_URL_HOST );
 
     if ( empty( $source_host ) ) {
         return false;

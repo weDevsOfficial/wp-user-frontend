@@ -51,9 +51,9 @@ class Login_Widget extends WP_Widget {
         } else {
             $user = wp_signon(
                 [
-					'user_login' => $user_login,
-					'user_password' => $user_pass,
-				], false
+                    'user_login' => $user_login,
+                    'user_password' => $user_pass,
+                ], false
             );
 
             if ( is_wp_error( $user ) ) {
@@ -98,9 +98,9 @@ class Login_Widget extends WP_Widget {
         if ( empty( $username_or_email ) ) {
             wp_send_json_error(
                 [
-					'error' => true,
-					'message' => __( 'Please fill all form fields', 'wp-user-frontend' ),
-				]
+                    'error' => true,
+                    'message' => __( 'Please fill all form fields', 'wp-user-frontend' ),
+                ]
             );
         } else {
             $username = is_email( $username_or_email ) ? sanitize_email( $username_or_email ) : sanitize_user( $username_or_email );
@@ -242,7 +242,7 @@ class Login_Widget extends WP_Widget {
         <div class="login-widget-container">
             <?php
             if ( ! is_user_logged_in() ) {
-				?>
+                ?>
 
                 <!-- Login form -->
                 <div class="wpuf-ajax-login-form">
@@ -257,10 +257,10 @@ class Login_Widget extends WP_Widget {
                         $registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Register', 'wp-user-frontend' ) );
                         echo wp_kses(
                             $registration_url, [
-								'a' => [
-									'href' => [],
-								],
-							]
+                                'a' => [
+                                    'href' => [],
+                                ],
+                            ]
                         );
                         echo esc_html( apply_filters( 'login_link_separator', ' | ' ) );
                     }

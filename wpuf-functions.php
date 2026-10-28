@@ -970,9 +970,9 @@ function wpuf_is_same_origin_request() {
     $source = '';
 
     if ( ! empty( $_SERVER['HTTP_ORIGIN'] ) ) {
-        $source = trim( wp_unslash( $_SERVER['HTTP_ORIGIN'] ) );
+        $source = sanitize_text_field( wp_unslash( $_SERVER['HTTP_ORIGIN'] ) );
     } elseif ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
-        $source = trim( wp_unslash( $_SERVER['HTTP_REFERER'] ) );
+        $source = sanitize_text_field( wp_unslash( $_SERVER['HTTP_REFERER'] ) );
     }
 
     // A browser sends a serialised origin, so anything without an explicit

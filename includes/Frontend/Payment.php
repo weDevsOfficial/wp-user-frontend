@@ -528,21 +528,23 @@ class Payment {
         $cost         = 0;
         if ( is_user_logged_in() ) {
             $userdata = wp_get_current_user();
-        } else {
-            $user_id = isset( $_REQUEST['user_id'] ) ? intval( wp_unslash( $_REQUEST['user_id'] ) ) : 0;
-            if ( $user_id ) {
-                $userdata = get_userdata( $user_id );
-            } elseif ( $type === 'post' && ! is_user_logged_in() ) {
-                $post     = get_post( $post_id );
-                $user_id  = $post->post_author;
-                $userdata = get_userdata( $user_id );
-            } else {
+        } elseif ( 'post' === $type ) {
+            // Guest pay per post: the beneficiary is the post's own author, never a value
+            // taken from the request, which could name any user.
+            $post     = get_post( $post_id );
+            $userdata = $post ? get_userdata( $post->post_author ) : false;
+
+            if ( ! $userdata ) {
                 $userdata             = new stdClass();
                 $userdata->ID         = 0;
                 $userdata->user_email = '';
                 $userdata->first_name = '';
                 $userdata->last_name  = '';
             }
+        } else {
+            // A subscription pack is always bought by the logged-in buyer. Without this a
+            // logged-out request could name another user and hand them a free pack.
+            wp_die( esc_html__( 'Invalid payment request.', 'wp-user-frontend' ) );
         }
 
         switch ( $type ) {

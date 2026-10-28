@@ -980,13 +980,28 @@ function wpuf_is_same_origin_request() {
     }
 
     $source_host = wp_parse_url( $source, PHP_URL_HOST );
-    $site_host   = wp_parse_url( home_url(), PHP_URL_HOST );
 
-    if ( empty( $source_host ) || empty( $site_host ) ) {
+    if ( empty( $source_host ) ) {
         return false;
     }
 
-    return strtolower( $source_host ) === strtolower( $site_host );
+    // Compare against the host the browser actually requested as well as the
+    // site's own, so a site reached on a mapped domain, on www when home_url
+    // has none, or on a dev port still recognises its own pages. A browser
+    // sets Host itself, so this cannot be used to pass the check from
+    // somewhere else.
+    $hosts = [ wp_parse_url( home_url(), PHP_URL_HOST ) ];
+
+    if ( ! empty( $_SERVER['HTTP_HOST'] ) ) {
+        $hosts[] = wp_parse_url(
+            'http://' . sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ), PHP_URL_HOST
+        );
+    }
+
+    $hosts       = array_filter( array_map( 'strtolower', array_filter( $hosts ) ) );
+    $source_host = strtolower( $source_host );
+
+    return in_array( $source_host, $hosts, true );
 }
 
 function wpuf_admin_role() {

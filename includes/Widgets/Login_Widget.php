@@ -36,6 +36,16 @@ class Login_Widget extends WP_Widget {
             wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
         }
 
+        // Sign-in may only happen for a request that came from a page on this
+        // site. The nonce above cannot establish that: it is printed to every
+        // logged-out visitor, and a cross-site POST carries none of the
+        // visitor's cookies, so this nopriv handler would otherwise sign a
+        // visitor's browser into whichever account the other site chose,
+        // ending the session they had. Same cause as CVE-2026-17564.
+        if ( ! wpuf_is_same_origin_request() ) {
+            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+        }
+
         if ( empty( $user_login ) || empty( $user_pass ) ) {
             wp_send_json_error( [ 'message'=> __( 'Please fill all form fields', 'wp-user-frontend' ) ] );
         } else {

@@ -99,12 +99,25 @@ trait FieldableTrait {
                         'title'        => $taxonomy->label,
                         'hierarchical' => $taxonomy->hierarchical,
                     ];
-                    $this->wp_post_types[ $post_type ][ $tax_name ]['terms'] = get_terms(
+                    $tax_terms = get_terms(
                         [
                             'taxonomy'   => $tax_name,
                             'hide_empty' => false,
                         ]
                     );
+
+                    // Term names are rendered inside the Vue-mounted form builder.
+                    // Neutralize any mustache delimiters so a crafted term name can
+                    // not be evaluated as a Vue template (stored XSS).
+                    if ( is_array( $tax_terms ) ) {
+                        foreach ( $tax_terms as $tax_term ) {
+                            if ( is_object( $tax_term ) && isset( $tax_term->name ) ) {
+                                $tax_term->name = wpuf_neutralize_template_delimiters( $tax_term->name );
+                            }
+                        }
+                    }
+
+                    $this->wp_post_types[ $post_type ][ $tax_name ]['terms'] = $tax_terms;
                 }
             }
 

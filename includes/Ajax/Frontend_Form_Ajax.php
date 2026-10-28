@@ -125,15 +125,18 @@ class Frontend_Form_Ajax {
 
         // check each form field for restricted shortcodes
         foreach ( $this->form_fields as $single_field ) {
-            if ( empty( $single_field['rich'] ) || 'yes' !== $single_field['rich'] ) {
+            if ( empty( $single_field['name'] ) || empty( $_POST[ $single_field['name'] ] ) || ! is_string( $_POST[ $single_field['name'] ] ) ) {
                 continue;
             }
 
-            $current_data = ! empty( $_POST[ $single_field['name'] ] ) ? sanitize_textarea_field( wp_unslash( $_POST[ $single_field['name'] ] ) ) : '';
+            // Check the same text that gets stored: run it through the same
+            // wp_kses() pass used on save, then drop control bytes, so the
+            // checked copy can not differ from the saved copy.
+            $current_data = wpuf_normalize_for_shortcode_check( wp_unslash( $_POST[ $single_field['name'] ] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- normalized and only compared, never stored.
 
             foreach ( $protected_shortcodes as $shortcode ) {
                 $search_for = '[' . $shortcode;
-                if ( strpos( $current_data, $search_for ) !== false ) {
+                if ( false !== stripos( $current_data, $search_for ) ) {
                     wpuf()->ajax->send_error(
                         sprintf(
                         // translators: %s is shortcode

@@ -60,7 +60,21 @@ class Upload_Ajax {
                 die( 'error' );
             }
         }
-        $wpuf_file = isset( $_FILES['wpuf_file'] ) ? $_FILES['wpuf_file'] : []; // WPCS: sanitization ok.
+
+        // Bind the request to a real upload-capable field in the form. The client
+        // supplied `type` must name a configured file/image upload field, otherwise
+        // a caller could create attachments against a form that has no upload field.
+        // The editor's "Insert Photo" upload sends no field name, so it is bound to
+        // a content field that has Insert Photo turned on instead.
+        $allowed = $image_only
+            ? $this->form_allows_insert_image( $form_id )
+            : $this->is_valid_upload_field( $form_id, $field_type );
+
+        if ( ! $allowed ) {
+            die( 'error' );
+        }
+
+        $wpuf_file = isset( $_FILES['wpuf_file'] ) ? $_FILES['wpuf_file'] : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- the file entry is validated by wp_handle_upload().
         $file_name      = pathinfo( $wpuf_file['name'], PATHINFO_FILENAME );
         $file_extension = pathinfo( $wpuf_file['name'], PATHINFO_EXTENSION );
         $upload = [
@@ -142,6 +156,167 @@ class Upload_Ajax {
             wp_send_json_error( $attach['error'], 200 );
         }
         exit;
+    }
+
+    /**
+     * Verify the requested field is a real upload-capable field of the form
+     *
+     * The upload endpoint must not trust the client-supplied `type` value to
+     * authorize an upload. The value has to name a field that actually exists in
+     * the form and is of an upload-capable type.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int    $form_id    the form the upload targets
+     * @param string $field_type the client-supplied field name (`type`)
+     *
+     * @return bool
+     */
+    public function is_valid_upload_field( $form_id, $field_type ) {
+        if ( empty( $field_type ) ) {
+            return false;
+        }
+
+        /**
+         * Field input types that are allowed to receive uploads.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array  $upload_types
+         * @param int    $form_id
+         * @param string $field_type
+         */
+        $upload_types = apply_filters(
+            'wpuf_upload_capable_field_types',
+            [ 'image_upload', 'file_upload', 'featured_image', 'avatar', 'cover_photo', 'profile_photo' ],
+            $form_id,
+            $field_type
+        );
+
+        $form_fields = function_exists( 'wpuf_get_form_fields' ) ? wpuf_get_form_fields( $form_id ) : [];
+
+        $allowed_names = $this->collect_upload_field_names( $form_fields, $upload_types );
+
+        /**
+         * Final allow-list of field names that may receive an upload for this form.
+         *
+         * Lets integrations that do not store fields as WPUF form inputs (for
+         * example weForms) register their own upload field names.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array  $allowed_names
+         * @param int    $form_id
+         * @param string $field_type
+         */
+        $allowed_names = apply_filters( 'wpuf_upload_allowed_field_names', $allowed_names, $form_id, $field_type );
+
+        return in_array( $field_type, (array) $allowed_names, true );
+    }
+
+    /**
+     * Check whether the form has a field with "Insert Photo" enabled
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $form_id the form the upload targets
+     *
+     * @return bool
+     */
+    public function form_allows_insert_image( $form_id ) {
+        $form_fields = function_exists( 'wpuf_get_form_fields' ) ? wpuf_get_form_fields( $form_id ) : [];
+
+        $allowed = $this->has_insert_image_field( $form_fields );
+
+        /**
+         * Whether an "Insert Photo" upload is allowed for this form.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param bool $allowed
+         * @param int  $form_id
+         */
+        return (bool) apply_filters( 'wpuf_upload_allow_insert_image', $allowed, $form_id );
+    }
+
+    /**
+     * Find a field with "Insert Photo" enabled, including nested ones
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $fields form fields or a nested field list
+     *
+     * @return bool
+     */
+    protected function has_insert_image_field( $fields ) {
+        if ( ! is_array( $fields ) ) {
+            return false;
+        }
+
+        foreach ( $fields as $field ) {
+            if ( ! is_array( $field ) ) {
+                continue;
+            }
+
+            if ( isset( $field['insert_image'] ) && 'yes' === $field['insert_image'] ) {
+                return true;
+            }
+
+            $nested = isset( $field['inner_fields'] ) ? $field['inner_fields'] : ( ! isset( $field['input_type'] ) && ! isset( $field['template'] ) ? $field : [] );
+
+            if ( $nested && $this->has_insert_image_field( $nested ) ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Collect the names of upload-capable fields, including nested ones
+     *
+     * Walks column (`inner_fields` keyed by column) and repeat (`inner_fields`
+     * list) fields so an upload field placed inside them is still accepted.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $fields       form fields or a nested field list
+     * @param array $upload_types upload-capable input types / templates
+     *
+     * @return array
+     */
+    protected function collect_upload_field_names( $fields, $upload_types ) {
+        $names = [];
+
+        if ( ! is_array( $fields ) ) {
+            return $names;
+        }
+
+        foreach ( $fields as $field ) {
+            if ( ! is_array( $field ) ) {
+                continue;
+            }
+
+            // A column bucket (list of fields) has no field keys of its own.
+            if ( ! isset( $field['input_type'] ) && ! isset( $field['template'] ) ) {
+                $names = array_merge( $names, $this->collect_upload_field_names( $field, $upload_types ) );
+                continue;
+            }
+
+            $input_type = isset( $field['input_type'] ) ? $field['input_type'] : '';
+            $template   = isset( $field['template'] ) ? $field['template'] : '';
+            $name       = isset( $field['name'] ) ? $field['name'] : '';
+
+            if ( '' !== $name && ( in_array( $input_type, $upload_types, true ) || in_array( $template, $upload_types, true ) ) ) {
+                $names[] = $name;
+            }
+
+            if ( ! empty( $field['inner_fields'] ) ) {
+                $names = array_merge( $names, $this->collect_upload_field_names( $field['inner_fields'], $upload_types ) );
+            }
+        }
+
+        return $names;
     }
 
     /**
@@ -239,7 +414,7 @@ class Upload_Ajax {
         return $data;
     }
 
-    public static function attach_html( $attach_id, $type = NULL, $form_id = NULL ) {
+    public static function attach_html( $attach_id, $type = null, $form_id = null ) {
         if ( ! $type ) {
             $type = isset( $_GET['type'] ) ? sanitize_text_field( wp_unslash( $_GET['type'] ) ) : 'image';
         }
@@ -436,5 +611,4 @@ class Upload_Ajax {
     public function insert_image() {
         $this->upload_file( true );
     }
-    
 }

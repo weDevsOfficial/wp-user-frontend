@@ -947,6 +947,48 @@ function wpuf_update_avatar( $user_id, $attachment_id ) {
     update_user_meta( $user_id, 'user_avatar', $relative_url );
 }
 
+/**
+ * Whether the current request was submitted from a page on this site
+ *
+ * A cross-site form POST carries the attacking page's Origin, and under the
+ * browsers' SameSite=Lax default it carries none of the visitor's cookies. So
+ * on such a request a nonce still verifies (a logged-out nonce is public, the
+ * registration page prints the same value to every anonymous visitor) and
+ * is_user_logged_in() still reads false (no cookies were sent). Only the
+ * request's own origin distinguishes a submission from our own page.
+ *
+ * Use this to decide whether a response may hand the browser an
+ * authentication cookie, never to decide whether to accept the submission.
+ *
+ * @since 4.3.15
+ *
+ * @return bool True when the Origin, or the Referer for the few clients that
+ *              omit Origin, is this site's host. False for another host, and
+ *              false when the request carries neither header.
+ */
+function wpuf_is_same_origin_request() {
+    $source = '';
+
+    if ( ! empty( $_SERVER['HTTP_ORIGIN'] ) ) {
+        $source = esc_url_raw( wp_unslash( $_SERVER['HTTP_ORIGIN'] ) );
+    } elseif ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
+        $source = esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) );
+    }
+
+    if ( empty( $source ) ) {
+        return false;
+    }
+
+    $source_host = wp_parse_url( $source, PHP_URL_HOST );
+    $site_host   = wp_parse_url( home_url(), PHP_URL_HOST );
+
+    if ( empty( $source_host ) || empty( $site_host ) ) {
+        return false;
+    }
+
+    return strtolower( $source_host ) === strtolower( $site_host );
+}
+
 function wpuf_admin_role() {
     return apply_filters( 'wpuf_admin_role', 'manage_options' );
 }

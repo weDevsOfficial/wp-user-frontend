@@ -17,17 +17,40 @@ import { wpCli } from './wpEnvCli';
  * @param shortcode e.g. `[wpuf_dashboard]`
  * @returns the page slug, or null when no published page holds the shortcode.
  */
-export function wpufPageSlug( shortcode: string ): string | null {
-    try {
-        const rows = JSON.parse(
-            wpCli( 'post list --post_type=page --post_status=publish --fields=post_name,post_content --orderby=ID --order=ASC --format=json' )
-        ) as Array<{ post_name: string; post_content: string }>;
-        const page = rows.find( ( r ) => ( r.post_content || '' ).includes( shortcode ) );
+type PageRow = { post_name: string; post_content: string };
 
-        return page ? page.post_name : null;
-    } catch {
-        return null;
+/**
+ * One wp-cli round trip per process, not one per lookup. Each call shells out through
+ * `npx @wordpress/env run`, which costs seconds on a CI runner, and a single test
+ * resolves five pages; without this the lookups alone could push a test towards its
+ * timeout. Pages are created before the suite reads them, so caching is safe here.
+ */
+let pageCache: PageRow[] | null = null;
+
+export function resetWpufPageCache(): void {
+    pageCache = null;
+}
+
+function pageRows(): PageRow[] {
+    if ( pageCache ) {
+        return pageCache;
     }
+
+    try {
+        pageCache = JSON.parse(
+            wpCli( 'post list --post_type=page --post_status=publish --fields=post_name,post_content --orderby=ID --order=ASC --format=json' )
+        ) as PageRow[];
+    } catch {
+        pageCache = [];
+    }
+
+    return pageCache;
+}
+
+export function wpufPageSlug( shortcode: string ): string | null {
+    const page = pageRows().find( ( r ) => ( r.post_content || '' ).includes( shortcode ) );
+
+    return page ? page.post_name : null;
 }
 
 /**

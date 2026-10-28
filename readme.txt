@@ -619,6 +619,7 @@ Please report security bugs found in the source code of the User Frontend plugin
 
 = 4.3.15 =
 * Security – Fixed an issue where a crafted page on another site could register an account and log the visitor's browser into it, ending their own session (reported by Yaswanth Reddy Sunkara, CVE-2026-17564).
+* Security – Fixed an issue where a crafted page on another site could sign a visitor's browser into an account of its choosing through the login widget, ending their own session (reported by Yaswanth Reddy Sunkara, CVE-2026-17564).
 
 = 4.3.14 (28 October, 2026) =
 * Security – Fixed an issue where a crafted link could run a script in a visitor's browser through the category field of a frontend form (reported by Wordfence, CVE-2026-103962).

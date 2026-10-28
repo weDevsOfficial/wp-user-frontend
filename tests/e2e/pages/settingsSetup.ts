@@ -6,6 +6,7 @@ import { Urls, Users } from '../utils/testData';
 import { Base } from './base';
 import { waitForSiteReady } from '../utils/siteReady';
 import { clearSavedSession } from '../utils/authSession';
+import { wpCli } from '../utils/wpEnvCli';
 export class SettingsSetupPage extends Base {
 
     constructor(page: Page) {
@@ -157,16 +158,56 @@ export class SettingsSetupPage extends Base {
         console.log('WPUF Pages are validated. all pages created successfully');
     }
 
+    /**
+     * Resolve a WPUF page by the shortcode it contains, not by its title.
+     *
+     * Other plugins ship pages with the same title: dokan-lite installs its own
+     * "Dashboard" with the slug `dashboard`, so WordPress slugs WPUF's `dashboard-2`
+     * and a title-only locator matches both links and trips Playwright strict mode.
+     * Which plugin wins the plain slug depends on activation order, so the slug can
+     * not be hard-coded either. The shortcode is the stable identity of a WPUF page.
+     *
+     * Returns the page's nav link locator, or null when no page holds the shortcode
+     * (the caller then falls back to the title-based selector).
+     */
+    wpufPageLinkByShortcode(shortcode: string): string | null {
+        try {
+            // Oldest first: a site that ran the installer more than once holds several
+            // pages with the same shortcode (dashboard, dashboard-2, dashboard-3). The
+            // first one created is the canonical page, and ordering by ID keeps the
+            // choice deterministic instead of depending on wp-cli's default date sort.
+            const rows = JSON.parse(
+                wpCli('post list --post_type=page --post_status=publish --fields=post_name,post_content --orderby=ID --order=ASC --format=json')
+            ) as Array<{ post_name: string; post_content: string }>;
+            const page = rows.find((r) => (r.post_content || '').includes(shortcode));
+
+            return page ? `//ul[@class="wp-block-page-list"]//li//a[contains(@href,"/${page.post_name}/")]` : null;
+        } catch {
+            return null;
+        }
+    }
+
+    /**
+     * Validate a WPUF page link, preferring the shortcode-resolved locator and
+     * falling back to the title-based selector when the page cannot be resolved.
+     */
+    async validateWPUFPageLink(shortcode: string, fallbackSelector: string) {
+        await this.validateAndClick(this.wpufPageLinkByShortcode(shortcode) ?? fallbackSelector);
+    }
+
     async validateWPUFpagesFE() {
         //Go to FrontEnd
         await this.navigateToURL(Urls.baseUrl);
 
-        //Validate WPUF Pages
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.dashboardPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.editPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.loginPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.subscriptionPageFE);
+        // Validate WPUF Pages. Identify each page by the shortcode it holds rather than
+        // its title: other active plugins ship pages with the same titles (dokan-lite
+        // installs its own "Dashboard"), which makes a title-only locator ambiguous and
+        // trips Playwright strict mode.
+        await this.validateWPUFPageLink('[wpuf_account]', Selectors.settingsSetup.wpufPagesFE.accountPageFE);
+        await this.validateWPUFPageLink('[wpuf_dashboard]', Selectors.settingsSetup.wpufPagesFE.dashboardPageFE);
+        await this.validateWPUFPageLink('[wpuf_edit]', Selectors.settingsSetup.wpufPagesFE.editPageFE);
+        await this.validateWPUFPageLink('[wpuf-login]', Selectors.settingsSetup.wpufPagesFE.loginPageFE);
+        await this.validateWPUFPageLink('[wpuf_sub_pack]', Selectors.settingsSetup.wpufPagesFE.subscriptionPageFE);
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.orderReceivedPageFE);
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.thankYouPageFE);
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.paymentPageFE);

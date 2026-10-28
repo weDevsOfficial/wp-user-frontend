@@ -549,6 +549,15 @@ class Payment {
             case 'post':
                 $post          = get_post( $post_id );
                 $form_id       = get_post_meta( $post_id, '_wpuf_form_id', true );
+                // only a post made by a WPUF form can be paid for here, never a pack or another object
+                if (
+                    ! $post
+                    || 'wpuf_subscription' === $post->post_type
+                    || 'wpuf_forms' !== get_post_type( $form_id )
+                    || ( is_user_logged_in() && (int) $post->post_author !== get_current_user_id() )
+                ) {
+                    wp_die( esc_html__( 'Invalid payment request.', 'wp-user-frontend' ) );
+                }
                 $form          = new Admin\Forms\Form( $form_id );
                 $form_settings = $form->get_settings();
                 $force_pack    = $form->is_enabled_force_pack();

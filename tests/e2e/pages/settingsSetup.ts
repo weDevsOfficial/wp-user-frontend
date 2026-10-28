@@ -6,7 +6,7 @@ import { Urls, Users } from '../utils/testData';
 import { Base } from './base';
 import { waitForSiteReady } from '../utils/siteReady';
 import { clearSavedSession } from '../utils/authSession';
-import { wpCli } from '../utils/wpEnvCli';
+import { wpufPageSlug } from '../utils/wpufPages';
 export class SettingsSetupPage extends Base {
 
     constructor(page: Page) {
@@ -171,20 +171,9 @@ export class SettingsSetupPage extends Base {
      * (the caller then falls back to the title-based selector).
      */
     wpufPageLinkByShortcode(shortcode: string): string | null {
-        try {
-            // Oldest first: a site that ran the installer more than once holds several
-            // pages with the same shortcode (dashboard, dashboard-2, dashboard-3). The
-            // first one created is the canonical page, and ordering by ID keeps the
-            // choice deterministic instead of depending on wp-cli's default date sort.
-            const rows = JSON.parse(
-                wpCli('post list --post_type=page --post_status=publish --fields=post_name,post_content --orderby=ID --order=ASC --format=json')
-            ) as Array<{ post_name: string; post_content: string }>;
-            const page = rows.find((r) => (r.post_content || '').includes(shortcode));
+        const slug = wpufPageSlug(shortcode);
 
-            return page ? `//ul[@class="wp-block-page-list"]//li//a[contains(@href,"/${page.post_name}/")]` : null;
-        } catch {
-            return null;
-        }
+        return slug ? `//ul[@class="wp-block-page-list"]//li//a[contains(@href,"/${slug}/")]` : null;
     }
 
     /**

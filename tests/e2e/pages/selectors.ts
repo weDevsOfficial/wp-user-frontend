@@ -113,7 +113,10 @@ export const Selectors = {
 
         wpufPagesFE: {
             accountPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Account"]',
-            dashboardPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Dashboard"]',
+            // Dokan installs its own page titled "Dashboard" (slug `dashboard`), so WordPress
+            // slugs the second one `dashboard-2` and a title-only match hits both. Pin this to
+            // WPUF's page by its href so the locator stays unambiguous.
+            dashboardPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Dashboard" and contains(@href,"/dashboard/")]',
             editPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Edit"]',
             subscriptionPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Subscription"]',
             loginPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Login"]',

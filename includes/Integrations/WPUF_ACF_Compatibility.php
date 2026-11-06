@@ -143,7 +143,7 @@ class WPUF_ACF_Compatibility {
             'post_status' => 'publish',
         ];
 
-        return $form_posts = get_posts( $args );
+        return get_posts( $args );
     }
 
     /**
@@ -177,31 +177,83 @@ class WPUF_ACF_Compatibility {
             return;
         } ?>
         <div class="notice notice-info">
-            <p><strong><?php printf( 
+            <p><strong>
+            <?php
+            printf(
                 // translators: %s is Title
                 esc_html( __( '%s Detected', 'wp-user-frontend' ) ),
-                        esc_html( $this->title ) ); ?></strong></p>
-            <p><?php printf( wp_kses_post( 
+                esc_html( $this->title )
+            );
+			?>
+                        </strong></p>
+            <p>
+            <?php
+            printf(
+                wp_kses_post(
                 // translators: %s is Title
-                __( 'Hey, looks like you have <strong>%s</strong> installed. What do you want to do with WPUF?',
-                    'wp-user-frontend' ) ), esc_html( $this->title ) ); ?></p>
+                    __(
+                        'Hey, looks like you have <strong>%s</strong> installed. What do you want to do with WPUF?',
+                        'wp-user-frontend'
+                    )
+                ), esc_html( $this->title )
+            );
+			?>
+                    </p>
             <p><i><strong
-                        style="color:#46b450;">Compatible: </strong><?php printf( esc_html( __( 'It will update compatibility option only, so existing custom fields data format will not change.',
-                        'wp-user-frontend' ) ) ); ?></i></p>
+                        style="color:#46b450;">Compatible: </strong>
+                        <?php
+                        printf(
+                            esc_html(
+                                __(
+                                    'It will update compatibility option only, so existing custom fields data format will not change.',
+                                    'wp-user-frontend'
+                                )
+                            )
+                        );
+						?>
+                        </i></p>
             <p><i><strong style="color:#46b450;">Compatible &
-                        Migrate: </strong><?php printf( esc_html( __( 'It will update existing custom fields data to ACF format and update compatibility option too.',
-                        'wp-user-frontend' ) ) ); ?></i></p>
+                        Migrate: </strong>
+                        <?php
+                        printf(
+                            esc_html(
+                                __(
+                                    'It will update existing custom fields data to ACF format and update compatibility option too.',
+                                    'wp-user-frontend'
+                                )
+                            )
+                        );
+						?>
+                        </i></p>
 
             <p>
                 <a href="#" class="button button-primary"
-                   id="wpuf-compatible-<?php echo esc_attr( $this->id ); ?>"><?php esc_html_e( 'Compatible',
-                        'wp-user-frontend' ); ?></a>
+                    id="wpuf-compatible-<?php echo esc_attr( $this->id ); ?>">
+                    <?php
+					esc_html_e(
+                        'Compatible',
+                        'wp-user-frontend'
+                    );
+					?>
+                        </a>
                 <a href="#" class="button button-primary"
-                   id="wpuf-migrate-<?php echo esc_attr( $this->id ); ?>"><?php esc_html_e( 'Compatible & Migrate',
-                        'wp-user-frontend' ); ?></a>
+                    id="wpuf-migrate-<?php echo esc_attr( $this->id ); ?>">
+                    <?php
+					esc_html_e(
+                        'Compatible & Migrate',
+                        'wp-user-frontend'
+                    );
+					?>
+                        </a>
                 <a href="#" class="button"
-                   id="wpuf-dismiss-<?php echo esc_attr( $this->id ); ?>"><?php esc_html_e( 'No Thanks',
-                        'wp-user-frontend' ); ?></a>
+                    id="wpuf-dismiss-<?php echo esc_attr( $this->id ); ?>">
+                    <?php
+					esc_html_e(
+                        'No Thanks',
+                        'wp-user-frontend'
+                    );
+					?>
+                        </a>
             </p>
         </div>
 
@@ -325,9 +377,11 @@ class WPUF_ACF_Compatibility {
                 $meta_key = 'repeater';
             }
             //check key also in meta vars
-            $meta_keys = array_map( function( $meta_var ) {
-                return $meta_var['name'];
-            }, $meta_vars );
+            $meta_keys = array_map(
+                function ( $meta_var ) {
+                    return $meta_var['name'];
+                }, $meta_vars
+            );
             if ( ! array_key_exists( $meta_key, $existing_meta ) && in_array( $name, $meta_keys, true ) ) {
                 update_post_meta( $post_id, $meta_key, $group['key'] );
             }

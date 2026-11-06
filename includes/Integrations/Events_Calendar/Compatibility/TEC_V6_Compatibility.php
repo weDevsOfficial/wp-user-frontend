@@ -28,20 +28,22 @@ class TEC_V6_Compatibility {
         $all_data = array_merge( $form_data, $meta_vars );
 
         // Extract taxonomy data directly from $_POST since WPUF doesn't pass it in form_data
+        // phpcs:disable WordPress.Security.NonceVerification.Missing -- runs inside the WPUF submit handler, after its nonce check.
         // Check for tribe_events_cat taxonomy field - can be array of IDs or comma-separated string
         if ( isset( $_POST['tribe_events_cat'] ) && ! isset( $all_data['tribe_events_cat'] ) ) {
             if ( is_array( $_POST['tribe_events_cat'] ) ) {
-                $all_data['tribe_events_cat'] = array_map( 'intval', $_POST['tribe_events_cat'] );
+                $all_data['tribe_events_cat'] = array_map( 'intval', wp_unslash( $_POST['tribe_events_cat'] ) );
             } else {
                 // Could be comma-separated string of IDs or names
-                $all_data['tribe_events_cat'] = sanitize_text_field( $_POST['tribe_events_cat'] );
+                $all_data['tribe_events_cat'] = sanitize_text_field( wp_unslash( $_POST['tribe_events_cat'] ) );
             }
         }
 
         // Check for tags if not already in form_data
         if ( ! isset( $all_data['tags'] ) && ! isset( $all_data['tags_input'] ) && isset( $_POST['tags'] ) ) {
-            $all_data['tags'] = sanitize_text_field( $_POST['tags'] );
+            $all_data['tags'] = sanitize_text_field( wp_unslash( $_POST['tags'] ) );
         }
+        // phpcs:enable WordPress.Security.NonceVerification.Missing
 
         /**
          * Opportunity to modify form data before converting to TEC ORM format
@@ -102,7 +104,7 @@ class TEC_V6_Compatibility {
             } else {
                 return false;
             }
-        } else {
+        } else { // phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found -- legacy branch, kept as is.
             // Fallback: create a default end date if none provided
             if ( ! empty( $orm_args['start_date'] ) ) {
                 $start_datetime = new \DateTime( $orm_args['start_date'] );
@@ -138,7 +140,7 @@ class TEC_V6_Compatibility {
         }
         // Handle all-day events using ORM field alias
         if ( ! empty( $all_data['_EventAllDay'] ) ) {
-            $is_all_day          = is_array( $all_data['_EventAllDay'] ) && in_array( '1', $all_data['_EventAllDay'] );
+            $is_all_day          = is_array( $all_data['_EventAllDay'] ) && in_array( '1', array_map( 'strval', $all_data['_EventAllDay'] ), true );
             $orm_args['all_day'] = $is_all_day;
             // For all-day events, if no end date is provided, set it to the same day
             if ( $is_all_day && ! empty( $orm_args['start_date'] ) && empty( $orm_args['end_date'] ) ) {
@@ -181,7 +183,7 @@ class TEC_V6_Compatibility {
         if ( ! empty( $all_data['_EventTimezone'] ) ) {
             $timezone = sanitize_text_field( $all_data['_EventTimezone'] );
             // Validate timezone
-            if ( in_array( $timezone, timezone_identifiers_list() ) ) {
+            if ( in_array( $timezone, timezone_identifiers_list(), true ) ) {
                 $orm_args['timezone'] = $timezone;
             } else {
                 // Use default timezone as fallback
@@ -192,7 +194,7 @@ class TEC_V6_Compatibility {
             $orm_args['timezone'] = wp_timezone_string();
         }
         // Ensure timezone is valid for TEC
-        if ( ! in_array( $orm_args['timezone'], timezone_identifiers_list() ) ) {
+        if ( ! in_array( $orm_args['timezone'], timezone_identifiers_list(), true ) ) {
             $orm_args['timezone'] = 'UTC';
         }
         // Map URL field using ORM field alias
@@ -206,20 +208,20 @@ class TEC_V6_Compatibility {
         // Map presentation fields using ORM field aliases
         if ( ! empty( $all_data['_EventShowMap'] ) ) {
             $show_map             = is_array( $all_data['_EventShowMap'] ) && in_array(
-                    '1', $all_data['_EventShowMap']
-                );
+                '1', array_map( 'strval', $all_data['_EventShowMap'] ), true
+            );
             $orm_args['show_map'] = $show_map;
         }
         if ( ! empty( $all_data['_EventShowMapLink'] ) ) {
             $show_map_link             = is_array( $all_data['_EventShowMapLink'] ) && in_array(
-                    '1', $all_data['_EventShowMapLink']
-                );
+                '1', array_map( 'strval', $all_data['_EventShowMapLink'] ), true
+            );
             $orm_args['show_map_link'] = $show_map_link;
         }
         if ( ! empty( $all_data['_EventHideFromUpcoming'] ) ) {
             $hide_from_upcoming             = is_array( $all_data['_EventHideFromUpcoming'] ) && in_array(
-                    '1', $all_data['_EventHideFromUpcoming']
-                );
+                '1', array_map( 'strval', $all_data['_EventHideFromUpcoming'] ), true
+            );
             $orm_args['hide_from_upcoming'] = $hide_from_upcoming;
         }
         // Map duration if available
@@ -237,7 +239,7 @@ class TEC_V6_Compatibility {
                 // Convert comma-separated string to array
                 $tags = array_map( 'trim', explode( ',', $all_data['tags'] ) );
                 $orm_args['tags_input'] = $tags;
-            } else if ( is_array( $all_data['tags'] ) ) {
+            } elseif ( is_array( $all_data['tags'] ) ) {
                 $orm_args['tags_input'] = $all_data['tags'];
             }
         }
@@ -247,7 +249,7 @@ class TEC_V6_Compatibility {
             // Handle different formats - could be array of IDs, comma-separated string, or text
             if ( is_array( $all_data['tribe_events_cat'] ) ) {
                 $orm_args['categories'] = $all_data['tribe_events_cat'];
-            } else if ( is_string( $all_data['tribe_events_cat'] ) ) {
+            } elseif ( is_string( $all_data['tribe_events_cat'] ) ) {
                 // Check if it's comma-separated IDs or names
                 if ( preg_match( '/^\d+(,\d+)*$/', $all_data['tribe_events_cat'] ) ) {
                     // Comma-separated IDs
@@ -372,11 +374,11 @@ class TEC_V6_Compatibility {
             }
         }
         // Check for WPUF nonce
-        if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'wpuf_form_add' ) ) {
+        if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_form_add' ) ) {
             return true;
         }
         // Check for WPUF AJAX action
-        if ( isset( $_POST['action'] ) && strpos( $_POST['action'], 'wpuf' ) === 0 ) {
+        if ( isset( $_POST['action'] ) && strpos( sanitize_text_field( wp_unslash( $_POST['action'] ) ), 'wpuf' ) === 0 ) {
             return true;
         }
 

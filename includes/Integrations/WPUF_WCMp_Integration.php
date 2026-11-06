@@ -17,8 +17,10 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WCMp_Integration' ) ) {
             add_filter( 'wcmp_vendor_dashboard_nav', [ $this, 'add_wpuf_posts_page' ] );
             add_filter( 'wcmp_endpoints_query_vars', [ $this, 'add_query_var' ] );
             add_filter( 'settings_vendor_general_tab_new_input', [ $this, 'endpoint_option_fields_sanitize' ], 10, 2 );
-            add_action( 'wcmp_vendor_dashboard_submit-post_endpoint',
-                [ $this, 'wcmp_vendor_dashboard_submit_post_endpoint' ] );
+            add_action(
+                'wcmp_vendor_dashboard_submit-post_endpoint',
+                [ $this, 'wcmp_vendor_dashboard_submit_post_endpoint' ]
+            );
             add_filter( 'wpuf_edit_post_link', [ $this, 'generate_edit_post_link' ] );
             add_filter( 'wpuf_edit_post_redirect', [ $this, 'update_edit_post_redirect_url' ], 10, 4 );
             add_filter( 'wpuf_delete_post_redirect', [ $this, 'update_delete_post_redirect_url' ] );
@@ -49,8 +51,12 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WCMp_Integration' ) ) {
                 'id'        => 'wpuf_post_forms',
                 'name'      => 'wpuf_post_forms',
                 'label_for' => 'wpuf_post_forms',
-                'desc'      => stripslashes( __( 'Select a post form that will show on the vendor dashboard.',
-                    'wp-user-frontend' ) ),
+                'desc'      => stripslashes(
+                    __(
+                        'Select a post form that will show on the vendor dashboard.',
+                        'wp-user-frontend'
+                    )
+                ),
                 'options'   => $this->get_post_forms(),
             ];
 
@@ -126,8 +132,12 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WCMp_Integration' ) ) {
         public function add_wpuf_posts_page( $vendor_nav ) {
             $vendor_nav['submit-post'] = [
                 'label'       => __( 'Submit Post', 'wp-user-frontend' ),
-                'url'         => wcmp_get_vendor_dashboard_endpoint_url( get_wcmp_vendor_settings( 'wcmp_vendor_submit_post_endpoint',
-                    'vendor', 'general', 'submit-post' ) ),
+                'url'         => wcmp_get_vendor_dashboard_endpoint_url(
+                    get_wcmp_vendor_settings(
+                        'wcmp_vendor_submit_post_endpoint',
+                        'vendor', 'general', 'submit-post'
+                    )
+                ),
                 'capability'  => apply_filters( 'wcmp_vendor_dashboard_menu_vendor_submit_post_capability', true ),
                 'position'    => 90,
                 'submenu'     => [],
@@ -144,8 +154,10 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WCMp_Integration' ) ) {
         public function add_query_var( $query_vars ) {
             $query_vars['submit-post'] = [
                 'label'    => __( 'Submit Post', 'wp-user-frontend' ),
-                'endpoint' => get_wcmp_vendor_settings( 'wcmp_vendor_submit_post_endpoint', 'vendor', 'general',
-                    'submit-post' ),
+                'endpoint' => get_wcmp_vendor_settings(
+                    'wcmp_vendor_submit_post_endpoint', 'vendor', 'general',
+                    'submit-post'
+                ),
             ];
 
             return $query_vars;
@@ -190,13 +202,19 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WCMp_Integration' ) ) {
          */
         public function generate_edit_post_link( $url ) {
             global $post;
-            $posts_page_url = wcmp_get_vendor_dashboard_endpoint_url( get_wcmp_vendor_settings( 'wcmp_vendor_submit_post_endpoint',
-                'vendor', 'general', 'submit-post' ) );
+            $posts_page_url = wcmp_get_vendor_dashboard_endpoint_url(
+                get_wcmp_vendor_settings(
+                    'wcmp_vendor_submit_post_endpoint',
+                    'vendor', 'general', 'submit-post'
+                )
+            );
             if ( is_vendor_dashboard() ) {
-                $url = add_query_arg( [
-                    'action' => 'edit-post',
-                    'pid'    => $post->ID,
-                ], $posts_page_url );
+                $url = add_query_arg(
+                    [
+						'action' => 'edit-post',
+						'pid'    => $post->ID,
+					], $posts_page_url
+                );
             }
 
             return $url;
@@ -208,17 +226,25 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WCMp_Integration' ) ) {
         public function update_edit_post_redirect_url( $response, $post_id, $form_id, $form_settings ) {
             $user          = wp_get_current_user();
             $role          = (array) $user->roles;
-            $selected_form = ( get_wcmp_vendor_settings( 'wpuf_post_forms',
-                'general' ) ) ? get_wcmp_vendor_settings( 'wpuf_post_forms', 'general' ) : '';
+            $selected_form = ( get_wcmp_vendor_settings(
+                'wpuf_post_forms',
+                'general'
+            ) ) ? get_wcmp_vendor_settings( 'wpuf_post_forms', 'general' ) : '';
             if ( $role[0] === 'dc_vendor' && $form_id === $selected_form && ( $form_settings['edit_redirect_to'] ?? '' ) === 'same' ) {
-                $post_page_url = wcmp_get_vendor_dashboard_endpoint_url( get_wcmp_vendor_settings( 'wcmp_vendor_submit_post_endpoint',
-                    'vendor', 'general', 'submit-post' ) );
-                $redirect_url = add_query_arg( [
-                    'action'   => 'edit-post',
-                    'pid'      => $post_id,
-                    '_wpnonce' => wp_create_nonce( 'wpuf_edit' ),
-                    'msg'      => 'post_updated',
-                ], $post_page_url );
+                $post_page_url = wcmp_get_vendor_dashboard_endpoint_url(
+                    get_wcmp_vendor_settings(
+                        'wcmp_vendor_submit_post_endpoint',
+                        'vendor', 'general', 'submit-post'
+                    )
+                );
+                $redirect_url = add_query_arg(
+                    [
+						'action'   => 'edit-post',
+						'pid'      => $post_id,
+						'_wpnonce' => wp_create_nonce( 'wpuf_edit' ),
+						'msg'      => 'post_updated',
+					], $post_page_url
+                );
                 $response['redirect_to'] = $redirect_url;
             }
 
@@ -230,11 +256,17 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WCMp_Integration' ) ) {
          */
         public function update_delete_post_redirect_url( $redirect_url ) {
             if ( is_vendor_dashboard() ) {
-                $post_page_url = wcmp_get_vendor_dashboard_endpoint_url( get_wcmp_vendor_settings( 'wcmp_vendor_submit_post_endpoint',
-                    'vendor', 'general', 'submit-post' ) );
-                $redirect_url = add_query_arg( [
-                    'msg' => 'deleted',
-                ], $post_page_url );
+                $post_page_url = wcmp_get_vendor_dashboard_endpoint_url(
+                    get_wcmp_vendor_settings(
+                        'wcmp_vendor_submit_post_endpoint',
+                        'vendor', 'general', 'submit-post'
+                    )
+                );
+                $redirect_url = add_query_arg(
+                    [
+						'msg' => 'deleted',
+					], $post_page_url
+                );
             }
 
             return $redirect_url;

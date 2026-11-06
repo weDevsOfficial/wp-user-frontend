@@ -855,7 +855,7 @@ class Frontend_Form_Ajax {
                 }
 
                 // guest post is enabled and details are off
-            } elseif ( ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) && ! wpuf_is_checkbox_or_toggle_on( $this->form_settings['guest_details'] ) ) {
+            } elseif ( ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) && ! wpuf_is_checkbox_or_toggle_on( $this->form_settings['guest_details'] ?? '' ) ) {
                 $post_author = $default_post_author;
             } elseif ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) {
                 wpuf()->ajax->send_error( $this->form_settings['message_restrict'] );

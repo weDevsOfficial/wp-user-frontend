@@ -7,7 +7,7 @@ Author: weDevs
 Version: 4.3.14
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 Requires at least: 5.0
-Requires PHP: 7.4
+Requires PHP: 8.0
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: wp-user-frontend
@@ -91,7 +91,7 @@ final class WP_User_Frontend {
      *
      * @var string
      */
-    private $min_php = '5.6';
+    private $min_php = '8.0';
 
     /**
      * Holds various class instances

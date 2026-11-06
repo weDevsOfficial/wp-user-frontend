@@ -5589,6 +5589,39 @@ function wpuf_get_protected_shortcodes() {
 }
 
 /**
+ * Find the first protected shortcode present in the given values
+ *
+ * Normalizes each value the same way the submitted value is normalized before
+ * it is stored, so the text that is checked matches the text that ends up in
+ * the database.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param array|string $values one or more values to check
+ *
+ * @return string the protected shortcode that was found, or an empty string
+ */
+function wpuf_find_protected_shortcode( $values ) {
+    $protected_shortcodes = wpuf_get_protected_shortcodes();
+
+    foreach ( (array) $values as $value ) {
+        if ( ! is_string( $value ) || '' === $value ) {
+            continue;
+        }
+
+        $value = wpuf_normalize_for_shortcode_check( $value );
+
+        foreach ( $protected_shortcodes as $shortcode ) {
+            if ( false !== stripos( $value, '[' . $shortcode ) ) {
+                return $shortcode;
+            }
+        }
+    }
+
+    return '';
+}
+
+/**
  * Get the current users roles as an array
  *
  * @since 3.6.6
@@ -5631,16 +5664,23 @@ function wpuf_modify_shortcodes( $content ) {
     }
 
     // get the id of the user who last edited the post
-    $user_id = get_post_meta( get_post()->ID, '_edit_last', true );
+    $user_id = get_post_meta( $post->ID, '_edit_last', true );
 
     $roles = wpuf_get_single_user_roles( $user_id );
 
+    // Posts inserted straight through wp_insert_post(), as the draft endpoint and
+    // the REST API do, carry no _edit_last at all. Fall back to the author so the
+    // protected shortcodes are still escaped instead of rendering unchecked.
     if ( empty( $roles ) ) {
-        return $content;
+        $roles = wpuf_get_single_user_roles( $post->post_author );
+    }
+
+    if ( ! is_array( $roles ) ) {
+        $roles = [];
     }
 
     // last modified by an admin, returns the content as it is
-    if ( in_array( 'administrator', $roles ) ) {
+    if ( in_array( 'administrator', $roles, true ) ) {
         return $content;
     }
 

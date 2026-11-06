@@ -433,7 +433,7 @@ class WPUF_Render_Form {
                         do_action( 'wpuf_edit_post_form_top', $form_id, $post_id, $form_settings );
                     }
 
-            if ( !is_user_logged_in() && ( isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['guest_details'] ) ) {
+            if ( !is_user_logged_in() && ( isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['guest_details'] ?? '' ) ) {
                 $this->guest_fields( $form_settings );
             }
 

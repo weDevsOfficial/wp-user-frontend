@@ -147,6 +147,58 @@ class Frontend_Form_Ajax {
             }
         }
 
+        // Column fields keep their own fields in inner_fields, which the loop
+        // above does not see, so a protected shortcode posted under a field
+        // nested in a column would pass unchecked. Walk those too.
+        foreach ( $this->form_fields as $single_field ) {
+            if ( empty( $single_field['inner_fields'] ) || ! is_array( $single_field['inner_fields'] ) ) {
+                continue;
+            }
+
+            foreach ( $single_field['inner_fields'] as $column ) {
+                foreach ( (array) $column as $inner ) {
+                    if ( empty( $inner['name'] ) || empty( $_POST[ $inner['name'] ] ) || ! is_string( $_POST[ $inner['name'] ] ) ) {
+                        continue;
+                    }
+
+                    $found = wpuf_find_protected_shortcode( wp_unslash( $_POST[ $inner['name'] ] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- normalized and only compared, never stored.
+
+                    if ( ! empty( $found ) ) {
+                        wpuf()->ajax->send_error(
+                            sprintf(
+                                // translators: %s is shortcode
+                                __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $found
+                            )
+                        );
+                    }
+                }
+            }
+        }
+
+        // post_title, post_content and post_excerpt are stored whatever fields
+        // the form defines, so a title-only form, a value posted under a name
+        // that is not a field, or a post_content field nested in a column all
+        // reach the sink without passing the loops above. Check the values that
+        // will actually be stored.
+        // phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- normalized by the helper and only compared, never stored.
+        $found = wpuf_find_protected_shortcode(
+            [
+                isset( $_POST['post_title'] ) ? wp_unslash( $_POST['post_title'] ) : '',
+                isset( $_POST['post_content'] ) ? wp_unslash( $_POST['post_content'] ) : '',
+                isset( $_POST['post_excerpt'] ) ? wp_unslash( $_POST['post_excerpt'] ) : '',
+            ]
+        );
+        // phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+        if ( ! empty( $found ) ) {
+            wpuf()->ajax->send_error(
+                sprintf(
+                    // translators: %s is shortcode
+                    __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $found
+                )
+            );
+        }
+
         // Attachment deletion authorization check
         $current_user_id = get_current_user_id();
         $post_id_for_edit = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : 0;

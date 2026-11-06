@@ -183,7 +183,7 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WC_Vendors_Integration' ) ) 
             $user          = wp_get_current_user();
             $role          = (array) $user->roles;
             $selected_form = get_option( 'wcvendors_wpuf_allowed_post_form', '' );
-            if ( $role[0] === 'vendor' && $form_id === $selected_form && $form_settings['edit_redirect_to'] === 'same' ) {
+            if ( $role[0] === 'vendor' && $form_id === $selected_form && ( $form_settings['edit_redirect_to'] ?? '' ) === 'same' ) {
                 $post_page_url = get_permalink( get_option( 'wcvendors_vendor_dashboard_page_id' ) );
                 $redirect_url = add_query_arg( [
                     'action'   => 'edit-post',

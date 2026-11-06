@@ -210,7 +210,7 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WCMp_Integration' ) ) {
             $role          = (array) $user->roles;
             $selected_form = ( get_wcmp_vendor_settings( 'wpuf_post_forms',
                 'general' ) ) ? get_wcmp_vendor_settings( 'wpuf_post_forms', 'general' ) : '';
-            if ( $role[0] === 'dc_vendor' && $form_id === $selected_form && $form_settings['edit_redirect_to'] === 'same' ) {
+            if ( $role[0] === 'dc_vendor' && $form_id === $selected_form && ( $form_settings['edit_redirect_to'] ?? '' ) === 'same' ) {
                 $post_page_url = wcmp_get_vendor_dashboard_endpoint_url( get_wcmp_vendor_settings( 'wcmp_vendor_submit_post_endpoint',
                     'vendor', 'general', 'submit-post' ) );
                 $redirect_url = add_query_arg( [

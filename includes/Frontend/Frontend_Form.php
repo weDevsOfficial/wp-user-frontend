@@ -145,7 +145,7 @@ class Frontend_Form extends Frontend_Render_Form {
 
         if ( $msg === 'post_updated' ) {
             echo wp_kses_post( '<div class="wpuf-success">' );
-            echo wp_kses_post( str_replace( '{link}', get_permalink( $post_id ), $this->form_settings['update_message'] ) );
+            echo wp_kses_post( str_replace( '{link}', get_permalink( $post_id ), $this->form_settings['update_message'] ?? '' ) );
             echo wp_kses_post( '</div>' );
         }
 
@@ -246,7 +246,7 @@ class Frontend_Form extends Frontend_Render_Form {
         $allowed_tags = wp_kses_allowed_html( 'post' );
         $post_content = isset( $_POST['post_content'] ) ? wp_kses( wp_unslash( $_POST['post_content'] ), $allowed_tags ) : '';
         $postarr = [
-            'post_type'    => $this->form_settings['post_type'],
+            'post_type'    => $this->form_settings['post_type'] ?? '',
             'post_status'  => wpuf_get_draft_post_status( $this->form_settings ),
             'post_author'  => $current_user_id,
             'post_title'   => isset( $_POST['post_title'] ) ? sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) : '',
@@ -335,7 +335,7 @@ class Frontend_Form extends Frontend_Render_Form {
 
             // save post formats if have any
             if ( isset( $this->form_settings['post_format'] ) && $this->form_settings['post_format'] !== '0' ) {
-                if ( post_type_supports( $this->form_settings['post_type'], 'post-formats' ) ) {
+                if ( post_type_supports( $this->form_settings['post_type'] ?? '', 'post-formats' ) ) {
                     set_post_format( $post_id, $this->form_settings['post_format'] );
                 }
             }
@@ -637,7 +637,7 @@ class Frontend_Form extends Frontend_Render_Form {
             $replace      = [ "<a href='" . $login . "'>Login</a>", "<a href='" . $register . "'>Register</a>" ];
             $placeholders = [ '{login}', '{register}' ];
 
-            $this->form_settings['message_restrict'] = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] );
+            $this->form_settings['message_restrict'] = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] ?? '' );
         }
     }
 

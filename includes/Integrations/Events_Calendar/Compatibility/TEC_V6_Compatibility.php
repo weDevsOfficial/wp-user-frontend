@@ -395,7 +395,7 @@ class TEC_V6_Compatibility {
      * @return bool
      */
     public function prepare_event_data( $form_id, $form_settings, $form_data ) {
-        if ( $form_settings['post_type'] !== 'tribe_events' ) {
+        if ( ( $form_settings['post_type'] ?? '' ) !== 'tribe_events' ) {
             return true;
         }
         // Convert form data to ORM format

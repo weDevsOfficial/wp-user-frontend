@@ -100,7 +100,7 @@ class WPUF_ACF_Compatibility {
                 $form_id       = $form->ID;
                 $form_vars     = wpuf_get_form_fields( $form_id );
                 $form_settings = wpuf_get_form_settings( $form_id );
-                $post_type     = $form_settings['post_type'];
+                $post_type     = $form_settings['post_type'] ?? '';
                 foreach ( $form_vars as $attr ) {
                     $field_type = $attr['input_type'];
                     $meta       = $attr['is_meta'];
@@ -315,7 +315,7 @@ class WPUF_ACF_Compatibility {
         if ( ! $this->plugin_exists() ) {
             return;
         }
-        $groups        = acf_get_field_groups( [ 'post_type' => $form_settings['post_type'] ] );
+        $groups        = acf_get_field_groups( [ 'post_type' => $form_settings['post_type'] ?? null ] );
         $existing_meta = get_post_meta( $post_id );
         foreach ( acf_get_fields( $groups ) as $group ) {
             $meta_key = '_' . $group['name'];

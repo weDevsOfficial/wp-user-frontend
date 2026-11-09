@@ -44,6 +44,6 @@
   "dependencies": {
     "@wordpress/env": "^10.36.0",
     "dotenv": "^17.2.3",
-    "js-yaml": "^4.0.9"
+    "js-yaml": "^4.3.1"
   }
 }

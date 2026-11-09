@@ -28,7 +28,7 @@
     "@tailwindcss/forms": "0.5.7",
     "@types/node": "^18.11.18",
     "@vitejs/plugin-vue": "^5.0.4",
-    "@wordpress/scripts": "^31.8.0",
+    "@wordpress/scripts": "^36.0.0",
     "autoprefixer": "^10.4.16",
     "daisyui": "^4.12.2",
     "grunt": "^1.6.3",

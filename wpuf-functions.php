@@ -261,7 +261,10 @@ function wpuf_get_pages( $post_type = 'page' ) {
 
     if ( $pages ) {
         foreach ( $pages as $page ) {
-            $array[ $page->ID ] = esc_attr( $page->post_title );
+            // Page titles can come from front-end submissions and are printed
+            // inside the Vue-mounted form builder, so neutralise template
+            // delimiters the same way taxonomy names already are.
+            $array[ $page->ID ] = wpuf_neutralize_template_delimiters( esc_attr( $page->post_title ) );
         }
     }
 

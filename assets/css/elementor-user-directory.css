@@ -1,0 +1,69 @@
+/**
+ * DESCRIPTION: Elementor-specific CSS overrides for the User Directory widget.
+ */
+
+/* Wrapper */
+.wpuf-elementor-user-directory-wrapper {
+	width: 100%;
+}
+
+/* Empty state for Elementor editor */
+.wpuf-elementor-ud-empty-state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 60px 20px;
+	text-align: center;
+	background: #f9fafb;
+	border: 2px dashed #d1d5db;
+	border-radius: 8px;
+}
+
+.wpuf-elementor-ud-empty-icon {
+	color: #9ca3af;
+	margin-bottom: 16px;
+}
+
+.wpuf-elementor-ud-empty-text {
+	font-size: 16px;
+	font-weight: 600;
+	color: #374151;
+	margin: 0 0 8px;
+}
+
+.wpuf-elementor-ud-empty-hint {
+	font-size: 14px;
+	color: #6b7280;
+	margin: 0;
+}
+
+.wpuf-elementor-ud-empty-hint a {
+	color: #7c3aed;
+	text-decoration: underline;
+}
+
+/* Profile preview separator in Elementor editor */
+.wpuf-elementor-profile-separator {
+	display: flex;
+	align-items: center;
+	margin: 40px 0 30px;
+	gap: 16px;
+}
+
+.wpuf-elementor-profile-separator::before,
+.wpuf-elementor-profile-separator::after {
+	content: '';
+	flex: 1;
+	height: 1px;
+	background: #d1d5db;
+}
+
+.wpuf-elementor-profile-separator span {
+	font-size: 13px;
+	font-weight: 600;
+	color: #6b7280;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	white-space: nowrap;
+}

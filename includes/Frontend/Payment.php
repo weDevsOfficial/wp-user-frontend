@@ -136,7 +136,8 @@ class Payment {
                     return;
                 }
                 $recurring_pay = isset( $pack_detail->meta_value['recurring_pay'] ) ? $pack_detail->meta_value['recurring_pay'] : 'no';
-                if ( empty( $pack_detail->meta_value['billing_amount'] ) || $pack_detail->meta_value['billing_amount'] <= 0 ) {
+                // A free pack is only given away while it is published; drafts, private and trashed packs are not offered.
+                if ( ( empty( $pack_detail->meta_value['billing_amount'] ) || $pack_detail->meta_value['billing_amount'] <= 0 ) && 'publish' === $pack_detail->post_status ) {
                     $is_free = true;
                 }
             }

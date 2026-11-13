@@ -1008,7 +1008,21 @@ function wpuf_is_same_origin_request() {
         );
     }
 
-    $hosts       = array_filter( array_map( 'strtolower', array_filter( $hosts ) ) );
+    /**
+     * Filter the hosts a login or registration form may be submitted from
+     *
+     * Add a host here only when a login or registration form for this site is
+     * served from another domain or subdomain the site owns, for example a
+     * shop subdomain whose form posts to the main site. Every host added can
+     * log a visitor's browser into an account, so never add one you do not
+     * control.
+     *
+     * @since 4.3.15
+     *
+     * @param array $hosts Host names, without scheme or port.
+     */
+    $hosts       = (array) apply_filters( 'wpuf_same_origin_hosts', $hosts );
+    $hosts       = array_filter( array_map( 'strtolower', array_filter( $hosts, 'is_string' ) ) );
     $source_host = strtolower( $source_host );
 
     return in_array( $source_host, $hosts, true );

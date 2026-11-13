@@ -195,8 +195,9 @@ function wpuf_neutralize_template_delimiters( $value ) {
         return $value;
     }
 
-    // Zero-width space (U+200B) between each pair of braces.
-    return str_replace( [ '{{', '}}' ], [ "{\xE2\x80\x8B{", "}\xE2\x80\x8B}" ], $value );
+    // Zero-width space (U+200B) after every brace that is followed by the same
+    // brace, so no "{{" or "}}" survives, also in runs of three or more.
+    return preg_replace( '/([{}])(?=\1)/', "\$1\xE2\x80\x8B", $value );
 }
 
 function wpuf_get_post_types( $args = [] ) {

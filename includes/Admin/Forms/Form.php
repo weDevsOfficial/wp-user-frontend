@@ -194,7 +194,7 @@ class Form {
         }
 
         if ( $this->is_charging_enabled() ) {
-            $pay_per_post      = $this->is_enabled_pay_per_post();
+            $pay_per_post = $this->is_enabled_pay_per_post();
 
             // $pay_per_post_cost = (float) $this->get_pay_per_post_cost();
             $force_pack        = $this->is_enabled_force_pack();
@@ -208,10 +208,14 @@ class Form {
 
                 if ( $force_pack ) {
                     $user_can_post = 'no';
-                    $pack_page     = get_permalink( wpuf_get_option( 'subscription_page',
-                                                                     'wpuf_payment' ) );
+                    $pack_page     = get_permalink(
+                        wpuf_get_option(
+                            'subscription_page',
+                            'wpuf_payment'
+                        )
+                    );
                     /* translators: %s: Pack page link */
-                    $info          = sprintf( __( 'You need to  <a href="%s">purchase a subscription package</a> to post in this form', 'wp-user-frontend' ), $pack_page );
+                    $info = sprintf( __( 'You need to  <a href="%s">purchase a subscription package</a> to post in this form', 'wp-user-frontend' ), $pack_page );
                 } elseif ( $pay_per_post && ! $force_pack ) {
                     $user_can_post = 'yes';
                     // $info = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
@@ -224,7 +228,7 @@ class Form {
                 // } else {
                 //     $user_can_post = 'yes';
                 // }
-            } else {
+            } else { // phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found -- legacy branch, kept as is.
                 // regular payment checking
                 if ( $force_pack && is_user_logged_in() ) {
                     $current_pack = $current_user->subscription()->current_pack();
@@ -233,40 +237,36 @@ class Form {
                         // user has valid post count
                         if ( $has_post_count ) {
                             $user_can_post = 'yes';
-                        } else {
-                            if ( $fallback_enabled && ! $has_post_count ) {
+                        } elseif ( $fallback_enabled && ! $has_post_count ) {
                                 $user_can_post = 'yes';
-                            } else {
-                                $user_can_post = 'no';
-                                $info          = __( 'Post Limit Exceeded for your purchased subscription pack.', 'wp-user-frontend' );
-                            }
+						} else {
+							$user_can_post = 'no';
+							$info          = __( 'Post Limit Exceeded for your purchased subscription pack.', 'wp-user-frontend' );
                         }
                     } else {
                         $user_can_post = 'no';
                         $info          = $current_pack->get_error_message();
                     }
-                } elseif ( $pay_per_post && is_user_logged_in() && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+                } elseif ( $pay_per_post && is_user_logged_in() && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ?? '' ) ) {
                     $user_can_post = 'yes';
                     // $info = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
                     // echo '<div class="wpuf-info">' . apply_filters( 'wpuf_ppp_notice', $info, $id, $form_settings ) . '</div>';
-                } elseif ( ! $pay_per_post && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+                } elseif ( ! $pay_per_post && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ?? '' ) ) {
                     $user_can_post = 'no';
                     $info          = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wp-user-frontend' ) );
                 } else {
                     $user_can_post = 'no';
 
                     if ( ! is_user_logged_in() ) {
-                        $info = $form_settings['message_restrict'];
+                        $info = $form_settings['message_restrict'] ?? '';
                     } else {
                         $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wp-user-frontend' ) );
                     }
                 }
             }
-        } else {
-            if ( ( isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] ) && !
+        } elseif ( ( isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] ) && !
                 is_user_logged_in() ) {
                 $user_can_post = 'yes';
-            }
         }
 
         return [ $user_can_post, $info ];

@@ -154,7 +154,7 @@ trait FieldableTrait {
     }
 
     public function set_default_taxonomy( $post_id ) {
-        $post_taxonomies = get_object_taxonomies( $this->form_settings['post_type'], 'objects' );
+        $post_taxonomies = get_object_taxonomies( $this->form_settings['post_type'] ?? '', 'objects' );
         foreach ( $post_taxonomies as $tax ) {
             if ( $tax->hierarchical ) {
                 $name = 'default_' . $tax->name;
@@ -768,27 +768,27 @@ trait FieldableTrait {
             // At this point $taxonomy_name should be a single id or array of ids
             if ( isset( $taxonomy_name ) && $taxonomy_name != 0 && $taxonomy_name != -1 ) {
                 // Auto-register post_tag taxonomy for tribe_events if not already registered
-                if ( 'tribe_events' === $this->form_settings['post_type'] &&
+                if ( 'tribe_events' === ( $this->form_settings['post_type'] ?? '' ) &&
                      'post_tag' === $taxonomy['name'] &&
                      ! is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
                     register_taxonomy_for_object_type( 'post_tag', 'tribe_events' );
                 }
 
                 // Auto-register product_tag taxonomy for product if not already registered
-                if ( 'product' === $this->form_settings['post_type'] &&
+                if ( 'product' === ( $this->form_settings['post_type'] ?? '' ) &&
                      'product_tag' === $taxonomy['name'] &&
-                     ! is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
+                     ! is_object_in_taxonomy( $this->form_settings['post_type'] ?? '', $taxonomy['name'] ) ) {
                     register_taxonomy_for_object_type( 'product_tag', 'product' );
                 }
 
                 // Auto-register download_tag taxonomy for download if not already registered
-                if ( 'download' === $this->form_settings['post_type'] &&
+                if ( 'download' === ( $this->form_settings['post_type'] ?? '' ) &&
                      'download_tag' === $taxonomy['name'] &&
-                     ! is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
+                     ! is_object_in_taxonomy( $this->form_settings['post_type'] ?? '', $taxonomy['name'] ) ) {
                     register_taxonomy_for_object_type( 'download_tag', 'download' );
                 }
 
-                if ( is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
+                if ( is_object_in_taxonomy( $this->form_settings['post_type'] ?? '', $taxonomy['name'] ) ) {
                     $tax = $taxonomy_name;
                     // if it's not an array, make it one
                     if ( ! is_array( $tax ) ) {

@@ -4285,7 +4285,7 @@ function wpuf_posts_submitted_by( $form_id ) {
     $args = [
         'meta_key'         => '_wpuf_form_id',
         'meta_value'       => $form_id,
-        'post_type'        => $settings['post_type'],
+        'post_type'        => $settings['post_type'] ?? '',
         'post_status'      => 'publish',
     ];
 
@@ -4820,9 +4820,9 @@ function wpuf_show_form_schedule_message( $form_id ) {
 
         // too early?
         if ( $current_time < $start_time ) {
-            echo wp_kses_post( '<div class="wpuf-message">' . $form_settings['form_pending_message'] . '</div>' );
+            echo wp_kses_post( '<div class="wpuf-message">' . ( $form_settings['form_pending_message'] ?? '' ) . '</div>' );
         } elseif ( $current_time > $end_time ) {
-            echo wp_kses_post( '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>' );
+            echo wp_kses_post( '<div class="wpuf-message">' . ( $form_settings['form_expired_message'] ?? '' ) . '</div>' );
         }
         ?>
         <script>
@@ -4858,7 +4858,7 @@ function wpuf_show_form_limit_message( $form_id ) {
         $form_entries = wpuf_form_posts_count( $form_id );
 
         if ( $limit && $limit <= $form_entries ) {
-            $info = $form_settings['limit_message'];
+            $info = $form_settings['limit_message'] ?? '';
             echo wp_kses_post( '<div class="wpuf-info">' . $info . '</div>' );
             ?>
             <script>

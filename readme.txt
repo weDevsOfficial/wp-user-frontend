@@ -617,6 +617,10 @@ Please report security bugs found in the source code of the User Frontend plugin
 
 == Changelog ==
 
+= 4.3.15 =
+* Fix – Post forms saved by older versions no longer log undefined key warnings (for example guest_details) or null deprecation notices on PHP 7.4 to 8.5 when posts are submitted, edited, saved as drafts or posted by guests.
+* Compatibility – WP User Frontend now requires PHP 8.0 or later. Sites still on PHP 7.4 should upgrade PHP before updating.
+
 = 4.3.14 (28 October, 2026) =
 * Security – Fixed an issue where a crafted link could run a script in a visitor's browser through the category field of a frontend form (reported by Wordfence, CVE-2026-103962).
 * Security – Fixed an issue where a guest could submit a category name that ran a script when an administrator later opened that form in the builder (reported by Wordfence, CVE-2026-109214).

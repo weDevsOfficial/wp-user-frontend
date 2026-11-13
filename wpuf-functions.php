@@ -5718,24 +5718,29 @@ function wpuf_modify_shortcodes( $content ) {
     }
 
     // get the id of the user who last edited the post
-    $user_id = get_post_meta( $post->ID, '_edit_last', true );
+    $user_id = (int) get_post_meta( $post->ID, '_edit_last', true );
 
-    $roles = wpuf_get_single_user_roles( $user_id );
+    if ( $user_id ) {
+        $roles = wpuf_get_single_user_roles( $user_id );
 
-    // Posts inserted straight through wp_insert_post(), as the draft endpoint and
-    // the REST API do, carry no _edit_last at all. Fall back to the author so the
-    // protected shortcodes are still escaped instead of rendering unchecked.
-    if ( empty( $roles ) ) {
-        $roles = wpuf_get_single_user_roles( $post->post_author );
-    }
+        // last modified by an admin (or by a user that no longer exists), returns
+        // the content as it is, as before
+        if ( empty( $roles ) || in_array( 'administrator', $roles, true ) ) {
+            return $content;
+        }
+    } else {
+        // Posts inserted straight through wp_insert_post(), as the draft endpoint
+        // and the REST API do, carry no _edit_last. Judge them by their author:
+        // no user behind the content (created by code, WP-CLI or an import), an
+        // administrator, or a user trusted with unfiltered HTML (editor) keeps it
+        // as it is. Authors, contributors and subscribers get the protected
+        // shortcodes escaped. The administrator check stays because administrators
+        // lack unfiltered_html on multisite.
+        $author = get_userdata( (int) $post->post_author );
 
-    if ( ! is_array( $roles ) ) {
-        $roles = [];
-    }
-
-    // last modified by an admin, returns the content as it is
-    if ( in_array( 'administrator', $roles, true ) ) {
-        return $content;
+        if ( ! $author || in_array( 'administrator', (array) $author->roles, true ) || user_can( $author, 'unfiltered_html' ) ) {
+            return $content;
+        }
     }
 
     $protected_shortcodes = wpuf_get_protected_shortcodes();

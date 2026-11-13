@@ -947,6 +947,87 @@ function wpuf_update_avatar( $user_id, $attachment_id ) {
     update_user_meta( $user_id, 'user_avatar', $relative_url );
 }
 
+/**
+ * Whether the current request was submitted from a page on this site
+ *
+ * A cross-site form POST carries the attacking page's Origin, and under the
+ * browsers' SameSite=Lax default it carries none of the visitor's cookies. So
+ * on such a request a nonce still verifies (a logged-out nonce is public, the
+ * registration page prints the same value to every anonymous visitor) and
+ * is_user_logged_in() still reads false (no cookies were sent). Only the
+ * request's own origin distinguishes a submission from our own page.
+ *
+ * Use this to decide whether a response may hand the browser an
+ * authentication cookie, never to decide whether to accept the submission.
+ *
+ * @since 4.3.15
+ *
+ * @return bool True when the Origin, or the Referer for the few clients that
+ *              omit Origin, is this site's host. False for another host, and
+ *              false when the request carries neither header.
+ */
+function wpuf_is_same_origin_request() {
+    $source = '';
+
+    if ( ! empty( $_SERVER['HTTP_ORIGIN'] ) ) {
+        $source = sanitize_text_field( wp_unslash( $_SERVER['HTTP_ORIGIN'] ) );
+    } elseif ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
+        $source = sanitize_text_field( wp_unslash( $_SERVER['HTTP_REFERER'] ) );
+    }
+
+    // A browser sends a serialised origin, so anything without an explicit
+    // http or https scheme did not come from one and is not trusted. Checking
+    // this before esc_url_raw() matters: that function would prepend a scheme
+    // to a bare host and make a malformed value look like one of ours.
+    if ( ! preg_match( '#^https?://#i', $source ) ) {
+        // Under Referrer-Policy: no-referrer a browser sends Origin: null and no
+        // Referer even for a same-origin POST. Sec-Fetch-Site is set by the
+        // browser itself and a page cannot change it, so "same-origin" still
+        // proves the form was submitted from one of this site's pages.
+        $fetch_site = isset( $_SERVER['HTTP_SEC_FETCH_SITE'] ) ? sanitize_key( wp_unslash( $_SERVER['HTTP_SEC_FETCH_SITE'] ) ) : '';
+
+        return 'same-origin' === $fetch_site;
+    }
+
+    $source_host = wp_parse_url( esc_url_raw( $source ), PHP_URL_HOST );
+
+    if ( empty( $source_host ) ) {
+        return false;
+    }
+
+    // Compare against the host the browser actually requested as well as the
+    // site's own, so a site reached on a mapped domain, on www when home_url
+    // has none, or on a dev port still recognises its own pages. A browser
+    // sets Host itself, so this cannot be used to pass the check from
+    // somewhere else.
+    $hosts = [ wp_parse_url( home_url(), PHP_URL_HOST ) ];
+
+    if ( ! empty( $_SERVER['HTTP_HOST'] ) ) {
+        $hosts[] = wp_parse_url(
+            'http://' . sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ), PHP_URL_HOST
+        );
+    }
+
+    /**
+     * Filter the hosts a login or registration form may be submitted from
+     *
+     * Add a host here only when a login or registration form for this site is
+     * served from another domain or subdomain the site owns, for example a
+     * shop subdomain whose form posts to the main site. Every host added can
+     * log a visitor's browser into an account, so never add one you do not
+     * control.
+     *
+     * @since 4.3.15
+     *
+     * @param array $hosts Host names, without scheme or port.
+     */
+    $hosts       = (array) apply_filters( 'wpuf_same_origin_hosts', $hosts );
+    $hosts       = array_filter( array_map( 'strtolower', array_filter( $hosts, 'is_string' ) ) );
+    $source_host = strtolower( $source_host );
+
+    return in_array( $source_host, $hosts, true );
+}
+
 function wpuf_admin_role() {
     return apply_filters( 'wpuf_admin_role', 'manage_options' );
 }

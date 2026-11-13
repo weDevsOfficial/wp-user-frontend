@@ -5589,6 +5589,93 @@ function wpuf_get_protected_shortcodes() {
 }
 
 /**
+ * Find the first protected shortcode present in the given values
+ *
+ * Normalizes each value the same way the submitted value is normalized before
+ * it is stored, so the text that is checked matches the text that ends up in
+ * the database.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param array|string $values one or more values to check
+ *
+ * @return string the protected shortcode that was found, or an empty string
+ */
+function wpuf_find_protected_shortcode( $values ) {
+    $protected_shortcodes = wpuf_get_protected_shortcodes();
+
+    foreach ( (array) $values as $value ) {
+        if ( ! is_string( $value ) || '' === $value ) {
+            continue;
+        }
+
+        $value = wpuf_normalize_for_shortcode_check( $value );
+
+        foreach ( $protected_shortcodes as $shortcode ) {
+            if ( false !== stripos( $value, '[' . $shortcode ) ) {
+                return $shortcode;
+            }
+        }
+    }
+
+    return '';
+}
+
+/**
+ * Find a protected shortcode in the values a post form submission will store
+ *
+ * Walks every field of the form, including fields nested in columns and array
+ * values such as checkboxes, plus post_title, post_content and post_excerpt,
+ * which are stored whatever fields the form defines. The submit and the draft
+ * endpoints both use it, so they accept and reject the same payloads.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param array $form_fields the fields of the submitted form
+ *
+ * @return string the protected shortcode that was found, or an empty string
+ */
+function wpuf_find_protected_shortcode_in_submission( $form_fields ) {
+    $names = [ 'post_title', 'post_content', 'post_excerpt' ];
+
+    foreach ( (array) $form_fields as $field ) {
+        $names[] = isset( $field['name'] ) ? $field['name'] : '';
+
+        $columns = isset( $field['inner_fields'] ) && is_array( $field['inner_fields'] ) ? $field['inner_fields'] : [];
+
+        foreach ( $columns as $column ) {
+            foreach ( (array) $column as $inner ) {
+                $names[] = isset( $inner['name'] ) ? $inner['name'] : '';
+            }
+        }
+    }
+
+    $values = [];
+
+    foreach ( array_unique( array_filter( $names, 'is_string' ) ) as $name ) {
+        // phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- callers verify the nonce; values are normalized by the helper and only compared, never stored.
+        if ( '' === $name || ! isset( $_POST[ $name ] ) ) {
+            continue;
+        }
+
+        $posted = wp_unslash( $_POST[ $name ] );
+        // phpcs:enable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+        if ( is_array( $posted ) ) {
+            array_walk_recursive(
+                $posted, function ( $value ) use ( &$values ) {
+                    $values[] = $value;
+                }
+            );
+        } else {
+            $values[] = $posted;
+        }
+    }
+
+    return wpuf_find_protected_shortcode( $values );
+}
+
+/**
  * Get the current users roles as an array
  *
  * @since 3.6.6
@@ -5631,17 +5718,29 @@ function wpuf_modify_shortcodes( $content ) {
     }
 
     // get the id of the user who last edited the post
-    $user_id = get_post_meta( get_post()->ID, '_edit_last', true );
+    $user_id = (int) get_post_meta( $post->ID, '_edit_last', true );
 
-    $roles = wpuf_get_single_user_roles( $user_id );
+    if ( $user_id ) {
+        $roles = wpuf_get_single_user_roles( $user_id );
 
-    if ( empty( $roles ) ) {
-        return $content;
-    }
+        // last modified by an admin (or by a user that no longer exists), returns
+        // the content as it is, as before
+        if ( empty( $roles ) || in_array( 'administrator', $roles, true ) ) {
+            return $content;
+        }
+    } else {
+        // Posts inserted straight through wp_insert_post(), as the draft endpoint
+        // and the REST API do, carry no _edit_last. Judge them by their author:
+        // no user behind the content (created by code, WP-CLI or an import), an
+        // administrator, or a user trusted with unfiltered HTML (editor) keeps it
+        // as it is. Authors, contributors and subscribers get the protected
+        // shortcodes escaped. The administrator check stays because administrators
+        // lack unfiltered_html on multisite.
+        $author = get_userdata( (int) $post->post_author );
 
-    // last modified by an admin, returns the content as it is
-    if ( in_array( 'administrator', $roles ) ) {
-        return $content;
+        if ( ! $author || in_array( 'administrator', (array) $author->roles, true ) || user_can( $author, 'unfiltered_html' ) ) {
+            return $content;
+        }
     }
 
     $protected_shortcodes = wpuf_get_protected_shortcodes();
@@ -5650,12 +5749,12 @@ function wpuf_modify_shortcodes( $content ) {
         $search_for = '[' . $shortcode;
 
         if ( strpos( $content, $search_for ) !== false ) {
-            $pattern = '/\[' . $shortcode . '(.*?)\]/';
+            // Break every opening "[tag" that WordPress would read as this shortcode,
+            // whatever follows it: attributes may span lines, so matching up to the
+            // closing bracket missed "[tag" followed by a newline.
+            $pattern = '/\[(' . preg_quote( $shortcode, '/' ) . ')(?![\w-])/';
 
-            $content = preg_replace_callback(
-                $pattern, function( $matches ) {
-                return str_replace( [ '[', ']' ], [ '&lbrack;', '&rbrack;' ], $matches[0] );
-            }, $content );
+            $content = preg_replace( $pattern, '&lbrack;$1', $content );
         }
     }
 

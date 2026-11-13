@@ -980,7 +980,13 @@ function wpuf_is_same_origin_request() {
     // this before esc_url_raw() matters: that function would prepend a scheme
     // to a bare host and make a malformed value look like one of ours.
     if ( ! preg_match( '#^https?://#i', $source ) ) {
-        return false;
+        // Under Referrer-Policy: no-referrer a browser sends Origin: null and no
+        // Referer even for a same-origin POST. Sec-Fetch-Site is set by the
+        // browser itself and a page cannot change it, so "same-origin" still
+        // proves the form was submitted from one of this site's pages.
+        $fetch_site = isset( $_SERVER['HTTP_SEC_FETCH_SITE'] ) ? sanitize_key( wp_unslash( $_SERVER['HTTP_SEC_FETCH_SITE'] ) ) : '';
+
+        return 'same-origin' === $fetch_site;
     }
 
     $source_host = wp_parse_url( esc_url_raw( $source ), PHP_URL_HOST );

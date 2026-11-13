@@ -255,11 +255,10 @@ class Frontend_Form extends Frontend_Render_Form {
         ];
 
         // A draft is stored with wp_insert_post() just like a submission, so it has to
-        // pass the same protected-shortcode check submit_post() applies. Without it the
-        // draft endpoint stores a shortcode the submission endpoint rejects.
-        $protected_shortcode = wpuf_find_protected_shortcode(
-            [ $postarr['post_title'], $postarr['post_content'], $postarr['post_excerpt'] ]
-        );
+        // pass the same protected-shortcode check submit_post() applies, over the same
+        // fields. Without it the draft endpoint stores a shortcode the submission
+        // endpoint rejects.
+        $protected_shortcode = wpuf_find_protected_shortcode_in_submission( $this->form_fields );
 
         if ( ! empty( $protected_shortcode ) ) {
             wp_send_json_error(

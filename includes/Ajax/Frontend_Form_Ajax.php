@@ -121,74 +121,10 @@ class Frontend_Form_Ajax {
             }
         }
 
-        $protected_shortcodes = wpuf_get_protected_shortcodes();
-
-        // check each form field for restricted shortcodes
-        foreach ( $this->form_fields as $single_field ) {
-            if ( empty( $single_field['name'] ) || empty( $_POST[ $single_field['name'] ] ) || ! is_string( $_POST[ $single_field['name'] ] ) ) {
-                continue;
-            }
-
-            // Check the same text that gets stored: run it through the same
-            // wp_kses() pass used on save, then drop control bytes, so the
-            // checked copy can not differ from the saved copy.
-            $current_data = wpuf_normalize_for_shortcode_check( wp_unslash( $_POST[ $single_field['name'] ] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- normalized and only compared, never stored.
-
-            foreach ( $protected_shortcodes as $shortcode ) {
-                $search_for = '[' . $shortcode;
-                if ( false !== stripos( $current_data, $search_for ) ) {
-                    wpuf()->ajax->send_error(
-                        sprintf(
-                        // translators: %s is shortcode
-                            __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $shortcode
-                        )
-                    );
-                }
-            }
-        }
-
-        // Column fields keep their own fields in inner_fields, which the loop
-        // above does not see, so a protected shortcode posted under a field
-        // nested in a column would pass unchecked. Walk those too.
-        foreach ( $this->form_fields as $single_field ) {
-            if ( empty( $single_field['inner_fields'] ) || ! is_array( $single_field['inner_fields'] ) ) {
-                continue;
-            }
-
-            foreach ( $single_field['inner_fields'] as $column ) {
-                foreach ( (array) $column as $inner ) {
-                    if ( empty( $inner['name'] ) || empty( $_POST[ $inner['name'] ] ) || ! is_string( $_POST[ $inner['name'] ] ) ) {
-                        continue;
-                    }
-
-                    $found = wpuf_find_protected_shortcode( wp_unslash( $_POST[ $inner['name'] ] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- normalized and only compared, never stored.
-
-                    if ( ! empty( $found ) ) {
-                        wpuf()->ajax->send_error(
-                            sprintf(
-                                // translators: %s is shortcode
-                                __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $found
-                            )
-                        );
-                    }
-                }
-            }
-        }
-
-        // post_title, post_content and post_excerpt are stored whatever fields
-        // the form defines, so a title-only form, a value posted under a name
-        // that is not a field, or a post_content field nested in a column all
-        // reach the sink without passing the loops above. Check the values that
-        // will actually be stored.
-        // phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- normalized by the helper and only compared, never stored.
-        $found = wpuf_find_protected_shortcode(
-            [
-                isset( $_POST['post_title'] ) ? wp_unslash( $_POST['post_title'] ) : '',
-                isset( $_POST['post_content'] ) ? wp_unslash( $_POST['post_content'] ) : '',
-                isset( $_POST['post_excerpt'] ) ? wp_unslash( $_POST['post_excerpt'] ) : '',
-            ]
-        );
-        // phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        // Check every value the submission will store, including fields nested
+        // in columns and post_title / post_content / post_excerpt. The helper
+        // normalizes each value the same way it is normalized on save.
+        $found = wpuf_find_protected_shortcode_in_submission( $this->form_fields );
 
         if ( ! empty( $found ) ) {
             wpuf()->ajax->send_error(

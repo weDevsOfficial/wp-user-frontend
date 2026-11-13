@@ -5622,6 +5622,60 @@ function wpuf_find_protected_shortcode( $values ) {
 }
 
 /**
+ * Find a protected shortcode in the values a post form submission will store
+ *
+ * Walks every field of the form, including fields nested in columns and array
+ * values such as checkboxes, plus post_title, post_content and post_excerpt,
+ * which are stored whatever fields the form defines. The submit and the draft
+ * endpoints both use it, so they accept and reject the same payloads.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param array $form_fields the fields of the submitted form
+ *
+ * @return string the protected shortcode that was found, or an empty string
+ */
+function wpuf_find_protected_shortcode_in_submission( $form_fields ) {
+    $names = [ 'post_title', 'post_content', 'post_excerpt' ];
+
+    foreach ( (array) $form_fields as $field ) {
+        $names[] = isset( $field['name'] ) ? $field['name'] : '';
+
+        $columns = isset( $field['inner_fields'] ) && is_array( $field['inner_fields'] ) ? $field['inner_fields'] : [];
+
+        foreach ( $columns as $column ) {
+            foreach ( (array) $column as $inner ) {
+                $names[] = isset( $inner['name'] ) ? $inner['name'] : '';
+            }
+        }
+    }
+
+    $values = [];
+
+    foreach ( array_unique( array_filter( $names, 'is_string' ) ) as $name ) {
+        // phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- callers verify the nonce; values are normalized by the helper and only compared, never stored.
+        if ( '' === $name || ! isset( $_POST[ $name ] ) ) {
+            continue;
+        }
+
+        $posted = wp_unslash( $_POST[ $name ] );
+        // phpcs:enable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+        if ( is_array( $posted ) ) {
+            array_walk_recursive(
+                $posted, function ( $value ) use ( &$values ) {
+                    $values[] = $value;
+                }
+            );
+        } else {
+            $values[] = $posted;
+        }
+    }
+
+    return wpuf_find_protected_shortcode( $values );
+}
+
+/**
  * Get the current users roles as an array
  *
  * @since 3.6.6
@@ -5690,12 +5744,12 @@ function wpuf_modify_shortcodes( $content ) {
         $search_for = '[' . $shortcode;
 
         if ( strpos( $content, $search_for ) !== false ) {
-            $pattern = '/\[' . $shortcode . '(.*?)\]/';
+            // Break every opening "[tag" that WordPress would read as this shortcode,
+            // whatever follows it: attributes may span lines, so matching up to the
+            // closing bracket missed "[tag" followed by a newline.
+            $pattern = '/\[(' . preg_quote( $shortcode, '/' ) . ')(?![\w-])/';
 
-            $content = preg_replace_callback(
-                $pattern, function( $matches ) {
-                return str_replace( [ '[', ']' ], [ '&lbrack;', '&rbrack;' ], $matches[0] );
-            }, $content );
+            $content = preg_replace( $pattern, '&lbrack;$1', $content );
         }
     }
 

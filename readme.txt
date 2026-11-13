@@ -7,7 +7,7 @@ Tags: frontend post, user directory, membership, user profile, user registration
 Requires at least: 5.0
 Tested up to: 7.1
 Stable tag: 4.3.14
-Requires PHP: 8.0
+Requires PHP: 7.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -619,7 +619,6 @@ Please report security bugs found in the source code of the User Frontend plugin
 
 = 4.3.15 =
 * Fix – Post forms saved by older versions no longer log undefined key warnings (for example guest_details) or null deprecation notices on PHP 7.4 to 8.5 when posts are submitted, edited, saved as drafts or posted by guests.
-* Compatibility – WP User Frontend now requires PHP 8.0 or later. Sites still on PHP 7.4 should upgrade PHP before updating.
 
 = 4.3.14 (28 October, 2026) =
 * Security – Fixed an issue where a crafted link could run a script in a visitor's browser through the category field of a frontend form (reported by Wordfence, CVE-2026-103962).

@@ -5680,7 +5680,7 @@ function wpuf_get_protected_shortcodes() {
  * it is stored, so the text that is checked matches the text that ends up in
  * the database.
  *
- * @since WPUF_SINCE
+ * @since 4.3.15
  *
  * @param array|string $values one or more values to check
  *
@@ -5714,7 +5714,7 @@ function wpuf_find_protected_shortcode( $values ) {
  * which are stored whatever fields the form defines. The submit and the draft
  * endpoints both use it, so they accept and reject the same payloads.
  *
- * @since WPUF_SINCE
+ * @since 4.3.15
  *
  * @param array $form_fields the fields of the submitted form
  *

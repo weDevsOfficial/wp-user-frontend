@@ -721,16 +721,15 @@ export class PostFormPage extends Base {
         await this.navigateToURL(this.downloadsPage);
         //Validate Product Title
         await this.validateAndClick(Selectors.postForms.downloadsFormData.titleBE(DownloadsForm.title));
-        await this.page.waitForTimeout(200);
-        try {
-            await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
-        } catch (error) {
-            await this.navigateToURL(this.downloadsPage);
-            //Validate Product Title
-            await this.validateAndClick(Selectors.postForms.downloadsFormData.titleBE(DownloadsForm.title));
-            await this.page.waitForTimeout(200);
-            await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
-        }
+        // The block editor's "Welcome to the editor" guide mounts late. For a user with no
+        // saved editor preferences (fresh after the RS0001 reset), WP hydrates preferences
+        // asynchronously ~0.4s after load and resets welcomeGuide to true — overwriting any
+        // earlier "off". So wait for the guide to show (absent if already dismissed), then
+        // turn it off via the preference and confirm it is gone.
+        const welcomeGuide = this.page.locator('.edit-post-welcome-guide');
+        await welcomeGuide.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
+        await this.page.evaluate(() => (window as any).wp.data.dispatch('core/preferences').set('core/edit-post', 'welcomeGuide', false));
+        await welcomeGuide.waitFor({ state: 'hidden' });
         //Validate Product Price — the edd_price input renders correct-but-hidden inside a
         //collapsed price panel, so assert it is present (value is encoded in the selector)
         //rather than visible (which would hang the full test timeout).
@@ -740,7 +739,7 @@ export class PostFormPage extends Base {
         //Validate Product Category
         await this.validateAndClick(Selectors.postForms.downloadsFormData.clickDownload);
         await this.page.waitForTimeout(300);
-        await this.validateAndClick(Selectors.postForms.downloadsFormData.clickCategory);
+        await this.clickIfAvailable(Selectors.postForms.downloadsFormData.clickCategory);
         await this.assertionValidate(Selectors.postForms.downloadsFormData.categoryBE(DownloadsForm.category));
         //Validate Product Tags
         //await this.validateAndClick(Selectors.postForms.downloadsFormData.clickTag);

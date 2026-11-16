@@ -418,7 +418,24 @@ class Registration {
                 );
             }
             $autologin_after_registration = wpuf_get_option( 'autologin_after_registration', 'wpuf_profile', 'on' );
-            if ( $autologin_after_registration === 'on' ) {
+
+            // Autologin may only run when the submission came from a page on this
+            // site, which is the one thing that ties the request to the browser
+            // that is about to receive the cookie. The nonce cannot: on a
+            // logged-out-only template it is minted at user id 0 with an empty
+            // session token, so every anonymous visitor is served the same value
+            // and anyone can embed it in a cross-site form. is_user_logged_in()
+            // above cannot either: a cross-site POST sends no cookies under the
+            // SameSite=Lax default, so it reads as a logged-out request while the
+            // response still lands in the victim's browser, clearing their session
+            // and logging them into the account just created.
+            //
+            // The registration itself is unaffected: a submission we cannot
+            // attribute to this browser still creates the account, it just does
+            // not get an authentication cookie.
+            //
+            // CVE-2026-17564, reported by Yaswanth Reddy Sunkara.
+            if ( $autologin_after_registration === 'on' && wpuf_is_same_origin_request() ) {
                 wp_clear_auth_cookie();
                 wp_set_current_user( $user );
                 wp_set_auth_cookie( $user );

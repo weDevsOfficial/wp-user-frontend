@@ -195,8 +195,9 @@ function wpuf_neutralize_template_delimiters( $value ) {
         return $value;
     }
 
-    // Zero-width space (U+200B) between each pair of braces.
-    return str_replace( [ '{{', '}}' ], [ "{\xE2\x80\x8B{", "}\xE2\x80\x8B}" ], $value );
+    // Zero-width space (U+200B) after every brace that is followed by the same
+    // brace, so no "{{" or "}}" survives, also in runs of three or more.
+    return preg_replace( '/([{}])(?=\1)/', "\$1\xE2\x80\x8B", $value );
 }
 
 function wpuf_get_post_types( $args = [] ) {
@@ -261,7 +262,10 @@ function wpuf_get_pages( $post_type = 'page' ) {
 
     if ( $pages ) {
         foreach ( $pages as $page ) {
-            $array[ $page->ID ] = esc_attr( $page->post_title );
+            // Page titles can come from front-end submissions and are printed
+            // inside the Vue-mounted form builder, so neutralise template
+            // delimiters the same way taxonomy names already are.
+            $array[ $page->ID ] = wpuf_neutralize_template_delimiters( esc_attr( $page->post_title ) );
         }
     }
 
@@ -945,6 +949,87 @@ function wpuf_update_avatar( $user_id, $attachment_id ) {
 
     // now update new user avatar
     update_user_meta( $user_id, 'user_avatar', $relative_url );
+}
+
+/**
+ * Whether the current request was submitted from a page on this site
+ *
+ * A cross-site form POST carries the attacking page's Origin, and under the
+ * browsers' SameSite=Lax default it carries none of the visitor's cookies. So
+ * on such a request a nonce still verifies (a logged-out nonce is public, the
+ * registration page prints the same value to every anonymous visitor) and
+ * is_user_logged_in() still reads false (no cookies were sent). Only the
+ * request's own origin distinguishes a submission from our own page.
+ *
+ * Use this to decide whether a response may hand the browser an
+ * authentication cookie, never to decide whether to accept the submission.
+ *
+ * @since 4.3.15
+ *
+ * @return bool True when the Origin, or the Referer for the few clients that
+ *              omit Origin, is this site's host. False for another host, and
+ *              false when the request carries neither header.
+ */
+function wpuf_is_same_origin_request() {
+    $source = '';
+
+    if ( ! empty( $_SERVER['HTTP_ORIGIN'] ) ) {
+        $source = sanitize_text_field( wp_unslash( $_SERVER['HTTP_ORIGIN'] ) );
+    } elseif ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
+        $source = sanitize_text_field( wp_unslash( $_SERVER['HTTP_REFERER'] ) );
+    }
+
+    // A browser sends a serialised origin, so anything without an explicit
+    // http or https scheme did not come from one and is not trusted. Checking
+    // this before esc_url_raw() matters: that function would prepend a scheme
+    // to a bare host and make a malformed value look like one of ours.
+    if ( ! preg_match( '#^https?://#i', $source ) ) {
+        // Under Referrer-Policy: no-referrer a browser sends Origin: null and no
+        // Referer even for a same-origin POST. Sec-Fetch-Site is set by the
+        // browser itself and a page cannot change it, so "same-origin" still
+        // proves the form was submitted from one of this site's pages.
+        $fetch_site = isset( $_SERVER['HTTP_SEC_FETCH_SITE'] ) ? sanitize_key( wp_unslash( $_SERVER['HTTP_SEC_FETCH_SITE'] ) ) : '';
+
+        return 'same-origin' === $fetch_site;
+    }
+
+    $source_host = wp_parse_url( esc_url_raw( $source ), PHP_URL_HOST );
+
+    if ( empty( $source_host ) ) {
+        return false;
+    }
+
+    // Compare against the host the browser actually requested as well as the
+    // site's own, so a site reached on a mapped domain, on www when home_url
+    // has none, or on a dev port still recognises its own pages. A browser
+    // sets Host itself, so this cannot be used to pass the check from
+    // somewhere else.
+    $hosts = [ wp_parse_url( home_url(), PHP_URL_HOST ) ];
+
+    if ( ! empty( $_SERVER['HTTP_HOST'] ) ) {
+        $hosts[] = wp_parse_url(
+            'http://' . sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ), PHP_URL_HOST
+        );
+    }
+
+    /**
+     * Filter the hosts a login or registration form may be submitted from
+     *
+     * Add a host here only when a login or registration form for this site is
+     * served from another domain or subdomain the site owns, for example a
+     * shop subdomain whose form posts to the main site. Every host added can
+     * log a visitor's browser into an account, so never add one you do not
+     * control.
+     *
+     * @since 4.3.15
+     *
+     * @param array $hosts Host names, without scheme or port.
+     */
+    $hosts       = (array) apply_filters( 'wpuf_same_origin_hosts', $hosts );
+    $hosts       = array_filter( array_map( 'strtolower', array_filter( $hosts, 'is_string' ) ) );
+    $source_host = strtolower( $source_host );
+
+    return in_array( $source_host, $hosts, true );
 }
 
 function wpuf_admin_role() {
@@ -4285,7 +4370,7 @@ function wpuf_posts_submitted_by( $form_id ) {
     $args = [
         'meta_key'         => '_wpuf_form_id',
         'meta_value'       => $form_id,
-        'post_type'        => $settings['post_type'],
+        'post_type'        => $settings['post_type'] ?? '',
         'post_status'      => 'publish',
     ];
 
@@ -4820,9 +4905,9 @@ function wpuf_show_form_schedule_message( $form_id ) {
 
         // too early?
         if ( $current_time < $start_time ) {
-            echo wp_kses_post( '<div class="wpuf-message">' . $form_settings['form_pending_message'] . '</div>' );
+            echo wp_kses_post( '<div class="wpuf-message">' . ( $form_settings['form_pending_message'] ?? '' ) . '</div>' );
         } elseif ( $current_time > $end_time ) {
-            echo wp_kses_post( '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>' );
+            echo wp_kses_post( '<div class="wpuf-message">' . ( $form_settings['form_expired_message'] ?? '' ) . '</div>' );
         }
         ?>
         <script>
@@ -4858,7 +4943,7 @@ function wpuf_show_form_limit_message( $form_id ) {
         $form_entries = wpuf_form_posts_count( $form_id );
 
         if ( $limit && $limit <= $form_entries ) {
-            $info = $form_settings['limit_message'];
+            $info = $form_settings['limit_message'] ?? '';
             echo wp_kses_post( '<div class="wpuf-info">' . $info . '</div>' );
             ?>
             <script>
@@ -5589,6 +5674,93 @@ function wpuf_get_protected_shortcodes() {
 }
 
 /**
+ * Find the first protected shortcode present in the given values
+ *
+ * Normalizes each value the same way the submitted value is normalized before
+ * it is stored, so the text that is checked matches the text that ends up in
+ * the database.
+ *
+ * @since 4.3.15
+ *
+ * @param array|string $values one or more values to check
+ *
+ * @return string the protected shortcode that was found, or an empty string
+ */
+function wpuf_find_protected_shortcode( $values ) {
+    $protected_shortcodes = wpuf_get_protected_shortcodes();
+
+    foreach ( (array) $values as $value ) {
+        if ( ! is_string( $value ) || '' === $value ) {
+            continue;
+        }
+
+        $value = wpuf_normalize_for_shortcode_check( $value );
+
+        foreach ( $protected_shortcodes as $shortcode ) {
+            if ( false !== stripos( $value, '[' . $shortcode ) ) {
+                return $shortcode;
+            }
+        }
+    }
+
+    return '';
+}
+
+/**
+ * Find a protected shortcode in the values a post form submission will store
+ *
+ * Walks every field of the form, including fields nested in columns and array
+ * values such as checkboxes, plus post_title, post_content and post_excerpt,
+ * which are stored whatever fields the form defines. The submit and the draft
+ * endpoints both use it, so they accept and reject the same payloads.
+ *
+ * @since 4.3.15
+ *
+ * @param array $form_fields the fields of the submitted form
+ *
+ * @return string the protected shortcode that was found, or an empty string
+ */
+function wpuf_find_protected_shortcode_in_submission( $form_fields ) {
+    $names = [ 'post_title', 'post_content', 'post_excerpt' ];
+
+    foreach ( (array) $form_fields as $field ) {
+        $names[] = isset( $field['name'] ) ? $field['name'] : '';
+
+        $columns = isset( $field['inner_fields'] ) && is_array( $field['inner_fields'] ) ? $field['inner_fields'] : [];
+
+        foreach ( $columns as $column ) {
+            foreach ( (array) $column as $inner ) {
+                $names[] = isset( $inner['name'] ) ? $inner['name'] : '';
+            }
+        }
+    }
+
+    $values = [];
+
+    foreach ( array_unique( array_filter( $names, 'is_string' ) ) as $name ) {
+        // phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- callers verify the nonce; values are normalized by the helper and only compared, never stored.
+        if ( '' === $name || ! isset( $_POST[ $name ] ) ) {
+            continue;
+        }
+
+        $posted = wp_unslash( $_POST[ $name ] );
+        // phpcs:enable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+        if ( is_array( $posted ) ) {
+            array_walk_recursive(
+                $posted, function ( $value ) use ( &$values ) {
+                    $values[] = $value;
+                }
+            );
+        } else {
+            $values[] = $posted;
+        }
+    }
+
+    return wpuf_find_protected_shortcode( $values );
+}
+
+/**
  * Get the current users roles as an array
  *
  * @since 3.6.6
@@ -5631,17 +5803,29 @@ function wpuf_modify_shortcodes( $content ) {
     }
 
     // get the id of the user who last edited the post
-    $user_id = get_post_meta( get_post()->ID, '_edit_last', true );
+    $user_id = (int) get_post_meta( $post->ID, '_edit_last', true );
 
-    $roles = wpuf_get_single_user_roles( $user_id );
+    if ( $user_id ) {
+        $roles = wpuf_get_single_user_roles( $user_id );
 
-    if ( empty( $roles ) ) {
-        return $content;
-    }
+        // last modified by an admin (or by a user that no longer exists), returns
+        // the content as it is, as before
+        if ( empty( $roles ) || in_array( 'administrator', $roles, true ) ) {
+            return $content;
+        }
+    } else {
+        // Posts inserted straight through wp_insert_post(), as the draft endpoint
+        // and the REST API do, carry no _edit_last. Judge them by their author:
+        // no user behind the content (created by code, WP-CLI or an import), an
+        // administrator, or a user trusted with unfiltered HTML (editor) keeps it
+        // as it is. Authors, contributors and subscribers get the protected
+        // shortcodes escaped. The administrator check stays because administrators
+        // lack unfiltered_html on multisite.
+        $author = get_userdata( (int) $post->post_author );
 
-    // last modified by an admin, returns the content as it is
-    if ( in_array( 'administrator', $roles ) ) {
-        return $content;
+        if ( ! $author || in_array( 'administrator', (array) $author->roles, true ) || user_can( $author, 'unfiltered_html' ) ) {
+            return $content;
+        }
     }
 
     $protected_shortcodes = wpuf_get_protected_shortcodes();
@@ -5650,12 +5834,12 @@ function wpuf_modify_shortcodes( $content ) {
         $search_for = '[' . $shortcode;
 
         if ( strpos( $content, $search_for ) !== false ) {
-            $pattern = '/\[' . $shortcode . '(.*?)\]/';
+            // Break every opening "[tag" that WordPress would read as this shortcode,
+            // whatever follows it: attributes may span lines, so matching up to the
+            // closing bracket missed "[tag" followed by a newline.
+            $pattern = '/\[(' . preg_quote( $shortcode, '/' ) . ')(?![\w-])/';
 
-            $content = preg_replace_callback(
-                $pattern, function( $matches ) {
-                return str_replace( [ '[', ']' ], [ '&lbrack;', '&rbrack;' ], $matches[0] );
-            }, $content );
+            $content = preg_replace( $pattern, '&lbrack;$1', $content );
         }
     }
 

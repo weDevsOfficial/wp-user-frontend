@@ -38,15 +38,15 @@ class Ajax {
         $this->register_ajax( 'wpuf_migrate_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'migrate_cf_data' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_ajax_login', [ new Login_Widget(), 'ajax_login' ], $this->logged_out_only );
         $this->register_ajax( 'wpuf_lost_password', [ new Login_Widget(), 'ajax_reset_pass' ], $this->logged_out_only );
-        $this->register_ajax( 'wpuf_ajax_logout', [ new Login_Widget(), 'ajax_logout' ], $this->logged_out_only );
+        $this->register_ajax( 'wpuf_ajax_logout', [ new Login_Widget(), 'ajax_logout' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_form_preview', [ new Frontend\Frontend_Form(), 'preview_form' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_make_media_embed_code', [ new Frontend\Frontend_Form(), 'make_media_embed_code' ] );
         $this->register_ajax( 'wpuf_draft_post', [ new Frontend\Frontend_Form(), 'draft_post' ] );
         $this->register_ajax( 'wpuf_delete_user_package', [ new Admin\Admin_Subscription(), 'delete_user_package' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_address_ajax_action', [ new Ajax\Address_Form_Ajax(), 'ajax_form_action' ] );
         $frontend_account = new Frontend\Frontend_Account();
-        $this->register_ajax( 'wpuf_account_update_profile',  [ $frontend_account, 'update_profile' ],   $this->logged_in_only );
-        $this->register_ajax( 'wpuf_account_change_password', [ $frontend_account, 'change_password' ],  $this->logged_in_only );
+        $this->register_ajax( 'wpuf_account_update_profile', [ $frontend_account, 'update_profile' ], $this->logged_in_only );
+        $this->register_ajax( 'wpuf_account_change_password', [ $frontend_account, 'change_password' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_import_forms', [ new Admin\Admin_Tools(), 'import_forms' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_get_child_cat', 'wpuf_get_child_cats' );
         $this->register_ajax( 'wpuf_ajax_address', 'wpuf_ajax_get_states_field' );
@@ -76,7 +76,9 @@ class Ajax {
             'accepted_args' => 1,
         ];
 
-        $args = wp_parse_args( $default, $args );
+        // Caller args override the defaults (they were swapped, so logged_in_only /
+        // logged_out_only were ignored and every action was registered both ways).
+        $args = wp_parse_args( $args, $default );
 
         if ( $args['priv'] ) {
             add_action( 'wp_ajax_' . $action, $callback, $args['priority'], $args['accepted_args'] );

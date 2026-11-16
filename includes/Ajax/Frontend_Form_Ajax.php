@@ -121,30 +121,18 @@ class Frontend_Form_Ajax {
             }
         }
 
-        $protected_shortcodes = wpuf_get_protected_shortcodes();
+        // Check every value the submission will store, including fields nested
+        // in columns and post_title / post_content / post_excerpt. The helper
+        // normalizes each value the same way it is normalized on save.
+        $found = wpuf_find_protected_shortcode_in_submission( $this->form_fields );
 
-        // check each form field for restricted shortcodes
-        foreach ( $this->form_fields as $single_field ) {
-            if ( empty( $single_field['name'] ) || empty( $_POST[ $single_field['name'] ] ) || ! is_string( $_POST[ $single_field['name'] ] ) ) {
-                continue;
-            }
-
-            // Check the same text that gets stored: run it through the same
-            // wp_kses() pass used on save, then drop control bytes, so the
-            // checked copy can not differ from the saved copy.
-            $current_data = wpuf_normalize_for_shortcode_check( wp_unslash( $_POST[ $single_field['name'] ] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- normalized and only compared, never stored.
-
-            foreach ( $protected_shortcodes as $shortcode ) {
-                $search_for = '[' . $shortcode;
-                if ( false !== stripos( $current_data, $search_for ) ) {
-                    wpuf()->ajax->send_error(
-                        sprintf(
-                        // translators: %s is shortcode
-                            __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $shortcode
-                        )
-                    );
-                }
-            }
+        if ( ! empty( $found ) ) {
+            wpuf()->ajax->send_error(
+                sprintf(
+                    // translators: %s is shortcode
+                    __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $found
+                )
+            );
         }
 
         // Attachment deletion authorization check

@@ -254,6 +254,21 @@ class Frontend_Form extends Frontend_Render_Form {
             'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) : '',
         ];
 
+        // A draft is stored with wp_insert_post() just like a submission, so it has to
+        // pass the same protected-shortcode check submit_post() applies, over the same
+        // fields. Without it the draft endpoint stores a shortcode the submission
+        // endpoint rejects.
+        $protected_shortcode = wpuf_find_protected_shortcode_in_submission( $this->form_fields );
+
+        if ( ! empty( $protected_shortcode ) ) {
+            wp_send_json_error(
+                [
+                    /* translators: %s: the protected shortcode name */
+                    'message' => sprintf( __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $protected_shortcode ),
+                ]
+            );
+        }
+
         if ( ! empty( $this->form_fields ) ) {
             foreach ( $this->form_fields as $field ) {
                 if ( $field['template'] === 'taxonomy' ) {

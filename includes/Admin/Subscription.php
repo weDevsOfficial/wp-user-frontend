@@ -214,18 +214,22 @@ class Subscription {
      * @return void
      */
     public function after_registration( $user_id ) {
-        if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( '_wpnonce' ) ) {
-            return;
-        }
-
+        // The core register form carries no nonce, so the pack itself is validated below instead.
+        // phpcs:disable WordPress.Security.NonceVerification.Missing
         $wpuf_sub = isset( $_POST['wpuf_sub'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_sub'] ) ) : '';
         $pack_id  = isset( $_POST['pack_id'] ) ? intval( wp_unslash( $_POST['pack_id'] ) ) : 0;
+        // phpcs:enable WordPress.Security.NonceVerification.Missing
 
         if ( $wpuf_sub !== 'yes' ) {
             return $user_id;
         }
 
         if ( empty( $pack_id ) ) {
+            return $user_id;
+        }
+
+        // Only a published pack can be picked at registration; drafts, private and trashed packs are not offered.
+        if ( 'wpuf_subscription' !== get_post_type( $pack_id ) || 'publish' !== get_post_status( $pack_id ) ) {
             return $user_id;
         }
 
@@ -548,7 +552,8 @@ class Subscription {
     public static function get_subscription( $sub_id ) {
         $pack = get_post( $sub_id );
 
-        if ( ! $pack ) {
+        // Any other post type here would let a non-pack ID be granted or priced as a pack.
+        if ( ! $pack || 'wpuf_subscription' !== $pack->post_type ) {
             return false;
         }
 

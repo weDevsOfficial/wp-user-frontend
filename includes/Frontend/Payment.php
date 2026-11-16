@@ -564,7 +564,7 @@ class Payment {
                 $form_settings = $form->get_settings();
                 $force_pack    = $form->is_enabled_force_pack();
                 $fallback_on   = $form->is_enabled_fallback_cost();
-                $post_count    = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
+                $post_count    = $current_user->subscription()->has_post_count( $form_settings['post_type'] ?? '' );
                 if ( $force_pack && $fallback_on && ! is_wp_error( $current_pack ) && ! $post_count ) {
                     $amount = $form->get_subs_fallback_cost();
                 } else {

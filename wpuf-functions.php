@@ -195,8 +195,9 @@ function wpuf_neutralize_template_delimiters( $value ) {
         return $value;
     }
 
-    // Zero-width space (U+200B) between each pair of braces.
-    return str_replace( [ '{{', '}}' ], [ "{\xE2\x80\x8B{", "}\xE2\x80\x8B}" ], $value );
+    // Zero-width space (U+200B) after every brace that is followed by the same
+    // brace, so no "{{" or "}}" survives, also in runs of three or more.
+    return preg_replace( '/([{}])(?=\1)/', "\$1\xE2\x80\x8B", $value );
 }
 
 function wpuf_get_post_types( $args = [] ) {
@@ -261,7 +262,10 @@ function wpuf_get_pages( $post_type = 'page' ) {
 
     if ( $pages ) {
         foreach ( $pages as $page ) {
-            $array[ $page->ID ] = esc_attr( $page->post_title );
+            // Page titles can come from front-end submissions and are printed
+            // inside the Vue-mounted form builder, so neutralise template
+            // delimiters the same way taxonomy names already are.
+            $array[ $page->ID ] = wpuf_neutralize_template_delimiters( esc_attr( $page->post_title ) );
         }
     }
 

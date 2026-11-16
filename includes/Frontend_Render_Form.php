@@ -94,7 +94,7 @@ class Frontend_Render_Form {
         ?>
         <li class="el-name">
             <div class="wpuf-label">
-                <label><?php echo esc_html( $form_settings['name_label'] ); ?> <span class="required">*</span></label>
+                <label><?php echo esc_html( $form_settings['name_label'] ?? '' ); ?> <span class="required">*</span></label>
             </div>
 
             <div class="wpuf-fields">
@@ -104,7 +104,7 @@ class Frontend_Render_Form {
 
         <li class="el-email">
             <div class="wpuf-label">
-                <label><?php echo esc_html( $form_settings['email_label'] ); ?> <span class="required">*</span></label>
+                <label><?php echo esc_html( $form_settings['email_label'] ?? '' ); ?> <span class="required">*</span></label>
             </div>
 
             <div class="wpuf-fields">
@@ -266,7 +266,7 @@ class Frontend_Render_Form {
             $replace      = [ "<a href='" . $login . "'>Login</a>", "<a href='" . $register . "'>Register</a>" ];
             $placeholders = [ '{login}', '{register}' ];
 
-            $message_restrict = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] );
+            $message_restrict = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] ?? '' );
 
             echo wp_kses_post( '<div class="wpuf-message">' . $message_restrict . '</div>' );
 

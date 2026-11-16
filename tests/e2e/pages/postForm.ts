@@ -718,33 +718,37 @@ export class PostFormPage extends Base {
     }
 
     async validateEnteredDownloadsDataBE() {
-        await this.navigateToURL(this.downloadsPage);
-        //Validate Product Title
-        await this.validateAndClick(Selectors.postForms.downloadsFormData.titleBE(DownloadsForm.title));
-        await this.page.waitForTimeout(200);
+        // The block editor's "Welcome to the editor" guide can open MORE than once: for a user
+        // with no saved editor preferences (fresh after the RS0001 reset), WP re-hydrates
+        // preferences asynchronously during load and resets welcomeGuide to true, re-opening
+        // the guide after it was dismissed. Any one-shot close races that. A locator handler
+        // dismisses it whenever it appears before an action. Scoped to this check (finally):
+        // other specs click the guide's close button themselves and must still see it.
+        const welcomeGuide = this.page.locator('.edit-post-welcome-guide');
+        await this.page.addLocatorHandler(welcomeGuide, async () => {
+            await this.page.evaluate(() => (window as any).wp.data.dispatch('core/preferences').set('core/edit-post', 'welcomeGuide', false));
+        });
         try {
-            await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
-        } catch (error) {
             await this.navigateToURL(this.downloadsPage);
             //Validate Product Title
             await this.validateAndClick(Selectors.postForms.downloadsFormData.titleBE(DownloadsForm.title));
-            await this.page.waitForTimeout(200);
-            await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
+            //Validate Product Price — the edd_price input renders correct-but-hidden inside a
+            //collapsed price panel, so assert it is present (value is encoded in the selector)
+            //rather than visible (which would hang the full test timeout).
+            await this.validateAttached(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice));
+            //Validate Product Excerpt (same reason — presence, not visibility)
+            await this.validateAttached(Selectors.postForms.downloadsFormData.excerpt(DownloadsForm.excerpt));
+            //Validate Product Category
+            await this.validateAndClick(Selectors.postForms.downloadsFormData.clickDownload);
+            await this.page.waitForTimeout(300);
+            await this.clickIfAvailable(Selectors.postForms.downloadsFormData.clickCategory);
+            await this.assertionValidate(Selectors.postForms.downloadsFormData.categoryBE(DownloadsForm.category));
+            //Validate Product Tags
+            //await this.validateAndClick(Selectors.postForms.downloadsFormData.clickTag);
+            //await this.assertionValidate(Selectors.postForms.downloadsFormData.tagBE(DownloadsForm.tags));
+        } finally {
+            await this.page.removeLocatorHandler(welcomeGuide);
         }
-        //Validate Product Price — the edd_price input renders correct-but-hidden inside a
-        //collapsed price panel, so assert it is present (value is encoded in the selector)
-        //rather than visible (which would hang the full test timeout).
-        await this.validateAttached(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice));
-        //Validate Product Excerpt (same reason — presence, not visibility)
-        await this.validateAttached(Selectors.postForms.downloadsFormData.excerpt(DownloadsForm.excerpt));
-        //Validate Product Category
-        await this.validateAndClick(Selectors.postForms.downloadsFormData.clickDownload);
-        await this.page.waitForTimeout(300);
-        await this.validateAndClick(Selectors.postForms.downloadsFormData.clickCategory);
-        await this.assertionValidate(Selectors.postForms.downloadsFormData.categoryBE(DownloadsForm.category));
-        //Validate Product Tags
-        //await this.validateAndClick(Selectors.postForms.downloadsFormData.clickTag);
-        //await this.assertionValidate(Selectors.postForms.downloadsFormData.tagBE(DownloadsForm.tags));
     }
 
     /*****************************************************************/

@@ -634,7 +634,13 @@ export class SubscriptionPage extends Base {
         await this.waitForLoading();
         await this.validateAndFillStrings(Selectors.subscription.newPackPage.inputColor, buttonColor);
         await this.waitForLoading();
+        // Wait for the REST save to land: SB0015 reads the colour on the FE right after,
+        // and navigating away before the request finishes leaves the old colour saved.
+        const saved = this.page.waitForResponse(
+            (res) => res.url().includes('subscription-settings') && res.request().method() !== 'GET'
+        );
         await this.validateAndClick(Selectors.subscription.newPackPage.savePreferencesButton);
+        expect((await saved).ok()).toBeTruthy();
         await this.waitForLoading();
         console.log('\x1b[32m%s\x1b[0m', `✅ Button color set to ${buttonColor}`);
     }

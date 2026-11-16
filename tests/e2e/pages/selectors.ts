@@ -867,7 +867,8 @@ export const Selectors = {
             // WPUF-rendered #edd_price twin, so a bare positional index can land on it.
             price: (price: string) => `//div[@id="edd_regular_price_field"]//input[@id="edd_price" and @value="${price}.00"]`,
             clickDownload: '//div[@class="interface-complementary-area editor-sidebar"]//div//button//span[normalize-space()="Download"]',
-            clickCategory: '//button[normalize-space()="Categories"]',
+            // Matches only while collapsed: the panel open-state persists per user, and a bare toggle would close an already-open panel.
+            clickCategory: '//button[normalize-space()="Categories" and @aria-expanded="false"]',
             categoryBE: (category: string) => `//label[normalize-space()='${category}']`,
             clickTag: '//button[normalize-space()="Tags"]',
             tagBE: (tag: string) => `//span[normalize-space()='${tag}']`,

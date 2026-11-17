@@ -93,7 +93,7 @@ class Payment_Flow {
         $fallback_cost = $form->is_enabled_fallback_cost();
         $current_user  = wpuf_get_user();
         $current_pack  = $current_user->subscription()->current_pack();
-        $has_post      = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
+        $has_post      = $current_user->subscription()->has_post_count( $form_settings['post_type'] ?? '' );
 
         if ( $force_pack && ! is_wp_error( $current_pack ) && $has_post ) {
             $sub_info    = Subscription::get_user_pack( $userdata->ID );
@@ -159,7 +159,7 @@ class Payment_Flow {
             Stores::submissions()->set_order_once( $post_id, $order_id );
         }
 
-        if ( $form->is_enabled_pay_per_post() || ( $form->is_enabled_force_pack() && $form->is_enabled_fallback_cost() && ! wpuf_get_user()->subscription()->has_post_count( $form_settings['post_type'] ) ) ) {
+        if ( $form->is_enabled_pay_per_post() || ( $form->is_enabled_force_pack() && $form->is_enabled_fallback_cost() && ! wpuf_get_user()->subscription()->has_post_count( $form_settings['post_type'] ?? '' ) ) ) {
             Stores::submissions()->set_order_once( $post_id, $order_id );
             Stores::submissions()->set_payment_status( $post_id, 'pending' );
         }
@@ -185,7 +185,7 @@ class Payment_Flow {
         $fallback_cost    = $form->is_enabled_fallback_cost();
         $current_user     = wpuf_get_user();
         $current_pack     = $current_user->subscription()->current_pack();
-        $has_pack         = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
+        $has_pack         = $current_user->subscription()->has_post_count( $form_settings['post_type'] ?? '' );
         $ppp_cost_enabled = $form->is_enabled_pay_per_post();
         $sub_expired      = $current_user->subscription()->expired();
 
@@ -289,7 +289,7 @@ class Payment_Flow {
 
         if ( $form_id ) {
             $form_settings = wpuf_get_form_settings( $form_id );
-            $post_status   = $form_settings['post_status'];
+            $post_status   = $form_settings['post_status'] ?? '';
         }
 
         Stores::submissions()->set_post_status( $post_id, $post_status );

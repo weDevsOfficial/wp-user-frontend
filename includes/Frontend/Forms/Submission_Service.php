@@ -166,6 +166,20 @@ class Submission_Service {
             'post_excerpt' => isset( $input['post_excerpt'] ) ? wp_kses( $input['post_excerpt'], $allowed_tags ) : '',
         ];
 
+        // A draft is stored with wp_insert_post() just like a submission, so it has to
+        // pass the same protected-shortcode check the submit handler applies, over the
+        // same fields (Submission_Context put them in $_POST for this call).
+        $protected_shortcode = wpuf_find_protected_shortcode_in_submission( $this->form_fields );
+
+        if ( ! empty( $protected_shortcode ) ) {
+            return new WP_Error(
+                'wpuf_draft_protected_shortcode',
+                /* translators: %s: the protected shortcode name */
+                sprintf( __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $protected_shortcode ),
+                [ 'status' => 400 ]
+            );
+        }
+
         if ( ! empty( $this->form_fields ) ) {
             foreach ( $this->form_fields as $field ) {
                 if ( 'taxonomy' !== $field['template'] ) {

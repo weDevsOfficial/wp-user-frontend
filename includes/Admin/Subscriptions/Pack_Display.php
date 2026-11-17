@@ -354,7 +354,7 @@ class Pack_Display {
                 ?>
             </div>
             <?php
-        } elseif ( $payment_enabled && $force_pack && $form->is_enabled_fallback_cost() && 0 < (float) apply_filters( 'wpuf_payment_amount', (float) $form->get_subs_fallback_cost() ) && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+        } elseif ( $payment_enabled && $force_pack && $form->is_enabled_fallback_cost() && 0 < (float) apply_filters( 'wpuf_payment_amount', (float) $form->get_subs_fallback_cost() ) && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ?? '' ) ) {
             ?>
             <div class="wpuf-info">
                 <?php
@@ -369,7 +369,7 @@ class Pack_Display {
                 ?>
             </div>
             <?php
-        } elseif ( $payment_enabled && $force_pack && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+        } elseif ( $payment_enabled && $force_pack && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ?? '' ) ) {
             // The pack is used up and there is no charge to show (0): say so without a
             // "$0.00 charge" sentence (develop printed one; owner: no $0.00 charge notice).
             ?>
@@ -489,7 +489,7 @@ class Pack_Display {
                                 // fallback cost disabled
                                 if ( ! $current_user->subscription()->current_pack_id() ) {
                                     return 'no';
-                                } elseif ( $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+                                } elseif ( $current_user->subscription()->has_post_count( $form_settings['post_type'] ?? '' ) ) {
                                     return 'yes';
                                 }
                             } elseif ( $fallback_enabled ) {

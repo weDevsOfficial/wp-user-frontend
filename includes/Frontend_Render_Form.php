@@ -209,7 +209,7 @@ class Frontend_Render_Form {
             $replace      = [ "<a href='" . $login . "'>Login</a>", "<a href='" . $register . "'>Register</a>" ];
             $placeholders = [ '{login}', '{register}' ];
 
-            $message_restrict = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] );
+            $message_restrict = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] ?? '' );
 
             echo wp_kses_post( '<div class="wpuf-message">' . $message_restrict . '</div>' );
 
@@ -274,7 +274,7 @@ class Frontend_Render_Form {
                     }
                     if ( ! is_user_logged_in(
                     ) && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) && ( ! empty( $this->form_settings['guest_details'] ) && wpuf_is_checkbox_or_toggle_on(
-                        $this->form_settings['guest_details']
+                        ( $this->form_settings['guest_details'] ?? '' )
                     ) ) ) {
                         $this->guest_fields( $this->form_settings );
                     }

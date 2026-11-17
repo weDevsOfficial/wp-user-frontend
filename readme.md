@@ -6,7 +6,7 @@
 **Tags:** frontend post, user directory, membership, user profile, user registration  
 **Requires at least:** 6.6  
 **Tested up to:** 7.1  
-**Stable tag:** 4.3.13  
+**Stable tag:** 4.3.15  
 **Requires PHP:** 7.4  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
@@ -628,6 +628,26 @@ Please report security bugs found in the source code of the User Frontend plugin
 
 
 ## Changelog ##
+
+### 4.3.15 (16 November, 2026) ###
+* Security – Fixed an issue where a crafted page on another site could register an account and log the visitor's browser into it, ending their own session (reported by Yaswanth Reddy Sunkara, CVE-2026-17564).
+* Security – Fixed an issue where a crafted page on another site could sign a visitor's browser into an account of its choosing through the login form or the login widget, ending their own session (reported by Yaswanth Reddy Sunkara, CVE-2026-17564).
+* Security – Fixed an issue where a logged-in member could still place the registration form shortcode in a post, including through other form fields or a saved draft, and use it to create accounts with a higher role (reported by cazy and Wordfence, CVE-2026-119634).
+* Security – Fixed an issue where a guest could submit a post title that ran a script when an administrator later opened the form builder (reported by UKO - Korea univ., CVE-2026-124072).
+* Security – Fixed an issue where a visitor could get an unpublished subscription pack assigned to their new account at registration (reported by Jonathan Mendiola via Patchstack).
+* Security – AJAX actions meant only for logged-in users are no longer also registered for logged-out visitors, and the AJAX logout now only runs for logged-in users.
+* Tweak – New filter `wpuf_same_origin_hosts` lets a site that serves its login or registration form from another domain it owns allow that host for sign-in.
+* Fix – Post forms saved by older versions no longer log undefined key warnings (for example guest_details) or null deprecation notices on PHP 7.4 to 8.5 when posts are submitted, edited, saved as drafts or posted by guests.
+
+### 4.3.14 (28 October, 2026) ###
+* Security – Fixed an issue where a crafted link could run a script in a visitor's browser through the category field of a frontend form (reported by Wordfence, CVE-2026-103962).
+* Security – Fixed an issue where a guest could submit a category name that ran a script when an administrator later opened that form in the builder (reported by Wordfence, CVE-2026-109214).
+* Security – Fixed an issue where a visitor could attach uploads to a form that has no upload field (reported by Sangho Lee).
+* Security – Fixed an issue where a logged-in member could place the registration shortcode in a submission and hand themselves a higher role (reported by Wordfence).
+* Security – Fixed an issue where a visitor could run the setup wizard and overwrite the payment, posting and profile settings, including the saved PayPal details (reported by Patchstack).
+* Security – Fixed an issue where a logged-in member could activate a paid subscription pack without paying for it (reported by Patchstack).
+* Fix – Form settings are no longer lost when a form is saved after new fields are added, so the submit button keeps its label and no PHP warning appears.
+
 
 
 ### 4.3.13 (1 October, 2026) ###

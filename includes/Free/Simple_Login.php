@@ -686,6 +686,19 @@ class Simple_Login {
             return null;
         }
 
+        // Sign-in may only happen for a request that came from a page on this
+        // site. The nonce above cannot establish that: it is printed to every
+        // logged-out visitor, and a cross-site POST carries none of the
+        // visitor's cookies, so this handler would otherwise sign a visitor's
+        // browser into whichever account the other site supplied credentials
+        // for, ending the session they already had. Same cause as
+        // CVE-2026-17564.
+        if ( ! wpuf_is_same_origin_request() ) {
+            $this->login_errors[] = __( 'Permission denied', 'wp-user-frontend' );
+
+            return null;
+        }
+
         $log = isset( $_POST['log'] ) ? sanitize_text_field( wp_unslash( $_POST['log'] ) ) : '';
         $pwd = isset( $_POST['pwd'] ) ? sanitize_text_field( ( wp_unslash( $_POST['pwd'] ) ) ) : '';
         // $g_recaptcha_response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';

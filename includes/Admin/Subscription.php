@@ -169,7 +169,8 @@ class Subscription {
     public static function get_subscription( $sub_id ) {
         $pack = get_post( $sub_id );
 
-        if ( ! $pack ) {
+        // Any other post type here would let a non-pack ID be granted or priced as a pack.
+        if ( ! $pack || 'wpuf_subscription' !== $pack->post_type ) {
             return false;
         }
 

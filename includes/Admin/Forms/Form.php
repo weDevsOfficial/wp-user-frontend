@@ -175,7 +175,7 @@ class Form {
 
         if ( isset( $this->form_settings['message_restrict'] ) && ! $guest_post_enabled && ! is_user_logged_in() ) {
             $user_can_post = 'no';
-            $info          = $this->form_settings['message_restrict'];
+            $info          = $this->form_settings['message_restrict'] ?? '';
 
             return [ $user_can_post, $info ];
         }
@@ -254,18 +254,18 @@ class Form {
                     $user_can_post = 'no';
                     $info          = $current_pack->get_error_message();
                 }
-            } elseif ( $pay_per_post && is_user_logged_in() && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+            } elseif ( $pay_per_post && is_user_logged_in() && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ?? '' ) ) {
                 $user_can_post = 'yes';
                 // $info = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
                 // echo '<div class="wpuf-info">' . apply_filters( 'wpuf_ppp_notice', $info, $id, $form_settings ) . '</div>';
-            } elseif ( ! $pay_per_post && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+            } elseif ( ! $pay_per_post && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ?? '' ) ) {
                 $user_can_post = 'no';
                 $info          = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wp-user-frontend' ) );
             } else {
                 $user_can_post = 'no';
 
                 if ( ! is_user_logged_in() ) {
-                    $info = $form_settings['message_restrict'];
+                    $info = $form_settings['message_restrict'] ?? '';
                 } else {
                     $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wp-user-frontend' ) );
                 }

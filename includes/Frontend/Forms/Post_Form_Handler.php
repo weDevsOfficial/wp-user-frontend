@@ -127,30 +127,18 @@ class Post_Form_Handler {
             }
         }
 
-        $protected_shortcodes = wpuf_get_protected_shortcodes();
+        // Check every value the submission will store, including fields nested
+        // in columns and post_title / post_content / post_excerpt. The helper
+        // normalizes each value the same way it is normalized on save.
+        $found = wpuf_find_protected_shortcode_in_submission( $this->form_fields );
 
-        // check each form field for restricted shortcodes
-        foreach ( $this->form_fields as $single_field ) {
-            if ( empty( $single_field['name'] ) || empty( $_POST[ $single_field['name'] ] ) || ! is_string( $_POST[ $single_field['name'] ] ) ) {
-                continue;
-            }
-
-            // Check the same text that gets stored: run it through the same
-            // wp_kses() pass used on save, then drop control bytes, so the
-            // checked copy can not differ from the saved copy.
-            $current_data = wpuf_normalize_for_shortcode_check( wp_unslash( $_POST[ $single_field['name'] ] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- normalized and only compared, never stored.
-
-            foreach ( $protected_shortcodes as $shortcode ) {
-                $search_for = '[' . $shortcode;
-                if ( false !== stripos( $current_data, $search_for ) ) {
-                    wpuf()->ajax->send_error(
-                        sprintf(
-                        // translators: %s is shortcode
-                            __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $shortcode
-                        )
-                    );
-                }
-            }
+        if ( ! empty( $found ) ) {
+            wpuf()->ajax->send_error(
+                sprintf(
+                    // translators: %s is shortcode
+                    __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $found
+                )
+            );
         }
 
         // Attachment deletion authorization check
@@ -243,7 +231,7 @@ class Post_Form_Handler {
                 $form_entries = wpuf_form_posts_count( $form_id );
 
                 if ( $limit && $limit <= $form_entries ) {
-                    wpuf()->ajax->send_error( $this->form_settings['limit_message'] );
+                    wpuf()->ajax->send_error( $this->form_settings['limit_message'] ?? null );
                 }
             }
             $this->on_edit_no_check_recaptcha( $post_vars );
@@ -350,10 +338,10 @@ class Post_Form_Handler {
                 $postarr['menu_order'] = $menu_order;
             }
 
-            if ( $this->form_settings['edit_post_status'] === '_nochange' ) {
+            if ( ( $this->form_settings['edit_post_status'] ?? '' ) === '_nochange' ) {
                 $postarr['post_status'] = get_post_field( 'post_status', $post_id );
             } else {
-                $postarr['post_status'] = $this->form_settings['edit_post_status'];
+                $postarr['post_status'] = $this->form_settings['edit_post_status'] ?? '';
             }
             // handle for falback ppp
             if ( 'pending' === Stores::submissions()->payment_status( $post_id ) ) {
@@ -421,7 +409,7 @@ class Post_Form_Handler {
 
         // Hook for post type specific processing after post creation
         if ( $post_id ) {
-            do_action( 'wpuf_post_created_' . $this->form_settings['post_type'], $post_id, $postarr, $meta_vars );
+            do_action( 'wpuf_post_created_' . ( $this->form_settings['post_type'] ?? '' ), $post_id, $postarr, $meta_vars );
         }
 
         // add post revision when post edit from the frontend
@@ -456,7 +444,7 @@ class Post_Form_Handler {
 
             // save post formats if have any
             if ( isset( $this->form_settings['post_format'] ) && $this->form_settings['post_format'] !== '0' ) {
-                if ( post_type_supports( $this->form_settings['post_type'], 'post-formats' ) ) {
+                if ( post_type_supports( ( $this->form_settings['post_type'] ?? '' ), 'post-formats' ) ) {
                     set_post_format( $post_id, $this->form_settings['post_format'] );
                 }
             }
@@ -515,11 +503,11 @@ class Post_Form_Handler {
         $page_id      = isset( $_POST['page_id'] ) ? intval( wp_unslash( $_POST['page_id'] ) ) : '';
 
         if ( $is_update ) {
-            if ( $this->form_settings['edit_redirect_to'] === 'page' ) {
-                $redirect_to = get_permalink( $this->form_settings['edit_page_id'] );
-            } elseif ( $this->form_settings['edit_redirect_to'] === 'url' ) {
-                $redirect_to = $this->form_settings['edit_url'];
-            } elseif ( $this->form_settings['edit_redirect_to'] === 'same' ) {
+            if ( ( $this->form_settings['edit_redirect_to'] ?? '' ) === 'page' ) {
+                $redirect_to = get_permalink( $this->form_settings['edit_page_id'] ?? '' );
+            } elseif ( ( $this->form_settings['edit_redirect_to'] ?? '' ) === 'url' ) {
+                $redirect_to = $this->form_settings['edit_url'] ?? '';
+            } elseif ( ( $this->form_settings['edit_redirect_to'] ?? '' ) === 'same' ) {
                 $redirect_to = add_query_arg(
                     [
                         'pid'      => $post_id,
@@ -531,11 +519,11 @@ class Post_Form_Handler {
             } else {
                 $redirect_to = get_permalink( $post_id );
             }
-        } elseif ( $this->form_settings['redirect_to'] === 'page' ) {
-            $redirect_to = get_permalink( $this->form_settings['page_id'] );
-        } elseif ( $this->form_settings['redirect_to'] === 'url' ) {
-            $redirect_to = $this->form_settings['url'];
-        } elseif ( $this->form_settings['redirect_to'] === 'same' ) {
+        } elseif ( ( $this->form_settings['redirect_to'] ?? '' ) === 'page' ) {
+            $redirect_to = get_permalink( $this->form_settings['page_id'] ?? '' );
+        } elseif ( ( $this->form_settings['redirect_to'] ?? '' ) === 'url' ) {
+            $redirect_to = $this->form_settings['url'] ?? '';
+        } elseif ( ( $this->form_settings['redirect_to'] ?? '' ) === 'same' ) {
             $show_message = true;
         } elseif ( 'publish' !== get_post_status( $post_id ) && ! current_user_can( 'read_post', $post_id ) ) {
             // "Newly created post" for a post the submitter can not open yet
@@ -806,7 +794,7 @@ class Post_Form_Handler {
 
         if ( ! is_user_logged_in() ) {
             if ( isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] && ! empty( $this->form_settings['guest_details'] ) && wpuf_is_checkbox_or_toggle_on(
-                $this->form_settings['guest_details']
+                ( $this->form_settings['guest_details'] ?? '' )
             ) ) {
                 $guest_name = isset( $_POST['guest_name'] ) ? sanitize_text_field( wp_unslash( $_POST['guest_name'] ) ) : '';
                 $guest_email = isset( $_POST['guest_email'] ) ? sanitize_email(
@@ -880,7 +868,7 @@ class Post_Form_Handler {
             } elseif ( ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) && ! wpuf_is_checkbox_or_toggle_on( $this->form_settings['guest_details'] ) ) {
                 $post_author = $default_post_author;
             } elseif ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) {
-                wpuf()->ajax->send_error( $this->form_settings['message_restrict'] );
+                wpuf()->ajax->send_error( $this->form_settings['message_restrict'] ?? null );
             }
 
             // the user must be logged in already

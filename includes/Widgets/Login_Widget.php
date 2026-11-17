@@ -35,6 +35,15 @@ class Login_Widget extends WP_Widget {
         $user_pass  = isset( $input['pwd'] ) ? (string) $input['pwd'] : '';
         $remember   = ! empty( $input['rememberme'] );
 
+        // Sign-in may only happen for a request that came from a page on this
+        // site. The widget nonce cannot establish that: it is printed to every
+        // logged-out visitor, and a cross-site POST carries none of the
+        // visitor's cookies, so this would otherwise sign a visitor's browser
+        // into whichever account the other site chose. CVE-2026-17564.
+        if ( ! wpuf_is_same_origin_request() ) {
+            return new WP_Error( 'wpuf_login_cross_site', __( 'Permission denied', 'wp-user-frontend' ), [ 'status' => 403 ] );
+        }
+
         if ( '' === $user_login || '' === $user_pass ) {
             return new WP_Error( 'wpuf_login_empty', __( 'Please fill all form fields', 'wp-user-frontend' ), [ 'status' => 400 ] );
         }

@@ -35,7 +35,7 @@ Pro has the same admin model: `wpuf-pro/webpack.admin.config.js` (`pnpm exec web
 
 ## Package manager and builds
 
-pnpm on this branch (`packageManager` pins the version; Node 22). Never `npm install` in the plugin root; `modules/user-directory` keeps npm.
+pnpm on this branch (`packageManager` pins the version; Node 26). Never `npm install` in the plugin root; `modules/user-directory` keeps npm.
 
 ```bash
 pnpm install --frozen-lockfile

@@ -179,7 +179,7 @@ at draft time (golden path step 1).
   `pnpm version:stamp` (`tools/version-replace.mjs`), check with `pnpm version:check`.
 - Merge free first: Pro's `release.yml` checks out free **`develop`** as a sibling (Pro's
   webpack resolves packages from free's `node_modules`).
-- Tag `vX.Y.Z` on the org repo → `.github/workflows/release.yml` (Node 22, PHP 7.4 + WP-CLI,
+- Tag `vX.Y.Z` on the org repo → `.github/workflows/release.yml` (Node 26, PHP 7.4 + WP-CLI,
   pnpm 12.8.1): free `pnpm install` → Pro `pnpm install` → `composer install --no-dev` (Pro and
   `modules/user-directory`) → `pnpm run build` → user-directory `npm install && npm run build`
   → `pnpm run makepot` → `pnpm run zip:all` (`grunt zip-all`, one zip per `pack.json` plan with
@@ -220,5 +220,5 @@ the deploy step fails (the GitHub Release still publishes).
 ## Repo facts
 - Repo `weDevsOfficial/wp-user-frontend` · branch `develop` · slug `wp-user-frontend`
   · fork `arifulhoque7/wp-user-frontend`
-- Main file `wpuf.php` · tag `vX.Y.Z` · build pnpm (`packageManager` pnpm 12.8.1, Node 22.22.2+) + Composer + PHP 7.4; Grunt only for the POT wrapper and the Tailwind 3 classic sheets
+- Main file `wpuf.php` · tag `vX.Y.Z` · build pnpm (`packageManager` pnpm 12.8.1, Node 26+) + Composer + PHP 7.4; Grunt only for the POT wrapper and the Tailwind 3 classic sheets
 - Generated assets are **gitignored** (built in CI); `.distignore` controls the package.

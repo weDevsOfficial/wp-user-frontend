@@ -26,7 +26,7 @@ jobs:
       - name: Move the pnpm store off a node_modules path
         run: pnpm config set store-dir "$HOME/.pnpm-store"
 
-      - name: Use Node.js 22
+      - name: Use Node.js 26
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc

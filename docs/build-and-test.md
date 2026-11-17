@@ -89,7 +89,7 @@ composer phpcbf                      # Auto-fix PHP code style
 ## Package manager
 
 pnpm on branch `feature/react-admin-revamp` (like FlyHR): `pnpm install --frozen-lockfile && pnpm build`
-(pnpm 12.8.1 from `packageManager`, Node 22.22.2+). `pnpm build` ends with `bin/verify-build.mjs`
+(pnpm 12.8.1 from `packageManager`, Node 26+). `pnpm build` ends with `bin/verify-build.mjs`
 (fails on a missing/empty generated asset, a React `.asset.php` without deps, or an unresolved
 import). `pnpm build` runs, in order: `build:tailwind`, `build:admin`, `build:frontend`,
 `build:tailwind-minify`, `build:admin-css`, `build:user-directory`, `build:blocks`, `build:sanitize`,

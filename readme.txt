@@ -462,7 +462,7 @@ The admin JavaScript and CSS shipped in this plugin are compiled from human-read
 
 To build the assets yourself from a checkout of the release tag:
 
-1. Install Node.js 22.22 or newer and enable pnpm (`corepack enable`).
+1. Install Node.js 26 or newer and enable pnpm (`corepack enable`).
 2. Run `pnpm install --frozen-lockfile`.
 3. Run `pnpm build`.
 

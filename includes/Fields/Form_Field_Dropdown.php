@@ -139,8 +139,8 @@ class Form_Field_Dropdown extends Field_Contract {
         $args = array(
             'post_type'         => $post_type,
             'post_status'       => 'publish',
-            'orderby'           => 'DESC',
-            'order'             => 'ID',
+            'orderby'           => 'title',
+            'order'             => 'ASC',
             'posts_per_page'    => -1,
         );
 

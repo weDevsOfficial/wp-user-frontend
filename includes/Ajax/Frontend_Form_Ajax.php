@@ -391,7 +391,8 @@ class Frontend_Form_Ajax {
 
         // Use standard post creation if no post_id was created or not an event
         if ( ! $post_id ) {
-            $post_id = wp_insert_post( $postarr );
+            // wp_insert_post() expects slashed data; slashing keeps the stored text identical to the checked text.
+            $post_id = wp_insert_post( wp_slash( $postarr ) );
         }
 
         // Hook for post type specific processing after post creation

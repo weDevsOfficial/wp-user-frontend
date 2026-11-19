@@ -518,9 +518,9 @@ trait FieldableTrait {
             }
         }
 
-        // save all custom fields
+        // save all custom fields; the meta API unslashes, so slash to store exactly the sanitized value
         foreach ( $meta_key_value as $meta_key => $meta_value ) {
-            update_post_meta( $post_id, $meta_key, $meta_value );
+            update_post_meta( $post_id, $meta_key, wp_slash( $meta_value ) );
         }
 
         // save any multicolumn repeatable fields
@@ -530,7 +530,7 @@ trait FieldableTrait {
 
             // now add them
             foreach ( $repeat_value as $repeat_field ) {
-                add_post_meta( $post_id, $repeat_key, $repeat_field );
+                add_post_meta( $post_id, $repeat_key, wp_slash( $repeat_field ) );
             }
         }
 

@@ -330,7 +330,8 @@ class Frontend_Form extends Frontend_Render_Form {
 
         $postarr = $this->adjust_thumbnail_id( $postarr );
 
-        $post_id = wp_insert_post( $postarr );
+        // wp_insert_post() expects slashed data; slashing keeps the stored text identical to the checked text.
+        $post_id = wp_insert_post( wp_slash( $postarr ) );
 
         // add post revision when post edit from the frontend
         wpuf_frontend_post_revision( $post_id, $this->form_settings );

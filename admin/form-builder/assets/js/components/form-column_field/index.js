@@ -237,6 +237,11 @@ Vue.component('form-column_field', {
                 if (same_template_fields) {
                     field.name += '_' + this.get_random_id();
                 }
+                // The generated key keeps following the label until the user types one.
+                if (field.name) {
+                    window.wpuf_meta_key_follows_label = window.wpuf_meta_key_follows_label || {};
+                    window.wpuf_meta_key_follows_label[field.id] = true;
+                }
             }
 
             payload.field = field;

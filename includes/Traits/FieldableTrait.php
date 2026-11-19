@@ -30,7 +30,10 @@ trait FieldableTrait {
      * @param array $field_settings
      */
     public function add_field_settings( $field_settings ) {
-        $this->set_wp_post_types();
+        // Field objects only need taxonomy names, not terms. Keep the terms if the builder already loaded them.
+        if ( empty( $this->wp_post_types ) ) {
+            $this->set_wp_post_types( false );
+        }
 
         if ( class_exists( 'WeDevs\Wpuf\Fields\Field_Contract' ) ) {
             $field_settings['post_title']     = new Form_Field_Post_Title();
@@ -63,10 +66,13 @@ trait FieldableTrait {
      * Populate available wp post types
      *
      * @since 2.5
+     * @since WPUF_SINCE Added `$with_terms` so callers that only need taxonomy names skip loading every term
+     *
+     * @param bool $with_terms Load the terms of each taxonomy (the form builder needs them).
      *
      * @return void
      */
-    public function set_wp_post_types() {
+    public function set_wp_post_types( $with_terms = true ) {
         $args = [ '_builtin' => true ];
         $wpuf_post_types = wpuf_get_post_types( $args );
 
@@ -99,6 +105,11 @@ trait FieldableTrait {
                         'title'        => $taxonomy->label,
                         'hierarchical' => $taxonomy->hierarchical,
                     ];
+
+                    if ( ! $with_terms ) {
+                        continue;
+                    }
+
                     $tax_terms = get_terms(
                         [
                             'taxonomy'   => $tax_name,

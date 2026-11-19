@@ -9,7 +9,8 @@
         <input
             type="text"
             v-model="value"
-            :readonly="option_field.is_read_only"
+            :readonly="option_field.is_read_only || is_integration_key"
             :class="builder_class_names('text')">
+        <p v-if="is_integration_key" class="wpuf-mt-1 wpuf-text-xs wpuf-text-gray-500"><?php esc_html_e( 'This meta key is used by The Events Calendar and can not be changed.', 'wp-user-frontend' ); ?></p>
     </div>
 </div>

@@ -46,6 +46,11 @@ wpuf_mixins.add_form_field = {
                 if (same_template_fields.length) {
                     field.name += '_' + same_template_fields.length;
                 }
+                // The generated key keeps following the label until the user types one.
+                if (field.name) {
+                    window.wpuf_meta_key_follows_label = window.wpuf_meta_key_follows_label || {};
+                    window.wpuf_meta_key_follows_label[field.id] = true;
+                }
             }
 
             payload.field = field;

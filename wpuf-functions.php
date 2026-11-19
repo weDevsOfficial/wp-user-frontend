@@ -5694,11 +5694,18 @@ function wpuf_find_protected_shortcode( $values ) {
             continue;
         }
 
-        $value = wpuf_normalize_for_shortcode_check( $value );
+        // wp_insert_post() and update_post_meta() unslash once more before saving,
+        // so check the value both as submitted and as it would be stored.
+        $candidates = [
+            wpuf_normalize_for_shortcode_check( $value ),
+            wpuf_normalize_for_shortcode_check( wp_unslash( $value ) ),
+        ];
 
         foreach ( $protected_shortcodes as $shortcode ) {
-            if ( false !== stripos( $value, '[' . $shortcode ) ) {
-                return $shortcode;
+            foreach ( $candidates as $candidate ) {
+                if ( false !== stripos( $candidate, '[' . $shortcode ) ) {
+                    return $shortcode;
+                }
             }
         }
     }

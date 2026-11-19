@@ -346,7 +346,12 @@ class Frontend_Form extends Frontend_Render_Form {
             // edit of a post that was already submitted (which must not be re-gated), so
             // that it never has to trust a client-supplied "is this new" field. Posts that
             // predate this meta simply have no flag and are treated as edits, as before.
-            update_post_meta( $post_id, '_wpuf_draft_pending', 1 );
+            // Only a newly created draft is flagged: Save Draft on an existing post (for
+            // example from the edit page) keeps it an edit, and a draft that is already
+            // flagged keeps its flag until it is submitted.
+            if ( ! isset( $_POST['post_id'] ) ) {
+                update_post_meta( $post_id, '_wpuf_draft_pending', 1 );
+            }
 
             // save post formats if have any
             if ( isset( $this->form_settings['post_format'] ) && $this->form_settings['post_format'] !== '0' ) {

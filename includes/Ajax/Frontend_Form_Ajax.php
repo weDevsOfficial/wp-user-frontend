@@ -306,6 +306,10 @@ class Frontend_Form_Ajax {
             $postarr['tags_input'] = explode( ',', sanitize_text_field( wp_unslash( $_POST['tags'] ) ) );
         }
 
+        // What the new-post path stores, kept for a saved draft that is being submitted for the first time.
+        $new_post_status = $postarr['post_status'];
+        $new_post_date   = $postarr['post_date'] ?? '';
+
         if ( isset( $_POST['post_id'] ) ) {
             $post_id = intval( wp_unslash( $_POST['post_id'] ) );
 
@@ -351,6 +355,20 @@ class Frontend_Form_Ajax {
         $wpuf_form_status = isset( $_POST['wpuf_form_status'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_form_status'] ) ) : '';
         if ( $wpuf_form_status === 'new' ) {
             $is_update = false;
+        }
+
+        // A draft made with Save Draft and never submitted still carries _wpuf_draft_pending
+        // (server state, see $is_new_submission above). Its first Submit, in the same session
+        // or later from the edit link, is a new submission: it gets the form's post status
+        // (so moderation still applies), the new-post notification and the add-post hooks.
+        if ( $posted_post_id && $is_new_submission ) {
+            $is_update              = false;
+            $postarr['post_status'] = $new_post_status;
+            $postarr['post_date']   = $new_post_date;
+
+            if ( isset( $this->form_settings['comment_status'] ) ) {
+                $postarr['comment_status'] = $this->form_settings['comment_status'];
+            }
         }
 
         // set default post category if it's not been set yet and if post type supports

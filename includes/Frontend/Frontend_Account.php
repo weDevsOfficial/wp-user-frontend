@@ -36,14 +36,15 @@ class Frontend_Account {
      *
      * @since 2.9.0
      * @return array $options
-     *
      */
     public function add_settings_options( $options ) {
         $options[] = [
             'name'    => 'allow_post_submission',
             'label'   => __( 'Post Submission', 'wp-user-frontend' ),
-            'desc'    => __( 'Enable if you want to allow users to submit post from the account page.',
-                             'wp-user-frontend' ),
+            'desc'    => __(
+                'Enable if you want to allow users to submit post from the account page.',
+                'wp-user-frontend'
+            ),
             'type'    => 'checkbox',
             'default' => 'on',
         ];
@@ -57,8 +58,10 @@ class Frontend_Account {
         $options[] = [
             'name'    => 'post_submission_form',
             'label'   => __( 'Submission Form', 'wp-user-frontend' ),
-            'desc'    => __( 'Select a post form that will use to submit post by the users from their account page.',
-                             'wp-user-frontend' ),
+            'desc'    => __(
+                'Select a post form that will use to submit post by the users from their account page.',
+                'wp-user-frontend'
+            ),
             'type'    => 'select',
             'options' => $this->get_post_forms(),
         ];
@@ -71,19 +74,22 @@ class Frontend_Account {
      *
      * @since 2.9.0
      * @return array $sections
-     *
      */
     public function add_account_sections( $sections ) {
         $allow_post_submission = wpuf_get_option( 'allow_post_submission', 'wpuf_my_account', 'on' );
-        $submission_label      = wpuf_get_option( 'post_submission_label', 'wpuf_my_account',
-                                                  __( 'Submit Post', 'wp-user-frontend' ) );
+        $submission_label      = wpuf_get_option(
+            'post_submission_label', 'wpuf_my_account',
+            __( 'Submit Post', 'wp-user-frontend' )
+        );
         if ( ! is_array( $sections ) ) {
             $sections = (array) $sections;
         }
         if ( $allow_post_submission === 'on' ) {
-            $sections = array_merge( $sections, [
-                'submit-post' => $submission_label,
-            ] );
+            $sections = array_merge(
+                $sections, [
+					'submit-post' => $submission_label,
+				]
+            );
         }
 
         return $sections;
@@ -99,17 +105,18 @@ class Frontend_Account {
      * @param array  $sections
      *
      * @return void
-     *
      */
     public function submit_post_section( $sections, $current_section ) {
         $allow_post_submission = wpuf_get_option( 'allow_post_submission', 'wpuf_my_account', 'on' );
         if ( $allow_post_submission !== 'on' ) {
             return;
         }
-        wpuf_load_template( 'submit-post.php', [
-            'sections'        => $sections,
-            'current_section' => $current_section,
-        ] );
+        wpuf_load_template(
+            'submit-post.php', [
+				'sections'        => $sections,
+				'current_section' => $current_section,
+			]
+        );
     }
 
     /**
@@ -172,10 +179,12 @@ class Frontend_Account {
      * @return void
      */
     public function dashboard_section( $sections, $current_section ) {
-        wpuf_load_template( 'dashboard/dashboard.php', [
-            'sections'        => $sections,
-            'current_section' => $current_section,
-        ] );
+        wpuf_load_template(
+            'dashboard/dashboard.php', [
+				'sections'        => $sections,
+				'current_section' => $current_section,
+			]
+        );
     }
 
     /**
@@ -190,10 +199,12 @@ class Frontend_Account {
      * @return void
      */
     public function posts_section( $sections, $current_section ) {
-        wpuf_load_template( 'dashboard/posts.php', [
-            'sections'        => $sections,
-            'current_section' => $current_section,
-        ] );
+        wpuf_load_template(
+            'dashboard/posts.php', [
+				'sections'        => $sections,
+				'current_section' => $current_section,
+			]
+        );
     }
 
     /**
@@ -225,9 +236,12 @@ class Frontend_Account {
         $pack = wpuf()->subscription->get_subscription( $sub_id );
 
         if ( ! $pack ) {
-            echo wp_kses_post( sprintf(
+            echo wp_kses_post(
+                sprintf(
                 // translators: %1$s and %2$s are HTML tags
-                __( '%1$sYour subscription pack is not exists. Please contact admin.%2$s', 'wp-user-frontend' ), '<p>', '</p>' ) );
+                    __( '%1$sYour subscription pack is not exists. Please contact admin.%2$s', 'wp-user-frontend' ), '<p>', '</p>'
+                )
+            );
 
             return;
         }
@@ -236,19 +250,26 @@ class Frontend_Account {
         $details_meta['onclick']      = '';
         $details_meta['symbol']       = wpuf_get_currency( 'symbol' );
         $recurring_des = '';
-        $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free',
-                                                                                                                                                      'wp-user-frontend' );
+        $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __(
+            'Free',
+            'wp-user-frontend'
+        );
         if ( wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay'] ) ) {
             /* translators: %s: billing cycle number, %s: billing cycle period */
-            $recurring_des = sprintf( __( 'For each', 'wp-user-frontend' ) . ' %s %s',
-                                      $pack->meta_value['billing_cycle_number'],
-                                      Subscription::get_cycle_label( $pack->meta_value['cycle_period'],
-                                                                          $pack->meta_value['billing_cycle_number'] ),
-                                      $pack->meta_value['_trial_duration_type'] );
-            /* translators: %s: number of installments */
-            $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) && -1 ===  $pack->meta_value['billing_limit'] ? sprintf( __( ', for %s installments',
-                                                                                           'wp-user-frontend' ),
-                                                                                       $pack->meta_value['billing_limit'] ) : '';
+            $recurring_des = sprintf(
+                __( 'For each', 'wp-user-frontend' ) . ' %s %s',
+                $pack->meta_value['billing_cycle_number'],
+                Subscription::get_cycle_label(
+                    $pack->meta_value['cycle_period'],
+                    $pack->meta_value['billing_cycle_number']
+                ),
+                $pack->meta_value['_trial_duration_type']
+            );
+            $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) && -1 === $pack->meta_value['billing_limit'] ? sprintf(
+                /* translators: %s: number of installments */
+                __( ', for %s installments', 'wp-user-frontend' ),
+                $pack->meta_value['billing_limit']
+            ) : '';
         }
         ob_start();
         wpuf_load_template(
@@ -277,10 +298,12 @@ class Frontend_Account {
      * @return void
      */
     public function edit_profile_section( $sections, $current_section ) {
-        wpuf_load_template( 'dashboard/edit-profile.php', [
-            'sections'        => $sections,
-            'current_section' => $current_section,
-        ] );
+        wpuf_load_template(
+            'dashboard/edit-profile.php', [
+				'sections'        => $sections,
+				'current_section' => $current_section,
+			]
+        );
     }
 
     /**
@@ -294,10 +317,12 @@ class Frontend_Account {
      * @return void
      */
     public function change_password_section( $sections, $current_section ) {
-        wpuf_load_template( 'dashboard/change-password.php', [
-            'sections'        => $sections,
-            'current_section' => $current_section,
-        ] );
+        wpuf_load_template(
+            'dashboard/change-password.php', [
+				'sections'        => $sections,
+				'current_section' => $current_section,
+			]
+        );
     }
 
     /**
@@ -355,10 +380,12 @@ class Frontend_Account {
             return;
         }
 
-        $result = wp_update_user( [
-            'ID'        => $current_user->ID,
-            'user_pass' => $pass1,
-        ] );
+        $result = wp_update_user(
+            [
+				'ID'        => $current_user->ID,
+				'user_pass' => $pass1,
+			]
+        );
 
         if ( is_wp_error( $result ) ) {
             wp_send_json_error( __( 'Could not update password. Please try again.', 'wp-user-frontend' ) );
@@ -423,7 +450,7 @@ class Frontend_Account {
             $email = sanitize_email( $email );
             if ( ! is_email( $email ) ) {
                 wp_send_json_error( __( 'Please provide a valid email address.', 'wp-user-frontend' ) );
-            } else if ( email_exists( $email ) && $email !== $current_user->user_email ) {
+            } elseif ( email_exists( $email ) && $email !== $current_user->user_email ) {
                 wp_send_json_error( __( 'This email address is already registered.', 'wp-user-frontend' ) );
             }
             $user->user_email = $email;
@@ -431,17 +458,19 @@ class Frontend_Account {
         if ( ! empty( $current_password ) && empty( $pass1 ) && empty( $pass2 ) ) {
             wp_send_json_error( __( 'Please fill out all password fields.', 'wp-user-frontend' ) );
             $save_pass = false;
-        } else if ( ! empty( $pass1 ) && empty( $current_password ) ) {
+        } elseif ( ! empty( $pass1 ) && empty( $current_password ) ) {
             wp_send_json_error( __( 'Please enter your current password.', 'wp-user-frontend' ) );
             $save_pass = false;
-        } else if ( ! empty( $pass1 ) && empty( $pass2 ) ) {
+        } elseif ( ! empty( $pass1 ) && empty( $pass2 ) ) {
             wp_send_json_error( __( 'Please re-enter your password.', 'wp-user-frontend' ) );
             $save_pass = false;
-        } else if ( ( ! empty( $pass1 ) || ! empty( $pass2 ) ) && $pass1 !== $pass2 ) {
+        } elseif ( ( ! empty( $pass1 ) || ! empty( $pass2 ) ) && $pass1 !== $pass2 ) {
             wp_send_json_error( __( 'New passwords do not match.', 'wp-user-frontend' ) );
             $save_pass = false;
-        } else if ( ! empty( $pass1 ) && ! wp_check_password( $current_password, $current_user->user_pass,
-                                                              $current_user->ID ) ) {
+        } elseif ( ! empty( $pass1 ) && ! wp_check_password(
+            $current_password, $current_user->user_pass,
+            $current_user->ID
+        ) ) {
             wp_send_json_error( __( 'Your current password is incorrect.', 'wp-user-frontend' ) );
             $save_pass = false;
         }

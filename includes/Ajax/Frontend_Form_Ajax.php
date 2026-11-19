@@ -217,7 +217,8 @@ class Frontend_Form_Ajax {
 
         [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
-        if ( ! isset( $_POST['post_id'] ) ) {
+        // The entry limit applies to every new submission, including the first Submit of a saved draft.
+        if ( $is_new_submission ) {
             $has_limit = isset( $this->form_settings['limit_entries'] ) && ( 'true' === $this->form_settings['limit_entries'] || 'on' === $this->form_settings['limit_entries'] );
 
             if ( $has_limit ) {
@@ -228,6 +229,9 @@ class Frontend_Form_Ajax {
                     wpuf()->ajax->send_error( $this->form_settings['limit_message'] ?? null );
                 }
             }
+        }
+
+        if ( ! isset( $_POST['post_id'] ) ) {
             $this->on_edit_no_check_recaptcha( $post_vars );
         }
 

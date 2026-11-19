@@ -58,14 +58,17 @@ class Form_Field_reCaptcha extends Field_Contract {
 
                 <div class="wpuf-fields <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>">
                     <script>
+                        // Only the form that holds the reCAPTCHA is gated, other WPUF forms on the page stay usable.
                         function wpufRecaptchaCallback(token) {
-                            jQuery('[name="g-recaptcha-response"]').val(token);
-                            jQuery('.wpuf-submit-button').attr('disabled',false).show();
-                            jQuery('.wpuf-submit-btn-recaptcha').hide();
+                            var forms = jQuery('.g-recaptcha').closest('form');
+
+                            forms.find('[name="g-recaptcha-response"]').val(token);
+                            forms.find('.wpuf-submit-button').attr('disabled',false).show();
+                            forms.find('.wpuf-submit-btn-recaptcha').hide();
                         }
 
                         jQuery(document).ready( function($) {
-                            $('.wpuf-submit-button').attr('disabled',true);
+                            $('<?php echo esc_js( '.wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>').closest('form').find('.wpuf-submit-button').attr('disabled',true);
                         });
                     </script>
 
@@ -80,7 +83,7 @@ class Form_Field_reCaptcha extends Field_Contract {
                     <script>
 
                         jQuery(document).ready(function($) {
-                            var btn = $('.wpuf-submit-button');
+                            var btn = $('<?php echo esc_js( '.wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>').closest('form').find('.wpuf-submit-button');
                             var gc_btn = btn.clone().removeClass().addClass('wpuf-submit-btn-recaptcha').attr('disabled',false);
                             btn.after(gc_btn);
                             btn.hide();

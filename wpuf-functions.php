@@ -5590,25 +5590,32 @@ function wpuf_include_once( $file_location ) {
 /**
  * Guess a suitable username for registration based on email address
  *
+ * Uses strict sanitizing, as validate_username() and wp_insert_user() do, so an
+ * address like peggy+test@example.com gives the valid username "peggytest".
+ *
+ * @since WPUF_SINCE Strict sanitizing, a fallback base and a unique result.
+ *
  * @param string $email email address
  *
  * @return string username
  */
 function wpuf_guess_username( $email ) {
-    // username from email address
-    $username = sanitize_user( substr( $email, 0, strpos( $email, '@' ) ) );
+    $at   = strpos( $email, '@' );
+    $base = sanitize_user( false === $at ? $email : substr( $email, 0, $at ), true );
+    // wp_insert_user() rejects logins over 60 characters; leave room for the number suffix.
+    $base = trim( substr( $base, 0, 50 ) );
 
-    if ( ! username_exists( $username ) ) {
-        return $username;
+    if ( '' === $base ) {
+        $base = 'user';
     }
 
-    // try to add some random number in username
-    // and may be we got our username
-    $username .= rand( 1, 199 );
+    $username = $base;
 
-    if ( ! username_exists( $username ) ) {
-        return $username;
+    while ( username_exists( $username ) ) {
+        $username = $base . wp_rand( 1, 99999 );
     }
+
+    return $username;
 }
 
 /**

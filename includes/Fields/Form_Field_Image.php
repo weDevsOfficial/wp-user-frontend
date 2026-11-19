@@ -154,16 +154,21 @@ class Form_Field_Image extends Field_Contract {
     /**
      * Prepare entry
      *
-     * @param $field
+     * @param array $field Field settings.
      *
-     * @return @return mixed
+     * @return int[] Sanitized attachment IDs for the field.
      */
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $raw_files = isset( $_POST['wpuf_files'] ) ? wp_unslash( $_POST['wpuf_files'] ) : [];
-        $wpuf_files = array_map( 'absint', $raw_files );
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Every ID is cast with absint() below.
+        $raw_files = isset( $_POST['wpuf_files'] ) && is_array( $_POST['wpuf_files'] ) ? wp_unslash( $_POST['wpuf_files'] ) : [];
 
-        return isset( $wpuf_files[ $field['name'] ] ) ? $wpuf_files[ $field['name'] ] : [];
+        if ( ! isset( $raw_files[ $field['name'] ] ) ) {
+            return [];
+        }
+
+        // Each field holds an array of attachment IDs, so sanitize every ID individually.
+        return array_map( 'absint', (array) $raw_files[ $field['name'] ] );
     }
 }

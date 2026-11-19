@@ -528,7 +528,8 @@ class Frontend_Form_Ajax {
             'success'      => true,
             'redirect_to'  => $redirect_to,
             'show_message' => $show_message,
-            'message'      => $this->form_settings['message'] ?? null,
+            // Template forms ship without a success message; fall back to the default text.
+            'message'      => ! empty( $this->form_settings['message'] ) ? $this->form_settings['message'] : __( 'Post saved', 'wp-user-frontend' ),
         ];
 
         $guest_mode     = isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ? $this->form_settings['post_permission'] : '';

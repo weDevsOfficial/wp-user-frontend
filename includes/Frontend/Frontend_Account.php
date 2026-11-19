@@ -13,6 +13,15 @@ use WeDevs\Wpuf\User_Subscription;
  */
 class Frontend_Account {
     /**
+     * The post the current user may preview as its author on this request
+     *
+     * @since WPUF_SINCE
+     *
+     * @var int
+     */
+    private $preview_post_id = 0;
+
+    /**
      * Class constructor
      */
     public function __construct() {
@@ -501,17 +510,71 @@ class Frontend_Account {
      * @return void
      */
     public function process_user_for_previewing_post( $query ) {
-        if ( current_user_can( 'edit_posts' ) ) {
+        if ( ! $query->is_main_query() || $this->preview_post_id ) {
             return;
         }
-        if ( ! $query->is_main_query() && ! $query->is_preview && ! $query->get( 'p' ) ) {
-            return;
-        }
+
         $current_user_id = get_current_user_id();
         $current_post_id = absint( $query->get( 'p' ) );
-        if ( $current_user_id === absint( get_post_field( 'post_author', $current_post_id ) ) ) {
-            add_filter( 'user_has_cap', [ $this, 'add_temporary_capability' ], 10, 3 );
+
+        if ( ! $current_user_id || ! $current_post_id ) {
+            return;
         }
+
+        if ( $current_user_id !== absint( get_post_field( 'post_author', $current_post_id ) ) || current_user_can( 'edit_post', $current_post_id ) ) {
+            return;
+        }
+
+        // WP_Query checks the post type's own edit cap (edit_tribe_event, ...) before it
+        // shows a draft, so grant edit_post for this one post, and only until that check ran.
+        $this->preview_post_id = $current_post_id;
+
+        add_filter( 'map_meta_cap', [ $this, 'allow_author_preview' ], 10, 4 );
+        add_filter( 'the_posts', [ $this, 'remove_author_preview' ], 10, 2 );
+    }
+
+    /**
+     * Let the author pass the edit_post check for the post being previewed
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array  $caps    Primitive caps the meta cap maps to.
+     * @param string $cap     Capability being checked.
+     * @param int    $user_id User ID.
+     * @param array  $args    Extra arguments, the post ID first.
+     *
+     * @return array
+     */
+    public function allow_author_preview( $caps, $cap, $user_id, $args ) {
+        if (
+            'edit_post' === $cap
+            && isset( $args[0] ) && is_numeric( $args[0] )
+            && $this->preview_post_id === absint( $args[0] )
+            && get_current_user_id() === absint( $user_id )
+        ) {
+            return [ 'exist' ];
+        }
+
+        return $caps;
+    }
+
+    /**
+     * Drop the preview grant once the main query has its posts
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array     $posts Posts found.
+     * @param \WP_Query $query The query.
+     *
+     * @return array
+     */
+    public function remove_author_preview( $posts, $query ) {
+        if ( $query->is_main_query() ) {
+            remove_filter( 'map_meta_cap', [ $this, 'allow_author_preview' ], 10 );
+            remove_filter( 'the_posts', [ $this, 'remove_author_preview' ], 10 );
+        }
+
+        return $posts;
     }
 
     /**

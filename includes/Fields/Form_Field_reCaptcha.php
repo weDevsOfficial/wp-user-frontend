@@ -5,6 +5,7 @@ namespace WeDevs\Wpuf\Fields;
 /**
  * Recaptcha Field Class
  */
+// phpcs:ignore PEAR.NamingConventions.ValidClassName.Invalid -- public class name, renaming it would break field registration.
 class Form_Field_reCaptcha extends Field_Contract {
 
     public function __construct() {
@@ -37,19 +38,23 @@ class Form_Field_reCaptcha extends Field_Contract {
             $is_invisible = $field_settings['recaptcha_type'] == 'invisible_recaptcha' ? true : false;
         }
 
-        $invisible_css   = $is_invisible ? ' style="margin: 0; padding: 0" ' : ''; ?> <li <?php $this->print_list_attributes( $field_settings );
-        echo esc_attr( $invisible_css ); ?>>
+        $invisible_css = $is_invisible ? ' style="margin: 0; padding: 0" ' : ''; ?> <li 
+        <?php
+        $this->print_list_attributes( $field_settings );
+        echo esc_attr( $invisible_css );
+		?>
+        >
 
             <?php
 
-            if ( !$is_invisible ) {
+            if ( ! $is_invisible ) {
                 $this->print_label( $field_settings );
             }
 
-        if ( !$public_key ) {
-            esc_html_e( 'reCaptcha API key is missing.', 'wp-user-frontend' );
-        } else {
-            ?>
+			if ( ! $public_key ) {
+				esc_html_e( 'reCaptcha API key is missing.', 'wp-user-frontend' );
+			} else {
+				?>
 
                 <div class="wpuf-fields <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>">
                     <script>
@@ -67,7 +72,8 @@ class Form_Field_reCaptcha extends Field_Contract {
                     <input type="hidden" name="g-recaptcha-response">
                 <?php
 
-                if ( $is_invisible ) { ?>
+                if ( $is_invisible ) {
+					?>
 
                     <?php wp_enqueue_script( 'wpuf-recaptcha-invisible', 'https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en', array(), null, true ); ?>
 
@@ -108,8 +114,9 @@ class Form_Field_reCaptcha extends Field_Contract {
 
                 </div>
 
-            <?php
-        } ?>
+				<?php
+			}
+			?>
 
         </li>
 

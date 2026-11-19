@@ -531,6 +531,8 @@ class Frontend_Account {
 
         add_filter( 'map_meta_cap', [ $this, 'allow_author_preview' ], 10, 4 );
         add_filter( 'the_posts', [ $this, 'remove_author_preview' ], 10, 2 );
+        // Fallback: the_posts does not fire when another plugin suppresses filters on the main query.
+        add_action( 'wp', [ $this, 'drop_author_preview' ] );
     }
 
     /**
@@ -570,11 +572,23 @@ class Frontend_Account {
      */
     public function remove_author_preview( $posts, $query ) {
         if ( $query->is_main_query() ) {
-            remove_filter( 'map_meta_cap', [ $this, 'allow_author_preview' ], 10 );
-            remove_filter( 'the_posts', [ $this, 'remove_author_preview' ], 10 );
+            $this->drop_author_preview();
         }
 
         return $posts;
+    }
+
+    /**
+     * Remove the preview grant filters
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function drop_author_preview() {
+        remove_filter( 'map_meta_cap', [ $this, 'allow_author_preview' ], 10 );
+        remove_filter( 'the_posts', [ $this, 'remove_author_preview' ], 10 );
+        remove_action( 'wp', [ $this, 'drop_author_preview' ] );
     }
 
     /**

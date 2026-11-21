@@ -169,7 +169,13 @@ class Frontend_Form extends Frontend_Render_Form {
         }
 
         $content = isset( $_POST['content'] ) ? sanitize_text_field( wp_unslash( $_POST['content'] ) ) : '';
-        $embed_code = wp_oembed_get( $content );
+        // Resolve the URL only against the registered oEmbed providers. oEmbed
+        // auto discovery performs a server side request to whatever URL is
+        // supplied, which would let an unauthenticated caller use this endpoint
+        // to reach internal or arbitrary third party hosts, so it is disabled.
+        $embed_code = ( ! empty( $content ) && wp_http_validate_url( $content ) )
+            ? wp_oembed_get( $content, [ 'discover' => false ] )
+            : false;
 
         if ( $embed_code ) {
             echo esc_html( $embed_code );

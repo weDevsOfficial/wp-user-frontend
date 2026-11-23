@@ -182,9 +182,12 @@ add_filter( 'media_upload_tabs', 'wpuf_unset_media_tab' );
  *
  * Inserting a zero-width space between the braces breaks the delimiter match
  * while keeping the visible text identical. This is display-only and never
- * touches the stored term/post data.
+ * touches the stored term/post data. Braces written as HTML entities are
+ * caught too, because the browser turns them into real braces before Vue
+ * reads the template.
  *
  * @since 4.3.14
+ * @since WPUF_SINCE Handles braces written as HTML entities.
  *
  * @param string $value
  *
@@ -194,6 +197,20 @@ function wpuf_neutralize_template_delimiters( $value ) {
     if ( ! is_string( $value ) || '' === $value ) {
         return $value;
     }
+
+    // Entities the browser decodes into a brace (&#123; &#x7b; &lbrace; ..., numeric
+    // ones even without the trailing ";") become literal braces first, so they are
+    // caught below. Nothing else is decoded: callers escape the result, and some
+    // print it through v-html, where decoding other entities would be unsafe.
+    $value = preg_replace_callback(
+        '/&(?:#0*(123|125)(?![0-9]);?|#x0*(7b|7d)(?![0-9a-f]);?|(lbrace|lcub|rbrace|rcub);)/i',
+        function ( $match ) {
+            $code = strtolower( $match[1] . ( isset( $match[2] ) ? $match[2] : '' ) . ( isset( $match[3] ) ? $match[3] : '' ) );
+
+            return in_array( $code, [ '123', '7b', 'lbrace', 'lcub' ], true ) ? '{' : '}';
+        },
+        $value
+    );
 
     // Zero-width space (U+200B) after every brace that is followed by the same
     // brace, so no "{{" or "}}" survives, also in runs of three or more.

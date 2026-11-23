@@ -542,7 +542,7 @@ class Frontend_Form_Ajax {
             // can tell a guest submission from any other draft on the same form.
             update_post_meta( $post_id, Frontend_Form::$guest_verify_id, 'yes' );
 
-            wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, 'yes', 1 );
+            wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, 'yes', 1, Frontend_Form::create_guest_verify_token( $post_id ) );
 
             $response['show_message'] = true;
             $response['redirect_to']  = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
@@ -556,7 +556,7 @@ class Frontend_Form_Ajax {
 
             update_post_meta( $post_id, '_wpuf_payment_status', 'pending' );
             update_post_meta( $post_id, Frontend_Form::$guest_verify_id, 'yes' );
-            wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, 'no', 2 );
+            wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, 'no', 2, Frontend_Form::create_guest_verify_token( $post_id ) );
         }
 
         if ( wpuf_is_checkbox_or_toggle_on( $guest_mode ) && wpuf_is_checkbox_or_toggle_on( $guest_verify ) && ! is_user_logged_in() ) {

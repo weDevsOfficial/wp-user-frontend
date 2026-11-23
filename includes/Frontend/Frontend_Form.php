@@ -25,6 +25,36 @@ class Frontend_Form extends Frontend_Render_Form {
      */
     public static $guest_verify_id = '_wpuf_guest_email_verify';
 
+    /**
+     * Meta key holding the SHA-256 hash of the guest verification link's random token
+     *
+     * @since WPUF_SINCE
+     *
+     * @var string
+     */
+    public static $guest_verify_token_id = '_wpuf_guest_verify_token';
+
+    /**
+     * Create the random single-use token for a guest verification link
+     *
+     * Only its hash is stored; the plain token goes into the e-mailed link. The
+     * encrypted p_id / f_id values are not secret enough on their own to prove
+     * the visitor received the e-mail.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $post_id the guest submission
+     *
+     * @return string the token to put in the link
+     */
+    public static function create_guest_verify_token( $post_id ) {
+        $token = bin2hex( random_bytes( 32 ) );
+
+        update_post_meta( $post_id, self::$guest_verify_token_id, hash( 'sha256', $token ) );
+
+        return $token;
+    }
+
     public function __construct() {
         // // guest post hook
         add_action( 'init', [ $this, 'publish_guest_post' ] );
@@ -430,6 +460,7 @@ class Frontend_Form extends Frontend_Render_Form {
         $post_msg = isset( $_GET['post_msg'] ) ? sanitize_text_field( wp_unslash( $_GET['post_msg'] ) ) : '';
         $pid      = isset( $_GET['p_id'] ) ? sanitize_text_field( wp_unslash( $_GET['p_id'] ) ) : '';
         $fid      = isset( $_GET['f_id'] ) ? sanitize_text_field( wp_unslash( $_GET['f_id'] ) ) : '';
+        $token    = isset( $_GET['t'] ) ? sanitize_text_field( wp_unslash( $_GET['t'] ) ) : '';
         // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
         if ( $post_msg !== 'verified' ) {
@@ -493,6 +524,15 @@ class Frontend_Form extends Frontend_Render_Form {
             wp_die( esc_html__( 'This post has already been published.', 'wp-user-frontend' ) );
         }
 
+        // The link must carry the random token stored for this post. Links sent
+        // before the token existed are refused: they can not prove the visitor
+        // received the e-mail.
+        $stored_token = (string) get_post_meta( $post_id, self::$guest_verify_token_id, true );
+
+        if ( '' === $token || '' === $stored_token || ! hash_equals( $stored_token, hash( 'sha256', $token ) ) ) {
+            wp_die( esc_html__( 'This verification link is invalid or has expired. Please contact the site administrator.', 'wp-user-frontend' ) );
+        }
+
         $payment_status = new Subscription();
         $form           = new Form( $real_form_id );
         $pay_per_post   = $form->is_enabled_pay_per_post();
@@ -516,6 +556,12 @@ class Frontend_Form extends Frontend_Render_Form {
             }
         } else {
             $p_status = get_post_status( $post_id );
+
+            // Use the token up before publishing, so two requests with the same link
+            // can not both get through.
+            if ( ! delete_post_meta( $post_id, self::$guest_verify_token_id, $stored_token ) ) {
+                wp_die( esc_html__( 'This post has already been published.', 'wp-user-frontend' ) );
+            }
 
             if ( $p_status ) {
                 wp_update_post(

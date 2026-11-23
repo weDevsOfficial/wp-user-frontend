@@ -4166,7 +4166,8 @@ function wpuf_decryption( $id, $nonce = null ) {
         try {
             return sodium_crypto_secretbox_open( base64_decode( $id ), $secret_iv, $secret_key );
         } catch ( Exception $e ) {
-            delete_option( 'wpuf_auth_keys' );
+            // A bad incoming value must not reset the site keys: that would void every
+            // outstanding link and stored value, and anyone can send one.
             return false;
         }
     }
@@ -4196,11 +4197,14 @@ function wpuf_decryption( $id, $nonce = null ) {
  *
  * @since 2.5.8
  *
+ * @since WPUF_SINCE param $token added
+ *
  * @param string $post_id_encoded, $form_id_encoded, $charging_enabled, $flag
+ * @param string $token random verification token for the link
  *
  * @return void
  */
-function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_enabled, $flag ) {
+function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_enabled, $flag, $token = '' ) {
     if ( 'on' !== wpuf_get_option( 'enable_guest_email_notification', 'wpuf_mails', 'on' ) ) {
         return;
     }
@@ -4218,6 +4222,7 @@ function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_
                 'f_id'     => urlencode( $form_id_encoded ),
                 'post_msg' => 'verified',
                 'f'        => 2,
+                't'        => $token,
             ], get_home_url()
         );
     } else {
@@ -4227,6 +4232,7 @@ function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_
                 'f_id'     => urlencode( $form_id_encoded ),
                 'post_msg' => 'verified',
                 'f'        => 1,
+                't'        => $token,
             ], get_home_url()
         );
     }

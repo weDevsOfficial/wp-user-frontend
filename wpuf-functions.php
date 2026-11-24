@@ -1254,13 +1254,13 @@ function wpuf_show_custom_fields( $content ) {
                             continue;
                         } elseif ( (string) $attr['wpuf_cond']['cond_option'][ $field_key ] !== (string) $cond_field_value ) {
                                 $return_for_no_cond = 1;
-                            } else {
-                                $return_for_no_cond = 0;
-                                break;
-                            }
+                        } else {
+                            $return_for_no_cond = 0;
+                            break;
                         }
                     }
                 }
+            }
 
             if ( $return_for_no_cond === 1 ) {
                 continue;
@@ -5806,13 +5806,13 @@ function wpuf_modify_shortcodes( $content ) {
     $user_id = (int) get_post_meta( $post->ID, '_edit_last', true );
 
     if ( $user_id ) {
-    $roles = wpuf_get_single_user_roles( $user_id );
+        $roles = wpuf_get_single_user_roles( $user_id );
 
         // last modified by an admin (or by a user that no longer exists), returns
         // the content as it is, as before
         if ( empty( $roles ) || in_array( 'administrator', $roles, true ) ) {
-        return $content;
-    }
+            return $content;
+        }
     } else {
         // Posts inserted straight through wp_insert_post(), as the draft endpoint
         // and the REST API do, carry no _edit_last. Judge them by their author:
@@ -5824,8 +5824,8 @@ function wpuf_modify_shortcodes( $content ) {
         $author = get_userdata( (int) $post->post_author );
 
         if ( ! $author || in_array( 'administrator', (array) $author->roles, true ) || user_can( $author, 'unfiltered_html' ) ) {
-        return $content;
-    }
+            return $content;
+        }
     }
 
     $protected_shortcodes = wpuf_get_protected_shortcodes();
@@ -6478,7 +6478,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                 ],
                             ],
                         ],
-                        'use_theme_css'           => [
+                        'use_theme_css'  => [
                             'label'     => __( 'Use Theme CSS', 'wp-user-frontend' ),
                             'type'      => 'toggle',
                             'help_text' => __(

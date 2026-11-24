@@ -9,12 +9,17 @@ Vue.component('field-text-meta', {
         wpuf_mixins.form_field_mixin
     ],
 
+    data: function () {
+        return {
+            // The key the field had when its options opened, so typing a key does not lock the input midway.
+            opened_key: this.editing_form_field[this.option_field.name]
+        };
+    },
+
     computed: {
         // The Events Calendar reads these exact, case-sensitive keys, so a field already mapped to one stays locked.
         is_integration_key: function () {
-            var key = this.editing_form_field[this.option_field.name];
-
-            return 'string' === typeof key && /^_(Event|Venue|Organizer)[A-Z]/.test(key);
+            return 'string' === typeof this.opened_key && /^_(Event|Venue|Organizer)[A-Z]/.test(this.opened_key);
         },
 
         value: {

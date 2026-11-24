@@ -50,7 +50,16 @@ class Enrollment_Controller {
         $this->verify_nonce();
 
         $method = $this->resolve_active_method();
-        $input  = $this->collect_input();
+
+        // An active method is only changed through disable (password + code) first,
+        // so a session alone cannot swap the secret.
+        if ( $method->is_enrolled( $user_id ) ) {
+            wp_send_json_error(
+                [ 'message' => __( 'This method is already active. Disable it first to set it up again.', 'wp-user-frontend' ) ],
+                400
+            );
+        }
+        $input = $this->collect_input();
 
         $result = $method->start_enrollment( $user_id, $input );
 
@@ -70,7 +79,16 @@ class Enrollment_Controller {
         $this->verify_nonce();
 
         $method = $this->resolve_active_method();
-        $input  = $this->collect_input();
+
+        // An active method is only changed through disable (password + code) first,
+        // so a session alone cannot swap the secret.
+        if ( $method->is_enrolled( $user_id ) ) {
+            wp_send_json_error(
+                [ 'message' => __( 'This method is already active. Disable it first to set it up again.', 'wp-user-frontend' ) ],
+                400
+            );
+        }
+        $input = $this->collect_input();
 
         $result = $method->confirm_enrollment( $user_id, $input );
 

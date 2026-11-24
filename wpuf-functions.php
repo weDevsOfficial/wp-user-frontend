@@ -1177,6 +1177,30 @@ function wpuf_get_2fa_methods() {
 }
 
 /**
+ * Whether a user must pass the WPUF second factor before getting a session
+ *
+ * Sign-in paths that set the auth cookie themselves (such as social
+ * login) call this first and send enrolled users through the WPUF login
+ * form instead. Returns false when the 2FA module is off.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param int $user_id User ID.
+ *
+ * @return bool
+ */
+function wpuf_2fa_user_requires_challenge( $user_id ) {
+    $manager = function_exists( 'wpuf' ) ? wpuf()->two_factor : null;
+    $login   = $manager ? $manager->login : null;
+
+    if ( ! $login instanceof \WeDevs\Wpuf\TwoFactor\Login_Controller ) {
+        return false;
+    }
+
+    return $login->user_requires_challenge( absint( $user_id ) );
+}
+
+/**
  * Show custom fields in post content area
  *
  * @since 3.3.0 Introducing `render_field_data` to render field value

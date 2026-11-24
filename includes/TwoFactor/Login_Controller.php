@@ -81,13 +81,49 @@ class Login_Controller {
      */
     private $pending_method_choices = [];
 
+    /**
+     * ID of the user an application password authenticated in this
+     * request, 0 when none did. Per-request state.
+     *
+     * @var int
+     */
+    private $app_password_user_id = 0;
+
     public function __construct( Method_Registry $registry ) {
         $this->registry = $registry;
 
         add_action( 'init', [ $this, 'maybe_handle_method_choice' ], 8 );
         add_action( 'init', [ $this, 'maybe_handle_stage_two' ], 9 );
         add_filter( 'authenticate', [ $this, 'maybe_require_2fa_challenge' ], 40, 3 );
+        add_action( 'application_password_did_authenticate', [ $this, 'remember_app_password_user' ] );
         add_action( 'wpuf_login_form_bottom', [ $this, 'render_2fa_field' ] );
+    }
+
+    /**
+     * Remember which user an application password authenticated, so only
+     * that account skips the second step for this request.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param \WP_User $user User the application password belongs to.
+     */
+    public function remember_app_password_user( $user ) {
+        if ( $user instanceof \WP_User ) {
+            $this->app_password_user_id = (int) $user->ID;
+        }
+    }
+
+    /**
+     * Whether this user would be asked for a second factor at sign-in
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $user_id User ID.
+     *
+     * @return bool
+     */
+    public function user_requires_challenge( int $user_id ): bool {
+        return $this->is_2fa_enabled_globally() && ! empty( $this->intersect_active_and_enrolled( $user_id ) );
     }
 
     /**
@@ -218,8 +254,10 @@ class Login_Controller {
             return $user;
         }
 
-        // Application passwords are a separate, user-issued credential for API requests.
-        if ( did_action( 'application_password_did_authenticate' ) ) {
+        // Application passwords are a separate, user-issued credential for API
+        // requests. Only the account the application password belongs to skips
+        // the second step; a request can authenticate more than one account.
+        if ( $this->app_password_user_id === (int) $user->ID ) {
             return $user;
         }
 

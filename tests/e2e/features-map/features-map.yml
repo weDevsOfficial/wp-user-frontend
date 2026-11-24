@@ -851,3 +851,310 @@ features:
     name: Lost password for a known user reaches the mailer (env-gated skip without SMTP)
   - id: FL0006
     name: Valid credentials log the user in (logged-in view shown)
+
+  # New post form editor (builder chrome + frontend output) — formEditorTest.spec.ts
+  - id: FE0000
+    name: Admin creates a blank post form to exercise the editor
+  - id: FE0001
+    name: Editor shell renders header, tabs, stage and side panel
+  - id: FE0002
+    name: Inline form title rename persists after reload
+  - id: FE0004
+    name: Form switcher navigates to another form editor
+  - id: FE0005
+    name: Form id chip matches the id in the URL
+  - id: FE0006
+    name: Preview link renders the form on the preview page
+  - id: FE0007
+    name: Save persists the stage field set
+  - id: FE0008
+    name: Form Editor / Settings tabs toggle their panels
+  - id: FE0010
+    name: Add Fields panel lists every field group
+  - id: FE0011
+    name: Field search filters the panel and clearing restores it
+  - id: FE0012
+    name: Search with no match shows no field buttons
+  - id: FE0013
+    name: Clicking a field button adds it to the stage
+  - id: FE0016
+    name: Single-instance post fields cannot be added twice
+  - id: FE0017
+    name: Hover reveals Edit / Copy / Remove on a stage field
+  - id: FE0018
+    name: Edit switches the side panel to Field Options
+  - id: FE0019
+    name: Copy duplicates a field on the stage
+  - id: FE0020
+    name: Remove deletes a field from the stage
+  - id: FE0021
+    name: Drag reorder persists after save
+  - id: FE0022
+    name: Required field shows the asterisk on the stage
+  - id: FE0023
+    name: Step Start renders as a multistep divider
+  - id: FE0032
+    name: Settings sidebar lists every section
+  - id: FE0033
+    name: Clicking a settings section renders its panel
+  - id: FE0034
+    name: Post settings (submit text) persist after save
+  - id: FE0040
+    name: Frontend form renders with the selected layout class
+  - id: FE0046
+    name: Frontend submit creates the post
+  - id: FE0047
+    name: Required validation blocks an empty frontend submit
+  - id: FE0003
+    name: Empty form title is not persisted (known bug, test.fail)
+  - id: FE0009
+    name: Leaving a dirty editor raises the unsaved-changes guard
+  - id: FE0014
+    name: Dragging a panel field onto the stage adds it
+  - id: FE0015
+    name: Pro-only fields are shown gated with the pro badge
+  - id: FE0024
+    name: Field Options shows an empty state on a form with no fields
+  - id: FE0025
+    name: Label edit updates the stage label live
+  - id: FE0026
+    name: Meta key is locked for post fields
+  - id: FE0027
+    name: Help text edit shows under the field on the stage
+  - id: FE0028
+    name: Required toggle adds and removes the asterisk
+  - id: FE0029
+    name: Field size option applies the size class on the stage
+  - id: FE0030
+    name: Dropdown options render on the stage
+  - id: FE0031
+    name: Conditional logic is offered once more than one field exists
+  - id: FE0035
+    name: Multistep toggle reveals the progress bar options
+  - id: FE0036
+    name: Form style (layout) selection persists
+  - id: FE0037
+    name: Payment settings persist after save
+  - id: FE0038
+    name: Notification settings persist after save
+  - id: FE0039
+    name: Form title and description toggles reach the frontend
+  - id: FE0041
+    name: Form title and description render on the template
+  - id: FE0042
+    name: Field help text renders under the field
+  - id: FE0043
+    name: Multistep navigation works on the frontend
+  - id: FE0044
+    name: Native selects use the template chevron
+  - id: FE0045
+    name: Image field with a single-file limit blocks a second upload
+  - id: FE0048
+    name: A subscriber cannot open the form builder
+  - id: FE0049
+    name: An unknown form id does not break the editor page
+  - id: FE0050
+    name: A script payload in the form title is escaped on the frontend
+
+  # All field types (one form with every field) — allFieldTypesTest.spec.ts
+  - id: AF0001
+    name: Every field type in the catalogue is added to one form
+  - id: AF0002
+    name: Post Fields render on the stage
+  - id: AF0003
+    name: Taxonomy fields render on the stage
+  - id: AF0004
+    name: Custom fields render on the stage
+  - id: AF0005
+    name: Pricing fields render on the stage
+  - id: AF0006
+    name: Others fields render on the stage
+  - id: AF0007
+    name: The field set survives a save + reload
+  - id: AF0008
+    name: Frontend renders a row and control for every core field type
+  - id: AF0009
+    name: Frontend renders the multistep wrapper for Step Start
+  - id: AF0010
+    name: Environment-dependent fields are reported (captchas, map, cart total)
+  - id: AF0011
+    name: Every rendered field accepts input and the form submits
+  - id: AF0012
+    name: The submitted post exists with the entered title
+  - id: AF0013
+    name: Field values round-trip through the WPUF edit form
+  - id: AF0014
+    name: Repeat Field renders on the frontend (known bug, test.fail)
+  - id: AF0015
+    name: No field type renders more than one row (known bug, test.fail)
+  - id: AF0016
+    name: An empty submit is blocked by the required-field rules (known bug with Math Captcha)
+  - id: AF0017
+    name: Email Address rejects a malformed address
+  - id: AF0018
+    name: Website URL rejects a malformed URL
+  - id: AF0019
+    name: Numeric Field only accepts numbers
+  - id: AF0020
+    name: Math Captcha rejects a wrong answer
+  - id: AF0021
+    name: Step Start without multistep enabled keeps the form usable (known bug, test.fail)
+
+  # Post-form coverage gaps (docs/post-form.md §7–§8) — PFG specs
+  # postFormViewControlTestPro.spec.ts
+  - id: PFG0000
+    name: Setup — form, page and a post to guard
+  - id: PFG0001
+    name: Restrict by roles — an allowed role sees the content
+  - id: PFG0002
+    name: Restrict by roles — a disallowed role gets the message
+  - id: PFG0003
+    name: Restrict by roles — a logged-out visitor is blocked
+  - id: PFG0004
+    name: Restrict by packs — a subscriber holding the pack passes
+  - id: PFG0005
+    name: Restrict by packs — a user without the pack is blocked
+  - id: PFG0006
+    name: Both view-control gates on — passing one is not enough
+
+  # postFormDisplayAdvancedTest.spec.ts
+  - id: PFG0010
+    name: Use Theme CSS off keeps WPUF form styling
+  - id: PFG0011
+    name: Use Theme CSS on hands styling to the theme
+  - id: PFG0012
+    name: Label Position = Above Element
+  - id: PFG0013
+    name: Label Position = Left / Right
+  - id: PFG0014
+    name: Label Position = Hidden
+  - id: PFG0015
+    name: Form style selection persists and reaches the frontend
+  - id: PFG0020
+    name: Inside the schedule window the form is submittable
+  - id: PFG0021
+    name: Before the window opens the pending notice shows
+  - id: PFG0022
+    name: After the window closes the expired notice shows
+  - id: PFG0023
+    name: Scheduling off restores the form
+  - id: PFG0040
+    name: AI Review enabled writes a review record
+  - id: PFG0041
+    name: AI Review disabled writes nothing
+  - id: PFG0042
+    name: N8N enabled still lets the submission through
+  - id: PFG0043
+    name: N8N with an unreachable webhook is not fatal
+  - id: PFG0044
+    name: Modules panel shows its empty state and link
+
+  # postFormPricingTestPro.spec.ts
+  - id: PFG0030
+    name: Pricing-fields payment setting persists and the pricing rows render
+  - id: PFG0031
+    name: Cart Total sums the selected pricing options
+  - id: PFG0032
+    name: The charge matches the cart and the post waits for payment
+  - id: PFG0033
+    name: With pricing payment off the post is created directly
+
+  # postFormExpirationTestPro.spec.ts
+  - id: PFG0050
+    name: Expiration settings round-trip through Save
+  - id: PFG0051
+    name: An expired post flips to the configured status
+  - id: PFG0052
+    name: Duration types write the matching expiration date
+  - id: PFG0053
+    name: Expiration email is queued for the author
+  - id: PFG0054
+    name: Expiration disabled writes no expiry metadata
+  - id: PFG0055
+    name: Inside the edit window the post is still editable
+  - id: PFG0056
+    name: After the edit window the edit form is refused
+
+  # postFormGuestSetupTest.spec.ts
+  - id: PFG0060
+    name: A guest submission is held until the email is verified
+  - id: PFG0061
+    name: The verification link publishes the post
+  - id: PFG0062
+    name: Admin notification fires after verification, not at submit
+  - id: PFG0063
+    name: A tampered verification link is rejected
+  - id: PFG0064
+    name: The Post Form template ships its documented field set
+  - id: PFG0065
+    name: Default category applies when the form has no Category field
+  - id: PFG0066
+    name: A non-WooCommerce post type is created as that type
+  - id: PFG0067
+    name: Copying a field keeps the meta keys unique
+
+  # postFormFieldBehaviourTest.spec.ts
+  - id: PFG0070
+    name: Section Break prints its title and description
+  - id: PFG0071
+    name: Custom HTML output reaches the rendered form
+  - id: PFG0072
+    name: A Shortcode field is executed, not printed
+  - id: PFG0073
+    name: An Action Hook field fires its hook
+  - id: PFG0074
+    name: Columns render as a multi-column row
+  - id: PFG0075
+    name: A required Terms & Conditions blocks submit
+  - id: PFG0076
+    name: A Ratings value is stored on the post
+  - id: PFG0077
+    name: An Embed value is stored on the post
+  - id: PFG0078
+    name: Hidden Field writes its value to post meta
+  - id: PFG0079
+    name: File Upload rejects a file over the size limit
+  - id: PFG0080
+    name: Checkbox / Radio / Multi Select values round-trip
+  - id: PFG0081
+    name: Repeat Field renders on the frontend (known bug, test.fail)
+
+  # postFormLifecycleTest.spec.ts
+  - id: PFG0090
+    name: Editing another user's post is refused
+  - id: PFG0091
+    name: A bogus pid / missing nonce is handled, not fatal
+  - id: PFG0092
+    name: A saved draft can be resumed and published
+  - id: PFG0093
+    name: Multistep Next is blocked while a step is invalid
+  - id: PFG0094
+    name: Multistep Back keeps what was already entered
+  - id: PFG0095
+    name: Conditional logic chains A to B to C
+  - id: PFG0096
+    name: A conditional field reappears when the rule is satisfied
+  - id: PFG0097
+    name: Duplicating a form copies it under a new id
+  - id: PFG0098
+    name: Trashing a form removes it from the default list
+  - id: PFG0099
+    name: Searching the list filters by form name
+
+  # postFormSecurityTest.spec.ts
+  - id: PFG0100
+    name: Saving without a nonce is refused
+  - id: PFG0101
+    name: Saving with an invalid nonce is refused
+  - id: PFG0102
+    name: Saving as a non-admin is refused
+  - id: PFG0103
+    name: A malformed field payload does not corrupt the form
+  - id: PFG0104
+    name: Script payloads in label / help / placeholder are escaped
+  - id: PFG0105
+    name: Script payloads in the unauthorized messages are escaped
+  - id: PFG0106
+    name: Custom HTML renders as authored (documented behaviour)
+  - id: PFG0107
+    name: A missing captcha answer blocks submit

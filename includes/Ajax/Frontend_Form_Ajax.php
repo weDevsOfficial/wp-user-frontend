@@ -590,11 +590,11 @@ class Frontend_Form_Ajax {
                 // Nothing valid to send to, so skip mail sending.
                 if ( ! empty( $to ) ) {
                     $subject   = $this->prepare_mail_body( $edit_subject, $post_author, $post_id );
-                    $subject   = wp_specialchars_decode( wp_strip_all_tags( $subject ), ENT_QUOTES ); // Plain-text header: no HTML entities.
+                    $subject   = wp_strip_all_tags( $subject );
                     $mail_body = get_formatted_mail_body( $mail_body, $subject );
                     $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
 
-                    wp_mail( $to, $subject, $mail_body, $headers );
+                    wp_mail( $to, wp_specialchars_decode( $subject, ENT_QUOTES ), $mail_body, $headers ); // Decode only for the plain-text header; the HTML template keeps the encoded subject.
                 }
             }
 
@@ -621,11 +621,11 @@ class Frontend_Form_Ajax {
                 // Nothing valid to send to, so skip mail sending.
                 if ( ! empty( $to ) ) {
                     $subject   = $this->prepare_mail_body( $new_notification['subject'], $post_author, $post_id );
-                    $subject   = wp_specialchars_decode( wp_strip_all_tags( $subject ), ENT_QUOTES ); // Plain-text header: no HTML entities.
+                    $subject   = wp_strip_all_tags( $subject );
                     $mail_body = get_formatted_mail_body( $mail_body, $subject );
                     $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
 
-                    wp_mail( $to, $subject, $mail_body, $headers );
+                    wp_mail( $to, wp_specialchars_decode( $subject, ENT_QUOTES ), $mail_body, $headers ); // Decode only for the plain-text header; the HTML template keeps the encoded subject.
                 }
             }
 

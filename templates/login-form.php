@@ -76,7 +76,7 @@ $button_text          = isset( $button_text ) ? (string) $button_text : __( 'Log
 
         <?php
             $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' );
-            $turnstile = wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' );
+            $turnstile = 'on' === wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' ) ? wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' ) : 'off';
 
             $turnstile_site_key = wpuf_get_option( 'turnstile_site_key', 'wpuf_general', '' );
         ?>

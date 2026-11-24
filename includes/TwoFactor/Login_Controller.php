@@ -32,8 +32,10 @@ namespace WeDevs\Wpuf\TwoFactor;
  * only when an instance flag set by an earlier stage is present, so
  * those fields are invisible until the prior stage succeeds.
  *
- * Limitation (documented): wp-login.php is not intercepted. Admins
- * logging in via /wp-admin/ bypass this challenge entirely.
+ * Any other password sign-in (wp-login.php, XML-RPC, other plugins'
+ * forms) is refused for enrolled accounts, because only the WPUF login
+ * form can run the second step. Application passwords for API requests
+ * still work for the account they belong to.
  *
  * @since WPUF_SINCE
  */

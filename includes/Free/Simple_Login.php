@@ -436,9 +436,10 @@ class Simple_Login {
 
                 default:
                     $loggedout = isset( $getdata['loggedout'] ) ? sanitize_text_field( $getdata['loggedout'] ) : '';
+                    $enable_turnstile     = wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' );
                     $login_form_turnstile = wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' );
 
-                    if ( 'on' === $login_form_turnstile ) {
+                    if ( 'on' === $enable_turnstile && 'on' === $login_form_turnstile ) {
                         wp_enqueue_script( 'wpuf-turnstile' );
                     }
 
@@ -517,9 +518,10 @@ class Simple_Login {
      * Default Turnstile verification — original Cloudflare HTTP flow.
      *
      * Registered as the default `wpuf_login_turnstile_verify` callback in
-     * `__construct()`. Reads `login_form_turnstile` from `wpuf_profile` to
-     * decide whether verification is required, then POSTs the user's token
-     * to Cloudflare's siteverify endpoint.
+     * `__construct()`. Verification is required only when both the General
+     * `enable_turnstile` switch and the login form's `login_form_turnstile`
+     * setting are on; it then POSTs the user's token to Cloudflare's
+     * siteverify endpoint.
      *
      * Public so the filter can dispatch to it; not part of the documented
      * extension surface — extensions should hook the filter, not call this
@@ -534,9 +536,10 @@ class Simple_Login {
     public function default_turnstile_verify( $is_valid, $context ) {
         $nonce = isset( $_POST['wpuf-login-nonce'] ) ? sanitize_key( wp_unslash( $_POST['wpuf-login-nonce'] ) ) : '';
 
+        $enable_turnstile     = wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' );
         $login_form_turnstile = wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' );
 
-        if ( 'on' !== $login_form_turnstile ) {
+        if ( 'on' !== $enable_turnstile || 'on' !== $login_form_turnstile ) {
             return true;
         }
 

@@ -6,8 +6,8 @@ namespace WeDevs\Wpuf\TwoFactor;
  * Symmetric encryption for 2FA secrets at rest
  *
  * Uses AES-256-GCM with a key derived from AUTH_KEY. If AUTH_KEY rotates,
- * stored ciphertexts become unreadable and affected users must re-enroll —
- * documented behavior in docs/totp.md.
+ * stored ciphertexts become unreadable and affected users must re-enroll
+ * (an admin can reset their 2FA from the user profile).
  *
  * @since WPUF_SINCE
  */

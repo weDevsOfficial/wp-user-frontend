@@ -54,7 +54,7 @@ class Meta_Mapper {
         // publish transition. See ensure_job_submission_action_triggered().
         update_post_meta( $post_id, '_public_submission', 1 );
 
-        $this->persist_meta( $post_id );
+        $this->persist_meta( $post_id, $form_id );
     }
 
     /**
@@ -74,7 +74,7 @@ class Meta_Mapper {
             return;
         }
 
-        $this->persist_meta( $post_id );
+        $this->persist_meta( $post_id, $form_id );
     }
 
     /**
@@ -152,13 +152,21 @@ class Meta_Mapper {
      * @since WPUF_SINCE
      *
      * @param int $post_id Post ID.
+     * @param int $form_id WPUF form ID.
      *
      * @return void
      */
-    private function persist_meta( $post_id ) {
+    private function persist_meta( $post_id, $form_id ) {
         $mapping = $this->get_meta_mapping();
 
+        // only fields that the submitted form really contains may be written
+        $form_field_names = wp_list_pluck( wpuf_get_form_fields( $form_id ), 'name' );
+
         foreach ( $mapping as $field_name => $meta_key ) {
+            if ( ! in_array( $field_name, $form_field_names, true ) ) {
+                continue;
+            }
+
             if ( ! isset( $_POST[ $field_name ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
                 continue;
             }

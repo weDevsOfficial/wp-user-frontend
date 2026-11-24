@@ -26,6 +26,7 @@ class Meta_Mapper {
      * @return void
      */
     public function register_hooks() {
+        add_filter( 'wpuf_add_post_args', [ $this, 'apply_approval_status' ], 10, 3 );
         add_action( 'wpuf_add_post_after_insert', [ $this, 'handle_after_insert' ], 10, 4 );
         add_action( 'wpuf_edit_post_after_update', [ $this, 'handle_after_update' ], 10, 4 );
     }
@@ -46,8 +47,6 @@ class Meta_Mapper {
         if ( ! $this->is_job_listing_form( $form_settings ) ) {
             return;
         }
-
-        $this->apply_approval_override( $post_id, $form_settings );
 
         // Signal to WPJM that this is a frontend submission — WPJM's own
         // shutdown handler will fire `job_manager_job_submitted` on the next
@@ -92,19 +91,24 @@ class Meta_Mapper {
     }
 
     /**
-     * Override post_status to `pending` when WPJM requires approval.
+     * Insert the job listing as `pending` when WPJM requires approval.
      *
-     * WPUF has already inserted the post by this hook, so we flip the status
-     * before WPJM's own `transition_post_status` listener fires.
+     * Runs on `wpuf_add_post_args`, before the post is inserted, so the
+     * listing is never published first and no publish hooks fire for it.
      *
      * @since WPUF_SINCE
      *
-     * @param int   $post_id       Post ID.
+     * @param array $postarr       Post data WPUF is about to insert.
+     * @param int   $form_id       WPUF form ID.
      * @param array $form_settings WPUF form settings.
      *
-     * @return void
+     * @return array
      */
-    private function apply_approval_override( $post_id, $form_settings ) {
+    public function apply_approval_status( $postarr, $form_id, $form_settings ) {
+        if ( ! $this->is_job_listing_form( $form_settings ) ) {
+            return $postarr;
+        }
+
         $requires_approval = (bool) get_option( 'job_manager_submission_requires_approval' );
 
         /**
@@ -113,32 +117,21 @@ class Meta_Mapper {
          * @since WPUF_SINCE
          *
          * @param bool  $requires_approval Whether the submission should land as pending.
-         * @param int   $post_id           Post ID.
+         * @param int   $form_id           WPUF form ID.
          * @param array $form_settings     WPUF form settings.
          */
         $requires_approval = (bool) apply_filters(
             'wpuf_wpjm_should_approve',
             $requires_approval,
-            $post_id,
+            $form_id,
             $form_settings
         );
 
-        if ( ! $requires_approval ) {
-            return;
+        if ( $requires_approval ) {
+            $postarr['post_status'] = 'pending';
         }
 
-        $post = get_post( $post_id );
-
-        if ( ! $post || 'pending' === $post->post_status ) {
-            return;
-        }
-
-        wp_update_post(
-            [
-                'ID'          => $post_id,
-                'post_status' => 'pending',
-            ]
-        );
+        return $postarr;
     }
 
     /**
@@ -229,10 +222,11 @@ class Meta_Mapper {
         switch ( $meta_key ) {
             case '_company_website':
             case '_company_video':
-                return WP_Job_Manager_Post_Types::sanitize_meta_field_url( $value );
+                // these fields hold one string; an array would fatal in WPJM's sanitizers on PHP 8
+                return is_string( $value ) ? WP_Job_Manager_Post_Types::sanitize_meta_field_url( $value ) : '';
 
             case '_application':
-                return WP_Job_Manager_Post_Types::sanitize_meta_field_application( $value );
+                return is_string( $value ) ? WP_Job_Manager_Post_Types::sanitize_meta_field_application( $value ) : '';
 
             case '_remote_position':
                 return (int) (bool) $value;

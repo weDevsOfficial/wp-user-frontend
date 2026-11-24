@@ -1,5 +1,27 @@
 <?php
 
+/**
+ * Filters the heading shown above the account page Submit Post form. Return an empty string to hide it.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $heading The "Submission Menu Label" setting, "Submit Post" by default.
+ */
+$submit_post_heading = apply_filters(
+    'wpuf_account_submit_post_heading',
+    wpuf_get_option( 'post_submission_label', 'wpuf_my_account', __( 'Submit Post', 'wp-user-frontend' ) )
+);
+
+if ( '' !== (string) $submit_post_heading ) {
+    ?>
+    <div class="wpuf-bg-transparent wpuf-rounded-t-lg wpuf-mb-3">
+        <h2 class="wpuf-text-gray-700 wpuf-font-bold wpuf-text-[32px] wpuf-leading-[48px] wpuf-tracking-[0.13px] wpuf-m-0">
+            <?php echo esc_html( $submit_post_heading ); ?>
+        </h2>
+    </div>
+    <?php
+}
+
 $no_form_notice = __( 'No post form assigned yet by the administrator.', 'wp-user-frontend' );
 $selected_form  = absint( wpuf_get_option( 'post_submission_form', 'wpuf_my_account' ) );
 $selected_post  = $selected_form ? get_post( $selected_form ) : null;

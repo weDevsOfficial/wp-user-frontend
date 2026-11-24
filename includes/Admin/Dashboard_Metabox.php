@@ -49,9 +49,9 @@ class Dashboard_Metabox {
     public function add_metabox() {
         wp_add_dashboard_widget(
             self::OPT_KEY, esc_html__( 'WP User Frontend News & Updates', 'wp-user-frontend' ), [
-            $this,
-            'render_metabox',
-        ], NULL, NULL, 'normal', 'high'
+				$this,
+				'render_metabox',
+			], null, null, 'normal', 'high'
         );
     }
 
@@ -97,7 +97,7 @@ class Dashboard_Metabox {
                     foreach ( $articles as $article ) {
                         ?>
                         <li><a href="<?php echo esc_url( $article['href'] ); ?>"
-                               target="_blank"><?php echo esc_html( $article['title'] ); ?></a></li>
+                                target="_blank"><?php echo esc_html( $article['title'] ); ?></a></li>
                     <?php } ?>
                 </ul>
             </div>
@@ -112,7 +112,7 @@ class Dashboard_Metabox {
                         ?>
                         <li class="blog-item">
                             <a href="<?php echo esc_url( $link['href'] ); ?>"
-                               target="_blank"><?php esc_html( $link['title'], 'wp-user-frontend' ); ?>
+                                target="_blank"><?php esc_html( $link['title'], 'wp-user-frontend' ); ?>
                                 <span aria-hidden="true" class="dashicons dashicons-external"></span></a>
                         </li>
                     <?php } ?>
@@ -152,7 +152,7 @@ class Dashboard_Metabox {
                 'href'  => $domain . $path,
             ];
             array_push( $article_list, $article );
-            $count ++;
+            ++$count;
             if ( $count >= 5 ) {
                 break;
             }

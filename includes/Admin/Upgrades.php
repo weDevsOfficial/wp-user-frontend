@@ -80,6 +80,13 @@ class Upgrades {
             return;
         }
 
+        // admin_init also runs for logged-out admin-ajax.php requests, so the nonce alone
+        // must not be what allows a data update. Only the role that is offered the link
+        // (show_upgrade_notice checks update_plugins) may run it.
+        if ( ! current_user_can( 'update_plugins' ) ) {
+            return;
+        }
+
         if ( empty( $_GET['wpuf_do_update'] ) || ! sanitize_text_field( wp_unslash( $_GET['wpuf_do_update'] ) ) ) {
             return;
         }

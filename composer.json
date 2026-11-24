@@ -10,17 +10,18 @@
     }
   ],
   "minimum-stability": "dev",
+  "prefer-stable": true,
   "require": {
     "php": ">=7.4",
     "composer/installers": ">=1.4",
-    "wedevs/wp-utils": "dev-main"
+    "wedevs/wp-utils": "^1.1"
   },
   "require-dev": {
     "wp-coding-standards/wpcs": "dev-develop",
     "dealerdirect/phpcodesniffer-composer-installer": "0.7.0",
     "tareq1988/wp-php-cs-fixer": "dev-master",
     "phpcompatibility/phpcompatibility-wp": "dev-master",
-    "phpunit/phpunit": "7.5.9"
+    "phpunit/phpunit": "^9.6"
   },
   "autoload": {
     "psr-4": {
@@ -37,6 +38,9 @@
     ]
   },
   "config": {
+    "platform": {
+      "php": "7.4"
+    },
     "allow-plugins": {
       "composer/installers": true,
       "dealerdirect/phpcodesniffer-composer-installer": true

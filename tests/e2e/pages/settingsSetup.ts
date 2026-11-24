@@ -2,9 +2,11 @@ import dotenv from 'dotenv';
 dotenv.config({ quiet: true });
 import { expect, type Page, type Dialog } from '@playwright/test';
 import { Selectors } from './selectors';
-import { Urls } from '../utils/testData';
+import { Urls, Users } from '../utils/testData';
 import { Base } from './base';
 import { waitForSiteReady } from '../utils/siteReady';
+import { clearSavedSession } from '../utils/authSession';
+import { wpufPageSlug } from '../utils/wpufPages';
 export class SettingsSetupPage extends Base {
 
     constructor(page: Page) {
@@ -131,32 +133,89 @@ export class SettingsSetupPage extends Base {
         }
     }
 
-    async validateWPUFpages() {
-        await this.navigateToURL(this.pagesPage);
+    /**
+     * The WPUF pages, each with the admin-list locator that identifies ITS row.
+     *
+     * Titles alone are ambiguous — Dokan ships its own "Dashboard" page, so
+     * WPUF's is created as `dashboard-2`. Every locator below therefore pins the
+     * row by the post-state badge WPUF adds ("— WPUF Dashboard Page"), or by an
+     * exact row title where WPUF owns the name outright.
+     */
+    private readonly wpufPages: Array<[string, string]> = [
+        ['Account', Selectors.settingsSetup.wpufPages.wpufAccountPage],
+        ['Dashboard', Selectors.settingsSetup.wpufPages.wpufDashboardPage],
+        ['Edit', Selectors.settingsSetup.wpufPages.wpufEditPage],
+        ['Login', Selectors.settingsSetup.wpufPages.wpufLoginPage],
+        ['Subscription', Selectors.settingsSetup.wpufPages.wpufSubscriptionPage],
+        ['Order Received', Selectors.settingsSetup.wpufPages.orderReceivedPage],
+        ['Payment', Selectors.settingsSetup.wpufPages.paymentPage],
+        ['Thank You', Selectors.settingsSetup.wpufPages.thankYouPage],
+    ];
 
-        //Validate WPUF Pages
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufAccountPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufDashboardPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufEditPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufLoginPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.orderReceivedPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.paymentPage);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPages.clickNextPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufSubscriptionPage);
-        await this.assertionValidate(Selectors.settingsSetup.wpufPages.thankYouPage);
+    async validateWPUFpages() {
+        // Validate each WPUF page independently of pagination. The pages list is sorted
+        // alphabetically and other plugins (WooCommerce, MailPoet, Dokan, EDD) add their own
+        // pages, so which pagination page a WPUF row lands on is not stable — relying on a
+        // fixed "page 1 then Next" split makes this flaky (a shifted row times out). Instead
+        // search the list for each page (WP admin `s=` param) so its row is always on screen.
+        const wpufPages: Array<[string, string]> = [
+            [ 'Account', Selectors.settingsSetup.wpufPages.wpufAccountPage ],
+            [ 'Dashboard', Selectors.settingsSetup.wpufPages.wpufDashboardPage ],
+            [ 'Edit', Selectors.settingsSetup.wpufPages.wpufEditPage ],
+            [ 'Login', Selectors.settingsSetup.wpufPages.wpufLoginPage ],
+            [ 'Order Received', Selectors.settingsSetup.wpufPages.orderReceivedPage ],
+            [ 'Payment', Selectors.settingsSetup.wpufPages.paymentPage ],
+            [ 'Subscription', Selectors.settingsSetup.wpufPages.wpufSubscriptionPage ],
+            [ 'Thank You', Selectors.settingsSetup.wpufPages.thankYouPage ],
+        ];
+
+        for (const [ pageName, selector ] of wpufPages) {
+            await this.navigateToURL(`${this.pagesPage}&s=${encodeURIComponent(pageName)}`);
+            await this.page.waitForLoadState('domcontentloaded');
+            await this.assertionValidate(selector);
+        }
         console.log('WPUF Pages are validated. all pages created successfully');
+    }
+
+    /**
+     * Resolve a WPUF page by the shortcode it contains, not by its title.
+     *
+     * Other plugins ship pages with the same title: dokan-lite installs its own
+     * "Dashboard" with the slug `dashboard`, so WordPress slugs WPUF's `dashboard-2`
+     * and a title-only locator matches both links and trips Playwright strict mode.
+     * Which plugin wins the plain slug depends on activation order, so the slug can
+     * not be hard-coded either. The shortcode is the stable identity of a WPUF page.
+     *
+     * Returns the page's nav link locator, or null when no page holds the shortcode
+     * (the caller then falls back to the title-based selector).
+     */
+    wpufPageLinkByShortcode(shortcode: string): string | null {
+        const slug = wpufPageSlug(shortcode);
+
+        return slug ? `//ul[@class="wp-block-page-list"]//li//a[contains(@href,"/${slug}/")]` : null;
+    }
+
+    /**
+     * Validate a WPUF page link, preferring the shortcode-resolved locator and
+     * falling back to the title-based selector when the page cannot be resolved.
+     */
+    async validateWPUFPageLink(shortcode: string, fallbackSelector: string) {
+        await this.validateAndClick(this.wpufPageLinkByShortcode(shortcode) ?? fallbackSelector);
     }
 
     async validateWPUFpagesFE() {
         //Go to FrontEnd
         await this.navigateToURL(Urls.baseUrl);
 
-        //Validate WPUF Pages
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.dashboardPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.editPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.loginPageFE);
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.subscriptionPageFE);
+        // Validate WPUF Pages. Identify each page by the shortcode it holds rather than
+        // its title: other active plugins ship pages with the same titles (dokan-lite
+        // installs its own "Dashboard"), which makes a title-only locator ambiguous and
+        // trips Playwright strict mode.
+        await this.validateWPUFPageLink('[wpuf_account]', Selectors.settingsSetup.wpufPagesFE.accountPageFE);
+        await this.validateWPUFPageLink('[wpuf_dashboard]', Selectors.settingsSetup.wpufPagesFE.dashboardPageFE);
+        await this.validateWPUFPageLink('[wpuf_edit]', Selectors.settingsSetup.wpufPagesFE.editPageFE);
+        await this.validateWPUFPageLink('[wpuf-login]', Selectors.settingsSetup.wpufPagesFE.loginPageFE);
+        await this.validateWPUFPageLink('[wpuf_sub_pack]', Selectors.settingsSetup.wpufPagesFE.subscriptionPageFE);
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.orderReceivedPageFE);
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.thankYouPageFE);
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.paymentPageFE);
@@ -166,7 +225,7 @@ export class SettingsSetupPage extends Base {
 
         await this.navigateToURL(Urls.baseUrl);
 
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
+        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.dashboardTab);
         await this.assertionValidate(Selectors.settingsSetup.accountPageTabs.viewDashboardPara);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.postsTab);
@@ -194,30 +253,14 @@ export class SettingsSetupPage extends Base {
             }
         };
         this.page.on('dialog', dialogHandler);
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
-        } catch (error) {
-            console.log('Failed to click Run Updater:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
         this.page.off('dialog', dialogHandler);
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
-        } catch (error) {
-            console.log('Failed to click Allow1:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
-        } catch (error) {
-            console.log('Failed to click Allow:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
-        } catch (error) {
-            console.log('Failed to click Skip Setup:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
 
         // try {
         //     await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSwitchCart);
@@ -231,17 +274,9 @@ export class SettingsSetupPage extends Base {
         //     console.log('Failed to click Dismiss:', error);
         // }
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
-        } catch (error) {
-            console.log('Failed to click EDD notice Cross:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
 
-        try {
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);
-        } catch (error) {
-            console.log('Failed to click PayPal Cross:', error);
-        }
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);
 
         if (ifWPUFLite == true) {
             //Activate Plugin
@@ -330,6 +365,20 @@ export class SettingsSetupPage extends Base {
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
         }
         await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
+
+        // Already activated? The key input renders readonly with a masked value and
+        // "Activations Remaining" is shown. Filling it then blocks until the test
+        // timeout ("element is not editable"), so short-circuit instead.
+        const alreadyActivated = await this.page
+            .locator(Selectors.settingsSetup.pluginStatusCheck.activationRemaining)
+            .first()
+            .isVisible()
+            .catch(() => false);
+        if (alreadyActivated) {
+            console.log('WPUF-Pro Status: License was already Activated');
+            return;
+        }
+
         //Activate Plugin
         await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
         await this.page.waitForTimeout(200);
@@ -355,10 +404,20 @@ export class SettingsSetupPage extends Base {
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDokanLite);
 
                 await this.navigateToURL(this.pluginsPage);
+                // Activation is confirmed by the Deactivate control appearing.
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickDokanLiteDeactivate);
 
-                await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
-
+                // Some Dokan versions surface an Appsero opt-in ("Allow") after activation and
+                // some do not. Dismiss it when present, but never block on it — it is optional
+                // UI, and activation is already verified above. Blocking here hung LS0030 for
+                // the full test timeout on builds where the notice never appears.
+                const dokanAllow = this.page.locator(Selectors.settingsSetup.pluginStatusCheck.clickAllow).first();
+                try {
+                    await dokanAllow.waitFor({ timeout: 5000 });
+                    await dokanAllow.click();
+                } catch (e) {
+                    console.log('Dokan Appsero opt-in not shown; continuing');
+                }
 
                 await this.navigateToURL(this.wpAdminPage);
                 await this.validateAndClick(Selectors.login.basicNavigation.clickDokanSidebar);
@@ -593,17 +652,36 @@ export class SettingsSetupPage extends Base {
     }
 
     async createPostCategories() {
-        //Go to Admin-Users
-        await this.navigateToURL(this.categoriesPage);
-        //Add New Category
-        //await this.validateAndClick(Selectors.settingsSetup.categories.clickCategoryMenu);
-        await this.page.waitForLoadState('domcontentloaded');
         const categoryNames: string[] = ['Science', 'Music'];
         for (let i = 0; i < categoryNames.length; i++) {
+            // Reload the categories screen for every term. WordPress's "Add New Category"
+            // form falls back to a full-page POST when its AJAX handler isn't bound, so filling
+            // the next term into a form left over from the previous submit races that reload and
+            // posts an empty name. A fresh page guarantees a stable form for each term.
+            await this.navigateToURL(this.categoriesPage);
+            await this.page.waitForLoadState('domcontentloaded');
+
+            const categoryRow = this.page
+                .locator(Selectors.settingsSetup.categories.validateCategory(categoryNames[i]))
+                .first();
+
+            // Idempotent: skip terms that already exist (e.g. a re-run against a used site).
+            if ( await categoryRow.count() > 0 ) {
+                continue;
+            }
+
             await this.validateAndFillStrings(Selectors.settingsSetup.categories.addNewCategory, categoryNames[i]);
             await this.validateAndClick(Selectors.settingsSetup.categories.submitCategory);
             await this.page.waitForTimeout(500);
-            await this.assertionValidate(Selectors.settingsSetup.categories.validateCategory(categoryNames[i]));
+
+            // The add completes either via AJAX (row injected in place) or a full-page POST (the
+            // submit navigates and the row is present after the redirect). Settle the page, then
+            // wait on the row; .first() tolerates any duplicate left on a re-used site.
+            await this.page.waitForLoadState('domcontentloaded').catch(() => {});
+            await this.page
+                .locator(Selectors.settingsSetup.categories.validateCategory(categoryNames[i]))
+                .first()
+                .waitFor({ timeout: 20000 });
         }
     }
     async createPostTags() {
@@ -873,9 +951,24 @@ export class SettingsSetupPage extends Base {
         // instead of a fixed 20s sleep (same worst-case ceiling, faster when done).
         await this.page.waitForTimeout(3000);
         await waitForSiteReady(this.page, 60000);
+
+        // The reset wipes the users/usermeta tables, so the current cookie (and any
+        // cached .auth state) is dead — every admin page below would render wp-login.
+        // Re-authenticate before touching plugins.php.
+        clearSavedSession(Users.adminUsername);
+        const { BasicLoginPage } = await import('./basicLogin'); // dynamic: basicLogin imports this module
+        await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
+
         await this.navigateToURL(this.pluginsPage);
-        await this.page.reload();
+        if (!this.page.url().includes('plugins.php')) {
+            await this.navigateToURL(this.pluginsPage);
+        }
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWCvendors);
+        // WP Reset only restores the plugins that were active when it ran, so a site
+        // whose EDD had drifted inactive comes back without the `download_*` taxonomies
+        // and PF0018 dies on "Invalid taxonomy". Optional click: no-op when already active.
+        await this.navigateToURL(this.pluginsPage);
+        await this.clickIfAvailable(Selectors.settingsSetup.pluginStatusCheck.clickEDD);
 
 
         await this.navigateToURL(this.pluginsPage);

@@ -1,7 +1,19 @@
 import { execSync } from 'child_process';
 
 /**
- * Run a wp-cli command inside the wp-env "tests-cli" container and return stdout.
+ * The wp-env CLI container that backs the site under test. wp-env serves the dev
+ * site (:8888) from `cli` and the tests site (:8889, the default target) from
+ * `tests-cli`. DB assertions must run against whichever one QA_BASE_URL points at,
+ * otherwise they read a different database than the browser navigates and fail
+ * (e.g. "Command failed" when a page created for the run isn't in that DB).
+ */
+function wpEnvCliContainer(): string {
+    return ( process.env.QA_BASE_URL || '' ).includes( ':8888' ) ? 'cli' : 'tests-cli';
+}
+
+/**
+ * Run a wp-cli command inside the wp-env container backing QA_BASE_URL and return
+ * stdout.
  *
  * Works both locally and in CI because both bring the environment up with
  * `wp-env` (see .github/workflows/e2e-wpuf.yml). `--skip-plugins --skip-themes`
@@ -10,8 +22,221 @@ import { execSync } from 'child_process';
  * surface (e.g. MailPoet subscribers, whose admin UI is gated by onboarding).
  */
 export function wpCli(command: string): string {
-    const full = `npx wp-env run tests-cli wp --skip-plugins --skip-themes ${command}`;
+    // Use the current package name: `wp-env` is a deprecated shim that only prints
+    // "Please run npx @wordpress/env instead" and exits 0 without running wp-cli, which
+    // made every wpCli() call return that message and throw when parsing its result.
+    const full = `npx @wordpress/env run ${wpEnvCliContainer()} wp --skip-plugins --skip-themes ${command}`;
+    // `@wordpress/env` resolves the instance from its working directory. In CI the suite and
+    // the wp-env instance share this directory, so the default cwd is correct. For a local
+    // setup where the wp-env project lives elsewhere (its .wp-env.json is not under tests/e2e),
+    // point WPUF_E2E_WP_ENV_DIR at that project dir so DB assertions hit the running instance
+    // instead of an unstarted one in the test cwd.
+    const cwd = process.env.WPUF_E2E_WP_ENV_DIR || process.cwd();
+    return execSync(full, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'], cwd } );
+}
+
+/**
+ * Same, but WITH plugins loaded. Needed whenever the command has to run WPUF's
+ * own code — firing `wpuf_remove_expired_post_hook`, reading a WPUF helper —
+ * because `wpCli()`'s `--skip-plugins` means those hooks are never registered.
+ * Slower, so prefer `wpCli()` for plain DB reads/writes.
+ */
+export function wpCliFull(command: string): string {
+    const full = `npx wp-env run tests-cli wp ${command}`;
     return execSync(full, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] });
+}
+
+let cliProbe: boolean | null = null;
+
+/**
+ * True when a wp-env CLI container is reachable. The suite also runs against
+ * non-wp-env sites (QA_BASE_URL pointing at a local WP install), where the CLI
+ * side-effect checks have to self-skip instead of failing the spec.
+ */
+export function wpCliAvailable(): boolean {
+    if (cliProbe === null) {
+        try {
+            wpCli('option get siteurl');
+            cliProbe = true;
+        } catch {
+            cliProbe = false;
+        }
+    }
+
+    return cliProbe;
+}
+
+/**
+ * Delete every WPUF form (post or registration) carrying the given title.
+ *
+ * Specs that build a form under a fixed name ("MailPoet Reg", "RF Settings")
+ * accumulate duplicates whenever the suite runs without the destructive setup
+ * phase, and every later "open the form called X" locator then dies on a
+ * strict-mode violation. Same self-cleaning idea as `seedPageWithShortcode`.
+ * No-op when no wp-env CLI is reachable, so non-wp-env runs are unaffected.
+ */
+export function deleteFormsByTitle( title: string ): void {
+    if ( ! wpCliAvailable() ) {
+        return;
+    }
+
+    try {
+        const ids = wpCli(
+            `post list --post_type=wpuf_forms,wpuf_profile --post_status=any --title="${title}" --field=ID`
+        ).trim();
+
+        for ( const id of ids.split( /\s+/ ).filter( Boolean ) ) {
+            wpCli( `post delete ${id} --force` );
+        }
+    } catch {
+        // Nothing to clean up — leave the site as it is.
+    }
+}
+
+/**
+ * Install a throwaway mu-plugin that echoes `marker` on `hookName`, so an
+ * Action Hook field can be proven to actually fire instead of only proving the
+ * hook name is not leaked. Returns false when no wp-env CLI is reachable.
+ */
+export function installHookProbe( hookName: string, marker: string ): boolean {
+    if ( ! wpCliAvailable() ) {
+        return false;
+    }
+
+    const php = `<?php add_action( '${hookName}', function() { echo '${marker}'; } );`;
+    // base64 keeps the PHP body free of quotes, which would otherwise have to
+    // survive both the local shell and the container's shell.
+    const encoded = Buffer.from( php, 'utf-8' ).toString( 'base64' );
+
+    try {
+        wpCli(
+            `eval 'file_put_contents( WPMU_PLUGIN_DIR . "/qa-hook-probe.php", base64_decode( "${encoded}" ) );'`
+        );
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+/** Remove the mu-plugin installed by `installHookProbe`. */
+export function removeHookProbe(): void {
+    if ( ! wpCliAvailable() ) {
+        return;
+    }
+
+    try {
+        wpCli( `eval '@unlink( WPMU_PLUGIN_DIR . "/qa-hook-probe.php" );'` );
+    } catch {
+        // nothing to remove
+    }
+}
+
+/**
+ * Current subscription-pack counts on the site, by post status.
+ *
+ * The subscription spec tracks the packs it creates, but other specs seed packs
+ * too, so its counters have to start from the real baseline instead of zero.
+ * Returns all-zero when no wp-env CLI is reachable.
+ */
+export function countSubscriptionPacks(): { all: number; publish: number; draft: number; trash: number } {
+    const zero = { all: 0, publish: 0, draft: 0, trash: 0 };
+
+    if ( ! wpCliAvailable() ) {
+        return zero;
+    }
+
+    const count = ( status: string ): number => {
+        try {
+            const out = wpCli(
+                `post list --post_type=wpuf_subscription --post_status=${status} --format=count`
+            ).trim();
+            return Number( out.split( /\s+/ ).filter( Boolean ).pop() || 0 );
+        } catch {
+            return 0;
+        }
+    };
+
+    // "All" in the WPUF list excludes trashed packs, matching WP's own list tables.
+    const publish = count( 'publish' );
+    const draft = count( 'draft' );
+
+    return { all: publish + draft, publish, draft, trash: count( 'trash' ) };
+}
+
+/** Post id for an exact title, or 0 when no post matches. */
+export function getPostIdByTitle(title: string, postType = 'post'): number {
+    const out = wpCli(`post list --post_type=${postType} --title="${title}" --field=ID --posts_per_page=1`).trim();
+
+    return Number(out.split(/\s+/).filter(Boolean).pop() || 0);
+}
+
+/** One field of a post (post_status, post_author, …). */
+export function getPostField(postId: number, field: string): string {
+    return wpCli(`post get ${postId} --field=${field}`).trim();
+}
+
+/** One meta value of a post; empty string when unset. */
+export function getPostMeta(postId: number, key: string): string {
+    try {
+        return wpCli(`post meta get ${postId} ${key}`).trim();
+    } catch {
+        return '';
+    }
+}
+
+export function setPostMeta(postId: number, key: string, value: string): void {
+    wpCli(`post meta update ${postId} ${key} '${value}'`);
+}
+
+export function deletePostMeta(postId: number, key: string): void {
+    try {
+        wpCli(`post meta delete ${postId} ${key}`);
+    } catch {
+        // meta was not set — nothing to remove
+    }
+}
+
+/** Create (or reuse) a user with an explicit role and known password. */
+export function seedUserWithRole(login: string, email: string, password: string, role: string): string {
+    try {
+        wpCli(`user get ${login} --field=ID`);
+        wpCli(`user update ${login} --user_pass='${password}' --role=${role} --skip-email`);
+    } catch {
+        wpCli(`user create ${login} ${email} --role=${role} --user_pass='${password}'`);
+    }
+
+    return login;
+}
+
+/**
+ * Give a user a completed subscription pack without walking the checkout UI.
+ * WPUF reads the pack from the `_wpuf_subscription_pack` user meta, so seeding
+ * it is enough for view-control / restriction assertions. Payment flows have
+ * their own specs — this shortcut is only for "user owns pack X" preconditions.
+ */
+export function seedUserSubscriptionPack(userLogin: string, packId: number): void {
+    const pack = JSON.stringify({
+        pack_id: String(packId),
+        status: 'completed',
+        posts: [],
+        recurring: 'no',
+    });
+
+    wpCli(`user meta update ${userLogin} _wpuf_subscription_pack '${pack}' --format=json`);
+}
+
+/**
+ * Encrypt a value exactly the way WPUF does for guest-post verification links
+ * (`wpuf_encryption`). Lets the guest-verification test build the link WPUF
+ * would have emailed, so the flow can be proven without an SMTP stack.
+ */
+export function wpufEncrypt(value: string | number): string {
+    return wpCliFull(`eval 'echo wpuf_encryption("${value}");'`).trim();
+}
+
+/** Run a WordPress cron hook now (plugins loaded, so WPUF's callbacks fire). */
+export function runCronHook(hook: string): void {
+    wpCliFull(`cron event run ${hook}`);
 }
 
 /**

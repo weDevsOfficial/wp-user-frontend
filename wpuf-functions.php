@@ -87,12 +87,14 @@ function wpuf_admin_post_status( $status ) {
  * @param <type> $post_id
  */
 function wpuf_upload_attachment( $post_id ) {
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is verified by the submit/draft handler that calls this.
     if ( ! isset( $_FILES['wpuf_post_attachments'] ) ) {
         return false;
     }
 
     $fields = (int) wpuf_get_option( 'attachment_num' );
 
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is verified by the submit/draft handler that calls this.
     $wpuf_post_attachments = isset( $_FILES['wpuf_post_attachments'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_FILES['wpuf_post_attachments'] ) ) : [];
 
     for ( $i = 0; $i < $fields; $i++ ) {
@@ -168,6 +170,36 @@ add_filter( 'media_upload_tabs', 'wpuf_unset_media_tab' );
  *
  * @return array
  */
+/**
+ * Neutralize Vue/mustache template delimiters in a display string
+ *
+ * The admin form builder mounts a full-build Vue instance on #wpuf-form-builder.
+ * Any text node inside that root that contains {{ }} is compiled as a Vue
+ * expression. Term names (and other stored, lower-privilege data) are shown
+ * inside the builder, so a name such as {{constructor.constructor('...')()}}
+ * would execute as JavaScript. HTML escaping does not help because the browser
+ * decodes entities before Vue reads the template, and { } are not escaped.
+ *
+ * Inserting a zero-width space between the braces breaks the delimiter match
+ * while keeping the visible text identical. This is display-only and never
+ * touches the stored term/post data.
+ *
+ * @since 4.3.14
+ *
+ * @param string $value
+ *
+ * @return string
+ */
+function wpuf_neutralize_template_delimiters( $value ) {
+    if ( ! is_string( $value ) || '' === $value ) {
+        return $value;
+    }
+
+    // Zero-width space (U+200B) after every brace that is followed by the same
+    // brace, so no "{{" or "}}" survives, also in runs of three or more.
+    return preg_replace( '/([{}])(?=\1)/', "\$1\xE2\x80\x8B", $value );
+}
+
 function wpuf_get_post_types( $args = [] ) {
     $defaults = [];
 
@@ -230,7 +262,10 @@ function wpuf_get_pages( $post_type = 'page' ) {
 
     if ( $pages ) {
         foreach ( $pages as $page ) {
-            $array[ $page->ID ] = esc_attr( $page->post_title );
+            // Page titles can come from front-end submissions and are printed
+            // inside the Vue-mounted form builder, so neutralise template
+            // delimiters the same way taxonomy names already are.
+            $array[ $page->ID ] = wpuf_neutralize_template_delimiters( esc_attr( $page->post_title ) );
         }
     }
 
@@ -277,6 +312,7 @@ add_filter( 'get_edit_post_link', 'wpuf_override_admin_edit_link', 10, 2 );
  *
  * @uses Walker
  */
+// phpcs:ignore Universal.Files.SeparateFunctionsFromOO.Mixed -- legacy file: these walkers have always lived alongside the helper functions; moving them would change the include contract.
 class WPUF_Walker_Category_Multi extends Walker {
 
     /**
@@ -330,6 +366,7 @@ class WPUF_Walker_Category_Multi extends Walker {
  *
  * @since 0.8
  */
+// phpcs:ignore Generic.Files.OneObjectStructurePerFile.MultipleFound -- legacy file: see the note on WPUF_Walker_Category_Multi above.
 class WPUF_Walker_Category_Checklist extends Walker {
     public $tree_type = 'category';
 
@@ -483,8 +520,8 @@ function wpuf_get_field_settings_excludes( $field_settings, $exclude_type ) {
     if ( ! empty( $attributes ) ) {
         foreach ( $attributes as $attr ) {
             $terms = get_terms(
-                $field_settings['name'],
                 [
+                    'taxonomy'   => $field_settings['name'],
                     'hide_empty' => false,
                     'parent'     => $attr,
                 ]
@@ -534,7 +571,7 @@ function wpuf_get_image_sizes() {
 function wpuf_allowed_extensions() {
     $extesions = [
         'images' => [
-            'ext' => 'jpg,jpeg,gif,png,bmp,webp',
+            'ext' => 'jpg,jpeg,jfif,gif,png,bmp,webp',
             'label' => __( 'Images', 'wp-user-frontend' ),
         ],
         'audio'  => [
@@ -845,7 +882,7 @@ function wpuf_get_user_avatar_data( $user, $size = 96 ) {
     if ( $first_name && $last_name ) {
         $initials = strtoupper( substr( $first_name, 0, 1 ) . substr( $last_name, 0, 1 ) );
     } else {
-        $name       = $user->display_name ?: $user->user_login;
+        $name       = $user->display_name ? $user->display_name : $user->user_login;
         $name_parts = explode( ' ', $name );
 
         if ( count( $name_parts ) >= 2 ) {
@@ -914,6 +951,87 @@ function wpuf_update_avatar( $user_id, $attachment_id ) {
     update_user_meta( $user_id, 'user_avatar', $relative_url );
 }
 
+/**
+ * Whether the current request was submitted from a page on this site
+ *
+ * A cross-site form POST carries the attacking page's Origin, and under the
+ * browsers' SameSite=Lax default it carries none of the visitor's cookies. So
+ * on such a request a nonce still verifies (a logged-out nonce is public, the
+ * registration page prints the same value to every anonymous visitor) and
+ * is_user_logged_in() still reads false (no cookies were sent). Only the
+ * request's own origin distinguishes a submission from our own page.
+ *
+ * Use this to decide whether a response may hand the browser an
+ * authentication cookie, never to decide whether to accept the submission.
+ *
+ * @since 4.3.15
+ *
+ * @return bool True when the Origin, or the Referer for the few clients that
+ *              omit Origin, is this site's host. False for another host, and
+ *              false when the request carries neither header.
+ */
+function wpuf_is_same_origin_request() {
+    $source = '';
+
+    if ( ! empty( $_SERVER['HTTP_ORIGIN'] ) ) {
+        $source = sanitize_text_field( wp_unslash( $_SERVER['HTTP_ORIGIN'] ) );
+    } elseif ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
+        $source = sanitize_text_field( wp_unslash( $_SERVER['HTTP_REFERER'] ) );
+    }
+
+    // A browser sends a serialised origin, so anything without an explicit
+    // http or https scheme did not come from one and is not trusted. Checking
+    // this before esc_url_raw() matters: that function would prepend a scheme
+    // to a bare host and make a malformed value look like one of ours.
+    if ( ! preg_match( '#^https?://#i', $source ) ) {
+        // Under Referrer-Policy: no-referrer a browser sends Origin: null and no
+        // Referer even for a same-origin POST. Sec-Fetch-Site is set by the
+        // browser itself and a page cannot change it, so "same-origin" still
+        // proves the form was submitted from one of this site's pages.
+        $fetch_site = isset( $_SERVER['HTTP_SEC_FETCH_SITE'] ) ? sanitize_key( wp_unslash( $_SERVER['HTTP_SEC_FETCH_SITE'] ) ) : '';
+
+        return 'same-origin' === $fetch_site;
+    }
+
+    $source_host = wp_parse_url( esc_url_raw( $source ), PHP_URL_HOST );
+
+    if ( empty( $source_host ) ) {
+        return false;
+    }
+
+    // Compare against the host the browser actually requested as well as the
+    // site's own, so a site reached on a mapped domain, on www when home_url
+    // has none, or on a dev port still recognises its own pages. A browser
+    // sets Host itself, so this cannot be used to pass the check from
+    // somewhere else.
+    $hosts = [ wp_parse_url( home_url(), PHP_URL_HOST ) ];
+
+    if ( ! empty( $_SERVER['HTTP_HOST'] ) ) {
+        $hosts[] = wp_parse_url(
+            'http://' . sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ), PHP_URL_HOST
+        );
+    }
+
+    /**
+     * Filter the hosts a login or registration form may be submitted from
+     *
+     * Add a host here only when a login or registration form for this site is
+     * served from another domain or subdomain the site owns, for example a
+     * shop subdomain whose form posts to the main site. Every host added can
+     * log a visitor's browser into an account, so never add one you do not
+     * control.
+     *
+     * @since 4.3.15
+     *
+     * @param array $hosts Host names, without scheme or port.
+     */
+    $hosts       = (array) apply_filters( 'wpuf_same_origin_hosts', $hosts );
+    $hosts       = array_filter( array_map( 'strtolower', array_filter( $hosts, 'is_string' ) ) );
+    $source_host = strtolower( $source_host );
+
+    return in_array( $source_host, $hosts, true );
+}
+
 function wpuf_admin_role() {
     return apply_filters( 'wpuf_admin_role', 'manage_options' );
 }
@@ -950,6 +1068,42 @@ function wpuf_get_gateways( $context = 'admin' ) {
 }
 
 /**
+ * Get the display label for a stored payment method
+ *
+ * The stored value comes from the checkout request, so it is never trusted here:
+ * it is sanitized, then matched against the registered gateways. Anything that is
+ * not a known gateway is reported as unknown instead of being echoed back.
+ *
+ * @since 4.3.13
+ *
+ * @param string $payment_method Stored payment method.
+ *
+ * @return string
+ */
+function wpuf_get_payment_type_label( $payment_method ) {
+    $payment_method = is_scalar( $payment_method ) ? sanitize_text_field( (string) $payment_method ) : '';
+
+    if ( empty( $payment_method ) ) {
+        return __( 'Unknown', 'wp-user-frontend' );
+    }
+
+    if ( 'bank' === $payment_method ) {
+        return __( 'Bank/Manual', 'wp-user-frontend' );
+    }
+
+    $gateways = wpuf_get_gateways();
+
+    if ( isset( $gateways[ $payment_method ] ) ) {
+        return $gateways[ $payment_method ];
+    }
+
+    // A gateway that is switched off, or that belongs to a plugin that is not active
+    // right now, is no longer registered: keep showing the stored name for those old
+    // transactions. It is sanitized above, so it can never carry markup.
+    return ucwords( $payment_method );
+}
+
+/**
  * Unserialize a value without ever instantiating PHP objects.
  *
  * Stored post meta may hold a serialized object payload (e.g. submitted through a
@@ -957,7 +1111,7 @@ function wpuf_get_gateways( $context = 'admin' ) {
  * classes, enabling PHP object injection. This restricts deserialization to plain
  * data and strips any object, so a serialized-object payload can never be revived.
  *
- * @since WPUF_SINCE
+ * @since 4.3.11
  *
  * @param mixed $value Possibly-serialized value.
  *
@@ -1098,13 +1252,11 @@ function wpuf_show_custom_fields( $content ) {
                     if ( isset( $attr['wpuf_cond']['cond_option'][ $field_key ] ) ) {
                         if ( is_array( $cond_field_value ) ) {
                             continue;
-                        } else {
-                            if ( (string) $attr['wpuf_cond']['cond_option'][ $field_key ] !== (string) $cond_field_value ) {
+                        } elseif ( (string) $attr['wpuf_cond']['cond_option'][ $field_key ] !== (string) $cond_field_value ) {
                                 $return_for_no_cond = 1;
-                            } else {
-                                $return_for_no_cond = 0;
-                                break;
-                            }
+                        } else {
+                            $return_for_no_cond = 0;
+                            break;
                         }
                     }
                 }
@@ -1276,7 +1428,7 @@ function wpuf_show_custom_fields( $content ) {
                                 $address_html .= '<li>';
 
                                 if ( 'no' === $hide_label ) {
-                                    $address_html .= '<label>' . $attr['address'][ $field_key ]['label'] . ': </label> ';
+                                    $address_html .= '<label>' . esc_html( $attr['address'][ $field_key ]['label'] ) . ': </label> ';
                                 }
 
                                 $address_html .= ' ' . $value . '</li>';
@@ -1306,7 +1458,7 @@ function wpuf_show_custom_fields( $content ) {
                     $repeat_html = '<li>';
 
                     if ( 'no' === $hide_label ) {
-                        $repeat_html .= '<label>' . $attr['label'] . ':</label>';
+                        $repeat_html .= '<label>' . esc_html( $attr['label'] ) . ':</label>';
                     }
 
                     $repeat_html .= '<ul class="wpuf-repeat-field-data">';
@@ -1325,7 +1477,7 @@ function wpuf_show_custom_fields( $content ) {
                                     $repeat_html .= '<li>';
 
                                     if ( 'no' === $inner_field['hide_field_label'] ) {
-                                        $repeat_html .= '<label>' . $inner_field['label'] . ':</label> ';
+                                        $repeat_html .= '<label>' . esc_html( $inner_field['label'] ) . ':</label> ';
                                     }
 
                                     // Handle different field types
@@ -1369,12 +1521,12 @@ function wpuf_show_custom_fields( $content ) {
 
                         $preview_width  = isset( $attr['preview_width'] ) ? $attr['preview_width'] : '123';
                         $preview_height = isset( $attr['preview_height'] ) ? $attr['preview_height'] : '456';
-                        $shortcode      = '[embed width="' . $preview_width . '" height="' . $preview_height . '"]' . $value . '[/embed]';
+                        $shortcode      = '[embed width="' . $preview_width . '" height="' . $preview_height . '"]' . esc_url_raw( $value ) . '[/embed]';
 
                         $preview = '<li>';
 
                         if ( 'no' === $hide_label ) {
-                            $preview .= sprintf( '<label>%s: </label>', $attr['label'] );
+                            $preview .= sprintf( '<label>%s: </label>', esc_html( $attr['label'] ) );
                         }
 
                         $preview .= "<div class='wpuf-embed-preview'>";
@@ -1391,10 +1543,10 @@ function wpuf_show_custom_fields( $content ) {
                     $link = '<li>';
 
                     if ( 'no' === $hide_label ) {
-                        $link .= '<label>' . $attr['label'] . ':</label>';
+                        $link .= '<label>' . esc_html( $attr['label'] ) . ':</label>';
                     }
 
-                    $link .= sprintf( " <a href='%s' target = '%s'>%s</a></li>", $value, $open_in, $value );
+                    $link .= sprintf( " <a href='%s' target = '%s'>%s</a></li>", esc_url( $value ), esc_attr( $open_in ), esc_html( $value ) );
 
                     $html .= $link;
                     break;
@@ -1405,7 +1557,7 @@ function wpuf_show_custom_fields( $content ) {
                     $html .= '<li>';
 
                     if ( 'no' === $hide_label ) {
-                        $html .= '<label>' . $attr['label'] . ':</label>';
+                        $html .= '<label>' . esc_html( $attr['label'] ) . ':</label>';
                     }
 
                     $html .= sprintf( ' %s</li>', make_clickable( strip_shortcodes( $value ) ) );
@@ -1423,7 +1575,7 @@ function wpuf_show_custom_fields( $content ) {
                     $html .= '<li>';
 
                     if ( 'no' === $hide_label ) {
-                        $html .= '<label>' . $attr['label'] . ':</label>';
+                        $html .= '<label>' . esc_html( $attr['label'] ) . ':</label>';
                     }
 
                     $html .= sprintf( ' %s</li>', make_clickable( strip_shortcodes( $value ) ) );
@@ -1444,7 +1596,7 @@ function wpuf_show_custom_fields( $content ) {
                             $html .= '<li>';
 
                             if ( 'no' === $hide_label ) {
-                                $html .= '<label>' . $attr['label'] . ':</label>';
+                                $html .= '<label>' . esc_html( $attr['label'] ) . ':</label>';
                             }
 
                             $html .= sprintf( ' %s</li>', make_clickable( strip_shortcodes( $modified_value ) ) );
@@ -1457,7 +1609,7 @@ function wpuf_show_custom_fields( $content ) {
                                 $html .= '<li>';
 
                                 if ( 'no' === $hide_label ) {
-                                    $html .= '<label>' . $attr['label'] . ':</label>';
+                                    $html .= '<label>' . esc_html( $attr['label'] ) . ':</label>';
                                 }
 
                                 $html .= sprintf( ' %s</li>', make_clickable( strip_shortcodes( $modified_value ) ) );
@@ -1470,7 +1622,7 @@ function wpuf_show_custom_fields( $content ) {
                             $html .= '<li>';
 
                             if ( 'no' === $hide_label ) {
-                                $html .= '<label>' . $attr['label'] . ':</label>';
+                                $html .= '<label>' . esc_html( $attr['label'] ) . ':</label>';
                             }
 
                             $html .= sprintf( ' %s</li>', make_clickable( strip_shortcodes( $new ) ) );
@@ -2150,7 +2302,7 @@ function taxnomy_select( $terms, $attr ) {
 
     $dataset = sprintf(
         'data-required="%s" data-type="select" data-form-id="%d"',
-        $attr['required'],
+        esc_attr( $attr['required'] ),
         $attr['form_id']
     );
 
@@ -2192,7 +2344,7 @@ function taxnomy_select( $terms, $attr ) {
     ];
     $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr );
     ?>
-    <span data-taxonomy=<?php echo wp_json_encode( $attr ); ?>></span>
+    <span data-taxonomy="<?php echo esc_attr( wp_json_encode( $attr ) ); ?>"></span>
     <?php
 }
 
@@ -2463,11 +2615,11 @@ function wpuf_get_completed_transactions( $args = [] ) {
 
     $args = wp_parse_args( $args, $defaults );
 
-    if ( ! in_array( $args['orderby'], $orderby ) ) {
+    if ( ! in_array( $args['orderby'], $orderby, true ) ) {
         $args['orderby'] = 'id';
     }
 
-    if ( ! in_array( $args['order'], $order ) ) {
+    if ( ! in_array( $args['order'], $order, true ) ) {
         $args['order'] = 'DESC';
     }
 
@@ -2475,7 +2627,10 @@ function wpuf_get_completed_transactions( $args = [] ) {
         return $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wpuf_transaction" );
     }
 
-    $result = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_transaction ORDER BY `{$args['orderby']}` {$args['order']} LIMIT {$args['offset']}, {$args['number']}", OBJECT );
+    $offset = absint( $args['offset'] );
+    $number = absint( $args['number'] );
+
+    $result = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_transaction ORDER BY `{$args['orderby']}` {$args['order']} LIMIT {$offset}, {$number}", OBJECT );
 
     return $result;
 }
@@ -2503,11 +2658,11 @@ function wpuf_get_pending_transactions( $args = [] ) {
 
     $args = wp_parse_args( $args, $defaults );
 
-    if ( ! in_array( $args['orderby'], $orderby ) ) {
+    if ( ! in_array( $args['orderby'], $orderby, true ) ) {
         $args['orderby'] = 'id';
     }
 
-    if ( ! in_array( $args['order'], $order ) ) {
+    if ( ! in_array( $args['order'], $order, true ) ) {
         $args['order'] = 'DESC';
     }
 
@@ -2554,7 +2709,7 @@ function wpuf_get_pending_transactions( $args = [] ) {
             'payer_first_name' => $info['user_info']['first_name'],
             'payer_last_name'  => $info['user_info']['last_name'],
             'payer_email'      => $info['user_info']['email'],
-            'payment_type'     => ( $info['post_data']['wpuf_payment_method'] === 'bank' ) ? 'Bank/Manual' : ucwords( $info['post_data']['wpuf_payment_method'] ),
+            'payment_type'     => wpuf_get_payment_type_label( isset( $info['post_data']['wpuf_payment_method'] ) ? $info['post_data']['wpuf_payment_method'] : '' ),
             'transaction_id'   => 0,
             'created'          => $info['date'],
         ];
@@ -4042,7 +4197,9 @@ function wpuf_encryption( $id, $nonce = null ) {
     }
 
     $ciphertext_raw = openssl_encrypt( $id, Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
-    $hmac           = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
+    // Authenticate the IV together with the ciphertext so a tampered IV is
+    // rejected on the way back in (see wpuf_decryption()).
+    $hmac           = hash_hmac( 'sha256', $secret_iv . $ciphertext_raw, $secret_key, true );
 
     return base64_encode( $secret_iv.$hmac.$ciphertext_raw );
 }
@@ -4083,15 +4240,19 @@ function wpuf_decryption( $id, $nonce = null ) {
     $secret_iv      = substr( $c, 0, $ivlen );
     $hmac           = substr( $c, $ivlen, 32 );
     $ciphertext_raw = substr( $c, $ivlen + 32 );
-    $original_text  = openssl_decrypt( $ciphertext_raw, Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
-    $calcmac        = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
+    // The IV travels inside the payload, so it must be authenticated too: an
+    // unauthenticated IV lets an attacker flip the first CBC plaintext block and
+    // forge a different value under the unchanged ciphertext/HMAC (e.g. a higher
+    // role in registration). Cover IV + ciphertext and verify BEFORE decrypting.
+    // Reported by Murad Akhmedov (WPScan).
+    $calcmac        = hash_hmac( 'sha256', $secret_iv . $ciphertext_raw, $secret_key, true );
 
     // timing attack safe comparison
-    if ( hash_equals( $hmac, $calcmac ) ) {
-        return $original_text;
+    if ( ! hash_equals( $hmac, $calcmac ) ) {
+        return false;
     }
 
-    return false;
+    return openssl_decrypt( $ciphertext_raw, Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
 }
 
 /**
@@ -4273,7 +4434,7 @@ function wpuf_posts_submitted_by( $form_id ) {
     $args = [
         'meta_key'         => '_wpuf_form_id',
         'meta_value'       => $form_id,
-        'post_type'        => $settings['post_type'],
+        'post_type'        => $settings['post_type'] ?? '',
         'post_status'      => 'publish',
     ];
 
@@ -4570,7 +4731,10 @@ function wpuf_get_terms( $taxonomy = 'category' ) {
     );
 
     foreach ( $terms as $key => $term ) {
-        $items[ $term->term_id ] = $term->name;
+        // Used to build option maps for the Vue-mounted form builder. Neutralize
+        // any mustache delimiters so a crafted term name is shown as literal text
+        // and never evaluated as a Vue template (stored XSS).
+        $items[ $term->term_id ] = wpuf_neutralize_template_delimiters( $term->name );
     }
 
     return $items;
@@ -4805,9 +4969,9 @@ function wpuf_show_form_schedule_message( $form_id ) {
 
         // too early?
         if ( $current_time < $start_time ) {
-            echo wp_kses_post( '<div class="wpuf-message">' . $form_settings['form_pending_message'] . '</div>' );
+            echo wp_kses_post( '<div class="wpuf-message">' . ( $form_settings['form_pending_message'] ?? '' ) . '</div>' );
         } elseif ( $current_time > $end_time ) {
-            echo wp_kses_post( '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>' );
+            echo wp_kses_post( '<div class="wpuf-message">' . ( $form_settings['form_expired_message'] ?? '' ) . '</div>' );
         }
         ?>
         <script>
@@ -4843,7 +5007,7 @@ function wpuf_show_form_limit_message( $form_id ) {
         $form_entries = wpuf_form_posts_count( $form_id );
 
         if ( $limit && $limit <= $form_entries ) {
-            $info = $form_settings['limit_message'];
+            $info = $form_settings['limit_message'] ?? '';
             echo wp_kses_post( '<div class="wpuf-info">' . $info . '</div>' );
             ?>
             <script>
@@ -5519,7 +5683,14 @@ function wpuf_guess_username( $email ) {
 function wpuf_clear_schedule_lock() {
     check_ajax_referer( 'wpuf_nonce', 'nonce' );
 
-    $post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : '';
+    // Clearing an edit-lock (potentially set by an admin) requires the ability
+    // to edit others' posts. This prevents any logged-in subscriber from wiping
+    // lock meta on arbitrary posts.
+    if ( ! current_user_can( 'edit_others_posts' ) ) {
+        wp_send_json_error( esc_html__( 'You are not allowed to clear this lock.', 'wp-user-frontend' ), 403 );
+    }
+
+    $post_id = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
 
     if ( ! empty( $post_id ) ) {
         update_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', '' );
@@ -5536,10 +5707,121 @@ function wpuf_clear_schedule_lock() {
  *
  * @return array
  */
+/**
+ * Normalize submitted text before checking it for protected shortcodes
+ *
+ * Runs the value through the same wp_kses() pass used when the post is
+ * saved, then removes NUL and other control bytes, so the text that is
+ * checked matches the text that ends up stored.
+ *
+ * @since 4.3.14
+ *
+ * @param string $value raw (unslashed) submitted value
+ *
+ * @return string
+ */
+function wpuf_normalize_for_shortcode_check( $value ) {
+    if ( ! is_string( $value ) || '' === $value ) {
+        return '';
+    }
+
+    $value = wp_kses( $value, wp_kses_allowed_html( 'post' ) );
+    $value = wp_kses_no_null( $value );
+
+    return (string) preg_replace( '/[\x00-\x1F\x7F]/', '', $value );
+}
+
 function wpuf_get_protected_shortcodes() {
     return [
         'wpuf-registration',
     ];
+}
+
+/**
+ * Find the first protected shortcode present in the given values
+ *
+ * Normalizes each value the same way the submitted value is normalized before
+ * it is stored, so the text that is checked matches the text that ends up in
+ * the database.
+ *
+ * @since 4.3.15
+ *
+ * @param array|string $values one or more values to check
+ *
+ * @return string the protected shortcode that was found, or an empty string
+ */
+function wpuf_find_protected_shortcode( $values ) {
+    $protected_shortcodes = wpuf_get_protected_shortcodes();
+
+    foreach ( (array) $values as $value ) {
+        if ( ! is_string( $value ) || '' === $value ) {
+            continue;
+        }
+
+        $value = wpuf_normalize_for_shortcode_check( $value );
+
+        foreach ( $protected_shortcodes as $shortcode ) {
+            if ( false !== stripos( $value, '[' . $shortcode ) ) {
+                return $shortcode;
+            }
+        }
+    }
+
+    return '';
+}
+
+/**
+ * Find a protected shortcode in the values a post form submission will store
+ *
+ * Walks every field of the form, including fields nested in columns and array
+ * values such as checkboxes, plus post_title, post_content and post_excerpt,
+ * which are stored whatever fields the form defines. The submit and the draft
+ * endpoints both use it, so they accept and reject the same payloads.
+ *
+ * @since 4.3.15
+ *
+ * @param array $form_fields the fields of the submitted form
+ *
+ * @return string the protected shortcode that was found, or an empty string
+ */
+function wpuf_find_protected_shortcode_in_submission( $form_fields ) {
+    $names = [ 'post_title', 'post_content', 'post_excerpt' ];
+
+    foreach ( (array) $form_fields as $field ) {
+        $names[] = isset( $field['name'] ) ? $field['name'] : '';
+
+        $columns = isset( $field['inner_fields'] ) && is_array( $field['inner_fields'] ) ? $field['inner_fields'] : [];
+
+        foreach ( $columns as $column ) {
+            foreach ( (array) $column as $inner ) {
+                $names[] = isset( $inner['name'] ) ? $inner['name'] : '';
+            }
+        }
+    }
+
+    $values = [];
+
+    foreach ( array_unique( array_filter( $names, 'is_string' ) ) as $name ) {
+        // phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- callers verify the nonce; values are normalized by the helper and only compared, never stored.
+        if ( '' === $name || ! isset( $_POST[ $name ] ) ) {
+            continue;
+        }
+
+        $posted = wp_unslash( $_POST[ $name ] );
+        // phpcs:enable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+        if ( is_array( $posted ) ) {
+            array_walk_recursive(
+                $posted, function ( $value ) use ( &$values ) {
+                    $values[] = $value;
+                }
+            );
+        } else {
+            $values[] = $posted;
+        }
+    }
+
+    return wpuf_find_protected_shortcode( $values );
 }
 
 /**
@@ -5585,17 +5867,29 @@ function wpuf_modify_shortcodes( $content ) {
     }
 
     // get the id of the user who last edited the post
-    $user_id = get_post_meta( get_post()->ID, '_edit_last', true );
+    $user_id = (int) get_post_meta( $post->ID, '_edit_last', true );
 
-    $roles = wpuf_get_single_user_roles( $user_id );
+    if ( $user_id ) {
+        $roles = wpuf_get_single_user_roles( $user_id );
 
-    if ( empty( $roles ) ) {
-        return $content;
-    }
+        // last modified by an admin (or by a user that no longer exists), returns
+        // the content as it is, as before
+        if ( empty( $roles ) || in_array( 'administrator', $roles, true ) ) {
+            return $content;
+        }
+    } else {
+        // Posts inserted straight through wp_insert_post(), as the draft endpoint
+        // and the REST API do, carry no _edit_last. Judge them by their author:
+        // no user behind the content (created by code, WP-CLI or an import), an
+        // administrator, or a user trusted with unfiltered HTML (editor) keeps it
+        // as it is. Authors, contributors and subscribers get the protected
+        // shortcodes escaped. The administrator check stays because administrators
+        // lack unfiltered_html on multisite.
+        $author = get_userdata( (int) $post->post_author );
 
-    // last modified by an admin, returns the content as it is
-    if ( in_array( 'administrator', $roles ) ) {
-        return $content;
+        if ( ! $author || in_array( 'administrator', (array) $author->roles, true ) || user_can( $author, 'unfiltered_html' ) ) {
+            return $content;
+        }
     }
 
     $protected_shortcodes = wpuf_get_protected_shortcodes();
@@ -5604,12 +5898,12 @@ function wpuf_modify_shortcodes( $content ) {
         $search_for = '[' . $shortcode;
 
         if ( strpos( $content, $search_for ) !== false ) {
-            $pattern = '/\[' . $shortcode . '(.*?)\]/';
+            // Break every opening "[tag" that WordPress would read as this shortcode,
+            // whatever follows it: attributes may span lines, so matching up to the
+            // closing bracket missed "[tag" followed by a newline.
+            $pattern = '/\[(' . preg_quote( $shortcode, '/' ) . ')(?![\w-])/';
 
-            $content = preg_replace_callback(
-                $pattern, function( $matches ) {
-                return str_replace( [ '[', ']' ], [ '&lbrack;', '&rbrack;' ], $matches[0] );
-            }, $content );
+            $content = preg_replace( $pattern, '&lbrack;$1', $content );
         }
     }
 
@@ -6422,6 +6716,7 @@ if ( ! function_exists( 'wpuf_field_profile_photo_allowed_extensions' ) ) {
         $allowed_extensions = [
             'jpg'  => __( 'JPG', 'wpuf-pro' ),
             'jpeg' => __( 'JPEG', 'wpuf-pro' ),
+            'jfif' => __( 'JFIF', 'wpuf-pro' ),
             'png'  => __( 'PNG', 'wpuf-pro' ),
             'gif'  => __( 'GIF', 'wpuf-pro' ),
         ];

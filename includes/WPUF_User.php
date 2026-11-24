@@ -97,7 +97,7 @@ class WPUF_User {
      * @return bool
      */
     public function is_verified() {
-        if ( !metadata_exists( 'user', $this->id, '_wpuf_user_active' ) ) {
+        if ( ! metadata_exists( 'user', $this->id, '_wpuf_user_active' ) ) {
             return true;
         }
 
@@ -207,7 +207,7 @@ class WPUF_User {
             return $address;
         }
 
-        if ( !empty( $address ) ) {
+        if ( ! empty( $address ) ) {
             return implode( ' ,', $address );
         }
 

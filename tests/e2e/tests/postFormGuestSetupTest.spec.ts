@@ -11,7 +11,6 @@ import {
     wpCli,
     getPostIdByTitle,
     getPostField,
-    wpufEncrypt,
 } from '../utils/wpEnvCli';
 import { Urls } from '../utils/testData';
 
@@ -121,11 +120,14 @@ test.describe( 'Post-Form-Guest-And-Setup', () => {
     test( 'PFG0061 : The verification link publishes the post', { tag: [ '@Lite', '@Test_PFG0061' ] }, async () => {
         const editor = new PostFormGapsPage( page );
 
-        // WPUF mails `?post_msg=verified&p_id=<enc>&f_id=<enc>`; rebuilding it with
-        // the site's own wpuf_encryption() proves the flow without an SMTP stack.
-        const encodedPost = encodeURIComponent( wpufEncrypt( guestPostId ) );
-        const encodedForm = encodeURIComponent( wpufEncrypt( guestFormId ) );
-        const verifyUrl = `${ Urls.baseUrl }/?post_msg=verified&p_id=${ encodedPost }&f_id=${ encodedForm }`;
+        // Open the link WPUF actually mailed to the guest. It carries a single-use
+        // `t=` token that only the e-mail knows, so it can not be rebuilt from
+        // p_id / f_id. WP Mail Log keeps the sent message without an SMTP stack.
+        const mail = wpCli(
+            `db query "SELECT message FROM wp_wml_entries WHERE to_email = '${ guestEmail }' AND message LIKE '%post_msg=verified%' ORDER BY id DESC LIMIT 1" --skip-column-names`
+        );
+        const verifyUrl = ( mail.match( /https?:\/\/[^\s"'<>]*post_msg=verified[^\s"'<>]*/ ) || [ '' ] )[ 0 ].replace( /&amp;/g, '&' );
+        expect( verifyUrl, 'no verification link in the mail sent to the guest' ).toContain( 't=' );
 
         await editor.withGuest( async ( guestPage ) => {
             await guestPage.goto( verifyUrl );

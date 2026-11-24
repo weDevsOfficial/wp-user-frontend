@@ -86,7 +86,7 @@ class Bank {
         // Resolve the base price after any pricing-field override, then apply the coupon.
         $original_price = floatval( $data['price'] );
 
-        $coupon_id = isset( $_POST['coupon_id'] ) ? absint( wp_unslash( $_POST['coupon_id'] ) ) : 0;
+        $coupon_id = isset( $_POST['coupon_id'] ) ? absint( wp_unslash( $_POST['coupon_id'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified in Payment::send_to_gateway() before any gateway runs.
 
         // Coupons are a Pro feature; only run when Pro is active to avoid a fatal in free-only installs.
         if ( $coupon_id > 0 && class_exists( Coupons::class ) ) {

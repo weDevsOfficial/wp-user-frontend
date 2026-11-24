@@ -58,7 +58,7 @@ class Subscription {
 
         $result = $wpdb->get_row(
             $wpdb->prepare(
-            'SELECT transaction_id FROM ' . $wpdb->prefix . 'wpuf_transaction
+                'SELECT transaction_id FROM ' . $wpdb->prefix . 'wpuf_transaction
             WHERE user_id = %d AND pack_id = %d LIMIT 1', $user_id, $pack_id
             )
         );
@@ -801,7 +801,7 @@ class Subscription {
         //$post = get_post( $post_id );
         return $wpdb->get_row(
             $wpdb->prepare(
-            "SELECT p.ID, p.post_status
+                "SELECT p.ID, p.post_status
             FROM $wpdb->posts p, $wpdb->postmeta m
             WHERE p.ID = m.post_id AND p.post_status <> 'publish' AND m.meta_key = '_wpuf_order_id' AND m.meta_value = %s", $order_id
             )

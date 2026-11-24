@@ -20,57 +20,57 @@ class SubscriptionPacks {
      */
     public function __construct() {
         add_action( 'init', [ $this, 'register_block' ] );
-        add_filter( 'block_categories_all', [ $this, 'register_block_category' ] );
     }
 
     /**
-     * Register the block category for WPUF blocks
+     * Register the Gutenberg block and localise editor data
      *
-     * @since WPUF_SINCE
-     *
-     * @param array $categories Existing block categories
-     *
-     * @return array
-     */
-    public function register_block_category( $categories ) {
-        // Avoid duplicate registration
-        foreach ( $categories as $category ) {
-            if ( $category['slug'] === 'wpuf' ) {
-                return $categories;
-            }
-        }
-
-        return array_merge( $categories, [
-            [
-                'slug'  => 'wpuf',
-                'title' => __( 'WP User Frontend', 'wp-user-frontend' ),
-            ],
-        ] );
-    }
-
-    /**
-     * Register the Gutenberg block
+     * The "wpuf" block category is registered by the PostForm block.
      *
      * @since WPUF_SINCE
      *
      * @return void
      */
     public function register_block() {
-        if ( ! wp_script_is( 'wpuf-subscription-packs-editor', 'registered' ) ) {
+        $asset_file = WPUF_ROOT . '/assets/js/blocks/subscription-packs.asset.php';
+
+        if ( ! file_exists( $asset_file ) ) {
             return;
         }
 
-        wp_localize_script(
+        $asset = require $asset_file;
+
+        wp_register_script(
             'wpuf-subscription-packs-editor',
-            'wpufSubscriptionPacks',
-            $this->get_editor_data()
+            WPUF_ROOT_URI . '/assets/js/blocks/subscription-packs.js',
+            $asset['dependencies'],
+            $asset['version'],
+            true
         );
 
-        $block_json_path = WPUF_ROOT . '/src/js/blocks/subscription-packs';
+        wp_register_style(
+            'wpuf-subscription-packs-editor-style',
+            WPUF_ROOT_URI . '/assets/js/blocks/subscription-packs.css',
+            [ 'wpuf-frontend-subscriptions' ],
+            $asset['version']
+        );
 
-        register_block_type( $block_json_path, [
-            'render_callback' => [ $this, 'render' ],
-        ] );
+        // Editor data is only needed in the block editor; avoid the pack query on every front-end request.
+        if ( is_admin() ) {
+            wp_localize_script(
+                'wpuf-subscription-packs-editor',
+                'wpufSubscriptionPacks',
+                $this->get_editor_data()
+            );
+        }
+
+        // Read the metadata from the built output: .distignore strips `src` from the release package.
+        register_block_type(
+            WPUF_ROOT . '/assets/js/blocks/subscription-packs',
+            [
+                'render_callback' => [ $this, 'render' ],
+            ]
+        );
     }
 
     /**
@@ -143,18 +143,18 @@ class SubscriptionPacks {
         $subscription_args = [];
 
         if ( ! empty( $attributes['include'] ) ) {
-            $subscription_args['include'] = implode( ',', array_map( 'intval', $attributes['include'] ) );
+            $subscription_args['include'] = implode( ',', array_map( 'intval', (array) $attributes['include'] ) );
         }
 
         if ( ! empty( $attributes['exclude'] ) ) {
-            $subscription_args['exclude'] = implode( ',', array_map( 'intval', $attributes['exclude'] ) );
+            $subscription_args['exclude'] = implode( ',', array_map( 'intval', (array) $attributes['exclude'] ) );
         }
 
-        if ( ! empty( $attributes['order'] ) ) {
-            $subscription_args['order'] = $attributes['order'];
+        if ( in_array( strtoupper( (string) $attributes['order'] ), [ 'ASC', 'DESC' ], true ) ) {
+            $subscription_args['order'] = strtoupper( $attributes['order'] );
         }
 
-        if ( ! empty( $attributes['orderby'] ) ) {
+        if ( in_array( $attributes['orderby'], [ 'title', 'date', 'meta_value_num' ], true ) ) {
             $subscription_args['orderby'] = $attributes['orderby'];
         }
 
@@ -196,10 +196,8 @@ class SubscriptionPacks {
         wp_enqueue_style( 'wpuf-frontend-subscriptions' );
 
         // Determine pack order for include
-        $pack_order = [];
-        if ( ! empty( $attributes['include'] ) ) {
-            $pack_order = array_map( 'intval', $attributes['include'] );
-        }
+        $pack_order = ! empty( $attributes['include'] ) ? array_map( 'intval', (array) $attributes['include'] ) : [];
+        $exclude    = ! empty( $attributes['exclude'] ) ? array_map( 'intval', (array) $attributes['exclude'] ) : [];
 
         ob_start();
 
@@ -209,8 +207,8 @@ class SubscriptionPacks {
                 'wpuf_subscription_listing_args', [
                     'subscription' => $subscription,
                     'args'         => [
-                        'include' => ! empty( $attributes['include'] ) ? implode( ',', $attributes['include'] ) : '',
-                        'exclude' => ! empty( $attributes['exclude'] ) ? implode( ',', $attributes['exclude'] ) : '',
+                        'include' => implode( ',', $pack_order ),
+                        'exclude' => implode( ',', $exclude ),
                     ],
                     'packs'        => $packs,
                     'pack_order'   => $pack_order,

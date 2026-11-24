@@ -1,0 +1,46 @@
+name: Guard — built assets must stay untracked
+# Generated assets are built in CI (`npm run build` + `grunt release`) and shipped
+# by the deploy workflow from the working tree. They must NEVER be committed to git
+# (re-tracking them bloats every PR and risks stale output shipping). Fail any
+# PR/push that tracks one of the known generated files.
+on:
+  pull_request:
+  push:
+    branches:
+      - develop
+      - master
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Fail if generated assets are tracked
+        run: |
+          tracked=$(git ls-files \
+            'assets/js/account.min.js' \
+            'assets/js/ai-form-builder.min.js' \
+            'assets/js/forms-list.min.js' \
+            'assets/js/forms-list.min.js.map' \
+            'assets/js/frontend-form.min.js' \
+            'assets/js/frontend-subscriptions.min.js' \
+            'assets/js/subscriptions.min.js' \
+            'assets/js/upload.min.js' \
+            'assets/js/wpuf-form-builder.js' \
+            'assets/js/wpuf-form-builder-mixins.js' \
+            'assets/js/wpuf-form-builder-components.js' \
+            'assets/js-templates/form-components.php' \
+            'assets/css/admin.css' \
+            'assets/css/elementor-frontend-forms.css' \
+            'assets/css/frontend-forms.css' \
+            'assets/css/registration-forms.css' \
+            'assets/css/wpuf-form-builder.css' \
+            'languages/wp-user-frontend.pot')
+          if [ -n "$tracked" ]; then
+            echo "::error::Generated assets are tracked — they must stay untracked (CI builds them)."
+            echo "Fix:  git rm --cached <file> && commit"
+            echo "$tracked"
+            exit 1
+          fi
+          echo "OK: no generated assets are tracked"

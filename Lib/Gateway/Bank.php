@@ -61,9 +61,8 @@ class Bank {
 
         $data['price'] = isset( $data['price'] ) ? empty( $data['price'] ) ? 0 : $data['price'] : 0;
 
-        if ( isset( $_POST['coupon_id'] ) && !empty( $_POST['coupon_id'] ) ) {
-            $data['price'] = (new Coupons())->discount( $data['price'], $_POST['coupon_id'], $data['item_number'] );
-        }
+        $data['discount']  = 0;
+        $data['coupon_id'] = 0;
 
         $post_id = isset( $data['item_number'] ) && $data['type'] === 'post' ? $data['item_number'] : 0;
 
@@ -82,9 +81,22 @@ class Bank {
             }
         }
 
+        // Resolve the base price after any pricing-field override, then apply the coupon.
+        $original_price = floatval( $data['price'] );
+
+        $coupon_id = isset( $_POST['coupon_id'] ) ? absint( wp_unslash( $_POST['coupon_id'] ) ) : 0;
+
+        // Coupons are a Pro feature; only run when Pro is active to avoid a fatal in free-only installs.
+        if ( $coupon_id > 0 && class_exists( Coupons::class ) ) {
+            $discounted_price  = floatval( ( new Coupons() )->discount( $data['price'], $coupon_id, $data['item_number'] ) );
+            $data['discount']  = $original_price - $discounted_price;
+            $data['coupon_id'] = $coupon_id;
+            $data['price']     = $discounted_price;
+        }
+
         $data['cost']     = apply_filters( 'wpuf_payment_amount', $data['price'], $post_id ); //price with tax from pro
-        $data['tax']      = floatval( $data['cost'] ) -  floatval( $data['price'] );
-        $data['subtotal'] = $data['price'];
+        $data['tax']      = floatval( $data['cost'] ) - floatval( $data['price'] );
+        $data['subtotal'] = $original_price;
 
         if ( $order_id ) {
             update_post_meta( $order_id, '_data', $data );

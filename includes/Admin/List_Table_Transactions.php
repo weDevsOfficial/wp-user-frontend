@@ -48,6 +48,7 @@ class List_Table_Transactions extends WP_List_Table {
             'user'           => __( 'User', 'wp-user-frontend' ),
             'subtotal'       => __( 'Subtotal', 'wp-user-frontend' ),
             'cost'           => __( 'Cost', 'wp-user-frontend' ),
+            'discount'       => __( 'Coupon', 'wp-user-frontend' ),
             'tax'            => __( 'Tax', 'wp-user-frontend' ),
             'post_id'        => __( 'Post ID', 'wp-user-frontend' ),
             'pack_id'        => __( 'Pack ID', 'wp-user-frontend' ),
@@ -131,15 +132,21 @@ class List_Table_Transactions extends WP_List_Table {
             $accept_nonce = wp_create_nonce( 'wpuf-accept-transaction' );
             $reject_nonce = wp_create_nonce( 'wpuf-reject-transaction' );
             $actions = [
-                'accept' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ),
-                                     'accept', absint( $id ), $accept_nonce, __( 'Accept', 'wp-user-frontend' ) ),
-                'reject' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ),
-                                     'reject', absint( $id ), $reject_nonce, __( 'Reject', 'wp-user-frontend' ) ),
+                'accept' => sprintf(
+                    '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ),
+                    'accept', absint( $id ), $accept_nonce, __( 'Accept', 'wp-user-frontend' )
+                ),
+                'reject' => sprintf(
+                    '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ),
+                    'reject', absint( $id ), $reject_nonce, __( 'Reject', 'wp-user-frontend' )
+                ),
             ];
         } else {
             $actions = [
-                'delete' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ),
-                                     'delete', absint( $id ), $delete_nonce, __( 'Delete', 'wp-user-frontend' ) ),
+                'delete' => sprintf(
+                    '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ),
+                    'delete', absint( $id ), $delete_nonce, __( 'Delete', 'wp-user-frontend' )
+                ),
             ];
         }
 
@@ -171,6 +178,21 @@ class List_Table_Transactions extends WP_List_Table {
             case 'cost':
                 return wpuf_format_price( $item->cost );
 
+            case 'discount':
+                if ( empty( $item->discount ) && empty( $item->coupon_id ) ) {
+                    return '-';
+                }
+                $output = '';
+                if ( ! empty( $item->coupon_id ) ) {
+                    $coupon_code = get_the_title( absint( $item->coupon_id ) );
+                    $coupon_url  = admin_url( 'post.php?post=' . absint( $item->coupon_id ) . '&action=edit' );
+                    $output     .= sprintf( '<a href="%s">%s</a>', esc_url( $coupon_url ), esc_html( $coupon_code ) );
+                }
+                if ( ! empty( $item->discount ) ) {
+                    $output .= ( $output ? '<br>' : '' ) . esc_html( wpuf_format_price( $item->discount ) );
+                }
+                return $output;
+
             case 'tax':
                 return wpuf_format_price( $item->tax );
 
@@ -181,11 +203,13 @@ class List_Table_Transactions extends WP_List_Table {
                 return ! empty( $item->pack_id ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?post=' . $item->pack_id . '&action=edit' ), $item->pack_id ) : '-';
 
             case 'payer':
-                return ! empty( $item->payer_first_name ) ? $item->payer_first_name . ' ' . $item->payer_last_name : '-';
+                return ! empty( $item->payer_first_name ) ? esc_html( $item->payer_first_name . ' ' . $item->payer_last_name ) : '-';
             case 'created':
                 return ! empty( $item->created ) ? gmdate( 'd-m-Y', strtotime( $item->created ) ) : '-';
             default:
-                return ! empty( $item->{$column_name} ) ? $item->{$column_name} : '-';
+                // Covers the gateway, email and transaction id columns, which carry values
+                // that came from the checkout request.
+                return ! empty( $item->{$column_name} ) ? esc_html( $item->{$column_name} ) : '-';
                 break;
         }
     }
@@ -215,7 +239,7 @@ class List_Table_Transactions extends WP_List_Table {
         ];
         if ( 'pending' === $status ) {
             $actions = $pending_action;
-        } else if ( 'completed' === $status ) {
+        } elseif ( 'completed' === $status ) {
             $actions = $completed_action;
         } else {
             $actions = array_merge( $completed_action, $pending_action );
@@ -235,15 +259,17 @@ class List_Table_Transactions extends WP_List_Table {
         $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : 'all';
         if ( 'pending' === $status ) {
             $total_items = wpuf_get_pending_transactions( [ 'count' => true ] );
-        } else if ( 'completed' === $status ) {
+        } elseif ( 'completed' === $status ) {
             $total_items = wpuf_get_completed_transactions( [ 'count' => true ] );
         } else {
             $total_items = wpuf_get_all_transactions( [ 'count' => true ] );
         }
-        $this->set_pagination_args( [
-                                        'total_items' => $total_items,
-                                        'per_page'    => $per_page,
-                                    ] );
+        $this->set_pagination_args(
+            [
+                'total_items' => $total_items,
+                'per_page'    => $per_page,
+            ]
+        );
         $this->_column_headers = $this->get_column_info();
         $this->process_actions();
         $offset = ( $current_page - 1 ) * $per_page;
@@ -257,7 +283,7 @@ class List_Table_Transactions extends WP_List_Table {
         }
         if ( 'pending' === $status ) {
             $this->items = wpuf_get_pending_transactions( $args );
-        } else if ( 'completed' === $status ) {
+        } elseif ( 'completed' === $status ) {
             $this->items = wpuf_get_completed_transactions( $args );
         } else {
             $this->items = wpuf_get_all_transactions( $args );
@@ -292,8 +318,10 @@ class List_Table_Transactions extends WP_List_Table {
             if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
                 return false;
             }
-            $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map( 'sanitize_text_field',
-                                                                        wp_unslash( $_REQUEST['bulk-items'] ) ) : [];
+            $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map(
+                'sanitize_text_field',
+                wp_unslash( $_REQUEST['bulk-items'] )
+            ) : [];
             $ids = esc_sql( $bulk_items );
             foreach ( $ids as $id ) {
                 $id = absint( $id );
@@ -322,8 +350,10 @@ class List_Table_Transactions extends WP_List_Table {
             if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
                 return false;
             }
-            $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map( 'sanitize_text_field',
-                                                                        wp_unslash( $_REQUEST['bulk-items'] ) ) : [];
+            $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map(
+                'sanitize_text_field',
+                wp_unslash( $_REQUEST['bulk-items'] )
+            ) : [];
             $ids        = esc_sql( $bulk_items );
             foreach ( $ids as $id ) {
                 $id      = absint( $id );
@@ -365,6 +395,8 @@ class List_Table_Transactions extends WP_List_Table {
                     'user_id'          => $info['user_info']['id'],
                     'status'           => 'completed',
                     'subtotal'         => $info['subtotal'],
+                    'discount'         => ! empty( $info['discount'] ) ? $info['discount'] : 0,
+                    'coupon_id'        => ! empty( $info['post_data']['coupon_id'] ) ? absint( $info['post_data']['coupon_id'] ) : 0,
                     'tax'              => $info['tax'],
                     'cost'             => $info['price'],
                     'post_id'          => $post_id,
@@ -399,8 +431,10 @@ class List_Table_Transactions extends WP_List_Table {
             if ( ! current_user_can( 'manage_options' ) ) {
                 return;
             }
-            $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map( 'sanitize_text_field',
-                                                                        wp_unslash( $_REQUEST['bulk-items'] ) ) : [];
+            $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map(
+                'sanitize_text_field',
+                wp_unslash( $_REQUEST['bulk-items'] )
+            ) : [];
             $ids        = esc_sql( $bulk_items );
             foreach ( $ids as $id ) {
                 $id = absint( $id );
@@ -420,6 +454,8 @@ class List_Table_Transactions extends WP_List_Table {
                         'user_id'          => $info['user_info']['id'],
                         'status'           => 'completed',
                         'subtotal'         => $info['subtotal'],
+                        'discount'         => ! empty( $info['discount'] ) ? $info['discount'] : 0,
+                        'coupon_id'        => ! empty( $info['post_data']['coupon_id'] ) ? absint( $info['post_data']['coupon_id'] ) : 0,
                         'tax'              => $info['tax'],
                         'cost'             => $info['price'],
                         'post_id'          => $post_id,

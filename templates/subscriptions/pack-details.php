@@ -20,24 +20,27 @@ if ( 'wpuf_pay' === $action || ! empty( $coupon_status ) ) {
     return;
 }
 
-// Block config defaults — when loaded via shortcode, $block_config may not be set
-$block_config = isset( $block_config ) ? $block_config : [
-    'columns'               => 3,
-    'show_price'            => true,
-    'show_features'         => true,
-    'show_description'      => true,
-    'button_color'          => '',
-    'button_text'           => '',
-    'pack_background_color' => '#ffffff',
-    'pack_border_color'     => '#e5e7eb',
-    'pack_border_radius'    => 12,
-    'pack_padding'          => 24,
-    'pack_shadow'           => 'md',
-    'title_font_size'       => 18,
-    'price_font_size'       => 30,
-    'card_gap'              => 16,
-    'recurring_font_size'   => 14,
-];
+// Block config defaults: the shortcode passes no or only a partial $block_config
+$block_config = wp_parse_args(
+    isset( $block_config ) ? (array) $block_config : [],
+    [
+        'columns'               => 3,
+        'show_price'            => true,
+        'show_features'         => true,
+        'show_description'      => true,
+        'button_color'          => '',
+        'button_text'           => '',
+        'pack_background_color' => '#ffffff',
+        'pack_border_color'     => '#e5e7eb',
+        'pack_border_radius'    => 12,
+        'pack_padding'          => 24,
+        'pack_shadow'           => 'md',
+        'title_font_size'       => 18,
+        'price_font_size'       => 30,
+        'card_gap'              => 16,
+        'recurring_font_size'   => 14,
+    ]
+);
 
 // Get the button color from settings and validate it
 $button_color = ! empty( $block_config['button_color'] ) ? $block_config['button_color'] : wpuf_get_option( 'button_color', 'wpuf_subscription_settings', '' );

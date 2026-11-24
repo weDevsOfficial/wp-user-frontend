@@ -56,10 +56,12 @@ class Subscription {
     public static function subscriber_cancel( $user_id, $pack_id ) {
         global $wpdb;
 
-        $result = $wpdb->get_row( $wpdb->prepare(
+        $result = $wpdb->get_row(
+            $wpdb->prepare(
             'SELECT transaction_id FROM ' . $wpdb->prefix . 'wpuf_transaction
             WHERE user_id = %d AND pack_id = %d LIMIT 1', $user_id, $pack_id
-        ) );
+            )
+        );
 
         $transaction_id = $result ? $result->transaction_id : 'Free';
 
@@ -212,18 +214,22 @@ class Subscription {
      * @return void
      */
     public function after_registration( $user_id ) {
-        if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( '_wpnonce' ) ) {
-            return;
-        }
-
+        // The core register form carries no nonce, so the pack itself is validated below instead.
+        // phpcs:disable WordPress.Security.NonceVerification.Missing
         $wpuf_sub = isset( $_POST['wpuf_sub'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_sub'] ) ) : '';
         $pack_id  = isset( $_POST['pack_id'] ) ? intval( wp_unslash( $_POST['pack_id'] ) ) : 0;
+        // phpcs:enable WordPress.Security.NonceVerification.Missing
 
         if ( $wpuf_sub !== 'yes' ) {
             return $user_id;
         }
 
         if ( empty( $pack_id ) ) {
+            return $user_id;
+        }
+
+        // Only a published pack can be picked at registration; drafts, private and trashed packs are not offered.
+        if ( 'wpuf_subscription' !== get_post_type( $pack_id ) || 'publish' !== get_post_status( $pack_id ) ) {
             return $user_id;
         }
 
@@ -438,7 +444,9 @@ class Subscription {
 
         if ( isset( $post_data['post_expiration_settings'] ) ) {
             if ( isset( $post_data['post_expiration_settings']['expiration_time_value'] ) && isset( $post_data['post_expiration_settings']['expiration_time_type'] ) ) {
-                $expiration_time = sanitize_text_field( wp_unslash( $post_data['post_expiration_settings']['expiration_time_value'] ) ) . ' subscription.php' . sanitize_text_field( wp_unslash( $post_data['post_expiration_settings']['expiration_time_type'] ) );
+                // Stored as a strtotime()-readable duration, e.g. "7 day". The separator must be a
+                // single space; anything else makes strtotime() fail and the post expire immediately.
+                $expiration_time = sanitize_text_field( wp_unslash( $post_data['post_expiration_settings']['expiration_time_value'] ) ) . ' ' . sanitize_text_field( wp_unslash( $post_data['post_expiration_settings']['expiration_time_type'] ) );
             }
 
             if ( isset( $post_data['post_expiration_settings']['enable_post_expiration'] ) && isset( $post_data['post_expiration_settings']['enable_post_expiration'] ) ) {
@@ -544,7 +552,8 @@ class Subscription {
     public static function get_subscription( $sub_id ) {
         $pack = get_post( $sub_id );
 
-        if ( ! $pack ) {
+        // Any other post type here would let a non-pack ID be granted or priced as a pack.
+        if ( ! $pack || 'wpuf_subscription' !== $pack->post_type ) {
             return false;
         }
 
@@ -607,7 +616,7 @@ class Subscription {
         $fallback_cost = $form->is_enabled_fallback_cost();
         $current_user  = wpuf_get_user();
         $current_pack  = $current_user->subscription()->current_pack();
-        $has_post      = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
+        $has_post      = $current_user->subscription()->has_post_count( $form_settings['post_type'] ?? '' );
 
         if ( $force_pack && ! is_wp_error( $current_pack ) && $has_post ) {
             $sub_info    = self::get_user_pack( $userdata->ID );
@@ -672,7 +681,7 @@ class Subscription {
             update_post_meta( $post_id, '_wpuf_order_id', $order_id, true );
         }
 
-        if ( $form->is_enabled_pay_per_post() || ( $form->is_enabled_force_pack() && $form->is_enabled_fallback_cost() && ! wpuf_get_user()->subscription()->has_post_count( $form_settings['post_type'] ) ) ) {
+        if ( $form->is_enabled_pay_per_post() || ( $form->is_enabled_force_pack() && $form->is_enabled_fallback_cost() && ! wpuf_get_user()->subscription()->has_post_count( $form_settings['post_type'] ?? '' ) ) ) {
             update_post_meta( $post_id, '_wpuf_order_id', $order_id, true );
             update_post_meta( $post_id, '_wpuf_payment_status', 'pending' );
         }
@@ -698,7 +707,7 @@ class Subscription {
         $fallback_cost    = $form->is_enabled_fallback_cost();
         $current_user     = wpuf_get_user();
         $current_pack     = $current_user->subscription()->current_pack();
-        $has_pack         = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
+        $has_pack         = $current_user->subscription()->has_post_count( $form_settings['post_type'] ?? '' );
         $ppp_cost_enabled = $form->is_enabled_pay_per_post();
         $sub_expired      = $current_user->subscription()->expired();
 
@@ -744,7 +753,7 @@ class Subscription {
             $this->handle_post_publish( $order_id );
         } elseif ( $info['pack_id'] ) {
             if ( $recurring ) {
-                $profile_id = $info['profile_id'];
+                $profile_id = $info['profile_id'] ?? null;
             } else {
                 $profile_id = isset( $info['user_id'] ) ? $info['user_id'] : null;
             }
@@ -790,11 +799,13 @@ class Subscription {
         global $wpdb;
 
         //$post = get_post( $post_id );
-        return $wpdb->get_row( $wpdb->prepare(
+        return $wpdb->get_row(
+            $wpdb->prepare(
             "SELECT p.ID, p.post_status
             FROM $wpdb->posts p, $wpdb->postmeta m
             WHERE p.ID = m.post_id AND p.post_status <> 'publish' AND m.meta_key = '_wpuf_order_id' AND m.meta_value = %s", $order_id
-        ) );
+            )
+        );
     }
 
     /**
@@ -828,7 +839,7 @@ class Subscription {
 
         if ( $form_id ) {
             $form_settings = wpuf_get_form_settings( $form_id );
-            $post_status   = $form_settings['post_status'];
+            $post_status   = $form_settings['post_status'] ?? '';
         }
 
         $update_post = [
@@ -944,10 +955,12 @@ class Subscription {
             ?>
 
             <p><i><?php esc_html_e( 'You have a subscription pack activated.', 'wp-user-frontend' ); ?></i></p>
-            <p><i><?php
+            <p><i>
+            <?php
                 // translators: %s: pack title
                 printf( esc_html__( 'Pack name: %s', 'wp-user-frontend' ), esc_html( get_the_title( $current_pack['pack_id'] ) ) );
-            ?></i></p>
+            ?>
+            </i></p>
 
             <?php echo '<p><i>' . esc_html__( 'To cancel the pack, press the following cancel button', 'wp-user-frontend' ) . '</i></p>'; ?>
 
@@ -1141,7 +1154,7 @@ class Subscription {
                 ?>
             </div>
             <?php
-        } elseif ( $payment_enabled && $force_pack && $form->is_enabled_fallback_cost() && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+        } elseif ( $payment_enabled && $force_pack && $form->is_enabled_fallback_cost() && ! is_wp_error( $current_pack ) && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ?? '' ) ) {
             ?>
             <div class="wpuf-info">
                 <?php
@@ -1273,7 +1286,7 @@ class Subscription {
                                 // fallback cost disabled
                                 if ( ! $current_user->subscription()->current_pack_id() ) {
                                     return 'no';
-                                } elseif ( $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+                                } elseif ( $current_user->subscription()->has_post_count( $form_settings['post_type'] ?? '' ) ) {
                                     return 'yes';
                                 }
                             } elseif ( $fallback_enabled ) {

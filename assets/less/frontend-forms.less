@@ -151,93 +151,10 @@ body {
     font-size: 13px;
 }
 
-#form-preview-stage,
-.wpuf-form-add{
-
-    &.wpuf-style{
-        ul.wpuf-form{
-
-            .wpuf-fields {
-                input[type=text],
-                input[type=password],
-                input[type=email],
-                input[type=url],
-                input[type=number],
-                input[type=tel],
-                textarea {
-                    background: #fafafa;
-                    -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
-                    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
-                    box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
-                    border: 1px solid #ddd;
-                    color: #888;
-                    width: 95%;
-                }
-
-                input[type=text]:focus,
-                input[type=password]:focus,
-                input[type=email]:focus,
-                input[type=url]:focus,
-                input[type=number]:focus,
-                textarea:focus {
-                    color: #373737;
-                }
-                textarea {
-                    padding-left: 3px;
-                    width: 95%;
-                }
-                input[type=text],
-                input[type=password],
-                input[type=email],
-                input[type=url],
-                input[type=number] {
-                    padding: 5px;
-                }
-
-                select {
-                    border: 1px solid @borderColor;
-                    padding: 2px;
-                    height: 2em;
-                    .border-radius(3px);
-                    min-width: 150px;
-                    max-width: 100%;
-                }
-
-                select[multiple] {
-                    height: auto;
-                }
-            }
-
-            .wpuf-fields-inline {
-                display: flex;
-                justify-content: space-between;
-            }
-
-            .wpuf-submit{
-
-                input[type=submit] {
-                    font-size: 16px;
-                    padding: 5px 15px;
-                    line-height: inherit;
-                    height: inherit;
-                    border: 1px solid #ccc;
-                    .border-radius(3px);
-                    .core-button();
-                }
-
-                input[type=submit]:disabled{
-                    background: #dddddd;
-                    border-color: #dddddd;
-                    -webkit-box-shadow: 0 1px 0 #dddddd;
-                    box-shadow: 0 1px 0 #dddddd;
-                    color: #000;
-                    text-shadow: 0 -1px 1px #dddddd, 1px 0 1px #dddddd, 0 1px 1px #dddddd, -1px 0 1px #dddddd;
-                }
-            }
-        }
-    }
-
-}
+/* Skin rules for layout1 (default) have been moved to
+ * assets/css/frontend-form/layout1.css, scoped to .wpuf-form-layout1.
+ * Each layout now owns its own visual skin; frontend-forms.css is structural only.
+ */
 
 ul.wpuf-form {
     list-style: none !important;
@@ -291,7 +208,9 @@ ul.wpuf-form {
 
             .wpuf-radio-block,
             .wpuf-checkbox-block{
-                display: block;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
                 margin-bottom: 6px;
             }
 
@@ -722,32 +641,365 @@ ul.wpuf-form {
     }
 }
 
-.wpuf-coupon-info-wrap {
-    border: 1px solid @borderColor;
-    padding: 15px;
-    margin-bottom: 20px;
+// Checkout page layout
+.wpuf-checkout-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    position: relative;
+
+    &--loading {
+        .wpuf-checkout-billing,
+        .wpuf-checkout-columns {
+            filter: blur(2px);
+            pointer-events: none;
+            user-select: none;
+            transition: filter 0.2s ease;
+        }
+
+        // Dim layer over the blurred sections; footer (button + errors) stays crisp.
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            // Stop the overlay above the footer so the spinner button and aria-live
+            // error region remain fully readable and interactive.
+            bottom: 80px;
+            background-color: rgba(255, 255, 255, 0.55);
+            border-radius: 8px;
+            pointer-events: none;
+            z-index: 1;
+        }
+    }
+}
+
+.wpuf-checkout-billing {
+    margin-bottom: 24px;
+
+    h3 {
+        margin: 0 0 16px 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #1a1a2e;
+    }
+}
+
+.wpuf-checkout-columns {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }
+}
+
+// Left column: Payment gateway cards
+.wpuf-checkout-left {
+    flex: 1;
+    min-width: 0;
+}
+
+// Right column: Order summary
+.wpuf-checkout-right {
+    width: 320px;
+    flex-shrink: 0;
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+}
+
+// Gateway card list
+#wpuf-payment-gateway {
+    ul.wpuf-payment-gateways {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        li {
+            margin: 0;
+            padding: 0;
+        }
+    }
+}
+
+.wpuf-gateway-card {
+    display: block;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: #fff;
+
+    &:hover {
+        border-color: #c7d2fe;
+    }
+
+    .wpuf-gateway-card-main {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .wpuf-gateway-icon {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            max-width: 36px;
+            max-height: 36px;
+            object-fit: contain;
+        }
+    }
+
+    .wpuf-gateway-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .wpuf-gateway-label {
+        display: block;
+        font-size: 15px;
+        font-weight: 600;
+        color: #1a1a2e;
+        line-height: 1.3;
+    }
+
+    .wpuf-gateway-desc {
+        display: block;
+        font-size: 13px;
+        color: #6b7280;
+        line-height: 1.4;
+        margin-top: 2px;
+    }
+
+    input[type="radio"] {
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .wpuf-payment-instruction {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #f3f4f6;
+    }
+}
+
+// Order summary card
+.wpuf-order-summary {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.wpuf-order-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.wpuf-order-item, .wpuf-order-row {
+    .wpuf-order-label {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #0F172A;
+    }
+
+    .wpuf-order-value {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #0F172A;
+    }
+}
+
+.wpuf-order-subtitle {
+    font-size: 12px;
+    font-weight: 400;
+    color: #6B7280;
+    margin-top: 8px;
+    margin-bottom: 12px;
+}
+
+.wpuf-order-divider {
+    border-top: 1px solid #e5e7eb;
+    margin: 12px 0;
+}
+
+// Coupon styles inside order summary
+.wpuf-order-summary {
+    .wpuf-coupon-btn {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        font-size: 14px;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .wpuf-coupon-show {
+        display: block;
+        width: 100%;
+        margin-top: 16px;
+        padding: 10px 16px;
+        box-sizing: border-box;
+    }
+
+    .wpuf-coupon-wrap {
+        margin: 16px 0 0;
+
+        .wpuf-coupon-error {
+            color: #D8000C;
+            font-size: 13px;
+            margin-bottom: 8px;
+
+            &:empty {
+                display: none;
+            }
+        }
+
+        .wpuf-coupon-field {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            margin-bottom: 8px;
+        }
+    }
+
+    a.wpuf-apply-coupon {
+        margin-right: 10px;
+        padding: 6px 14px;
+        display: inline-block;
+    }
+
+    .wpuf-coupon-cancel {
+        padding: 6px 14px;
+        display: inline-block;
+    }
 
     .wpuf-coupon-field-spinner {
         background: url( '../images/wpspin_light.gif' ) no-repeat right scroll rgba(0, 0, 0, 0);
     }
-    .wpuf-copon-show {
-        background: #EEEEEE;
-        border-radius: 3px;
-        border-width: 1px;
-        box-shadow: 0 1px 0 rgba(217, 217, 217, 0.5) inset, 0 1px 0 rgba(0, 0, 0, 0.15);
-        color: #5C5A5A;
-        cursor: pointer;
-        display: inline-block;
-        font-size: 14px;
-        padding: 5px 12px;
-        text-decoration: none;
-        width: 175px;
-        margin-bottom: 8px;
+
+    .wpuf-subscription-error {
+        color: #D8000C;
     }
 
-    .wpuf-copon-wrap {
-        margin: 15px 0;
+    .wpuf-coupon-applied {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 16px;
+        padding: 10px 14px;
+        background: #f1f5f9;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 400;
+        color: #475569;
+
+        .wpuf-coupon-applied-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .wpuf-coupon-remove {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+            color: #94a3b8;
+            opacity: 0.8;
+            transition: opacity 0.15s ease;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
     }
+}
+
+// Checkout footer with CTA button — colors inherit from theme via .wpuf-btn
+.wpuf-checkout-footer {
+    margin-top: 24px;
+
+    .wpuf-checkout-errors {
+        padding: 10px 14px;
+        margin-bottom: 12px;
+        border-radius: 6px;
+        background-color: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #b91c1c;
+        font-size: 14px;
+    }
+
+    .wpuf-checkout-btn {
+        display: block;
+        width: 100%;
+        padding: 14px 24px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        text-align: center;
+        transition: opacity 0.2s ease;
+
+        &--loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+    }
+
+    .wpuf-btn-spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: wpuf-spin 0.7s linear infinite;
+        flex-shrink: 0;
+    }
+}
+
+@keyframes wpuf-spin {
+    to { transform: rotate(360deg); }
+}
+
+// Legacy coupon info wrap (backward compatibility for Pro coupon rendering)
+.wpuf-coupon-info-wrap {
+    border: 1px solid @borderColor;
+    padding: 15px;
+    margin-bottom: 20px;
 
     .wpuf-pack-info {
         margin-bottom: 20px;
@@ -765,34 +1017,6 @@ ul.wpuf-form {
                 font-size: 14px;
             }
         }
-
-        wpuf-subscription-error {
-            color: #D8000C;
-        }
-    }
-
-    .wpuf-copon-show:hover {
-        background: none repeat scroll 0 0 #1E8CBE;
-        border-color: #0074A2;
-        box-shadow: 0 1px 0 rgba(120, 200, 230, 0.6) inset;
-        color: #FFFFFF;
-    }
-
-    a.wpuf-apply-coupon {
-        text-decoration: none;
-        font-size: 11px;
-        margin-top: 10px;
-        margin-right: 10px;
-        background: #21759b;
-        color: #fff;
-        padding: 5px 10px;
-        display: inline-block;
-        .border-radius(3px);
-    }
-
-    .wpuf-copon-cancel {
-        text-decoration: none;
-        font-size: 11px;
     }
 }
 
@@ -1024,35 +1248,13 @@ table.wpuf-table {
     }
 }
 
-#wpuf-payment-gateway {
-    @media(max-width: 549px){
-        margin-left: -15px;
-    }
-    ul.wpuf-payment-gateways {
-        list-style: none;
-        margin: 10px 0;
-
-        li {
-            margin: 0;
-
-            &.wpuf-gateway-paypal img {
-                max-width: 18px;
-            }
-
-            .wpuf-payment-instruction {
-                padding: 8px 10px;
-                margin: 0 10px;
-            }
-
-            .wpuf-instruction {
-                padding: 8px 10px;
-                margin-bottom: 10px;
-                background: #ebe8eb;
-                font-size: 13px;
-                .border-radius(2px);
-            }
-        }
-    }
+// Legacy #wpuf-payment-gateway instruction styles (kept for backward compatibility)
+#wpuf-payment-gateway .wpuf-instruction {
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    background: #ebe8eb;
+    font-size: 13px;
+    .border-radius(2px);
 }
 
 .wpuf-pagination {
@@ -1166,7 +1368,7 @@ table.wpuf-table {
 /*------------------------------------
  * Multistep form
  *-----------------------------------*/
- fieldset.wpuf-multistep-fieldset {
+fieldset.wpuf-multistep-fieldset {
     position: relative;
     padding-bottom: 50px;
     border: none;
@@ -1176,15 +1378,70 @@ table.wpuf-table {
         display: block;
     }
 
-    button.wpuf-multistep-next-btn.btn.btn-primary {
+    button.wpuf-multistep-nav-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5rem;
+        color: #4b5563;
+        white-space: nowrap;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.375rem;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover {
+            background: #f9fafb;
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+
+    button.wpuf-multistep-next-btn,
+    button.wpuf-multistep-prev-btn {
         position: absolute;
         bottom: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 24px;
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 400;
+        border-radius: 0.375rem;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        border: none;
+        background-color: #99A7B2;
+        color: rgb(255, 255, 255);
+        text-shadow: unset;
+
+        &:hover {
+            background-color: #7F8C96;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgb(255, 255, 255), 0 0 0 4px #99A7B2;
+        }
+    }
+
+    button.wpuf-multistep-next-btn {
         right: 0;
     }
 
-    button.wpuf-multistep-prev-btn.btn.btn-primary {
-        position: absolute;
-        bottom: 0;
+    button.wpuf-multistep-prev-btn {
         left: 0;
     }
 
@@ -1213,87 +1470,103 @@ table.wpuf-table {
 .wpuf-form .wpuf-multistep-progressbar {
 
     @stepBackground: #00a0d2;
+    @stepInactive: #E4E4E4;
 
-    ul.wpuf-step-wizard {
+    .wpuf-step-wizard {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
         margin: 20px 0 40px 0;
         padding: 0;
-        list-style: none;
 
         * {
             box-sizing: border-box;
         }
+    }
 
-        li {
-            background-color: #E4E4E4;
-            border-radius: 5px;
-            display: inline-block;
-            padding: 10px 30px 10px 40px;
-            margin-right: -7px;
-            width: auto;
-            margin: 0;
-            position: relative;
-            text-align: center;
+    .wpuf-step-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-shrink: 0;
+    }
 
-            &::before,
-            &::after {
-                border: solid transparent;
-                content: " ";
-                height: 0;
-                width: 0;
-                position: absolute;
-                border-color: transparent;
-                border-left-color: #fff;
-                border-radius: 10px;
-            }
+    .wpuf-step-circle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 2px solid @stepInactive;
+        background-color: #fff;
+        color: @stepInactive;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
 
-            &::before {
-                border-width: 26px;
-                margin-top: -14px;
-                right: -52px;
-                z-index: 98;
-            }
+    .wpuf-step-label {
+        margin-top: 8px;
+        font-size: 13px;
+        color: @stepInactive;
+        font-weight: 400;
+        white-space: nowrap;
+        transition: color 0.3s ease;
+    }
 
-            &::after {
-                border-left-color: #E4E4E4;
-                border-width: 25px;
-                margin-top: -37px;
-                right: -44px;
-                z-index: 99;
-            }
+    .wpuf-step-line {
+        flex: 1;
+        height: 2px;
+        background-color: @stepInactive;
+        margin-top: 18px;
+        min-width: 40px;
+        transition: background-color 0.3s ease;
+    }
 
-            &.active-step {
-                background-color: @stepBackground;
-                color: #fff;
+    .wpuf-step-line-active {
+        background-color: @stepBackground;
+    }
 
-                &::after {
-                    border-left-color: @stepBackground;
-                }
-            }
+    .wpuf-step-item.active-step,
+    .wpuf-step-item.completed-step {
+        .wpuf-step-circle {
+            background-color: @stepBackground;
+            border-color: @stepBackground;
+            color: #fff;
+        }
 
-            &:last-child::after {
-                border-left-color: transparent;
-            }
+        .wpuf-step-label {
+            color: #333;
+            font-weight: 600;
         }
     }
 
-    .ui-widget-header {
-        background: @stepBackground;
+    .wpuf-progressbar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
     }
 
-    &.ui-progressbar {
+    .wpuf-progressbar-track {
+        width: 100%;
+        height: 10px;
+        background-color: @stepInactive;
+        border-radius: 5px;
+        overflow: hidden;
         margin-bottom: 30px;
-        height: 25px;
-        border: 1px solid @borderColor;
-        position: relative;
+    }
 
-        .wpuf-progress-percentage {
-            position: absolute;
-            left: 50%;
-            font-size: 12px;
-            font-weight: bold;
-            text-shadow: 1px 1px 0 #fff;
-            top: 20%;
-        }
+    .wpuf-progressbar-fill {
+        height: 100%;
+        background-color: @stepBackground;
+        border-radius: 5px;
+        width: 0;
+        transition: width 0.3s ease;
     }
 }
 input.wpuf-btn {
@@ -1761,6 +2034,7 @@ li.wpuf-image-wrap.thumbnail:hover .caption {
     display:block;
 }
 
+// Legacy pay-row/pay-col layout (kept for backward compatibility)
 @media (min-width: 550px) {
     .wpuf-pay-row {
         width: 100%;

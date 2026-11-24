@@ -45,17 +45,16 @@ class Form_Field_Cloudflare_Turnstile extends Field_Contract {
                 <?php } ?>
                 id="wpuf-turnstile"
                 class="wpuf-fields wpuf-turnstile"></div>
+            <script>
+                window.onloadTurnstileCallback = function () {
+                    turnstile.render("#wpuf-turnstile", {
+                        sitekey: "<?php echo esc_js( $site_key ); ?>",
+                        theme:"<?php echo esc_js( $theme ); ?>",
+                        size:"<?php echo esc_js( $size ); ?>"
+                    });
+                };
+            </script>
         </li>
-
-        <script>
-            window.onloadTurnstileCallback = function () {
-                turnstile.render("#wpuf-turnstile", {
-                    sitekey: "<?php echo esc_js( $site_key ); ?>",
-                    theme:"<?php echo esc_js( $theme ); ?>",
-                    size:"<?php echo esc_js( $size ); ?>"
-                });
-            };
-        </script>
 
         <?php
     }

@@ -85,22 +85,39 @@ trait FieldableTrait {
             $wpuf_post_types[] = 'download';
         }
 
-        $ignore_taxonomies = apply_filters( 'wpuf-ignore-taxonomies', [
-            'post_format',
-        ] );
+        $ignore_taxonomies = apply_filters(
+            'wpuf-ignore-taxonomies', [
+                'post_format',
+            ]
+        );
         foreach ( $wpuf_post_types as $post_type ) {
             $this->wp_post_types[ $post_type ] = [];
             $taxonomies = get_object_taxonomies( $post_type, 'object' );
             foreach ( $taxonomies as $tax_name => $taxonomy ) {
-                if ( ! in_array( $tax_name, $ignore_taxonomies ) ) {
+                if ( ! in_array( $tax_name, $ignore_taxonomies, true ) ) {
                     $this->wp_post_types[ $post_type ][ $tax_name ] = [
                         'title'        => $taxonomy->label,
                         'hierarchical' => $taxonomy->hierarchical,
                     ];
-                    $this->wp_post_types[ $post_type ][ $tax_name ]['terms'] = get_terms( [
-                        'taxonomy'   => $tax_name,
-                        'hide_empty' => false,
-                    ] );
+                    $tax_terms = get_terms(
+                        [
+                            'taxonomy'   => $tax_name,
+                            'hide_empty' => false,
+                        ]
+                    );
+
+                    // Term names are rendered inside the Vue-mounted form builder.
+                    // Neutralize any mustache delimiters so a crafted term name can
+                    // not be evaluated as a Vue template (stored XSS).
+                    if ( is_array( $tax_terms ) ) {
+                        foreach ( $tax_terms as $tax_term ) {
+                            if ( is_object( $tax_term ) && isset( $tax_term->name ) ) {
+                                $tax_term->name = wpuf_neutralize_template_delimiters( $tax_term->name );
+                            }
+                        }
+                    }
+
+                    $this->wp_post_types[ $post_type ][ $tax_name ]['terms'] = $tax_terms;
                 }
             }
 
@@ -137,7 +154,7 @@ trait FieldableTrait {
     }
 
     public function set_default_taxonomy( $post_id ) {
-        $post_taxonomies = get_object_taxonomies( $this->form_settings['post_type'], 'objects' );
+        $post_taxonomies = get_object_taxonomies( $this->form_settings['post_type'] ?? '', 'objects' );
         foreach ( $post_taxonomies as $tax ) {
             if ( $tax->hierarchical ) {
                 $name = 'default_' . $tax->name;
@@ -150,7 +167,7 @@ trait FieldableTrait {
     }
 
     /**
-     * get Input fields
+     * Get input fields
      *
      * @param array $form_vars
      *
@@ -158,7 +175,9 @@ trait FieldableTrait {
      */
     public function get_input_fields( $form_vars ) {
         $ignore_lists = [ 'section_break', 'html' ];
-        $post_vars    = $meta_vars = $taxonomy_vars = [];
+        $post_vars     = [];
+        $meta_vars     = [];
+        $taxonomy_vars = [];
 
         foreach ( $form_vars as $key => $value ) {
             // get column field input fields
@@ -169,7 +188,7 @@ trait FieldableTrait {
                     if ( ! empty( $column_fields ) ) {
                         // ignore section break and HTML input type
                         foreach ( $column_fields as $column_field_key => $column_field ) {
-                            if ( in_array( $column_field['input_type'], $ignore_lists ) ) {
+                            if ( in_array( $column_field['input_type'], $ignore_lists, true ) ) {
                                 continue;
                             }
 
@@ -197,7 +216,7 @@ trait FieldableTrait {
             }
 
             // ignore section break and HTML input type
-            if ( in_array( $value['input_type'], $ignore_lists ) ) {
+            if ( in_array( $value['input_type'], $ignore_lists, true ) ) {
                 continue;
             }
 
@@ -294,6 +313,7 @@ trait FieldableTrait {
             return;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is verified by the submit/draft handler that calls this.
         $token = ! empty( $_POST['cf-turnstile-response'] ) ? sanitize_text_field( wp_unslash( $_POST['cf-turnstile-response'] ) ) : '';
 
         if ( empty( $token ) ) {
@@ -356,7 +376,7 @@ trait FieldableTrait {
     }
 
     /**
-     * reCaptcha Validation
+     * Validate reCaptcha
      *
      * @return void
      */
@@ -376,9 +396,9 @@ trait FieldableTrait {
             }
 
             $response  = null;
-            $reCaptcha = new \WPUF_ReCaptcha( $private_key );
+            $re_captcha = new \WPUF_ReCaptcha( $private_key );
 
-            $resp = $reCaptcha->verifyResponse(
+            $resp = $re_captcha->verifyResponse(
                 $remote_addr,
                 $g_recaptcha_response
             );
@@ -402,7 +422,7 @@ trait FieldableTrait {
 
             $response = $object->verifyResponse( $recaptcha );
 
-            if ( isset( $response['success'] ) and $response['success'] != true ) {
+            if ( isset( $response['success'] ) && $response['success'] != true ) {
                 $this->send_error( __( 'Invisible reCAPTCHA validation failed', 'wp-user-frontend' ) );
             }
         }
@@ -416,6 +436,7 @@ trait FieldableTrait {
      * @return array
      */
     private function adjust_thumbnail_id( $postarr ) {
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing -- each element is cast with absint() immediately below; the nonce is verified by the handler that calls this.
         $wpuf_files_raw = ! empty( $_POST['wpuf_files'] ) ? wp_unslash( $_POST['wpuf_files'] ) : [];
         $wpuf_files = [];
 
@@ -426,8 +447,19 @@ trait FieldableTrait {
         }
 
         if ( ! empty( $wpuf_files['featured_image'] ) ) {
-            $attachment_id            = reset( $wpuf_files['featured_image'] );
-            $postarr['_thumbnail_id'] = $attachment_id;
+            $attachment_id = absint( reset( $wpuf_files['featured_image'] ) );
+            $attachment    = $attachment_id ? get_post( $attachment_id ) : null;
+
+            // Only set the thumbnail from a real attachment owned by the current
+            // requester. Otherwise an attacker could set _thumbnail_id to an
+            // arbitrary attachment, bypassing the guarded featured-image path.
+            if (
+                $attachment
+                && 'attachment' === $attachment->post_type
+                && self::current_user_owns_attachment( $attachment )
+            ) {
+                $postarr['_thumbnail_id'] = $attachment_id;
+            }
         }
 
         return $postarr;
@@ -462,22 +494,27 @@ trait FieldableTrait {
         if ( isset( $wpuf_files['featured_image'] ) ) {
                 $attachment_id = reset( $wpuf_files['featured_image'] );
 
+            // @codingStandardsIgnoreEnd
+            // Make sure the supplied id is really an attachment that belongs to
+            // this post. Without this an attacker could point featured_image at
+            // an arbitrary post id and overwrite its title/content/excerpt.
+            if ( self::is_attachment_associable( $attachment_id, $post_id ) ) {
                 wpuf_associate_attachment( $attachment_id, $post_id );
                 set_post_thumbnail( $post_id, $attachment_id );
 
-                $file_data = isset( $_POST['wpuf_files_data'][ $attachment_id ] ) ? $_POST['wpuf_files_data'][ $attachment_id ] : false;
+                $file_data = self::get_sanitized_file_data( $attachment_id );
 
-            // @codingStandardsIgnoreEnd
-            if ( $file_data ) {
-                $args = [
-                    'ID'           => $attachment_id,
-                    'post_title'   => $file_data['title'],
-                    'post_content' => $file_data['desc'],
-                    'post_excerpt' => $file_data['caption'],
-                ];
-                wpuf_update_post( $args );
+                if ( $file_data ) {
+                    $args = [
+                        'ID'           => $attachment_id,
+                        'post_title'   => $file_data['title'],
+                        'post_content' => $file_data['desc'],
+                        'post_excerpt' => $file_data['caption'],
+                    ];
+                    wpuf_update_post( $args );
 
-                update_post_meta( $attachment_id, '_wp_attachment_image_alt', $file_data['title'] );
+                    update_post_meta( $attachment_id, '_wp_attachment_image_alt', $file_data['title'] );
+                }
             }
         }
 
@@ -504,6 +541,21 @@ trait FieldableTrait {
 
             $image_ids = '';
 
+            // Reject ids that are not attachments owned by / attachable to this
+            // post BEFORE storing them, so a crafted wpuf_files value cannot
+            // hijack, overwrite, delete or get persisted against an arbitrary post.
+            $valid_ids = [];
+
+            foreach ( $file_input['value'] as $attachment_id ) {
+                $attachment_id = absint( $attachment_id );
+
+                if ( self::is_attachment_associable( $attachment_id, $post_id ) ) {
+                    $valid_ids[] = $attachment_id;
+                }
+            }
+
+            $file_input['value'] = $valid_ids;
+
             if ( count( $file_input['value'] ) > 1 ) {
                 $image_ids = $file_input['value'];
             }
@@ -523,7 +575,24 @@ trait FieldableTrait {
 
                 //if file numbers are greated than allowed number, prevent it from being uploaded
                 if ( $file_numbers >= $file_input['count'] ) {
-                    wp_delete_attachment( $attachment_id );
+                    // Only ever delete an over-limit file the requester actually
+                    // owns (their own fresh upload) or can delete. A crafted
+                    // wpuf_files value that repeats an attachment id past the
+                    // field count must not become an arbitrary-file-deletion
+                    // primitive against another user's media.
+                    $overflow_attachment = get_post( $attachment_id );
+
+                    if (
+                        $overflow_attachment instanceof \WP_Post
+                        && 'attachment' === $overflow_attachment->post_type
+                        && (
+                            self::current_user_owns_attachment( $overflow_attachment )
+                            || current_user_can( 'delete_post', $attachment_id )
+                        )
+                    ) {
+                        wp_delete_attachment( $attachment_id );
+                    }
+
                     continue;
                 }
 
@@ -531,12 +600,8 @@ trait FieldableTrait {
                 //add_post_meta( $post_id, $file_input['name'], $attachment_id );
 
                 // file title, caption, desc update
+                $file_data = self::get_sanitized_file_data( $attachment_id );
 
-                // @codingStandardsIgnoreStart
-                $file_data = isset( $_POST['wpuf_files_data'][ $attachment_id ] ) ?
-                    array_map( 'sanitize_text_field', wp_unslash( $_POST['wpuf_files_data'][ $attachment_id ] ) ) : false;
-
-                // @codingStandardsIgnoreEnd
                 if ( $file_data ) {
                     $args = [
                         'ID'           => $attachment_id,
@@ -554,7 +619,111 @@ trait FieldableTrait {
     }
 
     /**
-     * set custom taxonomy
+     * Check whether an attachment may be associated with / edited for a post
+     *
+     * Guards against an IDOR where a crafted wpuf_files value points to an
+     * arbitrary post id or another user's attachment. Only real attachments
+     * that already belong to the given post, or that are unattached AND owned
+     * by the current requester, are allowed.
+     *
+     * @since 4.3.9
+     *
+     * @param int $attachment_id
+     * @param int $post_id
+     *
+     * @return bool
+     */
+    protected static function is_attachment_associable( $attachment_id, $post_id ) {
+        $attachment_id = absint( $attachment_id );
+        $post_id       = absint( $post_id );
+
+        if ( ! $attachment_id || ! $post_id ) {
+            return false;
+        }
+
+        $attachment = get_post( $attachment_id );
+
+        if ( ! $attachment || 'attachment' !== $attachment->post_type ) {
+            return false;
+        }
+
+        $parent = (int) $attachment->post_parent;
+
+        // Already belongs to this post (e.g. editing an existing submission).
+        if ( $parent === $post_id ) {
+            return true;
+        }
+
+        // Attached to a different post: never allow hijacking it.
+        if ( $parent ) {
+            return false;
+        }
+
+        // Unattached: only the owner may associate it, otherwise an attacker
+        // could target another user's freshly-uploaded or library media.
+        return self::current_user_owns_attachment( $attachment );
+    }
+
+    /**
+     * Check whether the current request owns an unattached attachment
+     *
+     * @since 4.3.9
+     *
+     * @param \WP_Post $attachment Attachment post object.
+     *
+     * @return bool
+     */
+    protected static function current_user_owns_attachment( $attachment ) {
+        $author_id = (int) $attachment->post_author;
+
+        if ( is_user_logged_in() ) {
+            if ( $author_id > 0 && get_current_user_id() === $author_id ) {
+                return true;
+            }
+
+            return current_user_can( 'edit_post', $attachment->ID );
+        }
+
+        // Guests: only author-less WPUF uploads bound to their session token.
+        if ( 0 !== $author_id || ! get_post_meta( $attachment->ID, '_wpuf_attachment', true ) ) {
+            return false;
+        }
+
+        $stored_token = (string) get_post_meta( $attachment->ID, '_wpuf_guest_token', true );
+        $cookie_token = isset( $_COOKIE['wpuf_guest_upload'] )
+            ? sanitize_text_field( wp_unslash( $_COOKIE['wpuf_guest_upload'] ) )
+            : '';
+
+        return '' !== $stored_token && '' !== $cookie_token && hash_equals( $stored_token, $cookie_token );
+    }
+
+    /**
+     * Get sanitized, validated file meta (title/desc/caption) for an attachment
+     *
+     * @since 4.3.9
+     *
+     * @param int $attachment_id
+     *
+     * @return array|false
+     */
+    protected static function get_sanitized_file_data( $attachment_id ) {
+        // @codingStandardsIgnoreStart
+        if ( empty( $_POST['wpuf_files_data'][ $attachment_id ] ) || ! is_array( $_POST['wpuf_files_data'][ $attachment_id ] ) ) {
+            return false;
+        }
+
+        $raw = array_map( 'sanitize_text_field', wp_unslash( $_POST['wpuf_files_data'][ $attachment_id ] ) );
+        // @codingStandardsIgnoreEnd
+
+        return [
+            'title'   => isset( $raw['title'] ) ? $raw['title'] : '',
+            'desc'    => isset( $raw['desc'] ) ? $raw['desc'] : '',
+            'caption' => isset( $raw['caption'] ) ? $raw['caption'] : '',
+        ];
+    }
+
+    /**
+     * Set custom taxonomy
      *
      * @param int   $post_id
      * @param array $taxonomy_vars
@@ -599,27 +768,27 @@ trait FieldableTrait {
             // At this point $taxonomy_name should be a single id or array of ids
             if ( isset( $taxonomy_name ) && $taxonomy_name != 0 && $taxonomy_name != -1 ) {
                 // Auto-register post_tag taxonomy for tribe_events if not already registered
-                if ( 'tribe_events' === $this->form_settings['post_type'] &&
+                if ( 'tribe_events' === ( $this->form_settings['post_type'] ?? '' ) &&
                      'post_tag' === $taxonomy['name'] &&
                      ! is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
                     register_taxonomy_for_object_type( 'post_tag', 'tribe_events' );
                 }
 
                 // Auto-register product_tag taxonomy for product if not already registered
-                if ( 'product' === $this->form_settings['post_type'] &&
+                if ( 'product' === ( $this->form_settings['post_type'] ?? '' ) &&
                      'product_tag' === $taxonomy['name'] &&
-                     ! is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
+                     ! is_object_in_taxonomy( $this->form_settings['post_type'] ?? '', $taxonomy['name'] ) ) {
                     register_taxonomy_for_object_type( 'product_tag', 'product' );
                 }
 
                 // Auto-register download_tag taxonomy for download if not already registered
-                if ( 'download' === $this->form_settings['post_type'] &&
+                if ( 'download' === ( $this->form_settings['post_type'] ?? '' ) &&
                      'download_tag' === $taxonomy['name'] &&
-                     ! is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
+                     ! is_object_in_taxonomy( $this->form_settings['post_type'] ?? '', $taxonomy['name'] ) ) {
                     register_taxonomy_for_object_type( 'download_tag', 'download' );
                 }
 
-                if ( is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
+                if ( is_object_in_taxonomy( $this->form_settings['post_type'] ?? '', $taxonomy['name'] ) ) {
                     $tax = $taxonomy_name;
                     // if it's not an array, make it one
                     if ( ! is_array( $tax ) ) {
@@ -633,39 +802,34 @@ trait FieldableTrait {
                         if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $taxonomy_name ) ) {
                             $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
                         }
-                    } else {
-                        if ( is_taxonomy_hierarchical( $taxonomy['name'] ) ) {
+                    } elseif ( is_taxonomy_hierarchical( $taxonomy['name'] ) ) {
                             wp_set_post_terms( $post_id, $taxonomy_name, $taxonomy['name'] );
 
                             // woocommerce check
-                            if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $taxonomy_name ) ) {
-                                $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
+                        if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $taxonomy_name ) ) {
+                            $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
+                        }
+                    } elseif ( $tax ) {
+                            $non_hierarchical = [];
+
+                        foreach ( $tax as $value ) {
+                            $term = get_term_by( 'id', $value, $taxonomy['name'] );
+
+                            if ( $term && ! is_wp_error( $term ) ) {
+                                $non_hierarchical[] = $term->name;
                             }
-                        } else {
-                            if ( $tax ) {
-                                $non_hierarchical = [];
+                        }
 
-                                foreach ( $tax as $value ) {
-                                    $term = get_term_by( 'id', $value, $taxonomy['name'] );
+                            wp_set_post_terms( $post_id, $non_hierarchical, $taxonomy['name'] );
 
-                                    if ( $term && ! is_wp_error( $term ) ) {
-                                        $non_hierarchical[] = $term->name;
-                                    }
-                                }
-
-                                wp_set_post_terms( $post_id, $non_hierarchical, $taxonomy['name'] );
-
-                                // woocommerce check
-                                if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $_POST[ $taxonomy['name'] ] ) ) {
-                                    $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
-                                }
-                            }
-                        } // hierarchical
-                    } // is text
+                            // woocommerce check
+                        if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $_POST[ $taxonomy['name'] ] ) ) {
+                            $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
+                        }
+                    } // hierarchical / is text
                 } // is object tax
-            } // isset tax
-
-            else {
+                // isset tax
+            } else {
                 if ( isset( $taxonomy_name ) && 0 === absint( $taxonomy_name ) ) {
                     wp_set_post_terms( $post_id, $taxonomy_name, $taxonomy['name'] );
                 }
@@ -685,7 +849,7 @@ trait FieldableTrait {
     }
 
     /**
-     * prepare meta fields
+     * Prepare meta fields
      *
      * @param array $meta_vars
      *
@@ -697,7 +861,8 @@ trait FieldableTrait {
         // process repeatable fields separately
         // if the input is array type, implode with separator in a field
         // /check_ajax_referer( 'wpuf_form_add' );
-        $post_data = wp_unslash( $_POST ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is verified by the submit/draft handler that calls this.
+        $post_data = wp_unslash( $_POST );
         $files          = [];
         $meta_key_value = [];
         $multi_repeated = []; //multi repeated fields will in sotre duplicated meta key
@@ -706,11 +871,18 @@ trait FieldableTrait {
             $wpuf_field = wpuf()->fields->get_field( $value['template'] );
             $posted_field_data = isset( $post_data[ $value['name'] ] ) ? $post_data[ $value['name'] ] : null;
 
-            if ( isset( $posted_field_data ) && method_exists( $wpuf_field, 'sanitize_field_data' ) ) {
+            // get_field() returns null for a template that is no longer
+            // registered, e.g. a field from a deactivated Pro module. Passing
+            // null to method_exists() is a fatal on PHP 8.
+            if ( isset( $posted_field_data ) && $wpuf_field && method_exists( $wpuf_field, 'sanitize_field_data' ) ) {
                 $meta_key_value[ $value['name'] ] = $wpuf_field->sanitize_field_data( $posted_field_data, $value );
                 continue;
             } elseif ( isset( $post_data[ $value['name'] ] ) && is_array( $post_data[ $value['name'] ] ) ) {
-                $value_name = isset( $post_data[ $value['name'] ] ) ? array_map( function( $item ) { return strip_shortcodes( sanitize_text_field( $item ) ); }, wp_unslash( $post_data[ $value['name'] ] ) ) : '';
+                $value_name = isset( $post_data[ $value['name'] ] ) ? array_map(
+                    function ( $item ) {
+                        return strip_shortcodes( sanitize_text_field( $item ) );
+                    }, wp_unslash( $post_data[ $value['name'] ] )
+                ) : '';
             } else {
                 $value_name = isset( $post_data[ $value['name'] ] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $post_data[ $value['name'] ] ) ) ) : '';
             }
@@ -739,12 +911,13 @@ trait FieldableTrait {
                     break;
 
                 case 'repeat':
+                    // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing -- each element is sanitised below before use; the nonce is verified by the handler that calls this.
                     $repeater_value = isset( $_POST[ $value['name'] ] ) ? wp_unslash( $_POST[ $value['name'] ] ) : [];
 
                     // If this repeat field has inner_fields and the value is an array of rows (ACF-style)
                     if ( ! empty( $value['inner_fields'] ) && is_array(
-                            $repeater_value
-                        ) && isset( $repeater_value[0] ) && is_array( $repeater_value[0] ) ) {
+                        $repeater_value
+                    ) && isset( $repeater_value[0] ) && is_array( $repeater_value[0] ) ) {
                         $rows = [];
                         foreach ( $repeater_value as $row ) {
                             $sanitized_row = [];
@@ -753,10 +926,15 @@ trait FieldableTrait {
 
                                 // Handle different field types appropriately
                                 if ( isset( $row[ $fname ] ) ) {
-                                    if ( in_array( $inner_field['template'], [ 'checkbox_field', 'multiple_select' ] ) ) {
+                                    if ( in_array( $inner_field['template'], [ 'checkbox_field', 'multiple_select' ], true ) ) {
                                         // For checkbox and multiselect, keep as array and sanitize each element
                                         if ( is_array( $row[ $fname ] ) ) {
-                                            $sanitized_row[ $fname ] = array_map( function( $item ) { return strip_shortcodes( sanitize_text_field( $item ) ); }, $row[ $fname ] );
+                                            $sanitized_row[ $fname ] = array_map(
+                                                function ( $item ) {
+                                                    return strip_shortcodes( sanitize_text_field( $item ) );
+                                                },
+                                                $row[ $fname ]
+                                            );
                                         } else {
                                             $sanitized_row[ $fname ] = strip_shortcodes( sanitize_text_field( $row[ $fname ] ) );
                                         }
@@ -771,11 +949,20 @@ trait FieldableTrait {
                             $rows[] = $sanitized_row;
                         }
                         $meta_key_value[ $value['name'] ] = $rows;
+                        // Fallback to old logic for single-field repeaters or legacy structure.
+                        // Sanitize each element at the storage layer (no output escaping so
+                        // structured/multi-value data still round-trips).
+                    } elseif ( is_array( $repeater_value ) ) {
+                            $sanitized_repeater = array_map(
+                                function ( $item ) {
+                                    return strip_shortcodes( sanitize_text_field( $item ) );
+                                },
+                                $repeater_value
+                            );
+
+                        $meta_key_value[ $value['name'] ] = implode( self::$separator, $sanitized_repeater );
                     } else {
-                        // Fallback to old logic for single-field repeaters or legacy structure
-                        $meta_key_value[ $value['name'] ] = is_array( $repeater_value ) ? implode(
-                            self::$separator, $repeater_value
-                        ) : '';
+                        $meta_key_value[ $value['name'] ] = '';
                     }
                     break;
 
@@ -898,6 +1085,4 @@ trait FieldableTrait {
             'is_taxonomy'  => 1,
         ];
     }
-
-
 }

@@ -107,7 +107,7 @@ class WeDevs_Settings_API {
 
             if ( isset($section['desc']) && !empty($section['desc']) ) {
                 $section['desc'] = '<div class="inside">' . $section['desc'] . '</div>';
-                $callback = create_function('', 'echo "' . str_replace( '"', '\"', $section['desc'] ) . '";'); // phpcs:ignore
+                $callback = function () use ( $section ) { echo wp_kses_post( $section['desc'] ); }; // phpcs:ignore
             } else if ( isset( $section['callback'] ) ) {
                 $callback = $section['callback'];
             } else {
@@ -463,6 +463,11 @@ class WeDevs_Settings_API {
 
                         <div class="<?php echo esc_attr( $block . '__name' ); ?>">
                             <?php echo esc_html( $admin_label ); ?>
+                            <?php if ( $is_pro ) : ?>
+                                <span class="wpuf-gateway-card__pro">
+                                    <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="<?php esc_attr_e( 'PRO', 'wp-user-frontend' ); ?>" />
+                                </span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; ?>

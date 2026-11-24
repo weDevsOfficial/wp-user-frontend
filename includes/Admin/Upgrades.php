@@ -28,6 +28,7 @@ class Upgrades {
         '4.0.11' => 'upgrades/upgrade-4.0.11.php',
         '4.1.0'  => 'upgrades/upgrade-4.1.0.php',
         '4.1.7'  => 'upgrades/upgrade-4.1.7.php',
+        '4.3.9'  => 'upgrades/upgrade-4.3.9.php',
     ];
 
     /**
@@ -76,6 +77,13 @@ class Upgrades {
      */
     public function perform_updates() {
         if ( ! isset( $_GET['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['nonce'] ) ), 'wpuf_do_update' ) ) {
+            return;
+        }
+
+        // admin_init also runs for logged-out admin-ajax.php requests, so the nonce alone
+        // must not be what allows a data update. Only the role that is offered the link
+        // (show_upgrade_notice checks update_plugins) may run it.
+        if ( ! current_user_can( 'update_plugins' ) ) {
             return;
         }
 

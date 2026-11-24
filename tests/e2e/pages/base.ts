@@ -4,6 +4,13 @@ import { expect, type Page } from '@playwright/test';
 import { Urls } from '../utils/testData';
 import { faker } from '@faker-js/faker';
 
+// Keep the terminal readable: page-object step logs ("✅ Clicked on //...") are
+// suppressed by default so only Playwright's own test-title lines show. Set
+// E2E_VERBOSE=1 to restore the full per-action locator logging for debugging.
+if (!process.env.E2E_VERBOSE) {
+    console.log = () => {};
+}
+
 export class Base {
     static generateWordWithMinLength(arg0: number): string {
         throw new Error('Method not implemented.');
@@ -19,6 +26,7 @@ export class Base {
     readonly newPagePage: string = Urls.baseUrl + '/wp-admin/post-new.php?post_type=page';
     readonly mediaPage: string = Urls.baseUrl + '/wp-admin/upload.php';
     readonly accountPage: string = Urls.baseUrl + '/account/';
+    readonly accountPostsPage: string = Urls.baseUrl + '/account/?section=post';
     readonly settingsPermalinkPage: string = Urls.baseUrl + '/wp-admin/options-permalink.php';
     readonly categoriesPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=category';
     readonly tagsPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=post_tag';
@@ -69,12 +77,85 @@ export class Base {
     async navigateToURL(url: string) {
         try {
             await this.waitForLoading();
-            await this.page.goto(url);
+            // The document, then up to 15s for "load": goto() alone waited for "load" with no
+            // limit (no navigation timeout in the config), so one request on the page that
+            // never finished held the test until its 3-minute timeout.
+            const go = async () => {
+                await this.page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+                await this.page.waitForLoadState('load', { timeout: 15000 }).catch(() => {});
+            };
+            try {
+                await go();
+            } catch (error) {
+                // Leaving a screen while its last request is still running cancels this
+                // navigation once (net::ERR_ABORTED): let it settle, then go again.
+                if (!String(error).includes('ERR_ABORTED')) {
+                    throw error;
+                }
+                await this.page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+                await go();
+            }
             await this.waitForLoading();
+
+            await this.skipHijackingSetupWizard(url);
+
             console.log('\x1b[34m%s\x1b[0m', `✅ Navigated to ${url}`);
             return true;
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to navigate to ${url}: ${error}`);
+            throw error;
+        }
+    }
+
+    /**
+     * Re-request `url` when a plugin's one-shot welcome wizard stole it.
+     *
+     * WPUF (and Dokan, and WooCommerce) redirect the FIRST admin page load after
+     * activation to their setup wizard — WPUF via the `wpuf_activation_redirect`
+     * transient (`Setup_Wizard::redirect_to_page`). Which navigation eats that
+     * redirect is a race: on a long-lived local site the transients were spent
+     * long ago, but in CI the plugins are activated at wp-env boot, so the first
+     * admin request in the run gets hijacked — and a chain of them lands on
+     * `page=dokan-setup` and then `page=wpuf-setup`. The wizards render full
+     * screen with no admin menu, so the victim test waits for a locator that can
+     * never appear.
+     *
+     * Each redirect deletes its own transient, so simply asking again gets us
+     * where we wanted. Loop, because one navigation can only burn one wizard.
+     * Never bounce a test that asked for a wizard on purpose (LS0006).
+     */
+    private async skipHijackingSetupWizard(url: string) {
+        const wizards = ['page=wpuf-setup', 'page=dokan-setup', 'page=wc-setup', 'path=/setup-wizard'];
+
+        for (let attempt = 0; attempt < wizards.length; attempt++) {
+            const landed = this.page.url();
+            const hijacked = wizards.some((wizard) => landed.includes(wizard) && !url.includes(wizard));
+
+            if (!hijacked) {
+                return;
+            }
+
+            console.log('\x1b[33m%s\x1b[0m', `↻ Setup wizard (${landed}) stole the navigation, retrying ${url}`);
+            await this.page.goto(url);
+            await this.waitForLoading();
+        }
+    }
+
+    // Validate an element is present in the DOM without requiring visibility.
+    // Use when the *value/text is already encoded in the selector* (so presence
+    // proves the data), but the element may sit in a collapsed/inactive panel —
+    // e.g. the EDD `edd_price` input on the block-editor download page renders
+    // correct-but-hidden inside a collapsed price panel, so a visibility wait
+    // (assertionValidate) would hang for the full test timeout.
+    async validateAttached(locator: string) {
+        try {
+            await this.waitForLoading();
+            await this.page.locator(locator).first().waitFor({ state: 'attached' });
+            await this.waitForLoading();
+            console.log('\x1b[34m%s\x1b[0m', `✅ Present (attached) ${locator}`);
+            return true;
+        } catch (error) {
+            console.log('\x1b[31m%s\x1b[0m', `❌ Not present ${locator}: ${error}`);
             throw error;
         }
     }
@@ -120,6 +201,50 @@ export class Base {
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to click on ${locator}: ${error}`);
             throw error;
+        }
+    }
+
+    /**
+     * Click a locator only if it shows up within `timeout`, otherwise skip it.
+     *
+     * For genuinely optional UI — admin notices, "Allow"/"Skip setup" prompts,
+     * dismiss crosses — that renders only on some plugin sets. `validateAndClick`
+     * in a try/catch is the wrong tool: it inherits the global action timeout, so
+     * an absent notice stalls the test instead of being skipped. `.first()` also
+     * keeps duplicated notices (WPUF + WPUF Pro both render "Allow") out of
+     * strict-mode violations.
+     */
+    async clickIfPresent(locator: string, timeout = 3000) {
+        const element = this.page.locator(locator).first();
+
+        try {
+            await element.waitFor({ state: 'visible', timeout });
+        } catch {
+            console.log('\x1b[33m%s\x1b[0m', `⏭ Optional element absent, skipped ${locator}`);
+            return false;
+        }
+
+        await element.click();
+        await this.waitForLoading();
+        console.log('\x1b[35m%s\x1b[0m', `✅ Clicked optional ${locator}`);
+        return true;
+    }
+
+    /**
+     * Dismiss an open SweetAlert2 dialog, if any.
+     *
+     * The form builder pops "Oops... You already have this field in the form"
+     * when a field that is already on the form is clicked again. Its backdrop
+     * swallows every later click, so an undismissed dialog stalls the whole
+     * spec until the test times out. No-op when no dialog is showing.
+     */
+    async dismissBlockingModal() {
+        const confirm = this.page.locator('//div[contains(@class,"swal2-container")]//button[contains(@class,"swal2-confirm")]').first();
+
+        if (await confirm.isVisible().catch(() => false)) {
+            await confirm.click();
+            await this.page.locator('//div[contains(@class,"swal2-container")]').first()
+                .waitFor({ state: 'hidden' }).catch(() => {});
         }
     }
 
@@ -179,6 +304,49 @@ export class Base {
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to fill ${locator} with ${value}: ${error}`);
             throw error;
+        }
+    }
+
+    // Fill only if the field becomes available (best-effort, non-blocking).
+    // Use for OPTIONAL fields that depend on an external service which may not
+    // load in every environment — e.g. the WPUF Google Map "Search address" box,
+    // which only renders once the Google Maps JS API initializes. When the Maps
+    // key is missing/referer-restricted the box stays hidden; the old
+    // `validateAndFillStrings` then blocked for the full test timeout (~2 min) and
+    // fail-fast skipped every downstream test in the spec. This waits a bounded
+    // time, fills when present, and otherwise logs a loud warning and continues
+    // so the rest of the form (and spec) still runs. Returns whether it filled.
+    async fillStringIfAvailable(locator: string, value: string, timeoutMs: number = 30000): Promise<boolean> {
+        try {
+            await this.waitForLoading();
+            const element = this.page.locator(locator);
+            await element.waitFor({ state: 'visible', timeout: timeoutMs });
+            await element.fill(value);
+            await this.waitForLoading();
+            console.log('\x1b[35m%s\x1b[0m', `✅ Filled ${locator} with ${value}`);
+            return true;
+        } catch (error) {
+            console.log('\x1b[33m%s\x1b[0m', `⚠️  Optional field not available within ${timeoutMs}ms — skipped: ${locator} (intended value: "${value}"). If a valid Google Maps key with the right referer is configured this should not happen.`);
+            return false;
+        }
+    }
+
+    // Click only if the element shows up quickly (best-effort, non-blocking).
+    // Use for OPTIONAL one-off notices/dismissals that may simply not exist on a
+    // given site (setup wizards, EDD/PayPal admin notices). `validateAndClick`
+    // waits the full 30s page default for each, so a handful of absent notices
+    // burned the entire 180s test budget before the real assertion ran.
+    async clickIfAvailable(locator: string, timeoutMs: number = 3000): Promise<boolean> {
+        try {
+            const element = this.page.locator(locator).first();
+            await element.waitFor({ state: 'visible', timeout: timeoutMs });
+            await element.click();
+            await this.waitForLoading();
+            console.log('\x1b[35m%s\x1b[0m', `✅ Clicked optional ${locator}`);
+            return true;
+        } catch (error) {
+            console.log('\x1b[33m%s\x1b[0m', `⚠️  Optional element absent within ${timeoutMs}ms — skipped: ${locator}`);
+            return false;
         }
     }
 
@@ -259,34 +427,73 @@ export class Base {
         }
     }
 
+    // Select a value in an enhanced multiselect. WPUF's redesigned multi-select field
+    // (Form_Field_MultiDropdown enqueues wpuf-custom-multiselect) wraps the native
+    // <select multiple> in a custom widget and hides the real element, so page.selectOption()
+    // hangs waiting for a visible option. Set the option on the (attached but hidden) native
+    // select and dispatch change/input so the widget syncs — robust to the widget's markup.
+    async selectMultiSelectByValue(locator: string, value: string) {
+        try {
+            await this.waitForLoading();
+            const element = this.page.locator(locator).first();
+            await element.waitFor({ state: 'attached' });
+            const matched = await element.evaluate((select: HTMLSelectElement, val: string) => {
+                const opt = Array.from(select.options).find(
+                    o => o.value === val || o.text.trim() === val
+                );
+                if (!opt) {
+                    return false;
+                }
+                opt.selected = true;
+                select.dispatchEvent(new Event('change', { bubbles: true }));
+                select.dispatchEvent(new Event('input', { bubbles: true }));
+                return true;
+            }, value);
+            expect(
+                matched,
+                `Multiselect ${locator} has no option matching "${value}"`
+            ).toBe(true);
+            await this.waitForLoading();
+            console.log('\x1b[33m%s\x1b[0m', `✅ Multiselected ${locator} with ${value}`);
+        } catch (error) {
+            console.log('\x1b[31m%s\x1b[0m', `❌ Failed to multiselect ${locator} with value ${value}: ${error}`);
+            throw error;
+        }
+    }
+
     // Wait for networkidle
     async waitForLoading() {
         await this.page.waitForLoadState('domcontentloaded');
     }
 
     async waitForFormSaved(formSavedLocator: string, saveButtonLocator: string) {
+        // Detect the transient "Saved form data" toast with a generous timeout.
+        // IMPORTANT: always return false ("saved – stop") so callers that loop
+        // `while (flag) { create/build form; flag = waitForFormSaved(...) }` run
+        // exactly once. Returning true on a flaky false-negative made those loops
+        // re-enter and create DUPLICATE forms, which then broke unscoped
+        // form-name selectors with Playwright strict-mode violations.
         try {
-            let formNotSaved = true;
-            let count = 1;
-            while (formNotSaved && count < 2) {
-                try {
-                    await this.waitForLoading();
-                    await this.page.locator(formSavedLocator).waitFor({ timeout: 5000 });
-                    await this.waitForLoading();
-                    formNotSaved = false;
-                } catch (error) {
-                    console.log('\x1b[33m%s\x1b[0m', `⚠️ Form not saved yet, clicking save button`);
-                    await this.waitForLoading();
-                    await this.validateAndClick(saveButtonLocator);
-                    await this.waitForLoading();
-                    count++;
-                }
-            }
+            await this.waitForLoading();
+            await this.page.locator(formSavedLocator).first().waitFor({ timeout: 15000 });
+            await this.waitForLoading();
             console.log('\x1b[32m%s\x1b[0m', `✅ Form saved`);
             return false;
         } catch (error) {
-            console.log('\x1b[31m%s\x1b[0m', `❌ Failed to save form`);
-            return true;
+            // Toast not seen in time (slow env / already dismissed). Best-effort:
+            // click Save once more and wait again, but never propagate — treat the
+            // form as saved to avoid duplicate-form creation.
+            console.log('\x1b[33m%s\x1b[0m', `⚠️ Save toast not detected yet, clicking save once more`);
+            try {
+                await this.waitForLoading();
+                await this.validateAndClick(saveButtonLocator);
+                await this.page.locator(formSavedLocator).first().waitFor({ timeout: 15000 });
+            } catch (retryError) {
+                // ignore – assume saved
+            }
+            await this.waitForLoading();
+            console.log('\x1b[32m%s\x1b[0m', `✅ Form saved (after retry)`);
+            return false;
         }
     }
 

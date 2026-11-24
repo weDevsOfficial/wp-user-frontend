@@ -24,7 +24,7 @@ class Bank_Gateway extends Payment_Gateway {
         $this->id                    = 'bank';
         $this->admin_label           = __( 'Bank Payment', 'wp-user-frontend' );
         $this->checkout_label        = __( 'Bank Payment', 'wp-user-frontend' );
-        $this->icon                  = '';
+        $this->icon                  = apply_filters( 'wpuf_bank_checkout_icon', WPUF_ASSET_URI . '/images/bank.svg' );
         $this->supports_subscription = false;
     }
 

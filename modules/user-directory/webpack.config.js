@@ -3,7 +3,7 @@
  *
  * @package WPUF
  * @subpackage Modules/User_Directory
- * @since WPUF_SINCE
+ * @since 4.3.9
  */
 
 const path = require('path');

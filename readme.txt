@@ -5,8 +5,8 @@ Contributors: wedevs, tareq1988, nizamuddinbabu
 Donate link: https://tareq.co/donate/
 Tags: frontend post, user directory, membership, user profile, user registration
 Requires at least: 5.0
-Tested up to: 7.0
-Stable tag: 4.3.10
+Tested up to: 7.1
+Stable tag: 4.3.15
 Requires PHP: 7.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -616,6 +616,68 @@ Please report security bugs found in the source code of the User Frontend plugin
 
 
 == Changelog ==
+
+= 4.3.15 (16 November, 2026) =
+* Security – Fixed an issue where a crafted page on another site could register an account and log the visitor's browser into it, ending their own session (reported by Yaswanth Reddy Sunkara, CVE-2026-17564).
+* Security – Fixed an issue where a crafted page on another site could sign a visitor's browser into an account of its choosing through the login form or the login widget, ending their own session (reported by Yaswanth Reddy Sunkara, CVE-2026-17564).
+* Security – Fixed an issue where a logged-in member could still place the registration form shortcode in a post, including through other form fields or a saved draft, and use it to create accounts with a higher role (reported by cazy and Wordfence, CVE-2026-119634).
+* Security – Fixed an issue where a guest could submit a post title that ran a script when an administrator later opened the form builder (reported by UKO - Korea univ., CVE-2026-124072).
+* Security – Fixed an issue where a visitor could get an unpublished subscription pack assigned to their new account at registration (reported by Jonathan Mendiola via Patchstack).
+* Security – AJAX actions meant only for logged-in users are no longer also registered for logged-out visitors, and the AJAX logout now only runs for logged-in users.
+* Tweak – New filter `wpuf_same_origin_hosts` lets a site that serves its login or registration form from another domain it owns allow that host for sign-in.
+* Fix – Post forms saved by older versions no longer log undefined key warnings (for example guest_details) or null deprecation notices on PHP 7.4 to 8.5 when posts are submitted, edited, saved as drafts or posted by guests.
+
+= 4.3.14 (28 October, 2026) =
+* Security – Fixed an issue where a crafted link could run a script in a visitor's browser through the category field of a frontend form (reported by Wordfence, CVE-2026-103962).
+* Security – Fixed an issue where a guest could submit a category name that ran a script when an administrator later opened that form in the builder (reported by Wordfence, CVE-2026-109214).
+* Security – Fixed an issue where a visitor could attach uploads to a form that has no upload field (reported by Sangho Lee).
+* Security – Fixed an issue where a logged-in member could place the registration shortcode in a submission and hand themselves a higher role (reported by Wordfence).
+* Security – Fixed an issue where a visitor could run the setup wizard and overwrite the payment, posting and profile settings, including the saved PayPal details (reported by Patchstack).
+* Security – Fixed an issue where a logged-in member could activate a paid subscription pack without paying for it (reported by Patchstack).
+* Fix – Form settings are no longer lost when a form is saved after new fields are added, so the submit button keeps its label and no PHP warning appears.
+
+
+
+= 4.3.13 (1 October, 2026) =
+
+
+* Security – Fixed an issue where a logged-in member could save a script through the checkout payment method and have it run when an admin opened the pending transactions list (reported by Wordfence, CVE-2026-96574).
+* Fix – The AI form builder saves generated forms again: Edit with Builder no longer fails with an HTTP 400 error.
+* Fix – Each prompt on the Create Form with AI screen now shows once instead of twice when WP User Frontend Pro is active.
+
+
+= 4.3.12 (21 September, 2026) =
+
+
+* Security – Fixed an issue where someone could sign up with a higher role than the site allows, or register while registration was switched off (reported by WPScan).
+* Security – Fixed an issue where a submission could skip the membership requirement by being saved as a draft first (CVE-2026-17563).
+* Security – Fixed an issue where the user registration form could be used to take over a visitor's session (CVE-2026-17564).
+* Security – Registration and user profile forms can no longer be used to hand out an administrator role (CVE-2026-75823).
+* Security – Fixed an issue where a logged-in member could delete or take over media files belonging to someone else through a frontend post form (reported by Patchstack).
+* Security – Fixed an issue where a guest could publish a paid submission without paying, by reusing the link from the confirmation email (reported by Patchstack).
+* Security – Fixed an issue where a membership pack could be activated from an unpaid PayPal subscription, kept an unlimited post count, and stayed active after the subscription expired or was suspended (reported by Patchstack).
+* Security – Fixed an issue where a custom field value or label could run scripts on the page when a submission was viewed.
+* Security – Values entered in a repeatable field are now cleaned before they are saved.
+* Security – Importing a form file can no longer create content of an unexpected type or status.
+* Security – The scheduled post expiration cleanup now requires the right permission to run.
+* Security – The user directory no longer shows a member's email address to logged-out visitors; signed-in visitors and sites that opt in still see it.
+* Fix – Guest post email verification works again: the link in the confirmation email publishes the post instead of showing an error.
+* Fix – A recurring membership pack now activates with the correct post limit and expiry date, including packs that start with a free trial, and comes back after a paused subscription is reactivated.
+* Fix – Posts no longer expire when post expiration is switched off on the membership pack, or when the expiration time is left empty or invalid.
+* Fix – A site whose plugin files were installed without their dependencies now shows a clear admin notice instead of a fatal error, whether or not WP User Frontend Pro is also installed.
+* Fix – Updating the plugin's dependencies no longer breaks the site with a missing-trait fatal error.
+* Enhance – Frontend form scripts and styles now load only on pages that actually use a WP User Frontend form, including pages built with Elementor, so the rest of the site stays lighter.
+
+
+= 4.3.11 (25 August, 2026) =
+
+
+* Security – Blocked PHP object injection when the frontend post edit form reads submitted meta (reported by WPScan).
+* Security – Enforced the membership subscription gate in the AJAX handler to stop unauthenticated post creation through a subscription-gated frontend post form (reported by Charles Vosburgh).
+* Security – User registration now fails closed when the nonce is missing or invalid and redirects to a safe URL, preventing CSRF-based login session fixation (reported by Yaswanth Reddy Sunkara).
+* Enhance – Redesigned the Modules page with a responsive card grid and modern layout.
+* Enhance – Added native support for uploading .jfif images through frontend post and user profile forms.
+* Compatibility – Tested with WordPress 7.1.
 
 
 = 4.3.10 (06 August, 2026) =

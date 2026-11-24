@@ -133,6 +133,25 @@ export class SettingsSetupPage extends Base {
         }
     }
 
+    /**
+     * The WPUF pages, each with the admin-list locator that identifies ITS row.
+     *
+     * Titles alone are ambiguous — Dokan ships its own "Dashboard" page, so
+     * WPUF's is created as `dashboard-2`. Every locator below therefore pins the
+     * row by the post-state badge WPUF adds ("— WPUF Dashboard Page"), or by an
+     * exact row title where WPUF owns the name outright.
+     */
+    private readonly wpufPages: Array<[string, string]> = [
+        ['Account', Selectors.settingsSetup.wpufPages.wpufAccountPage],
+        ['Dashboard', Selectors.settingsSetup.wpufPages.wpufDashboardPage],
+        ['Edit', Selectors.settingsSetup.wpufPages.wpufEditPage],
+        ['Login', Selectors.settingsSetup.wpufPages.wpufLoginPage],
+        ['Subscription', Selectors.settingsSetup.wpufPages.wpufSubscriptionPage],
+        ['Order Received', Selectors.settingsSetup.wpufPages.orderReceivedPage],
+        ['Payment', Selectors.settingsSetup.wpufPages.paymentPage],
+        ['Thank You', Selectors.settingsSetup.wpufPages.thankYouPage],
+    ];
+
     async validateWPUFpages() {
         // Validate each WPUF page independently of pagination. The pages list is sorted
         // alphabetically and other plugins (WooCommerce, MailPoet, Dokan, EDD) add their own
@@ -206,7 +225,7 @@ export class SettingsSetupPage extends Base {
 
         await this.navigateToURL(Urls.baseUrl);
 
-        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
+        await this.validateAndClickAny(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.dashboardTab);
         await this.assertionValidate(Selectors.settingsSetup.accountPageTabs.viewDashboardPara);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.postsTab);
@@ -941,7 +960,9 @@ export class SettingsSetupPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
 
         await this.navigateToURL(this.pluginsPage);
-        await this.page.reload();
+        if (!this.page.url().includes('plugins.php')) {
+            await this.navigateToURL(this.pluginsPage);
+        }
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWCvendors);
         // WP Reset only restores the plugins that were active when it ran, so a site
         // whose EDD had drifted inactive comes back without the `download_*` taxonomies

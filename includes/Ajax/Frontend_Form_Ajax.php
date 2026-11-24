@@ -197,9 +197,14 @@ class Frontend_Form_Ajax {
         // it with _wpuf_draft_pending and that flag is cleared once the submission goes
         // through, so finishing a draft is gated exactly once. Posts without the flag are
         // genuine edits (including everything created before this flag existed) and are
-        // not re-gated, matching [wpuf_edit], which the renderer never gates.
+        // not re-gated, matching [wpuf_edit], which the renderer never gates. A published,
+        // scheduled or private post has a GMT date (drafts and pending posts do not), so a
+        // flag left over on it from an earlier Save Draft does not make it new again.
         $posted_post_id    = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
-        $is_new_submission = ! $posted_post_id || (bool) get_post_meta( $posted_post_id, '_wpuf_draft_pending', true );
+        $is_new_submission = ! $posted_post_id || (
+            get_post_meta( $posted_post_id, '_wpuf_draft_pending', true )
+            && '0000-00-00 00:00:00' === get_post_field( 'post_date_gmt', $posted_post_id )
+        );
 
         if ( $is_new_submission ) {
             [ $user_can_post, $submission_info ] = $form->is_submission_open( $form, $this->form_settings );

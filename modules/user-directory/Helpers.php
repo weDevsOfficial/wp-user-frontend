@@ -13,6 +13,25 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+if ( ! function_exists( 'wpuf_ud_show_contact_info' ) ) {
+    /**
+     * Whether a viewer may see a user's contact details (email, phone).
+     *
+     * Hidden from anonymous visitors, matching WordPress core which never exposes
+     * user email to unauthenticated callers. Filterable so a site can deliberately
+     * opt in to public contact info. Shared by the free and pro directory output.
+     *
+     * @since 4.3.11
+     *
+     * @param \WP_User|null $user The user whose contact info would be shown.
+     *
+     * @return bool
+     */
+    function wpuf_ud_show_contact_info( $user = null ) {
+        return (bool) apply_filters( 'wpuf_ud_show_contact_info', is_user_logged_in(), $user );
+    }
+}
+
 // Register cron handler for background Gravatar checks (Issue #20 performance fix)
 add_action( 'wpuf_ud_check_gravatar', 'wpuf_ud_do_gravatar_check', 10, 2 );
 
@@ -443,19 +462,26 @@ function wpuf_ud_get_profile_data( $user, $template_data = [], $layout = 'layout
     $avatar_size = isset( $template_data['avatar_size'] ) ? $template_data['avatar_size'] : 192;
     $back_url    = isset( $template_data['back_url'] ) ? $template_data['back_url'] : '';
 
+    // The contact-visibility rule is applied here, at the source, so no layout or
+    // consumer of this array can surface the address by accident. The key is kept
+    // and blanked rather than dropped, so anything reading it gets an empty string
+    // instead of an undefined value.
+    $show_contact_info = wpuf_ud_show_contact_info( $user );
+
     // Build user_meta array
     $user_meta = [
         'display_name' => $full_name,
         'first_name'   => $first_name,
         'last_name'    => $last_name,
-        'email'        => $user->user_email,
+        'email'        => $show_contact_info ? $user->user_email : '',
         'website'      => $user->user_url,
         'bio'          => get_user_meta( $user->ID, 'description', true ),
     ];
 
-    // Build contact info - Using Pro-style icons with emerald circular background
+    // Build contact info - Using Pro-style icons with emerald circular background.
+    // Contact details are withheld from anonymous visitors (matching WP core).
     $contact_info = [];
-    if ( ! empty( $user->user_email ) ) {
+    if ( ! empty( $user->user_email ) && wpuf_ud_show_contact_info( $user ) ) {
         $contact_info['email'] = [
             'label'         => __( 'Email', 'wp-user-frontend' ),
             'value'         => $user->user_email,
@@ -531,7 +557,7 @@ function wpuf_ud_get_profile_data( $user, $template_data = [], $layout = 'layout
         'full_name'       => $full_name,
         'first_name'      => $first_name,
         'last_name'       => $last_name,
-        'email'           => $user->user_email,
+        'email'           => $show_contact_info ? $user->user_email : '',
         'website'         => $user->user_url,
         'bio'             => get_user_meta( $user->ID, 'description', true ),
         'avatar_size'     => $avatar_size,

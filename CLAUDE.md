@@ -160,8 +160,8 @@ Text, Textarea, Email, URL, Dropdown, MultiDropdown, Checkbox, Radio, Image, Fea
 ## Testing
 
 - **Playwright** for E2E tests in `tests/e2e/`
-  - Multiple config files for parallel execution (`playwright.parallel-one.config.ts`, `playwright.parallel-two.config.ts`)
-  - Setup config: `playwright.setup.config.ts`
+  - A single `playwright.config.ts` with `setup` / `e2e` / `api` projects (select via `--project`)
+  - The `e2e` project is sharded via Playwright's native `--shard=i/n`
 - **PHPUnit 7.5.9** listed as dev dependency (test infrastructure in development)
 
 ## Integrations

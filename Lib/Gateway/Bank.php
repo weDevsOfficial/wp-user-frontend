@@ -11,10 +11,10 @@ use WeDevs\Wpuf\Pro\Coupons;
  */
 class Bank {
     public function __construct() {
-        add_action( 'wpuf_gateway_bank', [$this, 'prepare_to_send'] );
+        add_action( 'wpuf_gateway_bank', [ $this, 'prepare_to_send' ] );
         add_filter( 'wpuf_options_payment', [ $this, 'payment_options' ] );
-        add_action( 'wpuf_gateway_bank_order_submit', [$this, 'order_notify_admin'] );
-        add_action( 'wpuf_gateway_bank_order_complete', [$this, 'order_notify_user'], 10, 2 );
+        add_action( 'wpuf_gateway_bank_order_submit', [ $this, 'order_notify_admin' ] );
+        add_action( 'wpuf_gateway_bank_order_complete', [ $this, 'order_notify_user' ], 10, 2 );
     }
 
     /**
@@ -53,11 +53,13 @@ class Bank {
      * @param array $data payment info
      */
     public function prepare_to_send( $data ) {
-        $order_id = wp_insert_post( [
-            'post_type'   => 'wpuf_order',
-            'post_status' => 'publish',
-            'post_title'  => 'WPUF Bank Order',
-        ] );
+        $order_id = wp_insert_post(
+            [
+				'post_type'   => 'wpuf_order',
+				'post_status' => 'publish',
+				'post_title'  => 'WPUF Bank Order',
+			]
+        );
 
         $data['price'] = isset( $data['price'] ) ? empty( $data['price'] ) ? 0 : $data['price'] : 0;
 
@@ -120,12 +122,14 @@ class Bank {
      * @param array $info payment information
      */
     public function order_notify_admin() {
-        $subject  = sprintf(
+        $subject = sprintf(
             // translators: %s is site name
-            __( '[%s] New Bank Order Received', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
-        $msg      = sprintf(
+            __( '[%s] New Bank Order Received', 'wp-user-frontend' ), get_bloginfo( 'name' )
+        );
+        $msg = sprintf(
             // translators: %1$s is site name url and %2$s is wpuf transaction url
-            __( 'New bank order received at %1$s, please check it out: %2$s', 'wp-user-frontend' ), get_bloginfo( 'name' ), admin_url( 'admin.php?page=wpuf_transaction' ) );
+            __( 'New bank order received at %1$s, please check it out: %2$s', 'wp-user-frontend' ), get_bloginfo( 'name' ), admin_url( 'admin.php?page=wpuf_transaction' )
+        );
 
         $receiver = get_bloginfo( 'admin_email' );
         $subject  = apply_filters( 'wpuf_mail_bank_admin_subject', $subject );
@@ -148,16 +152,18 @@ class Bank {
 
         $user = get_user_by( 'id', $transaction['user_id'] );
 
-        if ( !$user ) {
+        if ( ! $user ) {
             return;
         }
 
         $subject = sprintf(
             // translators: %s is site name
-            __( '[%s] Payment Received', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
-        $msg     = sprintf(
+            __( '[%s] Payment Received', 'wp-user-frontend' ), get_bloginfo( 'name' )
+        );
+        $msg = sprintf(
             // translators: %s is displayname
-            __( 'Hello %s,', 'wp-user-frontend' ), $user->display_name ) . "\r\n";
+            __( 'Hello %s,', 'wp-user-frontend' ), $user->display_name
+        ) . "\r\n";
         // translators: %s is the payment amount
         $msg .= sprintf( __( 'We have received your payment amount of %s through bank . ', 'wp-user-frontend' ), $transaction['cost'] ) . "\r\n\r\n";
         $msg .= __( 'Thanks for being with us.', 'wp-user-frontend' ) . "\r\n";

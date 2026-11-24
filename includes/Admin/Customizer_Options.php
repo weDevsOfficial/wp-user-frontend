@@ -15,7 +15,8 @@ class Customizer_Options {
     public function __construct() {
         // add_filter( 'customize_panel_active', '__return_true', 11 );
         add_action( 'customize_register', [ $this, 'customizer_options' ], 15 );
-        add_action( 'wp_head', [ $this, 'save_customizer_options' ] );
+        add_action( 'customize_save_after', [ $this, 'save_customizer_options' ] );
+        add_action( 'wp_head', [ $this, 'maybe_migrate_customizer_options' ] );
 
         add_filter( 'default_option_wpuf_panel', [ $this, 'maybe_fallback_get_option' ] );
     }
@@ -38,8 +39,32 @@ class Customizer_Options {
         return get_option( 'wpuf_address_options', [] );
     }
 
+    /**
+     * Build the billing address option once on sites that never stored it
+     *
+     * The option used to be rebuilt on every page view, so existing sites already have it.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function maybe_migrate_customizer_options() {
+        if ( false === get_option( 'wpuf_address_options' ) ) {
+            $this->save_customizer_options();
+        }
+    }
+
+    /**
+     * Copy the billing address theme mods into the wpuf_address_options option
+     *
+     * Runs after a Customizer save. Only the mods the active theme has are copied,
+     * so a theme without them keeps the stored settings.
+     *
+     * @return void
+     */
     public function save_customizer_options() {
-        $address_options = [];
+        $theme_mods      = (array) get_theme_mods();
+        $address_options = (array) get_option( 'wpuf_address_options', [] );
         $fields = [
             'show_address' => __( 'Show Billing Address', 'wp-user-frontend' ),
             'country'      => __( 'Country', 'wp-user-frontend' ),
@@ -50,14 +75,13 @@ class Customizer_Options {
             'zip'          => __( 'Postal Code/ZIP', 'wp-user-frontend' ),
         ];
         foreach ( $fields as $field => $label ) {
-            $settings_name             = 'wpuf_address_' . $field . '_settings';
-            $address_options[ $field ] = get_theme_mod( $settings_name );
-        }
-        update_option( 'wpuf_address_options', $address_options ); ?>
-        <style>
+            $settings_name = 'wpuf_address_' . $field . '_settings';
 
-        </style>
-        <?php
+            if ( array_key_exists( $settings_name, $theme_mods ) ) {
+                $address_options[ $field ] = $theme_mods[ $settings_name ];
+            }
+        }
+        update_option( 'wpuf_address_options', $address_options );
     }
 
     public function customizer_options( $wp_customize ) {

@@ -547,8 +547,13 @@ export class FormEditorPage extends Base {
 
     // pic-radio settings (form style) are opacity-0 radios behind a preview
     // image, so they need a forced check rather than a fill.
+    // Right after the editor opens, a late re-render can put the saved value
+    // back and undo the click, so retry until the pick sticks.
     async doPickRadioSetting( id: string, value: string ) {
-        await this.page.locator( this.fe.settings.radioOptionById( id, value ) ).first().check( { force: true } );
+        const radio = this.page.locator( this.fe.settings.radioOptionById( id, value ) ).first();
+        await expect( async () => {
+            await radio.check( { force: true, timeout: 5000 } );
+        } ).toPass( { timeout: 30000 } );
     }
 
     async validateRadioSettingPicked( id: string, value: string ) {

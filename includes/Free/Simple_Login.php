@@ -300,8 +300,8 @@ class Simple_Login {
         }
 
         // the lost password step is rendered by [wpuf-login]; if the configured
-        // login page does not have it, keep WordPress' own url so the user can
-        // still reset the password
+        // login page is known not to have it, keep WordPress' own url so the
+        // user can still reset the password
         if ( ! $this->login_page_renders_wpuf_form() ) {
             return $url;
         }
@@ -314,20 +314,25 @@ class Simple_Login {
      *
      * The `action` routing for lostpassword, rp and resetpass only runs inside
      * the [wpuf-login] shortcode, so a login page built with another login form
-     * cannot serve those steps.
+     * cannot serve those steps. The form can also come from a synced block, a
+     * template part or a builder we can not read, so the page is trusted unless
+     * it is an Oxygen page whose layout has no [wpuf-login].
      *
      * @since WPUF_SINCE
      *
      * @return bool
      */
     protected function login_page_renders_wpuf_form() {
-        $page_id = wpuf_get_option( 'login_page', 'wpuf_profile', false );
+        $page_id  = wpuf_get_option( 'login_page', 'wpuf_profile', false );
+        $has_form = true;
 
-        if ( ! $page_id ) {
-            return false;
+        if ( $page_id ) {
+            $is_oxygen_page = get_post_meta( $page_id, '_ct_builder_shortcodes', true ) || get_post_meta( $page_id, '_ct_builder_json', true );
+
+            if ( $is_oxygen_page ) {
+                $has_form = wpuf_has_shortcode( 'wpuf-login', $page_id );
+            }
         }
-
-        $has_form = wpuf_has_shortcode( 'wpuf-login', $page_id );
 
         return apply_filters( 'wpuf_login_page_renders_form', $has_form, $page_id );
     }

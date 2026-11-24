@@ -5,23 +5,50 @@ body.mceContentBody{
 }
 
 .wpuf-form-add.wpuf-form-layout2 {
+  --wpuf-l2-container-bg: #222635;
+  --wpuf-l2-surface-bg: #292C3F;
+  --wpuf-l2-text: #fff;
+  --wpuf-l2-muted: #64748B;
+  --wpuf-l2-label: #6B738B;
+  --wpuf-l2-border: #33374D;
+  --wpuf-l2-accent: #00C14B;
+  --wpuf-l2-danger: #F20000;
+  --wpuf-l2-primary: #379EFF;
+  --wpuf-l2-help: #6F4A70;
+  --wpuf-l2-info-border: #D5AED9;
+  --wpuf-l2-info-bg: #F8F1FA;
+  --wpuf-l2-star-bg: #F8F1FA;
+  --wpuf-l2-star-inactive: #33374d8a;
+  --wpuf-l2-star-active: #EDB867;
   position: relative;
-  background: #222635;
-  padding: 50px;
+  background: var(--wpuf-l2-container-bg);
+  padding: 50px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul {
   overflow: hidden;
 }
+.wpuf-form-add .wpuf-price-label {
+  color: var(--wpuf-l2-muted);
+}
+.wpuf-form-add .wpuf-upload-instructions {
+  color: var(--wpuf-l2-muted);
+}
+.wpuf-form-add .wpuf-repeat-container p {
+  color: var(--wpuf-l2-muted);
+}
+body ul.wpuf-form li label.wpuf-form-sub-label {
+  color: var(--wpuf-l2-muted);
+}
 .wpuf-form-add.wpuf-form-layout2 ul .wpuf-info {
-  border-color: #D5AED9;
-  background-color: #F8F1FA;
+  border-color: var(--wpuf-l2-info-border) !important;
+  background-color: var(--wpuf-l2-info-bg);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form .wpuf-errors {
-  color: #F20000;
+  color: var(--wpuf-l2-danger);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li {
-  padding: 0;
-  margin-bottom: 35px;
+  padding: 0 !important;
+  margin-bottom: 35px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error {
   background: transparent;
@@ -29,50 +56,51 @@ body.mceContentBody{
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wpuf-fields input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wpuf-fields textarea,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wpuf-fields select {
-  border-color: #F20000;
+  border-color: var(--wpuf-l2-danger) !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wpuf-fields .wpuf-error-msg {
-  color: #F20000;
+  color: var(--wpuf-l2-danger);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields textarea {
   width: 100% !important;
-  background: #292C3F;
+  background: var(--wpuf-l2-surface-bg);
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
-  box-shadow: none;
-  border: 0;
+  box-shadow: none !important;
   font-size: 14px;
-  border: 1px solid #33374D;
-  border-radius: 5px;
-  padding: 10px 0 10px 10px;
+  border: 1px solid var(--wpuf-l2-border) !important;
+  border-radius: 5px !important;
+  padding: 10px 0 10px 10px !important;
   box-sizing: border-box;
   position: relative;
-  color: #fff;
+  color: var(--wpuf-l2-text);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields select {
-  background: #292C3F;
+  background: var(--wpuf-l2-surface-bg);
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
-  box-shadow: none;
-  border: 1px solid #33374D;
-  border-radius: 5px;
+  box-shadow: none !important;
+  border: 1px solid var(--wpuf-l2-border) !important;
+  border-radius: 5px !important;
   font-size: 14px;
   box-sizing: border-box;
-  color: #fff;
-  padding: 10px;
+  color: var(--wpuf-l2-text);
+  padding: 10px !important;
   height: inherit;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .country_select select {
-  padding: 8px 0 10px 10px;
+  padding: 8px 0 10px 10px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields textarea {
-  border: 1px solid #33374D;
+  border: 1px solid var(--wpuf-l2-border) !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"] {
   width: inherit;
+  -webkit-appearance: none;
+  appearance: none;
   position: relative;
-  margin-right: 10px;
+  margin-right: 10px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::before {
   content: '';
@@ -81,23 +109,23 @@ body.mceContentBody{
   top: -1px;
   width: 16px;
   height: 16px;
-  border: 1px solid #6F4A70;
+  border: 1px solid var(--wpuf-l2-help) !important;
   -moz-border-radius: 100%;
   -webkit-border-radius: 100%;
-  border-radius: 100%;
+  border-radius: 100% !important;
   background: #fff;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::after {
   content: '';
   width: 10px;
   height: 10px;
-  background: #6F4A70;
+  background: var(--wpuf-l2-help);
   position: absolute;
   top: 3px;
   left: 1px;
   -moz-border-radius: 100%;
   -webkit-border-radius: 100%;
-  border-radius: 100%;
+  border-radius: 100% !important;
   -moz-transition: all 0.2s ease;
   -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
@@ -116,8 +144,10 @@ body.mceContentBody{
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
   width: inherit;
+  -webkit-appearance: none;
+  appearance: none;
   position: relative;
-  margin-right: 10px;
+  margin-right: 10px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
   content: '';
@@ -126,14 +156,14 @@ body.mceContentBody{
   top: -1px;
   width: 16px;
   height: 16px;
-  border: 1px solid #292C3F;
+  border: 1px solid var(--wpuf-l2-surface-bg) !important;
   background: #fff;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:after {
   content: '';
   width: 10px;
   height: 10px;
-  background: #292C3F;
+  background: var(--wpuf-l2-surface-bg);
   position: absolute;
   top: 3px;
   left: 1px;
@@ -154,20 +184,20 @@ body.mceContentBody{
   transform: scale(1);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields a.file-selector {
-  padding: 14px 40px 14px 60px;
-  margin: 0;
+  padding: 14px 40px 14px 60px !important;
+  margin: 0 !important;
   height: inherit;
   line-height: inherit;
-  border: 1px solid #33374D;
+  border: 1px solid var(--wpuf-l2-border) !important;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
-  border-radius: 5px;
+  border-radius: 5px !important;
   background: transparent;
-  color: #BFC4D1;
+  color: var(--wpuf-l2-muted);
   width: auto;
   position: relative;
   text-transform: uppercase;
-  box-shadow: none;
+  box-shadow: none !important;
   display: inline-block;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields a.file-selector:before {
@@ -184,20 +214,20 @@ body.mceContentBody{
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-radio-block,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-block {
-  color: #fff;
+  color: var(--wpuf-l2-text);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
-  border: 1px solid #33374D;
-  background: #292C3F;
-  color: #fff;
-  box-shadow: none;
+  border: 1px solid var(--wpuf-l2-border) !important;
+  background: var(--wpuf-l2-surface-bg);
+  color: var(--wpuf-l2-text);
+  box-shadow: none !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-address-field.city_name,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-address-field.zip {
-  margin-right: 6%;
+  margin-right: 6% !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-help {
-  color: #6F4A70;
+  color: var(--wpuf-l2-help);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]):active,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]):hover,
@@ -206,7 +236,6 @@ body.mceContentBody{
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li textarea:active,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li textarea:hover,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li textarea:focus,
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li textarea:visited,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li select:active,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li select:hover,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li select:focus,
@@ -215,33 +244,40 @@ body.mceContentBody{
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:not(.file-selector):not(.wpuf-insert-image):hover,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:not(.file-selector):not(.wpuf-insert-image):focus,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:not(.file-selector):not(.wpuf-insert-image):visited {
-  outline: none;
-  border-color: #00C14B;
+  outline: none !important;
+  border-color: var(--wpuf-l2-accent) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li input:focus-visible,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li textarea:focus-visible,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li select:focus-visible,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li a:focus-visible {
+  outline: 2px solid var(--wpuf-l2-accent) !important;
+  outline-offset: 1px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-label {
-    color: #6B738B;
+    color: var(--wpuf-l2-label);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap {
-  border: 0;
+  border: 0 !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .wp-editor-container {
-  border: 1px solid #33374D;
-  border-radius: 5px;
+  border: 1px solid var(--wpuf-l2-border) !important;
+  border-radius: 5px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .mce-toolbar-grp {
-  border: 0;
-  border-bottom: 1px solid #33374D;
-  border-radius: 0 0 5px 5px;
-  background: #292C3F;
-  padding: 3px 0;
+  border: 0 !important;
+  border-bottom: 1px solid var(--wpuf-l2-border) !important;
+  border-radius: 0 0 5px 5px !important;
+  background: var(--wpuf-l2-surface-bg);
+  padding: 3px 0 !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .mce-panel {
-  background: #292C3F;
+  background: var(--wpuf-l2-surface-bg);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .mce-btn.mce-listbox {
-  border-radius: 5px;
-  border-color: #292C3F;
-  background: #292C3F;
+  border-radius: 5px !important;
+  border-color: var(--wpuf-l2-surface-bg) !important;
+  background: var(--wpuf-l2-surface-bg);
 }
 
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .mce-btn.mce-listbox button{
@@ -249,67 +285,900 @@ body.mceContentBody{
 }
 
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .mce-statusbar {
-  border-top: 1px solid #33374D;
+  border-top: 1px solid var(--wpuf-l2-border) !important;
 }
 
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap:hover .mce-statusbar,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap:hover .mce-toolbar-grp ,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap:hover .wp-editor-container{
-  border-color:  #00C14B;
+  border-color: var(--wpuf-l2-accent) !important;
 }
 
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wp-editor-wrap .mce-statusbar,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wp-editor-wrap .mce-toolbar-grp ,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.has-error .wp-editor-wrap .wp-editor-container{
-  border-color:  #F20000;
+  border-color: var(--wpuf-l2-danger) !important;
 }
 
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.field-size-small .wpuf-fields {
-  width: 100%;
+  width: 30%;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .br-theme-css-stars .br-widget {
   display: inline-block;
-  background: #F8F1FA;
-  border: 1px solid #33374D;
+  background: var(--wpuf-l2-star-bg);
+  border: 1px solid var(--wpuf-l2-border) !important;
   line-height: 36px;
-  border-radius: 5px;
+  border-radius: 5px !important;
   height: 36px;
-  padding: 0 15px;
+  padding: 0 15px !important;
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .br-theme-css-stars .br-widget a:after {
-  color: #33374d8a;
+  color: var(--wpuf-l2-star-inactive);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .br-theme-css-stars .br-widget a.br-active:after,
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .br-theme-css-stars .br-widget a.br-selected:after {
-  color: #EDB867;
+  color: var(--wpuf-l2-star-active);
 }
 .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.wpuf-submit input[type=submit] {
-  background: #379EFF;
-  border-color: #379EFF;
+  background: var(--wpuf-l2-primary);
+  border-color: var(--wpuf-l2-primary) !important;
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
-  box-shadow: none;
+  box-shadow: none !important;
   text-shadow: none;
-  padding: 10px 35px;
+  padding: 10px 35px !important;
 }
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-step-wizard {
+.wpuf-form-add.wpuf-form-layout2 .wpuf-step-wizard {
   overflow: visible;
 }
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-step-wizard li {
-  padding: 10px 30px 10px 40px;
-  border-radius: 0;
+@media (max-width: 600px) {
+  .wpuf-form-add.wpuf-form-layout2 {
+    padding: 24px !important;
+  }
+
+  .wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li {
+    margin-bottom: 24px !important;
+  }
 }
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-step-wizard li:before {
-  margin-top: -14px;
-  border-left-color: #d5d3d3;
+
+/* Readable default text for field content the palette doesn't style explicitly
+   (multiselect widget, file-upload hints, custom HTML) on the dark background. */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields {
+  color: var(--wpuf-l2-text);
 }
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-step-wizard li:after {
-  border-width: 22px;
-  margin-top: -34px;
-  right: -40px;
-  border-radius: 0;
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.section_break .wpuf-section-wrap {
+  color: var(--wpuf-l2-text);
 }
-.wpuf-form-add.wpuf-form-layout2 ul.wpuf-step-wizard li.active-step:before {
-  border-left-color: #00a0d2;
-  right: -47px;
+
+/* ---- Figma sync: outlined controls with accent checked-states ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::before {
+  background: transparent;
+  border-color: var(--wpuf-l2-muted) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]:checked::before {
+  border-color: var(--wpuf-l2-primary) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::after {
+  background: var(--wpuf-l2-primary);
+  left: 0;
+  top: 2px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
+  background: transparent;
+  border-color: var(--wpuf-l2-muted) !important;
+  border-radius: 3px !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:before {
+  background: var(--wpuf-l2-primary);
+  border-color: var(--wpuf-l2-primary) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:after {
+  width: 9px;
+  height: 7px;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg width='9' height='7' viewBox='0 0 9 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.06186 0.278861C8.23568 0.45747 8.33333 0.699683 8.33333 0.952236C8.33333 1.20479 8.23568 1.447 8.06186 1.62561L3.42579 6.3878C3.25191 6.56636 3.01611 6.66667 2.77025 6.66667C2.52438 6.66667 2.28859 6.66636 2.11471 6.3878L0.26028 4.48293C0.0913804 4.3033 -0.00207753 4.06271 3.50511e-05 3.81298C0.00214763 3.56325 0.0996617 3.32437 0.271575 3.14778C0.443488 2.97119 0.676044 2.87102 0.919157 2.86885C1.16227 2.86668 1.39649 2.96268 1.57136 3.13618L2.77025 4.36768L6.75078 0.278861C6.92466 0.100307 7.16045 0 7.40632 0C7.65218 0 7.88798 0.100307 8.06186 0.278861Z' fill='white'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  left: 1px;
+  top: 4px;
+}
+
+/* ---- Figma sync: file upload zone palette ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-file-upload-zone {
+  border: 1px dashed var(--wpuf-l2-border) !important;
+  border-radius: 8px !important;
+  background: var(--wpuf-l2-surface-bg);
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-upload-instructions {
+  color: var(--wpuf-l2-muted);
+}
+
+/* ---- Figma sync: multiselect dropdown panel on dark palette ---- */
+.wpuf-form-add.wpuf-form-layout2 .custom-multiselect .multiselect-dropdown {
+  background: var(--wpuf-l2-surface-bg);
+  border: 1px solid var(--wpuf-l2-border) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .custom-multiselect .multiselect-option input[type="checkbox"]:checked + label::before {
+  background: var(--wpuf-l2-primary);
+  border-color: var(--wpuf-l2-primary) !important;
+}
+
+/* Figma typography — Inter (falls back to system sans when not loaded). */
+.wpuf-form-add.wpuf-form-layout2,
+.wpuf-form-add.wpuf-form-layout2 input,
+.wpuf-form-add.wpuf-form-layout2 textarea,
+.wpuf-form-add.wpuf-form-layout2 select,
+.wpuf-form-add.wpuf-form-layout2 button {
+    font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ==== Figma deep-sync (node 5527:36594) — exact navy palette & geometry ====
+   Every value below is taken from the dark-navy template frame itself; no
+   tokens borrowed from other templates. */
+.wpuf-form-add.wpuf-form-layout2 {
+  --wpuf-l2-container-bg: #1B2431;
+  --wpuf-l2-surface-bg: #222C3C;
+  --wpuf-l2-border: #344156;
+  --wpuf-l2-label: #9CABC3;
+  --wpuf-l2-primary: #3B82F6;
+  --wpuf-l2-help: #4A5971;
+  --wpuf-l2-accent: #3B82F6;
+
+  padding: 40px !important;
+  border-radius: 20px !important;
+}
+body.mceContentBody {
+  background: #222C3C;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li {
+  margin-bottom: 40px !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-label {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  margin-bottom: 10px !important;
+}
+body ul.wpuf-form li label.wpuf-form-sub-label {
+  color: #9CABC3;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields textarea {
+  font-size: 16px;
+  line-height: 24px;
+  border-radius: 10px !important;
+  padding: 12px 16px !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input::placeholder,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields textarea::placeholder {
+  color: #9CA3AF;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields select {
+  font-size: 16px;
+  border-radius: 10px !important;
+  padding: 12px 16px !important;
+  height: 48px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .country_select select {
+  padding: 12px 16px !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .wp-editor-container {
+  border-radius: 10px !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wp-editor-wrap .mce-toolbar-grp {
+  border-radius: 10px 10px 0 0 !important;
+}
+/* Controls: 20px circles, muted #4A5971 rest border, #3B82F6 accent */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"],
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+  margin-right: 12px !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::before {
+  width: 20px;
+  height: 20px;
+  border-color: var(--wpuf-l2-help) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::after {
+  width: 10px;
+  height: 10px;
+  left: 2px;
+  top: 4px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
+  width: 20px;
+  height: 20px;
+  border-color: var(--wpuf-l2-help) !important;
+  border-radius: 50% !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:after {
+  left: 2px;
+  top: 5px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-radio-block,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-block {
+  color: var(--wpuf-l2-label);
+  font-size: 16px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-radio-list li,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-list li,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-multi-select-list li {
+  margin-bottom: 12px !important;
+}
+/* Multiselect chips + panel */
+.wpuf-form-add.wpuf-form-layout2 .custom-multiselect .selected-item {
+  background: var(--wpuf-l2-primary);
+  border-radius: 6px !important;
+  padding: 4px 10px !important;
+  color: #fff;
+  font-size: 16px;
+  align-items: center;
+}
+.wpuf-form-add.wpuf-form-layout2 .custom-multiselect .remove-item {
+  color: #fff;
+}
+.wpuf-form-add.wpuf-form-layout2 .custom-multiselect .multiselect-dropdown {
+  border-radius: 10px !important;
+}
+/* File upload zone */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-file-upload-zone {
+  padding: 36px 20px !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-upload-title,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-upload-title .wpuf-label label {
+  color: #fff;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-upload-instructions {
+  font-size: 12px;
+  line-height: 20px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields a.file-selector {
+  border: none !important;
+  border-radius: 10px !important;
+  background: var(--wpuf-l2-primary);
+  color: #fff;
+  text-transform: none;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
+  border: none !important;
+  background: var(--wpuf-l2-primary);
+  color: #fff;
+  border-radius: 10px !important;
+  padding: 12px 16px !important;
+  font-size: 16px;
+}
+/* Submit pill */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.wpuf-submit input[type=submit] {
+  border-radius: 85px !important;
+  padding: 10px 32px !important;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-help {
+  font-style: italic;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+
+/* ---- Address field: wrapper is the field column; inner rows stack full width,
+   sub-label sits under its input. Matches real markup:
+   li > .wpuf-fields-address > .wpuf-address-field > .wpuf-fields.wpuf-sub-fields ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address {
+    float: left;
+    width: 70%;
+    box-sizing: border-box;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form.form-label-above li .wpuf-fields-address,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form.form-label-hidden li .wpuf-fields-address {
+    float: none;
+    width: 100%;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field {
+    display: block;
+    float: none;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 16px !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.city_name,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field.zip {
+    margin-right: 0 !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field .wpuf-fields.wpuf-sub-fields {
+    float: none;
+    width: 100%;
+    display: block;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field input,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address .wpuf-address-field select {
+    width: 100%;
+    box-sizing: border-box;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields-address label.wpuf-form-sub-label {
+    display: block;
+    float: none;
+    margin-top: 4px !important;
+}
+
+/* ---- Multiselect closed control: match the template field style ---- */
+.wpuf-form-add.wpuf-form-layout2 .custom-multiselect .multiselect-input {
+    background: var(--wpuf-l2-surface-bg);
+    border: 1px solid var(--wpuf-l2-border) !important;
+    border-radius: 10px !important;
+    padding: 8px 16px !important;
+    color: var(--wpuf-l2-text);
+    box-sizing: border-box;
+    min-height: 42px;
+    align-items: center;
+}
+/* ---- TOC label: sentence flows naturally; links use template accent ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block:has(a) {
+    display: block !important;
+    line-height: 24px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block:has(a) input[type="checkbox"] {
+    margin-right: 12px !important;
+    vertical-align: middle;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields a:not(.file-selector):not(.wpuf-insert-image):not(.wpuf-button):not(.wpuf-upload-trigger) {
+    color: #3B82F6;
+}
+/* ---- Space above the submit button ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.wpuf-submit input[type="submit"] {
+    margin-top: 40px !important;
+}
+
+/* ---- Theme reset (Use Theme CSS = off): neutralize theme bleed so the
+   template design owns the form. Only neutral props are forced — the
+   template's own colors/borders/spacing rules stay in charge. ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li {
+    list-style: none !important;
+    background-image: none !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li::before,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li::marker {
+    content: none !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="file"]),
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields textarea,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields select {
+    max-width: 100% !important;
+    text-shadow: none !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+    background-image: none;
+    box-sizing: border-box !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-label,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-label label {
+    letter-spacing: normal !important;
+    text-transform: none !important;
+    text-shadow: none !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li.wpuf-submit input[type="submit"] {
+    background-image: none !important;
+    text-shadow: none !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    text-decoration: none !important;
+    width: auto !important;
+    border-style: solid !important;
+    transition: background-color 0.2s ease;
+}
+
+/* ---- Pricing fields: palette-matched (price label, quantity, cart) ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-price-label,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-price-currency-label {
+    color: var(--wpuf-l2-label);
+    font-weight: 500;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-pricing-radio-item,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-pricing-checkbox-item {
+    margin-bottom: 12px !important;
+    align-items: center;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-pricing-quantity {
+    width: 80px !important;
+    padding: 6px 10px !important;
+    border: 1px solid var(--wpuf-l2-border) !important;
+    border-radius: 10px !important;
+    background: var(--wpuf-l2-surface-bg);
+    color: var(--wpuf-l2-text);
+    margin-left: 12px !important;
+    box-sizing: border-box;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-summary,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-display,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-multiselect-quantities {
+    background: var(--wpuf-l2-surface-bg);
+    border: 1px solid var(--wpuf-l2-border) !important;
+    border-radius: 10px !important;
+    color: var(--wpuf-l2-text);
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table {
+    background: transparent;
+    color: var(--wpuf-l2-text);
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
+    background: transparent;
+    border-bottom: 1px solid var(--wpuf-l2-border) !important;
+    color: var(--wpuf-l2-label);
+    font-weight: 500;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tbody td {
+    border-bottom: 1px solid var(--wpuf-l2-border) !important;
+    color: var(--wpuf-l2-text);
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tfoot td {
+    border-top: 1px solid var(--wpuf-l2-border) !important;
+    color: var(--wpuf-l2-text);
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-amount {
+    color: var(--wpuf-l2-primary);
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-qty-row label {
+    color: var(--wpuf-l2-text);
+}
+
+/* ---- Strength indicator: palette states (default box was WP-core white) ---- */
+.wpuf-form-add.wpuf-form-layout2 .pass-strength-result {
+    background: #222C3C;
+    border: 1px solid #344156 !important;
+    color: #9CABC3;
+    border-radius: 6px !important;
+    padding: 10px 32px !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .pass-strength-result.short {
+    background: #4A2323;
+    border-color: #4A2323 !important;
+    color: #FCA5A5;
+}
+.wpuf-form-add.wpuf-form-layout2 .pass-strength-result.bad {
+    background: #4A3623;
+    border-color: #4A3623 !important;
+    color: #FDBA74;
+}
+.wpuf-form-add.wpuf-form-layout2 .pass-strength-result.good {
+    background: #4A4423;
+    border-color: #4A4423 !important;
+    color: #FDE047;
+}
+.wpuf-form-add.wpuf-form-layout2 .pass-strength-result.strong {
+    background: #274A21;
+    border-color: #274A21 !important;
+    color: #B4F2A9;
+}
+
+/* ---- Math captcha: palette colors ---- */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-math-captcha .captcha-number,
+.wpuf-form-add.wpuf-form-layout2 .wpuf-math-captcha .captcha-equal {
+    color: #FFFFFF;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-math-captcha #captchaRefresher {
+    fill: #FFFFFF;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-math-captcha .wpuf-captcha-error {
+    color: #F20000;
+}
+
+/* ---- Multistep Prev/Next: same treatment as the template submit ---- */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-multistep-nav-btn {
+    background: #3B82F6;
+    color: #FFFFFF;
+    border: none !important;
+    border-radius: 85px !important;
+    padding: 10px 32px !important;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+    text-shadow: none;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+/* ---- Uploaded file rows (Figma): 48px bordered thumb, 24px delete/drag
+   icons, borderless row ---- */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap {
+    background: transparent;
+    border: none !important;
+    box-shadow: none !important;
+    float: none;
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    list-style: none;
+    padding: 8px 0 !important;
+    margin: 0 0 8px !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .attachment-name img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border: 1px solid #344156 !important;
+    border-radius: 10px !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .caption {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap a.attachment-delete img,
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .wpuf-drag-file img {
+    width: 24px;
+    height: 24px;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+/* ---- Attachment rows per Figma: clean row, palette trash icon, no dark
+   overlay chip; whole row stays sortable so the drag sprite is hidden ---- */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .caption {
+    background: transparent !important;
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    margin-left: auto !important;
+    padding: 0 !important;
+    width: auto !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .caption a.attachment-delete img {
+    display: none;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .caption a.attachment-delete {
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%239CABC3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0'/%3E%3C/svg%3E") center / 20px 20px no-repeat !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .caption .wpuf-drag-file {
+    display: none;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-attachment-list li.wpuf-image-wrap .wpuf-attach-title {
+    flex: 1;
+    font-size: 16px;
+    line-height: 24px;
+    color: #FFFFFF;
+    overflow-wrap: anywhere;
+}
+/* Legacy file-selector matches the field geometry of its template */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-fields a.file-selector {
+    min-height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
+
+/* ---- Consistency pass: forced cart palette, captcha strip, legacy icon ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields a.file-selector:before {
+    display: none !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-summary,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-total-display,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-multiselect-quantities {
+    background: var(--wpuf-l2-surface-bg) !important;
+    color: var(--wpuf-l2-text) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table {
+    background: transparent !important;
+    color: var(--wpuf-l2-text) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table thead th {
+    background: transparent !important;
+    color: var(--wpuf-l2-label) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tbody td,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-cart-table tfoot td {
+    color: var(--wpuf-l2-text) !important;
+    background: transparent !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha {
+    background: var(--wpuf-l2-surface-bg) !important;
+    border-color: var(--wpuf-l2-border) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha-number,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .captcha-equal {
+    color: var(--wpuf-l2-text) !important;
+}
+
+/* Ratings widget: transparent on the dark surface */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .br-theme-css-stars .br-widget {
+    background: transparent !important;
+    border: 1px solid var(--wpuf-l2-border) !important;
+}
+
+/* Legacy 150px thumbnail box: row layout needs natural height */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-attachment-list li.wpuf-image-wrap {
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+/* ---- Controls: explicit 20px box; pseudo geometry pinned (was anchored to
+   an auto-width inline input at -3,-1 → visible misalignment) ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"],
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  padding: 0 !important;
+  background: transparent;
+  border: none !important;
+  box-sizing: border-box;
+  vertical-align: middle;
+  flex: none;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::before,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="radio"]::after {
+  left: 5px;
+  top: 5px;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:after {
+  left: 5px;
+  top: 6px;
+}
+
+/* Phone field (intl-tel-input): keep the flag gutter — the forced
+   16px padding overlapped the dial-code/flag */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .iti input,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .iti input[type="tel"],
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .intl-tel-input input,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .intl-tel-input input[type="tel"] {
+    padding-left: 52px !important;
+}
+
+/* Figma sync: Select/Feature Image bar — exact 48px bar, no underline */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields a.file-selector,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .file-selector {
+    padding: 12px 16px !important;
+    min-height: 48px !important;
+    height: 48px !important;
+    line-height: 24px !important;
+    text-decoration: none !important;
+    font-weight: 400 !important;
+    box-sizing: border-box !important;
+}
+
+/* ---- Image selectors (Figma "Select Image" bar): compact left-aligned
+   icon + text bar in the template tokens ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields a.file-selector,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .file-selector {
+    background: #222C3C !important;
+    border: 1px solid #344156 !important;
+    border-radius: 10px !important;
+    color: #9CABC3 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    width: 100% !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    padding: 12px 16px !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+    font-weight: 400 !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    box-sizing: border-box !important;
+    box-shadow: none !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields a.file-selector:before,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .file-selector:before {
+    content: '' !important;
+    display: inline-block !important;
+    position: static !important;
+    width: 20px !important;
+    height: 20px !important;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%239CABC3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+    font-family: inherit !important;
+    line-height: normal !important;
+    flex: none;
+}
+
+/* ---- Phone country dropdown (intl-tel-input): palette panel; our forced
+   li spacing must not leak into its rows ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .iti__country-list {
+    background: #222C3C !important;
+    border: 1px solid #344156 !important;
+    color: #FFFFFF !important;
+    border-radius: 6px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .iti__country-list li,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .iti__country-list li.iti__country {
+    margin: 0 !important;
+    padding: 8px 12px !important;
+    list-style: none !important;
+    background-image: none !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .iti__country-name {
+    color: #FFFFFF !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .iti__dial-code {
+    color: #9CABC3 !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .iti__country-list li.iti__country:hover,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .iti__country-list li.iti__country.iti__highlight {
+    background: rgba(128, 128, 128, 0.15) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .iti__divider {
+    border-bottom: 1px solid #344156 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Selector focus/hover: single accent border, no outline ring */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields a.file-selector:hover,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields a.file-selector:focus,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields a.file-selector:focus-visible,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .file-selector:hover,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .file-selector:focus,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .file-selector:focus-visible {
+    outline: none !important;
+    border-color: #3B82F6 !important;
+    box-shadow: none !important;
+}
+
+/* Phone gutter: outrank the :not()-chain input padding rules */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .iti input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .intl-tel-input input:not([type="file"]):not([type="radio"]):not([type="checkbox"]):not([type="submit"]) {
+    padding-left: 52px !important;
+}
+
+/* ---- Field icons follow the template palette (inline SVGs) ---- */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-upload-icon svg path,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .dropdown-arrow svg path {
+    stroke: #9CABC3 !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .refresh svg,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-math-captcha .refresh svg path {
+    fill: #9CABC3 !important;
+}
+
+/* Field icon (Font Awesome, Show Icon = Yes) follows the template palette */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-label .wpuf-field-icon,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-field-icon {
+    color: #9CABC3 !important;
+}
+
+/* Field Size: native selects (dropdown, time, taxonomy, pricing dropdown)
+   default to content width — force them to fill the sized .wpuf-fields. */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields select {
+    width: 100% !important;
+}
+
+/* Native select: hide the OS arrow, use the same chevron as the multiselect widget */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields select {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg width='14' height='8' viewBox='0 0 14 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.25 0.75L7 7L0.75 0.75' stroke='%239CABC3' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 16px center !important;
+    background-size: 14px 8px !important;
+    padding-right: 40px !important;
+}
+
+/* Dark template: form title + description readable on the dark card */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-form-title { color: #F3F4F6 !important; }
+.wpuf-form-add.wpuf-form-layout2 .wpuf-form-description { color: #9CABC3 !important; }
+
+/* Spacing: separate form title/description from the first field */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-form-title { margin: 0 0 8px !important; }
+.wpuf-form-add.wpuf-form-layout2 .wpuf-form-description { margin: 0 0 32px !important; }
+
+/* Form list must not clip dropdowns / popups (multiselect panel, etc.) */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form {
+    overflow: initial !important;
+}
+
+/* Help text readable per palette */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-help {
+    color: #9CABC3 !important;
+}
+
+/* Multistep nav buttons: pill with proper padding (match registration) */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-multistep-nav-btn {
+    background: #3B82F6 !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 85px !important;
+    padding: 10px 32px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    line-height: 24px !important;
+    box-shadow: none !important;
+    text-transform: none !important;
+}
+
+/* Multistep wizard — dark-template readability overrides (B2/B3/B4).
+   Active/completed accents come from the shared wizard CSS; these only
+   fix the inactive/header colors that read as light-on-dark. */
+.wpuf-form-add.wpuf-form-layout2 .wpuf-step-item:not(.active-step):not(.completed-step) .wpuf-step-circle {
+  background: transparent !important;
+  border-color: #64748B !important;
+  color: #AEB6C7 !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-step-line:not(.wpuf-step-line-active) {
+  background-color: #33374D !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-step-item.active-step .wpuf-step-label,
+.wpuf-form-add.wpuf-form-layout2 .wpuf-step-item.completed-step .wpuf-step-label {
+  color: #ffffff !important;
+}
+.wpuf-form-add.wpuf-form-layout2 .wpuf-progressbar-header {
+  color: #ffffff !important;
+}
+
+/* ============================================================
+   CHECKBOX — authoritative dark-template rendering.
+   Supersedes the earlier conflicting rules that left the input at
+   opacity:0 with a circular, near-invisible pseudo box. The input itself
+   is the visible square control, so clicking it toggles natively.
+   ============================================================ */
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"] {
+  opacity: 1 !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  width: 18px !important;
+  height: 18px !important;
+  position: relative !important;
+  border: 1px solid #9CABC3 !important;
+  border-radius: 4px !important;
+  background: transparent !important;
+  cursor: pointer;
+  flex: none;
+  vertical-align: middle;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:before {
+  content: none !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:after {
+  content: '' !important;
+  opacity: 0;
+  width: 10px !important;
+  height: 8px !important;
+  border: none !important;
+  background: transparent no-repeat center / contain !important;
+  background-image: url("data:image/svg+xml,%3Csvg width='9' height='7' viewBox='0 0 9 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.06186 0.278861C8.23568 0.45747 8.33333 0.699683 8.33333 0.952236C8.33333 1.20479 8.23568 1.447 8.06186 1.62561L3.42579 6.3878C3.25191 6.56636 3.01611 6.66667 2.77025 6.66667C2.52438 6.66667 2.28859 6.66636 2.11471 6.3878L0.26028 4.48293C0.0913804 4.3033 -0.00207753 4.06271 3.50511e-05 3.81298C0.00214763 3.56325 0.0996617 3.32437 0.271575 3.14778C0.443488 2.97119 0.676044 2.87102 0.919157 2.86885C1.16227 2.86668 1.39649 2.96268 1.57136 3.13618L2.77025 4.36768L6.75078 0.278861C6.92466 0.100307 7.16045 0 7.40632 0C7.65218 0 7.88798 0.100307 8.06186 0.278861Z' fill='white'/%3E%3C/svg%3E") !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked {
+  background: #379EFF !important;
+  border-color: #379EFF !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields input[type="checkbox"]:checked:after {
+  opacity: 1 !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block::after,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields label.wpuf-checkbox-block::before {
+  content: none !important;
+}
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-pricing-checkbox-item::before,
+.wpuf-form-add.wpuf-form-layout2 ul.wpuf-form li .wpuf-fields .wpuf-pricing-checkbox-item::after {
+  content: none !important;
 }

@@ -35,6 +35,23 @@ export class SubscriptionPage extends Base {
     }
 
     async createSubscriptionPack(packData: typeof SubscriptionPacks.freeBasicPack) {
+        // The subscription builder is a Vue SPA. If the "Create New" button is
+        // clicked before the app finishes mounting, the click is a no-op and the
+        // builder never opens — later steps then hang for the full test timeout
+        // waiting for the "Subscription Details" tab. Confirm the builder opened
+        // and re-click if it did not.
+        const detailsTab = this.page.locator(Selectors.subscription.newPackPage.subscriptionDetailsSection);
+        for (let attempt = 0; attempt < 3; attempt++) {
+            await this.validateAndClick(Selectors.subscription.listPage.createNewPackButton);
+            try {
+                await detailsTab.waitFor({ state: 'visible', timeout: 15000 });
+                return;
+            } catch {
+                // Builder not up yet — settle and retry the create click.
+                await this.waitForLoading();
+            }
+        }
+        // Last attempt: let the caller's own wait surface a clear failure.
         await this.validateAndClick(Selectors.subscription.listPage.createNewPackButton);
     }
 
@@ -617,7 +634,13 @@ export class SubscriptionPage extends Base {
         await this.waitForLoading();
         await this.validateAndFillStrings(Selectors.subscription.newPackPage.inputColor, buttonColor);
         await this.waitForLoading();
+        // Wait for the REST save to land: SB0015 reads the colour on the FE right after,
+        // and navigating away before the request finishes leaves the old colour saved.
+        const saved = this.page.waitForResponse(
+            (res) => res.url().includes('subscription-settings') && res.request().method() !== 'GET'
+        );
         await this.validateAndClick(Selectors.subscription.newPackPage.savePreferencesButton);
+        expect((await saved).ok()).toBeTruthy();
         await this.waitForLoading();
         console.log('\x1b[32m%s\x1b[0m', `✅ Button color set to ${buttonColor}`);
     }

@@ -162,7 +162,7 @@ class Form_Field_Checkbox extends Field_Contract {
         $formatted_value = [];
 
         if ( is_serialized( $value ) ) {
-            $formatted_value = maybe_unserialize( $value );
+            $formatted_value = wpuf_safe_unserialize( $value );
         } elseif ( is_array( $value ) ) {
             $formatted_value = $value;
         } else {

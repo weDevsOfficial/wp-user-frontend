@@ -121,7 +121,20 @@ class Promotion {
                 </div>
             </div>
             <style type="text/css">
+                /*
+                 * These links only borrow .notice-dismiss to hook the dismiss
+                 * handler below; they are inline labels, not core's X button.
+                 * Core styles that class as a 24x24 absolutely positioned flex
+                 * box, so every one of those properties has to be undone or the
+                 * labels get clamped to 24px and wrap one word per line.
+                 */
                 #wpuf-review-notice .notice-dismiss{
+                    position: relative;
+                    top: auto;
+                    right: auto;
+                    display: inline-block;
+                    width: auto;
+                    height: auto;
                     padding: 0 0 0 26px;
                 }
 
@@ -225,7 +238,15 @@ class Promotion {
         }
 
         if ( ! empty( $_POST['dismissed'] ) ) {
-            $offer_key = ! empty( $_POST['option_name'] ) ? sanitize_text_field( wp_unslash( $_POST['option_name'] ) ) : '';
+            $offer_key = ! empty( $_POST['option_name'] ) ? sanitize_key( wp_unslash( $_POST['option_name'] ) ) : '';
+
+            // The campaign key comes from the remote promotion feed, so it cannot be a fixed
+            // list, but it must stay inside our own namespace: without this the request could
+            // name any option, such as active_plugins, and set it to "hide".
+            if ( ! $offer_key || 0 !== strpos( $offer_key, 'wpuf_' ) ) {
+                wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+            }
+
             update_option( $offer_key, 'hide' );
         }
     }

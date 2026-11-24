@@ -23,6 +23,16 @@ const headerTitle = computed(() => {
 const headerVersion = computed(() => {
     return wpuf.isProActive && wpuf.pro_version ? wpuf.pro_version : wpuf.version;
 });
+
+const headerPlan = computed(() => {
+    if ( ! wpuf.isProActive || ! wpuf.plan ) {
+        return '';
+    }
+    return wpuf.plan
+        .split('-')
+        .map( ( word ) => word.charAt(0).toUpperCase() + word.slice(1) )
+        .join(' ');
+});
 </script>
 
 <template>
@@ -30,6 +40,7 @@ const headerVersion = computed(() => {
         <div class="wpuf-flex wpuf-justify-start wpuf-items-center">
             <img :src="logoUrl" alt="WPUF Icon" class="wpuf-w-12 wpuf-mr-4" />
             <h2 class="wpuf-text-2xl wpuf-leading-7 wpuf-font-bold">{{ headerTitle }}</h2>
+            <span v-if="headerPlan" class="wpuf-ml-2 wpuf-inline-flex wpuf-items-center wpuf-rounded-full wpuf-bg-green-100 wpuf-px-2 wpuf-py-1 wpuf-text-xs wpuf-font-semibold wpuf-text-green-700 wpuf-ring-1 wpuf-ring-inset wpuf-ring-green-600/20">{{ headerPlan }}</span>
             <span class="wpuf-ml-2 wpuf-inline-flex wpuf-items-center wpuf-rounded-full wpuf-bg-green-100 wpuf-px-2 wpuf-py-1 wpuf-text-xs wpuf-font-medium wpuf-text-green-700 wpuf-ring-1 wpuf-ring-inset wpuf-ring-green-600/20">v{{ headerVersion }}</span>
             <a
                 v-if="!wpuf.isProActive"
@@ -45,9 +56,9 @@ const headerVersion = computed(() => {
                 class="wpuf-border wpuf-border-gray-100 wpuf-mr-[16px] wpuf-rounded-full wpuf-p-1 wpuf-shadow-sm hover:wpuf-bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
             ></span>
             <a
-                class="wpuf-border wpuf-border-gray-100 wpuf-mr-[16px] wpuf-canny-link wpuf-text-center wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-shadow-sm hover:wpuf-bg-slate-100 focus:wpuf-bg-slate-100"
+                class="wpuf-border wpuf-border-gray-100 wpuf-mr-[16px] wpuf-feedback-link wpuf-text-center wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-shadow-sm hover:wpuf-bg-slate-100 focus:wpuf-bg-slate-100"
                 target="_blank"
-                href="https://wpuf.canny.io/ideas">💡 {{ __( 'Submit Ideas', 'wp-user-frontend' ) }}</a>
+                href="https://feedback.wedevs.com/b/user-frontend">💡 {{ __( 'Submit Ideas', 'wp-user-frontend' ) }}</a>
             <a
                 :href="supportUrl"
                 target="_blank"

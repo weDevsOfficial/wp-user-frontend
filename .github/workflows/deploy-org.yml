@@ -1,0 +1,105 @@
+name: Deploy to WordPress.org
+# 10up-based release pipeline (replaces the Appsero auto-deploy).
+# Pushing a tag (vX.Y.Z) builds the assets in CI, publishes a GitHub Release
+# with the packaged zip, then deploys to the wp.org SVN repo via 10up.
+on:
+  push:
+    tags:
+      - "v*"
+permissions:
+  contents: write
+jobs:
+  tag:
+    name: Deploy plugin for new Tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Use desired version of PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Install and build
+        run: |
+          npm ci
+          npm run build
+
+      # POT + legacy assets (less/concat/uglify/tailwind) + readme.md.
+      # grunt-wp-i18n generates the POT, so no separate WP-CLI install is needed.
+      - name: Build legacy assets + POT
+        run: npx grunt release
+
+      - name: Composer install (no dev)
+        run: composer install --no-dev --optimize-autoloader
+
+      # Generated assets are gitignored and built fresh here; the 10up deploy ships
+      # them from the working tree. Hard gate: if any build output is missing the
+      # package would ship broken (the failure mode this whole model guards against).
+      - name: Verify built assets exist on disk
+        run: |
+          for f in \
+            assets/js/account.min.js \
+            assets/js/ai-form-builder.min.js \
+            assets/js/forms-list.min.js \
+            assets/js/forms-list.min.js.map \
+            assets/js/frontend-form.min.js \
+            assets/js/frontend-subscriptions.min.js \
+            assets/js/subscriptions.min.js \
+            assets/js/upload.min.js \
+            assets/js/wpuf-form-builder.js \
+            assets/js/wpuf-form-builder-mixins.js \
+            assets/js/wpuf-form-builder-components.js \
+            assets/js-templates/form-components.php \
+            assets/css/admin.css \
+            assets/css/elementor-frontend-forms.css \
+            assets/css/frontend-forms.css \
+            assets/css/registration-forms.css \
+            assets/css/wpuf-form-builder.css \
+            languages/wp-user-frontend.pot; do
+            test -f "$f" || { echo "::error::$f missing — build failed"; exit 1; }
+          done
+          echo "OK: all generated assets present on disk"
+
+      # Distributable zip (mirrors what ships to wp.org, via .distignore).
+      - name: Generate plugin zip
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          rm -rf /tmp/pkg && mkdir -p /tmp/pkg/wp-user-frontend
+          rsync -a --exclude-from=.distignore ./ /tmp/pkg/wp-user-frontend/
+          ( cd /tmp/pkg && zip -rq "$GITHUB_WORKSPACE/wp-user-frontend-v${VERSION}.zip" wp-user-frontend )
+          echo "Built wp-user-frontend-v${VERSION}.zip"
+
+      # Pull this version's changelog block out of readme.txt for the release notes.
+      - name: Extract changelog
+        run: |
+          { echo "## Changelog"; echo ""; \
+            awk '/^= v?[0-9]/{n++; if(n>1) exit} n>=1{print}' readme.txt; } > RELEASE_NOTES.md
+          echo "---- release notes ----"; cat RELEASE_NOTES.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          files: wp-user-frontend-v*.zip
+          body_path: RELEASE_NOTES.md
+
+      # wp.org SVN deploy last — the zip/Release above survive a deploy retry.
+      # NO BUILD_DIR: the default 10up flow rsyncs the working tree (with the
+      # freshly built, gitignored assets) to SVN, applying .distignore.
+      - name: WordPress Plugin Deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          dry-run: false
+        env:
+          SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASS }}
+          SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
+          SLUG: wp-user-frontend

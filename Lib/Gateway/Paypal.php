@@ -225,6 +225,18 @@ class Paypal {
                     }
                     break;
 
+                // A subscription that PayPal expires or suspends is no longer
+                // paying. Previously only an explicit CANCELLED event revoked the
+                // local pack, so these states left the entitlement active. Revoke
+                // it here too; a later ACTIVATED / PAYMENT.SALE.COMPLETED re-grants
+                // it if the buyer reactivates.
+                case 'BILLING.SUBSCRIPTION.EXPIRED':
+                case 'BILLING.SUBSCRIPTION.SUSPENDED':
+                    if ( isset( $event['resource'] ) ) {
+                        $this->handle_subscription_revoked( $event['resource'], $event['event_type'] );
+                    }
+                    break;
+
                 case 'BILLING.SUBSCRIPTION.CREATED':
                     if ( isset( $event['resource'] ) ) {
                         $this->handle_subscription_created( $event['resource'] );
@@ -333,7 +345,7 @@ class Paypal {
                 // Validate breakdown: item_total + tax_total should equal total (within rounding)
                 $breakdown_total = $subtotal + $tax;
                 $difference = abs( $breakdown_total - $total_amount );
-                
+
                 // If breakdown doesn't add up correctly, recalculate from total
                 // This handles cases where PayPal returns incorrect breakdown values
                 if ( $difference > 0.01 ) {
@@ -342,26 +354,23 @@ class Paypal {
                     if ( isset( $custom_data['subtotal'] ) && isset( $custom_data['tax'] ) ) {
                         $subtotal = floatval( $custom_data['subtotal'] );
                         $tax = floatval( $custom_data['tax'] );
-                    } else {
-                        // Recalculate: assume tax is correct, adjust subtotal
-                        // Or if subtotal seems wrong (equals total), calculate from total - tax
-                        if ( abs( $subtotal - $total_amount ) < 0.01 && $tax > 0 ) {
-                            // Subtotal equals total, which is wrong - recalculate
-                            $subtotal = $total_amount - $tax;
-                        } elseif ( $tax > 0 && $subtotal > 0 ) {
-                            // Both exist but don't add up - trust the total and recalculate
-                            $subtotal = $total_amount - $tax;
-                        }
+                        // Recalculate: assume tax is correct, adjust subtotal.
+                        // Or if subtotal seems wrong (equals total), calculate from total - tax.
+                    } elseif ( abs( $subtotal - $total_amount ) < 0.01 && $tax > 0 ) {
+                        // Subtotal equals total, which is wrong - recalculate
+                        $subtotal = $total_amount - $tax;
+                    } elseif ( $tax > 0 && $subtotal > 0 ) {
+                        // Both exist but don't add up - trust the total and recalculate
+                        $subtotal = $total_amount - $tax;
                     }
                 }
             } elseif ( isset( $custom_data['subtotal'] ) && isset( $custom_data['tax'] ) ) {
                 // Fallback: Use custom_id data if breakdown not available
                 $subtotal = floatval( $custom_data['subtotal'] );
                 $tax = floatval( $custom_data['tax'] );
-            } else {
-                // If no breakdown and no custom_data, try to recalculate from subscription pack
-                // This ensures accurate tax calculation based on current settings
-                if ( 'pack' === $custom_data['type'] && ! empty( $custom_data['item_number'] ) ) {
+                // If no breakdown and no custom_data, try to recalculate from subscription pack.
+                // This ensures accurate tax calculation based on current settings.
+            } elseif ( 'pack' === $custom_data['type'] && ! empty( $custom_data['item_number'] ) ) {
                     /**
                      * Filter: wpuf_recalculate_tax_from_pack
                      *
@@ -386,11 +395,10 @@ class Paypal {
                         $total_amount,
                         $custom_data['type']
                     );
-                    
-                    if ( $recalculated && is_array( $recalculated ) ) {
-                        $subtotal = isset( $recalculated['subtotal'] ) ? floatval( $recalculated['subtotal'] ) : $subtotal;
-                        $tax = isset( $recalculated['tax'] ) ? floatval( $recalculated['tax'] ) : $tax;
-                    }
+
+                if ( $recalculated && is_array( $recalculated ) ) {
+                    $subtotal = isset( $recalculated['subtotal'] ) ? floatval( $recalculated['subtotal'] ) : $subtotal;
+                    $tax = isset( $recalculated['tax'] ) ? floatval( $recalculated['tax'] ) : $tax;
                 }
             }
 
@@ -401,19 +409,21 @@ class Paypal {
 
             // Create payment record
             $data = [
-                'user_id' => $custom_data['user_id'],
-                'status' => 'completed',
-                'subtotal' => $subtotal,
-                'tax' => $tax,
-                'cost' => $cost,
-                'post_id' => ( 'post' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
-                'pack_id' => ( 'pack' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
+                'user_id'          => $custom_data['user_id'],
+                'status'           => 'completed',
+                'subtotal'         => $subtotal,
+                'discount'         => ! empty( $custom_data['discount'] ) ? floatval( $custom_data['discount'] ) : 0,
+                'coupon_id'        => ! empty( $custom_data['coupon_id'] ) ? absint( $custom_data['coupon_id'] ) : null,
+                'tax'              => $tax,
+                'cost'             => $cost,
+                'post_id'          => ( 'post' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
+                'pack_id'          => ( 'pack' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
                 'payer_first_name' => $user->first_name,
-                'payer_last_name' => $user->last_name,
-                'payer_email' => $user->user_email,
-                'payment_type' => 'paypal',
-                'transaction_id' => $payment['id'],
-                'created' => gmdate( 'Y-m-d H:i:s' ),
+                'payer_last_name'  => $user->last_name,
+                'payer_email'      => $user->user_email,
+                'payment_type'     => 'paypal',
+                'transaction_id'   => $payment['id'],
+                'created'          => gmdate( 'Y-m-d H:i:s' ),
             ];
 
             // Insert payment record
@@ -470,14 +480,14 @@ class Paypal {
         // Add rewrite rule for webhook endpoint
         add_rewrite_rule(
             '^webhook_triggered/?$',
-            'index.php?action=webhook_triggered=1',
+            'index.php?wpuf_paypal_action=webhook_triggered',
             'top'
         );
 
         // Add query var filter
         add_filter(
             'query_vars', function ( $vars ) {
-				$vars[] = 'action';
+				$vars[] = 'wpuf_paypal_action';
 				return $vars;
 			}
         );
@@ -493,7 +503,18 @@ class Paypal {
      * Handle webhook request
      */
     public function handle_webhook_request() {
-        if ( 'action' === get_query_var( 'action' ) &&
+        // The saved webhook URL uses a plain `?action=webhook_triggered` query string, which
+        // WordPress never exposes as a query var, so read the superglobal as well as the
+        // rewritten `wpuf_paypal_action` var. The payload is authenticated below by
+        // verify_webhook_signature_from_input(), so no nonce applies to this endpoint.
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
+
+        if ( 'webhook_triggered' !== $action ) {
+            $action = get_query_var( 'wpuf_paypal_action' );
+        }
+
+        if ( 'webhook_triggered' === $action &&
             isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] &&
             isset( $_SERVER['HTTP_PAYPAL_TRANSMISSION_ID'] ) ) {
             $raw_input = file_get_contents( 'php://input' );
@@ -526,7 +547,11 @@ class Paypal {
 
                 $acknowledged = true;
             } catch ( \Exception $e ) {
-               throw new \Exception( 'Webhook processing failed: ' . esc_html( $e->getMessage() ) );
+                // Never re-throw here: an uncaught exception would return a 500 HTML page to
+                // PayPal instead of the acknowledgement below, and PayPal would keep retrying.
+                if ( defined( 'WPUF_DEBUG' ) && WPUF_DEBUG ) {
+                    error_log( 'WPUF Debug: PayPal webhook processing failed: ' . $e->getMessage() );
+                }
             }
 
             // Always acknowledge to PayPal
@@ -637,7 +662,7 @@ class Paypal {
 
         $body = json_decode( wp_remote_retrieve_body( $response ), true );
 
-        return $body['access_token'];
+        return ! empty( $body['access_token'] ) ? $body['access_token'] : '';
     }
 
     /**
@@ -655,21 +680,26 @@ class Paypal {
                 throw new \Exception( 'Invalid custom data in subscription' );
             }
 
+            // BILLING.SUBSCRIPTION.CREATED only means the merchant created the
+            // subscription. Until the buyer approves it, PayPal keeps it in
+            // APPROVAL_PENDING with no payment, so an attacker can start checkout,
+            // abandon the approval page and still receive this signed event.
+            // Granting the pack here handed out the entitlement for free. Only act
+            // once PayPal reports the subscription genuinely ACTIVE; every other
+            // state waits for ACTIVATED / PAYMENT.SALE.COMPLETED to grant it.
+            $paypal_status = isset( $subscription['status'] ) ? strtoupper( $subscription['status'] ) : '';
+
+            if ( 'ACTIVE' !== $paypal_status ) {
+                return;
+            }
+
             $user_id = $custom_data['user_id'];
             $subscription_id = $subscription['id']; // This is the PayPal subscription ID
             $trial_period_days = isset( $custom_data['trial_period_days'] ) ? $custom_data['trial_period_days'] : 0;
             $is_trial = $trial_period_days > 0;
 
             // Check if we're in a trial period
-            $is_in_trial = false;
-            if ( isset( $subscription['billing_info']['cycle_executions'] ) ) {
-                foreach ( $subscription['billing_info']['cycle_executions'] as $cycle ) {
-                    if ( 'TRIAL' === $cycle['tenure_type'] && $cycle['cycles_completed'] < $cycle['cycles_remaining'] ) {
-                        $is_in_trial = true;
-                        break;
-                    }
-                }
-            }
+            $is_in_trial = $this->is_subscription_in_trial( $subscription );
 
             // Get the pack details
             $pack = get_post( $custom_data['item_number'] );
@@ -683,10 +713,21 @@ class Paypal {
             $period = isset( $pack_meta['_cycle_period'] ) ? $pack_meta['_cycle_period'] : 'month';
             $interval = isset( $pack_meta['_billing_cycle_number'] ) ? intval( $pack_meta['_billing_cycle_number'] ) : 1;
 
+            // WPUF stores per-post-type quotas under _post_type_name (+ any
+            // additional_cpt_options), not _post_types. Reading the wrong key left
+            // this empty and fell through to the unlimited (-1) default below, so a
+            // limited pack silently became unlimited. Read the real keys, matching
+            // User_Subscription::add_pack().
+            $pack_post_types = isset( $pack_meta['_post_type_name'] ) && is_array( $pack_meta['_post_type_name'] )
+                ? $pack_meta['_post_type_name'] : [];
+            $pack_additional_cpt = isset( $pack_meta['additional_cpt_options'] ) && is_array( $pack_meta['additional_cpt_options'] )
+                ? $pack_meta['additional_cpt_options'] : [];
+            $pack_quota = array_merge( $pack_post_types, $pack_additional_cpt );
+
             // Create subscription data structure with all necessary meta
             $subscription_data = [
                 'pack_id' => $custom_data['item_number'],
-                'posts' => isset( $pack_meta['_post_types'] ) ? $pack_meta['_post_types'] : [],
+                'posts' => $pack_quota,
                 'total_feature_item' => isset( $pack_meta['_total_feature_item'] ) ? $pack_meta['_total_feature_item'] : '-1',
                 'remove_feature_item' => isset( $pack_meta['_remove_feature_item'] ) ? $pack_meta['_remove_feature_item'] : '-1',
                 'status' => 'completed',
@@ -729,10 +770,36 @@ class Paypal {
             if ( $is_in_trial ) {
                 $this->create_trial_payment_record( $user_id, $custom_data['item_number'], $subscription_id );
             }
-
         } catch ( \Exception $e ) {
             throw $e;
         }
+    }
+
+    /**
+     * Check whether a PayPal subscription resource is inside its trial cycle
+     *
+     * @since 4.3.12
+     *
+     * @param array $subscription PayPal subscription resource.
+     *
+     * @return bool
+     */
+    private function is_subscription_in_trial( $subscription ) {
+        if ( empty( $subscription['billing_info']['cycle_executions'] ) || ! is_array( $subscription['billing_info']['cycle_executions'] ) ) {
+            return false;
+        }
+
+        foreach ( $subscription['billing_info']['cycle_executions'] as $cycle ) {
+            if ( ! isset( $cycle['tenure_type'], $cycle['cycles_completed'], $cycle['cycles_remaining'] ) ) {
+                continue;
+            }
+
+            if ( 'TRIAL' === $cycle['tenure_type'] && $cycle['cycles_completed'] < $cycle['cycles_remaining'] ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -1031,7 +1098,7 @@ class Paypal {
                 // Validate breakdown: item_total + tax_total should equal total (within rounding)
                 $breakdown_total = $subtotal + $tax;
                 $difference = abs( $breakdown_total - $total_amount );
-                
+
                 // If breakdown doesn't add up correctly, recalculate from total
                 // This handles cases where PayPal returns incorrect breakdown values
                 if ( $difference > 0.01 ) {
@@ -1040,26 +1107,23 @@ class Paypal {
                     if ( isset( $custom_data['subtotal'] ) && isset( $custom_data['tax'] ) ) {
                         $subtotal = floatval( $custom_data['subtotal'] );
                         $tax = floatval( $custom_data['tax'] );
-                    } else {
-                        // Recalculate: assume tax is correct, adjust subtotal
-                        // Or if subtotal seems wrong (equals total), calculate from total - tax
-                        if ( abs( $subtotal - $total_amount ) < 0.01 && $tax > 0 ) {
-                            // Subtotal equals total, which is wrong - recalculate
-                            $subtotal = $total_amount - $tax;
-                        } elseif ( $tax > 0 && $subtotal > 0 ) {
-                            // Both exist but don't add up - trust the total and recalculate
-                            $subtotal = $total_amount - $tax;
-                        }
+                        // Recalculate: assume tax is correct, adjust subtotal.
+                        // Or if subtotal seems wrong (equals total), calculate from total - tax.
+                    } elseif ( abs( $subtotal - $total_amount ) < 0.01 && $tax > 0 ) {
+                        // Subtotal equals total, which is wrong - recalculate
+                        $subtotal = $total_amount - $tax;
+                    } elseif ( $tax > 0 && $subtotal > 0 ) {
+                        // Both exist but don't add up - trust the total and recalculate
+                        $subtotal = $total_amount - $tax;
                     }
                 }
             } elseif ( isset( $custom_data['subtotal'] ) && isset( $custom_data['tax'] ) ) {
                 // Fallback: Use custom_id data if breakdown not available
                 $subtotal = floatval( $custom_data['subtotal'] );
                 $tax = floatval( $custom_data['tax'] );
-            } else {
-                // Fallback: Try to recalculate from subscription pack
-                // This ensures accurate tax calculation based on current settings
-                if ( $pack_id > 0 ) {
+                // Fallback: Try to recalculate from subscription pack.
+                // This ensures accurate tax calculation based on current settings.
+            } elseif ( $pack_id > 0 ) {
                     /**
                      * Filter: wpuf_recalculate_tax_from_pack
                      *
@@ -1084,27 +1148,26 @@ class Paypal {
                         $total_amount,
                         'pack'
                     );
-                    
-                    if ( $recalculated && is_array( $recalculated ) ) {
-                        $subtotal = isset( $recalculated['subtotal'] ) ? floatval( $recalculated['subtotal'] ) : $subtotal;
-                        $tax = isset( $recalculated['tax'] ) ? floatval( $recalculated['tax'] ) : $tax;
-                    } else {
-                        // If recalculation failed, try subscription plan tax percentage
-                        $tax_percentage = $this->get_subscription_tax_percentage( $subscription_id );
-                        if ( $tax_percentage > 0 ) {
-                            // Reverse calculate: subtotal = total / (1 + tax_percentage/100)
-                            $subtotal = $total_amount / ( 1 + ( $tax_percentage / 100 ) );
-                            $tax = $total_amount - $subtotal;
-                        }
-                    }
+
+                if ( $recalculated && is_array( $recalculated ) ) {
+                    $subtotal = isset( $recalculated['subtotal'] ) ? floatval( $recalculated['subtotal'] ) : $subtotal;
+                    $tax = isset( $recalculated['tax'] ) ? floatval( $recalculated['tax'] ) : $tax;
                 } else {
-                    // If no pack_id, try subscription plan tax percentage
+                    // If recalculation failed, try subscription plan tax percentage
                     $tax_percentage = $this->get_subscription_tax_percentage( $subscription_id );
                     if ( $tax_percentage > 0 ) {
                         // Reverse calculate: subtotal = total / (1 + tax_percentage/100)
                         $subtotal = $total_amount / ( 1 + ( $tax_percentage / 100 ) );
                         $tax = $total_amount - $subtotal;
                     }
+                }
+            } else {
+                // If no pack_id, try subscription plan tax percentage
+                $tax_percentage = $this->get_subscription_tax_percentage( $subscription_id );
+                if ( $tax_percentage > 0 ) {
+                    // Reverse calculate: subtotal = total / (1 + tax_percentage/100)
+                    $subtotal = $total_amount / ( 1 + ( $tax_percentage / 100 ) );
+                    $tax = $total_amount - $subtotal;
                 }
             }
 
@@ -1199,7 +1262,7 @@ class Paypal {
             'name'    => 'gate_instruct_paypal',
             'label'   => __( 'PayPal Instruction', 'wp-user-frontend' ),
             'type'    => 'wysiwyg',
-            'default' => "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account",
+            'default' => "Pay via PayPal. You can pay with your credit card if you don't have a PayPal account",
         ];
 
         // New REST API options
@@ -1437,12 +1500,17 @@ class Paypal {
                 }
             }
 
-            // Handle coupon if present
-            if ( isset( $_POST['coupon_id'] ) && ! empty( $_POST['coupon_id'] ) &&
-                isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_payment_coupon' ) &&
+            // Handle coupon if present. Coupons are a Pro feature, so only run when Pro is
+            // available to avoid a fatal on wpuf_pro() in free-only installs.
+            $coupon_discount = 0;
+            if ( function_exists( 'wpuf_pro' ) && wpuf_pro() &&
+                isset( $_POST['coupon_id'] ) && ! empty( $_POST['coupon_id'] ) &&
+                isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_payment_gateway' ) &&
                 is_numeric( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) ) ) {
-                $coupon_id = absint( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) );
-                $billing_amount = wpuf_pro()->coupon->discount( $billing_amount, $coupon_id, $data['item_number'] );
+                $coupon_id       = absint( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) );
+                $original_amount = floatval( $billing_amount );
+                $billing_amount  = wpuf_pro()->coupon->discount( $billing_amount, $coupon_id, $data['item_number'] );
+                $coupon_discount = $original_amount - floatval( $billing_amount );
             } else {
                 $coupon_id = '';
             }
@@ -1503,7 +1571,10 @@ class Paypal {
 
             // Handle free payments
             if ( $billing_amount == 0 ) {
-                wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], null, false, 'Free' );
+                // a free checkout may only grant a real subscription pack, never an id sent as another type
+                if ( 'pack' === $data['type'] && 'wpuf_subscription' === get_post_type( $data['item_number'] ) ) {
+                    wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], null, false, 'Free' );
+                }
                 wp_safe_redirect( $return_url );
                 exit();
             }
@@ -1561,7 +1632,7 @@ class Paypal {
 
                 // Create a plan with base amount (without tax, as tax will be added via subscription override)
                 $plan_base_amount = isset( $payment_data['breakdown']['item_total'] ) ? $payment_data['breakdown']['item_total'] : $billing_amount;
-                
+
                 $plan_id = $this->get_or_create_plan( $pack, $plan_base_amount, $period, $interval, $trial_period_days );
 
                 if ( ! $plan_id ) {
@@ -1580,10 +1651,11 @@ class Paypal {
                     ],
                     'custom_id' => wp_json_encode(
                         [
-							'type' => $data['type'],
-							'user_id' => $user_id,
+							'type'        => $data['type'],
+							'user_id'     => $user_id,
 							'item_number' => $data['item_number'],
-							'coupon_id' => $coupon_id,
+							'coupon_id'   => $coupon_id,
+							'discount'    => $coupon_discount,
 						]
                     ),
                 ];
@@ -1592,10 +1664,10 @@ class Paypal {
                 if ( isset( $payment_data['breakdown']['tax_total'] ) && $payment_data['breakdown']['tax_total'] > 0 ) {
                     $tax_amount = $payment_data['breakdown']['tax_total'];
                     $subtotal = $payment_data['breakdown']['item_total'] ?? $payment_data['amount'];
-                    
+
                     // Calculate tax percentage
                     $tax_percentage = ( $tax_amount / $subtotal ) * 100;
-                    
+
                     // Add plan override with tax
                     $subscription_data['plan'] = [
                         'taxes' => [
@@ -1674,7 +1746,7 @@ class Paypal {
                 // Add PayPal to allowed hosts just before redirect
                 add_filter(
                     'allowed_redirect_hosts',
-                    function( $hosts ) {
+                    function ( $hosts ) {
                         return array_merge( $hosts, $this->get_paypal_allowed_hosts() );
                     },
                     10,
@@ -1694,12 +1766,13 @@ class Paypal {
 							'description' => isset( $data['custom']['post_title'] ) ? $data['custom']['post_title'] : $data['item_name'],
 							'custom_id' => wp_json_encode(
                                 [
-									'type' => $payment_data['type'],
-									'user_id' => $payment_data['user_id'],
-									'coupon_id' => $payment_data['coupon_id'],
+									'type'        => $payment_data['type'],
+									'user_id'     => $payment_data['user_id'],
+									'coupon_id'   => $payment_data['coupon_id'],
 									'item_number' => $payment_data['item_number'],
-									'subtotal' => isset( $payment_data['breakdown']['item_total'] ) ? $payment_data['breakdown']['item_total'] : $payment_data['amount'],
-									'tax' => isset( $payment_data['breakdown']['tax_total'] ) ? $payment_data['breakdown']['tax_total'] : 0,
+									'subtotal'    => ( isset( $payment_data['breakdown']['item_total'] ) ? floatval( $payment_data['breakdown']['item_total'] ) : floatval( $payment_data['amount'] ) ) + $coupon_discount,
+									'tax'         => isset( $payment_data['breakdown']['tax_total'] ) ? $payment_data['breakdown']['tax_total'] : 0,
+									'discount'    => $coupon_discount,
 								]
                             ),
 						],
@@ -1767,7 +1840,7 @@ class Paypal {
                 // Add PayPal to allowed hosts just before redirect
                 add_filter(
                     'allowed_redirect_hosts',
-                    function( $hosts ) {
+                    function ( $hosts ) {
                         return array_merge( $hosts, $this->get_paypal_allowed_hosts() );
                     },
                     10,
@@ -1783,16 +1856,69 @@ class Paypal {
     }
 
     /**
+     * Whether a cached PayPal plan still matches the pack's current terms
+     *
+     * Compares the plan's REGULAR billing cycle price, currency and
+     * period/interval against the pack settings the current checkout is using.
+     *
+     * @since 4.3.12
+     *
+     * @param array      $plan     Plan representation returned by PayPal.
+     * @param int|float  $amount   Current pack amount.
+     * @param string     $period   Current billing period (day|week|month|year).
+     * @param int        $interval Current billing interval count.
+     *
+     * @return bool
+     */
+    private function plan_matches_pack( $plan, $amount, $period, $interval ) {
+        if ( empty( $plan['billing_cycles'] ) || ! is_array( $plan['billing_cycles'] ) ) {
+            return false;
+        }
+
+        $regular = null;
+
+        foreach ( $plan['billing_cycles'] as $cycle ) {
+            if ( isset( $cycle['tenure_type'] ) && 'REGULAR' === $cycle['tenure_type'] ) {
+                $regular = $cycle;
+                break;
+            }
+        }
+
+        if ( null === $regular ) {
+            return false;
+        }
+
+        $expected_currency = wpuf_get_option( 'currency', 'wpuf_payment', 'USD' );
+        $expected_value    = number_format( (float) $amount, 2, '.', '' );
+        $expected_unit     = strtoupper( (string) $period );
+        $expected_count    = max( 1, intval( $interval ) );
+
+        $plan_value    = isset( $regular['pricing_scheme']['fixed_price']['value'] )
+            ? number_format( (float) $regular['pricing_scheme']['fixed_price']['value'], 2, '.', '' ) : '';
+        $plan_currency = isset( $regular['pricing_scheme']['fixed_price']['currency_code'] )
+            ? $regular['pricing_scheme']['fixed_price']['currency_code'] : '';
+        $plan_unit     = isset( $regular['frequency']['interval_unit'] )
+            ? strtoupper( $regular['frequency']['interval_unit'] ) : '';
+        $plan_count    = isset( $regular['frequency']['interval_count'] )
+            ? intval( $regular['frequency']['interval_count'] ) : 0;
+
+        return $plan_value === $expected_value
+            && $plan_currency === $expected_currency
+            && $plan_unit === $expected_unit
+            && $plan_count === $expected_count;
+    }
+
+    /**
      * Get or create a PayPal subscription plan
      */
     private function get_or_create_plan( $pack, $amount, $period, $interval, $trial_period_days = 0 ) {
         try {
             $access_token = $this->get_access_token();
-            
+
             if ( ! $access_token ) {
                 return false;
             }
-            
+
             // Create plan name (tax will be added separately via subscription override)
             $plan_name = 'WPUF-' . $pack->post_title . '-' . uniqid();
             $plan_id = get_post_meta( $pack->ID, '_paypal_plan_id', true );
@@ -1813,7 +1939,16 @@ class Paypal {
 
                 if ( ! is_wp_error( $response ) ) {
                     $body = json_decode( wp_remote_retrieve_body( $response ), true );
-                    if ( isset( $body['status'] ) && 'ACTIVE' === $body['status'] ) {
+
+                    // Reuse the cached plan only when it still matches the pack's
+                    // current price, currency and billing period/interval. The id
+                    // is cached pack-wide and never invalidated on a pack edit,
+                    // currency change or a first buyer's coupon, so a later buyer
+                    // could otherwise be billed an old/discounted amount on a stale
+                    // ACTIVE plan. On any mismatch fall through and mint a fresh
+                    // plan bound to the current settings.
+                    if ( isset( $body['status'] ) && 'ACTIVE' === $body['status']
+                        && $this->plan_matches_pack( $body, $amount, $period, $interval ) ) {
                         return $plan_id;
                     }
                 }
@@ -1822,7 +1957,7 @@ class Paypal {
             // Create new plan (tax will be added separately via subscription override)
             // Ensure interval_count is at least 1 (PayPal doesn't accept 0 or negative values)
             $interval_count = max( 1, intval( $interval ) );
-            
+
             $plan_data = [
                 'product_id' => $this->get_or_create_product( $pack ),
                 'name' => $plan_name,
@@ -1882,7 +2017,7 @@ class Paypal {
                 // Update the regular billing cycle sequence
                 $plan_data['billing_cycles'][1]['sequence'] = 2;
             }
-            
+
             $response = wp_remote_post(
                 ( $this->test_mode ? 'https://api-m.sandbox.paypal.com' : 'https://api-m.paypal.com' ) . '/v1/billing/plans',
                 [
@@ -1901,7 +2036,6 @@ class Paypal {
 
             $response_code = wp_remote_retrieve_response_code( $response );
             $body = json_decode( wp_remote_retrieve_body( $response ), true );
-        
 
             if ( ! isset( $body['id'] ) ) {
                 throw new \Exception( 'Invalid response from PayPal - no plan ID' );
@@ -2034,7 +2168,6 @@ class Paypal {
 
             wp_safe_redirect( $success_url );
             exit;
-
         } catch ( \Exception $e ) {
             wp_safe_redirect( $this->get_error_page_url( $e->getMessage() ) );
             exit;
@@ -2180,9 +2313,11 @@ class Paypal {
         }
 
         // Check if this is a subscription return (has subscription_id parameter or type is pack with recurring)
+        $return_type  = isset( $_GET['type'] ) ? sanitize_text_field( wp_unslash( $_GET['type'] ) ) : '';
+        $return_token = isset( $_GET['token'] ) ? sanitize_text_field( wp_unslash( $_GET['token'] ) ) : '';
+
         $is_subscription_return = isset( $_GET['subscription_id'] ) || isset( $_GET['ba_token'] ) ||
-                                 ( isset( $_GET['type'] ) && $_GET['type'] === 'pack' &&
-                                   ( isset( $_GET['token'] ) && strpos( $_GET['token'], 'I-' ) === 0 ) );
+                                 ( 'pack' === $return_type && 0 === strpos( $return_token, 'I-' ) );
 
         // For subscription returns, nonce verification might fail due to PayPal's redirect process
         // So we'll be more lenient with subscription returns
@@ -2234,7 +2369,7 @@ class Paypal {
     private function handle_subscription_cancelled( $subscription ) {
         try {
             $subscription_id = isset( $subscription['id'] ) ? $subscription['id'] : 'UNKNOWN';
-            
+
             // Extract custom data
             $custom_data = [];
             if ( isset( $subscription['custom_id'] ) ) {
@@ -2282,12 +2417,84 @@ class Paypal {
     }
 
     /**
+     * Revoke a subscription that PayPal expired or suspended
+     *
+     * Mirrors the CANCELLED path: the local pack is reduced to a terminal record
+     * with no pack_id, so the subscription-based posting gate treats the user as
+     * having no active pack. A later reactivation re-grants it through the
+     * ACTIVATED / PAYMENT.SALE.COMPLETED handlers.
+     *
+     * @since 4.3.12
+     *
+     * @param array  $subscription PayPal subscription resource.
+     * @param string $event_type   Originating webhook event type.
+     *
+     * @return void
+     */
+    private function handle_subscription_revoked( $subscription, $event_type ) {
+        try {
+            $custom_data = [];
+
+            if ( isset( $subscription['custom_id'] ) ) {
+                $custom_data = json_decode( $subscription['custom_id'], true );
+            }
+
+            if ( ! $custom_data || ! isset( $custom_data['user_id'] ) ) {
+                throw new \Exception( 'Invalid custom data in subscription' );
+            }
+
+            $user_id         = $custom_data['user_id'];
+            $subscription_id = isset( $subscription['id'] ) ? $subscription['id'] : '';
+            $status          = 'BILLING.SUBSCRIPTION.EXPIRED' === $event_type ? 'expired' : 'suspended';
+
+            update_user_meta(
+                $user_id,
+                '_wpuf_subscription_pack',
+                [
+                    'profile_id' => $subscription_id,
+                    'status'     => $status,
+                    'updated'    => gmdate( 'Y-m-d H:i:s' ),
+                ]
+            );
+
+            global $wpdb;
+            $wpdb->update(
+                $wpdb->prefix . 'wpuf_subscribers',
+                [
+                    'subscribtion_status' => $status,
+                    'expire'              => gmdate( 'd-m-Y' ),
+                ],
+                [
+                    'user_id'        => $user_id,
+                    'transaction_id' => $subscription_id,
+                    'gateway'        => 'PayPal',
+                ],
+                [ '%s', '%s' ],
+                [ '%d', '%s', '%s' ]
+            );
+
+            /**
+             * Fires after a PayPal subscription is revoked on expiry or suspension.
+             *
+             * @since 4.3.12
+             *
+             * @param int    $user_id
+             * @param string $subscription_id
+             * @param string $event_type
+             */
+            do_action( 'wpuf_paypal_subscription_revoked', $user_id, $subscription_id, $event_type );
+        } catch ( \Exception $e ) {
+            throw $e;
+        }
+    }
+
+    /**
      * Handle subscription activation (after trial period)
      */
     private function handle_subscription_activated( $subscription ) {
         try {
             $subscription_id = isset( $subscription['id'] ) ? $subscription['id'] : 'UNKNOWN';
-            
+
             // Extract custom data
             $custom_data = [];
             if ( isset( $subscription['custom_id'] ) ) {
@@ -2326,13 +2533,47 @@ class Paypal {
 
             // Get user pack to check status and trial
             $user_pack = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
+            $user_pack = is_array( $user_pack ) ? $user_pack : [];
 
-            // Update subscription status if needed
-            if ( ! $user_pack || ! isset( $user_pack['pack_id'] ) || $user_pack['pack_id'] !== $pack_id ) {
-                // User pack doesn't exist or doesn't match, create/update it
+            // PayPal only ever sends BILLING.SUBSCRIPTION.CREATED while the
+            // subscription is still APPROVAL_PENDING, so the ACTIVE gate in
+            // handle_subscription_created() leaves ACTIVATED as the first event
+            // that may grant the pack. Writing a bare pack_id/status pair here left
+            // the user with no quota and no expiry, which current_pack() reads as
+            // expired. Packs without a trial were repaired moments later by
+            // PAYMENT.SALE.COMPLETED, but a free trial sends no sale event until it
+            // ends. Grant through the canonical path so quota, expiry and the
+            // recurring flags land whichever event arrives first.
+            $has_usable_pack = isset( $user_pack['pack_id'] )
+                && (int) $user_pack['pack_id'] === $pack_id
+                && ! empty( $user_pack['posts'] );
+
+            if ( ! $has_usable_pack ) {
+                $trial_days = isset( $custom_data['trial_period_days'] ) ? intval( $custom_data['trial_period_days'] ) : 0;
+                $is_trial   = $trial_days > 0 || $this->is_subscription_in_trial( $subscription );
+
+                if ( $is_trial ) {
+                    // Zero-cost trial transaction: wpuf_payment_received grants the
+                    // pack through User_Subscription::add_pack().
+                    $this->create_trial_payment_record( $user_id, $pack_id, $subscription_id );
+                } else {
+                    wpuf_get_user( $user_id )->subscription()->add_pack( $pack_id, $subscription_id, true, 'completed' );
+                }
+
+                $user_pack = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
+                $user_pack = is_array( $user_pack ) ? $user_pack : [];
+
+                if ( $is_trial && ! empty( $user_pack ) ) {
+                    $user_pack['trial'] = 'yes';
+                }
+            }
+
+            if ( empty( $user_pack ) ) {
+                // Nothing could be granted; keep the previous minimal record so the
+                // status handling below still has something to work with.
                 $user_pack = [
                     'pack_id' => $pack_id,
-                    'status' => 'completed',
+                    'status'  => 'completed',
                 ];
             }
 
@@ -2391,7 +2632,10 @@ class Paypal {
                 }
             }
         } catch ( \Exception $e ) {
-            throw new \Exception( 'Error handling subscription activation: ' . $e->getMessage(), 0, $e );
+            $message = 'Error handling subscription activation: ' . $e->getMessage();
+
+            // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $e is the chained previous exception, not output; the message is escaped above.
+            throw new \Exception( esc_html( $message ), 0, $e );
         }
     }
 
@@ -2429,7 +2673,10 @@ class Paypal {
                     return floatval( $subscription_details['plan']['taxes']['percentage'] );
                 }
             }
-        } catch ( \Exception $e ) {}
+        } catch ( \Exception $e ) {
+            // The tax percentage is optional; fall through to the default below.
+            unset( $e );
+        }
 
         return 0;
     }
@@ -2504,7 +2751,7 @@ class Paypal {
         // Add them to item_total
         $supported_keys = array_keys( $breakdown_map );
         foreach ( $breakdown as $key => $value ) {
-            if ( ! in_array( $key, $supported_keys ) && is_numeric( $value ) && $value > 0 ) {
+            if ( ! in_array( $key, $supported_keys, true ) && is_numeric( $value ) && $value > 0 ) {
                 // Add unsupported breakdown items to item_total
                 if ( ! isset( $paypal_breakdown['item_total'] ) ) {
                     $paypal_breakdown['item_total'] = [
@@ -2527,33 +2774,6 @@ class Paypal {
     }
 }
 
-// Register webhook endpoint
-add_action(
-    'init', function () {
-		add_rewrite_rule(
-            '^webhook_triggered/?$',
-            'index.php?action=webhook_triggered=1',
-            'top'
-		);
-	}
-);
-
-// Add query var
-add_filter(
-    'query_vars', function ( $vars ) {
-		$vars[] = 'action';
-		return $vars;
-	}
-);
-
-// Handle webhook request
-add_action(
-    'template_redirect', function () {
-		if ( get_query_var( 'action' ) === 'webhook_triggered' ) {
-			$paypal = new \WeDevs\Wpuf\Lib\Gateway\Paypal();
-			$raw_input = file_get_contents( 'php://input' );
-			$paypal->process_webhook( $raw_input );
-			exit;
-		}
-	}
-);
+// Webhook endpoint registration and handling live in Paypal::register_webhook_endpoint() and
+// Paypal::handle_webhook_request(), both hooked in the constructor. The duplicate registration
+// that used to sit here bypassed the signature check performed by handle_webhook_request().

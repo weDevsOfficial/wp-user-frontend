@@ -12,9 +12,9 @@
  * @var $current_pack
  */
 
-// Block config defaults: the shortcode passes no or only a partial $block_config
-$block_config = wp_parse_args(
-    isset( $block_config ) ? (array) $block_config : [],
+// Only the subscription block passes $block_config; the [wpuf_sub_pack] shortcode keeps its original markup
+$block_config = empty( $block_config ) ? [] : wp_parse_args(
+    (array) $block_config,
     [
         'columns'               => 3,
         'show_price'            => true,
@@ -49,9 +49,13 @@ do_action( 'wpuf_before_subscription_listing', $packs );
 </style>
 <?php
 if ( $packs ) {
-    $columns_class = 'lg:wpuf-grid-cols-' . absint( $block_config['columns'] );
-    $gap_px        = isset( $block_config['card_gap'] ) ? absint( $block_config['card_gap'] ) : 16;
-    echo wp_kses_post( '<ul class="wpuf_packs wpuf-grid wpuf-grid-cols-1 md:wpuf-grid-cols-2 ' . esc_attr( $columns_class ) . ' wpuf-max-w-5xl wpuf-mx-auto wpuf-px-4 wpuf-items-start wpuf-mt-6" style="gap:' . esc_attr( $gap_px ) . 'px">' );
+    if ( $block_config ) {
+        $columns_class = 'lg:wpuf-grid-cols-' . absint( $block_config['columns'] );
+        $gap_px        = absint( $block_config['card_gap'] );
+        echo wp_kses_post( '<ul class="wpuf_packs wpuf-grid wpuf-grid-cols-1 md:wpuf-grid-cols-2 ' . esc_attr( $columns_class ) . ' wpuf-max-w-5xl wpuf-mx-auto wpuf-px-4 wpuf-items-start wpuf-mt-6" style="gap:' . esc_attr( $gap_px ) . 'px">' );
+    } else {
+        echo wp_kses_post( '<ul class="wpuf_packs wpuf-grid wpuf-grid-cols-1 md:wpuf-grid-cols-2 lg:wpuf-grid-cols-3 wpuf-gap-4 wpuf-max-w-5xl wpuf-mx-auto wpuf-px-4 wpuf-items-start wpuf-mt-6">' );
+    }
 
     if ( isset( $args['include'] ) && $args['include'] != '' ) {
         for ( $i = 0, $pack_order_count = count( $pack_order ); $i < $pack_order_count; $i++ ) {

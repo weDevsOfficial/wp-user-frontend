@@ -20,7 +20,10 @@ if ( 'wpuf_pay' === $wpuf_request_action || ! empty( $coupon_status ) ) {
     return;
 }
 
-// Block config defaults: the shortcode passes no or only a partial $block_config
+// Only the subscription block passes $block_config; the [wpuf_sub_pack] shortcode keeps its original markup
+$wpuf_is_block = ! empty( $block_config );
+
+// Block config defaults: the block may pass only a partial $block_config
 $block_config = wp_parse_args(
     isset( $block_config ) ? (array) $block_config : [],
     [
@@ -93,6 +96,11 @@ $card_style = implode( ';', $card_style_parts );
 $title_font_size     = isset( $block_config['title_font_size'] ) ? absint( $block_config['title_font_size'] ) : 18;
 $price_font_size     = isset( $block_config['price_font_size'] ) ? absint( $block_config['price_font_size'] ) : 30;
 $recurring_font_size = isset( $block_config['recurring_font_size'] ) ? absint( $block_config['recurring_font_size'] ) : 14;
+
+// Override button text if set in block config
+if ( ! empty( $block_config['button_text'] ) ) {
+    $button_name = $block_config['button_text'];
+}
 ?>
 <style>
 /* Critical inline styles to prevent FOUC */
@@ -105,10 +113,14 @@ $recurring_font_size = isset( $block_config['recurring_font_size'] ) ? absint( $
     display: none !important;
 }
 </style>
+<?php if ( $wpuf_is_block ) : ?>
 <div class="wpuf-transition-all wpuf-duration-300 wpuf-relative wpuf-mt-2" style="<?php echo esc_attr( $card_style ); ?>">
+<?php else : ?>
+<div class="wpuf-rounded-xl wpuf-p-6 wpuf-ring-1 wpuf-ring-gray-200 wpuf-bg-white wpuf-shadow-md hover:wpuf-shadow-lg wpuf-transition-all wpuf-duration-300 wpuf-relative wpuf-mt-2">
+<?php endif; ?>
     <!-- Header Section -->
     <div class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-gap-x-4">
-        <h3 class="wpuf-font-semibold wpuf-text-gray-900 wpuf-leading-8" style="font-size:<?php echo esc_attr( $title_font_size ); ?>px">
+        <h3 class="<?php echo $wpuf_is_block ? '' : 'wpuf-text-lg '; ?>wpuf-font-semibold wpuf-text-gray-900 wpuf-leading-8"<?php echo $wpuf_is_block ? ' style="font-size:' . esc_attr( $title_font_size ) . 'px"' : ''; ?>>
             <?php echo wp_kses_post( $pack->post_title ); ?>
         </h3>
         <?php if ( isset( $pack->featured ) && $pack->featured ) { ?>
@@ -125,24 +137,24 @@ $recurring_font_size = isset( $block_config['recurring_font_size'] ) ? absint( $
     <?php endif; ?>
     
     <!-- Price Section -->
-    <?php if ( $block_config['show_price'] ) : ?>
+<?php if ( $block_config['show_price'] ) : ?>
     <div class="wpuf-mt-4">
     <div class="wpuf-flex wpuf-items-baseline wpuf-gap-x-1">
         <?php if ( $billing_amount != '0.00' ) { ?>
-            <span class="wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900" style="font-size:<?php echo esc_attr( $price_font_size ); ?>px">
+            <span class="<?php echo $wpuf_is_block ? '' : 'wpuf-text-3xl '; ?>wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900"<?php echo $wpuf_is_block ? ' style="font-size:' . esc_attr( $price_font_size ) . 'px"' : ''; ?>>
                 <?php echo esc_html( wpuf_format_price( $billing_amount ) ); ?>
             </span>
-            <span class="wpuf-font-semibold wpuf-text-gray-600 wpuf-leading-6" style="font-size:<?php echo esc_attr( $recurring_font_size ); ?>px">
+            <span class="<?php echo $wpuf_is_block ? '' : 'wpuf-text-sm '; ?>wpuf-font-semibold wpuf-text-gray-600 wpuf-leading-6"<?php echo $wpuf_is_block ? ' style="font-size:' . esc_attr( $recurring_font_size ) . 'px"' : ''; ?>>
                 <?php echo wp_kses_post( $recurring_des ); ?>
             </span>
         <?php } else { ?>
-            <span class="wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900" style="font-size:<?php echo esc_attr( $price_font_size ); ?>px">
+            <span class="<?php echo $wpuf_is_block ? '' : 'wpuf-text-3xl '; ?>wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900"<?php echo $wpuf_is_block ? ' style="font-size:' . esc_attr( $price_font_size ) . 'px"' : ''; ?>>
                 <?php esc_html_e( 'Free', 'wp-user-frontend' ); ?>
             </span>
         <?php } ?>
     </div>
 
-		<?php if ( wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay'] ) && ! empty( $trial_des ) ) { ?>
+    <?php if ( wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay'] ) && ! empty( $trial_des ) ) { ?>
         <div class="wpuf-mt-3">
             <div class="wpuf-text-sm wpuf-text-gray-600">
                 <?php echo esc_html( $trial_des ); ?>
@@ -150,19 +162,13 @@ $recurring_font_size = isset( $block_config['recurring_font_size'] ) ? absint( $
         </div>
     <?php } ?>
     </div>
-    <?php endif; ?>
-
-    <?php
-    // Override button text if set in block config
-    if ( ! empty( $block_config['button_text'] ) ) {
-        $button_name = $block_config['button_text'];
-    }
-    ?>
+<?php endif; ?>
+    
     <!-- Button Section -->
     <div class="wpuf-mt-6">
         <?php if ( 'completed' === $current_pack_status ) : ?>
             <a class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-semibold wpuf-text-gray-400 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 wpuf-cursor-not-allowed wpuf-bg-gray-100 wpuf-leading-6"
-                href="javascript:void(0)">
+               href="javascript:void(0)">
                 <?php echo esc_html( is_string( $button_name ) ? $button_name : strval( $button_name ) ); ?>
             </a>
         <?php else : ?>
@@ -172,13 +178,13 @@ $recurring_font_size = isset( $block_config['recurring_font_size'] ) ? absint( $
                 }
             </style>
             <a class="wpuf-subscription-buy-btn wpuf-block wpuf-w-full wpuf-rounded-md <?php echo $use_custom_color ? '' : 'wpuf-bg-primary hover:wpuf-bg-primaryHover'; ?> wpuf-px-3 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm wpuf-ring-0 wpuf-transition-all wpuf-duration-200 wpuf-leading-6"
-                <?php if ( $use_custom_color ) : ?>
-                style="background-color: <?php echo esc_attr( $button_color ); ?>;"
-                onmouseover="this.style.filter='brightness(0.9)'"
-                onmouseout="this.style.filter='brightness(1)'"
-                <?php endif; ?>
-                href="<?php echo esc_attr( add_query_arg( $query_args, esc_url( $query_url ) ) ); ?>"
-                onclick="<?php echo esc_attr( $details_meta['onclick'] ); ?>">
+               <?php if ( $use_custom_color ) : ?>
+               style="background-color: <?php echo esc_attr( $button_color ); ?>;"
+               onmouseover="this.style.filter='brightness(0.9)'"
+               onmouseout="this.style.filter='brightness(1)'"
+               <?php endif; ?>
+               href="<?php echo esc_attr( add_query_arg( $query_args, esc_url( $query_url ) ) ); ?>"
+               onclick="<?php echo esc_attr( $details_meta['onclick'] ); ?>">
                 <?php echo esc_html( $button_name ); ?>
             </a>
         <?php endif; ?>

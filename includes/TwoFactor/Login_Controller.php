@@ -184,17 +184,11 @@ class Login_Controller {
      */
     // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
     public function maybe_require_2fa_challenge( $user, $username, $password ) {
-        // phpcs:ignore WordPress.Security.NonceVerification.Missing
-        if ( empty( $_POST['wpuf_login'] ) ) {
-            return $user;
-        }
-
         // Stage 2 / method-choice are handled separately at init priority
-        // 8 and 9; defense-in-depth.
+        // 8 and 9 and never call wp_signon(), so a password sign-in that
+        // carries one of their tokens is not the WPUF stage-one request.
         // phpcs:ignore WordPress.Security.NonceVerification.Missing
-        if ( ! empty( $_POST['wpuf_2fa_token'] ) || ! empty( $_POST['wpuf_2fa_selector_token'] ) ) {
-            return $user;
-        }
+        $is_wpuf_stage_one = ! empty( $_POST['wpuf_login'] ) && empty( $_POST['wpuf_2fa_token'] ) && empty( $_POST['wpuf_2fa_selector_token'] );
 
         // Simple_Login::process_login() calls wp_signon() twice in some
         // paths (legacy email-as-username fallback at line ~616). Without
@@ -202,7 +196,7 @@ class Login_Controller {
         // retry, orphaning the first transient for its full TTL and —
         // for OTP methods — sending a duplicate code. If we've already
         // staged either flow this request, the answer is the same.
-        if ( $this->pending_selector_token || $this->pending_token ) {
+        if ( $is_wpuf_stage_one && ( $this->pending_selector_token || $this->pending_token ) ) {
             return new \WP_Error(
                 'wpuf_2fa_required',
                 __( 'Two-factor verification required.', 'wp-user-frontend' )
@@ -221,6 +215,21 @@ class Login_Controller {
 
         if ( empty( $enrolled ) ) {
             return $user;
+        }
+
+        // Application passwords are a separate, user-issued credential for API requests.
+        if ( did_action( 'application_password_did_authenticate' ) ) {
+            return $user;
+        }
+
+        // Only the WPUF login form can run the second step. Any other password
+        // sign-in (wp-login.php, XML-RPC, other plugins' forms) would skip it,
+        // so it is refused for accounts that have 2FA enabled.
+        if ( ! $is_wpuf_stage_one ) {
+            return new \WP_Error(
+                'wpuf_2fa_login_form_required',
+                $this->login_form_required_message()
+            );
         }
 
         // phpcs:ignore WordPress.Security.NonceVerification.Missing
@@ -526,6 +535,28 @@ class Login_Controller {
         </div>
         <p style="display:none;"><?php // Re-open the <p> the template will try to close. ?>
         <?php
+    }
+
+    /**
+     * Error shown when an account with 2FA signs in outside the WPUF login form
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string
+     */
+    private function login_form_required_message(): string {
+        $page_id = wpuf_get_option( 'login_page', 'wpuf_profile', 0 );
+        $url     = $page_id ? get_permalink( $page_id ) : '';
+
+        if ( ! $url ) {
+            return __( 'Two-factor authentication is enabled for this account. Please sign in from this site\'s login form.', 'wp-user-frontend' );
+        }
+
+        return sprintf(
+            /* translators: %s: URL of the WPUF login page */
+            __( 'Two-factor authentication is enabled for this account. Please sign in from the <a href="%s">login page</a>.', 'wp-user-frontend' ),
+            esc_url( $url )
+        );
     }
 
     /**

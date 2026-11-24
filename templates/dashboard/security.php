@@ -110,7 +110,7 @@ $allowed_html = apply_filters(
             <?php esc_html_e( 'Add a second verification step to your account. After entering your password you will need to enter a code from one of the methods below.', 'wp-user-frontend' ); ?>
         </p>
         <p class="wpuf-text-gray-500 wpuf-text-sm wpuf-mt-3 wpuf-mb-0">
-            <?php esc_html_e( 'Two-factor authentication protects logins through this site\'s login form. Administrators logging in via /wp-admin/ are not challenged.', 'wp-user-frontend' ); ?>
+            <?php esc_html_e( 'Once two-factor authentication is on, sign in from this site\'s login form. Other sign-in pages, such as /wp-login.php, are refused for your account.', 'wp-user-frontend' ); ?>
         </p>
     </div>
 

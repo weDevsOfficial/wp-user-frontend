@@ -49,9 +49,16 @@ export class PostFormGapsPage extends FormEditorPage {
 
     // Multi-selects keep every pick as an .item chip inside the selectize input.
     async doPickMultiSelectSetting( id: string, optionText: string ) {
-        await this.validateAndClick( this.gaps.settings.selectizeInput( id ) );
-        await this.validateAndClick( this.gaps.settings.selectizeOptionByText( id, optionText ) );
-        await expect( this.page.locator( this.gaps.settings.selectizeItem( id, optionText ) ).first() ).toBeVisible();
+        const item = this.page.locator( this.gaps.settings.selectizeItem( id, optionText ) ).first();
+
+        // A pick saved by an earlier test is still a chip, and selectize hides
+        // picked options from the dropdown, so there is nothing to click.
+        if ( ! await item.isVisible() ) {
+            await this.validateAndClick( this.gaps.settings.selectizeInput( id ) );
+            await this.validateAndClick( this.gaps.settings.selectizeOptionByText( id, optionText ) );
+        }
+
+        await expect( item ).toBeVisible();
     }
 
     async validateMultiSelectHas( id: string, optionText: string ) {

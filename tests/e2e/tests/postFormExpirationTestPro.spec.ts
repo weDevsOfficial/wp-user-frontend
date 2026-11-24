@@ -118,15 +118,10 @@ test.describe( 'Post-Form-Expiration-And-Edit-Lock', () => {
         expect( getPostMeta( expiringPostId, 'wpuf-expired_post_status' ) ).toBe( 'draft' );
     } );
 
-    // BUG (see BUGS-FOUND.md #21): Frontend_Form_Ajax::wpuf_user_subscription_pack()
-    // enters the subscription-pack branch on `isset($pack['_enable_post_expiration'])`
-    // rather than on its value, so a pack with expiration switched OFF still writes
-    // `wpuf-post_expiration_date = 1970-01-01` and the pack's `_expired_post_status`.
-    // Pro's Post_Expiration::save_expiration_meta() then bails on the same isset()
-    // test, so the form's own settings never reach the post. PFG0051 above passes
-    // only because the submitting user holds no pack yet.
+    // Regression guard (fixed on develop): a pack with post
+    // expiration switched OFF used to still write `wpuf-post_expiration_date =
+    // 1970-01-01` and the pack's `_expired_post_status`, overruling the form.
     test( 'PFG0051b : A pack with expiration off does not override the form', { tag: [ '@Pro', '@Test_PFG0051b' ] }, async () => {
-        test.fail();
         const editor = new PostFormGapsPage( page );
         const title = `EXP Pack ${ faker.string.alphanumeric( 5 ) }`;
 

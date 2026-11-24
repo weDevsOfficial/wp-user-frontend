@@ -136,9 +136,9 @@ test.describe( 'Post-Form-Security', () => {
             form: {
                 action: 'wpuf_form_builder_save_form',
                 form_data: `wpuf_form_builder_nonce=${ nonce }&wpuf_form_id=${ formId }&post_title=${ formName }`,
-                // A field with no input_type and an unknown template.
-                'form_fields[0][label]': 'Broken',
-                'form_fields[0][template]': 'definitely_not_a_field',
+                // A field with no input_type and an unknown template, sent as the
+                // JSON string the builder posts (the handler json_decode()s it).
+                form_fields: JSON.stringify( [ { label: 'Broken', template: 'definitely_not_a_field', is_new: true } ] ),
             },
         } );
 

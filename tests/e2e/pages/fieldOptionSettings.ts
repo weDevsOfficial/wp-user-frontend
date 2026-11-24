@@ -807,6 +807,9 @@ export class FieldOptionSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, PostTitle = faker.word.words(2));
         console.log(PostForm.title);
         await this.page.waitForTimeout(1000);
+        // The date checks before this test leave the jQuery UI datepicker open, and its
+        // "Done" button can sit over the date input and swallow the click. Close it first.
+        await this.clickIfPresent('//button[contains(@class,"ui-datepicker-close")]', 1000);
         //Enter Date / Time
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.dateTimeSelect);
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectYear, '2024');

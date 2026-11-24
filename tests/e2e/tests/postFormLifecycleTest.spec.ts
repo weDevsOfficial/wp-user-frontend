@@ -312,6 +312,8 @@ test.describe( 'Post-Form-Lifecycle', () => {
         const throwaway = `LC Trash ${ faker.string.alphanumeric( 5 ) }`;
 
         await postForm.createBlankFormPostForm( throwaway );
+        // The new name only reaches the list once the builder saves it.
+        await editor.doSaveForm();
         await editor.openFormsList();
         await editor.validateFormListed( throwaway, true );
 

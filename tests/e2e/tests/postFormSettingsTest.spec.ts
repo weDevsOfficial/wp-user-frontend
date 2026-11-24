@@ -379,10 +379,17 @@ test.describe('Post Form Settings Tests', () => {
     });
 
     test('PFS0034 : Admin is validating post update status for draft', { tag: ['@Lite'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        // The newest post is still PFS0027's Save Draft draft, and finishing such a
+        // draft is a new submission (form Post Status), not an update. Submit a post
+        // normally first so the edit below really exercises Edit Post Status.
+        const submittedTitle = faker.word.words(3);
+        const submittedContent = faker.lorem.paragraph();
+        await postFormSettings.validateSubmittedPostStatusFE(submittedTitle, submittedContent, submittedContent, 'Live');
+
         postTitle = faker.word.words(3);
         postContent = faker.lorem.paragraph();
         postExcerpt = postContent;
-        const postFormSettings = new PostFormSettingsPage(page);
         await postFormSettings.validatePostUpdateStatusInForm(postTitle, postContent, postExcerpt, 'Offline');
     });
     test('PFS0035 : Admin is setting post update status to pending review', { tag: ['@Lite'] }, async () => {

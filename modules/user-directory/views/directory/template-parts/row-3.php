@@ -28,6 +28,12 @@ $last_name  = get_user_meta( $user->ID, 'last_name', true );
 // Get phone number
 $phone = get_user_meta( $user->ID, 'wpuf_profile_phone', true );
 
+// Contact details (email, phone) are hidden from anonymous visitors, matching
+// WordPress core which never exposes user email to unauthenticated callers.
+$show_contact_info = function_exists( 'wpuf_ud_show_contact_info' )
+    ? wpuf_ud_show_contact_info( $user )
+    : is_user_logged_in();
+
 // Get avatar size for card layout
 $card_avatar_size = ! empty( $avatar_size ) ? $avatar_size : 128;
 
@@ -64,7 +70,7 @@ $avatar = wpuf_ud_get_user_avatar_html( $user, $card_avatar_size, '!wpuf-rounded
         </h3>
 
         <!-- Email -->
-        <?php if ( $user_email ) : ?>
+        <?php if ( $user_email && $show_contact_info ) : ?>
             <p class="wpuf-text-[14px] wpuf-font-normal wpuf-text-gray-600 !wpuf-m-0">
                 <a href="<?php echo esc_url( 'mailto:' . $user_email ); ?>" target="_blank" rel="noopener" class="wpuf-text-gray-500 hover:wpuf-text-gray-900">
                     <?php echo esc_html( $user_email ); ?>
@@ -82,7 +88,7 @@ $avatar = wpuf_ud_get_user_avatar_html( $user, $card_avatar_size, '!wpuf-rounded
         <?php endif; ?>
 
         <!-- Phone Number -->
-        <?php if ( $phone ) : ?>
+        <?php if ( $phone && $show_contact_info ) : ?>
             <p class="wpuf-text-[14px] wpuf-font-normal wpuf-text-gray-600 !wpuf-m-0">
                 <a href="tel:<?php echo esc_attr( $phone ); ?>" class="wpuf-text-gray-500 hover:wpuf-text-gray-900">
                     <?php echo esc_html( $phone ); ?>

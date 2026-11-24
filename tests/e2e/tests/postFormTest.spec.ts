@@ -8,6 +8,7 @@ import * as fs from 'fs'; //Clear Cookie
 import { BasicLogoutPage } from '../pages/basicLogout';
 import { faker } from '@faker-js/faker';
 import { configureSpecFailFast } from '../utils/specFailFast';
+import { waitForSiteReady } from '../utils/siteReady';
 
 let browser: Browser;
 let context: BrowserContext;
@@ -56,15 +57,20 @@ test.describe('Post-Forms', () => {
      * @Test_PF0022 : Admin is validating downloads created
      * @Test_PF0023 : Admin is validating entered downloads data
      * @Test_PF0024 : Admin is validating entered downloads data BE
+     * @Test_PF0025 : User edits their post from the frontend dashboard
+     * @Test_PF0026 : User validates the edited post
+     * @Test_PF0027 : User deletes their post from the frontend dashboard
      *
      */
 
     let pfShortCode: string;
     let productShortCode: string;
     let downloadsShortCode: string;
+    let dashOldTitle: string;
+    let dashNewTitle: string;
 
     test('PF0001 : Admin is creating a Blank Post Form with all Fields', { tag: ['@Lite'] }, async () => {
-        await page.waitForTimeout(15000);
+        await waitForSiteReady(page, 15000);
         await new BasicLoginPage(page).basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
         const PostFormClass = new PostFormPage(page);
         const FieldAdd = new FieldAddPage(page);
@@ -298,6 +304,47 @@ test.describe('Post-Forms', () => {
         const PostForm = new PostFormPage(page);
 
         await PostForm.validateEnteredDownloadsDataBE();
+    });
+
+    /**--------- FRONTEND POST MANAGEMENT (edit + delete) ---------**
+     * A real user journey with no prior coverage: the user edits then deletes
+     * their own post from the account dashboard. Self-cleaning — removes the
+     * post created earlier in this spec. @Lite (dashboard edit/delete is Lite).
+     */
+
+    test('PF0025 : User edits their post from the frontend dashboard', { tag: ['@Lite', '@Test_PF0025'] }, async () => {
+        // Switch from admin back to the post author.
+        await new BasicLogoutPage(page).logOut();
+        await new BasicLoginPage(page).basicLogin(Users.userEmail, Users.userPassword);
+
+        const PostForm = new PostFormPage(page);
+        dashNewTitle = faker.word.words(3);
+        dashOldTitle = await PostForm.editFirstPostFromDashboard(dashNewTitle);
+    });
+
+    test('PF0026 : User validates the edited post', { tag: ['@Lite', '@Test_PF0026'] }, async () => {
+        const PostForm = new PostFormPage(page);
+        await PostForm.validatePostEdited(dashNewTitle, dashOldTitle);
+    });
+
+    test('PF0027 : Math Captcha is enforced on the post edit form', { tag: ['@Lite', '@Test_PF0027'] }, async () => {
+        // Anti-spam promise: the form's Math Captcha must actually block a submit.
+        // Unanswered edit → rejected (error shown, nothing saved); answered → saved.
+        // Leaves the post title unchanged so the delete step below still matches.
+        const PostForm = new PostFormPage(page);
+        await PostForm.validateMathCaptchaEnforced();
+    });
+
+    test('PF0028 : User deletes their post from the frontend dashboard', { tag: ['@Lite', '@Test_PF0028'] }, async () => {
+        const PostForm = new PostFormPage(page);
+        await PostForm.deletePostFromDashboard(dashNewTitle);
+
+        // This user is the post author (a low-privilege front-end user), not an
+        // admin. logOut() hovers the wp-admin "Howdy" admin-bar flyout, which does
+        // not exist for users who can't reach wp-admin — visiting /wp-admin/
+        // redirects them to the front-end, so the hover hangs. Log out from the
+        // WPUF account page's "Sign out" link instead.
+        await new BasicLogoutPage(page).signOutFE();
     });
 
 });

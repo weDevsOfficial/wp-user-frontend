@@ -31,7 +31,7 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
             $selected = $this->get_meta( $post_id, $field_settings['name'], $type );
 
             if ( is_serialized( $selected ) ) {
-                $selected = maybe_unserialize( $selected );
+                $selected = wpuf_safe_unserialize( $selected );
             } elseif ( is_array( $selected ) ) {
                 $selected = $selected;
             } else {
@@ -182,9 +182,11 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
      * @return void
      */
     private function enqueue_multiselect_assets() {
-        // Check if we're in the frontend
-        if ( ! is_admin() ) {
+        // Check if we're in the frontend. The custom-multiselect script and style
+        // are both registered by Pro, so only enqueue them when Pro is active.
+        if ( ! is_admin() && class_exists( 'WP_User_Frontend_Pro' ) ) {
             wp_enqueue_script( 'wpuf-custom-multiselect' );
+            wp_enqueue_style( 'wpuf-custom-multiselect' );
         }
     }
 }

@@ -27,7 +27,7 @@ function wpuf_free_get_modules() {
             'name'        => __( 'User Directory', 'wp-user-frontend' ),
             'description' => __( 'Handle user listing and user profile in frontend', 'wp-user-frontend' ),
             'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/user-directory/',
-            'thumbnail'   => 'wpuf-ul.png',
+            'thumbnail'   => 'wpuf-ul.svg',
             'class'       => 'WeDevs\\Wpuf\\Modules\\User_Directory\\User_Directory',
         ],
     ];

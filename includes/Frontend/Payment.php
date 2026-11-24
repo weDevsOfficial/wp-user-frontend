@@ -956,12 +956,13 @@ class Payment {
             wp_mkdir_p( $inv_dir );
         }
 
-        // Generate PDF file
-        $pdf_file = $inv_dir . "{$inv_u_id}_{$inv_filename}_{$inv_id}.pdf";
+        // Generate PDF file. The random part keeps the public file name from being guessed.
+        $pdf_name = "{$inv_u_id}_{$inv_filename}_{$inv_id}_" . wp_generate_password( 20, false, false ) . '.pdf';
+        $pdf_file = $inv_dir . $pdf_name;
         $invoice->render( $pdf_file, 'F' );
 
         // Save download link
-        $dl_link = content_url() . '/uploads/wpuf-invoices/' . "{$inv_u_id}_{$inv_filename}_{$inv_id}.pdf";
+        $dl_link = content_url() . '/uploads/wpuf-invoices/' . $pdf_name;
         update_user_meta( $inv_u_id, '_invoice_link' . $inv_id, $dl_link );
 
         // Send invoice via email

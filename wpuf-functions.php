@@ -4127,7 +4127,7 @@ function wpuf_encryption( $id, $nonce = null ) {
         try {
             return base64_encode( sodium_crypto_secretbox( $id, $secret_iv, $secret_key ) );
         } catch ( Exception $e ) {
-            delete_option( 'wpuf_auth_keys' );
+            // Never reset the site keys here: that voids every outstanding link and stored value.
             return false;
         }
     }

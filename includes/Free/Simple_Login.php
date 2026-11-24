@@ -963,7 +963,7 @@ class Simple_Login {
 
         $activation_key = isset( $_GET['wpuf_registration_activation'] ) ? sanitize_text_field( wp_unslash( $_GET['wpuf_registration_activation'] ) ) : '';
 
-        if ( $user->get_activation_key() !== $activation_key ) {
+        if ( ! $user->check_activation_key( $activation_key ) ) {
             wpuf()->frontend->simple_login->add_error( __( 'Activation URL is not valid', 'wp-user-frontend' ) );
 
             return;
@@ -1017,7 +1017,9 @@ class Simple_Login {
         $autologin_after_registration = wpuf_get_option( 'autologin_after_registration', 'wpuf_profile', 'on' );
         $pack_id                      = ! empty( $_GET['pack_id'] ) ? sanitize_key( wp_unslash( $_GET['pack_id'] ) ) : '';
 
+        // A user still waiting for admin approval (or denied) must not get a session here.
         if ( $autologin_after_registration === 'on'
+             && in_array( $wpuf_user_status, [ '', 'approved' ], true )
              && $pack_id !== null && is_integer( (int) $pack_id ) ) {
             wp_set_current_user( $user_id );
             wp_set_auth_cookie( $user_id );

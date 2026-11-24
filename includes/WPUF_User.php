@@ -138,7 +138,36 @@ class WPUF_User {
      * @return void
      */
     public function set_activation_key( $key ) {
-        update_user_meta( $this->id, '_wpuf_activation_key', $key );
+        // Only a hash is stored, so a leaked database row cannot be used as a link.
+        update_user_meta( $this->id, '_wpuf_activation_key', hash( 'sha256', (string) $key ) );
+        update_user_meta( $this->id, '_wpuf_activation_key_time', time() );
+    }
+
+    /**
+     * Check an activation key from a link against the stored hash
+     *
+     * Keys stored before hashing, and keys older than seven days, are refused;
+     * the user can ask for a new link from the login form.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $key Key from the activation link.
+     *
+     * @return bool
+     */
+    public function check_activation_key( $key ) {
+        $stored = (string) $this->get_activation_key();
+        $issued = (int) get_user_meta( $this->id, '_wpuf_activation_key_time', true );
+
+        if ( '' === (string) $key || '' === $stored || ! $issued ) {
+            return false;
+        }
+
+        if ( time() - $issued > 7 * DAY_IN_SECONDS ) {
+            return false;
+        }
+
+        return hash_equals( $stored, hash( 'sha256', (string) $key ) );
     }
 
     /**
@@ -161,6 +190,7 @@ class WPUF_User {
      */
     public function remove_activation_key() {
         delete_user_meta( $this->id, '_wpuf_activation_key' );
+        delete_user_meta( $this->id, '_wpuf_activation_key_time' );
     }
 
     /**

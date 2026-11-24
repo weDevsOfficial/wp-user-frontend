@@ -560,8 +560,16 @@ class User_Directory_Widget extends Widget_Base {
                 'label'      => __( 'Gap Between Cards', 'wp-user-frontend' ),
                 'type'       => Controls_Manager::SLIDER,
                 'size_units' => [ 'px' ],
-                'range'      => [ 'px' => [ 'min' => 0, 'max' => 100 ] ],
-                'default'    => [ 'size' => 24, 'unit' => 'px' ],
+                'range'      => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+                'default'    => [
+					'size' => 24,
+					'unit' => 'px',
+				],
                 'selectors'  => [
                     '{{WRAPPER}} .wpuf-ud-list-layout-3 ul' => 'gap: {{SIZE}}{{UNIT}} !important;',
                 ],
@@ -609,9 +617,18 @@ class User_Directory_Widget extends Widget_Base {
                 'label'     => __( 'Alignment', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::CHOOSE,
                 'options'   => [
-                    'left'   => [ 'title' => __( 'Left', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-left' ],
-                    'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-center' ],
-                    'right'  => [ 'title' => __( 'Right', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-right' ],
+                    'left'   => [
+						'title' => __( 'Left', 'wp-user-frontend' ),
+						'icon' => 'eicon-text-align-left',
+					],
+                    'center' => [
+						'title' => __( 'Center', 'wp-user-frontend' ),
+						'icon' => 'eicon-text-align-center',
+					],
+                    'right'  => [
+						'title' => __( 'Right', 'wp-user-frontend' ),
+						'icon' => 'eicon-text-align-right',
+					],
                 ],
                 'selectors' => [
                     '{{WRAPPER}} .wpuf-ud-list-layout-3 li h3' => 'text-align: {{VALUE}} !important; width: 100% !important;',
@@ -1353,13 +1370,15 @@ class User_Directory_Widget extends Widget_Base {
      * @return array Array of WP_Post objects.
      */
     protected function get_directories() {
-        return get_posts( [
-            'post_type'      => 'wpuf_user_listing',
-            'post_status'    => 'any',
-            'posts_per_page' => -1,
-            'orderby'        => 'title',
-            'order'          => 'ASC',
-        ] );
+        return get_posts(
+            [
+				'post_type'      => 'wpuf_user_listing',
+				'post_status'    => 'any',
+				'posts_per_page' => -1,
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+			]
+        );
     }
 
     /**
@@ -1372,7 +1391,7 @@ class User_Directory_Widget extends Widget_Base {
     protected function get_directory_options() {
         $directories = $this->get_directories();
         $options     = [ '' => __( '— Select Directory —', 'wp-user-frontend' ) ];
-        foreach ($directories as $directory) {
+        foreach ( $directories as $directory ) {
             $options[ $directory->ID ] = $directory->post_title;
         }
         return $options;

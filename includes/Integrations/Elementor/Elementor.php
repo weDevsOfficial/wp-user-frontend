@@ -335,18 +335,20 @@ class Elementor {
     public function register_elementor_page_rewrite_rules() {
         // Fast path: query only pages that have been flagged via the meta key.
         // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-        $pages = get_posts( [
-            'post_type'      => 'page',
-            'post_status'    => 'publish',
-            'posts_per_page' => -1,
-            'meta_query'     => [
-                [
-                    'key'     => '_wpuf_has_ud_elementor_widget',
-                    'value'   => '1',
-                    'compare' => '=',
-                ],
-            ],
-        ] );
+        $pages = get_posts(
+            [
+				'post_type'      => 'page',
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'meta_query'     => [
+					[
+						'key'     => '_wpuf_has_ud_elementor_widget',
+						'value'   => '1',
+						'compare' => '=',
+					],
+				],
+			]
+        );
 
         // Fallback: if no flagged pages exist (e.g. first deploy, meta not yet written),
         // scan _elementor_data for existing pages and back-fill the meta flag so future
@@ -356,11 +358,13 @@ class Elementor {
         // so the fast path above handles new widget pages; this scan only migrates
         // pages that pre-date the flag.
         if ( empty( $pages ) && false === get_transient( 'wpuf_ud_elementor_backfill_done' ) ) {
-            $all_pages = get_posts( [
-                'post_type'      => 'page',
-                'post_status'    => 'publish',
-                'posts_per_page' => -1,
-            ] );
+            $all_pages = get_posts(
+                [
+					'post_type'      => 'page',
+					'post_status'    => 'publish',
+					'posts_per_page' => -1,
+				]
+            );
 
             foreach ( $all_pages as $page ) {
                 $elementor_data = get_post_meta( $page->ID, '_elementor_data', true );

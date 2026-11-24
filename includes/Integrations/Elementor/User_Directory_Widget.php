@@ -1267,7 +1267,8 @@ class User_Directory_Widget extends Widget_Base {
         $post     = get_post( $directory_id );
         $settings = [];
         if ( ! empty( $post->post_content ) ) {
-            $settings = json_decode( $post->post_content, true ) ?: [];
+            $decoded  = json_decode( $post->post_content, true );
+            $settings = is_array( $decoded ) ? $decoded : [];
         }
         $default_settings = class_exists( \WeDevs\Wpuf\Modules\User_Directory\User_Directory::class )
             ? \WeDevs\Wpuf\Modules\User_Directory\User_Directory::get_default_settings()

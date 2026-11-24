@@ -292,7 +292,7 @@ class Elementor {
     /**
      * Flush rewrite rules when Elementor saves a page containing the User Directory widget
      *
-     * @since 4.3.1
+     * @since WPUF_SINCE
      *
      * @param int   $post_id The post ID.
      * @param array $data    The Elementor data.
@@ -328,7 +328,7 @@ class Elementor {
      * whether the free or Pro module is handling PrettyUrls. Pages are found via a post
      * meta flag (_wpuf_has_ud_elementor_widget) set in maybe_flush_rules_on_elementor_save().
      *
-     * @since 4.3.1
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -399,7 +399,7 @@ class Elementor {
      * using the User Directory widget via Elementor won't be detected by the
      * default shortcode-based check in PrettyUrls::get_directory_pages().
      *
-     * @since 4.3.1
+     * @since WPUF_SINCE
      *
      * @param array $directory_pages Pages already detected via shortcode.
      * @param array $all_pages       All published pages.

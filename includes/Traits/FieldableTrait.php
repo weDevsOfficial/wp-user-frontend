@@ -800,14 +800,14 @@ trait FieldableTrait {
 
                         // woocommerce check
                         if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $taxonomy_name ) ) {
-                            $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
+                            $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy, $post_id );
                         }
                     } elseif ( is_taxonomy_hierarchical( $taxonomy['name'] ) ) {
                             wp_set_post_terms( $post_id, $taxonomy_name, $taxonomy['name'] );
 
                             // woocommerce check
                         if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $taxonomy_name ) ) {
-                            $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
+                            $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy, $post_id );
                         }
                     } elseif ( $tax ) {
                             $non_hierarchical = [];
@@ -824,7 +824,7 @@ trait FieldableTrait {
 
                             // woocommerce check
                         if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $_POST[ $taxonomy['name'] ] ) ) {
-                            $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
+                            $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy, $post_id );
                         }
                     } // hierarchical / is text
                 } // is object tax
@@ -1070,19 +1070,42 @@ trait FieldableTrait {
      * @since 4.0.6 moved from Render_Form.php to FieldableTrait.php
      *
      * @param array $taxonomy
+     * @param int   $post_id  Product the terms were saved to. Since WPUF_SINCE.
      *
      * @return array
      */
-    public function woo_attribute( $taxonomy ) {
+    public function woo_attribute( $taxonomy, $post_id = 0 ) {
         check_ajax_referer( 'wpuf_form_add' );
         $taxonomy_name = isset( $_POST[ $taxonomy['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $taxonomy['name'] ] ) ) : '';
 
-        return [
+        $attribute = [
             'name'         => ! empty( $taxonomy['name'] ) ? $taxonomy['name'] : '',
             'value'        => $taxonomy_name,
             'is_visible'   => ! empty( $taxonomy['woo_attr_vis'] ) && ( 'yes' === $taxonomy['woo_attr_vis'] ) ? 1 : 0,
             'is_variation' => 0,
             'is_taxonomy'  => 1,
         ];
+
+        // WooCommerce reads the terms itself only for registered product attributes (pa_*).
+        // Any other taxonomy (product_cat, product_shipping_class, ...) is shown as a custom
+        // attribute, so store its label and term names instead of the submitted term ids.
+        if ( $post_id && 0 !== strpos( $attribute['name'], 'pa_' ) ) {
+            $term_names = wp_get_post_terms( $post_id, $attribute['name'], [ 'fields' => 'names' ] );
+
+            if ( ! is_wp_error( $term_names ) && ! empty( $term_names ) ) {
+                $tax_object = get_taxonomy( $attribute['name'] );
+
+                if ( ! empty( $taxonomy['label'] ) ) {
+                    $attribute['name'] = $taxonomy['label'];
+                } elseif ( $tax_object ) {
+                    $attribute['name'] = $tax_object->labels->singular_name;
+                }
+
+                $attribute['value']       = implode( ' | ', $term_names );
+                $attribute['is_taxonomy'] = 0;
+            }
+        }
+
+        return $attribute;
     }
 }

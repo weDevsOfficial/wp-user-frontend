@@ -386,53 +386,6 @@ class Render_Form {
         </script>
         <?php
 
-        //through var, we will know if multiform step started already
-        //$multiform_start = 0;
-
-        //if multistep form is enabled
-        if ( isset( $form_settings['enable_multistep'] ) && $form_settings['enable_multistep'] == 'yes' ) {
-            $ms_ac_txt_color   = isset( $form_settings['ms_ac_txt_color'] ) ? $form_settings['ms_ac_txt_color'] : '#ffffff';
-            $ms_active_bgcolor = isset( $form_settings['ms_active_bgcolor'] ) ? $form_settings['ms_active_bgcolor'] : '#00a0d2';
-            $ms_bgcolor        = isset( $form_settings['ms_bgcolor'] ) ? $form_settings['ms_bgcolor'] : '#E4E4E4'; ?>
-            <style type="text/css">
-                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li,
-                .wpuf-form .wpuf-multistep-progressbar.ui-progressbar {
-                    background-color:  <?php echo esc_html( $ms_bgcolor ); ?>;
-                    background:  <?php echo esc_html( $ms_bgcolor ); ?>;
-                }
-                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li::after{
-                    border-left-color: <?php echo esc_html( $ms_bgcolor ); ?>;
-                }
-                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li.active-step,
-                .wpuf-form .wpuf-multistep-progressbar .ui-widget-header{
-                    color: <?php echo esc_html( $ms_ac_txt_color ); ?>;
-                    background-color:  <?php echo esc_html( $ms_active_bgcolor ); ?>;
-                }
-                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li.active-step::after {
-                    border-left-color: <?php echo esc_html( $ms_active_bgcolor ); ?>;
-                }
-                .wpuf-form .wpuf-multistep-progressbar.ui-progressbar .wpuf-progress-percentage{
-                    color: <?php echo esc_html( $ms_ac_txt_color ); ?>;
-                }
-            </style>
-            <input type="hidden" name="wpuf_multistep_type" value="<?php echo esc_attr( $form_settings['multistep_progressbar_type'] ); ?>"/>
-            <?php
-            if ( $form_settings['multistep_progressbar_type'] == 'step_by_step' ) {
-                ?>
-                <!--wpuf-multistep-progressbar-> wpuf_ms_pb-->
-                <div class="wpuf-multistep-progressbar">
-
-                </div>
-            <?php
-            } else {
-                ?>
-                <div class="wpuf-multistep-progressbar">
-
-                </div>
-            <?php
-            }
-        }
-
         foreach ( $form_vars as $key => $form_field ) {
 
             // check field visibility options
@@ -1011,7 +964,7 @@ class Render_Form {
 
             if ( $multiselect ) {
                 if ( is_serialized( $selected ) ) {
-                    $selected = maybe_unserialize( $selected );
+                    $selected = wpuf_safe_unserialize( $selected );
                 } elseif ( is_array( $selected ) ) {
                     $selected = $selected;
                 } else {
@@ -1095,7 +1048,7 @@ class Render_Form {
         if ( $post_id ) {
             if ( $value = $this->get_meta( $post_id, $attr['name'], $type, true ) ) {
                 if ( is_serialized( $value ) ) {
-                    $selected = maybe_unserialize( $value );
+                    $selected = wpuf_safe_unserialize( $value );
                 } elseif ( is_array( $value ) ) {
                     $selected = $value;
                 } else {
@@ -1339,7 +1292,7 @@ class Render_Form {
         if ( wpuf_is_pro_active() ) {
             return false;
         }
-        
+
         // Get free taxonomies (built-in + taxonomies for post/page)
         $free_taxonomies = wpuf_get_free_taxonomies();
         return ! in_array( $form_field['name'], $free_taxonomies, true );
@@ -1548,7 +1501,7 @@ class Render_Form {
 
                 if ( $images ) {
                     if ( is_serialized( $images[0] ) ) {
-                        $images = maybe_unserialize( $images[0] );
+                        $images = wpuf_safe_unserialize( $images[0] );
                     }
 
                     if ( is_array( $images[0] ) ) {
@@ -1612,7 +1565,7 @@ class Render_Form {
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
-                    var uploader = new WPUF_Uploader('wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles', 'wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container', <?php echo esc_attr( $attr['count'] ); ?>, '<?php echo esc_attr( $attr['name'] ); ?>', 'jpg,jpeg,gif,png,bmp', <?php echo esc_attr( $attr['max_size'] ); ?>);
+                    var uploader = new WPUF_Uploader('wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles', 'wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container', <?php echo esc_attr( $attr['count'] ); ?>, '<?php echo esc_attr( $attr['name'] ); ?>', 'jpg,jpeg,jfif,gif,png,bmp', <?php echo esc_attr( $attr['max_size'] ); ?>);
                     wpuf_plupload_items.push(uploader);
                 });
             })(jQuery);

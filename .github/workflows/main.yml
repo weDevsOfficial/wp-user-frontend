@@ -1,6 +1,21 @@
 name: Plugin asset/readme update
 # Syncs the wp.org readme + .wordpress-org/ assets (banner/icon/screenshots) to
 # SVN trunk on every master push, without redeploying plugin code.
+#
+# The 10up action rsyncs `.wordpress-org/` into the SVN `assets/` directory and
+# fails the whole job when that directory does not exist:
+#
+#   rsync: [sender] change_dir ".../.wordpress-org" failed: No such file or directory (2)
+#   rsync error: some files/attrs were not transferred (code 23)
+#
+# This repo has never carried `.wordpress-org/`, so every run since the workflow
+# was added failed on that line, which put a red cross on each release without
+# anything actually being wrong. The listing's banner, icons and screenshots are
+# held in wp.org SVN under `assets/` and are edited there directly.
+#
+# So the asset/readme sync only runs once the directory exists. Add
+# `.wordpress-org/` (mirroring the files already in SVN `assets/`) to turn the
+# sync on, and it will start syncing with no further change here.
 on:
   push:
     branches:
@@ -13,7 +28,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+
+      - name: Check for a .wordpress-org directory
+        id: assets
+        run: |
+          if [ -d .wordpress-org ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No .wordpress-org directory, so the wp.org asset/readme sync is skipped. The listing's assets live in wp.org SVN under assets/."
+          fi
+
       - name: WordPress.org plugin asset/readme update
+        if: steps.assets.outputs.present == 'true'
         uses: 10up/action-wordpress-plugin-asset-update@stable
         env:
           SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASS }}

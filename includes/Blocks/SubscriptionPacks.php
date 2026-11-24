@@ -97,10 +97,22 @@ class SubscriptionPacks {
         return [
             'packs'          => $packs_list,
             'orderByOptions' => [
-                [ 'value' => '',               'label' => __( 'Default', 'wp-user-frontend' ) ],
-                [ 'value' => 'title',          'label' => __( 'Title', 'wp-user-frontend' ) ],
-                [ 'value' => 'date',           'label' => __( 'Date', 'wp-user-frontend' ) ],
-                [ 'value' => 'meta_value_num', 'label' => __( 'Sort Order', 'wp-user-frontend' ) ],
+                [
+					'value' => '',
+					'label' => __( 'Default', 'wp-user-frontend' ),
+				],
+                [
+					'value' => 'title',
+					'label' => __( 'Title', 'wp-user-frontend' ),
+				],
+                [
+					'value' => 'date',
+					'label' => __( 'Date', 'wp-user-frontend' ),
+				],
+                [
+					'value' => 'meta_value_num',
+					'label' => __( 'Sort Order', 'wp-user-frontend' ),
+				],
             ],
         ];
     }

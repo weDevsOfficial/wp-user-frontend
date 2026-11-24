@@ -1027,14 +1027,16 @@ class Subscription {
      * @param bool   $coupon_status
      */
     public function pack_details( $pack, $details_meta, $current_pack_id = '', $coupon_status = false, $block_config = [] ) {
-        $block_config = wp_parse_args( $block_config, [
-            'columns'          => 3,
-            'show_price'       => true,
-            'show_features'    => true,
-            'show_description' => true,
-            'button_color'     => '',
-            'button_text'      => '',
-        ] );
+        $block_config = wp_parse_args(
+            $block_config, [
+				'columns'          => 3,
+				'show_price'       => true,
+				'show_features'    => true,
+				'show_description' => true,
+				'button_color'     => '',
+				'button_text'      => '',
+			]
+        );
 
         // $price_with_tax = $this->wpuf_prices_include_tax();
 

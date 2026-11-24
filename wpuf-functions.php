@@ -5701,6 +5701,22 @@ function wpuf_find_protected_shortcode( $values ) {
             wpuf_normalize_for_shortcode_check( wp_unslash( $value ) ),
         ];
 
+        // The save path also runs strip_shortcodes(), which can join a tag that was
+        // split by another shortcode. Check what is left after stripping as well,
+        // repeated until nothing changes.
+        foreach ( $candidates as $candidate ) {
+            for ( $i = 0; $i < 10; $i++ ) {
+                $stripped = strip_shortcodes( $candidate );
+
+                if ( $stripped === $candidate ) {
+                    break;
+                }
+
+                $candidate    = $stripped;
+                $candidates[] = $candidate;
+            }
+        }
+
         foreach ( $protected_shortcodes as $shortcode ) {
             foreach ( $candidates as $candidate ) {
                 if ( false !== stripos( $candidate, '[' . $shortcode ) ) {
@@ -5830,7 +5846,13 @@ function wpuf_modify_shortcodes( $content ) {
         // lack unfiltered_html on multisite.
         $author = get_userdata( (int) $post->post_author );
 
-        if ( ! $author || in_array( 'administrator', (array) $author->roles, true ) || user_can( $author, 'unfiltered_html' ) ) {
+        // A guest submission is stored under the default post owner, usually an
+        // administrator, so its author says nothing about who wrote it.
+        $form_id       = (int) get_post_meta( $post->ID, '_wpuf_form_id', true );
+        $form_settings = $form_id ? wpuf_get_form_settings( $form_id ) : [];
+        $is_guest_form = isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'];
+
+        if ( ! $is_guest_form && ( ! $author || in_array( 'administrator', (array) $author->roles, true ) || user_can( $author, 'unfiltered_html' ) ) ) {
             return $content;
         }
     }

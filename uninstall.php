@@ -8,7 +8,8 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
  *
  * Runs when WP User Frontend is deleted and only removes what the free plugin
  * created itself, each switch on User Frontend > Tools > Uninstall Settings.
- * WP User Frontend Pro's options, tables and post types are left to Pro.
+ * WP User Frontend Pro's options, tables and post types are left to Pro, and
+ * the settings both plugins share are kept while Pro is still installed.
  *
  * @since WPUF_SINCE
  */
@@ -49,10 +50,11 @@ class WPUF_Uninstaller {
     /**
      * Delete the pages the WPUF installer created
      *
-     * A page counts as created by WPUF when the installer marked it, or when it
-     * still has exactly the installer's title and content (the pages in WPUF's
-     * page settings, plus Dashboard and Account). Pages the site owner built or
-     * edited are kept, even with a [wpuf shortcode.
+     * A page counts as created by WPUF when the installer marked it and its
+     * content is still the installer's, or when it still has exactly the
+     * installer's title and content (the pages in WPUF's page settings, plus
+     * Dashboard and Account). Pages the site owner built or edited are kept,
+     * even with a [wpuf shortcode.
      *
      * @since WPUF_SINCE
      *
@@ -61,7 +63,7 @@ class WPUF_Uninstaller {
     private function delete_pages() {
         global $wpdb;
 
-        $page_ids = get_posts(
+        $marked_ids = get_posts(
             [
                 'post_type'   => 'page',
                 'post_status' => [ 'publish', 'draft', 'pending', 'private', 'future', 'trash' ],
@@ -71,6 +73,16 @@ class WPUF_Uninstaller {
                 'meta_value'  => '1', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
             ]
         );
+
+        // A marked page the site owner edited is kept, like an unmarked one.
+        $installer_contents = array_merge( wp_list_pluck( $this->get_installer_page_settings(), 'content' ), [ '[wpuf_dashboard]' ] );
+        $page_ids           = [];
+
+        foreach ( $marked_ids as $marked_id ) {
+            if ( in_array( trim( (string) get_post_field( 'post_content', $marked_id ) ), $installer_contents, true ) ) {
+                $page_ids[] = $marked_id;
+            }
+        }
 
         // Sites installed before the marker existed: the page settings the installer fills.
         foreach ( $this->get_installer_page_settings() as $setting ) {
@@ -212,7 +224,14 @@ class WPUF_Uninstaller {
      * @return void
      */
     private function delete_settings() {
-        foreach ( $this->get_options() as $option ) {
+        $options = $this->get_options();
+
+        // WP User Frontend Pro stores its own fields in these options too.
+        if ( $this->is_pro_installed() ) {
+            $options = array_diff( $options, $this->get_options_shared_with_pro() );
+        }
+
+        foreach ( $options as $option ) {
             delete_option( $option );
         }
 
@@ -270,6 +289,45 @@ class WPUF_Uninstaller {
             'wp-user-frontend_tracking_last_send',
             'wp-user-frontend_tracking_skipped',
         ];
+    }
+
+    /**
+     * The options WPUF free shares with WP User Frontend Pro
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    private function get_options_shared_with_pro() {
+        return [
+            'wpuf_profile',
+            'wpuf_mails',
+            'wpuf_tax_rates',
+            'wpuf_base_country_state',
+            'wpuf_address_options',
+            'wpuf_taxonomy_view_restrictions_enabled',
+        ];
+    }
+
+    /**
+     * Whether WP User Frontend Pro is still installed (active or not)
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    private function is_pro_installed() {
+        if ( ! function_exists( 'get_plugins' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+
+        foreach ( array_keys( get_plugins() ) as $plugin ) {
+            if ( 'wpuf-pro.php' === basename( $plugin ) ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

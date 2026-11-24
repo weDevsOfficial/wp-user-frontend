@@ -74,7 +74,7 @@ class Admin_Tools {
      */
     public function get_uninstall_fields() {
         return [
-            'delete_settings' => __( 'Delete Plugin Settings', 'wp-user-frontend' ),
+            'delete_settings' => __( 'Delete Plugin Settings (settings shared with WP User Frontend Pro are kept while Pro is installed)', 'wp-user-frontend' ),
             'delete_database' => __( 'Delete Database Tables', 'wp-user-frontend' ),
             'delete_forms'    => __( 'Delete WPUF Forms', 'wp-user-frontend' ),
             'delete_pages'    => __( 'Delete WPUF Pages', 'wp-user-frontend' ),
@@ -98,7 +98,7 @@ class Admin_Tools {
                 <div class="notice notice-error inline">
                     <p>
                         <strong><?php esc_html_e( 'Caution:', 'wp-user-frontend' ); ?></strong>
-                        <?php esc_html_e( 'Check these to remove WP User Frontend related data and tables from the database when the plugin is deleted. When you delete the WP User Frontend free version, it will also remove all the data related to WP User Frontend Pro. Nothing is removed when the plugins are only deactivated.', 'wp-user-frontend' ); ?>
+                        <?php esc_html_e( 'Check these to remove the data and tables WP User Frontend created from the database when the plugin is deleted. WP User Frontend Pro\'s own data is not removed. Nothing is removed when the plugins are only deactivated.', 'wp-user-frontend' ); ?>
                     </p>
                 </div>
 

@@ -64,6 +64,7 @@ export const Selectors = {
             clickWPUFPluginLite: '//a[@id="activate-wp-user-frontend"]',
             clickWPUFPluginPro: '//a[@id="activate-wp-user-frontend-pro"]',
             clickWCvendors: '//a[@id="activate-wc-vendors"]',
+            clickEDD: '//a[@id="activate-easy-digital-downloads"]',
             clickDokanLite: '//a[@id="activate-dokan-lite"]',
             clickWPUFPluginDeactivate: '//a[@id="deactivate-wp-user-frontend"]',
             clickWPUFPluginProDeactivate: '//a[@id="deactivate-wp-user-frontend-pro"]',
@@ -233,14 +234,20 @@ export const Selectors = {
             clickCategoryMenu: '//a[normalize-space()="Categories"]',
             addNewCategory: '//input[@id="tag-name"]',
             submitCategory: '//input[@id="submit"]',
-            validateCategory: (categoryName: string) => `//tbody[@id="the-list"]//tr//td//strong//a[normalize-space()="${categoryName}"]`,
+            // No //td segment on purpose: WordPress renders the term name in the list's primary
+            // column as a <th scope="row">, not a <td>. //td//strong//a never matched, so the
+            // add succeeded but validation hung until the test timeout. Do not re-add //td.
+            validateCategory: (categoryName: string) => `//tbody[@id="the-list"]//tr//strong//a[normalize-space()="${categoryName}"]`,
         },
 
         tags: {
             clickTagsMenu: '//a[normalize-space()="Tags"]',
             addNewTag: '//input[@id="tag-name"]',
             submitTag: '//input[@id="submit"]',
-            validateTag: (tagName: string) => `//tbody[@id="the-list"]//tr//td//strong//a[normalize-space()="${tagName}"]`,
+            // No //td segment on purpose: WordPress renders the term name in the list's primary
+            // column as a <th scope="row">, not a <td>. //td//strong//a never matched, so the
+            // add succeeded but validation hung until the test timeout. Do not re-add //td.
+            validateTag: (tagName: string) => `//tbody[@id="the-list"]//tr//strong//a[normalize-space()="${tagName}"]`,
         },
 
         keys: {
@@ -864,7 +871,8 @@ export const Selectors = {
             // WPUF-rendered #edd_price twin, so a bare positional index can land on it.
             price: (price: string) => `//div[@id="edd_regular_price_field"]//input[@id="edd_price" and @value="${price}.00"]`,
             clickDownload: '//div[@class="interface-complementary-area editor-sidebar"]//div//button//span[normalize-space()="Download"]',
-            clickCategory: '//button[normalize-space()="Categories"]',
+            // Matches only while collapsed: the panel open-state persists per user, and a bare toggle would close an already-open panel.
+            clickCategory: '//button[normalize-space()="Categories" and @aria-expanded="false"]',
             categoryBE: (category: string) => `//label[normalize-space()='${category}']`,
             clickTag: '//button[normalize-space()="Tags"]',
             tagBE: (tag: string) => `//span[normalize-space()='${tag}']`,
@@ -1128,13 +1136,13 @@ export const Selectors = {
         postStatusColumn: (title: string, status: string, a: string, b: string) => `//td${a}[normalize-space(text())="${title}"]//..${b}//span[normalize-space(text())="${status}"]`,
         saveDraftButton: '//a[normalize-space(text())="Save Draft"]',
         draftSavedAlert: '//span[@class="wpuf-draft-saved"]',
-        // The revamped multistep bar renders a header + track instead of the old
-        // "Step Start (100%)" div. Pro (frontend-form-step.js) writes
-        // `.wpuf-progressbar-percent-text`, free (frontend-form.js) writes
-        // `.wpuf-progressbar-percent` — match the shared prefix so both pass.
-        multiStepProgressbar: '//div[contains(@class,"wpuf-multistep-progressbar")]//span[contains(@class,"wpuf-progressbar-percent")]',
-        // step_by_step renders a wizard whose label carries the step legend.
-        multiStepByStep: '//div[contains(@class,"wpuf-step-wizard")]//div[contains(@class,"wpuf-step-label")][normalize-space()="Step Start"]',
+        // Progressbar ("progressive") type — the default. The frontend renders a header
+        // (.wpuf-progressbar-header) with "Step N of M" step text plus a percent, not the old
+        // "Step Start (100%)" label. Match the new step-text span.
+        multiStepProgressbar: '//div[contains(@class,"wpuf-multistep-progressbar")]//span[contains(@class,"wpuf-progressbar-step-text") and starts-with(normalize-space(.),"Step 1 of")]',
+        // Step-by-step type — renders a .wpuf-step-wizard of .wpuf-step-item circles, each with
+        // a .wpuf-step-label carrying the step legend ("Step Start"), not the old <li> markup.
+        multiStepByStep: '//div[contains(@class,"wpuf-step-wizard")]//div[contains(@class,"wpuf-step-label") and normalize-space(text())="Step Start"]',
         removeStepStart: '//div[@class="step-start-indicator"]/../../../..//span[4]',
         confirmDelete: '//button[normalize-space()="Yes, delete it"]',
         threeDotButton: '(//div[contains(@class,"wpuf-relative wpuf-inline-block")]//button)[1]',
@@ -1498,9 +1506,8 @@ export const Selectors = {
             multiStepTypeContainer: '//label[@for="multistep_progressbar_type-selectized"]//..//..//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")]',
             multiStepTypeDropdown: '//label[@for="multistep_progressbar_type-selectized"]//..//..//div[contains(@class,"selectize-dropdown-content")]',
             multiStepTypeOption: (value: string) => `//label[@for="multistep_progressbar_type-selectized"]//..//..//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${value}"]`,
-            // Same revamped markup as postFormSettings.multiStepProgressbar above.
-            multiStepProgressbar: '//div[contains(@class,"wpuf-multistep-progressbar")]//span[contains(@class,"wpuf-progressbar-percent")]',
-            multiStepByStep: '//div[contains(@class,"wpuf-step-wizard")]//div[contains(@class,"wpuf-step-label")][normalize-space()="Step Start"]',
+            multiStepProgressbar: '//div[contains(@class,"wpuf-multistep-progressbar")]//span[contains(@class,"wpuf-progressbar-step-text") and starts-with(normalize-space(.),"Step 1 of")]',
+            multiStepByStep: '//div[contains(@class,"wpuf-step-wizard")]//div[contains(@class,"wpuf-step-label") and normalize-space(text())="Step Start"]',
         },
 
         // Custom Fields Section

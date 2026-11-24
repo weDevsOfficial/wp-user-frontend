@@ -1,7 +1,19 @@
 import { execSync } from 'child_process';
 
 /**
- * Run a wp-cli command inside the wp-env "tests-cli" container and return stdout.
+ * The wp-env CLI container that backs the site under test. wp-env serves the dev
+ * site (:8888) from `cli` and the tests site (:8889, the default target) from
+ * `tests-cli`. DB assertions must run against whichever one QA_BASE_URL points at,
+ * otherwise they read a different database than the browser navigates and fail
+ * (e.g. "Command failed" when a page created for the run isn't in that DB).
+ */
+function wpEnvCliContainer(): string {
+    return ( process.env.QA_BASE_URL || '' ).includes( ':8888' ) ? 'cli' : 'tests-cli';
+}
+
+/**
+ * Run a wp-cli command inside the wp-env container backing QA_BASE_URL and return
+ * stdout.
  *
  * Works both locally and in CI because both bring the environment up with
  * `wp-env` (see .github/workflows/e2e-wpuf.yml). `--skip-plugins --skip-themes`
@@ -10,8 +22,17 @@ import { execSync } from 'child_process';
  * surface (e.g. MailPoet subscribers, whose admin UI is gated by onboarding).
  */
 export function wpCli(command: string): string {
-    const full = `npx wp-env run tests-cli wp --skip-plugins --skip-themes ${command}`;
-    return execSync(full, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] });
+    // Use the current package name: `wp-env` is a deprecated shim that only prints
+    // "Please run npx @wordpress/env instead" and exits 0 without running wp-cli, which
+    // made every wpCli() call return that message and throw when parsing its result.
+    const full = `npx @wordpress/env run ${wpEnvCliContainer()} wp --skip-plugins --skip-themes ${command}`;
+    // `@wordpress/env` resolves the instance from its working directory. In CI the suite and
+    // the wp-env instance share this directory, so the default cwd is correct. For a local
+    // setup where the wp-env project lives elsewhere (its .wp-env.json is not under tests/e2e),
+    // point WPUF_E2E_WP_ENV_DIR at that project dir so DB assertions hit the running instance
+    // instead of an unstarted one in the test cwd.
+    const cwd = process.env.WPUF_E2E_WP_ENV_DIR || process.cwd();
+    return execSync(full, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'], cwd } );
 }
 
 /**

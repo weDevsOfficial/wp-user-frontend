@@ -50,8 +50,12 @@ const htmlOutput =
     : shardIndex ? `./playwright-report/parallel-${shardIndex}-report`
     : './playwright-report';
 
-// Artifact (trace/screenshot) dir — per shard so sequential shards don't clobber.
-const artifactDir = shardIndex ? `./test-results/shard-${shardIndex}` : './test-results';
+// Artifact (trace/screenshot) dir — per shard/phase so sequential runs don't clobber.
+// Playwright wipes outputDir at start, so setup/api must not own the shared parent
+// (the api phase used to erase every shard's failure screenshots).
+const artifactDir = shardIndex ? `./test-results/shard-${shardIndex}`
+    : phase ? `./test-results/${phase}`
+    : './test-results';
 
 export default defineConfig({
     testDir: './tests',

@@ -4,12 +4,28 @@ import { BasicLogoutPage } from '../pages/basicLogout';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Users } from '../utils/testData';
 import { configureSpecFailFast } from '../utils/specFailFast';
+import { wpCli } from '../utils/wpEnvCli';
 
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
 test.beforeAll(async () => {
+    // Activation sets the one-shot `wpuf_activation_redirect` transient, and the first
+    // admin page load after that is redirected to the setup wizard, a full-screen page
+    // with no admin sidebar. Which navigation gets hijacked depends on plugin activation
+    // order, so LS0002 ("Dashboard page reached") intermittently landed on the wizard and
+    // waited out its 180s timeout on a sidebar that was never going to render. Consuming
+    // the transient here makes the first navigation deterministic. LS0006 still covers the
+    // wizard: it opens `admin.php?page=wpuf-setup` directly rather than relying on this
+    // redirect.
+    try {
+        wpCli( 'transient delete wpuf_activation_redirect' );
+    } catch {
+        // wp-cli is unavailable in some local setups; the redirect is then merely a flake
+        // risk, not a hard failure, so the suite still runs.
+    }
+
     // Launch browser
     browser = await chromium.launch();
 

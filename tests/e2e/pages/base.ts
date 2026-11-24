@@ -77,22 +77,24 @@ export class Base {
     async navigateToURL(url: string) {
         try {
             await this.waitForLoading();
-
+            // The document, then up to 15s for "load": goto() alone waited for "load" with no
+            // limit (no navigation timeout in the config), so one request on the page that
+            // never finished held the test until its 3-minute timeout.
+            const go = async () => {
+                await this.page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+                await this.page.waitForLoadState('load', { timeout: 15000 }).catch(() => {});
+            };
             try {
-                await this.page.goto(url);
+                await go();
             } catch (error) {
-                // Chromium reports ERR_ABORTED when a still-settling page cancels
-                // the navigation (wp-admin redirects, a lingering unload handler).
-                // Nothing is wrong with the target — just ask for it again.
+                // Leaving a screen while its last request is still running cancels this
+                // navigation once (net::ERR_ABORTED): let it settle, then go again.
                 if (!String(error).includes('ERR_ABORTED')) {
                     throw error;
                 }
-
-                console.log('\x1b[33m%s\x1b[0m', `↻ Navigation to ${url} aborted, retrying`);
-                await this.page.waitForTimeout(1000);
-                await this.page.goto(url);
+                await this.page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+                await go();
             }
-
             await this.waitForLoading();
 
             await this.skipHijackingSetupWizard(url);
@@ -329,6 +331,25 @@ export class Base {
         }
     }
 
+    // Click only if the element shows up quickly (best-effort, non-blocking).
+    // Use for OPTIONAL one-off notices/dismissals that may simply not exist on a
+    // given site (setup wizards, EDD/PayPal admin notices). `validateAndClick`
+    // waits the full 30s page default for each, so a handful of absent notices
+    // burned the entire 180s test budget before the real assertion ran.
+    async clickIfAvailable(locator: string, timeoutMs: number = 3000): Promise<boolean> {
+        try {
+            const element = this.page.locator(locator).first();
+            await element.waitFor({ state: 'visible', timeout: timeoutMs });
+            await element.click();
+            await this.waitForLoading();
+            console.log('\x1b[35m%s\x1b[0m', `✅ Clicked optional ${locator}`);
+            return true;
+        } catch (error) {
+            console.log('\x1b[33m%s\x1b[0m', `⚠️  Optional element absent within ${timeoutMs}ms — skipped: ${locator}`);
+            return false;
+        }
+    }
+
     // Validate and Fill Numbers
     async validateAndFillNumbers(locator: string, value: number) {
         try {
@@ -402,6 +423,40 @@ export class Base {
             console.log('\x1b[33m%s\x1b[0m', `✅ Selected ${locator} with ${value}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to select ${locator} with value ${value}: ${error}`);
+            throw error;
+        }
+    }
+
+    // Select a value in an enhanced multiselect. WPUF's redesigned multi-select field
+    // (Form_Field_MultiDropdown enqueues wpuf-custom-multiselect) wraps the native
+    // <select multiple> in a custom widget and hides the real element, so page.selectOption()
+    // hangs waiting for a visible option. Set the option on the (attached but hidden) native
+    // select and dispatch change/input so the widget syncs — robust to the widget's markup.
+    async selectMultiSelectByValue(locator: string, value: string) {
+        try {
+            await this.waitForLoading();
+            const element = this.page.locator(locator).first();
+            await element.waitFor({ state: 'attached' });
+            const matched = await element.evaluate((select: HTMLSelectElement, val: string) => {
+                const opt = Array.from(select.options).find(
+                    o => o.value === val || o.text.trim() === val
+                );
+                if (!opt) {
+                    return false;
+                }
+                opt.selected = true;
+                select.dispatchEvent(new Event('change', { bubbles: true }));
+                select.dispatchEvent(new Event('input', { bubbles: true }));
+                return true;
+            }, value);
+            expect(
+                matched,
+                `Multiselect ${locator} has no option matching "${value}"`
+            ).toBe(true);
+            await this.waitForLoading();
+            console.log('\x1b[33m%s\x1b[0m', `✅ Multiselected ${locator} with ${value}`);
+        } catch (error) {
+            console.log('\x1b[31m%s\x1b[0m', `❌ Failed to multiselect ${locator} with value ${value}: ${error}`);
             throw error;
         }
     }

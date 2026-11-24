@@ -5,3 +5,5 @@
 # for trimming plugins). `.wp-env.json` stays the committed default.
 .wp-env.override.json
 .playwright-mcp/
+# Symlinks to the wp-env container debug logs — machine-local paths.
+debug/

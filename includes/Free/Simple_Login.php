@@ -854,8 +854,8 @@ class Simple_Login {
         if ( isset( $_POST['user_login'] ) && isset( $_POST['_wpnonce'] ) ) {
             $nonce = ! empty( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 
-            if ( ! empty( $nonce) && ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
-                return ;
+            if ( ! empty( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
+                return;
             }
 
             if ( $this->retrieve_password() ) {

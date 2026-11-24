@@ -1,7 +1,7 @@
 <?php
 /*
-  If you would like to edit this file, copy it to your current theme's directory and edit it there.
-  WPUF will always look in your theme's directory first, before using this default template.
+    If you would like to edit this file, copy it to your current theme's directory and edit it there.
+    WPUF will always look in your theme's directory first, before using this default template.
  */
 ?>
 <?php
@@ -83,36 +83,40 @@ $button_text          = isset( $button_text ) ? (string) $button_text : __( 'Log
         <?php if ( $recaptcha === 'on' ) { ?>
             <p>
                 <div class="wpuf-fields">
-                    <?php echo wp_kses( recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ),[
-                        'div' => [
-                            'class' => [],
-                            'data-sitekey' => [],
-                        ],
+                    <?php
+                    echo wp_kses(
+                        recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ), [
+                            'div' => [
+                                'class' => [],
+                                'data-sitekey' => [],
+                            ],
 
-                        'script' => [
-                            'src' => []
-                        ],
+                            'script' => [
+                                'src' => [],
+                            ],
 
-                        'noscript' => [],
+                            'noscript' => [],
 
-                        'iframe' => [
-                            'src' => [],
-                            'height' => [],
-                            'width' => [],
-                            'frameborder' => [],
-                        ],
-                        'br' => [],
-                        'textarea' => [
-                            'name' => [],
-                            'rows' => [],
-                            'cols' => [],
-                        ],
-                        'input' => [
-                            'type'   => [],
-                            'value' => [],
-                            'name'   => [],
+                            'iframe' => [
+                                'src' => [],
+                                'height' => [],
+                                'width' => [],
+                                'frameborder' => [],
+                            ],
+                            'br' => [],
+                            'textarea' => [
+                                'name' => [],
+                                'rows' => [],
+                                'cols' => [],
+                            ],
+                            'input' => [
+                                'type'   => [],
+                                'value' => [],
+                                'name'   => [],
+                            ],
                         ]
-                    ] ); ?>
+                    );
+                    ?>
                 </div>
             </p>
         <?php } ?>
@@ -148,7 +152,7 @@ $button_text          = isset( $button_text ) ? (string) $button_text : __( 'Log
             <input type="hidden" name="redirect_to" value="<?php echo esc_attr( $redirect_to ); ?>" />
             <input type="hidden" name="wpuf_login" value="true" />
             <input type="hidden" name="action" value="login" />
-            <?php wp_nonce_field( 'wpuf_login_action','wpuf-login-nonce' ); ?>
+            <?php wp_nonce_field( 'wpuf_login_action', 'wpuf-login-nonce' ); ?>
         </p>
         <p>
             <?php do_action( 'wpuf_login_form_bottom' ); ?>
@@ -156,6 +160,15 @@ $button_text          = isset( $button_text ) ? (string) $button_text : __( 'Log
     </form>
 
     <div class="wpuf-action-links">
-        <?php echo wp_kses_post( wpuf()->frontend->simple_login->get_action_links( [ 'login' => false, 'lostpassword' => false ] ) ); ?>
+        <?php
+        echo wp_kses_post(
+            wpuf()->frontend->simple_login->get_action_links(
+                [
+                    'login' => false,
+                    'lostpassword' => false,
+                ]
+            )
+        );
+        ?>
     </div>
 </div>

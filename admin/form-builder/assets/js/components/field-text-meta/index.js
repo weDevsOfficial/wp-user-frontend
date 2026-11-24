@@ -16,6 +16,13 @@ Vue.component('field-text-meta', {
         };
     },
 
+    watch: {
+        // Repeat field inner fields are opened without closing the panel, so this component can be reused for another field.
+        'editing_form_field.id': function () {
+            this.opened_key = this.editing_form_field[this.option_field.name];
+        }
+    },
+
     computed: {
         // The Events Calendar reads these exact, case-sensitive keys, so a field already mapped to one stays locked.
         is_integration_key: function () {

@@ -4457,7 +4457,7 @@ function get_formatted_mail_body( $message, $subject ) {
  * Replace the post notification placeholders that both notification senders share
  *
  * Runs after the fixed placeholders ({post_title}, {author}...) are replaced.
- * Handles `{taxonomy_<slug>}` and the placeholders added through the
+ * Handles `{dashboard_link}`, `{taxonomy_<slug>}` and the placeholders added through the
  * `wpuf_notification_placeholders` filter.
  *
  * @since WPUF_SINCE
@@ -4473,6 +4473,14 @@ function wpuf_replace_notification_placeholders( $content, $user_id, $post_id ) 
 
     if ( ! is_string( $content ) || false === strpos( $content, '{' ) || ! $post ) {
         return $content;
+    }
+
+    // {dashboard_link}: the account page set in Settings > My Account, where the submitter can edit their posts.
+    if ( false !== strpos( $content, '{dashboard_link}' ) ) {
+        $account_page = wpuf_get_option( 'account_page', 'wpuf_my_account', '' );
+        $account_url  = $account_page ? get_permalink( $account_page ) : '';
+        $account_link = $account_url ? sprintf( '<a href="%1$s">%2$s</a>', esc_url( $account_url ), esc_html( $account_url ) ) : '';
+        $content      = str_replace( '{dashboard_link}', $account_link, $content );
     }
 
     // {taxonomy_<slug>}: names of the post's terms, for any taxonomy registered for the post type.
@@ -6483,6 +6491,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                          <span data-clipboard-text="{siteurl}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{siteurl}</span>
                                          <span data-clipboard-text="{permalink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{permalink}</span>
                                          <span data-clipboard-text="{editlink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{editlink}</span>
+                                         <span data-clipboard-text="{dashboard_link}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{dashboard_link}</span>
                                          <span class="wpuf-pill-green">{custom_meta_key}</span>
                                          e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for <i>website_url</i> meta field
                                          <br><span class="wpuf-pill-green">{taxonomy_slug}</span>

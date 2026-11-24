@@ -33,6 +33,9 @@ class Two_Factor_Manager {
         // alongside any externally-registered methods, not before them.
         $registry->register( new TOTP_Method( $google2fa, $storage, $rate_limiter, $qr ) );
 
+        add_filter( 'wpuf_settings_sections', [ $this, 'add_settings_section' ] );
+        add_filter( 'wpuf_settings_fields', [ $this, 'add_settings_fields' ] );
+
         $this->container['crypto']       = $crypto;
         $this->container['storage']      = $storage;
         $this->container['rate_limiter'] = $rate_limiter;
@@ -67,5 +70,76 @@ class Two_Factor_Manager {
         // Useful for plugins that want to log the final method list,
         // or for tests asserting on registration.
         do_action( 'wpuf_2fa_methods', $registry->all() );
+    }
+
+    /**
+     * Add the 2FA tab after Login / Registration on User Frontend > Settings
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $sections Settings sections.
+     *
+     * @return array
+     */
+    public function add_settings_section( $sections ) {
+        $section = [
+            'id'    => 'wpuf_2fa',
+            'title' => __( '2FA', 'wp-user-frontend' ),
+            'icon'  => 'dashicons-id',
+        ];
+
+        $position = array_search( 'wpuf_profile', wp_list_pluck( $sections, 'id' ), true );
+
+        if ( false === $position ) {
+            $sections[] = $section;
+
+            return $sections;
+        }
+
+        array_splice( $sections, $position + 1, 0, [ $section ] );
+
+        return $sections;
+    }
+
+    /**
+     * Add the 2FA settings fields
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $fields Settings fields keyed by section.
+     *
+     * @return array
+     */
+    public function add_settings_fields( $fields ) {
+        $fields['wpuf_2fa'] = apply_filters(
+            'wpuf_options_2fa',
+            [
+                [
+                    'name'    => 'enable_2fa',
+                    'label'   => __( 'Enable Two-Factor Authentication', 'wp-user-frontend' ),
+                    'desc'    => __( 'When enabled, users can secure their accounts with a second verification step.', 'wp-user-frontend' ),
+                    'type'    => 'toggle',
+                    'default' => 'off',
+                ],
+                [
+                    'name'       => 'active_2fa_methods',
+                    'label'      => __( '2FA Methods', 'wp-user-frontend' ),
+                    'desc'       => __( 'Select which methods users can use to verify their identity.', 'wp-user-frontend' ),
+                    'type'       => 'method_selector',
+                    'options'    => wpuf_get_2fa_methods(),
+                    'depends_on' => 'enable_2fa',
+                ],
+                [
+                    'name'       => 'totp_issuer_label',
+                    'label'      => __( 'App Display Name', 'wp-user-frontend' ),
+                    'desc'       => __( "Name shown inside the user's authenticator app (e.g., Google Authenticator).", 'wp-user-frontend' ),
+                    'type'       => 'text',
+                    'default'    => get_bloginfo( 'name' ),
+                    'depends_on' => 'enable_2fa',
+                ],
+            ]
+        );
+
+        return $fields;
     }
 }

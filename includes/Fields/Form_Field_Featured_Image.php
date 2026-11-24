@@ -56,33 +56,36 @@ class Form_Field_Featured_Image extends Field_Contract {
                     <ul class="wpuf-attachment-list thumbnails">
 
                         <?php
-                            if ( $has_featured_image ) {
-                                echo wp_kses( $featured_image, [
-                                    'li' => [
-                                        'class' => []
-                                    ],
-                                    'div' => [
-                                        'class' => []
-                                    ],
-                                    'img' => [
-                                        'src' => [],
-                                        'alt' => [],
-                                    ],
-                                    'input' => [
-                                        'type' => [],
-                                        'name' => [],
-                                        'value' => [],
-                                    ],
-                                    'a' => [
-                                        'href' => [],
-                                        'class' => [],
-                                        'data-attach-id' => [],
-                                    ],
-                                    'span' => [
-                                        'class' => []
-                                    ]
-                                ]);
-                            } ?>
+						if ( $has_featured_image ) {
+							echo wp_kses(
+                                $featured_image, [
+									'li' => [
+										'class' => [],
+									],
+									'div' => [
+										'class' => [],
+									],
+									'img' => [
+										'src' => [],
+										'alt' => [],
+									],
+									'input' => [
+										'type' => [],
+										'name' => [],
+										'value' => [],
+									],
+									'a' => [
+										'href' => [],
+										'class' => [],
+										'data-attach-id' => [],
+									],
+									'span' => [
+										'class' => [],
+									],
+								]
+                            );
+						}
+						?>
 
                     </ul>
                 </div>
@@ -95,13 +98,14 @@ class Form_Field_Featured_Image extends Field_Contract {
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
-                    var uploader = new WPUF_Uploader('wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles', 'wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container', <?php echo esc_attr($field_settings['count'] ); ?>, '<?php echo esc_attr( $field_settings['name'] ); ?>', 'jpg,jpeg,jfif,gif,png,bmp,webp', <?php echo esc_attr( $field_settings['max_size'] ); ?>);
+                    var uploader = new WPUF_Uploader('wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles', 'wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container', <?php echo esc_attr( $field_settings['count'] ); ?>, '<?php echo esc_attr( $field_settings['name'] ); ?>', 'jpg,jpeg,jfif,gif,png,bmp,webp', <?php echo esc_attr( $field_settings['max_size'] ); ?>);
                     wpuf_plupload_items.push(uploader);
                 });
             })(jQuery);
         </script>
 
-        <?php $this->after_field_print_label();
+        <?php
+        $this->after_field_print_label();
     }
 
     /**

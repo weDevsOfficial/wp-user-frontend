@@ -91,6 +91,8 @@ class Bank {
         // Coupons are a Pro feature; only run when Pro is active to avoid a fatal in free-only installs.
         if ( $coupon_id > 0 && class_exists( Coupons::class ) ) {
             $discounted_price = ( new Coupons() )->discount( $data['price'], $coupon_id, $data['item_number'] );
+            // discount() formats the price for the site (space before or after, comma decimals): make it a plain number.
+            $discounted_price = str_replace( [ '&nbsp;', "\xC2\xA0", ' ', wpuf_get_price_decimal_separator() ], [ '', '', '', '.' ], (string) $discounted_price );
 
             // A refused coupon returns a message instead of an amount: keep the full price and drop the coupon.
             if ( is_numeric( $discounted_price ) ) {

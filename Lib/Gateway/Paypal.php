@@ -1510,6 +1510,8 @@ class Paypal {
                 $coupon_id       = absint( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) );
                 $original_amount = floatval( $billing_amount );
                 $discounted      = wpuf_pro()->coupon->discount( $billing_amount, $coupon_id, $data['item_number'] );
+                // discount() formats the price for the site (space before or after, comma decimals): make it a plain number.
+                $discounted      = str_replace( [ '&nbsp;', "\xC2\xA0", ' ', wpuf_get_price_decimal_separator() ], [ '', '', '', '.' ], (string) $discounted );
 
                 // A refused coupon returns a message instead of an amount: keep the full price and drop the coupon.
                 if ( is_numeric( $discounted ) ) {

@@ -5,6 +5,7 @@ import { Selectors } from './selectors';
 import { Base } from './base';
 import { faker } from '@faker-js/faker';
 import { DownloadsForm, PostForm, ProductForm, Urls } from '../utils/testData';
+import { deleteFormsByTitle } from '../utils/wpEnvCli';
 //import { TestData } from '../tests/testdata';
 
 export class PostFormPage extends Base {
@@ -20,6 +21,10 @@ export class PostFormPage extends Base {
 
     //BlankForm
     async createBlankFormPostForm(newPostName: string) {
+
+        // Drop any same-named form left by an earlier run, or every later
+        // "open the form called X" locator hits a strict-mode violation.
+        deleteFormsByTitle(newPostName);
 
         //Visit Post Form Page
         await this.navigateToURL(this.wpufPostFormPage);

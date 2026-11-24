@@ -201,12 +201,7 @@ test.describe( 'Post-Form-Security', () => {
         await editor.validateFrontendText( labelMarker );
     } );
 
-    // BUG (wpuf-pro): Post_View_Control\Frontend returns the role and
-    // subscription restriction messages unescaped, so a <script> in the message
-    // runs for every blocked visitor. test.fail() keeps the expectation on
-    // record until the output is escaped.
     test( 'PFG0105 : Script payloads in the unauthorized messages are escaped', { tag: [ '@Pro', '@Test_PFG0105' ] }, async () => {
-        test.fail();
         const editor = new PostFormGapsPage( page );
         await editor.openFormEditor( formId );
         await editor.doOpenSettingsSection( 'General' );

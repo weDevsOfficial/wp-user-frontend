@@ -18,6 +18,107 @@ class Admin_Tools {
         add_action( 'wpuf_load_tools', [ $this, 'add_logout_to_menu' ] );
         add_filter( 'upload_mimes', [ $this, 'add_json_mime_type' ] );
         add_filter( 'wp_handle_upload_prefilter', [ $this, 'enable_json_upload' ] );
+        add_action( 'admin_init', [ $this, 'register_uninstall_setting' ] );
+    }
+
+    /**
+     * Register the Tools > Uninstall Settings option, read by uninstall.php
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function register_uninstall_setting() {
+        register_setting(
+            'wpuf_uninstall',
+            'wpuf_uninstall',
+            [
+                'type'              => 'array',
+                'sanitize_callback' => [ $this, 'sanitize_uninstall_settings' ],
+                'default'           => [],
+            ]
+        );
+    }
+
+    /**
+     * Keep only the known uninstall switches that are turned on
+     *
+     * @since WPUF_SINCE
+     *
+     * @param mixed $input Submitted value.
+     *
+     * @return array
+     */
+    public function sanitize_uninstall_settings( $input ) {
+        $output = [];
+
+        if ( ! is_array( $input ) ) {
+            return $output;
+        }
+
+        foreach ( array_keys( $this->get_uninstall_fields() ) as $key ) {
+            if ( isset( $input[ $key ] ) && 'on' === $input[ $key ] ) {
+                $output[ $key ] = 'on';
+            }
+        }
+
+        return $output;
+    }
+
+    /**
+     * The uninstall switches shown on User Frontend > Tools
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    public function get_uninstall_fields() {
+        return [
+            'delete_settings' => __( 'Delete Plugin Settings', 'wp-user-frontend' ),
+            'delete_database' => __( 'Delete Database Tables', 'wp-user-frontend' ),
+            'delete_forms'    => __( 'Delete WPUF Forms', 'wp-user-frontend' ),
+            'delete_pages'    => __( 'Delete WPUF Pages', 'wp-user-frontend' ),
+        ];
+    }
+
+    /**
+     * Render the Uninstall Settings box on User Frontend > Tools
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function uninstall_settings_tool() {
+        $settings = (array) get_option( 'wpuf_uninstall', [] );
+        ?>
+        <div class="postbox">
+            <h3><?php esc_html_e( 'Uninstall Settings', 'wp-user-frontend' ); ?></h3>
+
+            <div class="inside">
+                <div class="notice notice-error inline">
+                    <p>
+                        <strong><?php esc_html_e( 'Caution:', 'wp-user-frontend' ); ?></strong>
+                        <?php esc_html_e( 'Check these to remove WP User Frontend related data and tables from the database when the plugin is deleted. When you delete the WP User Frontend free version, it will also remove all the data related to WP User Frontend Pro. Nothing is removed when the plugins are only deactivated.', 'wp-user-frontend' ); ?>
+                    </p>
+                </div>
+
+                <form method="post" action="options.php">
+                    <?php settings_fields( 'wpuf_uninstall' ); ?>
+
+                    <?php foreach ( $this->get_uninstall_fields() as $key => $label ) : ?>
+                        <p>
+                            <label for="wpuf_uninstall_<?php echo esc_attr( $key ); ?>">
+                                <input type="checkbox" id="wpuf_uninstall_<?php echo esc_attr( $key ); ?>" name="wpuf_uninstall[<?php echo esc_attr( $key ); ?>]" value="on" <?php checked( isset( $settings[ $key ] ) ? $settings[ $key ] : '', 'on' ); ?>>
+                                <?php echo esc_html( $label ); ?>
+                            </label>
+                        </p>
+                    <?php endforeach; ?>
+
+                    <?php submit_button(); ?>
+                </form>
+            </div>
+        </div>
+        <?php
     }
 
     /**
@@ -418,6 +519,8 @@ class Admin_Tools {
             </div>
 
             <?php $this->logout_menu_tool(); ?>
+
+            <?php $this->uninstall_settings_tool(); ?>
         </div>
         <?php
     }

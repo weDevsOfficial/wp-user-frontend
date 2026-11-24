@@ -917,7 +917,7 @@ abstract class Field_Contract {
             return;
         }
         ?>
-        <span class="wpuf-help"><?php echo stripslashes( $field['help'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+        <span class="wpuf-help"><?php echo wp_kses_post( stripslashes( $field['help'] ) ); ?></span>
         <?php
     }
 

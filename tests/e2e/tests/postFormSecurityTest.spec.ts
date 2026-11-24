@@ -176,12 +176,7 @@ test.describe( 'Post-Form-Security', () => {
         await editor.openFrontendForm( pageSlug );
     } );
 
-    // BUG: Field_Contract::help_text() prints the field's help text unescaped
-    // (`echo stripslashes( $field['help'] )`), so a <script> in the help option
-    // runs on the frontend form. Label and placeholder are escaped. test.fail()
-    // keeps the expectation on record until the output is escaped.
     test( 'PFG0104 : Script payloads in label / help / placeholder are escaped', { tag: [ '@Lite', '@Test_PFG0104' ] }, async () => {
-        test.fail();
         const editor = new PostFormGapsPage( page );
         await editor.openFormEditor( formId );
         await editor.doEditField( 'text_field' );

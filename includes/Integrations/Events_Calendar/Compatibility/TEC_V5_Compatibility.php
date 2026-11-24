@@ -41,7 +41,7 @@ class TEC_V5_Compatibility {
             $postarr = apply_filters( 'wpuf_tec_v5_before_create_post', $postarr, $meta_vars, $form_id, $form_settings );
 
             // First create the WordPress post
-            $post_id = wp_insert_post( $postarr );
+            $post_id = wp_insert_post( wp_slash( $postarr ) );
 
             if ( is_wp_error( $post_id ) || ! $post_id ) {
                 return false;
@@ -89,7 +89,6 @@ class TEC_V5_Compatibility {
             do_action( 'wpuf_tec_v5_after_create_event', $post_id, $meta_vars, $postarr, $form_id, $form_settings );
 
             return $post_id;
-
         } catch ( \Exception $e ) {
             return false;
         }

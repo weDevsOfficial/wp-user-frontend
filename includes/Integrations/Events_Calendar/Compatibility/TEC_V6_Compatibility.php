@@ -483,6 +483,13 @@ class TEC_V6_Compatibility {
          */
         $args = apply_filters( 'wpuf_tec_before_create_event', $args, $postarr, $meta_vars, $form_id, $form_settings );
 
+        // The ORM hands these to wp_insert_post() / wp_update_post(), which unslash them.
+        foreach ( [ 'title', 'description', 'excerpt' ] as $text_key ) {
+            if ( isset( $args[ $text_key ] ) && is_string( $args[ $text_key ] ) ) {
+                $args[ $text_key ] = wp_slash( $args[ $text_key ] );
+            }
+        }
+
         // Call the TEC ORM API
         try {
             if ( function_exists( 'tribe_events' ) ) {

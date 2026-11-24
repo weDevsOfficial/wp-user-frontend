@@ -511,7 +511,7 @@ trait FieldableTrait {
                         'post_content' => $file_data['desc'],
                         'post_excerpt' => $file_data['caption'],
                     ];
-                    wpuf_update_post( $args );
+                    wpuf_update_post( wp_slash( $args ) );
 
                     update_post_meta( $attachment_id, '_wp_attachment_image_alt', $file_data['title'] );
                 }
@@ -609,7 +609,7 @@ trait FieldableTrait {
                         'post_content' => $file_data['desc'],
                         'post_excerpt' => $file_data['caption'],
                     ];
-                    wpuf_update_post( $args );
+                    wpuf_update_post( wp_slash( $args ) );
 
                     update_post_meta( $attachment_id, '_wp_attachment_image_alt', $file_data['title'] );
                 }
@@ -716,9 +716,9 @@ trait FieldableTrait {
         // @codingStandardsIgnoreEnd
 
         return [
-            'title'   => isset( $raw['title'] ) ? $raw['title'] : '',
-            'desc'    => isset( $raw['desc'] ) ? $raw['desc'] : '',
-            'caption' => isset( $raw['caption'] ) ? $raw['caption'] : '',
+            'title'   => isset( $raw['title'] ) ? wpuf_strip_shortcodes_fully( $raw['title'] ) : '',
+            'desc'    => isset( $raw['desc'] ) ? wpuf_strip_shortcodes_fully( $raw['desc'] ) : '',
+            'caption' => isset( $raw['caption'] ) ? wpuf_strip_shortcodes_fully( $raw['caption'] ) : '',
         ];
     }
 

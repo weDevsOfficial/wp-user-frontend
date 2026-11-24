@@ -5673,12 +5673,20 @@ function wpuf_get_protected_shortcodes() {
     ];
 }
 
+if ( ! defined( 'WPUF_STRIP_SHORTCODE_PASSES' ) ) {
+    // Enough for any real nesting; deeper input is escaped instead of stripped.
+    define( 'WPUF_STRIP_SHORTCODE_PASSES', 5 );
+}
+
 /**
  * Remove every registered shortcode from user input, until none is left
  *
  * strip_shortcodes() makes a single pass, so a shortcode split by another one
- * ("[gall[caption]ery]") comes back whole once the inner one is removed. Every
- * pass that changes the text makes it shorter, so the loop always ends.
+ * ("[gall[caption]ery]") comes back whole once the inner one is removed. The
+ * passes are capped so crafted nesting can not burn CPU; whatever still
+ * changes after the cap gets its brackets escaped instead. Brackets inside HTML
+ * tags are escaped too, because strip_shortcodes() skips attributes while
+ * do_shortcode() still runs shortcodes found there.
  *
  * @since WPUF_SINCE
  *
@@ -5691,10 +5699,27 @@ function wpuf_strip_shortcodes_fully( $content ) {
         return $content;
     }
 
+    $passes = 0;
+
     do {
         $previous = $content;
         $content  = strip_shortcodes( $content );
-    } while ( $content !== $previous );
+        ++$passes;
+    } while ( $content !== $previous && $passes < WPUF_STRIP_SHORTCODE_PASSES );
+
+    if ( $content !== $previous ) {
+        $content = str_replace( [ '[', ']' ], [ '&#91;', '&#93;' ], $content );
+    }
+
+    if ( false !== strpos( $content, '<' ) ) {
+        $content = preg_replace_callback(
+            '/<[^<>]*>/',
+            function ( $tag ) {
+                return str_replace( [ '[', ']' ], [ '&#91;', '&#93;' ], $tag[0] );
+            },
+            $content
+        );
+    }
 
     return $content;
 }
@@ -5727,22 +5752,26 @@ function wpuf_find_protected_shortcode( $values ) {
             wpuf_normalize_for_shortcode_check( wp_unslash( $value ) ),
         ];
 
-        // strip_shortcodes() can join a tag that was split by another shortcode, so
-        // check the text after every stripping pass too (the last pass would remove
-        // the joined tag itself, so the end result alone is not enough).
-        foreach ( [ $candidates[0], $candidates[1] ] as $text ) {
-            do {
-                $previous     = $text;
-                $text         = strip_shortcodes( $text );
-                $candidates[] = $text;
-            } while ( $text !== $previous );
-        }
+        foreach ( $candidates as $text ) {
+            // strip_shortcodes() can join a tag that was split by another shortcode,
+            // so check the text after every pass too: the last pass would remove the
+            // joined tag itself. Nesting deeper than the cap is refused outright.
+            $passes = 0;
 
-        foreach ( $protected_shortcodes as $shortcode ) {
-            foreach ( $candidates as $candidate ) {
-                if ( false !== stripos( $candidate, '[' . $shortcode ) ) {
-                    return $shortcode;
+            do {
+                foreach ( $protected_shortcodes as $shortcode ) {
+                    if ( false !== stripos( $text, '[' . $shortcode ) ) {
+                        return $shortcode;
+                    }
                 }
+
+                $previous = $text;
+                $text     = strip_shortcodes( $text );
+                ++$passes;
+            } while ( $text !== $previous && $passes <= WPUF_STRIP_SHORTCODE_PASSES );
+
+            if ( $text !== $previous && ! empty( $protected_shortcodes ) ) {
+                return reset( $protected_shortcodes );
             }
         }
     }
@@ -5765,7 +5794,7 @@ function wpuf_find_protected_shortcode( $values ) {
  * @return string the protected shortcode that was found, or an empty string
  */
 function wpuf_find_protected_shortcode_in_submission( $form_fields ) {
-    $names = [ 'post_title', 'post_content', 'post_excerpt' ];
+    $names = [ 'post_title', 'post_content', 'post_excerpt', 'wpuf_files_data' ];
 
     foreach ( (array) $form_fields as $field ) {
         $names[] = isset( $field['name'] ) ? $field['name'] : '';

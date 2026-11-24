@@ -5674,6 +5674,32 @@ function wpuf_get_protected_shortcodes() {
 }
 
 /**
+ * Remove every registered shortcode from user input, until none is left
+ *
+ * strip_shortcodes() makes a single pass, so a shortcode split by another one
+ * ("[gall[caption]ery]") comes back whole once the inner one is removed. Every
+ * pass that changes the text makes it shorter, so the loop always ends.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $content
+ *
+ * @return string
+ */
+function wpuf_strip_shortcodes_fully( $content ) {
+    if ( ! is_string( $content ) || '' === $content ) {
+        return $content;
+    }
+
+    do {
+        $previous = $content;
+        $content  = strip_shortcodes( $content );
+    } while ( $content !== $previous );
+
+    return $content;
+}
+
+/**
  * Find the first protected shortcode present in the given values
  *
  * Normalizes each value the same way the submitted value is normalized before
@@ -5701,20 +5727,15 @@ function wpuf_find_protected_shortcode( $values ) {
             wpuf_normalize_for_shortcode_check( wp_unslash( $value ) ),
         ];
 
-        // The save path also runs strip_shortcodes(), which can join a tag that was
-        // split by another shortcode. Check what is left after stripping as well,
-        // repeated until nothing changes.
-        foreach ( $candidates as $candidate ) {
-            for ( $i = 0; $i < 10; $i++ ) {
-                $stripped = strip_shortcodes( $candidate );
-
-                if ( $stripped === $candidate ) {
-                    break;
-                }
-
-                $candidate    = $stripped;
-                $candidates[] = $candidate;
-            }
+        // strip_shortcodes() can join a tag that was split by another shortcode, so
+        // check the text after every stripping pass too (the last pass would remove
+        // the joined tag itself, so the end result alone is not enough).
+        foreach ( [ $candidates[0], $candidates[1] ] as $text ) {
+            do {
+                $previous     = $text;
+                $text         = strip_shortcodes( $text );
+                $candidates[] = $text;
+            } while ( $text !== $previous );
         }
 
         foreach ( $protected_shortcodes as $shortcode ) {

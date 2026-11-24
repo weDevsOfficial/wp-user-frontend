@@ -2,7 +2,6 @@
 
 namespace WeDevs\Wpuf\Fields;
 
-
 /**
   * Textarea Field Class
   */
@@ -206,6 +205,6 @@ class Form_Field_Textarea extends Field_Contract {
       * @return string
       */
     public function sanitize_field_data( $data, $field ) {
-        return strip_shortcodes( wp_kses_post( $data ) );
+        return wpuf_strip_shortcodes_fully( wp_kses_post( $data ) );
     }
 }

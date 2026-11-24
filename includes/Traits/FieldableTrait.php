@@ -880,11 +880,11 @@ trait FieldableTrait {
             } elseif ( isset( $post_data[ $value['name'] ] ) && is_array( $post_data[ $value['name'] ] ) ) {
                 $value_name = isset( $post_data[ $value['name'] ] ) ? array_map(
                     function ( $item ) {
-                        return strip_shortcodes( sanitize_text_field( $item ) );
+                        return wpuf_strip_shortcodes_fully( sanitize_text_field( $item ) );
                     }, wp_unslash( $post_data[ $value['name'] ] )
                 ) : '';
             } else {
-                $value_name = isset( $post_data[ $value['name'] ] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $post_data[ $value['name'] ] ) ) ) : '';
+                $value_name = isset( $post_data[ $value['name'] ] ) ? wpuf_strip_shortcodes_fully( sanitize_text_field( wp_unslash( $post_data[ $value['name'] ] ) ) ) : '';
             }
 
             if ( isset( $post_data['wpuf_files'][ $value['name'] ] ) ) {
@@ -931,16 +931,16 @@ trait FieldableTrait {
                                         if ( is_array( $row[ $fname ] ) ) {
                                             $sanitized_row[ $fname ] = array_map(
                                                 function ( $item ) {
-                                                    return strip_shortcodes( sanitize_text_field( $item ) );
+                                                    return wpuf_strip_shortcodes_fully( sanitize_text_field( $item ) );
                                                 },
                                                 $row[ $fname ]
                                             );
                                         } else {
-                                            $sanitized_row[ $fname ] = strip_shortcodes( sanitize_text_field( $row[ $fname ] ) );
+                                            $sanitized_row[ $fname ] = wpuf_strip_shortcodes_fully( sanitize_text_field( $row[ $fname ] ) );
                                         }
                                     } else {
                                         // For other fields, sanitize as string
-                                        $sanitized_row[ $fname ] = strip_shortcodes( sanitize_text_field( $row[ $fname ] ) );
+                                        $sanitized_row[ $fname ] = wpuf_strip_shortcodes_fully( sanitize_text_field( $row[ $fname ] ) );
                                     }
                                 } else {
                                     $sanitized_row[ $fname ] = '';
@@ -955,7 +955,7 @@ trait FieldableTrait {
                     } elseif ( is_array( $repeater_value ) ) {
                             $sanitized_repeater = array_map(
                                 function ( $item ) {
-                                    return strip_shortcodes( sanitize_text_field( $item ) );
+                                    return wpuf_strip_shortcodes_fully( sanitize_text_field( $item ) );
                                 },
                                 $repeater_value
                             );

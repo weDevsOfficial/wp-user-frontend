@@ -590,7 +590,7 @@ class Frontend_Form_Ajax {
                 // Nothing valid to send to, so skip mail sending.
                 if ( ! empty( $to ) ) {
                     $subject   = $this->prepare_mail_body( $edit_subject, $post_author, $post_id );
-                    $subject   = wp_strip_all_tags( $subject );
+                    $subject   = wp_specialchars_decode( wp_strip_all_tags( $subject ), ENT_QUOTES ); // Plain-text header: no HTML entities.
                     $mail_body = get_formatted_mail_body( $mail_body, $subject );
                     $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
 
@@ -621,7 +621,7 @@ class Frontend_Form_Ajax {
                 // Nothing valid to send to, so skip mail sending.
                 if ( ! empty( $to ) ) {
                     $subject   = $this->prepare_mail_body( $new_notification['subject'], $post_author, $post_id );
-                    $subject   = wp_strip_all_tags( $subject );
+                    $subject   = wp_specialchars_decode( wp_strip_all_tags( $subject ), ENT_QUOTES ); // Plain-text header: no HTML entities.
                     $mail_body = get_formatted_mail_body( $mail_body, $subject );
                     $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
 

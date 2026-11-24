@@ -88,10 +88,15 @@ class Bank {
 
         // Coupons are a Pro feature; only run when Pro is active to avoid a fatal in free-only installs.
         if ( $coupon_id > 0 && class_exists( Coupons::class ) ) {
-            $discounted_price  = floatval( ( new Coupons() )->discount( $data['price'], $coupon_id, $data['item_number'] ) );
-            $data['discount']  = $original_price - $discounted_price;
-            $data['coupon_id'] = $coupon_id;
-            $data['price']     = $discounted_price;
+            $discounted_price = ( new Coupons() )->discount( $data['price'], $coupon_id, $data['item_number'] );
+
+            // A refused coupon returns a message instead of an amount: keep the full price and drop the coupon.
+            if ( is_numeric( $discounted_price ) ) {
+                $discounted_price  = floatval( $discounted_price );
+                $data['discount']  = $original_price - $discounted_price;
+                $data['coupon_id'] = $coupon_id;
+                $data['price']     = $discounted_price;
+            }
         }
 
         $data['cost']     = apply_filters( 'wpuf_payment_amount', $data['price'], $post_id ); //price with tax from pro

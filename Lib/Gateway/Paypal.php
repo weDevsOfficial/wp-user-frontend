@@ -1509,8 +1509,15 @@ class Paypal {
                 is_numeric( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) ) ) {
                 $coupon_id       = absint( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) );
                 $original_amount = floatval( $billing_amount );
-                $billing_amount  = wpuf_pro()->coupon->discount( $billing_amount, $coupon_id, $data['item_number'] );
-                $coupon_discount = $original_amount - floatval( $billing_amount );
+                $discounted      = wpuf_pro()->coupon->discount( $billing_amount, $coupon_id, $data['item_number'] );
+
+                // A refused coupon returns a message instead of an amount: keep the full price and drop the coupon.
+                if ( is_numeric( $discounted ) ) {
+                    $billing_amount  = $discounted;
+                    $coupon_discount = $original_amount - floatval( $billing_amount );
+                } else {
+                    $coupon_id = '';
+                }
             } else {
                 $coupon_id = '';
             }
@@ -1570,7 +1577,7 @@ class Paypal {
             $payment_data['total'] = $billing_amount;
 
             // Handle free payments
-            if ( $billing_amount == 0 ) {
+            if ( 0.0 === floatval( $billing_amount ) ) {
                 // a free checkout may only grant a real subscription pack, never an id sent as another type
                 if ( 'pack' === $data['type'] && 'wpuf_subscription' === get_post_type( $data['item_number'] ) ) {
                     wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], null, false, 'Free' );

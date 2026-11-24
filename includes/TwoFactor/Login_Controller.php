@@ -102,7 +102,8 @@ class Login_Controller {
 
         $nonce = isset( $_POST['wpuf-login-nonce'] ) ? sanitize_key( wp_unslash( $_POST['wpuf-login-nonce'] ) ) : '';
 
-        if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+        // Same login-CSRF guard as Simple_Login::process_login(): this step sets the auth cookie.
+        if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) || ! wpuf_is_same_origin_request() ) {
             $this->pending_token = '';
             $this->push_login_error( __( 'Security check failed. Please log in again.', 'wp-user-frontend' ) );
 
@@ -272,7 +273,7 @@ class Login_Controller {
 
         $nonce = isset( $_POST['wpuf-login-nonce'] ) ? sanitize_key( wp_unslash( $_POST['wpuf-login-nonce'] ) ) : '';
 
-        if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+        if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) || ! wpuf_is_same_origin_request() ) {
             $this->push_login_error( __( 'Security check failed. Please log in again.', 'wp-user-frontend' ) );
 
             return;

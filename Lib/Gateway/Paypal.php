@@ -357,13 +357,13 @@ class Paypal {
                         // Recalculate: assume tax is correct, adjust subtotal.
                         // Or if subtotal seems wrong (equals total), calculate from total - tax.
                     } elseif ( abs( $subtotal - $total_amount ) < 0.01 && $tax > 0 ) {
-                            // Subtotal equals total, which is wrong - recalculate
-                            $subtotal = $total_amount - $tax;
-                        } elseif ( $tax > 0 && $subtotal > 0 ) {
-                            // Both exist but don't add up - trust the total and recalculate
-                            $subtotal = $total_amount - $tax;
-                        }
+                        // Subtotal equals total, which is wrong - recalculate
+                        $subtotal = $total_amount - $tax;
+                    } elseif ( $tax > 0 && $subtotal > 0 ) {
+                        // Both exist but don't add up - trust the total and recalculate
+                        $subtotal = $total_amount - $tax;
                     }
+                }
             } elseif ( isset( $custom_data['subtotal'] ) && isset( $custom_data['tax'] ) ) {
                 // Fallback: Use custom_id data if breakdown not available
                 $subtotal = floatval( $custom_data['subtotal'] );
@@ -396,11 +396,11 @@ class Paypal {
                         $custom_data['type']
                     );
 
-                    if ( $recalculated && is_array( $recalculated ) ) {
-                        $subtotal = isset( $recalculated['subtotal'] ) ? floatval( $recalculated['subtotal'] ) : $subtotal;
-                        $tax = isset( $recalculated['tax'] ) ? floatval( $recalculated['tax'] ) : $tax;
-                    }
+                if ( $recalculated && is_array( $recalculated ) ) {
+                    $subtotal = isset( $recalculated['subtotal'] ) ? floatval( $recalculated['subtotal'] ) : $subtotal;
+                    $tax = isset( $recalculated['tax'] ) ? floatval( $recalculated['tax'] ) : $tax;
                 }
+            }
 
             // Ensure cost is always subtotal + tax (for consistency)
             // Use total_amount as fallback if calculation seems off
@@ -1123,13 +1123,13 @@ class Paypal {
                         // Recalculate: assume tax is correct, adjust subtotal.
                         // Or if subtotal seems wrong (equals total), calculate from total - tax.
                     } elseif ( abs( $subtotal - $total_amount ) < 0.01 && $tax > 0 ) {
-                            // Subtotal equals total, which is wrong - recalculate
-                            $subtotal = $total_amount - $tax;
-                        } elseif ( $tax > 0 && $subtotal > 0 ) {
-                            // Both exist but don't add up - trust the total and recalculate
-                            $subtotal = $total_amount - $tax;
-                        }
+                        // Subtotal equals total, which is wrong - recalculate
+                        $subtotal = $total_amount - $tax;
+                    } elseif ( $tax > 0 && $subtotal > 0 ) {
+                        // Both exist but don't add up - trust the total and recalculate
+                        $subtotal = $total_amount - $tax;
                     }
+                }
             } elseif ( isset( $custom_data['subtotal'] ) && isset( $custom_data['tax'] ) ) {
                 // Fallback: Use custom_id data if breakdown not available
                 $subtotal = floatval( $custom_data['subtotal'] );
@@ -1162,20 +1162,11 @@ class Paypal {
                         'pack'
                     );
 
-                    if ( $recalculated && is_array( $recalculated ) ) {
-                        $subtotal = isset( $recalculated['subtotal'] ) ? floatval( $recalculated['subtotal'] ) : $subtotal;
-                        $tax = isset( $recalculated['tax'] ) ? floatval( $recalculated['tax'] ) : $tax;
-                    } else {
-                        // If recalculation failed, try subscription plan tax percentage
-                        $tax_percentage = $this->get_subscription_tax_percentage( $subscription_id );
-                        if ( $tax_percentage > 0 ) {
-                            // Reverse calculate: subtotal = total / (1 + tax_percentage/100)
-                            $subtotal = $total_amount / ( 1 + ( $tax_percentage / 100 ) );
-                            $tax = $total_amount - $subtotal;
-                        }
-                    }
+                if ( $recalculated && is_array( $recalculated ) ) {
+                    $subtotal = isset( $recalculated['subtotal'] ) ? floatval( $recalculated['subtotal'] ) : $subtotal;
+                    $tax = isset( $recalculated['tax'] ) ? floatval( $recalculated['tax'] ) : $tax;
                 } else {
-                    // If no pack_id, try subscription plan tax percentage
+                    // If recalculation failed, try subscription plan tax percentage
                     $tax_percentage = $this->get_subscription_tax_percentage( $subscription_id );
                     if ( $tax_percentage > 0 ) {
                         // Reverse calculate: subtotal = total / (1 + tax_percentage/100)
@@ -1183,6 +1174,15 @@ class Paypal {
                         $tax = $total_amount - $subtotal;
                     }
                 }
+            } else {
+                // If no pack_id, try subscription plan tax percentage
+                $tax_percentage = $this->get_subscription_tax_percentage( $subscription_id );
+                if ( $tax_percentage > 0 ) {
+                    // Reverse calculate: subtotal = total / (1 + tax_percentage/100)
+                    $subtotal = $total_amount / ( 1 + ( $tax_percentage / 100 ) );
+                    $tax = $total_amount - $subtotal;
+                }
+            }
 
             // Ensure cost is always subtotal + tax (for consistency)
             // Use total_amount as fallback if calculation seems off
@@ -1586,7 +1586,7 @@ class Paypal {
             if ( $billing_amount == 0 ) {
                 // a free checkout may only grant a real subscription pack, never an id sent as another type
                 if ( 'pack' === $data['type'] && 'wpuf_subscription' === get_post_type( $data['item_number'] ) ) {
-                wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], null, false, 'Free' );
+                    wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], null, false, 'Free' );
                 }
                 wp_safe_redirect( $return_url );
                 exit();
@@ -1759,7 +1759,7 @@ class Paypal {
                 // Add PayPal to allowed hosts just before redirect
                 add_filter(
                     'allowed_redirect_hosts',
-                    function( $hosts ) {
+                    function ( $hosts ) {
                         return array_merge( $hosts, $this->get_paypal_allowed_hosts() );
                     },
                     10,
@@ -1853,7 +1853,7 @@ class Paypal {
                 // Add PayPal to allowed hosts just before redirect
                 add_filter(
                     'allowed_redirect_hosts',
-                    function( $hosts ) {
+                    function ( $hosts ) {
                         return array_merge( $hosts, $this->get_paypal_allowed_hosts() );
                     },
                     10,
@@ -2554,7 +2554,7 @@ class Paypal {
                 // status handling below still has something to work with.
                 $user_pack = [
                     'pack_id' => $pack_id,
-                    'status' => 'completed',
+                    'status'  => 'completed',
                 ];
             }
 

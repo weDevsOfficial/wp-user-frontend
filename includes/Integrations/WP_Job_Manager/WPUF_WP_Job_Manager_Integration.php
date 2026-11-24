@@ -51,6 +51,11 @@ class WPUF_WP_Job_Manager_Integration {
         $this->meta_mapper = new Meta_Mapper();
         $this->meta_mapper->register_hooks();
 
+        // the free "Post a Job" template, Pro ships its own
+        if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
+            add_filter( 'wpuf_get_post_form_templates', [ $this, 'register_free_template' ] );
+        }
+
         /**
          * Fires once the WP Job Manager integration has initialized.
          *
@@ -59,6 +64,21 @@ class WPUF_WP_Job_Manager_Integration {
          * @param WPUF_WP_Job_Manager_Integration $integration The integration instance.
          */
         do_action( 'wpuf_wpjm_integration_ready', $this );
+    }
+
+    /**
+     * Add the free "Post a Job" form template
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $templates Post form templates.
+     *
+     * @return array
+     */
+    public function register_free_template( $templates ) {
+        $templates['post_form_template_wp_job_manager'] = new Template_Free();
+
+        return $templates;
     }
 
     /**

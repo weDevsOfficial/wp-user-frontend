@@ -729,14 +729,14 @@ class Frontend_Form extends Frontend_Render_Form {
             )
         );
         $subject     = $this->prepare_mail_body( isset( $notification['new_subject'] ) ? $notification['new_subject'] : '', $author_id, $post_id );
-        $subject     = wp_specialchars_decode( wp_strip_all_tags( $subject ), ENT_QUOTES ); // Plain-text header: no HTML entities.
+        $subject     = wp_strip_all_tags( $subject );
         $mail_body   = get_formatted_mail_body( $mail_body, $subject );
         $headers     = [ 'Content-Type: text/html; charset=UTF-8' ];
 
         // update the information for future to check if the email is already verified
         update_user_meta( $author_id, 'wpuf_guest_email_verified', 1 );
         if ( ! empty( $to ) ) {
-            wp_mail( $to, $subject, $mail_body, $headers );
+            wp_mail( $to, wp_specialchars_decode( $subject, ENT_QUOTES ), $mail_body, $headers ); // Decode only for the plain-text header; the HTML template keeps the encoded subject.
         }
     }
 

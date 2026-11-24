@@ -4,12 +4,28 @@ import { BasicLogoutPage } from '../pages/basicLogout';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Users } from '../utils/testData';
 import { configureSpecFailFast } from '../utils/specFailFast';
+import { wpCli } from '../utils/wpEnvCli';
 
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
 test.beforeAll(async () => {
+    // Activation sets the one-shot `wpuf_activation_redirect` transient, and the first
+    // admin page load after that is redirected to the setup wizard, a full-screen page
+    // with no admin sidebar. Which navigation gets hijacked depends on plugin activation
+    // order, so LS0002 ("Dashboard page reached") intermittently landed on the wizard and
+    // waited out its 180s timeout on a sidebar that was never going to render. Consuming
+    // the transient here makes the first navigation deterministic. LS0006 still covers the
+    // wizard: it opens `admin.php?page=wpuf-setup` directly rather than relying on this
+    // redirect.
+    try {
+        wpCli( 'transient delete wpuf_activation_redirect' );
+    } catch {
+        // wp-cli is unavailable in some local setups; the redirect is then merely a flake
+        // risk, not a hard failure, so the suite still runs.
+    }
+
     // Launch browser
     browser = await chromium.launch();
 
@@ -55,6 +71,11 @@ test.describe('Login and Setup', () => {
      * @test_LS0026 : Admin is enabling payment gateway paypal
      * @test_LS0027 : Admin is activating dokan lite
      * @test_LS0028 : Admin is logging out successfully
+     * @Test_LS0032 : Admin validates permalink setting persisted
+     * @Test_LS0033 : Admin validates anyone-can-register setting persisted
+     * @Test_LS0034 : Admin validates payment gateways persisted
+     * @Test_LS0035 : Admin validates AI provider selection persisted
+     * @Test_LS0036 : Admin validates WPUF general settings persist (round-trip)
      */
     if (process.env.CI !== 'true') {
         test('RS0001 : Admin is resetting Site', { tag: ['@Basic'] }, async () => {
@@ -266,7 +287,9 @@ test.describe('Login and Setup', () => {
         await SettingsSetup.enableOpenAI();
     });
 
-    test.skip('LS0029 : Admin is enabling Anthropic AI', { tag: ['@Basic'] }, async () => {
+    // Was skipped outright; the Anthropic provider exists in the AI tab and saves
+    // exactly like Google/OpenAI above, so it is covered the same way.
+    test('LS0029 : Admin is enabling Anthropic AI', { tag: ['@Basic'] }, async () => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.enableAnthropicAI();
     });
@@ -274,6 +297,38 @@ test.describe('Login and Setup', () => {
     test('LS0030 : Admin is activating dokan lite', { tag: ['@Basic'] }, async () => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.dokanLiteStatusCheck();
+    });
+
+    /**----------- SETTINGS PERSISTENCE VERIFICATION -----------**
+     * Reload each surface configured above and assert the setting actually
+     * persisted server-side (setup steps only fill+save; these prove it stuck).
+     * Run before logout so the shared page is still authenticated.
+     */
+
+    test('LS0032 : Admin validates permalink setting persisted', { tag: ['@Basic', '@Test_LS0032'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.validatePermalinkPersistence();
+    });
+
+    test('LS0033 : Admin validates anyone-can-register setting persisted', { tag: ['@Basic', '@Test_LS0033'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.validateAllowRegistrationPersistence();
+    });
+
+    test('LS0034 : Admin validates payment gateways persisted', { tag: ['@Basic', '@Test_LS0034'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.validatePaymentGatewayPersistence();
+    });
+
+    test('LS0035 : Admin validates AI provider selection persisted', { tag: ['@Basic', '@Test_LS0035'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        // LS0029 enabled Anthropic last, so it is the persisted active provider.
+        await SettingsSetup.validateAIProviderPersistence('anthropic');
+    });
+
+    test('LS0036 : Admin validates WPUF general settings persist (round-trip)', { tag: ['@Basic', '@Test_LS0036'] }, async () => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.validateGeneralSettingsPersistenceRoundTrip();
     });
 
     test('LS0031 : Admin is logging out successfully', { tag: ['@Basic'] }, async () => {

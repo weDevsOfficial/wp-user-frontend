@@ -66,7 +66,7 @@ module.exports = function( grunt) {
         makepot: {
             target: {
                 options: {
-                    exclude: ['build/.*', 'node_modules/*'],
+                    exclude: ['build/.*', 'node_modules/*', 'plugins/.*', 'tests/.*', 'vendor/.*'],
                     mainFile: 'wpuf.php',
                     domainPath: '/languages/',
                     potFilename: 'wp-user-frontend.pot',

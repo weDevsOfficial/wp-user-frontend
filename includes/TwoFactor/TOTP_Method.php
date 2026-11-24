@@ -21,7 +21,7 @@ class TOTP_Method implements Method_Interface {
     public const ID                  = 'totp';
     public const PERIOD_SECONDS      = 30;
     public const DRIFT_WINDOW_STEPS  = 1;
-    public const SECRET_LENGTH_BYTES = 20; // 160 bits per RFC 6238 §5.
+    public const SECRET_LENGTH_BYTES = 32; // base32 characters: 32 x 5 bits = 160 bits per RFC 6238 §5.
 
     /** @var Google2FA */
     private $google2fa;

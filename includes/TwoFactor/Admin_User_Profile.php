@@ -34,7 +34,7 @@ class Admin_User_Profile {
     }
 
     public function render_section( $user ) {
-        if ( ! current_user_can( 'manage_options' ) ) {
+        if ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'edit_user', $user->ID ) ) {
             return;
         }
 
@@ -166,7 +166,7 @@ class Admin_User_Profile {
     public function handle_reset() {
         $target_user_id = isset( $_POST['user_id'] ) ? (int) $_POST['user_id'] : 0;
 
-        if ( ! current_user_can( 'manage_options' ) ) {
+        if ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'edit_user', $target_user_id ) ) {
             wp_die( esc_html__( 'You do not have permission to reset 2FA for this user.', 'wp-user-frontend' ), 403 );
         }
 

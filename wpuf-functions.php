@@ -5686,7 +5686,8 @@ if ( ! defined( 'WPUF_STRIP_SHORTCODE_PASSES' ) ) {
  * passes are capped so crafted nesting can not burn CPU; whatever still
  * changes after the cap gets its brackets escaped instead. Brackets inside HTML
  * tags are escaped too, because strip_shortcodes() skips attributes while
- * do_shortcode() still runs shortcodes found there.
+ * do_shortcode() still runs shortcodes found there. HTML comments are left as
+ * they are: block markup keeps its JSON and do_shortcode() never runs inside them.
  *
  * @since WPUF_SINCE
  *
@@ -5713,8 +5714,13 @@ function wpuf_strip_shortcodes_fully( $content ) {
 
     if ( false !== strpos( $content, '<' ) ) {
         $content = preg_replace_callback(
-            '/<[^<>]*>/',
+            '/<!--.*?-->|<[^<>]*>/s',
             function ( $tag ) {
+                // Keep HTML comments (block markup JSON); WordPress escapes shortcodes in comments at render.
+                if ( 0 === strpos( $tag[0], '<!--' ) ) {
+                    return $tag[0];
+                }
+
                 return str_replace( [ '[', ']' ], [ '&#91;', '&#93;' ], $tag[0] );
             },
             $content

@@ -22,6 +22,7 @@ phpcs-report.txt
 # Ignore the following directories and files for automation tests
 test-results
 playwright-report
+.playwright-mcp/
 tests/e2e/node_modules/
 tests/e2e/test-results/
 tests/e2e/setup

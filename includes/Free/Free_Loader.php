@@ -2078,7 +2078,9 @@ class Free_Loader extends Pro_Prompt {
                                          <span class="wpuf-pill-green">{custom_meta_key}</span>
                                          e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for <i>website_url</i> meta field
                                          <br><span class="wpuf-pill-green">{taxonomy_slug}</span>
-                                         e.g: <span class="wpuf-pill-green">{taxonomy_post_tag}</span> for the terms of the <i>post_tag</i> taxonomy</p>',
+                                         e.g: <span class="wpuf-pill-green">{taxonomy_post_tag}</span> for the terms of the <i>post_tag</i> taxonomy
+                                         <br><span class="wpuf-pill-green">{author_meta_meta_key}</span>
+                                         e.g: <span class="wpuf-pill-green">{author_meta_billing_phone}</span> for the author\'s <i>billing_phone</i> user meta</p>',
             ],
         ];
 

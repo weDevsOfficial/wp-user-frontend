@@ -2214,6 +2214,11 @@ class Paypal {
         }
 
         try {
+            // PayPal order IDs are upper-case letters and digits; refuse anything else before it reaches the API path.
+            if ( ! preg_match( '/^[A-Z0-9]+$/', $token ) ) {
+                throw new \Exception( 'Invalid payment token' );
+            }
+
             // Get access token and capture payment
             $access_token = $this->get_access_token();
             $capture_url = ( $this->test_mode ? 'https://api-m.sandbox.paypal.com' : 'https://api-m.paypal.com' ) .
@@ -2244,7 +2249,12 @@ class Paypal {
             // some hosts. process_payment_capture() is idempotent (it skips when
             // the transaction already exists), so the webhook can still fire
             // afterwards without creating a duplicate record.
-            if ( isset( $body['purchase_units'][0]['payments']['captures'][0] ) ) {
+            // The order can be COMPLETED while its capture is still PENDING (e.g. an
+            // eCheck or a payment review); leave those to the webhook, as before.
+            if (
+                isset( $body['purchase_units'][0]['payments']['captures'][0]['status'] )
+                && 'COMPLETED' === $body['purchase_units'][0]['payments']['captures'][0]['status']
+            ) {
                 $capture = $body['purchase_units'][0]['payments']['captures'][0];
 
                 // PayPal usually copies custom_id onto the capture resource;

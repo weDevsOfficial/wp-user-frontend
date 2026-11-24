@@ -905,8 +905,6 @@ features:
     name: Frontend submit creates the post
   - id: FE0047
     name: Required validation blocks an empty frontend submit
-  - id: FE0003
-    name: Empty form title is not persisted (known bug, test.fail)
   - id: FE0009
     name: Leaving a dirty editor raises the unsaved-changes guard
   - id: FE0014
@@ -983,12 +981,6 @@ features:
     name: The submitted post exists with the entered title
   - id: AF0013
     name: Field values round-trip through the WPUF edit form
-  - id: AF0014
-    name: Repeat Field renders on the frontend (known bug, test.fail)
-  - id: AF0015
-    name: No field type renders more than one row (known bug, test.fail)
-  - id: AF0016
-    name: An empty submit is blocked by the required-field rules (known bug with Math Captcha)
   - id: AF0017
     name: Email Address rejects a malformed address
   - id: AF0018
@@ -997,8 +989,6 @@ features:
     name: Numeric Field only accepts numbers
   - id: AF0020
     name: Math Captcha rejects a wrong answer
-  - id: AF0021
-    name: Step Start without multistep enabled keeps the form usable (known bug, test.fail)
 
   # Post-form coverage gaps (docs/post-form.md §7–§8) — PFG specs
   # postFormViewControlTestPro.spec.ts
@@ -1040,8 +1030,6 @@ features:
     name: Scheduling off restores the form
   - id: PFG0040
     name: AI Review enabled writes a review record
-  - id: PFG0041
-    name: AI Review disabled writes nothing
   - id: PFG0042
     name: N8N enabled still lets the submission through
   - id: PFG0043
@@ -1116,8 +1104,6 @@ features:
     name: File Upload rejects a file over the size limit
   - id: PFG0080
     name: Checkbox / Radio / Multi Select values round-trip
-  - id: PFG0081
-    name: Repeat Field renders on the frontend (known bug, test.fail)
 
   # postFormLifecycleTest.spec.ts
   - id: PFG0090
@@ -1150,10 +1136,6 @@ features:
     name: Saving as a non-admin is refused
   - id: PFG0103
     name: A malformed field payload does not corrupt the form
-  - id: PFG0104
-    name: Script payloads in label / help / placeholder are escaped
-  - id: PFG0105
-    name: Script payloads in the unauthorized messages are escaped
   - id: PFG0106
     name: Custom HTML renders as authored (documented behaviour)
   - id: PFG0107

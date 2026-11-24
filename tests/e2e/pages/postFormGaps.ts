@@ -303,7 +303,9 @@ export class PostFormGapsPage extends FormEditorPage {
 
     async getListedFormNames(): Promise<string[]> {
         return this.page
-            .locator( `${ this.gaps.formList.allRows }//span[1]` )
+            // The name is the span next to the row checkbox; a bare //span[1] also
+            // returns the status badge ("Published", "Draft") as a name.
+            .locator( `${ this.gaps.formList.allRows }//input[@type="checkbox"]/following-sibling::span[1]` )
             .evaluateAll( ( nodes ) => nodes.map( ( node ) => ( node.textContent || '' ).trim() ) );
     }
 

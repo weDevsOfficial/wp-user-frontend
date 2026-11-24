@@ -307,12 +307,16 @@ test.describe( 'Post-Form-Expiration-And-Edit-Lock', () => {
         const title = lockPostTitle;
         const postId = getPostIdByTitle( title );
 
-        // Move the stored lock timestamp into the past — same effect as waiting
-        // out the configured hours.
-        setPostMeta( postId, '_wpuf_lock_user_editing_post_time', String( Math.floor( Date.now() / 1000 ) - 60 ) );
-
         await editor.withUser( authorLogin, authorPass, async ( authorPage ) => {
+            // The dashboard drops the Edit link once the window is over, so read it
+            // (and its per-session nonce) while the post is still editable.
             const href = await editor.getDashboardEditHref( authorPage, dashboardSlug, title );
+            expect( href ).toContain( 'pid=' );
+
+            // Move the stored lock timestamp into the past — same effect as waiting
+            // out the configured hours.
+            setPostMeta( postId, '_wpuf_lock_user_editing_post_time', String( Math.floor( Date.now() / 1000 ) - 60 ) );
+
             await editor.validateEditRefused( authorPage, href, /allocated time for editing this post has been expired/i );
         } );
 

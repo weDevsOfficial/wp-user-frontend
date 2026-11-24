@@ -411,9 +411,11 @@ export class FormEditorPage extends Base {
         await expect( this.page.locator( this.fe.stage.fieldLabel( type ) ).first() ).toContainText( label );
     }
 
-    async validateHelpTextUpdatesStage( type: string, helpText: string ) {
+    // The stage renders help text as HTML (v-html), so markup in it shows up as
+    // elements, not text; pass the visible text as `expectedText` in that case.
+    async validateHelpTextUpdatesStage( type: string, helpText: string, expectedText = helpText ) {
         await this.validateAndFillStrings( this.fos.helpText, helpText );
-        await expect( this.page.locator( this.fe.stage.fieldByType( type ) ).first() ).toContainText( helpText );
+        await expect( this.page.locator( this.fe.stage.fieldByType( type ) ).first() ).toContainText( expectedText );
     }
 
     async validateRequiredTogglesAsterisk( type: string ) {

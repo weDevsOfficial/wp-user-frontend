@@ -729,7 +729,7 @@ class Frontend_Form extends Frontend_Render_Form {
             )
         );
         $subject     = $this->prepare_mail_body( isset( $notification['new_subject'] ) ? $notification['new_subject'] : '', $author_id, $post_id );
-        $subject     = wp_strip_all_tags( $subject );
+        $subject     = wp_specialchars_decode( wp_strip_all_tags( $subject ), ENT_QUOTES ); // Plain-text header: no HTML entities.
         $mail_body   = get_formatted_mail_body( $mail_body, $subject );
         $headers     = [ 'Content-Type: text/html; charset=UTF-8' ];
 

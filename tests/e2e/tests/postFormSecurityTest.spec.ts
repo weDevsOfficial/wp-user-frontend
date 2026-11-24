@@ -159,7 +159,12 @@ test.describe( 'Post-Form-Security', () => {
         await expect( page.locator( 'body' ) ).not.toContainText( 'There has been a critical error' );
 
         // The builder must still save cleanly afterwards, i.e. the form is not
-        // wedged into an unrecoverable state by the bad field.
+        // wedged into an unrecoverable state by the bad field. The payload above
+        // also replaced the field list, so put back the fields the builder needs
+        // to save and the rest of this spec uses.
+        await editor.doAddField( 'Post Title' );
+        await editor.doAddField( 'Post Content' );
+        await editor.doAddField( 'Text' );
         await editor.doSaveForm();
 
         // Restore the posting permission the wiped payload cleared, so the rest of

@@ -809,7 +809,8 @@ export class FieldOptionSettingsPage extends Base {
         await this.page.waitForTimeout(1000);
         // The date checks before this test leave the jQuery UI datepicker open, and its
         // "Done" button can sit over the date input and swallow the click. Close it first.
-        await this.clickIfPresent('//button[contains(@class,"ui-datepicker-close")]', 1000);
+        const closeDatepicker = '//button[contains(@class,"ui-datepicker-close")]';
+        await this.clickIfPresent(closeDatepicker, 1000);
         //Enter Date / Time
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.dateTimeSelect);
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectYear, '2024');
@@ -817,6 +818,8 @@ export class FieldOptionSettingsPage extends Base {
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectDay);
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectHour, '2');
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectMinute, '7');
+        // The open picker can cover the Submit button as well.
+        await this.clickIfPresent(closeDatepicker, 1000);
         //Create Post
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.submitPostFormsFE);
         await this.page.waitForTimeout(2000);

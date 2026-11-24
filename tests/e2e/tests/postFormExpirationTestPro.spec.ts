@@ -18,6 +18,14 @@ import {
     seedUserWithRole,
 } from '../utils/wpEnvCli';
 
+// Pro's expiry cron drops an expiration date older than the post itself as
+// corrupt (Post_Expiration::has_corrupt_expiration_date), so a post created
+// today cannot be given yesterday's date until it is backdated as well.
+const backdatePost = ( postId: number ) => {
+    const threeDaysAgo = new Date( Date.now() - 3 * 86400000 ).toISOString().slice( 0, 19 ).replace( 'T', ' ' );
+    wpCli( `post update ${ postId } --post_date='${ threeDaysAgo }' --post_date_gmt='${ threeDaysAgo }'` );
+};
+
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
@@ -157,6 +165,7 @@ test.describe( 'Post-Form-Expiration-And-Edit-Lock', () => {
         // Seed both metas directly so this covers process_expired_posts() itself,
         // independent of the save-time defect PFG0051 records.
         const yesterday = new Date( Date.now() - 86400000 ).toISOString().slice( 0, 10 );
+        backdatePost( expiringPostId );
         setPostMeta( expiringPostId, 'wpuf-expired_post_status', 'draft' );
         setPostMeta( expiringPostId, 'wpuf-post_expiration_date', yesterday );
         deletePostMeta( expiringPostId, 'wpuf-post_expired' );
@@ -219,6 +228,7 @@ test.describe( 'Post-Form-Expiration-And-Edit-Lock', () => {
         expect( getPostMeta( postId, 'wpuf-post_expiration_message' ) ).toContain( expirationMessage );
 
         const yesterday = new Date( Date.now() - 86400000 ).toISOString().slice( 0, 10 );
+        backdatePost( postId );
         setPostMeta( postId, 'wpuf-post_expiration_date', yesterday );
         runCronHook( 'wpuf_remove_expired_post_hook' );
 

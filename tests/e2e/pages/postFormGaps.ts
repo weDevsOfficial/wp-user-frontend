@@ -74,6 +74,16 @@ export class PostFormGapsPage extends FormEditorPage {
     /******** Field options **********/
     /*********************************/
 
+    // Hidden fields sit in their own "Hidden Fields" block below the stage; their
+    // row in the main list is hidden, so doEditField() can never hover it.
+    async doEditHiddenField() {
+        await this.doOpenTab( 'Form Editor' );
+        const row = this.page.locator( '//h4[normalize-space()="Hidden Fields"]/following-sibling::ul/li' ).last();
+        await row.hover();
+        await row.locator( 'xpath=.//span[normalize-space()="Edit"]' ).click();
+        await expect( this.page.locator( this.fe.panel.fieldOptionsPanel ) ).toBeVisible();
+    }
+
     // Structural fields (Section Break, Custom HTML, Shortcode, Action Hook,
     // Hidden Field, Terms & Conditions) render option inputs with no name or id,
     // so they are filled through their label.

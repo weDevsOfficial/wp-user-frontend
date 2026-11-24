@@ -18,6 +18,14 @@ import {
     seedUserWithRole,
 } from '../utils/wpEnvCli';
 
+// Pro's expiry cron drops an expiration date older than the post itself as
+// corrupt (Post_Expiration::has_corrupt_expiration_date), so a post created
+// today cannot be given yesterday's date until it is backdated as well.
+const backdatePost = ( postId: number ) => {
+    const threeDaysAgo = new Date( Date.now() - 3 * 86400000 ).toISOString().slice( 0, 19 ).replace( 'T', ' ' );
+    wpCli( `post update ${ postId } --post_date='${ threeDaysAgo }' --post_date_gmt='${ threeDaysAgo }'` );
+};
+
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
@@ -118,15 +126,10 @@ test.describe( 'Post-Form-Expiration-And-Edit-Lock', () => {
         expect( getPostMeta( expiringPostId, 'wpuf-expired_post_status' ) ).toBe( 'draft' );
     } );
 
-    // BUG (see BUGS-FOUND.md #21): Frontend_Form_Ajax::wpuf_user_subscription_pack()
-    // enters the subscription-pack branch on `isset($pack['_enable_post_expiration'])`
-    // rather than on its value, so a pack with expiration switched OFF still writes
-    // `wpuf-post_expiration_date = 1970-01-01` and the pack's `_expired_post_status`.
-    // Pro's Post_Expiration::save_expiration_meta() then bails on the same isset()
-    // test, so the form's own settings never reach the post. PFG0051 above passes
-    // only because the submitting user holds no pack yet.
+    // Regression guard (fixed on develop): a pack with post
+    // expiration switched OFF used to still write `wpuf-post_expiration_date =
+    // 1970-01-01` and the pack's `_expired_post_status`, overruling the form.
     test( 'PFG0051b : A pack with expiration off does not override the form', { tag: [ '@Pro', '@Test_PFG0051b' ] }, async () => {
-        test.fail();
         const editor = new PostFormGapsPage( page );
         const title = `EXP Pack ${ faker.string.alphanumeric( 5 ) }`;
 
@@ -162,6 +165,7 @@ test.describe( 'Post-Form-Expiration-And-Edit-Lock', () => {
         // Seed both metas directly so this covers process_expired_posts() itself,
         // independent of the save-time defect PFG0051 records.
         const yesterday = new Date( Date.now() - 86400000 ).toISOString().slice( 0, 10 );
+        backdatePost( expiringPostId );
         setPostMeta( expiringPostId, 'wpuf-expired_post_status', 'draft' );
         setPostMeta( expiringPostId, 'wpuf-post_expiration_date', yesterday );
         deletePostMeta( expiringPostId, 'wpuf-post_expired' );
@@ -224,6 +228,7 @@ test.describe( 'Post-Form-Expiration-And-Edit-Lock', () => {
         expect( getPostMeta( postId, 'wpuf-post_expiration_message' ) ).toContain( expirationMessage );
 
         const yesterday = new Date( Date.now() - 86400000 ).toISOString().slice( 0, 10 );
+        backdatePost( postId );
         setPostMeta( postId, 'wpuf-post_expiration_date', yesterday );
         runCronHook( 'wpuf_remove_expired_post_hook' );
 
@@ -302,12 +307,16 @@ test.describe( 'Post-Form-Expiration-And-Edit-Lock', () => {
         const title = lockPostTitle;
         const postId = getPostIdByTitle( title );
 
-        // Move the stored lock timestamp into the past — same effect as waiting
-        // out the configured hours.
-        setPostMeta( postId, '_wpuf_lock_user_editing_post_time', String( Math.floor( Date.now() / 1000 ) - 60 ) );
-
         await editor.withUser( authorLogin, authorPass, async ( authorPage ) => {
+            // The dashboard drops the Edit link once the window is over, so read it
+            // (and its per-session nonce) while the post is still editable.
             const href = await editor.getDashboardEditHref( authorPage, dashboardSlug, title );
+            expect( href ).toContain( 'pid=' );
+
+            // Move the stored lock timestamp into the past — same effect as waiting
+            // out the configured hours.
+            setPostMeta( postId, '_wpuf_lock_user_editing_post_time', String( Math.floor( Date.now() / 1000 ) - 60 ) );
+
             await editor.validateEditRefused( authorPage, href, /allocated time for editing this post has been expired/i );
         } );
 

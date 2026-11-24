@@ -136,9 +136,9 @@ test.describe( 'Post-Form-Security', () => {
             form: {
                 action: 'wpuf_form_builder_save_form',
                 form_data: `wpuf_form_builder_nonce=${ nonce }&wpuf_form_id=${ formId }&post_title=${ formName }`,
-                // A field with no input_type and an unknown template.
-                'form_fields[0][label]': 'Broken',
-                'form_fields[0][template]': 'definitely_not_a_field',
+                // A field with no input_type and an unknown template, sent as the
+                // JSON string the builder posts (the handler json_decode()s it).
+                form_fields: JSON.stringify( [ { label: 'Broken', template: 'definitely_not_a_field', is_new: true } ] ),
             },
         } );
 
@@ -159,23 +159,34 @@ test.describe( 'Post-Form-Security', () => {
         await expect( page.locator( 'body' ) ).not.toContainText( 'There has been a critical error' );
 
         // The builder must still save cleanly afterwards, i.e. the form is not
-        // wedged into an unrecoverable state by the bad field.
+        // wedged into an unrecoverable state by the bad field. The payload above
+        // also replaced the field list, so put back the fields the builder needs
+        // to save and the rest of this spec uses.
+        await editor.doAddField( 'Post Title' );
+        await editor.doAddField( 'Post Content' );
+        await editor.doAddField( 'Text' );
         await editor.doSaveForm();
 
         // Restore the posting permission the wiped payload cleared, so the rest of
         // this spec still has a form the frontend will render.
-        await editor.doOpenSettingsSection( 'Posting Control' );
+        // Posting Control is a block inside the General section, not a sidebar item.
+        await editor.doOpenSettingsSection( 'General' );
         await editor.doSelectSetting( 'post_permission', 'everyone' );
         await editor.doSaveForm();
         await editor.openFrontendForm( pageSlug );
     } );
 
+    // BUG: Field_Contract::help_text() prints the field's help text unescaped
+    // (`echo stripslashes( $field['help'] )`), so a <script> in the help option
+    // runs on the frontend form. Label and placeholder are escaped. test.fail()
+    // keeps the expectation on record until the output is escaped.
     test( 'PFG0104 : Script payloads in label / help / placeholder are escaped', { tag: [ '@Lite', '@Test_PFG0104' ] }, async () => {
+        test.fail();
         const editor = new PostFormGapsPage( page );
         await editor.openFormEditor( formId );
         await editor.doEditField( 'text_field' );
         await editor.validateLabelUpdatesStage( 'text_field', `${ labelMarker }${ xssPayload }` );
-        await editor.validateHelpTextUpdatesStage( 'text_field', `help ${ xssPayload }` );
+        await editor.validateHelpTextUpdatesStage( 'text_field', `help ${ xssPayload }`, 'help' );
         await editor.doExpandAdvancedOptions();
         await editor.doSetFieldOptionInput( 'Placeholder text', `hint ${ xssPayload }` );
         await editor.doSaveForm();
@@ -185,11 +196,17 @@ test.describe( 'Post-Form-Security', () => {
         // The payload is visible as text, never executed.
         const fired = await page.evaluate( () => ( window as any ).qaXssFired === true );
         expect( fired, 'a field option payload executed on the frontend' ).toBeFalsy();
-        expect( await page.locator( '//form[contains(@class,"wpuf-form")]//script' ).count() ).toBe( 0 );
+        // The form always carries WPUF's own inline bootstrap script; only the payload counts.
+        expect( await page.locator( '//form[contains(@class,"wpuf-form")]//script[contains(.,"qaXssFired")]' ).count() ).toBe( 0 );
         await editor.validateFrontendText( labelMarker );
     } );
 
+    // BUG (wpuf-pro): Post_View_Control\Frontend returns the role and
+    // subscription restriction messages unescaped, so a <script> in the message
+    // runs for every blocked visitor. test.fail() keeps the expectation on
+    // record until the output is escaped.
     test( 'PFG0105 : Script payloads in the unauthorized messages are escaped', { tag: [ '@Pro', '@Test_PFG0105' ] }, async () => {
+        test.fail();
         const editor = new PostFormGapsPage( page );
         await editor.openFormEditor( formId );
         await editor.doOpenSettingsSection( 'General' );

@@ -258,7 +258,7 @@ test.describe( 'Post-Form-Field-Behaviour', () => {
 
         await editor.openFormEditor( formId );
         await editor.doAddField( 'Hidden Field' );
-        await editor.doEditField( 'custom_hidden_field' );
+        await editor.doEditHiddenField();
         await editor.doSetFieldOptionInput( 'Meta Key', hiddenKey );
         await editor.doSetFieldOptionInput( 'Meta Value', hiddenValue );
         await editor.doSaveForm();

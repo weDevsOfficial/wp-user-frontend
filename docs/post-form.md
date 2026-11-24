@@ -148,7 +148,8 @@ and role-based restriction.
 
 Placeholders usable in To/Subject/Body: `{post_title}`, `{post_content}`, `{post_excerpt}`,
 `{tags}`, `{category}`, `{author}`, `{author_email}`, `{author_bio}`, `{sitename}`,
-`{siteurl}`, `{permalink}`, `{editlink}`, `{custom_{META_KEY}}` (e.g. `{custom_website_url}`).
+`{siteurl}`, `{permalink}`, `{editlink}`, `{custom_meta_key}` (e.g. `{custom_website_url}`),
+`{taxonomy_slug}` (e.g. `{taxonomy_post_tag}`: comma-separated term names).
 
 ### 4.4 Display Settings
 - Choose Form Style (form-template gallery)

@@ -793,6 +793,7 @@ class Frontend_Form extends Frontend_Render_Form {
         }
 
         $content = str_replace( $post_field_search, $post_field_replace, $content );
+        $content = wpuf_replace_notification_placeholders( $content, $user_id, $post_id );
 
         // custom fields
         preg_match_all( '/{custom_([\w-]*)\b}/', $content, $matches );

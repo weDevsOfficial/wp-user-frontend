@@ -4454,6 +4454,65 @@ function get_formatted_mail_body( $message, $subject ) {
 }
 
 /**
+ * Replace the post notification placeholders that both notification senders share
+ *
+ * Runs after the fixed placeholders ({post_title}, {author}...) are replaced.
+ * Handles `{taxonomy_<slug>}` and the placeholders added through the
+ * `wpuf_notification_placeholders` filter.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $content Notification to, subject or body.
+ * @param int    $user_id Post author ID.
+ * @param int    $post_id Post ID.
+ *
+ * @return string
+ */
+function wpuf_replace_notification_placeholders( $content, $user_id, $post_id ) {
+    $post = get_post( $post_id );
+
+    if ( ! is_string( $content ) || false === strpos( $content, '{' ) || ! $post ) {
+        return $content;
+    }
+
+    // {taxonomy_<slug>}: names of the post's terms, for any taxonomy registered for the post type.
+    $content = preg_replace_callback(
+        '/{taxonomy_([\w-]+)}/',
+        static function ( $matches ) use ( $post ) {
+            if ( ! is_object_in_taxonomy( $post->post_type, $matches[1] ) ) {
+                return '';
+            }
+
+            $names = wp_get_post_terms( $post->ID, $matches[1], [ 'fields' => 'names' ] );
+
+            return is_wp_error( $names ) ? '' : implode( ', ', array_map( 'esc_html', $names ) );
+        },
+        $content
+    );
+
+    /**
+     * Filter extra post notification placeholders
+     *
+     * Return an array of `'{placeholder}' => 'value'` pairs. Values are put
+     * into the e-mail as they are, so escape them (esc_html, esc_url).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array  $placeholders Placeholder => value pairs.
+     * @param int    $post_id      Post ID.
+     * @param int    $user_id      Post author ID.
+     * @param string $content      Notification text being prepared.
+     */
+    $placeholders = apply_filters( 'wpuf_notification_placeholders', [], $post_id, $user_id, $content );
+
+    if ( ! empty( $placeholders ) && is_array( $placeholders ) ) {
+        $content = str_replace( array_keys( $placeholders ), array_values( $placeholders ), $content );
+    }
+
+    return $content;
+}
+
+/**
  * Renders an HTML Dropdown
  *
  * @param array $args
@@ -6424,8 +6483,10 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                          <span data-clipboard-text="{siteurl}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{siteurl}</span>
                                          <span data-clipboard-text="{permalink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{permalink}</span>
                                          <span data-clipboard-text="{editlink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{editlink}</span>
-                                         <span class="wpuf-pill-green">{custom_{NAME_OF_CUSTOM_FIELD}}</span>
-                                         e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for <i>website_url</i> meta field</p>',
+                                         <span class="wpuf-pill-green">{custom_meta_key}</span>
+                                         e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for <i>website_url</i> meta field
+                                         <br><span class="wpuf-pill-green">{taxonomy_slug}</span>
+                                         e.g: <span class="wpuf-pill-green">{taxonomy_post_tag}</span> for the terms of the <i>post_tag</i> taxonomy</p>',
                         ],
                     ],
                 ],

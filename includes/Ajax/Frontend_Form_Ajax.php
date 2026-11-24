@@ -961,6 +961,7 @@ class Frontend_Form_Ajax {
         }
 
         $content = str_replace( $post_field_search, $post_field_replace, $content );
+        $content = wpuf_replace_notification_placeholders( $content, $user_id, $post_id );
         // replace line breaks with proper html tags
         $content = str_replace( [ "\r\n", "\n", "\r" ], '<br />', $content );
 

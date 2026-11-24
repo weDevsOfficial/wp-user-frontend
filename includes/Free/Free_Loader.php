@@ -2074,8 +2074,10 @@ class Free_Loader extends Pro_Prompt {
                                          <span data-clipboard-text="{siteurl}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{siteurl}</span>
                                          <span data-clipboard-text="{permalink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{permalink}</span>
                                          <span data-clipboard-text="{editlink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{editlink}</span>
-                                         <span class="wpuf-pill-green">{custom_{NAME_OF_CUSTOM_FIELD}}</span>
-                                         e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for <i>website_url</i> meta field</p>',
+                                         <span class="wpuf-pill-green">{custom_meta_key}</span>
+                                         e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for <i>website_url</i> meta field
+                                         <br><span class="wpuf-pill-green">{taxonomy_slug}</span>
+                                         e.g: <span class="wpuf-pill-green">{taxonomy_post_tag}</span> for the terms of the <i>post_tag</i> taxonomy</p>',
             ],
         ];
 

@@ -191,11 +191,11 @@ class Assets {
             'forms-list'           => [
                 'src' => WPUF_ASSET_URI . '/css/forms-list.min.css',
             ],
-            'account'              => [
-                'src' => WPUF_ASSET_URI . '/css/frontend/account.css',
-            ],
             'elementor-user-directory' => [
                 'src' => WPUF_ASSET_URI . '/css/elementor-user-directory.css',
+            ],
+            'account'              => [
+                'src' => WPUF_ASSET_URI . '/css/frontend/account.css',
             ],
         ];
 

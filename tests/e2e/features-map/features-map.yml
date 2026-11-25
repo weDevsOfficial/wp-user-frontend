@@ -1054,8 +1054,6 @@ features:
     name: An expired post flips to the configured status
   - id: PFG0052
     name: Duration types write the matching expiration date
-  - id: PFG0053
-    name: Expiration email is queued for the author
   - id: PFG0054
     name: Expiration disabled writes no expiry metadata
   - id: PFG0055

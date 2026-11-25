@@ -24,7 +24,7 @@ class Form_Field_Checkbox extends Field_Contract {
      * @return void
      */
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
-        if ( isset( $post_id ) && $post_id != '0'  ) {
+        if ( isset( $post_id ) && $post_id != '0' ) {
             if ( $this->is_meta( $field_settings ) ) {
                 if ( $value = $this->get_meta( $post_id, $field_settings['name'], $type, true ) ) {
                     $selected = $this->get_formatted_value( $value );
@@ -57,13 +57,15 @@ class Form_Field_Checkbox extends Field_Contract {
                     </label>
                     <?php
                 }
-            } ?>
+            }
+            ?>
 
             <?php $this->help_text( $field_settings ); ?>
 
         </div>
 
-        <?php $this->after_field_print_label();
+        <?php
+        $this->after_field_print_label();
     }
 
     /**
@@ -72,7 +74,7 @@ class Form_Field_Checkbox extends Field_Contract {
      * @return array
      */
     public function get_options_settings() {
-        $default_options  = $this->get_default_option_settings();
+        $default_options = $this->get_default_option_settings();
 
         $dropdown_options = [
             $this->get_default_option_dropdown_settings( true ),
@@ -104,7 +106,7 @@ class Form_Field_Checkbox extends Field_Contract {
     public function get_field_props() {
         $defaults = $this->default_attributes();
 
-        $props    = [
+        $props = [
             'input_type'        => 'checkbox',
             'is_meta'           => 'yes',
             'selected'          => [],
@@ -129,16 +131,16 @@ class Form_Field_Checkbox extends Field_Contract {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $field_name = isset( $_POST[$field['name']] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[$field['name']] ) ) : [];
+        $field_name = isset( $_POST[ $field['name'] ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $field['name'] ] ) ) : [];
         $field_name = array_map( 'sanitize_text_field', array_map( 'strip_shortcodes', $field_name ) );
 
-        $entry_value  = ( is_array( $field_name ) && $field_name ) ? $field_name : [];
+        $entry_value = ( is_array( $field_name ) && $field_name ) ? $field_name : [];
 
         if ( $entry_value ) {
             $new_val = [];
 
             foreach ( $entry_value as $option_key ) {
-                $new_val[] = isset( $field['options'][$option_key] ) ? $field['options'][$option_key] : '';
+                $new_val[] = isset( $field['options'][ $option_key ] ) ? $field['options'][ $option_key ] : '';
             }
 
             $entry_value = implode( '|', $new_val );
@@ -210,7 +212,7 @@ class Form_Field_Checkbox extends Field_Contract {
             ? wpuf_validate_boolean( $field['hide_field_label'] )
             : false;
 
-        $data = implode( ' | ' , $selected );
+        $data = implode( ' | ', $selected );
 
         if ( empty( $data ) ) {
             return '';
@@ -220,8 +222,8 @@ class Form_Field_Checkbox extends Field_Contract {
 
         ob_start();
         ?>
-            <li class="<?php echo esc_attr( implode( ' ' , $container_classnames ) );  ?>">
-                <?php if ( ! $hide_label ): ?>
+            <li class="<?php echo esc_attr( implode( ' ', $container_classnames ) ); ?>">
+                <?php if ( ! $hide_label ) : ?>
                     <label><?php echo esc_html( $field['label'] ); ?>:</label>
                 <?php endif; ?>
                 <?php echo esc_html( $data ); ?>

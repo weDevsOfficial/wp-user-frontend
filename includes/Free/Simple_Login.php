@@ -722,11 +722,16 @@ class Simple_Login {
         $user          = wp_signon( apply_filters( 'wpuf_login_credentials', $creds ), $secure_cookie );
 
         //try with old implementation, which is wrong but we must support that
-        // (not when the password was right and 2FA paused the sign-in: a retry
-        // would be counted as a second failed login)
-        if ( is_wp_error( $user ) && 0 !== strpos( $user->get_error_code(), 'wpuf_2fa_' ) ) {
-            $creds['user_login']    = sanitize_text_field( wp_unslash( $_POST['log'] ) );
-            $creds['user_password'] = sanitize_text_field( wp_unslash( $_POST['pwd'] ) );
+        // (#1238: the sanitized posted values). Only when they differ from what was
+        // just tried, and not when the password was right and 2FA paused the
+        // sign-in: a repeat would count the same attempt twice in wp_login_failed.
+        $legacy_login    = sanitize_text_field( wp_unslash( $_POST['log'] ) );
+        $legacy_password = sanitize_text_field( wp_unslash( $_POST['pwd'] ) );
+        $legacy_differs  = $legacy_login !== $creds['user_login'] || $legacy_password !== $creds['user_password'];
+
+        if ( is_wp_error( $user ) && $legacy_differs && 0 !== strpos( $user->get_error_code(), 'wpuf_2fa_' ) ) {
+            $creds['user_login']    = $legacy_login;
+            $creds['user_password'] = $legacy_password;
 
             $user = wp_signon( apply_filters( 'wpuf_login_credentials', $creds ), $secure_cookie );
         }

@@ -36,7 +36,7 @@ class Form_Field_Radio extends Form_Field_Checkbox {
 
         do_action( 'wpuf_radio_field_after_label', $field_settings ); ?>
 
-            <div class="wpuf-fields">
+            <div class="<?php echo esc_attr( $this->get_options_wrap_class( $field_settings ) ); ?>">
 
                 <?php
                 if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {
@@ -93,6 +93,7 @@ class Form_Field_Radio extends Form_Field_Checkbox {
                 'priority'      => 23,
                 'help_text'     => __( 'Show this option in an inline list', 'wp-user-frontend' ),
             ],
+            $this->get_columns_option_settings(),
         ];
 
         return array_merge( $default_options, $dropdown_options );

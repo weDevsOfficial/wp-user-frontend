@@ -1,6 +1,22 @@
 <div class="wpuf-fields">
     <div
-        v-if="field.inline !== 'yes'"
+        v-if="field.columns > 1"
+        :style="{ display: 'grid', gap: '8px 16px', gridTemplateColumns: 'repeat(' + field.columns + ', minmax(0, 1fr))' }">
+        <div
+            v-if="has_options" v-for="(label, val) in field.options"
+            class="wpuf-flex wpuf-items-center">
+            <input
+                type="radio"
+                :value="val"
+                :checked="is_selected(val)"
+                :id="'radio-' + field.name + '-' + val"
+                :class="builder_class_names('radio')">
+            <label :for="'radio-' + field.name + '-' + val">{{ label }}</label>
+        </div>
+    </div>
+
+    <div
+        v-else-if="field.inline !== 'yes'"
         class="wpuf-space-y-2">
         <div
             v-if="has_options" v-for="(label, val) in field.options"

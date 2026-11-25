@@ -39,7 +39,7 @@ class Form_Field_Checkbox extends Field_Contract {
         }
         $this->field_print_label( $field_settings, $form_id ); ?>
 
-        <div class="wpuf-fields">
+        <div class="<?php echo esc_attr( $this->get_options_wrap_class( $field_settings ) ); ?>">
 
             <?php
             if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {
@@ -95,9 +95,56 @@ class Form_Field_Checkbox extends Field_Contract {
                 'priority'      => 23,
                 'help_text'     => __( 'Show this option in an inline list', 'wp-user-frontend' ),
             ],
+            $this->get_columns_option_settings(),
         ];
 
         return array_merge( $default_options, $dropdown_options );
+    }
+
+    /**
+     * Columns setting shared by the checkbox and radio fields
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    protected function get_columns_option_settings() {
+        return [
+            'name'      => 'columns',
+            'title'     => __( 'Columns', 'wp-user-frontend' ),
+            'type'      => 'select',
+            'options'   => [
+                '1' => __( 'Default', 'wp-user-frontend' ),
+                '2' => __( '2 Columns', 'wp-user-frontend' ),
+                '3' => __( '3 Columns', 'wp-user-frontend' ),
+                '4' => __( '4 Columns', 'wp-user-frontend' ),
+            ],
+            'default'   => '1',
+            'section'   => 'advanced',
+            'priority'  => 23,
+            'help_text' => __( 'Show the options in columns. Default keeps the inline list setting. On small screens the options stack in one column.', 'wp-user-frontend' ),
+        ];
+    }
+
+    /**
+     * CSS class of the wrapper around the options
+     *
+     * Fields without a columns value keep the plain wrapper class.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $field_settings
+     *
+     * @return string
+     */
+    protected function get_options_wrap_class( $field_settings ) {
+        $columns = isset( $field_settings['columns'] ) ? (string) $field_settings['columns'] : '';
+
+        if ( in_array( $columns, [ '2', '3', '4' ], true ) ) {
+            return 'wpuf-fields wpuf-fields-columns wpuf-fields-columns-' . $columns;
+        }
+
+        return 'wpuf-fields';
     }
 
     /**

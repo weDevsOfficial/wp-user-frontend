@@ -26,7 +26,9 @@ class Form_Field_Checkbox extends Field_Contract {
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
         if ( isset( $post_id ) && $post_id != '0' ) {
             if ( $this->is_meta( $field_settings ) ) {
-                if ( $value = $this->get_meta( $post_id, $field_settings['name'], $type, true ) ) {
+                $value = $this->get_meta( $post_id, $field_settings['name'], $type, true );
+
+                if ( $value ) {
                     $selected = $this->get_formatted_value( $value );
                 } else {
                     $selected = [];
@@ -49,7 +51,7 @@ class Form_Field_Checkbox extends Field_Contract {
                             class="<?php echo esc_attr( sprintf( 'wpuf_%s_%d', $field_settings['name'], $form_id ) ); ?>"
                             id="<?php echo esc_attr( $field_settings['name'] ); ?>"
                             name="<?php echo esc_attr( $field_settings['name'] ); ?>[]"
-                            value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $value, $selected ) ? ' checked="checked"' : ''; ?>
+                            value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $value, $selected ) ? ' checked="checked"' : ''; // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- int option keys must match saved string values. ?>
                             data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                             data-type="checkbox"
                         />

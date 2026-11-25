@@ -201,6 +201,17 @@ class Login_Controller {
         // Success: consume token, set the auth cookie, redirect.
         delete_transient( self::TRANSIENT_KEY . $token );
 
+        // The password step refused pending and denied accounts, but an
+        // administrator can change the status while the code is being entered.
+        $status_error = $this->account_status_error( $user_id );
+
+        if ( $status_error ) {
+            $this->pending_token = '';
+            $this->push_login_error( $status_error );
+
+            return;
+        }
+
         $remember = ! empty( $challenge['remember'] );
         wp_set_auth_cookie( $user_id, $remember );
 
@@ -214,7 +225,8 @@ class Login_Controller {
             ? $challenge['final_redirect']
             : home_url( '/' );
 
-        wp_safe_redirect( $redirect );
+        /** This filter is documented in includes/Free/Simple_Login.php */
+        wp_safe_redirect( apply_filters( 'wpuf_login_redirect', $redirect, $user ) );
         exit;
     }
 
@@ -373,6 +385,36 @@ class Login_Controller {
         }
 
         $held->do_action( [ $username, $error ] );
+    }
+
+    /**
+     * Error to show when the account may not sign in any more
+     *
+     * Same pending / denied user status that WPUF Pro checks at the password
+     * step, with the messages from its settings.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $user_id User ID.
+     *
+     * @return string Empty when the account may sign in.
+     */
+    private function account_status_error( int $user_id ): string {
+        if ( ! wpuf()->is_pro() ) {
+            return '';
+        }
+
+        $status = get_user_meta( $user_id, 'wpuf_user_status', true );
+
+        if ( ! in_array( $status, [ 'pending', 'denied' ], true ) ) {
+            return '';
+        }
+
+        $default = 'pending' === $status
+            ? __( 'Your account has to be approved by an administrator before you can login.', 'wp-user-frontend' )
+            : __( 'Your account has been denied by an administrator, please contact admin to approve your account.', 'wp-user-frontend' );
+
+        return (string) wpuf_get_option( $status . '_user_message', 'wpuf_profile', $default );
     }
 
     /**

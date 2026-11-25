@@ -1592,7 +1592,8 @@ body.wpuf-modal-open {
     // Hide the native checkbox robustly. The extra container class beats WP
     // core's input[type=checkbox] rule, which would otherwise re-size it and
     // render a second checkmark next to the custom toggle.
-    .wpuf-gateway-cards &__checkbox {
+    .wpuf-gateway-cards &__checkbox,
+    .wpuf-method-cards &__checkbox {
         position: absolute;
         width: 1px;
         height: 1px;

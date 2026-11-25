@@ -698,7 +698,10 @@ class Simple_Login {
             if ( isset( $user->user_login ) ) {
                 $creds['user_login'] = $user->user_login;
             } else {
-                $this->login_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wp-user-frontend' );
+                $message              = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wp-user-frontend' );
+                $this->login_errors[] = $message;
+
+                $this->report_login_failed( $log, new WP_Error( 'invalid_email', $message ) );
 
                 return;
             }
@@ -714,6 +717,9 @@ class Simple_Login {
 
             if ( is_wp_error( $validate ) ) {
                 $this->login_errors[] = $validate->get_error_message();
+
+                $this->report_login_failed( $user->user_login, $validate );
+
                 return;
             }
         }
@@ -745,6 +751,25 @@ class Simple_Login {
             wp_safe_redirect( apply_filters( 'wpuf_login_redirect', $redirect, $user ) );
             exit;
         }
+    }
+
+    /**
+     * Report a login rejected before wp_signon() as a failed login
+     *
+     * The e-mail checks in process_login() stop the request before
+     * wp_authenticate() runs, so login limit plugins would never count those
+     * attempts. Fires `wp_login_failed` once, as core does for a failed sign-in.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string    $username Username the attempt was for, or the submitted value.
+     * @param \WP_Error $error    Why the login was rejected.
+     *
+     * @return void
+     */
+    private function report_login_failed( $username, $error ) {
+        /** This action is documented in wp-includes/pluggable.php */
+        do_action( 'wp_login_failed', $username, $error );
     }
 
     /**

@@ -110,21 +110,15 @@ test.describe( 'Post-Form-Guest-And-Setup', () => {
         expect( [ 'draft', 'pending' ] ).toContain( getPostField( guestPostId, 'post_status' ) );
     } );
 
-    // BUG (see BUGS-FOUND.md #24): Frontend_Form::publish_guest_post() refuses to
-    // verify unless `post_author === 0`, but Frontend_Form_Ajax::set_post_author()
-    // always assigns an author for a guest post — the freshly created user when
-    // `guest_details` is on, `default_post_owner` when it is off. The two halves
-    // contradict each other, so guest email verification can never succeed.
-    test( 'PFG0060a : An unverified guest post stays authorless', { tag: [ '@Lite', '@Test_PFG0060a' ] }, async () => {
+    // The guest path always stores a real author (the auto-created guest user, or
+    // the default post owner when guest details are off); publish_guest_post()
+    // gates on the form and the pending-verification marker, not on author 0.
+    test( 'PFG0060a : An unverified guest post keeps a real author', { tag: [ '@Lite', '@Test_PFG0060a' ] }, async () => {
         test.skip( ! guestPostId, 'PFG0060 did not produce a guest submission' );
-        test.fail();
-        expect( getPostField( guestPostId, 'post_author' ) ).toBe( '0' );
+        expect( getPostField( guestPostId, 'post_author' ) ).not.toBe( '0' );
     } );
 
-    // Blocked by the same defect as PFG0060a — the guard rejects every guest post
-    // because none of them is authorless.
     test( 'PFG0061 : The verification link publishes the post', { tag: [ '@Lite', '@Test_PFG0061' ] }, async () => {
-        test.fail();
         const editor = new PostFormGapsPage( page );
 
         // WPUF mails `?post_msg=verified&p_id=<enc>&f_id=<enc>`; rebuilding it with
@@ -150,9 +144,6 @@ test.describe( 'Post-Form-Guest-And-Setup', () => {
         // plugin there is nothing to read it back from.
         test.skip( ! hasMailLog, 'No mail-log plugin on this site — guest notification cannot be read' );
 
-        // Blocked by BUGS-FOUND #24: verification never completes, so the
-        // post-verification admin notification is never sent.
-        test.fail();
         await expect( page.locator( 'body' ) ).toContainText( guestPostTitle );
     } );
 

@@ -1242,7 +1242,7 @@ class Simple_Login {
             ? strtoupper( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) )
             : 'GET';
 
-        if ( 'GET' !== $request_method ) {
+        if ( 'GET' !== $request_method && ! $this->wp_login_post_skips_wpuf_captcha() ) {
             return;
         }
 
@@ -1270,6 +1270,27 @@ class Simple_Login {
             wp_safe_redirect( $login_page_url );
             exit;
         }
+    }
+
+    /**
+     * Whether a credential post to wp-login.php would skip the WPUF login captcha
+     *
+     * wp-login.php only checks reCAPTCHA when a response is posted and can not
+     * check Turnstile at all, so while the WPUF login form asks for one of them
+     * such posts keep being sent to the WPUF login page.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    private function wp_login_post_skips_wpuf_captcha() {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        if ( 'on' === wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' ) && empty( $_POST['g-recaptcha-response'] ) ) {
+            return true;
+        }
+
+        return 'on' === wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' )
+            && 'on' === wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' );
     }
 
     /**

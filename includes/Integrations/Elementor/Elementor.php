@@ -15,6 +15,15 @@ namespace WeDevs\Wpuf\Integrations\Elementor;
 class Elementor {
 
     /**
+     * Option holding the IDs of the pages with the User Directory widget
+     *
+     * @since WPUF_SINCE
+     *
+     * @var string
+     */
+    const WIDGET_PAGES_OPTION = 'wpuf_ud_elementor_pages';
+
+    /**
      * Constructor
      *
      * @since 4.0.0
@@ -310,84 +319,102 @@ class Elementor {
 
         $has_widget = ! empty( $elementor_data ) && is_string( $elementor_data ) && strpos( $elementor_data, '"widgetType":"wpuf-user-directory"' ) !== false;
 
-        // Keep a queryable meta flag so register_elementor_page_rewrite_rules() can find
-        // these pages efficiently without scanning all _elementor_data values on every init.
+        $page_ids = $this->get_widget_page_ids();
+        $listed   = in_array( (int) $post_id, $page_ids, true );
+
         if ( $has_widget ) {
-            // The meta flag puts this page on the fast meta_query path, so no back-fill re-scan is needed.
-            update_post_meta( $post_id, '_wpuf_has_ud_elementor_widget', '1' );
+            if ( ! $listed ) {
+                $page_ids[] = (int) $post_id;
+                update_option( self::WIDGET_PAGES_OPTION, $page_ids, true );
+            }
+
             delete_transient( 'wpuf_ud_directory_pages' );
 
-            // This request's init ran before the flag existed, so add the page's rule before the flush saves the rules.
+            // This request's init ran before the page was listed, so add the page's rule before the flush saves the rules.
             if ( 'publish' === $post->post_status ) {
                 $this->add_page_rewrite_rule( $post->post_name );
             }
 
             flush_rewrite_rules();
-        } else {
-            delete_post_meta( $post_id, '_wpuf_has_ud_elementor_widget' );
+        } elseif ( $listed ) {
+            update_option( self::WIDGET_PAGES_OPTION, array_values( array_diff( $page_ids, [ (int) $post_id ] ) ), true );
+            delete_transient( 'wpuf_ud_directory_pages' );
         }
+    }
+
+    /**
+     * IDs of the pages that hold the User Directory widget
+     *
+     * Kept in one autoloaded option, maintained on Elementor save, so a normal
+     * request reads it without a query. Pages saved before the option existed are
+     * found once by a scan of the published pages.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return int[]
+     */
+    private function get_widget_page_ids() {
+        $page_ids = get_option( self::WIDGET_PAGES_OPTION, false );
+
+        if ( is_array( $page_ids ) ) {
+            return array_map( 'intval', $page_ids );
+        }
+
+        $page_ids  = [];
+        $all_pages = get_posts(
+            [
+                'post_type'      => 'page',
+                'post_status'    => 'publish',
+                'posts_per_page' => -1,
+            ]
+        );
+
+        foreach ( $all_pages as $page ) {
+            $elementor_data = get_post_meta( $page->ID, '_elementor_data', true );
+
+            if ( ! empty( $elementor_data ) && is_string( $elementor_data ) && strpos( $elementor_data, '"widgetType":"wpuf-user-directory"' ) !== false ) {
+                $page_ids[] = (int) $page->ID;
+            }
+        }
+
+        // Saved even when empty, so the scan runs only once.
+        update_option( self::WIDGET_PAGES_OPTION, $page_ids, true );
+
+        if ( ! empty( $page_ids ) ) {
+            // Rules are added on this init; flush once they are, so they are saved.
+            add_action( 'init', 'flush_rewrite_rules', 99 );
+        }
+
+        return $page_ids;
     }
 
     /**
      * Register pretty URL rewrite rules for pages using the User Directory Elementor widget
      *
      * This runs directly on init (priority 5) so the rules are registered regardless of
-     * whether the free or Pro module is handling PrettyUrls. Pages are found via a post
-     * meta flag (_wpuf_has_ud_elementor_widget) set in maybe_flush_rules_on_elementor_save().
+     * whether the free or Pro module is handling PrettyUrls.
      *
      * @since WPUF_SINCE
      *
      * @return void
      */
     public function register_elementor_page_rewrite_rules() {
-        // Fast path: query only pages that have been flagged via the meta key.
-        // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+        $page_ids = $this->get_widget_page_ids();
+
+        if ( empty( $page_ids ) ) {
+            return;
+        }
+
         $pages = get_posts(
             [
-				'post_type'      => 'page',
-				'post_status'    => 'publish',
-				'posts_per_page' => -1,
-				'meta_query'     => [
-					[
-						'key'     => '_wpuf_has_ud_elementor_widget',
-						'value'   => '1',
-						'compare' => '=',
-					],
-				],
-			]
+                'post_type'              => 'page',
+                'post_status'            => 'publish',
+                'post__in'               => $page_ids,
+                'posts_per_page'         => -1,
+                'update_post_meta_cache' => false,
+                'update_post_term_cache' => false,
+            ]
         );
-
-        // Fallback: if no flagged pages exist (e.g. first deploy, meta not yet written),
-        // scan _elementor_data for existing pages and back-fill the meta flag so future
-        // requests use the fast path. This only runs once until a page is found.
-        // Run the expensive all-pages back-fill scan at most once per cache window
-        // instead of on every front-end init. The meta flag is written on page save,
-        // so the fast path above handles new widget pages; this scan only migrates
-        // pages that pre-date the flag.
-        if ( empty( $pages ) && false === get_transient( 'wpuf_ud_elementor_backfill_done' ) ) {
-            $all_pages = get_posts(
-                [
-					'post_type'      => 'page',
-					'post_status'    => 'publish',
-					'posts_per_page' => -1,
-				]
-            );
-
-            foreach ( $all_pages as $page ) {
-                $elementor_data = get_post_meta( $page->ID, '_elementor_data', true );
-                if ( ! empty( $elementor_data ) && is_string( $elementor_data ) && strpos( $elementor_data, '"widgetType":"wpuf-user-directory"' ) !== false ) {
-                    update_post_meta( $page->ID, '_wpuf_has_ud_elementor_widget', '1' );
-                    $pages[] = $page;
-                }
-            }
-
-            set_transient( 'wpuf_ud_elementor_backfill_done', 1, DAY_IN_SECONDS );
-
-            // If we found pages via the fallback scan, flush so the new rules take effect.
-            if ( ! empty( $pages ) ) {
-                flush_rewrite_rules();
-            }
-        }
 
         foreach ( $pages as $page ) {
             $this->add_page_rewrite_rule( $page->post_name );
@@ -427,6 +454,7 @@ class Elementor {
      */
     public function add_elementor_directory_pages( $directory_pages, $all_pages ) {
         $existing_ids = wp_list_pluck( $directory_pages, 'ID' );
+        $widget_ids   = $this->get_widget_page_ids();
 
         foreach ( $all_pages as $page ) {
             // Skip pages already detected via shortcode
@@ -434,9 +462,7 @@ class Elementor {
                 continue;
             }
 
-            $elementor_data = get_post_meta( $page->ID, '_elementor_data', true );
-
-            if ( ! empty( $elementor_data ) && is_string( $elementor_data ) && strpos( $elementor_data, '"widgetType":"wpuf-user-directory"' ) !== false ) {
+            if ( in_array( (int) $page->ID, $widget_ids, true ) ) {
                 $directory_pages[] = $page;
             }
         }

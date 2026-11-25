@@ -54,7 +54,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         if ( ! in_array( $this->tax_name, $free_taxonomies, true ) && ! wpuf_is_pro_active() ) {
             return true;
         }
-        
+
         return false;
     }
 
@@ -281,10 +281,9 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
                     <?php $this->taxnomy_select( null ); ?>
                 </div>
                 <?php
-            } else {
-                if ( $this->field_settings['type'] === 'ajax' ) {
+            } elseif ( $this->field_settings['type'] === 'ajax' ) {
                     $level = 0;
-                    ?>
+                ?>
                                 <div id="lvl<?php echo esc_attr( $level ); ?>" level="<?php echo esc_attr( $level ); ?>" >
 
                     <?php
@@ -359,7 +358,6 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
                                wp_dropdown_categories( $tax_args );
                         }
                     }
-                }
             }
             ?>
         </div>
@@ -409,7 +407,6 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         //         'selected' => []
         //     ]
         // ] );
-
     }
 
     public function tax_multiselect( $post_id = null ) {
@@ -459,7 +456,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
 
         ?>
 
-        <input class="textfield <?php echo esc_attr( $this->required_class( $attr ) ); echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $this->form_id ); ?>" id="<?php echo esc_attr( $attr['name'] ); ?>" type="text" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" value="<?php echo esc_attr( implode( ', ', $this->terms ) ); ?>" size="40" />
+        <input class="textfield <?php echo esc_attr( $this->required_class( $attr ) . ' wpuf_' . $field_settings['name'] . '_' . $this->form_id ); ?>" id="<?php echo esc_attr( $attr['name'] ); ?>" type="text" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" value="<?php echo esc_attr( implode( ', ', $this->terms ) ); ?>" size="40" />
 
         <script type="text/javascript">
             ;(function($) {

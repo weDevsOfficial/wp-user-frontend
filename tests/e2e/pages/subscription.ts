@@ -630,7 +630,13 @@ export class SubscriptionPage extends Base {
     }
 
     async editPreferances(buttonColor: string) {
+        // Preferences.vue loads the saved colour on mount; a value typed before that GET
+        // answers is overwritten with the old one, and the save then stores the old colour.
+        const loaded = this.page.waitForResponse(
+            (res) => res.url().includes('subscription-settings') && res.request().method() === 'GET'
+        );
         await this.validateAndClick(Selectors.subscription.newPackPage.packPreferences);
+        await loaded;
         await this.waitForLoading();
         await this.validateAndFillStrings(Selectors.subscription.newPackPage.inputColor, buttonColor);
         await this.waitForLoading();

@@ -10,9 +10,14 @@
     }
 
     if (!Array.prototype.hasOwnProperty('swap')) {
-        Array.prototype.swap = function (from, to) {
-            this.splice(to, 0, this.splice(from, 1)[0]);
-        };
+        // Not enumerable, so for...in and $.extend() over an array do not list it as an item.
+        Object.defineProperty(Array.prototype, 'swap', {
+            value: function (from, to) {
+                this.splice(to, 0, this.splice(from, 1)[0]);
+            },
+            writable: true,
+            configurable: true
+        });
     }
 
     // check if an element is visible in browser viewport

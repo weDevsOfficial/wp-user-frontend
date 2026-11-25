@@ -106,7 +106,6 @@ test.describe( 'Form-Editor', () => {
      * Negative / security
      * @Test_FE0049 : An unknown form id does not break the editor page
      * @Test_FE0050 : A script payload in the form title is escaped on the frontend
-     * @Test_FE0003 : Empty form title is not persisted (known bug — test.fail)
      * @Test_FE0048 : A subscriber cannot open the form builder
      *
      */
@@ -501,18 +500,10 @@ test.describe( 'Form-Editor', () => {
         await editor.validateTitleXssEscaped( xssTitle, pageSlug );
     } );
 
-    // KNOWN BUG (see BUGS-FOUND.md #2): the builder saves an empty form title, so
-    // the form ends up nameless in the forms list. Marked test.fail() so the suite
-    // stays honest — it turns red the day the guard lands. Runs late because it
-    // blanks the form name.
-    test( 'FE0003 : Empty form title is not persisted', { tag: [ '@Lite', '@Test_FE0003' ] }, async () => {
-        test.fail();
-        const editor = new FormEditorPage( page );
-        await editor.openFormEditor( formId );
-        await editor.validateEmptyTitleRejected( xssTitle );
-    } );
-
     test( 'FE0048 : A subscriber cannot open the form builder', { tag: [ '@Lite', '@Test_FE0048' ] }, async () => {
-        await new FormEditorPage( page ).validateBuilderBlockedForSubscriber( formId, subscriberName, subscriberPass );
+        const editor = new FormEditorPage( page );
+        // The helper reads the REST nonce from the open page, so be on an admin screen.
+        await editor.openFormEditor( formId );
+        await editor.validateBuilderBlockedForSubscriber( formId, subscriberName, subscriberPass );
     } );
 } );

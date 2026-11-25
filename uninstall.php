@@ -201,17 +201,32 @@ class WPUF_Uninstaller {
      * @return void
      */
     private function delete_forms() {
+        $post_types = [ 'wpuf_forms', 'wpuf_input', 'wpuf_subscription' ];
+        $pro        = $this->is_pro_installed();
+
+        // WP User Frontend Pro builds its registration forms on wpuf_profile, keep them while Pro is installed
+        if ( ! $pro ) {
+            $post_types[] = 'wpuf_profile';
+        }
+
         $posts = get_posts(
             [
-                'post_type'   => [ 'wpuf_forms', 'wpuf_profile', 'wpuf_input', 'wpuf_subscription' ],
+                'post_type'   => $post_types,
                 'post_status' => [ 'publish', 'draft', 'pending', 'private', 'future', 'trash' ],
                 'numberposts' => -1,
                 'fields'      => 'ids',
+                'orderby'     => 'ID',
+                'order'       => 'ASC',
             ]
         );
 
         // wp_delete_post() also removes each post's own meta
         foreach ( $posts as $post_id ) {
+            // the fields of a kept registration form stay with it
+            if ( $pro && 'wpuf_input' === get_post_type( $post_id ) && 'wpuf_profile' === get_post_type( wp_get_post_parent_id( $post_id ) ) ) {
+                continue;
+            }
+
             wp_delete_post( $post_id, true );
         }
     }
@@ -224,6 +239,8 @@ class WPUF_Uninstaller {
      * @return void
      */
     private function delete_settings() {
+        global $wpdb;
+
         $options = $this->get_options();
 
         // WP User Frontend Pro stores its own fields in these options too.
@@ -234,6 +251,11 @@ class WPUF_Uninstaller {
         foreach ( $options as $option ) {
             delete_option( $option );
         }
+
+        // Two-factor login user data. The TwoFactor code arrives with #1885, so the keys are
+        // matched by its known prefix: _wpuf_2fa_method_{id}_*, _wpuf_2fa_audit_log,
+        // _wpuf_2fa_failures and _wpuf_2fa_locked_until.
+        $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->usermeta} WHERE meta_key LIKE %s", $wpdb->esc_like( '_wpuf_2fa_' ) . '%' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
         foreach ( [ 'wpuf_activation_redirect', 'wpuf_ai_models_cache', 'wpuf_sort_order_migration_done', 'wpuf_ud_directory_pages' ] as $transient ) {
             delete_transient( $transient );
@@ -259,6 +281,14 @@ class WPUF_Uninstaller {
             'wpuf_mails',
             'wpuf_privacy',
             'wpuf_ai',
+            'wpuf_2fa',
+            // Pro feature sections free registers in its settings (Pro shares them)
+            'wpuf_content_restriction',
+            'wpuf_payment_invoices',
+            'wpuf_payment_tax',
+            'wpuf_seo_settings',
+            'wpuf_sms',
+            'wpuf_social_api',
             // other free options
             '_wpuf_page_created',
             'wpuf_address_options',
@@ -277,6 +307,7 @@ class WPUF_Uninstaller {
             'wpuf_preview_page',
             'wpuf_review_notice_dismiss',
             'wpuf_setup_wizard',
+            'wpuf_submission_form_cleared',
             'wpuf_subscription_settings',
             'wpuf_tax_rates',
             'wpuf_taxonomy_view_restrictions_enabled',
@@ -306,6 +337,12 @@ class WPUF_Uninstaller {
             'wpuf_base_country_state',
             'wpuf_address_options',
             'wpuf_taxonomy_view_restrictions_enabled',
+            'wpuf_content_restriction',
+            'wpuf_payment_invoices',
+            'wpuf_payment_tax',
+            'wpuf_seo_settings',
+            'wpuf_sms',
+            'wpuf_social_api',
         ];
     }
 

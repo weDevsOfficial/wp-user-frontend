@@ -45,7 +45,8 @@ Vue.component('builder-stage-v4-1', {
                 in_column_field = false;
 
                 // if the field drop in column field, then stop field rendering in the builder stage
-                $(".wpuf-column-inner-fields" ).on( "drop", function(event) {
+                // (namespaced and unbound first, so each drag does not stack another handler)
+                $(".wpuf-column-inner-fields" ).off( "drop.wpuf" ).on( "drop.wpuf", function(event) {
                     var targetColumn = event.currentTarget.classList,
                         isColumnExist = $.inArray(".wpuf-column-inner-fields", targetColumn);
 

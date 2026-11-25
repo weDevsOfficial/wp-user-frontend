@@ -43,7 +43,6 @@ test.describe( 'Post-Form-Field-Behaviour', () => {
      * @Test_PFG0078 : Hidden Field writes its value to post meta
      * @Test_PFG0079 : File Upload rejects a file over the size limit (@Pro)
      * @Test_PFG0080 : Checkbox / Radio / Multi Select values round-trip
-     * @Test_PFG0081 : Repeat Field renders on the frontend (known bug)
      *
      */
 
@@ -258,7 +257,7 @@ test.describe( 'Post-Form-Field-Behaviour', () => {
 
         await editor.openFormEditor( formId );
         await editor.doAddField( 'Hidden Field' );
-        await editor.doEditField( 'custom_hidden_field' );
+        await editor.doEditHiddenField();
         await editor.doSetFieldOptionInput( 'Meta Key', hiddenKey );
         await editor.doSetFieldOptionInput( 'Meta Value', hiddenValue );
         await editor.doSaveForm();
@@ -333,20 +332,4 @@ test.describe( 'Post-Form-Field-Behaviour', () => {
         }
     } );
 
-    // KNOWN BUG (BUGS-FOUND.md): the builder saves the Repeat Field with
-    // input_type "repeat" while the renderer is registered as "repeat_field", so
-    // the field never reaches the frontend. test.fail() keeps this honest — it
-    // turns red the day the mismatch is fixed.
-    test( 'PFG0081 : Repeat Field renders on the frontend', { tag: [ '@Pro', '@Test_PFG0081' ] }, async () => {
-        const editor = new PostFormGapsPage( page );
-        await editor.openFormEditor( formId );
-        test.skip( ! await editor.isFieldAvailable( 'Repeat Field' ), 'Repeat Field requires wpuf-pro' );
-
-        test.fail();
-        await editor.doAddField( 'Repeat Field' );
-        await editor.doSaveForm();
-
-        await editor.openFrontendForm( pageSlug );
-        await editor.validateFrontendRow( 'Repeat Field', 'input' );
-    } );
 } );

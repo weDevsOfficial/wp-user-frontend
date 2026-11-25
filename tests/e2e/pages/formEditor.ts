@@ -411,9 +411,11 @@ export class FormEditorPage extends Base {
         await expect( this.page.locator( this.fe.stage.fieldLabel( type ) ).first() ).toContainText( label );
     }
 
-    async validateHelpTextUpdatesStage( type: string, helpText: string ) {
+    // The stage renders help text as HTML (v-html), so markup in it shows up as
+    // elements, not text; pass the visible text as `expectedText` in that case.
+    async validateHelpTextUpdatesStage( type: string, helpText: string, expectedText = helpText ) {
         await this.validateAndFillStrings( this.fos.helpText, helpText );
-        await expect( this.page.locator( this.fe.stage.fieldByType( type ) ).first() ).toContainText( helpText );
+        await expect( this.page.locator( this.fe.stage.fieldByType( type ) ).first() ).toContainText( expectedText );
     }
 
     async validateRequiredTogglesAsterisk( type: string ) {
@@ -545,8 +547,13 @@ export class FormEditorPage extends Base {
 
     // pic-radio settings (form style) are opacity-0 radios behind a preview
     // image, so they need a forced check rather than a fill.
+    // Right after the editor opens, a late re-render can put the saved value
+    // back and undo the click, so retry until the pick sticks.
     async doPickRadioSetting( id: string, value: string ) {
-        await this.page.locator( this.fe.settings.radioOptionById( id, value ) ).first().check( { force: true } );
+        const radio = this.page.locator( this.fe.settings.radioOptionById( id, value ) ).first();
+        await expect( async () => {
+            await radio.check( { force: true, timeout: 5000 } );
+        } ).toPass( { timeout: 30000 } );
     }
 
     async validateRadioSettingPicked( id: string, value: string ) {

@@ -131,7 +131,8 @@ class WPUF_File_Logger {
         $upload_dir          = wp_get_upload_dir();
         $this->log_directory = apply_filters( 'wpuf_log_directory', $upload_dir['basedir'] . '/wpuf-logs' );
 
-        add_action( 'init', [ $this, 'write_cached_logs' ] );
+        // shutdown, not init: the logger is usually created after init, and entries cached then were never written
+        add_action( 'shutdown', [ $this, 'write_cached_logs' ] );
     }
 
     /**
@@ -200,6 +201,13 @@ class WPUF_File_Logger {
         }
 
         $this->open();
+
+        // file not writable yet: cache the raw entry, it is formatted once when written
+        if ( ! is_resource( $this->file_handle ) ) {
+            $this->cache_log( $message, $level );
+
+            return true;
+        }
 
         $message = $this->format_message(
             [
@@ -273,11 +281,9 @@ class WPUF_File_Logger {
      * @return bool
      */
     protected function write( $message, $level = self::INFO ) {
-        // file is not yet ready to write, cached for later
+        // log() caches the raw entry before formatting, so a formatted message is never cached here
         if ( ! is_resource( $this->file_handle ) ) {
-            $this->cache_log( $message, $level );
-
-            return true;
+            return false;
         }
 
         fwrite( $this->file_handle, (string) $message ); // @codingStandardsIgnoreLine.
@@ -350,7 +356,7 @@ class WPUF_File_Logger {
 
     /**
      * Write cached logs. If a log is written too early in the request, pluggable functions may be unavailable.
-     * These logs will be cached and written on 'init' action.
+     * These logs will be cached and written on the 'shutdown' action.
      *
      * @since WPUF_SINCE
      *

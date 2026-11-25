@@ -1,4 +1,4 @@
-<div class="wpuf-fields wpuf-min-w-full">
+<div class="wpuf-fields wpuf-min-w-full" :style="{ textAlign: field.title_alignment || 'center' }">
     <div
         v-if="!field.divider || field.divider === 'regular'"
         class="wpuf-section-wrap">

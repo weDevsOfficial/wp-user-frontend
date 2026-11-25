@@ -315,6 +315,13 @@ class Elementor {
         if ( $has_widget ) {
             // The meta flag puts this page on the fast meta_query path, so no back-fill re-scan is needed.
             update_post_meta( $post_id, '_wpuf_has_ud_elementor_widget', '1' );
+            delete_transient( 'wpuf_ud_directory_pages' );
+
+            // This request's init ran before the flag existed, so add the page's rule before the flush saves the rules.
+            if ( 'publish' === $post->post_status ) {
+                $this->add_page_rewrite_rule( $post->post_name );
+            }
+
             flush_rewrite_rules();
         } else {
             delete_post_meta( $post_id, '_wpuf_has_ud_elementor_widget' );
@@ -383,13 +390,25 @@ class Elementor {
         }
 
         foreach ( $pages as $page ) {
-            $page_slug = $page->post_name;
-            add_rewrite_rule(
-                '^' . $page_slug . '/([^/]+)/?$',
-                'index.php?pagename=' . $page_slug . '&wpuf_user_profile=$matches[1]',
-                'top'
-            );
+            $this->add_page_rewrite_rule( $page->post_name );
         }
+    }
+
+    /**
+     * Add the profile pretty URL rewrite rule for one User Directory widget page
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $page_slug The page slug.
+     *
+     * @return void
+     */
+    private function add_page_rewrite_rule( $page_slug ) {
+        add_rewrite_rule(
+            '^' . $page_slug . '/([^/]+)/?$',
+            'index.php?pagename=' . $page_slug . '&wpuf_user_profile=$matches[1]',
+            'top'
+        );
     }
 
     /**

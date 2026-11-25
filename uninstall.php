@@ -312,6 +312,8 @@ class WPUF_Uninstaller {
             'wpuf_tax_rates',
             'wpuf_taxonomy_view_restrictions_enabled',
             'wpuf_ud_flush_rewrite_rules',
+            'wpuf_ud_elementor_pages',
+            'wpuf_guest_verify_resend_dismissed',
             'wpuf_version',
             'wpuf_whats_new',
             // usage tracking of the bundled Appsero client

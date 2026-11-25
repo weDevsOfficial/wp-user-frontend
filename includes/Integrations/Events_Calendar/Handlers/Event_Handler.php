@@ -24,6 +24,42 @@ class Event_Handler {
      */
     public function __construct( $compatibility_manager ) {
         $this->compatibility_manager = $compatibility_manager;
+
+        // Late, after Pro writes the venue / organizer back (priority 999).
+        add_action( 'wpuf_add_post_after_insert', [ $this, 'unlink_invalid_linked_posts' ], 1001 );
+        add_action( 'wpuf_edit_post_after_update', [ $this, 'unlink_invalid_linked_posts' ], 1001 );
+    }
+
+    /**
+     * Remove venue / organizer links that do not point to a venue / organizer
+     *
+     * The form saves the raw dropdown value into _EventVenueID / _EventOrganizerID.
+     * "- Select -" is -1, which TEC's meta sanitizing stores as post 1, so the
+     * event was linked to an unrelated post.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $post_id Saved post ID.
+     *
+     * @return void
+     */
+    public function unlink_invalid_linked_posts( $post_id ) {
+        if ( 'tribe_events' !== get_post_type( $post_id ) ) {
+            return;
+        }
+
+        $linked = [
+            '_EventVenueID'     => 'tribe_venue',
+            '_EventOrganizerID' => 'tribe_organizer',
+        ];
+
+        foreach ( $linked as $meta_key => $post_type ) {
+            foreach ( get_post_meta( $post_id, $meta_key, false ) as $linked_id ) {
+                if ( ! is_numeric( $linked_id ) || $post_type !== get_post_type( (int) $linked_id ) ) {
+                    delete_post_meta( $post_id, $meta_key, $linked_id );
+                }
+            }
+        }
     }
 
     /**

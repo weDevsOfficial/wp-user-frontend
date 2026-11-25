@@ -37,8 +37,6 @@ test.describe( 'Post-Form-Security', () => {
      * @Test_PFG0101 : Saving with an invalid nonce is refused
      * @Test_PFG0102 : Saving as a non-admin is refused
      * @Test_PFG0103 : A malformed field payload does not corrupt the form
-     * @Test_PFG0104 : Script payloads in label / help / placeholder are escaped
-     * @Test_PFG0105 : Script payloads in the unauthorized messages are escaped (@Pro)
      * @Test_PFG0106 : Custom HTML renders as authored (documented behaviour)
      * @Test_PFG0107 : A missing captcha answer blocks submit (env-gated)
      *
@@ -176,12 +174,7 @@ test.describe( 'Post-Form-Security', () => {
         await editor.openFrontendForm( pageSlug );
     } );
 
-    // BUG: Field_Contract::help_text() prints the field's help text unescaped
-    // (`echo stripslashes( $field['help'] )`), so a <script> in the help option
-    // runs on the frontend form. Label and placeholder are escaped. test.fail()
-    // keeps the expectation on record until the output is escaped.
     test( 'PFG0104 : Script payloads in label / help / placeholder are escaped', { tag: [ '@Lite', '@Test_PFG0104' ] }, async () => {
-        test.fail();
         const editor = new PostFormGapsPage( page );
         await editor.openFormEditor( formId );
         await editor.doEditField( 'text_field' );

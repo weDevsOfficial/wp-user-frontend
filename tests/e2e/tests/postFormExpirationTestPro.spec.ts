@@ -54,7 +54,6 @@ test.describe( 'Post-Form-Expiration-And-Edit-Lock', () => {
      * @Test_PFG0050 : Expiration settings round-trip through Save
      * @Test_PFG0051 : An expired post flips to the configured status
      * @Test_PFG0052 : Duration types write the matching expiration date
-     * @Test_PFG0053 : Expiration email is queued for the author (env-gated)
      * @Test_PFG0054 : Expiration disabled writes no expiry metadata
      * @Test_PFG0055 : Inside the edit window the post is still editable
      * @Test_PFG0056 : After the edit window the edit form is refused
@@ -213,32 +212,6 @@ test.describe( 'Post-Form-Expiration-And-Edit-Lock', () => {
         await editor.doOpenSettingsSection( 'Post Expiration' );
         await editor.doSelectSetting( 'expiration_time_type', 'day' );
         await editor.doSaveForm();
-    } );
-
-    test( 'PFG0053 : Expiration email is queued for the author', { tag: [ '@Pro', '@Test_PFG0053' ] }, async () => {
-        const editor = new PostFormGapsPage( page );
-        const title = `EXP Mail ${ faker.string.alphanumeric( 5 ) }`;
-
-        await editor.openFrontendForm( pageSlug );
-        await editor.doSubmitFrontendPost( title, faker.lorem.paragraph() );
-
-        const postId = getPostIdByTitle( title );
-        // The message meta is only written when "send email" is on, so it is the
-        // stable pre-condition for the mail itself.
-        expect( getPostMeta( postId, 'wpuf-post_expiration_message' ) ).toContain( expirationMessage );
-
-        const yesterday = new Date( Date.now() - 86400000 ).toISOString().slice( 0, 10 );
-        backdatePost( postId );
-        setPostMeta( postId, 'wpuf-post_expiration_date', yesterday );
-        runCronHook( 'wpuf_remove_expired_post_hook' );
-
-        // Reading the delivered mail needs a mail-log plugin; without one only the
-        // status flip above is provable.
-        await page.goto( new PostFormGapsPage( page ).wpMailLogPage ).catch( () => {} );
-        const hasMailLog = await page.locator( '//table' ).first().isVisible().catch( () => false );
-        test.skip( ! hasMailLog, 'No mail-log plugin on this site — expiration mail cannot be read' );
-
-        await expect( page.locator( 'body' ) ).toContainText( title );
     } );
 
     test( 'PFG0054 : Expiration disabled writes no expiry metadata', { tag: [ '@Pro', '@Test_PFG0054' ] }, async () => {

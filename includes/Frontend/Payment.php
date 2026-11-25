@@ -324,7 +324,11 @@ class Payment {
                                     // Coupon UI. Rendered here rather than by Pro so the
                                     // field keeps working on any Pro version, since Pro
                                     // only supplies the Ajax handlers.
-                                    if ( $pack_id && class_exists( 'WeDevs\Wpuf\Pro\Coupons' ) ) {
+                                    // A pay-per-post item only gets the box from a Pro that prices post coupons
+                                    // (it has get_payment_object()); older Pro priced every coupon from a pack.
+                                    $coupon_item_id = $pack_id ? $pack_id : ( method_exists( 'WeDevs\Wpuf\Pro\Coupons', 'get_payment_object' ) ? $post_id : 0 );
+
+                                    if ( $coupon_item_id && class_exists( 'WeDevs\Wpuf\Pro\Coupons' ) ) {
                                         ?>
                                         <a href="#" class="wpuf-coupon-show"><?php esc_html_e( 'Have a discount code?', 'wp-user-frontend' ); ?></a>
 
@@ -333,8 +337,8 @@ class Payment {
                                             <input type="text" name="coupon_code" size="20" class="wpuf-coupon-field" placeholder="<?php esc_attr_e( 'Coupon code', 'wp-user-frontend' ); ?>">
                                             <input type="hidden" name="coupon_id" size="20" class="wpuf-coupon-id-field">
                                             <div class="wpuf-coupon-actions">
-                                                <a href="#" data-pack_id="<?php echo esc_attr( $pack_id ); ?>" class="wpuf-apply-coupon"><?php esc_html_e( 'Apply Coupon', 'wp-user-frontend' ); ?></a>
-                                                <a href="#" data-pack_id="<?php echo esc_attr( $pack_id ); ?>" class="wpuf-coupon-cancel"><?php esc_html_e( 'Cancel', 'wp-user-frontend' ); ?></a>
+                                                <a href="#" data-pack_id="<?php echo esc_attr( $coupon_item_id ); ?>" class="wpuf-apply-coupon"><?php esc_html_e( 'Apply Coupon', 'wp-user-frontend' ); ?></a>
+                                                <a href="#" data-pack_id="<?php echo esc_attr( $coupon_item_id ); ?>" class="wpuf-coupon-cancel"><?php esc_html_e( 'Cancel', 'wp-user-frontend' ); ?></a>
                                             </div>
                                         </div>
                                         <?php

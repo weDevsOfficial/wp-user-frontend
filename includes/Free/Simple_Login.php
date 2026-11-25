@@ -692,58 +692,35 @@ class Simple_Login {
             }
         }
 
-        if ( is_email( $log ) && apply_filters( 'wpuf_get_username_from_email', true ) ) {
-            $user = get_user_by( 'email', $log );
+        // The password is checked only by wp_signon(), so every `authenticate`
+        // filter (login limits, 2FA, account status) runs for an e-mail login
+        // exactly as for a username. An unknown address goes to core unchanged.
+        $is_email_login = is_email( $log ) && apply_filters( 'wpuf_get_username_from_email', true );
+        $email_user     = $is_email_login ? get_user_by( 'email', $log ) : false;
 
-            if ( isset( $user->user_login ) ) {
-                $creds['user_login'] = $user->user_login;
-            } else {
-                $message              = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wp-user-frontend' );
-                $this->login_errors[] = $message;
-
-                $this->report_login_failed( $log, new WP_Error( 'invalid_email', $message ) );
-
-                return;
-            }
-        } else {
-            $creds['user_login'] = $log;
-        }
-
+        $creds['user_login']    = isset( $email_user->user_login ) ? $email_user->user_login : $log;
         $creds['user_password'] = $pwd;
         $creds['remember']      = isset( $_POST['rememberme'] ) ? sanitize_text_field( wp_unslash( $_POST['rememberme'] ) ) : '';
-
-        if ( isset( $user->user_login ) ) {
-            $validate = wp_authenticate_email_password( null, trim( $log ), $creds['user_password'] );
-
-            if ( is_wp_error( $validate ) ) {
-                $this->login_errors[] = $validate->get_error_message();
-
-                $this->report_login_failed( $user->user_login, $validate );
-
-                return;
-            }
-        }
 
         $secure_cookie = is_ssl() ? true : false;
         $user          = wp_signon( apply_filters( 'wpuf_login_credentials', $creds ), $secure_cookie );
 
         //try with old implementation, which is wrong but we must support that
-        // (#1238: the sanitized posted values). Only when they differ from what was
-        // just tried, and not when the password was right and 2FA paused the
-        // sign-in: a repeat would count the same attempt twice in wp_login_failed.
-        $legacy_login    = sanitize_text_field( wp_unslash( $_POST['log'] ) );
+        // (#1238: the sanitized posted password). Only when that password differs
+        // from the one just tried, and not when the password was right and 2FA
+        // paused the sign-in: a repeat would count the same attempt twice in
+        // wp_login_failed.
         $legacy_password = sanitize_text_field( wp_unslash( $_POST['pwd'] ) );
-        $legacy_differs  = $legacy_login !== $creds['user_login'] || $legacy_password !== $creds['user_password'];
 
-        if ( is_wp_error( $user ) && $legacy_differs && 0 !== strpos( $user->get_error_code(), 'wpuf_2fa_' ) ) {
-            $creds['user_login']    = $legacy_login;
+        if ( is_wp_error( $user ) && $legacy_password !== $creds['user_password'] && 0 !== strpos( $user->get_error_code(), 'wpuf_2fa_' ) ) {
+            $creds['user_login']    = sanitize_text_field( wp_unslash( $_POST['log'] ) );
             $creds['user_password'] = $legacy_password;
 
             $user = wp_signon( apply_filters( 'wpuf_login_credentials', $creds ), $secure_cookie );
         }
 
         if ( is_wp_error( $user ) ) {
-            $this->login_errors[] = $user->get_error_message();
+            $this->login_errors[] = $is_email_login ? $this->email_login_error_message( $user, $log ) : $user->get_error_message();
 
             return;
         } else {
@@ -754,22 +731,34 @@ class Simple_Login {
     }
 
     /**
-     * Report a login rejected before wp_signon() as a failed login
+     * Error shown for a failed e-mail login
      *
-     * The e-mail checks in process_login() stop the request before
-     * wp_authenticate() runs, so login limit plugins would never count those
-     * attempts. Fires `wp_login_failed` once, as core does for a failed sign-in.
+     * The password is checked by wp_signon() against the username the address
+     * belongs to, so core words a wrong password for that username. Keep the
+     * texts an e-mail login has always shown (core's own e-mail wording).
      *
      * @since WPUF_SINCE
      *
-     * @param string    $username Username the attempt was for, or the submitted value.
-     * @param \WP_Error $error    Why the login was rejected.
+     * @param \WP_Error $error Error from wp_signon().
+     * @param string    $email Submitted e-mail address.
      *
-     * @return void
+     * @return string
      */
-    private function report_login_failed( $username, $error ) {
-        /** This action is documented in wp-includes/pluggable.php */
-        do_action( 'wp_login_failed', $username, $error );
+    private function email_login_error_message( $error, $email ) {
+        switch ( $error->get_error_code() ) {
+            case 'invalid_email':
+                return '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wp-user-frontend' );
+
+            case 'incorrect_password':
+                return sprintf(
+                    /* translators: %s: Email address. */
+                    __( '<strong>Error:</strong> The password you entered for the email address %s is incorrect.', 'default' ), // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- core's own string, same text and translation as before.
+                    '<strong>' . esc_html( $email ) . '</strong>'
+                ) . ' <a href="' . esc_url( wp_lostpassword_url() ) . '">' . __( 'Lost your password?', 'default' ) . '</a>'; // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch -- core's own string.
+
+            default:
+                return $error->get_error_message();
+        }
     }
 
     /**

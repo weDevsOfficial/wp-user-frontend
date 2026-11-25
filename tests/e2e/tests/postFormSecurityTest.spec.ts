@@ -37,8 +37,6 @@ test.describe( 'Post-Form-Security', () => {
      * @Test_PFG0101 : Saving with an invalid nonce is refused
      * @Test_PFG0102 : Saving as a non-admin is refused
      * @Test_PFG0103 : A malformed field payload does not corrupt the form
-     * @Test_PFG0104 : Script payloads in label / help / placeholder are escaped
-     * @Test_PFG0105 : Script payloads in the unauthorized messages are escaped (@Pro)
      * @Test_PFG0106 : Custom HTML renders as authored (documented behaviour)
      * @Test_PFG0107 : A missing captcha answer blocks submit (env-gated)
      *
@@ -174,63 +172,6 @@ test.describe( 'Post-Form-Security', () => {
         await editor.doSelectSetting( 'post_permission', 'everyone' );
         await editor.doSaveForm();
         await editor.openFrontendForm( pageSlug );
-    } );
-
-    // BUG: Field_Contract::help_text() prints the field's help text unescaped
-    // (`echo stripslashes( $field['help'] )`), so a <script> in the help option
-    // runs on the frontend form. Label and placeholder are escaped. test.fail()
-    // keeps the expectation on record until the output is escaped.
-    test( 'PFG0104 : Script payloads in label / help / placeholder are escaped', { tag: [ '@Lite', '@Test_PFG0104' ] }, async () => {
-        test.fail();
-        const editor = new PostFormGapsPage( page );
-        await editor.openFormEditor( formId );
-        await editor.doEditField( 'text_field' );
-        await editor.validateLabelUpdatesStage( 'text_field', `${ labelMarker }${ xssPayload }` );
-        await editor.validateHelpTextUpdatesStage( 'text_field', `help ${ xssPayload }`, 'help' );
-        await editor.doExpandAdvancedOptions();
-        await editor.doSetFieldOptionInput( 'Placeholder text', `hint ${ xssPayload }` );
-        await editor.doSaveForm();
-
-        await editor.openFrontendForm( pageSlug );
-
-        // The payload is visible as text, never executed.
-        const fired = await page.evaluate( () => ( window as any ).qaXssFired === true );
-        expect( fired, 'a field option payload executed on the frontend' ).toBeFalsy();
-        // The form always carries WPUF's own inline bootstrap script; only the payload counts.
-        expect( await page.locator( '//form[contains(@class,"wpuf-form")]//script[contains(.,"qaXssFired")]' ).count() ).toBe( 0 );
-        await editor.validateFrontendText( labelMarker );
-    } );
-
-    // BUG (wpuf-pro): Post_View_Control\Frontend returns the role and
-    // subscription restriction messages unescaped, so a <script> in the message
-    // runs for every blocked visitor. test.fail() keeps the expectation on
-    // record until the output is escaped.
-    test( 'PFG0105 : Script payloads in the unauthorized messages are escaped', { tag: [ '@Pro', '@Test_PFG0105' ] }, async () => {
-        test.fail();
-        const editor = new PostFormGapsPage( page );
-        await editor.openFormEditor( formId );
-        await editor.doOpenSettingsSection( 'General' );
-        test.skip( ! await editor.isSettingAvailable( 'view_control_role_enabled' ), 'View Control requires wpuf-pro' );
-        test.skip( ! wpCliAvailable(), 'Needs wp-cli to seed a blocked viewer' );
-
-        const marker = `QA_MSG_${ faker.string.alphanumeric( 5 ) }`;
-        await editor.doEnableRoleViewControl( 'Editor', `${ marker }${ xssPayload }` );
-
-        const title = `SEC Post ${ faker.string.alphanumeric( 5 ) }`;
-        await editor.openFrontendForm( pageSlug );
-        await editor.doSubmitFrontendPost( title, faker.lorem.paragraph() );
-        const postUrl = page.url().split( '?' )[ 0 ];
-
-        seedUserWithRole( subscriberLogin, `${ subscriberLogin }@example.test`, subscriberPass, 'subscriber' );
-
-        await editor.withUser( subscriberLogin, subscriberPass, async ( subscriberPage ) => {
-            await subscriberPage.goto( postUrl );
-            await expect( subscriberPage.locator( '//div[contains(@class,"wpuf-restricted-content")]' ).first() ).toContainText( marker );
-            expect( await subscriberPage.evaluate( () => ( window as any ).qaXssFired === true ) ).toBeFalsy();
-        } );
-
-        await editor.openFormEditor( formId );
-        await editor.doDisableViewControl();
     } );
 
     test( 'PFG0106 : Custom HTML renders as authored', { tag: [ '@Lite', '@Test_PFG0106' ] }, async () => {

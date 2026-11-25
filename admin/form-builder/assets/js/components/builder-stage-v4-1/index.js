@@ -30,9 +30,17 @@ Vue.component('builder-stage-v4-1', {
         // bind jquery ui sortable
         $('#form-preview-stage, #form-preview-stage .wpuf-form.sortable-list').sortable({
             placeholder: 'form-preview-stage-dropzone',
+            // lets a stage field be dropped into a column field, see form-column_field receive
+            connectWith: '.wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
+            // a column is entered when the pointer is over it, not when half of the dragged field is
+            forcePointerForContainers: true,
             items: '.field-items',
             handle: '.field-buttons .move',
             scroll: true,
+            start: function () {
+                // the lifted field changes the layout, re-read it so the drop targets match the screen
+                $(this).sortable('refreshPositions');
+            },
             over: function() {
                 in_column_field = false;
 
@@ -67,7 +75,7 @@ Vue.component('builder-stage-v4-1', {
                     // remove button from stage
                     $(this).find('.wpuf-field-button').remove();
 
-                } else if ('stage' === source) {
+                } else if ('stage' === source && ! $(item).closest('.wpuf-column-fields-sortable-list').length) {
                     payload.fromIndex = parseInt(data.index);
 
                     self.$store.commit('swap_form_field_elements', payload);

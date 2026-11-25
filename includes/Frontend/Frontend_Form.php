@@ -554,6 +554,15 @@ class Frontend_Form extends Frontend_Render_Form {
                 wpuf_clear_buffer();
                 wp_send_json_error( $response );
             }
+
+            // Already paid: use the token up, so the same link can not fire the
+            // verified hook again. While payment is pending the link stays usable
+            // to reach the payment page.
+            if ( ! delete_post_meta( $post_id, self::$guest_verify_token_id, $stored_token ) ) {
+                wp_die( esc_html__( 'This post has already been published.', 'wp-user-frontend' ) );
+            }
+
+            update_post_meta( $post_id, self::$guest_verify_id, 'no' );
         } else {
             $p_status = get_post_status( $post_id );
 

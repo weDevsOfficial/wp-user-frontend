@@ -881,10 +881,10 @@ trait FieldableTrait {
                 $value_name = isset( $post_data[ $value['name'] ] ) ? array_map(
                     function ( $item ) {
                         return wpuf_strip_shortcodes_fully( sanitize_text_field( $item ) );
-                    }, wp_unslash( $post_data[ $value['name'] ] )
+                    }, $post_data[ $value['name'] ] // already unslashed above; a second pass drops real backslashes
                 ) : '';
             } else {
-                $value_name = isset( $post_data[ $value['name'] ] ) ? wpuf_strip_shortcodes_fully( sanitize_text_field( wp_unslash( $post_data[ $value['name'] ] ) ) ) : '';
+                $value_name = isset( $post_data[ $value['name'] ] ) ? wpuf_strip_shortcodes_fully( sanitize_text_field( $post_data[ $value['name'] ] ) ) : '';
             }
 
             if ( isset( $post_data['wpuf_files'][ $value['name'] ] ) ) {

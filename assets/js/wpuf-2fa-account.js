@@ -26,6 +26,7 @@
 
         var ajaxUrl = $root.data('ajax-url');
         var nonce   = $root.data('nonce');
+        var i18n    = (window.wpuf2faAccount && window.wpuf2faAccount.i18n) || {};
 
         function showMessage($container, message, isError) {
             var $msg = $container.find('.wpuf-2fa-message').first();
@@ -49,7 +50,7 @@
                 html +=   '<div class="wpuf-2fa-qr-target">' + (props.qr_svg || '') + '</div>';
                 html +=   '<div class="wpuf-flex-1 wpuf-min-w-0">';
                 html +=     '<label class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 wpuf-mb-1">';
-                html +=       'Manual entry key';
+                html +=       escapeHtml(i18n.manualEntryKey);
                 html +=     '</label>';
                 html +=     '<input type="text" readonly value="' + escapeAttr(props.secret || '') + '"';
                 html +=       ' class="wpuf-font-mono wpuf-text-sm wpuf-w-full wpuf-max-w-xs wpuf-border wpuf-border-gray-300 wpuf-rounded-md wpuf-bg-gray-50 wpuf-text-gray-700 wpuf-px-3 wpuf-py-2" />';
@@ -104,7 +105,7 @@
                 if (!response || !response.success) {
                     var msg = (response && response.data && response.data.message)
                         ? response.data.message
-                        : 'Could not start setup.';
+                        : i18n.startFailed;
                     showMessage($enroll, msg, true);
                     $btn.prop('disabled', false);
                     return;
@@ -122,7 +123,7 @@
                 $enroll.removeClass('wpuf-hidden');
                 $enroll.find('.wpuf-2fa-method-code').focus();
             }).fail(function () {
-                showMessage($enroll, 'Network error. Please try again.', true);
+                showMessage($enroll, i18n.networkError, true);
                 $btn.prop('disabled', false);
             });
         });
@@ -137,7 +138,7 @@
             var code     = $enroll.find('.wpuf-2fa-method-code').val();
 
             if (!code) {
-                showMessage($enroll, 'Enter the verification code.', true);
+                showMessage($enroll, i18n.enterCode, true);
                 return;
             }
 
@@ -152,7 +153,7 @@
                 if (!response || !response.success) {
                     var msg = (response && response.data && response.data.message)
                         ? response.data.message
-                        : 'Could not verify the code.';
+                        : i18n.verifyFailed;
                     showMessage($enroll, msg, true);
                     $btn.prop('disabled', false);
 
@@ -167,7 +168,7 @@
                 showMessage($enroll, response.data.message, false);
                 window.setTimeout(function () { window.location.reload(); }, 800);
             }).fail(function () {
-                showMessage($enroll, 'Network error. Please try again.', true);
+                showMessage($enroll, i18n.networkError, true);
                 $btn.prop('disabled', false);
             });
         });
@@ -191,13 +192,13 @@
                 if (!response || !response.success) {
                     var msg = (response && response.data && response.data.message)
                         ? response.data.message
-                        : 'Could not send the code.';
+                        : i18n.sendFailed;
                     showMessage($form, msg, true);
                     return;
                 }
                 showMessage($form, response.data.message, false);
             }).fail(function () {
-                showMessage($form, 'Network error. Please try again.', true);
+                showMessage($form, i18n.networkError, true);
                 $btn.prop('disabled', false);
             });
         });
@@ -213,11 +214,11 @@
             var code      = $form.find('.wpuf-2fa-disable-code').val();
 
             if (!password) {
-                showMessage($form, 'Enter your current password.', true);
+                showMessage($form, i18n.enterPassword, true);
                 return;
             }
             if (!code) {
-                showMessage($form, 'Enter the verification code.', true);
+                showMessage($form, i18n.enterCode, true);
                 return;
             }
 
@@ -233,7 +234,7 @@
                 if (!response || !response.success) {
                     var msg = (response && response.data && response.data.message)
                         ? response.data.message
-                        : 'Could not disable 2FA.';
+                        : i18n.disableFailed;
                     showMessage($form, msg, true);
                     $btn.prop('disabled', false);
                     return;
@@ -242,7 +243,7 @@
                 showMessage($form, response.data.message, false);
                 window.setTimeout(function () { window.location.reload(); }, 800);
             }).fail(function () {
-                showMessage($form, 'Network error. Please try again.', true);
+                showMessage($form, i18n.networkError, true);
                 $btn.prop('disabled', false);
             });
         });

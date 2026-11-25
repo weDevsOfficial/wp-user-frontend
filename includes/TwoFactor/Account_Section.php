@@ -57,6 +57,22 @@ class Account_Section {
         $methods = $this->registry->active();
 
         wp_enqueue_script( 'wpuf-2fa-account' );
+        wp_localize_script(
+            'wpuf-2fa-account',
+            'wpuf2faAccount',
+            [
+                'i18n' => [
+                    'manualEntryKey' => __( 'Manual entry key', 'wp-user-frontend' ),
+                    'startFailed'    => __( 'Could not start setup.', 'wp-user-frontend' ),
+                    'networkError'   => __( 'Network error. Please try again.', 'wp-user-frontend' ),
+                    'enterCode'      => __( 'Enter the verification code.', 'wp-user-frontend' ),
+                    'verifyFailed'   => __( 'Could not verify the code.', 'wp-user-frontend' ),
+                    'sendFailed'     => __( 'Could not send the code.', 'wp-user-frontend' ),
+                    'enterPassword'  => __( 'Enter your current password.', 'wp-user-frontend' ),
+                    'disableFailed'  => __( 'Could not disable 2FA.', 'wp-user-frontend' ),
+                ],
+            ]
+        );
 
         wpuf_load_template(
             'dashboard/security.php',

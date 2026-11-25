@@ -497,6 +497,16 @@ function wpuf_settings_fields() {
                     'default' => 'off',
                 ],
                 [
+                    'name'    => 'login_popup',
+                    'label'   => __( 'Login Popup', 'wp-user-frontend' ),
+                    'desc'    => __(
+                        'If enabled, the Login link in restricted content messages and in post forms that need a login opens the login form in a popup, and the user comes back to the same page after logging in. Needs the Login Page above.',
+                        'wp-user-frontend'
+                    ),
+                    'type'    => 'checkbox',
+                    'default' => 'off',
+                ],
+                [
                     'name'    => 'login_form_recaptcha',
                     'label'   => __( 'reCAPTCHA in Login Form', 'wp-user-frontend' ),
                     'desc'    => __(

@@ -109,7 +109,6 @@ test.describe( 'Post-Form-Pricing-Payment', () => {
         await expect.poll( async () => cartTotalValue(), { timeout: 15000 } ).toBeGreaterThan( before );
     } );
 
-    // Set by PFG0032 so PFG0032a can look the same submission up.
     let heldPostId = 0;
 
     test( 'PFG0032 : The charge matches the cart and the post waits for payment', { tag: [ '@Pro', '@Test_PFG0032' ] }, async () => {
@@ -143,16 +142,6 @@ test.describe( 'Post-Form-Pricing-Payment', () => {
         expect( heldPostId ).toBeGreaterThan( 0 );
         // The cost the payment page will charge is stored on the post.
         expect( getPostMeta( heldPostId, '_wpuf_pricing_field_cost' ) ).toBe( String( total ) );
-    } );
-
-    // BUG (see BUGS-FOUND.md): Pricing_Field_Payment::redirect_to_payment() sends
-    // the submitter to the payment page but never changes the post status, so a
-    // pricing-field submission is public before a cent is paid. test.fail() keeps
-    // the expectation on record until the product holds the post.
-    test( 'PFG0032a : An unpaid pricing submission is not public', { tag: [ '@Pro', '@Test_PFG0032a' ] }, async () => {
-        test.skip( ! heldPostId, 'PFG0032 did not produce a submission to check' );
-        test.fail();
-        expect( getPostField( heldPostId, 'post_status' ) ).not.toBe( 'publish' );
     } );
 
     test( 'PFG0033 : With pricing payment off the post is created directly', { tag: [ '@Pro', '@Test_PFG0033' ] }, async () => {

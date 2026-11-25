@@ -49,9 +49,16 @@ export class PostFormGapsPage extends FormEditorPage {
 
     // Multi-selects keep every pick as an .item chip inside the selectize input.
     async doPickMultiSelectSetting( id: string, optionText: string ) {
-        await this.validateAndClick( this.gaps.settings.selectizeInput( id ) );
-        await this.validateAndClick( this.gaps.settings.selectizeOptionByText( id, optionText ) );
-        await expect( this.page.locator( this.gaps.settings.selectizeItem( id, optionText ) ).first() ).toBeVisible();
+        const item = this.page.locator( this.gaps.settings.selectizeItem( id, optionText ) ).first();
+
+        // A pick saved by an earlier test is still a chip, and selectize hides
+        // picked options from the dropdown, so there is nothing to click.
+        if ( ! await item.isVisible() ) {
+            await this.validateAndClick( this.gaps.settings.selectizeInput( id ) );
+            await this.validateAndClick( this.gaps.settings.selectizeOptionByText( id, optionText ) );
+        }
+
+        await expect( item ).toBeVisible();
     }
 
     async validateMultiSelectHas( id: string, optionText: string ) {
@@ -66,6 +73,16 @@ export class PostFormGapsPage extends FormEditorPage {
     /*********************************/
     /******** Field options **********/
     /*********************************/
+
+    // Hidden fields sit in their own "Hidden Fields" block below the stage; their
+    // row in the main list is hidden, so doEditField() can never hover it.
+    async doEditHiddenField() {
+        await this.doOpenTab( 'Form Editor' );
+        const row = this.page.locator( '//h4[normalize-space()="Hidden Fields"]/following-sibling::ul/li' ).last();
+        await row.hover();
+        await row.locator( 'xpath=.//span[normalize-space()="Edit"]' ).click();
+        await expect( this.page.locator( this.fe.panel.fieldOptionsPanel ) ).toBeVisible();
+    }
 
     // Structural fields (Section Break, Custom HTML, Shortcode, Action Hook,
     // Hidden Field, Terms & Conditions) render option inputs with no name or id,
@@ -286,7 +303,9 @@ export class PostFormGapsPage extends FormEditorPage {
 
     async getListedFormNames(): Promise<string[]> {
         return this.page
-            .locator( `${ this.gaps.formList.allRows }//span[1]` )
+            // The name is the span next to the row checkbox; a bare //span[1] also
+            // returns the status badge ("Published", "Draft") as a name.
+            .locator( `${ this.gaps.formList.allRows }//input[@type="checkbox"]/following-sibling::span[1]` )
             .evaluateAll( ( nodes ) => nodes.map( ( node ) => ( node.textContent || '' ).trim() ) );
     }
 

@@ -79,7 +79,10 @@ Vue.mixin({
                             var columnFieldIndex = 0;
 
                             while (columnFieldIndex < innerColumnFields[columnFields].length) {
-                                if (innerColumnFields[columnFields][columnFieldIndex].template === field_name) {
+                                var innerField = innerColumnFields[columnFields][columnFieldIndex];
+
+                                // Fields keyed by meta key (e.g. the Events Calendar group) match on name.
+                                if (innerField.template === field_name || innerField.name === field_name) {
                                     return true;
                                 }
                                 columnFieldIndex++;

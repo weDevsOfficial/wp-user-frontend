@@ -609,8 +609,10 @@ class Simple_Login {
         // we don't stack "Username is required" / "Password is required" /
         // "Cloudflare Turnstile verification failed" alongside the actual
         // 2FA error. The 2FA controller owns this request from `init`@9.
+        // The method picker (2+ methods enrolled) posts no credentials either,
+        // and is handled by the 2FA controller from `init`@8.
         // phpcs:ignore WordPress.Security.NonceVerification.Missing
-        if ( ! empty( $_POST['wpuf_2fa_token'] ) ) {
+        if ( ! empty( $_POST['wpuf_2fa_token'] ) || ! empty( $_POST['wpuf_2fa_selector_token'] ) ) {
             return;
         }
 

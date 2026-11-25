@@ -287,6 +287,8 @@ class Paypal {
     private function process_payment_capture( $payment ) {
         global $wpdb;
 
+        $claimed = false;
+
         try {
             // Get custom data from custom_id
             if ( ! isset( $payment['custom_id'] ) ) {
@@ -306,6 +308,14 @@ class Paypal {
                 throw new \Exception( 'Invalid payment amount: negative value' );
             }
 
+            // The browser return and the webhook both land here and can arrive together:
+            // only the request that claims the capture id goes on to record it.
+            $claimed = $this->claim_transaction( $payment['id'] );
+
+            if ( ! $claimed ) {
+                return;
+            }
+
             // Check if transaction already exists
             $existing = $wpdb->get_var(
                 $wpdb->prepare(
@@ -316,6 +326,8 @@ class Paypal {
             );
 
             if ( $existing ) {
+                $this->release_transaction( $payment['id'] );
+
                 return; // Exit if transaction already processed
             }
 
@@ -433,9 +445,48 @@ class Paypal {
             if ( ! empty( $custom_data['coupon_id'] ) ) {
                 $this->update_coupon_usage( $custom_data['coupon_id'] );
             }
+
+            $this->release_transaction( $payment['id'] );
         } catch ( \Exception $e ) {
+            if ( $claimed ) {
+                $this->release_transaction( $payment['id'] );
+            }
+
             throw $e;
         }
+    }
+
+    /**
+     * Claim a capture id so that only one request records it
+     *
+     * INSERT IGNORE on the unique option name is atomic; add_option() is not, because it upserts.
+     * shortcut: a request that dies mid-way leaves its claim behind, so that id is skipped until
+     * the option row is deleted; add an expiry if that is ever seen.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $transaction_id PayPal capture id
+     *
+     * @return bool True when this request owns the id
+     */
+    private function claim_transaction( $transaction_id ) {
+        global $wpdb;
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- an atomic insert is the point; the options API cannot do it.
+        return (bool) $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, %s, 'no')", 'wpuf_txn_lock_' . md5( 'paypal' . $transaction_id ), time() ) );
+    }
+
+    /**
+     * Release a capture id claimed by claim_transaction()
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $transaction_id PayPal capture id
+     *
+     * @return void
+     */
+    private function release_transaction( $transaction_id ) {
+        delete_option( 'wpuf_txn_lock_' . md5( 'paypal' . $transaction_id ) );
     }
 
     /**

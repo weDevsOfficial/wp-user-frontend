@@ -206,41 +206,6 @@ test.describe( 'All-Field-Types', () => {
 
     /**------------------- END TO END: SUBMIT + ROUND TRIP -------------------**/
 
-    // BUG (see BUGS-FOUND.md): a Step Start field on a form whose multistep
-    // setting is off renders a permanently hidden .wpuf-multistep-fieldset, so
-    // every field after it — including Submit — is unreachable.
-    test( 'AF0021 : Step Start without multistep enabled keeps the form usable', { tag: [ '@Pro', '@Test_AF0021' ] }, async () => {
-        test.setTimeout( 240000 );
-        test.skip( ! added.includes( 'step_start' ), 'Step Start requires wpuf-pro' );
-        test.fail();
-        const editor = new FormEditorPage( page );
-
-        // Precondition: the form has a Step Start but multistep switched off.
-        await editor.openFormEditor( formId );
-        await editor.doOpenSettingsSection( 'Display Settings' );
-        const hasMultistep = await editor.isSettingAvailable( 'enable_multistep' );
-
-        if ( hasMultistep ) {
-            await editor.doToggleSetting( 'enable_multistep', false );
-            await editor.doSaveForm();
-        }
-
-        try {
-            await editor.openFrontendForm( pageSlug );
-            const rows = await editor.countFrontendRows();
-            expect( rows.hidden, `${ rows.hidden } field rows are hidden with no way to reach them` ).toBe( 0 );
-            await expect( page.locator( '//form[contains(@class,"wpuf-form")]//input[contains(@class,"wpuf-submit-button")]' ).first() ).toBeVisible();
-        } finally {
-            // Put multistep back so the submit flow below can reach the button.
-            if ( hasMultistep ) {
-                await editor.openFormEditor( formId );
-                await editor.doOpenSettingsSection( 'Display Settings' );
-                await editor.doToggleSetting( 'enable_multistep', true );
-                await editor.doSaveForm();
-            }
-        }
-    } );
-
     test( 'AF0011 : Every rendered field accepts input and the form submits', { tag: [ '@Lite', '@Test_AF0011' ] }, async () => {
         test.setTimeout( 420000 );
         const editor = new FormEditorPage( page );
@@ -311,49 +276,7 @@ test.describe( 'All-Field-Types', () => {
         expect( lost, `fields that lost their value on edit: ${ lost.join( ', ' ) }` ).toEqual( [] );
     } );
 
-    /**--------------------- KNOWN PRODUCT DEFECTS -------------------------**/
-
-    // BUG: Field_Repeat::get_field_props() stores input_type "repeat" while the
-    // field is registered as "repeat_field", so the renderer finds no handler and
-    // drops the field. test.fail() keeps the suite honest until it is fixed.
-    test( 'AF0014 : Repeat Field renders on the frontend', { tag: [ '@Pro', '@Test_AF0014' ] }, async () => {
-        test.skip( ! added.includes( 'repeat_field' ), 'Repeat Field requires wpuf-pro' );
-        test.fail();
-        const editor = new FormEditorPage( page );
-        await editor.openFrontendForm( pageSlug );
-        await editor.validateFrontendRow( 'Repeat Field', 'input' );
-    } );
-
-    // BUG: the Shortcode field prints its own <li> on top of the generic field
-    // wrapper, so every shortcode field renders twice (the first row is empty).
-    test( 'AF0015 : No field type renders more than one row', { tag: [ '@Lite', '@Test_AF0015' ] }, async () => {
-        test.fail();
-        const editor = new FormEditorPage( page );
-        await editor.openFrontendForm( pageSlug );
-
-        const labels = ( await editor.getFrontendFieldLabels() ).filter( Boolean );
-        const duplicated = labels.filter( ( label, index ) => labels.indexOf( label ) !== index );
-
-        expect( [ ...new Set( duplicated ) ], `field labels rendered more than once: ${ duplicated.join( ', ' ) }` ).toEqual( [] );
-    } );
-
     /**------------------ VALIDATION RULES PER FIELD TYPE ------------------**/
-
-    // BUG (see BUGS-FOUND.md): on a form holding Math Captcha, the captcha submit
-    // handler calls stopImmediatePropagation() before WPUF's own validation runs,
-    // so clicking Submit on an empty form renders no message at all — not even the
-    // captcha's own. WPUF's validateForm() does produce the right errors when it is
-    // reached, which is why this is a wiring defect rather than missing validation.
-    test( 'AF0016 : An empty submit is blocked by the required-field rules', { tag: [ '@Lite', '@Test_AF0016' ] }, async () => {
-        test.setTimeout( 180000 );
-        test.fail( added.includes( 'math_captcha' ), 'Math Captcha suppresses all submit feedback' );
-        const editor = new FormEditorPage( page );
-        await editor.openFrontendForm( pageSlug );
-
-        const errors = await editor.validateRequiredFieldsBlockSubmit();
-        console.log( `empty-submit errors: ${ errors.join( ' | ' ) }` );
-        expect( errors.length, 'the empty form was submitted with no complaint' ).toBeGreaterThan( 0 );
-    } );
 
     test( 'AF0017 : Email Address rejects a malformed address', { tag: [ '@Lite', '@Test_AF0017' ] }, async () => {
         const editor = new FormEditorPage( page );

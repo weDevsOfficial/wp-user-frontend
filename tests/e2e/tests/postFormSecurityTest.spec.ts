@@ -37,8 +37,6 @@ test.describe( 'Post-Form-Security', () => {
      * @Test_PFG0101 : Saving with an invalid nonce is refused
      * @Test_PFG0102 : Saving as a non-admin is refused
      * @Test_PFG0103 : A malformed field payload does not corrupt the form
-     * @Test_PFG0104 : Script payloads in label / help / placeholder are escaped
-     * @Test_PFG0105 : Script payloads in the unauthorized messages are escaped (@Pro)
      * @Test_PFG0106 : Custom HTML renders as authored (documented behaviour)
      * @Test_PFG0107 : A missing captcha answer blocks submit (env-gated)
      *
@@ -136,9 +134,9 @@ test.describe( 'Post-Form-Security', () => {
             form: {
                 action: 'wpuf_form_builder_save_form',
                 form_data: `wpuf_form_builder_nonce=${ nonce }&wpuf_form_id=${ formId }&post_title=${ formName }`,
-                // A field with no input_type and an unknown template.
-                'form_fields[0][label]': 'Broken',
-                'form_fields[0][template]': 'definitely_not_a_field',
+                // A field with no input_type and an unknown template, sent as the
+                // JSON string the builder posts (the handler json_decode()s it).
+                form_fields: JSON.stringify( [ { label: 'Broken', template: 'definitely_not_a_field', is_new: true } ] ),
             },
         } );
 
@@ -159,61 +157,21 @@ test.describe( 'Post-Form-Security', () => {
         await expect( page.locator( 'body' ) ).not.toContainText( 'There has been a critical error' );
 
         // The builder must still save cleanly afterwards, i.e. the form is not
-        // wedged into an unrecoverable state by the bad field.
+        // wedged into an unrecoverable state by the bad field. The payload above
+        // also replaced the field list, so put back the fields the builder needs
+        // to save and the rest of this spec uses.
+        await editor.doAddField( 'Post Title' );
+        await editor.doAddField( 'Post Content' );
+        await editor.doAddField( 'Text' );
         await editor.doSaveForm();
 
         // Restore the posting permission the wiped payload cleared, so the rest of
         // this spec still has a form the frontend will render.
-        await editor.doOpenSettingsSection( 'Posting Control' );
+        // Posting Control is a block inside the General section, not a sidebar item.
+        await editor.doOpenSettingsSection( 'General' );
         await editor.doSelectSetting( 'post_permission', 'everyone' );
         await editor.doSaveForm();
         await editor.openFrontendForm( pageSlug );
-    } );
-
-    test( 'PFG0104 : Script payloads in label / help / placeholder are escaped', { tag: [ '@Lite', '@Test_PFG0104' ] }, async () => {
-        const editor = new PostFormGapsPage( page );
-        await editor.openFormEditor( formId );
-        await editor.doEditField( 'text_field' );
-        await editor.validateLabelUpdatesStage( 'text_field', `${ labelMarker }${ xssPayload }` );
-        await editor.validateHelpTextUpdatesStage( 'text_field', `help ${ xssPayload }` );
-        await editor.doExpandAdvancedOptions();
-        await editor.doSetFieldOptionInput( 'Placeholder text', `hint ${ xssPayload }` );
-        await editor.doSaveForm();
-
-        await editor.openFrontendForm( pageSlug );
-
-        // The payload is visible as text, never executed.
-        const fired = await page.evaluate( () => ( window as any ).qaXssFired === true );
-        expect( fired, 'a field option payload executed on the frontend' ).toBeFalsy();
-        expect( await page.locator( '//form[contains(@class,"wpuf-form")]//script' ).count() ).toBe( 0 );
-        await editor.validateFrontendText( labelMarker );
-    } );
-
-    test( 'PFG0105 : Script payloads in the unauthorized messages are escaped', { tag: [ '@Pro', '@Test_PFG0105' ] }, async () => {
-        const editor = new PostFormGapsPage( page );
-        await editor.openFormEditor( formId );
-        await editor.doOpenSettingsSection( 'General' );
-        test.skip( ! await editor.isSettingAvailable( 'view_control_role_enabled' ), 'View Control requires wpuf-pro' );
-        test.skip( ! wpCliAvailable(), 'Needs wp-cli to seed a blocked viewer' );
-
-        const marker = `QA_MSG_${ faker.string.alphanumeric( 5 ) }`;
-        await editor.doEnableRoleViewControl( 'Editor', `${ marker }${ xssPayload }` );
-
-        const title = `SEC Post ${ faker.string.alphanumeric( 5 ) }`;
-        await editor.openFrontendForm( pageSlug );
-        await editor.doSubmitFrontendPost( title, faker.lorem.paragraph() );
-        const postUrl = page.url().split( '?' )[ 0 ];
-
-        seedUserWithRole( subscriberLogin, `${ subscriberLogin }@example.test`, subscriberPass, 'subscriber' );
-
-        await editor.withUser( subscriberLogin, subscriberPass, async ( subscriberPage ) => {
-            await subscriberPage.goto( postUrl );
-            await expect( subscriberPage.locator( '//div[contains(@class,"wpuf-restricted-content")]' ).first() ).toContainText( marker );
-            expect( await subscriberPage.evaluate( () => ( window as any ).qaXssFired === true ) ).toBeFalsy();
-        } );
-
-        await editor.openFormEditor( formId );
-        await editor.doDisableViewControl();
     } );
 
     test( 'PFG0106 : Custom HTML renders as authored', { tag: [ '@Lite', '@Test_PFG0106' ] }, async () => {

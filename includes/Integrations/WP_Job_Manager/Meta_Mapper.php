@@ -166,10 +166,35 @@ class Meta_Mapper {
 
             $raw_value = wp_unslash( $_POST[ $field_name ] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
-            $sanitized = $this->sanitize_for_meta( $raw_value, $meta_key );
+            $sanitized = $this->strip_shortcodes( $this->sanitize_for_meta( $raw_value, $meta_key ) );
 
-            update_post_meta( $post_id, $meta_key, $sanitized );
+            // update_post_meta() unslashes, so slash once to keep backslashes the user typed
+            update_post_meta( $post_id, $meta_key, wp_slash( $sanitized ) );
         }
+    }
+
+    /**
+     * Strip shortcodes the way FieldableTrait does for the value it stored first
+     *
+     * Uses wpuf_strip_shortcodes_fully() when available (it also removes
+     * nested and attribute shortcodes), otherwise WordPress strip_shortcodes().
+     *
+     * @since WPUF_SINCE
+     *
+     * @param mixed $value Sanitized value.
+     *
+     * @return mixed
+     */
+    private function strip_shortcodes( $value ) {
+        if ( is_array( $value ) ) {
+            return array_map( [ $this, 'strip_shortcodes' ], $value );
+        }
+
+        if ( ! is_string( $value ) ) {
+            return $value;
+        }
+
+        return function_exists( 'wpuf_strip_shortcodes_fully' ) ? wpuf_strip_shortcodes_fully( $value ) : strip_shortcodes( $value );
     }
 
     /**

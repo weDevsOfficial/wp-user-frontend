@@ -73,7 +73,7 @@ class TOTP_Method implements Method_Interface {
     }
 
     public function is_enrolled( int $user_id ): bool {
-        return $this->storage->get_method_secret( $user_id, self::ID ) !== null;
+        return $this->storage->has_method_secret( $user_id, self::ID );
     }
 
     /**
@@ -192,6 +192,14 @@ class TOTP_Method implements Method_Interface {
         }
 
         $secret = $this->storage->get_method_secret( $user_id, self::ID );
+
+        if ( $secret === null && $this->storage->has_method_secret( $user_id, self::ID ) ) {
+            // Stored but unreadable (AUTH_KEY rotated): fail closed.
+            return new \WP_Error(
+                'wpuf_2fa_secret_unreadable',
+                __( 'Your two-factor setup must be reset by an administrator. Please contact the site administrator.', 'wp-user-frontend' )
+            );
+        }
 
         if ( $secret === null ) {
             return new \WP_Error(

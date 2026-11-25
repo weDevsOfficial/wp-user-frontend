@@ -81,6 +81,24 @@ class User_Storage {
     }
 
     /**
+     * Whether a credential is stored for the method, readable or not
+     *
+     * Enrollment must not depend on decryption: after an AUTH_KEY rotation
+     * the secret is unreadable, and 2FA has to stay on (and fail closed)
+     * until an administrator resets it.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int    $user_id   User ID.
+     * @param string $method_id Method ID.
+     *
+     * @return bool
+     */
+    public function has_method_secret( $user_id, $method_id ): bool {
+        return (bool) get_user_meta( $user_id, $this->meta_secret_key( $method_id ), true );
+    }
+
+    /**
      * @param int    $user_id
      * @param string $method_id
      *

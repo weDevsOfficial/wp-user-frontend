@@ -301,8 +301,9 @@ test.describe( 'Post-Form-Lifecycle', () => {
         await editor.openFormsList();
 
         // WPUF names the copy after the original; two rows now match the name.
-        const rows = await editor.getListedFormNames();
-        expect( rows.filter( ( name ) => name.includes( formName ) ).length ).toBeGreaterThan( 1 );
+        // The rows arrive over REST after the page loads, so poll.
+        await expect.poll( async () => ( await editor.getListedFormNames() )
+            .filter( ( name ) => name.includes( formName ) ).length ).toBeGreaterThan( 1 );
         expect( before ).not.toBe( '' );
     } );
 
@@ -312,6 +313,10 @@ test.describe( 'Post-Form-Lifecycle', () => {
         const throwaway = `LC Trash ${ faker.string.alphanumeric( 5 ) }`;
 
         await postForm.createBlankFormPostForm( throwaway );
+        // The new name only reaches the list once the builder saves it, and the
+        // builder refuses to save a post form without a Title, Body or Excerpt.
+        await editor.doAddField( 'Post Title' );
+        await editor.doSaveForm();
         await editor.openFormsList();
         await editor.validateFormListed( throwaway, true );
 
@@ -327,12 +332,14 @@ test.describe( 'Post-Form-Lifecycle', () => {
         const editor = new PostFormGapsPage( page );
         await editor.openFormsList();
 
+        // The list filters after a debounce and a REST round trip, so poll.
         await editor.doSearchForms( formName );
-        const matches = await editor.getListedFormNames();
-        expect( matches.length ).toBeGreaterThan( 0 );
-        expect( matches.every( ( name ) => name.includes( formName ) ) ).toBeTruthy();
+        await expect.poll( async () => {
+            const matches = await editor.getListedFormNames();
+            return matches.length > 0 && matches.every( ( name ) => name.includes( formName ) );
+        } ).toBeTruthy();
 
         await editor.doSearchForms( 'zzz-no-such-form-zzz' );
-        expect( ( await editor.getListedFormNames() ).length ).toBe( 0 );
+        await expect.poll( async () => ( await editor.getListedFormNames() ).length ).toBe( 0 );
     } );
 } );

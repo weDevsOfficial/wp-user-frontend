@@ -27,8 +27,15 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
         // Enqueue custom multi-select assets
         $this->enqueue_multiselect_assets();
 
+        // The Events Calendar keeps one _EventOrganizerID meta row per organizer.
+        $is_tec_organizers = '_EventOrganizerID' === $field_settings['name'];
+
+        if ( $is_tec_organizers ) {
+            $field_settings['options'] = $this->get_posts( 'tribe_organizer' );
+        }
+
         if ( isset( $post_id ) && $post_id != '0' ) {
-            $selected = $this->get_meta( $post_id, $field_settings['name'], $type );
+            $selected = $this->get_meta( $post_id, $field_settings['name'], $type, ! $is_tec_organizers );
 
             if ( is_serialized( $selected ) ) {
                 $selected = wpuf_safe_unserialize( $selected );

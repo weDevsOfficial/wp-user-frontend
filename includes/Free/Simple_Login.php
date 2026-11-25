@@ -722,7 +722,9 @@ class Simple_Login {
         $user          = wp_signon( apply_filters( 'wpuf_login_credentials', $creds ), $secure_cookie );
 
         //try with old implementation, which is wrong but we must support that
-        if ( is_wp_error( $user ) ) {
+        // (not when the password was right and 2FA paused the sign-in: a retry
+        // would be counted as a second failed login)
+        if ( is_wp_error( $user ) && 0 !== strpos( $user->get_error_code(), 'wpuf_2fa_' ) ) {
             $creds['user_login']    = sanitize_text_field( wp_unslash( $_POST['log'] ) );
             $creds['user_password'] = sanitize_text_field( wp_unslash( $_POST['pwd'] ) );
 

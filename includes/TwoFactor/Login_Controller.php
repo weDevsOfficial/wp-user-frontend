@@ -91,6 +91,14 @@ class Login_Controller {
      */
     private $app_password_user_id = 0;
 
+    /**
+     * `wp_login_failed` callbacks held back while the password step of a
+     * WPUF 2FA sign-in is paused. Null when nothing is held.
+     *
+     * @var \WP_Hook|false|null
+     */
+    private $held_login_failed = null;
+
     public function __construct( Method_Registry $registry ) {
         $this->registry = $registry;
 
@@ -282,6 +290,10 @@ class Login_Controller {
         // challenge until after they choose. Email OTP sends a real
         // message and consumes a slot, so we don't want to issue one
         // for a method the user is about to switch away from.
+        // The password was correct: the WP_Error below only pauses wp_signon()
+        // until the code is entered, so it must not count as a failed login.
+        $this->hold_login_failed();
+
         if ( count( $enrolled ) >= 2 ) {
             $this->begin_method_selection( $user->ID, $enrolled, $remember, $final_redirect );
 
@@ -298,6 +310,69 @@ class Login_Controller {
         }
 
         return $this->issue_and_mint_challenge( $user->ID, $method, $remember, $final_redirect );
+    }
+
+    /**
+     * Hold back `wp_login_failed` for the one call wp_authenticate() makes next
+     *
+     * Lockout plugins (Limit Login Attempts, Wordfence) count that action, so
+     * without this every 2FA sign-in with the right password would count as
+     * a failed login.
+     *
+     * shortcut: if a later `authenticate` filter turns our WP_Error back into a
+     * WP_User, the action never fires and stays held for the rest of this
+     * request, which then signs the user in; release it on `wp_login` if that
+     * ever matters.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    private function hold_login_failed() {
+        global $wp_filter;
+
+        if ( null !== $this->held_login_failed ) {
+            return;
+        }
+
+        $this->held_login_failed = isset( $wp_filter['wp_login_failed'] ) ? $wp_filter['wp_login_failed'] : false;
+        unset( $wp_filter['wp_login_failed'] );
+
+        add_action( 'wp_login_failed', [ $this, 'release_login_failed' ], 10, 2 );
+    }
+
+    /**
+     * Put the held `wp_login_failed` callbacks back
+     *
+     * They still run when a later `authenticate` filter replaced our 2FA
+     * error with a real failure.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string         $username Username or email address.
+     * @param \WP_Error|null $error    Why the sign-in stopped.
+     *
+     * @return void
+     */
+    public function release_login_failed( $username, $error = null ) {
+        global $wp_filter;
+
+        $held                    = $this->held_login_failed;
+        $this->held_login_failed = null;
+
+        if ( ! $held instanceof \WP_Hook ) {
+            unset( $wp_filter['wp_login_failed'] );
+
+            return;
+        }
+
+        $wp_filter['wp_login_failed'] = $held; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+
+        if ( is_wp_error( $error ) && 0 === strpos( $error->get_error_code(), 'wpuf_2fa_' ) ) {
+            return;
+        }
+
+        $held->do_action( [ $username, $error ] );
     }
 
     /**

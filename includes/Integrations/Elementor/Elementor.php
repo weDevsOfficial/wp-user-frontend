@@ -124,8 +124,10 @@ class Elementor {
             wp_enqueue_style( $handle );
         }
 
-        // User Directory assets — register if the free module hasn't done it
-        // (e.g. when Pro is active, Free_Loader is skipped so Shortcode::register_assets() never runs)
+        // User Directory styles: only registered here (when Pro is active, Free_Loader is skipped
+        // so Shortcode::register_assets() never runs). User_Directory_Widget::get_style_depends()
+        // loads them only where that widget renders: their form resets would hide the checkboxes
+        // and radios of every other WPUF form on the page.
         if ( ! wp_style_is( 'wpuf-user-directory-frontend', 'registered' ) ) {
             wp_register_style(
                 'wpuf-user-directory-frontend',
@@ -134,18 +136,10 @@ class Elementor {
                 WPUF_VERSION
             );
         }
-        wp_enqueue_style( 'wpuf-user-directory-frontend' );
-        wp_enqueue_style( 'wpuf-elementor-user-directory' );
 
         if ( wpuf_is_pro_active() ) {
             wp_enqueue_script( 'wpuf-conditional-logic' );
             wp_enqueue_script( 'wpuf-frontend-form' );
-
-            // Pro's Assets::enqueue_shortcode_assets() bails on Elementor pages because
-            // it checks has_shortcode($post->post_content) which is always false for Elementor
-            // (widget data lives in _elementor_data meta). Enqueue Pro's UD styles here instead.
-            wp_enqueue_style( 'wpuf-ud-styles' );
-            wp_enqueue_style( 'wpuf-ud-shortcode-styles' );
         }
 
         /**

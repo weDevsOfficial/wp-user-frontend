@@ -67,3 +67,11 @@
 	letter-spacing: 0.05em;
 	white-space: nowrap;
 }
+
+/* The directory stylesheet resets every checkbox and radio on the page (appearance: none, no border style
+   outside its own containers). Keep the native boxes in WPUF forms on the same page. */
+.wpuf-elementor-widget-wrapper ul.wpuf-form input[type="checkbox"],
+.wpuf-elementor-widget-wrapper ul.wpuf-form input[type="radio"] {
+	-webkit-appearance: auto;
+	appearance: auto;
+}

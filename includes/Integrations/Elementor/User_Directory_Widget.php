@@ -81,7 +81,16 @@ class User_Directory_Widget extends Widget_Base {
      * @return array
      */
     public function get_style_depends() {
-        return [ 'wpuf-user-directory-frontend', 'wpuf-elementor-user-directory' ];
+        $depends = [ 'wpuf-user-directory-frontend', 'wpuf-elementor-user-directory' ];
+
+        // Pro's Assets::enqueue_shortcode_assets() bails on Elementor pages (the widget data lives
+        // in _elementor_data, not post_content), so Pro's directory styles load from here.
+        if ( wpuf_is_pro_active() ) {
+            $depends[] = 'wpuf-ud-styles';
+            $depends[] = 'wpuf-ud-shortcode-styles';
+        }
+
+        return $depends;
     }
 
     /**

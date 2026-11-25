@@ -459,9 +459,10 @@ class Paypal {
     /**
      * Claim a capture id so that only one request records it
      *
-     * INSERT IGNORE on the unique option name is atomic; add_option() is not, because it upserts.
-     * shortcut: a request that dies mid-way leaves its claim behind, so that id is skipped until
-     * the option row is deleted; add an expiry if that is ever seen.
+     * Two requests (browser return and webhook) can check "recorded?" and insert at the same
+     * moment. INSERT IGNORE on the unique option name is atomic; add_option() is not, because it
+     * upserts. A claim older than ten minutes belongs to a request that died: one request takes
+     * it over with a conditional UPDATE, so a webhook retry still records the payment.
      *
      * @since WPUF_SINCE
      *
@@ -472,8 +473,15 @@ class Paypal {
     private function claim_transaction( $transaction_id ) {
         global $wpdb;
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- an atomic insert is the point; the options API cannot do it.
-        return (bool) $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, %s, 'no')", 'wpuf_txn_lock_' . md5( 'paypal' . $transaction_id ), time() ) );
+        $name = 'wpuf_txn_lock_' . md5( 'paypal' . $transaction_id );
+        $now  = time();
+
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- an atomic insert/update is the point; the options API cannot do it.
+        $claimed = $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, %s, 'no')", $name, $now ) )
+            || $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->options} SET option_value = %s WHERE option_name = %s AND option_value < %d", $now, $name, $now - 10 * MINUTE_IN_SECONDS ) );
+        // phpcs:enable
+
+        return (bool) $claimed;
     }
 
     /**

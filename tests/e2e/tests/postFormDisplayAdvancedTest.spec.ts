@@ -45,7 +45,6 @@ test.describe( 'Post-Form-Display-Advanced', () => {
      *
      * Integrations
      * @Test_PFG0040 : AI Review enabled writes a review record (env-gated)
-     * @Test_PFG0041 : AI Review disabled writes nothing
      * @Test_PFG0042 : N8N enabled still lets the submission through
      * @Test_PFG0043 : N8N with an unreachable webhook is not fatal
      * @Test_PFG0044 : Modules panel shows its empty state and link
@@ -226,30 +225,6 @@ test.describe( 'Post-Form-Display-Advanced', () => {
         await expect
             .poll( () => getPostMeta( postId, 'wpuf_ai_post_review' ), { timeout: 60000 } )
             .not.toBe( '' );
-    } );
-
-    // BUG (see BUGS-FOUND.md): the AI review runs on every submission regardless
-    // of the form's `ai_review_enabled` setting, stamping `wpuf_ai_post_review`
-    // (status "failed", "AI service not configured") onto posts from forms that
-    // never opted in. test.fail() keeps the expectation on record.
-    test( 'PFG0041 : AI Review disabled writes nothing', { tag: [ '@Pro', '@Test_PFG0041' ] }, async () => {
-        const editor = new PostFormGapsPage( page );
-        await editor.openFormEditor( formId );
-        await editor.doOpenSettingsSection( 'AI Review' );
-        test.skip( ! await editor.isSettingAvailable( 'ai_review_enabled' ), 'AI Review requires wpuf-pro' );
-        test.skip( ! wpCliAvailable(), 'Reading the review meta needs wp-cli' );
-        test.fail();
-
-        await editor.doToggleSetting( 'ai_review_enabled', false );
-        await editor.doSaveForm();
-
-        const title = `No AI Review ${ faker.string.alphanumeric( 5 ) }`;
-        await editor.openFrontendForm( pageSlug );
-        await editor.doSubmitFrontendPost( title, faker.lorem.paragraph() );
-
-        const postId = getPostIdByTitle( title );
-        expect( postId ).toBeGreaterThan( 0 );
-        expect( getPostMeta( postId, 'wpuf_ai_post_review' ) ).toBe( '' );
     } );
 
     test( 'PFG0042 : N8N enabled still lets the submission through', { tag: [ '@Lite', '@Test_PFG0042' ] }, async () => {

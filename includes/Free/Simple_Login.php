@@ -1342,11 +1342,23 @@ class Simple_Login {
         // The same styles and scripts as the login page, so the form looks and works the same.
         wpuf()->frontend->enqueue_form_assets();
 
-        if ( 'on' === wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' ) ) {
+        // Only when the login form shows Turnstile, as on the login page.
+        if ( 'on' === wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' ) && 'on' === wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' ) ) {
             wp_enqueue_script( 'wpuf-turnstile' );
         }
 
         $login_url = $this->get_login_url();
+
+        // The same filtered template args as the login page, so a layout or texts set by Pro apply here too.
+        $args = apply_filters(
+            'wpuf_login_form_template_args',
+            [
+                'action_url'   => $login_url,
+                'redirect_to'  => '',
+                'layout_class' => apply_filters( 'wpuf_login_form_layout_class', '' ),
+            ]
+        );
+
         // Login links point to the login page or to wp-login.php, with or without a redirect_to.
         $link_urls = [ $login_url, site_url( 'wp-login.php', 'login' ) ];
         ?>
@@ -1355,12 +1367,7 @@ class Simple_Login {
                 <button type="button" class="wpuf-login-popup-close" aria-label="<?php esc_attr_e( 'Close', 'wp-user-frontend' ); ?>">&times;</button>
                 <h2 id="wpuf-login-popup-title"><?php esc_html_e( 'Login required', 'wp-user-frontend' ); ?></h2>
                 <?php
-                wpuf_load_template(
-                    'login-form.php', [
-                        'action_url'  => $login_url,
-                        'redirect_to' => '',
-                    ]
-                );
+                wpuf_load_template( 'login-form.php', $args );
                 ?>
             </div>
         </dialog>

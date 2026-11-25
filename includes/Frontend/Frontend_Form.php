@@ -410,7 +410,7 @@ class Frontend_Form extends Frontend_Render_Form {
         if ( $user_can_post === 'yes' ) {
             $this->render_form( $id, null, $atts, $form );
         } else {
-            echo wp_kses_post( '<div class="wpuf-info">' . $info . '</div>' );
+            echo wp_kses_post( \WeDevs\Wpuf\Free\Simple_Login::detect_login_message( '<div class="wpuf-info">' . $info . '</div>' ) );
         }
         $content = ob_get_contents();
         ob_end_clean();

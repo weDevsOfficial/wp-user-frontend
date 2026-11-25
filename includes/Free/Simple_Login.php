@@ -28,6 +28,13 @@ class Simple_Login {
 
     private static $_instance;
 
+    /**
+     * Whether this request printed a login-required message, see login_popup()
+     *
+     * @var bool
+     */
+    private static $login_message_printed = false;
+
     public function __construct() {
         add_action( 'init', [ $this, 'process_login' ] );
         add_action( 'init', [ $this, 'process_logout' ] );
@@ -36,6 +43,7 @@ class Simple_Login {
         add_action( 'init', [ $this, 'wp_login_page_redirect' ] );
         add_action( 'init', [ $this, 'activation_user_registration' ] );
         add_action( 'wp_footer', [ $this, 'login_popup' ] );
+        add_filter( 'the_content', [ __CLASS__, 'detect_login_message' ], PHP_INT_MAX );
         add_action( 'login_form', [ $this, 'add_custom_fields' ] );
         add_action( 'login_enqueue_scripts', [ $this, 'login_form_scripts' ] );
         add_filter( 'wp_authenticate_user', [ $this, 'validate_custom_fields' ], 10, 2 );
@@ -1284,6 +1292,35 @@ class Simple_Login {
     }
 
     /**
+     * Note a login-required message in this output, so the footer prints the login popup
+     *
+     * Runs last on `the_content` for the Pro content restriction and View Control messages, and
+     * is called where the post form prints its login message, which can render outside the
+     * content (post form block in a template, Elementor widget, sidebar).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $html Output that may hold a login-required message.
+     *
+     * @return string The same output.
+     */
+    public static function detect_login_message( $html ) {
+        if ( self::$login_message_printed || ! is_string( $html ) || is_user_logged_in() || 'on' !== wpuf_get_option( 'login_popup', 'wpuf_profile', 'off' ) ) {
+            return $html;
+        }
+
+        $login_page = wpuf_get_option( 'login_page', 'wpuf_profile', false );
+        $login_url  = $login_page ? get_permalink( $login_page ) : '';
+        $has_link   = ( $login_url && false !== strpos( $html, $login_url ) ) || false !== strpos( $html, 'wp-login.php' );
+
+        if ( $has_link && preg_match( '/wpuf-(message|info|restrict-message|restricted-content)\b/', $html ) ) {
+            self::$login_message_printed = true;
+        }
+
+        return $html;
+    }
+
+    /**
      * Print the login popup for the Login links of restricted content
      *
      * Opt-in with the `login_popup` setting. The popup holds the normal login form and posts it
@@ -1297,7 +1334,8 @@ class Simple_Login {
     public function login_popup() {
         $login_page = wpuf_get_option( 'login_page', 'wpuf_profile', false );
 
-        if ( is_user_logged_in() || ! $login_page || is_page( $login_page ) || 'on' !== wpuf_get_option( 'login_popup', 'wpuf_profile', 'off' ) ) {
+        // Only on requests that printed a login-required message, so other pages load nothing.
+        if ( ! self::$login_message_printed || is_user_logged_in() || ! $login_page || is_page( $login_page ) || 'on' !== wpuf_get_option( 'login_popup', 'wpuf_profile', 'off' ) ) {
             return;
         }
 
@@ -1355,7 +1393,7 @@ class Simple_Login {
                     linkUrls = JSON.parse( dialog.getAttribute( 'data-link-urls' ) ).map( bare );
 
                 document.addEventListener( 'click', function ( e ) {
-                    var link = e.target.closest ? e.target.closest( '.wpuf-message a[href], .wpuf-restrict-message a[href], .wpuf-restricted-content a[href]' ) : null;
+                    var link = e.target.closest ? e.target.closest( '.wpuf-message a[href], .wpuf-info a[href], .wpuf-restrict-message a[href], .wpuf-restricted-content a[href]' ) : null;
 
                     if ( ! link || 0 !== e.button || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || -1 === linkUrls.indexOf( bare( link.href ) ) ) {
                         return;

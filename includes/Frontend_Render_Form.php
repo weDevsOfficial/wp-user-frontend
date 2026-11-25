@@ -268,7 +268,7 @@ class Frontend_Render_Form {
 
             $message_restrict = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] ?? '' );
 
-            echo wp_kses_post( '<div class="wpuf-message">' . $message_restrict . '</div>' );
+            echo wp_kses_post( Free\Simple_Login::detect_login_message( '<div class="wpuf-message">' . $message_restrict . '</div>' ) );
 
             return;
         }

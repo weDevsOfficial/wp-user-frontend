@@ -108,14 +108,23 @@ export function installHookProbe( hookName: string, marker: string ): boolean {
     // survive both the local shell and the container's shell.
     const encoded = Buffer.from( php, 'utf-8' ).toString( 'base64' );
 
+    let written = '';
+
     try {
-        wpCli(
-            `eval 'file_put_contents( WPMU_PLUGIN_DIR . "/qa-hook-probe.php", base64_decode( "${encoded}" ) );'`
+        // wp-env ships no mu-plugins folder, and file_put_contents() into a missing
+        // folder only warns, so create it and report whether the file landed.
+        written = wpCli(
+            `eval 'wp_mkdir_p( WPMU_PLUGIN_DIR ); echo false === file_put_contents( WPMU_PLUGIN_DIR . "/qa-hook-probe.php", base64_decode( "${encoded}" ) ) ? "PROBE_FAILED" : "PROBE_OK";'`
         );
-        return true;
     } catch {
         return false;
     }
+
+    if ( ! written.includes( 'PROBE_OK' ) ) {
+        throw new Error( `Could not write the hook probe mu-plugin: ${ written }` );
+    }
+
+    return true;
 }
 
 /** Remove the mu-plugin installed by `installHookProbe`. */

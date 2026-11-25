@@ -4197,14 +4197,15 @@ function wpuf_decryption( $id, $nonce = null ) {
  *
  * @since 2.5.8
  *
- * @since WPUF_SINCE param $token added
+ * @since WPUF_SINCE params $token and $to added
  *
  * @param string $post_id_encoded, $form_id_encoded, $charging_enabled, $flag
  * @param string $token random verification token for the link
+ * @param string $to    recipient; defaults to the guest e-mail of the current submission
  *
  * @return void
  */
-function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_enabled, $flag, $token = '' ) {
+function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_enabled, $flag, $token = '', $to = '' ) {
     if ( 'on' !== wpuf_get_option( 'enable_guest_email_notification', 'wpuf_mails', 'on' ) ) {
         return;
     }
@@ -4238,7 +4239,11 @@ function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_
     }
 
     $default_body     = 'Hey There, <br> <br> We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process. <br> <br> Please click the link below to verify: <br> <br> <a href="' . esc_url( $encoded_guest_url ) . '">Publish Post</a> <br> <br> Regards, <br> <br>' . bloginfo( 'name' );
-    $to               = isset( $_POST['guest_email'] ) ? sanitize_email( wp_unslash( $_POST['guest_email'] ) ) : '';
+
+    if ( '' === $to ) {
+        $to = isset( $_POST['guest_email'] ) ? sanitize_email( wp_unslash( $_POST['guest_email'] ) ) : '';
+    }
+
     $guest_email_sub  = wpuf_get_option( 'guest_email_subject', 'wpuf_mails', 'Please Confirm Your Email to Get the Post Published!' );
     $subject          = $guest_email_sub;
     $guest_email_body = wpuf_get_option( 'guest_email_body', 'wpuf_mails', $default_body );

@@ -501,6 +501,9 @@ test.describe( 'Form-Editor', () => {
     } );
 
     test( 'FE0048 : A subscriber cannot open the form builder', { tag: [ '@Lite', '@Test_FE0048' ] }, async () => {
-        await new FormEditorPage( page ).validateBuilderBlockedForSubscriber( formId, subscriberName, subscriberPass );
+        const editor = new FormEditorPage( page );
+        // The helper reads the REST nonce from the open page, so be on an admin screen.
+        await editor.openFormEditor( formId );
+        await editor.validateBuilderBlockedForSubscriber( formId, subscriberName, subscriberPass );
     } );
 } );

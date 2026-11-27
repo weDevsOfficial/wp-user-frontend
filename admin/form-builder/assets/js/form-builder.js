@@ -485,6 +485,29 @@
                 }
             },
 
+            // move a field from the stage into a column of a column field, keeping the same field object
+            move_field_into_column: function (state, payload) {
+                var field = state.form_fields.splice(payload.fromIndex, 1)[0],
+                    columnField = state.form_fields.find(item => item.id === payload.toWhichColumnField);
+
+                if (columnField.inner_fields[payload.toColumn] === undefined) {
+                    Vue.set(columnField.inner_fields, payload.toColumn, []);
+                }
+
+                columnField.inner_fields[payload.toColumn].splice(payload.toIndex, 0, field);
+            },
+
+            // move a column inner field out to the stage
+            move_column_field_to_stage: function (state, payload) {
+                var columnField = state.form_fields.find(item => item.id === payload.field_id),
+                    field = columnField.inner_fields[payload.fromColumn].splice(payload.fromIndex, 1)[0];
+
+                // an inner field has no wpuf_input post of its own, so the save has to create one
+                Vue.set(field, 'is_new', true);
+
+                state.form_fields.splice(payload.toIndex, 0, field);
+            },
+
             // add new form field element to repeat field
             add_repeat_inner_field_element: function (state, payload) {
                 var repeatFieldIndex = state.form_fields.findIndex(field => field.id === payload.toWhichRepeatField);

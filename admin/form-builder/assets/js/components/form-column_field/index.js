@@ -27,7 +27,9 @@ Vue.component('form-column_field', {
             sortableFields = $(self.$el).find('.wpuf-column-inner-fields .wpuf-column-fields-sortable-list'),
             sortableTriggered = 1,
             columnFieldArea = $('.wpuf-field-columns'),
-            columnFields = $(self.$el).find(".wpuf-field-columns .wpuf-column-inner-fields");
+            columnFields = $(self.$el).find(".wpuf-field-columns .wpuf-column-inner-fields"),
+            stageList = $('#form-preview-stage .wpuf-form.sortable-list'),
+            connectedToStage = false;
 
         columnFieldArea.mouseenter(function() {
             self.resizeColumns(self.field.columns);
@@ -42,9 +44,27 @@ Vue.component('form-column_field', {
         $(sortableFields).sortable({
             placeholder: 'form-preview-stage-dropzone',
             connectWith: sortableFields,
+            forcePointerForContainers: true,
             items: '.column-field-items',
             handle: '.wpuf-column-field-control-buttons .move',
             scroll: true,
+            start: function () {
+                connectedToStage = false;
+                // the lifted field changes the layout, re-read it so the drop targets match the screen
+                $(this).sortable('refreshPositions');
+            },
+            // the stage is a drop target only while the pointer is outside this column field,
+            // otherwise the gaps between the columns would count as the stage
+            sort: function (e) {
+                var box     = self.$el.getBoundingClientRect(),
+                    outside = e.clientX < box.left || e.clientX > box.right || e.clientY < box.top || e.clientY > box.bottom;
+
+                if (outside !== connectedToStage) {
+                    connectedToStage = outside;
+                    $(this).sortable('option', 'connectWith', outside ? sortableFields.add(stageList) : sortableFields);
+                    $(this).sortable('refresh');
+                }
+            },
             stop: function( event, ui ) {
                 var item        = ui.item[0];
                 var data        = item.dataset;
@@ -63,6 +83,56 @@ Vue.component('form-column_field', {
                     $(this).find('.wpuf-field-button').remove();
                 }
             },
+            // a field dragged in from the stage
+            receive: function (e, ui) {
+                var data = ui.item[0].dataset;
+
+                if ('stage' !== data.source) {
+                    return;
+                }
+
+                var fromIndex = parseInt(data.index),
+                    field     = self.$store.state.form_fields[fromIndex],
+                    payload   = {
+                        fromIndex: fromIndex,
+                        toWhichColumnField: self.field.id,
+                        toColumn: $(this).parent().data('column'),
+                        toIndex: parseInt($(ui.item).index())
+                    };
+
+                // put the DOM back and let Vue render the move from the store
+                $(ui.sender).sortable('cancel');
+
+                if (!field) {
+                    return;
+                }
+
+                if (self.isAllowedInColumnField(field.template)) {
+                    self.show_not_allowed_in_column_alert();
+                    return;
+                }
+
+                self.$store.commit('move_field_into_column', payload);
+            },
+            // an inner field dropped on the stage
+            remove: function (e, ui) {
+                var item = ui.item[0];
+
+                if ($(item).closest('.wpuf-column-fields-sortable-list').length) {
+                    return;
+                }
+
+                var payload = {
+                    field_id: self.field.id,
+                    fromColumn: item.attributes['in-column'].value,
+                    fromIndex: parseInt(item.attributes['column-field-index'].value),
+                    toIndex: parseInt($(ui.item).index())
+                };
+
+                $(this).sortable('cancel');
+
+                self.$store.commit('move_column_field_to_stage', payload);
+            },
             update: function (e, ui) {
                 var item    = ui.item[0],
                     data    = item.dataset,
@@ -72,11 +142,12 @@ Vue.component('form-column_field', {
                         toIndex: toIndex
                     };
 
-                if ( 'column-field-stage' === source) {
+                // a field that left the column field is handled in remove
+                if ( 'column-field-stage' === source && $(item).closest('.wpuf-column-fields-sortable-list').length ) {
                     payload.field_id   = self.field.id;
                     payload.fromIndex  = parseInt(item.attributes['column-field-index'].value);
                     payload.fromColumn = item.attributes['in-column'].value;
-                    payload.toColumn   = $(item).parent().parent().attr('class').split(' ')[0];
+                    payload.toColumn   = $(item).closest('[data-column]').data('column');
 
                     // when drag field one column to another column, sortable event trigger twice and try to swap field twice.
                     // So the following conditions are needed to check and run swap_column_field_elements commit only once
@@ -181,6 +252,21 @@ Vue.component('form-column_field', {
             return false;
         },
 
+        show_not_allowed_in_column_alert() {
+            Swal.fire({
+                title: '<span class="wpuf-text-primary">Oops...</span>',
+                html: '<p class="wpuf-text-gray-500 wpuf-text-xl wpuf-m-0 wpuf-p-0">You cannot add this field as inner column field</p>',
+                imageUrl: wpuf_form_builder.asset_url + '/images/oops.svg',
+                showCloseButton: true,
+                padding: '1rem',
+                width: '35rem',
+                customClass: {
+                    confirmButton: "!wpuf-flex focus:!wpuf-shadow-none !wpuf-bg-primary",
+                    closeButton: "wpuf-absolute"
+                },
+            });
+        },
+
         add_column_inner_field(data) {
             var payload = {
                 toWhichColumnField: this.field.id,
@@ -190,18 +276,7 @@ Vue.component('form-column_field', {
             };
 
             if (this.isAllowedInColumnField(data.field_template)) {
-                Swal.fire({
-                    title: '<span class="wpuf-text-primary">Oops...</span>',
-                    html: '<p class="wpuf-text-gray-500 wpuf-text-xl wpuf-m-0 wpuf-p-0">You cannot add this field as inner column field</p>',
-                    imageUrl: wpuf_form_builder.asset_url + '/images/oops.svg',
-                    showCloseButton: true,
-                    padding: '1rem',
-                    width: '35rem',
-                    customClass: {
-                        confirmButton: "!wpuf-flex focus:!wpuf-shadow-none !wpuf-bg-primary",
-                        closeButton: "wpuf-absolute"
-                    },
-                });
+                this.show_not_allowed_in_column_alert();
                 return;
             }
 

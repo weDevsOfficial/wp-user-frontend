@@ -31,8 +31,6 @@ class Frontend_Form extends Frontend_Render_Form {
         // notification and other tasks after the guest verified the email
         add_action( 'wpuf_guest_post_email_verified', [ $this, 'send_mail_to_admin_after_guest_mail_verified' ] );
 
-        $this->set_wp_post_types();
-
         // Enable post edit link for post authors in frontend
         if ( ! is_admin() ) {
             add_filter( 'user_has_cap', [ $this, 'map_capabilities_for_post_authors' ], 10, 4 );

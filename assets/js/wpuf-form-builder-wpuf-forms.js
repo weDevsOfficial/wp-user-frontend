@@ -148,9 +148,17 @@
                     fields: tax_names
                 });
 
+                // The Events Calendar field group is only offered on event forms.
+                if (wpuf_form_builder.tec_fields) {
+                    self.$store.commit('set_panel_section_fields', {
+                        id: 'events-calendar',
+                        fields: 'tribe_events' === post_type ? wpuf_form_builder.tec_fields : []
+                    });
+                }
+
                 // Bind jquery ui draggable. But first destroy any previous binding
                 Vue.nextTick(function () {
-                    var buttons = $('#panel-form-field-buttons-taxonomies .wpuf-field-button');
+                    var buttons = $('#panel-form-field-buttons-taxonomies .wpuf-field-button, #panel-form-field-buttons-events-calendar .wpuf-field-button');
 
                     buttons.each(function () {
                         if ($(this).draggable('instance')) {

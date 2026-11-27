@@ -15,6 +15,8 @@ import ContentHeader from './components/subscriptions/ContentHeader';
 import QuickEdit from './components/subscriptions/QuickEdit';
 import Notices from './components/subscriptions/Notices';
 import Subscribers from './components/subscriptions/Subscribers';
+import StatusSidebar from './components/subscriptions/StatusSidebar';
+import SetupChecklist from './components/subscriptions/SetupChecklist';
 
 // Import stores to register them
 import './stores/subscription';
@@ -94,7 +96,7 @@ const SubscriptionsApp = () => {
             setIsUnsavedPopupOpen(true);
             return;
         }
-        navigate({ action: 'new', id: null, post_status: null, p: null });
+        navigate({ action: 'new', id: null, p: null });
     }, [isDirty, navigate, setIsUnsavedPopupOpen]);
 
     // Handle sidebar status click
@@ -119,7 +121,7 @@ const SubscriptionsApp = () => {
         // A sidebar click goes to that status; the form's Cancel goes back to
         // the list it came from (develop goToList).
         if ('__new' === pendingStatus) {
-            navigate({ action: 'new', id: null, post_status: null, p: null });
+            navigate({ action: 'new', id: null, p: null });
             setPendingStatus(null);
             return;
         }
@@ -151,25 +153,39 @@ const SubscriptionsApp = () => {
                 allCount={allCount}
                 onAddSubscription={handleAddSubscription}
             />
-            {/* The list and Preferences: the forms list layout, status tabs in the
-                list card. The form and subscribers views: full width, no sidebar
-                (each has its own way back: Cancel, the back arrow). */}
+            {/* develop's layout: the status sidebar stays while the list or the
+                editor (Edit, Add) opens on its right, in the same screen. The
+                subscribers view: full width (its back arrow returns). */}
             <div className={isUnsavedPopupOpen ? 'blur-sm' : ''}>
-                {action === 'edit' || action === 'new' ? (
-                    <div className="pt-6">
-                        <SubscriptionForm
-                            mode={action === 'new' ? 'add-new' : 'edit'}
-                            subscriptionId={subscriptionId}
-                            onDiscardChanges={handleDiscardChanges}
-                            onContinueEditing={handleContinueEditing}
-                        />
-                    </div>
-                ) : action === 'subscribers' && subscriptionId ? (
+                {action === 'subscribers' && subscriptionId ? (
                     <div className="pt-6">
                         <Subscribers subscriptionId={subscriptionId} />
                     </div>
                 ) : (
-                    <SubscriptionList onStatusClick={handleStatusClick} />
+                    <>
+                        {/* What visitors still need before they can buy a pack, with quick actions. */}
+                        {action !== 'edit' && action !== 'new' && <SetupChecklist />}
+                        <div className="mt-6 flex flex-col gap-6 lg:flex-row lg:gap-0">
+                            <StatusSidebar
+                                status={status}
+                                counts={allCount}
+                                isList={action !== 'edit' && action !== 'new'}
+                                onSelect={handleStatusClick}
+                            />
+                            <div className="min-w-0 flex-1 lg:pl-12">
+                                {action === 'edit' || action === 'new' ? (
+                                    <SubscriptionForm
+                                        mode={action === 'new' ? 'add-new' : 'edit'}
+                                        subscriptionId={subscriptionId}
+                                        onDiscardChanges={handleDiscardChanges}
+                                        onContinueEditing={handleContinueEditing}
+                                    />
+                                ) : (
+                                    <SubscriptionList />
+                                )}
+                            </div>
+                        </div>
+                    </>
                 )}
             </div>
 

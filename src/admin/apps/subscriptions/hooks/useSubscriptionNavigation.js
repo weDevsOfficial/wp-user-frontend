@@ -19,7 +19,8 @@ export const useSubscriptionNavigation = () => {
 	 * @param {number} id - Subscription ID
 	 */
 	const goToEdit = useCallback((id) => {
-		navigate({ action: 'edit', id: String(id), post_status: null, p: null });
+		// The status filter stays: the sidebar keeps it and Cancel / save return to it.
+		navigate({ action: 'edit', id: String(id), p: null });
 	}, [navigate]);
 
 	/**
@@ -35,24 +36,23 @@ export const useSubscriptionNavigation = () => {
 	 * Navigate to new subscription form
 	 */
 	const goToNew = useCallback(() => {
-		navigate({ action: 'new', id: null, post_status: null, p: null });
+		navigate({ action: 'new', id: null, p: null });
 	}, [navigate]);
 
 	/**
 	 * Navigate to list view
 	 *
-	 * @param {string|null} status - Optional status filter (all, publish, draft, trash)
+	 * @param {string|null} [status] Status filter (all, publish, draft, trash); left out, the current one stays
 	 */
-	const goToList = useCallback((status = null) => {
+	const goToList = useCallback((status) => {
 		const params = {
 			action: null, // Clear action param to return to list view
 			id: null, // Clear id param
 			p: null, // Clear pagination
 		};
-		if (status && status !== 'all') {
-			params.post_status = status;
-		} else {
-			params.post_status = null; // Clear status filter if 'all'
+		// Left out, the current filter stays (the editor's Cancel / save); 'all' clears it.
+		if (undefined !== status) {
+			params.post_status = status && status !== 'all' ? status : null;
 		}
 		navigate(params);
 	}, [navigate]);

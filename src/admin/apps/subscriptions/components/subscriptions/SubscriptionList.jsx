@@ -1,17 +1,16 @@
 /**
  * DESCRIPTION: Subscription list view component
- * DESCRIPTION: The forms list layout: one list card with the status tabs, a card / list view switch,
- * DESCRIPTION: the packs as cards (default) or table rows, and the footer pagination; Preferences
- * DESCRIPTION: live in Settings > Payments > Subscriptions (quick link in the toolbar)
+ * DESCRIPTION: One list card (right of the status sidebar): the status title and text, Preferences and the
+ * DESCRIPTION: card / list view switch, the packs as cards (default) or table rows, and the footer pagination;
+ * DESCRIPTION: Preferences live in Settings > Payments > Subscriptions (quick link in the toolbar)
  */
 import { useEffect, useMemo, useCallback, useState } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import { Button, EmptyState, ErrorState, Pagination, Skeleton, TableSkeleton, Tabs } from '@wpuf/components';
+import { Button, EmptyState, ErrorState, Pagination, Skeleton, TableSkeleton } from '@wpuf/components';
 import { Inbox, LayoutGrid, List, Package, Plus, Settings } from 'lucide-react';
 import SubscriptionBox from './SubscriptionBox';
 import SubscriptionTable from './SubscriptionTable';
-import SetupChecklist from './SetupChecklist';
 import { SubscriptionListActions } from '../../slots';
 import { useSubscriptionNavigation } from '../../hooks';
 import { subscriptionsData } from '../../boot';
@@ -83,7 +82,7 @@ const ViewSwitch = ( { view, onChange } ) => (
 	</div>
 );
 
-const SubscriptionList = ( { onStatusClick } ) => {
+const SubscriptionList = () => {
 	const { params } = useSelect( ( select ) => ( {
 		params: select( 'wpuf/subscriptions-router' ).getQueryParams(),
 	} ), [] );
@@ -171,15 +170,13 @@ const SubscriptionList = ( { onStatusClick } ) => {
 		trash: __( 'Review deleted subscriptions. Restore or permanently delete them as required.', 'wp-user-frontend' ),
 	} ), [] );
 
-	// The former sidebar items as the list card's status tabs.
-	const countsLoaded = !! allCount && undefined !== allCount.all;
-	const tabs = [
-		// No count until the counts arrive: "(0)" while loading reads as "no plans".
-		{ id: 'all', label: __( 'All Subscriptions', 'wp-user-frontend' ), count: countsLoaded ? allCount.all || 0 : undefined },
-		{ id: 'publish', label: __( 'Published', 'wp-user-frontend' ), count: countsLoaded ? allCount.publish || 0 : undefined },
-		{ id: 'draft', label: __( 'Drafts', 'wp-user-frontend' ), count: countsLoaded ? allCount.draft || 0 : undefined },
-		{ id: 'trash', label: __( 'Trash', 'wp-user-frontend' ), count: countsLoaded ? allCount.trash || 0 : undefined },
-	];
+	// develop's ListHeader title per status (its "All" shows the plain "Subscriptions").
+	const headerTitle = {
+		all: __( 'Subscriptions', 'wp-user-frontend' ),
+		publish: __( 'Published', 'wp-user-frontend' ),
+		draft: __( 'Drafts', 'wp-user-frontend' ),
+		trash: __( 'Trash', 'wp-user-frontend' ),
+	};
 
 	let content;
 
@@ -247,21 +244,17 @@ const SubscriptionList = ( { onStatusClick } ) => {
 		);
 	}
 
+	// List card (FlyHR, as the forms lists): toolbar with develop's status title and
+	// text, Preferences + view switch, the packs or a state, footer pagination.
 	return (
-		<>
-		{ /* What visitors still need before they can buy a pack, with quick actions. */ }
-		<SetupChecklist />
-		{ /* List card (FlyHR, as the forms lists): toolbar with status tabs + view
-		     switch, the status description, the packs or a state, footer pagination. */ }
-		<div className="mt-6 rounded-[10px] border border-solid border-gray-200 bg-white shadow-sm">
-			<div className="flex flex-wrap items-center justify-between gap-3 border-0 border-b border-solid border-gray-200 px-4 pt-3 pb-2">
-				<Tabs
-					variant="toolbar"
-					tabs={ tabs }
-					value={ currentSubscriptionStatus }
-					onChange={ ( next ) => onStatusClick && onStatusClick( next ) }
-					label={ __( 'Subscription status', 'wp-user-frontend' ) }
-				/>
+		<div className="rounded-[10px] border border-solid border-gray-200 bg-white shadow-sm">
+			<div className="flex flex-wrap items-center justify-between gap-3 border-0 border-b border-solid border-gray-200 px-4 py-3">
+				<div className="min-w-0">
+					<h3 className="m-0 text-base font-semibold text-gray-900">{ headerTitle[ currentSubscriptionStatus ] || __( 'Subscriptions', 'wp-user-frontend' ) }</h3>
+					<p className="m-0 mt-1 text-sm text-gray-500">
+						{ headerMessage[ currentSubscriptionStatus ] || __( 'Explore and manage all subscriptions in one place', 'wp-user-frontend' ) }
+					</p>
+				</div>
 				<div className="flex items-center gap-2">
 					<Button variant="secondary" size="sm" onClick={ openPreferences }>
 						<Settings size={ 16 } aria-hidden="true" />
@@ -270,10 +263,6 @@ const SubscriptionList = ( { onStatusClick } ) => {
 					<ViewSwitch view={ view } onChange={ changeView } />
 				</div>
 			</div>
-
-			<p className="m-0 border-0 border-b border-solid border-gray-200 px-4 py-3 text-sm text-gray-500">
-				{ headerMessage[ currentSubscriptionStatus ] || __( 'Explore and manage all subscriptions in one place', 'wp-user-frontend' ) }
-			</p>
 
 			{ /* Extension slot: Pro and third-party plugins can add actions above the packs */ }
 			{ ! isPreferences && subscriptionList && subscriptionList.length > 0 && ! isLoading && ! listError && (
@@ -284,7 +273,6 @@ const SubscriptionList = ( { onStatusClick } ) => {
 
 			{ content }
 		</div>
-		</>
 	);
 };
 

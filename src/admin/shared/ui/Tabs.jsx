@@ -9,36 +9,58 @@
  *   with a soft shadow;
  * - variant "toolbar" (FlyHR list cards, forms lists since 4.2): 44px tabs,
  *   px-4 14px/500, count as "(n)" in light gray, active primary with a 2px
- *   line 8px below the tab (on the card's toolbar border).
+ *   line 8px below the tab (on the card's toolbar border);
+ * - variant "vertical" (develop subscriptions sidebar, measured): 40px rows
+ *   (py-2 px-5, 14px/24px), 8px apart, active row white in primary, count
+ *   as a 14px pill badge on the right; up / down arrows move between rows.
  */
 import { Tabs as PuiTabs, TabsList, TabsTrigger, cn } from '@wedevs/plugin-ui';
+import Badge from './Badge';
+
+// plugin-ui's Tabs takes `orientation` for its look only (the keys stay
+// left / right): up / down move the focus in the vertical list, Enter picks.
+const moveVertical = ( event ) => {
+    if ( 'ArrowDown' !== event.key && 'ArrowUp' !== event.key ) {
+        return;
+    }
+    const tabs = Array.from( event.currentTarget.querySelectorAll( '[role="tab"]:not([disabled])' ) );
+    const index = tabs.indexOf( event.target.ownerDocument.activeElement );
+    const step = 'ArrowDown' === event.key ? 1 : -1;
+    event.preventDefault();
+    tabs[ ( index + step + tabs.length ) % tabs.length ]?.focus();
+};
 
 /**
  * @param {Object}   props
  * @param {Array}    props.tabs      [{ id, label, count?, disabled? }]
  * @param {string}   props.value     Active tab id.
  * @param {Function} props.onChange  ( id ) => void
- * @param {string}   [props.variant] underline|segmented|section (develop subscriptions form: padded tabs over a full-width line)|toolbar|pill (FlyHR page tab bar: icon, label, (count))
+ * @param {string}   [props.variant] underline|segmented|section (develop subscriptions form: padded tabs over a full-width line)|toolbar|pill (FlyHR page tab bar: icon, label, (count))|vertical
  * @param {string}   [props.label]   aria-label of the tab list.
+ * @param {Function} [props.onTabClick] ( id ) => void on every click, the active tab too.
  */
-export default function Tabs( { tabs, value, onChange, variant = 'underline', label, className } ) {
+export default function Tabs( { tabs, value, onChange, variant = 'underline', label, className, onTabClick } ) {
     const segmented = 'segmented' === variant;
     const section = 'section' === variant;
     const toolbar = 'toolbar' === variant;
     const pill = 'pill' === variant;
+    const vertical = 'vertical' === variant;
 
     return (
-        <PuiTabs value={ value } onValueChange={ ( next ) => onChange( next ) }>
+        <PuiTabs value={ value } onValueChange={ ( next ) => onChange( next ) } orientation={ vertical ? 'vertical' : undefined }>
             <TabsList
-                variant={ segmented || pill ? 'default' : 'line' }
+                variant={ segmented || pill || vertical ? 'default' : 'line' }
                 aria-label={ label }
+                aria-orientation={ vertical ? 'vertical' : undefined }
+                onKeyDown={ vertical ? moveVertical : undefined }
                 className={ cn(
                     'h-auto group-data-horizontal/tabs:h-auto justify-start',
                     segmented && 'w-max gap-0 rounded-lg bg-gray-100 p-1',
                     section && 'w-full gap-0 p-0 rounded-none bg-transparent border-0 border-b border-solid border-gray-200 text-sm font-medium text-center text-gray-500',
                     toolbar && 'w-auto min-w-0 max-w-full gap-0 p-0 -mb-2 pb-2 rounded-none bg-transparent items-stretch overflow-x-auto',
                     pill && 'inline-flex h-auto! w-fit max-w-full items-center gap-1 overflow-x-auto rounded-lg border border-solid border-gray-200 bg-gray-50! p-1',
-                    ! segmented && ! section && ! toolbar && ! pill && 'w-auto gap-0 p-0 rounded-none bg-transparent',
+                    vertical && 'flex w-full! h-auto! flex-col items-stretch gap-2 rounded-none bg-transparent! p-0',
+                    ! segmented && ! section && ! toolbar && ! pill && ! vertical && 'w-auto gap-0 p-0 rounded-none bg-transparent',
                     className
                 ) }
             >
@@ -47,6 +69,7 @@ export default function Tabs( { tabs, value, onChange, variant = 'underline', la
                         key={ tab.id }
                         value={ tab.id }
                         disabled={ tab.disabled }
+                        onClick={ onTabClick ? () => onTabClick( tab.id ) : undefined }
                         className={ cn(
                             // Develop spaces tabs with a right margin on each (also the last one).
                             'flex-none h-auto gap-0 cursor-pointer shadow-none',
@@ -54,12 +77,15 @@ export default function Tabs( { tabs, value, onChange, variant = 'underline', la
                             section && 'me-2 mb-[-1px] rounded-t-lg rounded-b-none border-0 border-solid px-3 py-2.5 text-sm font-medium text-gray-500 data-active:border-b-2 data-active:border-b-primary data-active:text-primary enabled:hover:border-b-2 enabled:hover:border-b-primary enabled:hover:text-primary',
                             toolbar && 'relative h-10 gap-1.5 overflow-visible rounded-none data-[slot]:border-0! data-[slot]:border-b-0! bg-transparent px-4 text-sm font-medium text-gray-500 shadow-none! outline-none! ring-0! focus:shadow-none! focus-visible:ring-0! focus-visible:outline-none! focus-visible:text-gray-900 after:hidden data-active:bg-transparent data-active:text-primary enabled:hover:text-gray-900! data-active:hover:text-primary!',
                             pill && 'group inline-flex h-auto! shrink-0 items-center gap-2 rounded-md! data-[slot]:border-0! data-[slot]:border-b-0! bg-transparent after:hidden! px-3 py-1.5 text-sm font-medium text-gray-500 ring-1 ring-transparent transition-all outline-none! focus:shadow-none! enabled:hover:text-gray-900! data-active:bg-white! data-active:text-primary! data-active:shadow-sm! data-active:ring-primary/40!',
-                            ! segmented && ! section && ! toolbar && ! pill && 'mr-8 rounded-none border-0 border-b-2 border-transparent px-1 py-4 text-sm font-medium text-gray-500 data-active:border-b-primary data-active:text-primary enabled:hover:border-b-primary enabled:hover:text-primary'
+                            vertical && 'w-full! justify-between gap-3 rounded-md! data-[slot]:border-0! bg-transparent after:hidden! px-5 py-2 text-left text-sm leading-6 font-normal whitespace-normal text-gray-700 shadow-none! outline-none! focus:shadow-none! enabled:hover:bg-gray-50! enabled:hover:text-primary! data-active:bg-white! data-active:text-primary! data-active:shadow-none! focus-visible:ring-2! focus-visible:ring-primary/40!',
+                            ! segmented && ! section && ! toolbar && ! pill && ! vertical && 'mr-8 rounded-none border-0 border-b-2 border-transparent px-1 py-4 text-sm font-medium text-gray-500 data-active:border-b-primary data-active:text-primary enabled:hover:border-b-primary enabled:hover:text-primary'
                         ) }
                     >
                         { pill && tab.icon }
-                        { toolbar || pill ? <span>{ tab.label }</span> : tab.label }
-                        { undefined !== tab.count && ( pill ? (
+                        { toolbar || pill || vertical ? <span>{ tab.label }</span> : tab.label }
+                        { undefined !== tab.count && ( vertical ? (
+                            <Badge variant="pill" tone={ tab.id === value ? 'primary' : 'neutral' } className="shrink-0 px-2.5 py-1 text-sm">{ tab.count }</Badge>
+                        ) : pill ? (
                             <span className="font-normal text-gray-400 group-data-active:text-primary/70">{ '(' + tab.count + ')' }</span>
                         ) : toolbar ? (
                             <span className="font-normal text-[#a5a5aa]">{ '(' + tab.count + ')' }</span>

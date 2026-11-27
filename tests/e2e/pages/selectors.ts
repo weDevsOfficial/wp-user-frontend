@@ -2099,9 +2099,9 @@ export const Selectors = {
             quickEditButton: 'xpath=//*[@role="menuitem"][normalize-space()="Quick Edit"] >> visible=true >> nth=0',
             darftButton: 'xpath=//*[@role="menuitem"][normalize-space()="Draft"] >> visible=true >> nth=0',
             trashButton: 'xpath=//*[@role="menuitem"][normalize-space()="Trash"] >> visible=true >> nth=0',
-            // Status tabs of the list card (count as "(n)", also 0).
-            trashTab1: 'role=tab[name=/^Trash\\s*\\(1\\)$/]',
-            draftTab1: 'role=tab[name=/^Drafts\\s*\\(1\\)$/]',
+            // Status sidebar tabs (develop's look: the label plus a count badge).
+            trashTab1: 'role=tab[name=/^Trash\\s*1$/]',
+            draftTab1: 'role=tab[name=/^Drafts\\s*1$/]',
             cardViewButton: 'role=button[name="Card view"s]',
             listViewButton: 'role=button[name="List view"s]',
             confirmTrashButton: 'xpath=(//*[@role="alertdialog" or @role="dialog"]//button[normalize-space()="Trash"] | //div[contains(@class,"swal2-popup")]//button[normalize-space()="Trash"])[1]',
@@ -2201,11 +2201,11 @@ export const Selectors = {
             validatePackPublished: (packName)=> `//div[contains(text(),"${packName}")]//..//..//..//*[normalize-space(text())="Published"]`,
             validatePackDrafted: (packName)=> `//div[contains(text(),"${packName}")]//..//..//..//*[normalize-space(text())="Draft"]`,
             validatePackTrashed: (packName)=> `//div[contains(text(),"${packName}")]//..//..//..//*[normalize-space(text())="Trash"]`,
-            // List card status tabs: the label plus the count as "(n)" (also 0).
-            validateAllPackCount: (packCount: number)=> `role=tab[name=/^All Subscriptions\\s*\\(${packCount || 0}\\)$/]`,
-            validatePublishedPackCount: (packCount: number)=> `role=tab[name=/^Published\\s*\\(${packCount || 0}\\)$/]`,
-            validateDraftPackCount: (packCount: number)=> `role=tab[name=/^Drafts\\s*\\(${packCount || 0}\\)$/]`,
-            validateTrashPackCount: (packCount: number)=> `role=tab[name=/^Trash\\s*\\(${packCount || 0}\\)$/]`,
+            // Status sidebar tabs: the label plus a count badge, no badge for 0 (develop).
+            validateAllPackCount: (packCount: number)=> `role=tab[name=/^All Subscriptions${packCount ? `\\s*${packCount}` : ''}$/]`,
+            validatePublishedPackCount: (packCount: number)=> `role=tab[name=/^Published${packCount ? `\\s*${packCount}` : ''}$/]`,
+            validateDraftPackCount: (packCount: number)=> `role=tab[name=/^Drafts${packCount ? `\\s*${packCount}` : ''}$/]`,
+            validateTrashPackCount: (packCount: number)=> `role=tab[name=/^Trash${packCount ? `\\s*${packCount}` : ''}$/]`,
             validateSubscriberscount: (packName: string, subscribersCount: number)=> `//div[contains(text(),"${packName}")]//..//..//..//p[normalize-space(text())="Total Subscribers"]//..//a[normalize-space(text())="${subscribersCount}"]`,
             // The list toolbar's Preferences link: opens Settings > Payments > Subscriptions.
             packPreferences: 'role=button[name="Preferences"s]',

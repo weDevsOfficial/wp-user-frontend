@@ -5,6 +5,7 @@ namespace WeDevs\Wpuf\Fields;
 /**
  * Recaptcha Field Class
  */
+// phpcs:ignore PEAR.NamingConventions.ValidClassName.Invalid -- public class name, renaming it would break field registration.
 class Form_Field_reCaptcha extends Field_Contract {
 
     public function __construct() {
@@ -37,44 +38,52 @@ class Form_Field_reCaptcha extends Field_Contract {
             $is_invisible = $field_settings['recaptcha_type'] == 'invisible_recaptcha' ? true : false;
         }
 
-        $invisible_css   = $is_invisible ? ' style="margin: 0; padding: 0" ' : ''; ?> <li <?php $this->print_list_attributes( $field_settings );
-        echo esc_attr( $invisible_css ); ?>>
+        $invisible_css = $is_invisible ? ' style="margin: 0; padding: 0" ' : ''; ?> <li 
+        <?php
+        $this->print_list_attributes( $field_settings );
+        echo esc_attr( $invisible_css );
+		?>
+        >
 
             <?php
 
-            if ( !$is_invisible ) {
+            if ( ! $is_invisible ) {
                 $this->print_label( $field_settings );
             }
 
-        if ( !$public_key ) {
-            esc_html_e( 'reCaptcha API key is missing.', 'wp-user-frontend' );
-        } else {
-            ?>
+			if ( ! $public_key ) {
+				esc_html_e( 'reCaptcha API key is missing.', 'wp-user-frontend' );
+			} else {
+				?>
 
                 <div class="wpuf-fields <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>">
                     <script>
+                        // Only the form that holds the reCAPTCHA is gated, other WPUF forms on the page stay usable.
                         function wpufRecaptchaCallback(token) {
-                            jQuery('[name="g-recaptcha-response"]').val(token);
-                            jQuery('.wpuf-submit-button').attr('disabled',false).show();
-                            jQuery('.wpuf-submit-btn-recaptcha').hide();
+                            var forms = jQuery('.g-recaptcha').closest('form');
+
+                            forms.find('[name="g-recaptcha-response"]').val(token);
+                            forms.find('.wpuf-submit-button').attr('disabled',false).show();
+                            forms.find('.wpuf-submit-btn-recaptcha').hide();
                         }
 
                         jQuery(document).ready( function($) {
-                            $('.wpuf-submit-button').attr('disabled',true);
+                            $('<?php echo esc_js( '.wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>').closest('form').find('.wpuf-submit-button').attr('disabled',true);
                         });
                     </script>
 
                     <input type="hidden" name="g-recaptcha-response">
                 <?php
 
-                if ( $is_invisible ) { ?>
+                if ( $is_invisible ) {
+					?>
 
                     <?php wp_enqueue_script( 'wpuf-recaptcha-invisible', 'https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en', array(), null, true ); ?>
 
                     <script>
 
                         jQuery(document).ready(function($) {
-                            var btn = $('.wpuf-submit-button');
+                            var btn = $('<?php echo esc_js( '.wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>').closest('form').find('.wpuf-submit-button');
                             var gc_btn = btn.clone().removeClass().addClass('wpuf-submit-btn-recaptcha').attr('disabled',false);
                             btn.after(gc_btn);
                             btn.hide();
@@ -108,8 +117,9 @@ class Form_Field_reCaptcha extends Field_Contract {
 
                 </div>
 
-            <?php
-        } ?>
+				<?php
+			}
+			?>
 
         </li>
 

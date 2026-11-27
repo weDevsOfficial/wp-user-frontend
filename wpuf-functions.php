@@ -5558,6 +5558,59 @@ function wpuf_get_post_forms() {
 }
 
 /**
+ * Clear the My Account "Submission Form" value saved before it took effect
+ *
+ * Before 4.3.16 the Submit Post tab ignored this setting, and saving the My Account
+ * tab stored the first form in the list, so a saved value is not a real choice.
+ * Clearing it once keeps each site on its Default Post Form after the update.
+ *
+ * @since WPUF_SINCE
+ *
+ * @return void
+ */
+function wpuf_clear_legacy_submission_form() {
+    if ( get_option( 'wpuf_submission_form_cleared' ) ) {
+        return;
+    }
+
+    $settings = get_option( 'wpuf_my_account' );
+
+    if ( is_array( $settings ) && ! empty( $settings['post_submission_form'] ) ) {
+        $settings['post_submission_form'] = '';
+        update_option( 'wpuf_my_account', $settings );
+    }
+
+    update_option( 'wpuf_submission_form_cleared', 1 );
+}
+
+add_action( 'init', 'wpuf_clear_legacy_submission_form' );
+
+/**
+ * Give the My Account "Submission Form" select an empty first choice
+ *
+ * Without it, saving the My Account tab stores the first form in the list. Added
+ * through the existing filter so the legacy settings file stays untouched.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param array $options My Account settings fields.
+ *
+ * @return array
+ */
+function wpuf_submission_form_empty_choice( $options ) {
+    foreach ( $options as $key => $option ) {
+        if ( isset( $option['name'] ) && 'post_submission_form' === $option['name'] ) {
+            $options[ $key ]['default'] = '';
+            $options[ $key ]['options'] = [ '' => __( 'Use the Default Post Form', 'wp-user-frontend' ) ] + (array) $option['options'];
+        }
+    }
+
+    return $options;
+}
+
+add_filter( 'wpuf_options_wpuf_my_account', 'wpuf_submission_form_empty_choice' );
+
+/**
  * require_once a file upon checking the existence of the file
  *
  * @since 4.0.0

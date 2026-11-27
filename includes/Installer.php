@@ -20,7 +20,7 @@ class Installer {
 
         $installed = get_option( 'wpuf_installed' );
 
-        if ( !$installed ) {
+        if ( ! $installed ) {
             update_option( 'wpuf_installed', time() );
         }
 
@@ -41,11 +41,11 @@ class Installer {
         $collate = '';
 
         if ( $wpdb->has_cap( 'collation' ) ) {
-            if ( !empty( $wpdb->charset ) ) {
+            if ( ! empty( $wpdb->charset ) ) {
                 $collate .= "DEFAULT CHARACTER SET $wpdb->charset";
             }
 
-            if ( !empty( $wpdb->collate ) ) {
+            if ( ! empty( $wpdb->collate ) ) {
                 $collate .= " COLLATE $wpdb->collate";
             }
         }
@@ -102,8 +102,14 @@ class Installer {
      * Schedules the post expiry event
      *
      * @since 2.2.7
+     * @since WPUF_SINCE wpuf_cleanup_logs added
      */
     public function schedule_events() {
         wp_schedule_event( time(), 'daily', 'wpuf_remove_expired_post_hook' );
+
+        // check existence before scheduling a new event
+        if ( ! wp_next_scheduled( 'wpuf_cleanup_logs' ) ) {
+            wp_schedule_event( time() + ( 3 * HOUR_IN_SECONDS ), 'daily', 'wpuf_cleanup_logs' );
+        }
     }
 }

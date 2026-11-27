@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly
 
 class Subscription_Plans_Widget extends Widget_Base {
+	use Per_User_Output;
 
 	/**
 	 * Retrieve the widget name
@@ -1299,7 +1300,8 @@ class Subscription_Plans_Widget extends Widget_Base {
 
 			if ( $recurring_pay ) {
 				$cycle_label  = wpuf()->subscription->get_cycle_label( $cycle_period, $billing_cycle_number );
-				$billing_text = sprintf( __( 'Every %s %s', 'wp-user-frontend' ), $billing_cycle_number, $cycle_label );
+				/* translators: %s: billing cycle number, %s: cycle period label */
+				$billing_text = sprintf( __( 'Every %s %s', 'wp-user-frontend' ), $billing_cycle_number, $cycle_label ); // phpcs:ignore WordPress.WP.I18n.UnorderedPlaceholdersText -- existing string, reordering would drop its translations.
 				echo '<span class="wpuf-sub-billing-cycle">' . esc_html( $billing_text ) . '</span>';
 			} else {
 				echo '<span class="wpuf-sub-billing-cycle">' . esc_html__( 'One time payment', 'wp-user-frontend' ) . '</span>';
@@ -1312,7 +1314,8 @@ class Subscription_Plans_Widget extends Widget_Base {
 
 		// Trial Description
 		if ( $billing_amount > 0 && $recurring_pay && $trial_status && $trial_duration > 0 ) {
-			$duration = _n( $trial_duration_type, $trial_duration_type . 's', $trial_duration, 'wp-user-frontend' );
+			$duration = _n( $trial_duration_type, $trial_duration_type . 's', $trial_duration, 'wp-user-frontend' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralSingle, WordPress.WP.I18n.NonSingularStringLiteralPlural -- existing call, kept as is.
+			/* translators: %1$s: trial duration, %2$s: trial period */
 			$trial_text = sprintf( __( 'Trial available for first %1$s %2$s', 'wp-user-frontend' ), $trial_duration, $duration );
 			echo '<div class="wpuf-sub-trial-description">' . esc_html( $trial_text ) . '</div>';
 		}
@@ -1418,6 +1421,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $all_limits['post'] ) {
 					$features_list[] = __( 'Unlimited posts', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d posts allowed', 'wp-user-frontend' ), intval( $all_limits['post'] ) );
 				}
 			}
@@ -1427,6 +1431,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $all_limits['page'] ) {
 					$features_list[] = __( 'Unlimited pages', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d pages allowed', 'wp-user-frontend' ), intval( $all_limits['page'] ) );
 				}
 			}
@@ -1436,6 +1441,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $all_limits['user_request'] ) {
 					$features_list[] = __( 'Unlimited user requests', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d user requests allowed', 'wp-user-frontend' ), intval( $all_limits['user_request'] ) );
 				}
 			}
@@ -1445,6 +1451,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $all_limits['product'] ) {
 					$features_list[] = __( 'Unlimited products', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d products allowed', 'wp-user-frontend' ), intval( $all_limits['product'] ) );
 				}
 			}
@@ -1454,6 +1461,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $all_limits['wp_block'] ) {
 					$features_list[] = __( 'Unlimited reusable blocks', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d reusable blocks allowed', 'wp-user-frontend' ), intval( $all_limits['wp_block'] ) );
 				}
 			}
@@ -1463,6 +1471,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $all_limits['wp_template'] ) {
 					$features_list[] = __( 'Unlimited templates', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d templates allowed', 'wp-user-frontend' ), intval( $all_limits['wp_template'] ) );
 				}
 			}
@@ -1472,6 +1481,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $all_limits['wp_template_part'] ) {
 					$features_list[] = __( 'Unlimited template parts', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d template parts allowed', 'wp-user-frontend' ), intval( $all_limits['wp_template_part'] ) );
 				}
 			}
@@ -1481,6 +1491,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $all_limits['wp_navigation'] ) {
 					$features_list[] = __( 'Unlimited navigation menus', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d navigation menus allowed', 'wp-user-frontend' ), intval( $all_limits['wp_navigation'] ) );
 				}
 			}
@@ -1490,6 +1501,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $all_limits['wp_global_styles'] ) {
 					$features_list[] = __( 'Unlimited global styles', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d global styles allowed', 'wp-user-frontend' ), intval( $all_limits['wp_global_styles'] ) );
 				}
 			}
@@ -1499,6 +1511,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $all_limits['wp_font_family'] ) {
 					$features_list[] = __( 'Unlimited font families', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d font families allowed', 'wp-user-frontend' ), intval( $all_limits['wp_font_family'] ) );
 				}
 			}
@@ -1508,6 +1521,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $all_limits['wp_font_face'] ) {
 					$features_list[] = __( 'Unlimited font faces', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d font faces allowed', 'wp-user-frontend' ), intval( $all_limits['wp_font_face'] ) );
 				}
 			}
@@ -1517,6 +1531,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $all_limits['product_variation'] ) {
 					$features_list[] = __( 'Unlimited product variations', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d product variations allowed', 'wp-user-frontend' ), intval( $all_limits['product_variation'] ) );
 				}
 			}
@@ -1526,6 +1541,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $all_limits['shop_order'] ) {
 					$features_list[] = __( 'Unlimited shop orders', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d shop orders allowed', 'wp-user-frontend' ), intval( $all_limits['shop_order'] ) );
 				}
 			}
@@ -1535,6 +1551,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $all_limits['shop_order_refund'] ) {
 					$features_list[] = __( 'Unlimited shop refunds', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d shop refunds allowed', 'wp-user-frontend' ), intval( $all_limits['shop_order_refund'] ) );
 				}
 			}
@@ -1544,6 +1561,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $all_limits['shop_coupon'] ) {
 					$features_list[] = __( 'Unlimited shop coupons', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d shop coupons allowed', 'wp-user-frontend' ), intval( $all_limits['shop_coupon'] ) );
 				}
 			}
@@ -1553,6 +1571,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 				if ( '-1' === $pack->meta_value['_total_feature_item'] ) {
 					$features_list[] = __( 'Unlimited featured items', 'wp-user-frontend' );
 				} else {
+					/* translators: %d: number */
 					$features_list[] = sprintf( __( '%d featured items', 'wp-user-frontend' ), intval( $pack->meta_value['_total_feature_item'] ) );
 				}
 			}
@@ -1563,7 +1582,8 @@ class Subscription_Plans_Widget extends Widget_Base {
 				$expiry_type = isset( $pack->meta_value['_post_expiration_period'] ) ? $pack->meta_value['_post_expiration_period'] : 'day';
 
 				if ( $expiry_period > 0 ) {
-					$features_list[] = sprintf( __( 'Posts expire after %d %s', 'wp-user-frontend' ), $expiry_period, $expiry_type . ( $expiry_period > 1 ? 's' : '' ) );
+					/* translators: %d: expiry period, %s: expiry unit */
+					$features_list[] = sprintf( __( 'Posts expire after %d %s', 'wp-user-frontend' ), $expiry_period, $expiry_type . ( $expiry_period > 1 ? 's' : '' ) ); // phpcs:ignore WordPress.WP.I18n.UnorderedPlaceholdersText -- existing string, reordering would drop its translations.
 				} else {
 					$features_list[] = __( 'Post expiration enabled', 'wp-user-frontend' );
 				}
@@ -1580,7 +1600,8 @@ class Subscription_Plans_Widget extends Widget_Base {
 				$trial_type = isset( $pack->meta_value['trial_duration_type'] ) ? $pack->meta_value['trial_duration_type'] : 'day';
 
 				if ( $trial_duration > 0 ) {
-					$features_list[] = sprintf( __( '%d %s free trial', 'wp-user-frontend' ), $trial_duration, $trial_type . ( $trial_duration > 1 ? 's' : '' ) );
+					/* translators: %d: trial duration, %s: trial unit */
+					$features_list[] = sprintf( __( '%d %s free trial', 'wp-user-frontend' ), $trial_duration, $trial_type . ( $trial_duration > 1 ? 's' : '' ) ); // phpcs:ignore WordPress.WP.I18n.UnorderedPlaceholdersText -- existing string, reordering would drop its translations.
 				} else {
 					$features_list[] = __( 'Free trial available', 'wp-user-frontend' );
 				}
@@ -1624,6 +1645,7 @@ class Subscription_Plans_Widget extends Widget_Base {
 
 				echo '<div class="wpuf-sub-features-toggle-wrapper">';
 				echo '<button type="button" class="wpuf-sub-features-toggle wpuf-sub-features-see-more" data-pack-id="' . esc_attr( $pack_id ) . '" data-expanded="false">';
+				/* translators: %d: number */
 				printf( esc_html__( 'See %d more features', 'wp-user-frontend' ), intval( $hidden_count ) );
 				echo '</button>';
 				echo '<button type="button" class="wpuf-sub-features-toggle wpuf-sub-features-see-less" data-pack-id="' . esc_attr( $pack_id ) . '" data-expanded="true" style="display: none;">';

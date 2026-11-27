@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly
 
 class Account_Widget extends Widget_Base {
+    use Per_User_Output;
 
     /**
      * Retrieve the widget name

@@ -27,8 +27,15 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
         // Enqueue custom multi-select assets
         $this->enqueue_multiselect_assets();
 
+        // The Events Calendar keeps one _EventOrganizerID meta row per organizer.
+        $is_tec_organizers = '_EventOrganizerID' === $field_settings['name'];
+
+        if ( $is_tec_organizers ) {
+            $field_settings['options'] = $this->get_posts( 'tribe_organizer' );
+        }
+
         if ( isset( $post_id ) && $post_id != '0' ) {
-            $selected = $this->get_meta( $post_id, $field_settings['name'], $type );
+            $selected = $this->get_meta( $post_id, $field_settings['name'], $type, ! $is_tec_organizers );
 
             if ( is_serialized( $selected ) ) {
                 $selected = wpuf_safe_unserialize( $selected );
@@ -43,33 +50,37 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
             $selected = is_array( $selected ) ? $selected : (array) $selected;
         }
 
-        $name     = $field_settings['name'] . '[]';
+        $name = $field_settings['name'] . '[]';
 
         $this->field_print_label( $field_settings, $form_id ); ?>
 
-            <?php do_action( 'WPUF_multidropdown_field_after_label', $field_settings ); ?>
+            <?php do_action( 'WPUF_multidropdown_field_after_label', $field_settings ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.NotLowercase -- public hook name, kept for compatibility. ?>
 
             <div class="wpuf-fields">
                 <select multiple="multiple" class="multiselect wpuf-multiselect-field <?php echo 'wpuf_' . esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>" id="<?php echo esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>" name="<?php echo esc_attr( $name ); ?>" multiple="multiple" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-type="multiselect" data-placeholder="<?php echo esc_attr( $field_settings['first'] ); ?>">
 
-                    <?php if ( !empty( $field_settings['first'] ) ) { ?>
+                    <?php if ( ! empty( $field_settings['first'] ) ) { ?>
                         <option value="-1"><?php echo esc_attr( $field_settings['first'] ); ?></option>
                     <?php } ?>
 
                     <?php
                     if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {
                         foreach ( $field_settings['options'] as $value => $option ) {
-                            $current_select = selected( in_array( $value, $selected ), true, false ); ?>
+                            // Loose match kept: option keys can be integers while saved values are strings.
+                            $current_select = selected( in_array( $value, $selected ), true, false ); // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
+                            ?>
                             <option value="<?php echo esc_attr( $value ); ?>"<?php echo esc_attr( $current_select ); ?>><?php echo esc_html( $option ); ?></option>
                             <?php
                         }
-                    } ?>
+                    }
+                    ?>
                 </select>
                 <?php $this->help_text( $field_settings ); ?>
             </div>
 
 
-        <?php $this->after_field_print_label();
+        <?php
+        $this->after_field_print_label();
     }
 
     /**
@@ -105,7 +116,7 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $field_name = isset( $_POST[$field['name']] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[$field['name']] ) ) : [];
+        $field_name = isset( $_POST[ $field['name'] ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $field['name'] ] ) ) : [];
         $field_name = array_map( 'strip_shortcodes', $field_name );
         $entry_value  = ( is_array( $field_name ) && $field_name ) ? $field_name : [];
 
@@ -113,7 +124,7 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
             $new_val = [];
 
             foreach ( $entry_value as $option_key ) {
-                $new_val[] = isset( $field['options'][$option_key] ) ? $field['options'][$option_key] : '';
+                $new_val[] = isset( $field['options'][ $option_key ] ) ? $field['options'][ $option_key ] : '';
             }
             $entry_value = implode( wpuf()->get_field_seperator(), $new_val );
         } else {
@@ -154,7 +165,7 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
             ? wpuf_validate_boolean( $field['hide_field_label'] )
             : false;
 
-        $data = implode( ' | ' , $selected );
+        $data = implode( ' | ', $selected );
 
         if ( empty( $data ) ) {
             return '';
@@ -164,8 +175,8 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
 
         ob_start();
         ?>
-            <li class="<?php echo esc_attr( implode( ' ' , $container_classnames ) );  ?>">
-                <?php if ( ! $hide_label ): ?>
+            <li class="<?php echo esc_attr( implode( ' ', $container_classnames ) ); ?>">
+                <?php if ( ! $hide_label ) : ?>
                     <label><?php echo esc_html( $field['label'] ); ?>:</label>
                 <?php endif; ?>
                 <?php echo esc_html( $data ); ?>

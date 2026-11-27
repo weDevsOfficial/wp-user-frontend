@@ -244,14 +244,14 @@ class Frontend_Form extends Frontend_Render_Form {
 
         $entry_fields = $form->prepare_entries();
         $allowed_tags = wp_kses_allowed_html( 'post' );
-        $post_content = isset( $_POST['post_content'] ) ? wp_kses( wp_unslash( $_POST['post_content'] ), $allowed_tags ) : '';
+        $post_content = isset( $_POST['post_content'] ) ? wpuf_strip_shortcodes_fully( wp_kses( wp_unslash( $_POST['post_content'] ), $allowed_tags ) ) : '';
         $postarr = [
             'post_type'    => $this->form_settings['post_type'] ?? '',
             'post_status'  => wpuf_get_draft_post_status( $this->form_settings ),
             'post_author'  => $current_user_id,
-            'post_title'   => isset( $_POST['post_title'] ) ? sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) : '',
+            'post_title'   => isset( $_POST['post_title'] ) ? wpuf_strip_shortcodes_fully( sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) ) : '',
             'post_content' => $post_content,
-            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) : '',
+            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wpuf_strip_shortcodes_fully( wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) ) : '',
         ];
 
         // A draft is stored with wp_insert_post() just like a submission, so it has to
@@ -330,7 +330,8 @@ class Frontend_Form extends Frontend_Render_Form {
 
         $postarr = $this->adjust_thumbnail_id( $postarr );
 
-        $post_id = wp_insert_post( $postarr );
+        // wp_insert_post() expects slashed data; slashing keeps the stored text identical to the checked text.
+        $post_id = wp_insert_post( wp_slash( $postarr ) );
 
         // add post revision when post edit from the frontend
         wpuf_frontend_post_revision( $post_id, $this->form_settings );

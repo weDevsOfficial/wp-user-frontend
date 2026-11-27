@@ -240,9 +240,9 @@ class Frontend_Form_Ajax {
             'post_type'    => ! empty( $this->form_settings['post_type'] ) ? $this->form_settings['post_type'] : 'post',
             'post_status'  => isset( $this->form_settings['post_status'] ) ? $this->form_settings['post_status'] : 'publish',
             'post_author'  => $post_author,
-            'post_title'   => isset( $_POST['post_title'] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) ) : '',
-            'post_content' => isset( $_POST['post_content'] ) ? strip_shortcodes( wp_kses( wp_unslash( $_POST['post_content'] ), $allowed_tags ) ) : '',
-            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? strip_shortcodes( wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) ) : '',
+            'post_title'   => isset( $_POST['post_title'] ) ? wpuf_strip_shortcodes_fully( sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) ) : '',
+            'post_content' => isset( $_POST['post_content'] ) ? wpuf_strip_shortcodes_fully( wp_kses( wp_unslash( $_POST['post_content'] ), $allowed_tags ) ) : '',
+            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wpuf_strip_shortcodes_fully( wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) ) : '',
         ];
 
         // $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
@@ -391,7 +391,8 @@ class Frontend_Form_Ajax {
 
         // Use standard post creation if no post_id was created or not an event
         if ( ! $post_id ) {
-            $post_id = wp_insert_post( $postarr );
+            // wp_insert_post() expects slashed data; slashing keeps the stored text identical to the checked text.
+            $post_id = wp_insert_post( wp_slash( $postarr ) );
         }
 
         // Hook for post type specific processing after post creation

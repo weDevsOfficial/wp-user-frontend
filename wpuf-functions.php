@@ -5673,6 +5673,63 @@ function wpuf_get_protected_shortcodes() {
     ];
 }
 
+if ( ! defined( 'WPUF_STRIP_SHORTCODE_PASSES' ) ) {
+    // Enough for any real nesting; deeper input is escaped instead of stripped.
+    define( 'WPUF_STRIP_SHORTCODE_PASSES', 5 );
+}
+
+/**
+ * Remove every registered shortcode from user input, until none is left
+ *
+ * strip_shortcodes() makes a single pass, so a shortcode split by another one
+ * ("[gall[caption]ery]") comes back whole once the inner one is removed. The
+ * passes are capped so crafted nesting can not burn CPU; whatever still
+ * changes after the cap gets its brackets escaped instead. Brackets inside HTML
+ * tags are escaped too, because strip_shortcodes() skips attributes while
+ * do_shortcode() still runs shortcodes found there. HTML comments are left as
+ * they are: block markup keeps its JSON and do_shortcode() never runs inside them.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $content
+ *
+ * @return string
+ */
+function wpuf_strip_shortcodes_fully( $content ) {
+    if ( ! is_string( $content ) || '' === $content ) {
+        return $content;
+    }
+
+    $passes = 0;
+
+    do {
+        $previous = $content;
+        $content  = strip_shortcodes( $content );
+        ++$passes;
+    } while ( $content !== $previous && $passes < WPUF_STRIP_SHORTCODE_PASSES );
+
+    if ( $content !== $previous ) {
+        $content = str_replace( [ '[', ']' ], [ '&#91;', '&#93;' ], $content );
+    }
+
+    if ( false !== strpos( $content, '<' ) ) {
+        $content = preg_replace_callback(
+            '/<!--.*?-->|<[^<>]*>/s',
+            function ( $tag ) {
+                // Keep HTML comments (block markup JSON); WordPress escapes shortcodes in comments at render.
+                if ( 0 === strpos( $tag[0], '<!--' ) ) {
+                    return $tag[0];
+                }
+
+                return str_replace( [ '[', ']' ], [ '&#91;', '&#93;' ], $tag[0] );
+            },
+            $content
+        );
+    }
+
+    return $content;
+}
+
 /**
  * Find the first protected shortcode present in the given values
  *
@@ -5694,11 +5751,33 @@ function wpuf_find_protected_shortcode( $values ) {
             continue;
         }
 
-        $value = wpuf_normalize_for_shortcode_check( $value );
+        // wp_insert_post() and update_post_meta() unslash once more before saving,
+        // so check the value both as submitted and as it would be stored.
+        $candidates = [
+            wpuf_normalize_for_shortcode_check( $value ),
+            wpuf_normalize_for_shortcode_check( wp_unslash( $value ) ),
+        ];
 
-        foreach ( $protected_shortcodes as $shortcode ) {
-            if ( false !== stripos( $value, '[' . $shortcode ) ) {
-                return $shortcode;
+        foreach ( $candidates as $text ) {
+            // strip_shortcodes() can join a tag that was split by another shortcode,
+            // so check the text after every pass too: the last pass would remove the
+            // joined tag itself. Nesting deeper than the cap is refused outright.
+            $passes = 0;
+
+            do {
+                foreach ( $protected_shortcodes as $shortcode ) {
+                    if ( false !== stripos( $text, '[' . $shortcode ) ) {
+                        return $shortcode;
+                    }
+                }
+
+                $previous = $text;
+                $text     = strip_shortcodes( $text );
+                ++$passes;
+            } while ( $text !== $previous && $passes <= WPUF_STRIP_SHORTCODE_PASSES );
+
+            if ( $text !== $previous && ! empty( $protected_shortcodes ) ) {
+                return reset( $protected_shortcodes );
             }
         }
     }
@@ -5721,7 +5800,7 @@ function wpuf_find_protected_shortcode( $values ) {
  * @return string the protected shortcode that was found, or an empty string
  */
 function wpuf_find_protected_shortcode_in_submission( $form_fields ) {
-    $names = [ 'post_title', 'post_content', 'post_excerpt' ];
+    $names = [ 'post_title', 'post_content', 'post_excerpt', 'wpuf_files_data' ];
 
     foreach ( (array) $form_fields as $field ) {
         $names[] = isset( $field['name'] ) ? $field['name'] : '';
@@ -5823,7 +5902,13 @@ function wpuf_modify_shortcodes( $content ) {
         // lack unfiltered_html on multisite.
         $author = get_userdata( (int) $post->post_author );
 
-        if ( ! $author || in_array( 'administrator', (array) $author->roles, true ) || user_can( $author, 'unfiltered_html' ) ) {
+        // A guest submission is stored under the default post owner, usually an
+        // administrator, so its author says nothing about who wrote it.
+        $form_id       = (int) get_post_meta( $post->ID, '_wpuf_form_id', true );
+        $form_settings = $form_id ? wpuf_get_form_settings( $form_id ) : [];
+        $is_guest_form = isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'];
+
+        if ( ! $is_guest_form && ( ! $author || in_array( 'administrator', (array) $author->roles, true ) || user_can( $author, 'unfiltered_html' ) ) ) {
             return $content;
         }
     }

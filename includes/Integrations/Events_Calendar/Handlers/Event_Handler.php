@@ -46,7 +46,7 @@ class Event_Handler {
 
         if ( ! $compatibility_handler || ! $compatibility_handler->is_active() ) {
             // Fallback to standard WordPress post creation if TEC is not available
-            return wp_insert_post( $postarr );
+            return wp_insert_post( wp_slash( $postarr ) );
         }
 
         // Delegate to the appropriate compatibility handler

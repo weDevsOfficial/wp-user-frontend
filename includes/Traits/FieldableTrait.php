@@ -511,16 +511,16 @@ trait FieldableTrait {
                         'post_content' => $file_data['desc'],
                         'post_excerpt' => $file_data['caption'],
                     ];
-                    wpuf_update_post( $args );
+                    wpuf_update_post( wp_slash( $args ) );
 
                     update_post_meta( $attachment_id, '_wp_attachment_image_alt', $file_data['title'] );
                 }
             }
         }
 
-        // save all custom fields
+        // save all custom fields; the meta API unslashes, so slash to store exactly the sanitized value
         foreach ( $meta_key_value as $meta_key => $meta_value ) {
-            update_post_meta( $post_id, $meta_key, $meta_value );
+            update_post_meta( $post_id, $meta_key, wp_slash( $meta_value ) );
         }
 
         // save any multicolumn repeatable fields
@@ -530,7 +530,7 @@ trait FieldableTrait {
 
             // now add them
             foreach ( $repeat_value as $repeat_field ) {
-                add_post_meta( $post_id, $repeat_key, $repeat_field );
+                add_post_meta( $post_id, $repeat_key, wp_slash( $repeat_field ) );
             }
         }
 
@@ -609,7 +609,7 @@ trait FieldableTrait {
                         'post_content' => $file_data['desc'],
                         'post_excerpt' => $file_data['caption'],
                     ];
-                    wpuf_update_post( $args );
+                    wpuf_update_post( wp_slash( $args ) );
 
                     update_post_meta( $attachment_id, '_wp_attachment_image_alt', $file_data['title'] );
                 }
@@ -716,9 +716,9 @@ trait FieldableTrait {
         // @codingStandardsIgnoreEnd
 
         return [
-            'title'   => isset( $raw['title'] ) ? $raw['title'] : '',
-            'desc'    => isset( $raw['desc'] ) ? $raw['desc'] : '',
-            'caption' => isset( $raw['caption'] ) ? $raw['caption'] : '',
+            'title'   => isset( $raw['title'] ) ? wpuf_strip_shortcodes_fully( $raw['title'] ) : '',
+            'desc'    => isset( $raw['desc'] ) ? wpuf_strip_shortcodes_fully( $raw['desc'] ) : '',
+            'caption' => isset( $raw['caption'] ) ? wpuf_strip_shortcodes_fully( $raw['caption'] ) : '',
         ];
     }
 
@@ -880,11 +880,11 @@ trait FieldableTrait {
             } elseif ( isset( $post_data[ $value['name'] ] ) && is_array( $post_data[ $value['name'] ] ) ) {
                 $value_name = isset( $post_data[ $value['name'] ] ) ? array_map(
                     function ( $item ) {
-                        return strip_shortcodes( sanitize_text_field( $item ) );
-                    }, wp_unslash( $post_data[ $value['name'] ] )
+                        return wpuf_strip_shortcodes_fully( sanitize_text_field( $item ) );
+                    }, $post_data[ $value['name'] ] // already unslashed above; a second pass drops real backslashes
                 ) : '';
             } else {
-                $value_name = isset( $post_data[ $value['name'] ] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $post_data[ $value['name'] ] ) ) ) : '';
+                $value_name = isset( $post_data[ $value['name'] ] ) ? wpuf_strip_shortcodes_fully( sanitize_text_field( $post_data[ $value['name'] ] ) ) : '';
             }
 
             if ( isset( $post_data['wpuf_files'][ $value['name'] ] ) ) {
@@ -931,16 +931,16 @@ trait FieldableTrait {
                                         if ( is_array( $row[ $fname ] ) ) {
                                             $sanitized_row[ $fname ] = array_map(
                                                 function ( $item ) {
-                                                    return strip_shortcodes( sanitize_text_field( $item ) );
+                                                    return wpuf_strip_shortcodes_fully( sanitize_text_field( $item ) );
                                                 },
                                                 $row[ $fname ]
                                             );
                                         } else {
-                                            $sanitized_row[ $fname ] = strip_shortcodes( sanitize_text_field( $row[ $fname ] ) );
+                                            $sanitized_row[ $fname ] = wpuf_strip_shortcodes_fully( sanitize_text_field( $row[ $fname ] ) );
                                         }
                                     } else {
                                         // For other fields, sanitize as string
-                                        $sanitized_row[ $fname ] = strip_shortcodes( sanitize_text_field( $row[ $fname ] ) );
+                                        $sanitized_row[ $fname ] = wpuf_strip_shortcodes_fully( sanitize_text_field( $row[ $fname ] ) );
                                     }
                                 } else {
                                     $sanitized_row[ $fname ] = '';
@@ -955,7 +955,7 @@ trait FieldableTrait {
                     } elseif ( is_array( $repeater_value ) ) {
                             $sanitized_repeater = array_map(
                                 function ( $item ) {
-                                    return strip_shortcodes( sanitize_text_field( $item ) );
+                                    return wpuf_strip_shortcodes_fully( sanitize_text_field( $item ) );
                                 },
                                 $repeater_value
                             );

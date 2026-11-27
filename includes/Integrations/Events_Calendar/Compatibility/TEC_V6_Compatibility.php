@@ -483,15 +483,24 @@ class TEC_V6_Compatibility {
          */
         $args = apply_filters( 'wpuf_tec_before_create_event', $args, $postarr, $meta_vars, $form_id, $form_settings );
 
+        // The ORM hands these to wp_insert_post() / wp_update_post(), which unslash them.
+        // Slash a copy, so the wpuf_tec_after_create_event listeners still get the plain values.
+        $orm_args = $args;
+        foreach ( [ 'title', 'description', 'excerpt' ] as $text_key ) {
+            if ( isset( $orm_args[ $text_key ] ) && is_string( $orm_args[ $text_key ] ) ) {
+                $orm_args[ $text_key ] = wp_slash( $orm_args[ $text_key ] );
+            }
+        }
+
         // Call the TEC ORM API
         try {
             if ( function_exists( 'tribe_events' ) ) {
                 // Update existing event or create new one
                 if ( $is_update ) {
-                    $event = tribe_events()->where( 'id', $post_id )->set_args( $args )->save();
+                    $event = tribe_events()->where( 'id', $post_id )->set_args( $orm_args )->save();
                     $event_id = $event ? $post_id : 0;
                 } else {
-                    $event = tribe_events()->set_args( $args )->create();
+                    $event = tribe_events()->set_args( $orm_args )->create();
                     $event_id = ( $event instanceof \WP_Post ) ? $event->ID : 0;
                 }
 

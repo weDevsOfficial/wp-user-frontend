@@ -319,8 +319,11 @@ class Form {
 				'post_status' => 'publish',
 				'post_type'   => 'wpuf_input',
 				'numberposts' => '-1',
-				'orderby'     => 'menu_order',
-				'order'       => 'ASC',
+				// ID breaks ties, so fields that share a menu_order (older duplicates) keep their insert order.
+				'orderby'     => [
+					'menu_order' => 'ASC',
+					'ID'         => 'ASC',
+				],
 			]
         );
 

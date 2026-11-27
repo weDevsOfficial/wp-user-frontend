@@ -2099,8 +2099,11 @@ function wpuf_get_form_fields( $form_id ) {
             'post_status' => 'publish',
             'post_type'   => 'wpuf_input',
             'numberposts' => '-1',
-            'orderby'     => 'menu_order',
-            'order'       => 'ASC',
+            // ID breaks ties, so fields that share a menu_order (older duplicates) keep their insert order.
+            'orderby'     => [
+                'menu_order' => 'ASC',
+                'ID'         => 'ASC',
+            ],
         ]
     );
 
@@ -3731,8 +3734,8 @@ function wpuf_duplicate_form( $post_id ) {
 
     $form_id = wp_insert_post( $new_form );
 
-    foreach ( $contents as $content ) {
-        wpuf_insert_form_field( $form_id, $content );
+    foreach ( $contents as $order => $content ) {
+        wpuf_insert_form_field( $form_id, $content, null, $order );
     }
 
     // update the post title to remove confusion

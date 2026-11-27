@@ -174,6 +174,17 @@
                     hideLoading();
 
                     try {
+                        const udI18n = ( window.wpufUserDirectorySearch && window.wpufUserDirectorySearch.i18n ) || {};
+
+                        // Update the visible "Showing X of Y" result count (sits above the list, survives list re-renders)
+                        const countNode = listingDiv.querySelector('.wpuf-ud-result-count');
+                        if (countNode && data.count_label) {
+                            countNode.textContent = data.count_label;
+                            if (typeof data.total !== 'undefined') {
+                                countNode.setAttribute('data-total', data.total);
+                            }
+                        }
+
                         // If we have results, restore the user list container first
                         if (data.rows_html && data.rows_html.trim() !== '') {
                             // Remove "no results" message if it exists
@@ -214,11 +225,11 @@
 
                                     const heading = document.createElement('h3');
                                     heading.style.cssText = 'font-size: 1rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;';
-                                    heading.textContent = 'No users found matching your search criteria.';
+                                    heading.textContent = udI18n.noUsersFound || 'No users found matching your search criteria.';
 
                                     const description = document.createElement('p');
                                     description.style.cssText = 'font-size: 0.875rem; color: #6b7280;';
-                                    description.textContent = 'Try adjusting your search or filter to find what you\'re looking for.';
+                                    description.textContent = udI18n.tryAdjusting || 'Try adjusting your search or filter to find what you\'re looking for.';
 
                                     noResultsContent.appendChild(iconContainer);
                                     noResultsContent.appendChild(heading);

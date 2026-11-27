@@ -1134,6 +1134,10 @@ features:
     name: Saving as a non-admin is refused
   - id: PFG0103
     name: A malformed field payload does not corrupt the form
+  - id: PFG0104
+    name: Script payloads in label / help / placeholder are escaped
+  - id: PFG0105
+    name: Script payloads in the unauthorized messages are escaped
   - id: PFG0106
     name: Custom HTML renders as authored (documented behaviour)
   - id: PFG0107

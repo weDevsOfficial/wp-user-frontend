@@ -34,19 +34,27 @@ class Form_Field_URL extends Form_Field_Text {
 
         $placeholder = ! empty( $field_settings['placeholder'] ) ? $field_settings['placeholder'] : '';
 
+        // In wp-admin this field sits inside the core edit form, so a browser-side URL check would block Publish/Update for an older or relative saved value.
+        $is_admin_screen = is_admin() && ! wp_doing_ajax();
+
         $this->field_print_label( $field_settings, $form_id ); ?>
             <div class="wpuf-fields">
                 <input
                     id="<?php echo esc_attr( $field_settings['name'] . '_' . $form_id ); ?>"
-                    type="url" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,20}(:[0-9]{1,20})?(\/.*)?$" class="url <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
+                    <?php if ( $is_admin_screen ) { ?>
+                        type="text" inputmode="url"
+                    <?php } else { ?>
+                        type="url" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,20}(:[0-9]{1,20})?(\/.*)?$"
+                        oninvalid="this.setCustomValidity('Please enter website with https://')"
+                        oninput="this.setCustomValidity('')"
+                    <?php } ?>
+                    class="url <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
                     data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                     data-type="url"
                     name="<?php echo esc_attr( $field_settings['name'] ); ?>"
                     placeholder="<?php echo esc_attr( $placeholder ); ?>"
                     value="<?php echo esc_attr( $value ); ?>" size="<?php echo esc_attr( $field_settings['size'] ); ?>"
                     autocomplete="url"
-                    oninvalid="this.setCustomValidity('Please enter website with https://')"
-                    oninput="this.setCustomValidity('')"
                 />
                 <?php $this->help_text( $field_settings ); ?>
             </div>

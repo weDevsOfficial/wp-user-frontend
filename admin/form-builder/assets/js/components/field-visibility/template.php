@@ -98,7 +98,7 @@
                     if ( $subscriptions ) {
                         foreach ( $subscriptions as $pack ) {
                             $output  = '<li class="wpuf-mt-2 wpuf-flex wpuf-items-center">';
-                            $output .= "<label class='wpuf-flex wpuf-items-center'><input  :class=\"builder_class_names('checkbox')\" class=\"!wpuf-mr-2\" type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
+                            $output .= "<label class='wpuf-flex wpuf-items-center'><input  :class=\"builder_class_names('checkbox')\" class=\"!wpuf-mr-2\" type='checkbox' v-model='choices' value='" . esc_attr( $pack->ID ) . "' > " . esc_html( wpuf_neutralize_template_delimiters( $pack->post_title ) ) . ' </label>';
                             $output .= '</li>';
 
                             $allowed_html = [

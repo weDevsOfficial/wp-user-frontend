@@ -38,7 +38,7 @@
                                         ?>
                                         <li>
                                             <a class="wpuf-block wpuf-rounded-none wpuf-font-medium wpuf-text-left wpuf-px-4 wpuf-py-2 !wpuf-text-sm wpuf-text-gray-700 hover:wpuf-bg-gray-100 hover:wpuf-text-gray-900 focus:wpuf-shadow-none focus:wpuf-outline-none" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-' . $form_type . '-forms&action=edit&id=' . $form->ID ) ); ?>">
-                                                <?php echo esc_html( $form->post_title ); ?>
+                                                <?php echo esc_html( wpuf_neutralize_template_delimiters( $form->post_title ) ); ?>
                                             </a>
                                         </li>
                                         <?php
@@ -58,12 +58,12 @@
                         ?>
                         <?php
                         // translators: %s is the shortcode type (e.g., form, post, profile)
-                        $title = sprintf( __( 'Click to copy %s shortcode', 'wp-user-frontend' ), esc_attr( $shortcode['type'] ) );
+                        $copy_title = sprintf( __( 'Click to copy %s shortcode', 'wp-user-frontend' ), esc_attr( $shortcode['type'] ) );
                         $clipboard = sprintf( '[%s type="%s" id="%s"]', $shortcode['name'], esc_attr( $shortcode['type'] ), esc_attr( $form_id ) );
                         ?>
                         <span
                             class="form-id wpuf-group wpuf-flex wpuf-items-center wpuf-px-[18px] wpuf-py-[10px] wpuf-rounded-md wpuf-border wpuf-border-gray-300 hover:wpuf-cursor-pointer wpuf-ml-6 wpuf-text-gray-700 wpuf-text-base wpuf-leading-none wpuf-shadow-sm"
-                            title="<?php echo esc_attr( $title ); ?>"
+                            title="<?php echo esc_attr( $copy_title ); ?>"
                             data-clipboard-text="<?php echo esc_attr( $clipboard ); ?>"><?php echo esc_attr( ucwords( $shortcode['type'] ) ); ?>: #{{ post.ID }}
                             <span id="default-icon" class="wpuf-ml-2">
                                 <svg

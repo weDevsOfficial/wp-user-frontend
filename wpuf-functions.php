@@ -5375,7 +5375,14 @@ function wpuf_pagination( $total_items, $per_page, $pagination_args = [] ) {
  * @return array
  */
 function wpuf_unset_conditional( $settings ) {
-    $remove_cond_field = [ 'action_hook', 'step_start' ];
+    /**
+     * Filters the field templates that get no conditional logic option in the form builder
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $remove_cond_field Field templates.
+     */
+    $remove_cond_field = apply_filters( 'wpuf_conditional_logic_excluded_fields', [ 'action_hook', 'step_start' ] );
 
     $field_settings = array_map(
         function ( $field ) use ( $remove_cond_field ) {

@@ -427,7 +427,8 @@ class Paypal {
                 'discount'         => ! empty( $custom_data['discount'] ) ? floatval( $custom_data['discount'] ) : 0,
                 'coupon_id'        => ! empty( $custom_data['coupon_id'] ) ? absint( $custom_data['coupon_id'] ) : null,
                 'tax'              => $tax,
-                'cost'             => $cost,
+                // Cost is stored before tax (subtotal - discount), like every gateway; tax has its own column.
+                'cost'             => round( $cost - $tax, 2 ),
                 'post_id'          => ( 'post' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
                 'pack_id'          => ( 'pack' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
                 'payer_first_name' => $user->first_name,
@@ -1242,7 +1243,8 @@ class Paypal {
                 'subtotal'          => $subtotal,
                 'profile_id'        => $subscription_id,
                 'tax'               => $tax,
-                'cost'              => $cost,
+                // Cost is stored before tax, like every gateway; tax has its own column.
+                'cost'              => round( $cost - $tax, 2 ),
                 'post_id'           => 0,
                 'pack_id'           => $pack_id,
                 'payer_first_name'  => $user->first_name,

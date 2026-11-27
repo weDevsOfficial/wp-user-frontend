@@ -25,9 +25,11 @@ class Form_Field_SectionBreak extends Field_Contract {
      */
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
         $field_settings['name'] = isset( $field_settings['name'] ) ? $field_settings['name'] : $this->input_type;
-        $field_settings['description'] = isset( $field_settings['description'] ) ? $field_settings['description'] : ''; ?>
+        $field_settings['description'] = isset( $field_settings['description'] ) ? $field_settings['description'] : '';
+        // Forms saved before the alignment option existed have no value: keep them centred.
+        $alignment = isset( $field_settings['title_alignment'] ) && in_array( $field_settings['title_alignment'], [ 'left', 'right' ], true ) ? $field_settings['title_alignment'] : 'center'; ?>
         <li <?php $this->print_list_attributes( $field_settings ); ?>>
-            <div class="wpuf-section-wrap wpuf-fields <?php echo esc_attr( 'section_' . $form_id ); ?><?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>" style="width: 100%; text-align:center">
+            <div class="wpuf-section-wrap wpuf-fields <?php echo esc_attr( 'section_' . $form_id ); ?><?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>" style="width: 100%; text-align:<?php echo esc_attr( $alignment ); ?>">
                 <h2 class="wpuf-section-title"><?php echo esc_attr( $field_settings['label'] ); ?></h2>
                 <div class="wpuf-section-details"><?php echo esc_attr( $field_settings['description'] ); ?></div>
             </div>
@@ -67,6 +69,20 @@ class Form_Field_SectionBreak extends Field_Contract {
                 'section'   => 'basic',
                 'priority'  => 12,
                 'help_text' => __( 'Some details text about the section', 'wp-user-frontend' ),
+            ],
+            [
+                'name'      => 'title_alignment',
+                'title'     => __( 'Title Alignment', 'wp-user-frontend' ),
+                'type'      => 'select',
+                'options'   => [
+                    'left'   => __( 'Left', 'wp-user-frontend' ),
+                    'center' => __( 'Center', 'wp-user-frontend' ),
+                    'right'  => __( 'Right', 'wp-user-frontend' ),
+                ],
+                'default'   => 'center',
+                'section'   => 'basic',
+                'priority'  => 14,
+                'help_text' => __( 'Alignment of the section title and description', 'wp-user-frontend' ),
             ],
         ];
 

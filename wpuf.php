@@ -91,7 +91,7 @@ final class WP_User_Frontend {
      *
      * @var string
      */
-    private $min_php = '5.6';
+    private $min_php = '7.4';
 
     /**
      * Holds various class instances
@@ -129,7 +129,7 @@ final class WP_User_Frontend {
     public function is_supported_php( $min_php = null ) {
         $min_php = $min_php ? $min_php : $this->min_php;
 
-        if ( version_compare( PHP_VERSION, $min_php, '<=' ) ) {
+        if ( version_compare( PHP_VERSION, $min_php, '<' ) ) {
             return false;
         }
 
@@ -149,7 +149,7 @@ final class WP_User_Frontend {
         $error = __( 'Your installed PHP Version is: ', 'wp-user-frontend' ) . PHP_VERSION . '. ';
         $error .= __( 'The <strong>WP User Frontend</strong> plugin requires PHP version <strong>', 'wp-user-frontend' ) . $this->min_php . __( '</strong> or greater.', 'wp-user-frontend' ); ?>
         <div class="error">
-            <p><?php printf( esc_html( $error ) ); ?></p>
+            <p><?php echo wp_kses( $error, [ 'strong' => [] ] ); ?></p>
         </div>
         <?php
     }

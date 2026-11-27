@@ -148,7 +148,10 @@ and role-based restriction.
 
 Placeholders usable in To/Subject/Body: `{post_title}`, `{post_content}`, `{post_excerpt}`,
 `{tags}`, `{category}`, `{author}`, `{author_email}`, `{author_bio}`, `{sitename}`,
-`{siteurl}`, `{permalink}`, `{editlink}`, `{custom_{META_KEY}}` (e.g. `{custom_website_url}`).
+`{siteurl}`, `{permalink}`, `{editlink}`, `{dashboard_link}` (link to the account page), `{custom_meta_key}` (e.g. `{custom_website_url}`),
+`{taxonomy_slug}` (e.g. `{taxonomy_post_tag}`: comma-separated term names),
+`{author_meta_meta_key}` (e.g. `{author_meta_billing_phone}`: a user meta value of the post author;
+keys that can hold private data, such as `_*`, `*pass*`, `*token*`, `*key*` or `wp_capabilities`, print nothing).
 
 ### 4.4 Display Settings
 - Choose Form Style (form-template gallery)

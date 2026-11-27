@@ -4454,6 +4454,128 @@ function get_formatted_mail_body( $message, $subject ) {
 }
 
 /**
+ * Replace the post notification placeholders that both notification senders share
+ *
+ * Runs after the fixed placeholders ({post_title}, {author}...) are replaced.
+ * Handles `{dashboard_link}`, `{taxonomy_<slug>}`, `{author_meta_<key>}` and the
+ * placeholders added through the `wpuf_notification_placeholders` filter.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $content Notification to, subject or body.
+ * @param int    $user_id Post author ID.
+ * @param int    $post_id Post ID.
+ *
+ * @return string
+ */
+function wpuf_replace_notification_placeholders( $content, $user_id, $post_id ) {
+    $post = get_post( $post_id );
+
+    if ( ! is_string( $content ) || false === strpos( $content, '{' ) || ! $post ) {
+        return $content;
+    }
+
+    // {dashboard_link}: the account page set in Settings > My Account, where the submitter can edit their posts.
+    if ( false !== strpos( $content, '{dashboard_link}' ) ) {
+        $account_page = wpuf_get_option( 'account_page', 'wpuf_my_account', '' );
+        $account_url  = $account_page ? get_permalink( $account_page ) : '';
+        $account_link = $account_url ? sprintf( '<a href="%1$s">%2$s</a>', esc_url( $account_url ), esc_html( $account_url ) ) : '';
+        $content      = str_replace( '{dashboard_link}', $account_link, $content );
+    }
+
+    // {taxonomy_<slug>}: names of the post's terms, for any taxonomy registered for the post type.
+    $content = preg_replace_callback(
+        '/{taxonomy_([\w-]+)}/',
+        static function ( $matches ) use ( $post ) {
+            if ( ! is_object_in_taxonomy( $post->post_type, $matches[1] ) ) {
+                return '';
+            }
+
+            $names = wp_get_post_terms( $post->ID, $matches[1], [ 'fields' => 'names' ] );
+
+            return is_wp_error( $names ) ? '' : implode( ', ', array_map( 'esc_html', $names ) );
+        },
+        $content
+    );
+
+    // {author_meta_<key>}: a user meta value of the post author (the submitter).
+    $content = preg_replace_callback(
+        '/{author_meta_([\w-]+)}/',
+        static function ( $matches ) use ( $post ) {
+            if ( empty( $post->post_author ) || ! wpuf_author_meta_placeholder_allowed( $matches[1] ) ) {
+                return '';
+            }
+
+            $value = get_user_meta( (int) $post->post_author, $matches[1], true );
+
+            if ( is_array( $value ) ) {
+                $value = implode( ', ', array_filter( $value, 'is_scalar' ) );
+            }
+
+            return is_scalar( $value ) ? esc_html( $value ) : '';
+        },
+        $content
+    );
+
+    /**
+     * Filter extra post notification placeholders
+     *
+     * Return an array of `'{placeholder}' => 'value'` pairs. Values are put
+     * into the e-mail as they are, so escape them (esc_html, esc_url).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array  $placeholders Placeholder => value pairs.
+     * @param int    $post_id      Post ID.
+     * @param int    $user_id      Post author ID.
+     * @param string $content      Notification text being prepared.
+     */
+    $placeholders = apply_filters( 'wpuf_notification_placeholders', [], $post_id, $user_id, $content );
+
+    if ( ! empty( $placeholders ) && is_array( $placeholders ) ) {
+        $content = str_replace( array_keys( $placeholders ), array_values( $placeholders ), $content );
+    }
+
+    return $content;
+}
+
+/**
+ * Whether a user meta key may be printed by the `{author_meta_<key>}` notification placeholder
+ *
+ * Keys that can hold private data are refused: keys starting with `_`, keys
+ * containing capabilities, user_level, pass, token, secret or key, the blog
+ * prefixed WordPress keys (`wp_capabilities`, `wp_user-settings`...) and a few
+ * other WordPress and WPUF keys that store login or location data.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $key User meta key.
+ *
+ * @return bool
+ */
+function wpuf_author_meta_placeholder_allowed( $key ) {
+    global $wpdb;
+
+    $private_keys = [ 'session_tokens', 'community-events-location', 'primary_blog', 'source_domain', 'user_analytics_info_during_register' ];
+
+    $allowed = '' !== $key
+        && 0 !== strpos( $key, '_' )
+        && ! preg_match( '/capabilities|user_level|pass|token|secret|key/i', $key )
+        && ! ( '' !== $wpdb->base_prefix && 0 === stripos( $key, $wpdb->base_prefix ) )
+        && ! in_array( strtolower( $key ), $private_keys, true );
+
+    /**
+     * Filter whether a user meta key may be used in the `{author_meta_<key>}` notification placeholder
+     *
+     * @since WPUF_SINCE
+     *
+     * @param bool   $allowed Whether the key may be printed.
+     * @param string $key     User meta key.
+     */
+    return (bool) apply_filters( 'wpuf_author_meta_placeholder_allowed', $allowed, $key );
+}
+
+/**
  * Renders an HTML Dropdown
  *
  * @param array $args
@@ -6424,8 +6546,13 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                          <span data-clipboard-text="{siteurl}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{siteurl}</span>
                                          <span data-clipboard-text="{permalink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{permalink}</span>
                                          <span data-clipboard-text="{editlink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{editlink}</span>
-                                         <span class="wpuf-pill-green">{custom_{NAME_OF_CUSTOM_FIELD}}</span>
-                                         e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for <i>website_url</i> meta field</p>',
+                                         <span data-clipboard-text="{dashboard_link}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{dashboard_link}</span>
+                                         <span class="wpuf-pill-green">{custom_meta_key}</span>
+                                         e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for <i>website_url</i> meta field
+                                         <br><span class="wpuf-pill-green">{taxonomy_slug}</span>
+                                         e.g: <span class="wpuf-pill-green">{taxonomy_post_tag}</span> for the terms of the <i>post_tag</i> taxonomy
+                                         <br><span class="wpuf-pill-green">{author_meta_meta_key}</span>
+                                         e.g: <span class="wpuf-pill-green">{author_meta_billing_phone}</span> for the author\'s <i>billing_phone</i> user meta</p>',
                         ],
                     ],
                 ],

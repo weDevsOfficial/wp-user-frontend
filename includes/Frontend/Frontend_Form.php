@@ -736,7 +736,7 @@ class Frontend_Form extends Frontend_Render_Form {
         // update the information for future to check if the email is already verified
         update_user_meta( $author_id, 'wpuf_guest_email_verified', 1 );
         if ( ! empty( $to ) ) {
-            wp_mail( $to, $subject, $mail_body, $headers );
+            wp_mail( $to, wp_specialchars_decode( $subject, ENT_QUOTES ), $mail_body, $headers ); // Decode only for the plain-text header; the HTML template keeps the encoded subject.
         }
     }
 
@@ -793,6 +793,7 @@ class Frontend_Form extends Frontend_Render_Form {
         }
 
         $content = str_replace( $post_field_search, $post_field_replace, $content );
+        $content = wpuf_replace_notification_placeholders( $content, $user_id, $post_id );
 
         // custom fields
         preg_match_all( '/{custom_([\w-]*)\b}/', $content, $matches );

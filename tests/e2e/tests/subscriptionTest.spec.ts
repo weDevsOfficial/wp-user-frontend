@@ -8,6 +8,7 @@ import { subscribe } from "diagnostics_channel";
 import { PostFormSettingsPage } from "../pages/postFormSettings";
 import { SettingsSetupPage } from "../pages/settingsSetup";
 import { aiWp } from "../pages/aiFormBuilder";
+import { countSubscriptionPacks } from '../utils/wpEnvCli';
 
 let browser: Browser;
 let context: BrowserContext;
@@ -88,6 +89,16 @@ test.describe('Subscription-Module', () => {
         const BasicLogin = new BasicLoginPage(page);
         await test.step("Login as an admin for accessing dashboard", async () => {
             await new BasicLoginPage(page).basicLogin(Users.adminUsername, Users.adminPassword);
+        })
+        // The counters below track packs this spec creates, but earlier specs in the
+        // same run also create packs (postFormViewControlTestPro seeds one), so they
+        // have to start from what the site already holds rather than from zero.
+        await test.step("Baseline the pack counts against packs already on the site", async () => {
+            const baseline = countSubscriptionPacks();
+            SubscriptionPacks.packCounts.allPackCount = baseline.all;
+            SubscriptionPacks.packCounts.publishedPackCount = baseline.publish;
+            SubscriptionPacks.packCounts.draftPackCount = baseline.draft;
+            SubscriptionPacks.packCounts.trashPackCount = baseline.trash;
         })
         // Create Free Subscription Pack
         const SubscriptionPg = new SubscriptionPage(page);

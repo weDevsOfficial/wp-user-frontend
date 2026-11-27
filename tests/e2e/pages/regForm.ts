@@ -7,6 +7,7 @@ import { RegistrationForm, VendorRegistrationForm, Urls, PostForm, Users } from 
 import { faker } from '@faker-js/faker';
 import { BasicLoginPage } from './basicLogin';
 import { BasicLogoutPage } from './basicLogout';
+import { deleteFormsByTitle } from '../utils/wpEnvCli';
 
 // new email
 let newEmail = '';
@@ -134,6 +135,10 @@ export class RegFormPage extends Base {
 
     //BlankForm
     async createBlankForm_RF(newRegFormName: string, newRegFormPage: string) {
+
+        // Drop any same-named form left by an earlier run, or every later
+        // "open the form called X" locator hits a strict-mode violation.
+        deleteFormsByTitle(newRegFormName);
 
         let flag = true;
 

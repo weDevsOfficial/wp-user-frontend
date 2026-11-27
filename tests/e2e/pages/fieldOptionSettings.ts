@@ -840,6 +840,10 @@ export class FieldOptionSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, PostTitle = faker.word.words(2));
         console.log(PostForm.title);
         await this.page.waitForTimeout(1000);
+        // The date checks before this test leave the jQuery UI datepicker open, and its
+        // "Done" button can sit over the date input and swallow the click. Close it first.
+        const closeDatepicker = '//button[contains(@class,"ui-datepicker-close")]';
+        await this.clickIfPresent(closeDatepicker, 1000);
         //Enter Date / Time
         // FOS0089 opened the picker on this input and left it open; its button
         // pane then covers the input and the click never lands. Close it first.
@@ -850,10 +854,16 @@ export class FieldOptionSettingsPage extends Base {
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectDay);
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectHour, '2');
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectMinute, '7');
+        // The open picker can cover the Submit button as well.
+        await this.clickIfPresent(closeDatepicker, 1000);
         //Create Post
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.submitPostFormsFE);
         await this.page.waitForTimeout(2000);
-        await this.navigateToURL(this.postsPage);
+        // The publish-time post is backdated, and edit.php lists 20 rows sorted by
+        // date DESC — once the suite has created >20 posts the row falls onto page
+        // two and the assertion can never see it. Search for the exact title so the
+        // row is always on the page being asserted.
+        await this.navigateToURL(`${this.postsPage}?s=${encodeURIComponent(PostTitle)}`);
         await this.assertionValidate(Selectors.fieldOptionsSettings.fieldOptionsPanel.dateTimeOptions.validatePostPublishTime(PostTitle));
         console.log(`Publish time validated`);
     }

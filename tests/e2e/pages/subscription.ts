@@ -651,7 +651,7 @@ export class SubscriptionPage extends Base {
         // packs page before the colour is stored.
         const saved = this.page.waitForResponse((response) => /wpuf\/v1\/settings/.test(response.url()) && response.request().method() === 'POST');
         await this.validateAndClick(Selectors.subscription.newPackPage.savePreferencesButton);
-        await saved;
+        expect((await saved).ok()).toBeTruthy();
         await this.waitForLoading();
         console.log('\x1b[32m%s\x1b[0m', `✅ Button color set to ${buttonColor}`);
     }

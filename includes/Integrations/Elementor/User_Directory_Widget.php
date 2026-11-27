@@ -1245,6 +1245,23 @@ class User_Directory_Widget extends Widget_Base {
                 'nonce'   => wp_create_nonce( 'wp_rest' ),
             ]
         );
+
+        // Pro's search script reads wpufUserDirectory (its shortcode assets never load on Elementor pages).
+        // Without the nonce, paging and search run as a guest and drop the fields only signed-in users see.
+        if ( wpuf_is_pro_active() ) {
+            $ud_data = [
+                'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+                'restUrl'     => rest_url( 'wpuf/v1/' ),
+                'isShortcode' => true,
+            ];
+
+            if ( is_user_logged_in() ) {
+                $ud_data['nonce'] = wp_create_nonce( 'wp_rest' );
+            }
+
+            wp_localize_script( 'wpuf-ud-search-shortcode', 'wpufUserDirectory', $ud_data );
+        }
+
         echo '<div class="wpuf-elementor-user-directory-wrapper">';
         // Directory section — render via shortcode
         echo do_shortcode( '[wpuf_user_listing id="' . $directory_id . '"]' );

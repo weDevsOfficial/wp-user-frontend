@@ -287,6 +287,8 @@ class Paypal {
     private function process_payment_capture( $payment ) {
         global $wpdb;
 
+        $claimed = false;
+
         try {
             // Get custom data from custom_id
             if ( ! isset( $payment['custom_id'] ) ) {
@@ -306,6 +308,14 @@ class Paypal {
                 throw new \Exception( 'Invalid payment amount: negative value' );
             }
 
+            // The browser return and the webhook both land here and can arrive together:
+            // only the request that claims the capture id goes on to record it.
+            $claimed = $this->claim_transaction( $payment['id'] );
+
+            if ( ! $claimed ) {
+                return;
+            }
+
             // Check if transaction already exists
             $existing = $wpdb->get_var(
                 $wpdb->prepare(
@@ -316,6 +326,8 @@ class Paypal {
             );
 
             if ( $existing ) {
+                $this->release_transaction( $payment['id'] );
+
                 return; // Exit if transaction already processed
             }
 
@@ -415,7 +427,8 @@ class Paypal {
                 'discount'         => ! empty( $custom_data['discount'] ) ? floatval( $custom_data['discount'] ) : 0,
                 'coupon_id'        => ! empty( $custom_data['coupon_id'] ) ? absint( $custom_data['coupon_id'] ) : null,
                 'tax'              => $tax,
-                'cost'             => $cost,
+                // Cost is stored before tax (subtotal - discount), like every gateway; tax has its own column.
+                'cost'             => round( $cost - $tax, 2 ),
                 'post_id'          => ( 'post' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
                 'pack_id'          => ( 'pack' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
                 'payer_first_name' => $user->first_name,
@@ -433,9 +446,56 @@ class Paypal {
             if ( ! empty( $custom_data['coupon_id'] ) ) {
                 $this->update_coupon_usage( $custom_data['coupon_id'] );
             }
+
+            $this->release_transaction( $payment['id'] );
         } catch ( \Exception $e ) {
+            if ( $claimed ) {
+                $this->release_transaction( $payment['id'] );
+            }
+
             throw $e;
         }
+    }
+
+    /**
+     * Claim a capture id so that only one request records it
+     *
+     * Two requests (browser return and webhook) can check "recorded?" and insert at the same
+     * moment. INSERT IGNORE on the unique option name is atomic; add_option() is not, because it
+     * upserts. A claim older than ten minutes belongs to a request that died: one request takes
+     * it over with a conditional UPDATE, so a webhook retry still records the payment.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $transaction_id PayPal capture id
+     *
+     * @return bool True when this request owns the id
+     */
+    private function claim_transaction( $transaction_id ) {
+        global $wpdb;
+
+        $name = 'wpuf_txn_lock_' . md5( 'paypal' . $transaction_id );
+        $now  = time();
+
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- an atomic insert/update is the point; the options API cannot do it.
+        $claimed = $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, %s, 'no')", $name, $now ) )
+            || $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->options} SET option_value = %s WHERE option_name = %s AND option_value < %d", $now, $name, $now - 10 * MINUTE_IN_SECONDS ) );
+        // phpcs:enable
+
+        return (bool) $claimed;
+    }
+
+    /**
+     * Release a capture id claimed by claim_transaction()
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $transaction_id PayPal capture id
+     *
+     * @return void
+     */
+    private function release_transaction( $transaction_id ) {
+        delete_option( 'wpuf_txn_lock_' . md5( 'paypal' . $transaction_id ) );
     }
 
     /**
@@ -1183,7 +1243,8 @@ class Paypal {
                 'subtotal'          => $subtotal,
                 'profile_id'        => $subscription_id,
                 'tax'               => $tax,
-                'cost'              => $cost,
+                // Cost is stored before tax, like every gateway; tax has its own column.
+                'cost'              => round( $cost - $tax, 2 ),
                 'post_id'           => 0,
                 'pack_id'           => $pack_id,
                 'payer_first_name'  => $user->first_name,
@@ -2214,6 +2275,11 @@ class Paypal {
         }
 
         try {
+            // PayPal order IDs are upper-case letters and digits; refuse anything else before it reaches the API path.
+            if ( ! preg_match( '/^[A-Z0-9]+$/', $token ) ) {
+                throw new \Exception( 'Invalid payment token' );
+            }
+
             // Get access token and capture payment
             $access_token = $this->get_access_token();
             $capture_url = ( $this->test_mode ? 'https://api-m.sandbox.paypal.com' : 'https://api-m.paypal.com' ) .
@@ -2236,6 +2302,43 @@ class Paypal {
 
             if ( ! isset( $body['status'] ) || $body['status'] !== 'COMPLETED' ) {
                 throw new \Exception( 'Payment not completed' );
+            }
+
+            // Payment captured. Record the transaction and publish the post
+            // (or activate the pack) synchronously, so it does not depend solely
+            // on the PayPal webhook — which may be blocked or misconfigured on
+            // some hosts. process_payment_capture() is idempotent (it skips when
+            // the transaction already exists), so the webhook can still fire
+            // afterwards without creating a duplicate record.
+            // The order can be COMPLETED while its capture is still PENDING (e.g. an
+            // eCheck or a payment review); leave those to the webhook, as before.
+            if (
+                isset( $body['purchase_units'][0]['payments']['captures'][0]['status'] )
+                && 'COMPLETED' === $body['purchase_units'][0]['payments']['captures'][0]['status']
+            ) {
+                $capture = $body['purchase_units'][0]['payments']['captures'][0];
+
+                // PayPal usually copies custom_id onto the capture resource;
+                // fall back to the purchase unit's custom_id when it is absent.
+                if ( empty( $capture['custom_id'] ) && ! empty( $body['purchase_units'][0]['custom_id'] ) ) {
+                    $capture['custom_id'] = $body['purchase_units'][0]['custom_id'];
+                }
+
+                try {
+                    $this->process_payment_capture( $capture );
+                } catch ( \Exception $e ) {
+                    // Do not block the success redirect if local processing
+                    // fails; the webhook remains as a fallback. Emit a hook so the
+                    // "paid but not published" path leaves a diagnostic trail.
+                    do_action(
+                        'wpuf_paypal_return_processing_failed',
+                        [
+                            'token'      => $token,
+                            'capture_id' => isset( $capture['id'] ) ? $capture['id'] : '',
+                            'message'    => $e->getMessage(),
+                        ]
+                    );
+                }
             }
 
             // Redirect to success page

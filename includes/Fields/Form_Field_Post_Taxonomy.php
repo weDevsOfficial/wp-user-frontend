@@ -54,7 +54,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         if ( ! in_array( $this->tax_name, $free_taxonomies, true ) && ! wpuf_is_pro_active() ) {
             return true;
         }
-        
+
         return false;
     }
 
@@ -149,6 +149,10 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
             default:
                 // code...
                 break;
+        }
+
+        if ( in_array( $this->field_settings['type'], [ 'text', 'multiselect' ], true ) && isset( $this->field_settings['show_term_list'] ) && 'yes' === $this->field_settings['show_term_list'] ) {
+            $this->most_used_terms();
         }
         ?>
         <span class="wpuf-wordlimit-message wpuf-help"></span>
@@ -281,10 +285,9 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
                     <?php $this->taxnomy_select( null ); ?>
                 </div>
                 <?php
-            } else {
-                if ( $this->field_settings['type'] === 'ajax' ) {
+            } elseif ( $this->field_settings['type'] === 'ajax' ) {
                     $level = 0;
-                    ?>
+                ?>
                                 <div id="lvl<?php echo esc_attr( $level ); ?>" level="<?php echo esc_attr( $level ); ?>" >
 
                     <?php
@@ -359,7 +362,6 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
                                wp_dropdown_categories( $tax_args );
                         }
                     }
-                }
             }
             ?>
         </div>
@@ -409,7 +411,6 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         //         'selected' => []
         //     ]
         // ] );
-
     }
 
     public function tax_multiselect( $post_id = null ) {
@@ -459,7 +460,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
 
         ?>
 
-        <input class="textfield <?php echo esc_attr( $this->required_class( $attr ) ); echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $this->form_id ); ?>" id="<?php echo esc_attr( $attr['name'] ); ?>" type="text" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" value="<?php echo esc_attr( implode( ', ', $this->terms ) ); ?>" size="40" />
+        <input class="textfield <?php echo esc_attr( $this->required_class( $attr ) . ' wpuf_' . $field_settings['name'] . '_' . $this->form_id ); ?>" id="<?php echo esc_attr( $attr['name'] ); ?>" type="text" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" value="<?php echo esc_attr( implode( ', ', $this->terms ) ); ?>" size="40" />
 
         <script type="text/javascript">
             ;(function($) {
@@ -467,6 +468,128 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
                         $('#<?php echo esc_attr( $attr['name'] ); ?>').suggest( wpuf_frontend.ajaxurl + '<?php echo $query_string; // phpcs:ignore ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                 });
             })(jQuery);
+        </script>
+        <?php
+    }
+
+    /**
+     * Print the most used terms under a Text Input or Multi Select taxonomy field
+     *
+     * A click on a term adds it to the field, like the tag box in wp-admin. Only terms
+     * this field already offers are listed (same Exclude / Include / Child of settings),
+     * ordered by how many posts use them.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    protected function most_used_terms() {
+        $limit   = isset( $this->field_settings['term_list_limit'] ) ? absint( $this->field_settings['term_list_limit'] ) : 0;
+        $exclude = wpuf_get_field_settings_excludes( $this->field_settings, $this->exclude_type );
+
+        $terms = get_terms(
+            [
+                'taxonomy'       => $this->taxonomy,
+                'orderby'        => 'count',
+                'order'          => 'DESC',
+                'hide_empty'     => true,
+                'number'         => $limit ? min( $limit, 50 ) : 10,
+                $exclude['type'] => ( 'child_of' === $this->exclude_type ) ? $exclude['childs'] : $this->exclude,
+            ]
+        );
+
+        if ( is_wp_error( $terms ) || empty( $terms ) ) {
+            return;
+        }
+        ?>
+        <div class="wpuf-term-list" data-type="<?php echo esc_attr( $this->field_settings['type'] ); ?>">
+            <span class="wpuf-term-list-title"><?php esc_html_e( 'Most used', 'wp-user-frontend' ); ?></span>
+            <?php foreach ( $terms as $term ) { ?>
+                <button type="button" class="wpuf-term-list-item" data-term-id="<?php echo esc_attr( $term->term_id ); ?>" data-term-name="<?php echo esc_attr( $term->name ); ?>"><?php echo esc_html( $term->name ); ?></button>
+            <?php } ?>
+        </div>
+        <?php
+        static $assets_printed = false;
+
+        if ( $assets_printed ) {
+            return;
+        }
+
+        $assets_printed = true;
+        ?>
+        <style>
+            .wpuf-term-list { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; }
+            .wpuf-term-list[hidden], .wpuf-term-list .wpuf-term-list-item[hidden] { display: none; }
+            .wpuf-term-list .wpuf-term-list-title { margin-right: 4px; font-size: 12px; font-weight: 600; text-transform: uppercase; opacity: .7; }
+            .wpuf-term-list .wpuf-term-list-item { margin: 0; padding: 2px 10px; border: 1px solid #d1d5db; border-radius: 999px; background: #fff; color: inherit; font-size: 13px; line-height: 1.6; text-transform: none; box-shadow: none; cursor: pointer; }
+            .wpuf-term-list .wpuf-term-list-item:hover, .wpuf-term-list .wpuf-term-list-item:focus { border-color: #9ca3af; background: #f3f4f6; color: inherit; }
+        </style>
+        <script type="text/javascript">
+            jQuery( function( $ ) {
+                // Hide terms that are already picked (and, for Multi Select, terms the select does not offer).
+                function refresh( $list ) {
+                    var $field = $list.closest( '.wpuf-fields' );
+
+                    if ( 'multiselect' === $list.attr( 'data-type' ) ) {
+                        var $select   = $field.find( 'select[multiple]' ).first();
+                        var selectize = $select[0] && $select[0].selectize;
+                        var picked    = $.map( $select.val() || [], String );
+
+                        $list.find( '.wpuf-term-list-item' ).each( function() {
+                            var id      = $( this ).attr( 'data-term-id' );
+                            var offered = selectize ? selectize.options.hasOwnProperty( id ) : $select.find( 'option[value="' + id + '"]' ).length > 0;
+
+                            $( this ).prop( 'hidden', ! offered || -1 !== $.inArray( id, picked ) );
+                        } );
+                    } else {
+                        var names = $.map( ( $field.find( 'input.textfield' ).first().val() || '' ).split( ',' ), function( name ) {
+                            return $.trim( name ).toLowerCase();
+                        } );
+
+                        $list.find( '.wpuf-term-list-item' ).each( function() {
+                            $( this ).prop( 'hidden', -1 !== $.inArray( $( this ).attr( 'data-term-name' ).toLowerCase(), names ) );
+                        } );
+                    }
+
+                    $list.prop( 'hidden', ! $list.find( '.wpuf-term-list-item:not([hidden])' ).length );
+                }
+
+                $( document ).on( 'click', '.wpuf-term-list-item', function( event ) {
+                    var $list  = $( this ).closest( '.wpuf-term-list' );
+                    var $field = $list.closest( '.wpuf-fields' );
+
+                    event.preventDefault();
+
+                    if ( 'multiselect' === $list.attr( 'data-type' ) ) {
+                        var $select = $field.find( 'select[multiple]' ).first();
+                        var id      = $( this ).attr( 'data-term-id' );
+
+                        if ( $select[0] && $select[0].selectize ) {
+                            $select[0].selectize.addItem( id );
+                        } else {
+                            $select.find( 'option[value="' + id + '"]' ).prop( 'selected', true );
+                            $select.trigger( 'change' );
+                        }
+                    } else {
+                        var $input  = $field.find( 'input.textfield' ).first();
+                        var current = $.trim( $input.val() ).replace( /,\s*$/, '' );
+
+                        $input.val( current ? current + ', ' + $( this ).attr( 'data-term-name' ) : $( this ).attr( 'data-term-name' ) ).trigger( 'change' );
+                    }
+
+                    refresh( $list );
+                } );
+
+                $( document ).on( 'change input', '.wpuf-fields select[multiple], .wpuf-fields input.textfield', function() {
+                    $( this ).closest( '.wpuf-fields' ).find( '.wpuf-term-list' ).each( function() {
+                        refresh( $( this ) );
+                    } );
+                } );
+
+                $( '.wpuf-term-list' ).each( function() {
+                    refresh( $( this ) );
+                } );
+            } );
         </script>
         <?php
     }
@@ -480,7 +603,37 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         $default_options      = $this->get_default_option_settings( false, [ 'dynamic' ] );
         $default_text_options = $this->get_default_taxonomy_option_setttings( $this->tax_name, false );
 
-        return array_merge( $default_options, $default_text_options );
+        $term_list_options = [
+            [
+                'name'          => 'show_term_list',
+                'title'         => __( 'Most Used Terms', 'wp-user-frontend' ),
+                'type'          => 'checkbox',
+                'is_single_opt' => true,
+                'options'       => [
+                    'yes' => __( 'Show the most used terms under the field', 'wp-user-frontend' ),
+                ],
+                'section'       => 'advanced',
+                'priority'      => 28,
+                'help_text'     => __( 'Visitors can click a term to add it, like the tag box in wp-admin. Only terms this field offers are listed.', 'wp-user-frontend' ),
+                'dependencies'  => [
+                    'type' => [ 'text', 'multiselect' ],
+                ],
+            ],
+            [
+                'name'          => 'term_list_limit',
+                'title'         => __( 'Number of Terms', 'wp-user-frontend' ),
+                'type'          => 'text',
+                'variation'     => 'number',
+                'section'       => 'advanced',
+                'priority'      => 28,
+                'help_text'     => __( 'How many of the most used terms to show when the option above is on. Default 10, maximum 50.', 'wp-user-frontend' ),
+                'dependencies'  => [
+                    'type' => [ 'text', 'multiselect' ],
+                ],
+            ],
+        ];
+
+        return array_merge( $default_options, $default_text_options, $term_list_options );
     }
 
     /**

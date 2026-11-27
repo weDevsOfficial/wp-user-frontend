@@ -594,7 +594,7 @@ class Frontend_Form_Ajax {
                     $mail_body = get_formatted_mail_body( $mail_body, $subject );
                     $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
 
-                    wp_mail( $to, $subject, $mail_body, $headers );
+                    wp_mail( $to, wp_specialchars_decode( $subject, ENT_QUOTES ), $mail_body, $headers ); // Decode only for the plain-text header; the HTML template keeps the encoded subject.
                 }
             }
 
@@ -625,7 +625,7 @@ class Frontend_Form_Ajax {
                     $mail_body = get_formatted_mail_body( $mail_body, $subject );
                     $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
 
-                    wp_mail( $to, $subject, $mail_body, $headers );
+                    wp_mail( $to, wp_specialchars_decode( $subject, ENT_QUOTES ), $mail_body, $headers ); // Decode only for the plain-text header; the HTML template keeps the encoded subject.
                 }
             }
 
@@ -961,6 +961,7 @@ class Frontend_Form_Ajax {
         }
 
         $content = str_replace( $post_field_search, $post_field_replace, $content );
+        $content = wpuf_replace_notification_placeholders( $content, $user_id, $post_id );
         // replace line breaks with proper html tags
         $content = str_replace( [ "\r\n", "\n", "\r" ], '<br />', $content );
 

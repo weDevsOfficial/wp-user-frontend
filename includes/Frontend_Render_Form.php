@@ -240,24 +240,36 @@ class Frontend_Render_Form {
             }
         }
 
-        // Dark templates: the TinyMCE iframe loads only its own stylesheets, so the
-        // editor content area stays white unless we inject the palette. Prepare the
-        // filter here but attach it only around this form's field render (below), so it
-        // never bleeds onto other editors on the page and never persists after render.
-        $wpuf_dark_editor_style = null;
+        // The TinyMCE iframe loads only its own stylesheets, so neither the layout font
+        // nor the dark palette reaches the editor content area unless we inject them.
+        // Prepare the filter here but attach it only around this form's field render
+        // (below), so it never bleeds onto other editors on the page and never persists
+        // after render. With "Use Theme CSS" on, the editor is left to the theme.
+        $wpuf_editor_style = null;
 
-        if ( 'on' !== $use_theme_css && in_array( $layout, [ 'layout2', 'layout5' ], true ) ) {
-            $editor_bg = 'layout2' === $layout ? '#222C3C' : '#394141';
+        if ( 'on' !== $use_theme_css ) {
+            // Same font stack as the post form layouts (assets/css/frontend-form/layout*.css).
+            // Registration layouts inherit the theme font, so they get no font rule.
+            $font_style = 'wpuf_profile' !== $form->data->post_type
+                ? "body.mceContentBody { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }"
+                : '';
+            $dark_style = '';
 
-            $wpuf_dark_editor_style = function ( $mce_init ) use ( $editor_bg ) {
-                $style = sprintf( 'body.mceContentBody { background: %s; color: #ffffff; caret-color: #ffffff; }', $editor_bg );
+            if ( in_array( $layout, [ 'layout2', 'layout5' ], true ) ) {
+                $editor_bg  = 'layout2' === $layout ? '#222C3C' : '#394141';
+                $dark_style = sprintf( 'body.mceContentBody { background: %s; color: #ffffff; caret-color: #ffffff; }', $editor_bg );
+            }
 
-                $mce_init['content_style'] = isset( $mce_init['content_style'] )
-                    ? $mce_init['content_style'] . ' ' . $style
-                    : $style;
+            if ( $font_style || $dark_style ) {
+                $wpuf_editor_style = function ( $mce_init ) use ( $font_style, $dark_style ) {
+                    // Font goes first so a content_style set through wpuf_textarea_editor_args still wins.
+                    $existing = isset( $mce_init['content_style'] ) ? $mce_init['content_style'] : '';
 
-                return $mce_init;
-            };
+                    $mce_init['content_style'] = trim( $font_style . ' ' . $existing . ' ' . $dark_style );
+
+                    return $mce_init;
+                };
+            }
         }
 
         if ( ! is_user_logged_in() && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' !== $this->form_settings['post_permission'] ) ) {
@@ -340,17 +352,17 @@ class Frontend_Render_Form {
 
                     // Post Content renders as a teeny editor by default, which runs
                     // teeny_mce_before_init instead of tiny_mce_before_init. Scope the
-                    // dark-editor palette to this form's fields only, then detach it.
-                    if ( $wpuf_dark_editor_style ) {
-                        add_filter( 'tiny_mce_before_init', $wpuf_dark_editor_style );
-                        add_filter( 'teeny_mce_before_init', $wpuf_dark_editor_style );
+                    // editor font and dark palette to this form's fields only, then detach it.
+                    if ( $wpuf_editor_style ) {
+                        add_filter( 'tiny_mce_before_init', $wpuf_editor_style );
+                        add_filter( 'teeny_mce_before_init', $wpuf_editor_style );
                     }
 
                     wpuf()->fields->render_fields( $this->form_fields, $form_id, $atts, $type = 'post', $post_id );
 
-                    if ( $wpuf_dark_editor_style ) {
-                        remove_filter( 'tiny_mce_before_init', $wpuf_dark_editor_style );
-                        remove_filter( 'teeny_mce_before_init', $wpuf_dark_editor_style );
+                    if ( $wpuf_editor_style ) {
+                        remove_filter( 'tiny_mce_before_init', $wpuf_editor_style );
+                        remove_filter( 'teeny_mce_before_init', $wpuf_editor_style );
                     }
 
                     $this->submit_button( $form_id, $this->form_settings, $post_id );

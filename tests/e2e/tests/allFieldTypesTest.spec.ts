@@ -7,6 +7,7 @@ import { FieldTypes, fieldTypesByGroup } from '../utils/fieldTypes';
 import { faker } from '@faker-js/faker';
 import { configureSpecFailFast } from '../utils/specFailFast';
 import { waitForSiteReady } from '../utils/siteReady';
+import { wpCli, wpCliAvailable } from '../utils/wpEnvCli';
 
 let browser: Browser;
 let context: BrowserContext;
@@ -220,6 +221,13 @@ test.describe( 'All-Field-Types', () => {
                 await editor.doToggleSetting( 'enable_multistep', true );
                 await editor.doSaveForm();
             }
+        }
+
+        // The builder now saves reCAPTCHA and Turnstile on the form (it used to drop
+        // them). With the e2e placeholder keys they can never be solved, and an
+        // unsolved reCAPTCHA keeps Submit disabled, so take them off for this run.
+        if ( wpCliAvailable() ) {
+            wpCli( `eval 'foreach ( get_children( [ "post_parent" => ${ formId }, "post_type" => "wpuf_input", "numberposts" => -1 ] ) as $c ) { $f = maybe_unserialize( $c->post_content ); if ( in_array( $f["template"] ?? "", [ "recaptcha", "cloudflare_turnstile" ], true ) ) { wp_delete_post( $c->ID, true ); } }'` );
         }
 
         await editor.openFrontendForm( pageSlug );

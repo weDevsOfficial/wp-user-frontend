@@ -352,7 +352,8 @@ class WPUF_Privacy {
                         ],
                         [
                             'name'  => __( 'Total', 'wp-user-frontend' ),
-                            'value' => $txn_data['cost'],
+                            // Paid total: rows store the cost before tax (older rows from some gateways with it), the parts agree on both.
+                            'value' => ! empty( $txn_data['subtotal'] ) ? round( (float) $txn_data['subtotal'] - (float) ( $txn_data['discount'] ?? 0 ) + (float) $txn_data['tax'], 2 ) : $txn_data['cost'],
                         ],
                         [
                             'name'  => __( 'Post ID', 'wp-user-frontend' ),

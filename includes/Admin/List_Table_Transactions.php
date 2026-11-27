@@ -47,9 +47,10 @@ class List_Table_Transactions extends WP_List_Table {
             'status'         => __( 'Status', 'wp-user-frontend' ),
             'user'           => __( 'User', 'wp-user-frontend' ),
             'subtotal'       => __( 'Subtotal', 'wp-user-frontend' ),
-            'cost'           => __( 'Cost', 'wp-user-frontend' ),
             'discount'       => __( 'Coupon', 'wp-user-frontend' ),
+            'cost'           => __( 'Cost (before tax)', 'wp-user-frontend' ),
             'tax'            => __( 'Tax', 'wp-user-frontend' ),
+            'total'          => __( 'Total', 'wp-user-frontend' ),
             'post_id'        => __( 'Post ID', 'wp-user-frontend' ),
             'pack_id'        => __( 'Pack ID', 'wp-user-frontend' ),
             'payment_type'   => __( 'Gateway', 'wp-user-frontend' ),
@@ -195,6 +196,14 @@ class List_Table_Transactions extends WP_List_Table {
 
             case 'tax':
                 return wpuf_format_price( $item->tax );
+
+            case 'total':
+                // Amount paid. Built from the parts because older rows from some gateways stored cost with tax.
+                if ( '' === (string) $item->subtotal || null === $item->subtotal ) {
+                    return wpuf_format_price( $item->cost );
+                }
+
+                return wpuf_format_price( (float) $item->subtotal - (float) $item->discount + (float) $item->tax );
 
             case 'post_id':
                 return ! empty( $item->post_id ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?post=' . $item->post_id . '&action=edit' ), $item->post_id ) : '-';

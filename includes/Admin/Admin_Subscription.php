@@ -266,7 +266,8 @@ class Admin_Subscription {
                 'status'           => 'completed',
                 'subtotal'         => $cost,
                 'tax'              => $tax_amount,
-                'cost'             => $billing_amount,
+                // Cost is stored before tax, like every gateway; the tax has its own column.
+                'cost'             => $cost,
                 'post_id'          => 0,
                 'pack_id'          => $pack_id,
                 'payer_first_name' => $user_info->first_name,

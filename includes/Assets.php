@@ -194,6 +194,9 @@ class Assets {
             'account'              => [
                 'src' => WPUF_ASSET_URI . '/css/frontend/account.css',
             ],
+            '2fa-login'            => [
+                'src' => WPUF_ASSET_URI . '/css/wpuf-2fa-login.css',
+            ],
         ];
 
         return apply_filters( 'wpuf_styles_to_register', $styles );
@@ -420,6 +423,15 @@ class Assets {
             ],
             'elementor-subscription-plans' => [
                 'src'       => WPUF_ASSET_URI . '/js/elementor-subscription-plans.js',
+                'in_footer' => true,
+            ],
+            '2fa-account'                  => [
+                'src'       => WPUF_ASSET_URI . '/js/wpuf-2fa-account.js',
+                'deps'      => [ 'jquery' ],
+                'in_footer' => true,
+            ],
+            '2fa-login'                    => [
+                'src'       => WPUF_ASSET_URI . '/js/wpuf-2fa-login.js',
                 'in_footer' => true,
             ],
         ];

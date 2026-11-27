@@ -91,7 +91,7 @@ final class WP_User_Frontend {
      *
      * @var string
      */
-    private $min_php = '5.6';
+    private $min_php = '7.4';
 
     /**
      * Holds various class instances
@@ -129,7 +129,7 @@ final class WP_User_Frontend {
     public function is_supported_php( $min_php = null ) {
         $min_php = $min_php ? $min_php : $this->min_php;
 
-        if ( version_compare( PHP_VERSION, $min_php, '<=' ) ) {
+        if ( version_compare( PHP_VERSION, $min_php, '<' ) ) {
             return false;
         }
 
@@ -224,6 +224,7 @@ final class WP_User_Frontend {
         $this->container['api']          = new WeDevs\Wpuf\API();
         $this->container['integrations'] = new WeDevs\Wpuf\Integrations();
         $this->container['ai_manager']   = new WeDevs\Wpuf\AI_Manager();
+        $this->container['two_factor']   = new WeDevs\Wpuf\TwoFactor\Two_Factor_Manager();
         $this->container['post_form_block'] = new WeDevs\Wpuf\Blocks\PostForm();
 
         if ( is_admin() ) {

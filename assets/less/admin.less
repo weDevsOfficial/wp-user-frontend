@@ -1536,16 +1536,23 @@ body.wpuf-modal-open {
 }
 
 // ==========================================================================
-// Gateway Selector Card Grid
+// Card Selector Grid
 // ==========================================================================
+// Shared by `gateway_selector` and `method_selector` field types. Each
+// emits its own BEM block (`wpuf-gateway-card`, `wpuf-method-card`) so
+// the two namespaces evolve independently while reusing the same rules.
+// Add new selector blocks to both selector lists below; the nested
+// `&` rules then apply to every block in the list.
 
-.wpuf-gateway-cards {
+.wpuf-gateway-cards,
+.wpuf-method-cards {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
 }
 
-.wpuf-gateway-card {
+.wpuf-gateway-card,
+.wpuf-method-card {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -1585,7 +1592,8 @@ body.wpuf-modal-open {
     // Hide the native checkbox robustly. The extra container class beats WP
     // core's input[type=checkbox] rule, which would otherwise re-size it and
     // render a second checkmark next to the custom toggle.
-    .wpuf-gateway-cards &__checkbox {
+    .wpuf-gateway-cards &__checkbox,
+    .wpuf-method-cards &__checkbox {
         position: absolute;
         width: 1px;
         height: 1px;

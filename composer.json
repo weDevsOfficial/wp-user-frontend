@@ -14,7 +14,9 @@
   "require": {
     "php": ">=7.4",
     "composer/installers": ">=1.4",
-    "wedevs/wp-utils": "^1.1"
+    "wedevs/wp-utils": "^1.1",
+    "pragmarx/google2fa": "^8.0.3",
+    "bacon/bacon-qr-code": "^2.0"
   },
   "require-dev": {
     "wp-coding-standards/wpcs": "dev-develop",

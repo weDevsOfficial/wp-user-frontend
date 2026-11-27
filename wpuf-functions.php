@@ -1135,6 +1135,72 @@ function wpuf_safe_unserialize( $value ) {
 }
 
 /**
+ * Get all the registered 2FA methods
+ *
+ * Each method is shaped like a gateway-selector card so the shared card
+ * renderer can render them. Email OTP and SMS OTP ship as pro previews
+ * for now — only TOTP is functional in the free MVP.
+ *
+ * @since WPUF_SINCE
+ *
+ * @return array
+ */
+function wpuf_get_2fa_methods() {
+    $methods = [];
+
+    // Note: avoid `isset( wpuf()->two_factor )` here — `ContainerTrait`
+    // implements `__get` but not `__isset`, so `isset()` returns false
+    // even when the container key exists. Read the value once and
+    // null-check it instead.
+    $manager  = function_exists( 'wpuf' ) ? wpuf()->two_factor : null;
+    $registry = $manager ? $manager->registry : null;
+
+    if ( $registry instanceof \WeDevs\Wpuf\TwoFactor\Method_Registry ) {
+        foreach ( $registry->all() as $id => $method ) {
+            $methods[ $id ] = [
+                'admin_label'    => $method->get_label(),
+                'icon'           => '',
+                'is_pro_preview' => false,
+            ];
+        }
+    }
+
+    /**
+     * Filter the settings-page list of available 2FA methods.
+     *
+     * Note: this filter is for the **admin settings UI** and operates on
+     * the settings-shaped array. To register new methods, hook
+     * `wpuf_2fa_register_methods` instead — that's the registry the
+     * framework actually consults at runtime.
+     */
+    return apply_filters( 'wpuf_2fa_settings_methods', $methods );
+}
+
+/**
+ * Whether a user must pass the WPUF second factor before getting a session
+ *
+ * Sign-in paths that set the auth cookie themselves (such as social
+ * login) call this first and send enrolled users through the WPUF login
+ * form instead. Returns false when the 2FA module is off.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param int $user_id User ID.
+ *
+ * @return bool
+ */
+function wpuf_2fa_user_requires_challenge( $user_id ) {
+    $manager = function_exists( 'wpuf' ) ? wpuf()->two_factor : null;
+    $login   = $manager ? $manager->login : null;
+
+    if ( ! $login instanceof \WeDevs\Wpuf\TwoFactor\Login_Controller ) {
+        return false;
+    }
+
+    return $login->user_requires_challenge( absint( $user_id ) );
+}
+
+/**
  * Show custom fields in post content area
  *
  * @since 3.3.0 Introducing `render_field_data` to render field value
@@ -6816,7 +6882,21 @@ function wpuf_get_login_layout_options() {
         ];
     }
 
-    return $options;
+    /**
+     * Filter the available login form layout options.
+     *
+     * Single source of truth for the layout list — both free settings
+     * (preview / disabled radio) and Pro settings (live radio) read from
+     * here. Add a new layout via this filter and it appears in both UIs
+     * automatically.
+     *
+     * Each entry must be `[ 'label' => string, 'image' => url ]`.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $options Layout options keyed by layout id (`layout1`…`layout7`).
+     */
+    return apply_filters( 'wpuf_login_layouts', $options );
 }
 
 /**

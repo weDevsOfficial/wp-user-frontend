@@ -62,6 +62,9 @@
         // Gateway Selector Card Grid
         wpufInitGatewaySelector();
 
+        // Method Selector Card Grid (2FA, social login, etc.)
+        wpufInitMethodSelector();
+
         function wpuf_search_reset() {
             content.forEach(function (row, index) {
                 var content_id = row.closest('div').getAttribute('id');
@@ -303,5 +306,63 @@
         } else {
             hideAllGatewaySettings();
         }
+    }
+
+    /**
+     * Method Selector Card Grid
+     *
+     * Generic toggle handler for the `method_selector` field type.
+     * Unlike the gateway selector, methods do not have per-method
+     * settings rows to reveal — clicking a card simply flips the
+     * checkbox and the `--active` class. Pro-locked cards are inert.
+     */
+    function wpufInitMethodSelector() {
+        var containers = document.querySelectorAll('.wpuf-method-cards');
+
+        if ( ! containers.length ) {
+            return;
+        }
+
+        containers.forEach(function(container) {
+            var cards = container.querySelectorAll('.wpuf-method-card');
+
+            cards.forEach(function(card) {
+                var checkbox = card.querySelector('.wpuf-method-card__checkbox');
+
+                if ( ! checkbox ) {
+                    return;
+                }
+
+                // Sync `--active` when the checkbox state changes (label click,
+                // keyboard, or programmatic toggle).
+                checkbox.addEventListener('change', function() {
+                    if ( checkbox.checked ) {
+                        card.classList.add('wpuf-method-card--active');
+                    } else {
+                        card.classList.remove('wpuf-method-card--active');
+                    }
+                });
+
+                // Card body click toggles the checkbox. The toggle label has its
+                // own `for` binding so we skip clicks that originate inside it
+                // to avoid double-firing.
+                card.addEventListener('click', function(e) {
+                    if ( e.target.closest('.wpuf-method-card__toggle') ) {
+                        return;
+                    }
+
+                    if ( e.target === checkbox ) {
+                        return;
+                    }
+
+                    if ( card.classList.contains('wpuf-method-card--pro-locked') ) {
+                        return;
+                    }
+
+                    checkbox.checked = ! checkbox.checked;
+                    checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+                });
+            });
+        });
     }
 })();

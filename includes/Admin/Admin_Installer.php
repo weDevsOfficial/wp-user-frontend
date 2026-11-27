@@ -161,6 +161,17 @@ class Admin_Installer {
                 )
             );
         }
+        // mark the pages so uninstall can tell them from pages the site owner built
+        $installer_pages = [ $dashboard_page, $account_page, $edit_page, $login_page ];
+
+        if ( isset( $subscr_page ) ) {
+            array_push( $installer_pages, $subscr_page, $payment_page, $thank_page, $bank_page );
+        }
+
+        foreach ( array_filter( $installer_pages ) as $installer_page ) {
+            update_post_meta( $installer_page, '_wpuf_installer_page', 1 );
+        }
+
         // save the settings
         if ( $edit_page ) {
             // merge, so settings the admin already saved are kept

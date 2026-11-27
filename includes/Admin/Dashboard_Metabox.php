@@ -3,10 +3,11 @@
 namespace WeDevs\Wpuf\Admin;
 
 use DOMDocument;
-use DomXPath;
 
 class Dashboard_Metabox {
     const URL = 'https://wedevs.com/category/user-frontend-pro';
+    const FEED_URL = 'https://wedevs.com/rss.xml';
+    const FEED_CATEGORIES = [ 'WP User Frontend', 'WP User Frontend Pro' ];
     const OPT_KEY = 'wpuf_admin_db_mb';
     const SURVEY_KEY = 'wpuf_dashboard_survey';
 
@@ -49,9 +50,9 @@ class Dashboard_Metabox {
     public function add_metabox() {
         wp_add_dashboard_widget(
             self::OPT_KEY, esc_html__( 'WP User Frontend News & Updates', 'wp-user-frontend' ), [
-            $this,
-            'render_metabox',
-        ], NULL, NULL, 'normal', 'high'
+				$this,
+				'render_metabox',
+			], null, null, 'normal', 'high'
         );
     }
 
@@ -97,7 +98,7 @@ class Dashboard_Metabox {
                     foreach ( $articles as $article ) {
                         ?>
                         <li><a href="<?php echo esc_url( $article['href'] ); ?>"
-                               target="_blank"><?php echo esc_html( $article['title'] ); ?></a></li>
+                                target="_blank"><?php echo esc_html( $article['title'] ); ?></a></li>
                     <?php } ?>
                 </ul>
             </div>
@@ -112,7 +113,7 @@ class Dashboard_Metabox {
                         ?>
                         <li class="blog-item">
                             <a href="<?php echo esc_url( $link['href'] ); ?>"
-                               target="_blank"><?php esc_html( $link['title'], 'wp-user-frontend' ); ?>
+                                target="_blank"><?php esc_html( $link['title'], 'wp-user-frontend' ); ?>
                                 <span aria-hidden="true" class="dashicons dashicons-external"></span></a>
                         </li>
                     <?php } ?>
@@ -124,46 +125,76 @@ class Dashboard_Metabox {
 
     private function fetch_articles() {
         $article_list = get_transient( self::OPT_KEY );
-        if ( $article_list ) {
+
+        // A cached empty list is a hit too, so a failed or empty fetch is not retried on every dashboard load.
+        if ( is_array( $article_list ) ) {
             return $article_list;
         }
-        $response = wp_remote_get( esc_url( self::URL ) );
-        if ( is_wp_error( $response ) ) {
-            return [];
-        }
-        $body = wp_remote_retrieve_body( $response );
-        $dom = new DOMDocument();
-        @$dom->loadHTML( $body );
-        $finder = new DomXPath( $dom );
-        $classname = 'post__title';
-        $nodes     = $finder->query( "//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]" );
-        if ( empty( $nodes ) ) {
-            return [];
-        }
-        $url          = parse_url( self::URL );
-        $domain       = $url['scheme'] . '://' . $url['host'];
+
         $article_list = [];
-        $count        = 0;
-        foreach ( $nodes as $node ) {
-            $title = $node->nodeValue;
-            $path  = $node->lastChild->attributes[0]->nodeValue;
-            $article = [
-                'title' => $title,
-                'href'  => $domain . $path,
+        $response     = wp_remote_get( self::FEED_URL, [ 'timeout' => 5 ] );
+
+        if ( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
+            $article_list = $this->parse_feed( wp_remote_retrieve_body( $response ) );
+        }
+
+        set_transient( self::OPT_KEY, $article_list, $article_list ? DAY_IN_SECONDS : 6 * HOUR_IN_SECONDS );
+
+        return $article_list;
+    }
+
+    /**
+     * Get the latest WP User Frontend posts from the weDevs blog RSS feed
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $body RSS XML.
+     *
+     * @return array
+     */
+    private function parse_feed( $body ) {
+        $dom      = new DOMDocument();
+        $previous = libxml_use_internal_errors( true );
+        $loaded   = $dom->loadXML( $body, LIBXML_NONET );
+
+        libxml_clear_errors();
+        libxml_use_internal_errors( $previous );
+
+        if ( ! $loaded ) {
+            return [];
+        }
+
+        $article_list = [];
+
+        foreach ( $dom->getElementsByTagName( 'item' ) as $item ) {
+            $categories = [];
+
+            foreach ( $item->getElementsByTagName( 'category' ) as $category ) {
+                $categories[] = trim( $category->textContent ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+            }
+
+            if ( ! array_intersect( $categories, self::FEED_CATEGORIES ) ) {
+                continue;
+            }
+
+            $title = $item->getElementsByTagName( 'title' )->item( 0 );
+            $link  = $item->getElementsByTagName( 'link' )->item( 0 );
+
+            if ( ! $title || ! $link ) {
+                continue;
+            }
+
+            $article_list[] = [
+                'title' => trim( $title->textContent ), // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+                'href'  => trim( $link->textContent ), // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
             ];
-            array_push( $article_list, $article );
-            $count ++;
-            if ( $count >= 5 ) {
+
+            if ( count( $article_list ) >= 5 ) {
                 break;
             }
         }
-        if ( ! empty( $article_list ) ) {
-            set_transient( self::OPT_KEY, $article_list, DAY_IN_SECONDS );
 
-            return $article_list;
-        }
-
-        return [];
+        return $article_list;
     }
 
     private function get_links() {

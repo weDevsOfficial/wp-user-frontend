@@ -28,6 +28,13 @@ class Simple_Login {
 
     private static $_instance;
 
+    /**
+     * Whether this request printed a login-required message, see login_popup()
+     *
+     * @var bool
+     */
+    private static $login_message_printed = false;
+
     public function __construct() {
         add_action( 'init', [ $this, 'process_login' ] );
         add_action( 'init', [ $this, 'process_logout' ] );
@@ -35,6 +42,8 @@ class Simple_Login {
 
         add_action( 'init', [ $this, 'wp_login_page_redirect' ] );
         add_action( 'init', [ $this, 'activation_user_registration' ] );
+        add_action( 'wp_footer', [ $this, 'login_popup' ] );
+        add_filter( 'the_content', [ __CLASS__, 'detect_login_message' ], PHP_INT_MAX );
         add_action( 'login_form', [ $this, 'add_custom_fields' ] );
         add_action( 'login_enqueue_scripts', [ $this, 'login_form_scripts' ] );
         add_filter( 'wp_authenticate_user', [ $this, 'validate_custom_fields' ], 10, 2 );
@@ -1280,5 +1289,180 @@ class Simple_Login {
         $message = str_replace( $user_field_search, $user_field_replace, $message );
 
         return $message;
+    }
+
+    /**
+     * Note a login-required message in this output, so the footer prints the login popup
+     *
+     * Runs last on `the_content` for the Pro content restriction and View Control messages, and
+     * is called where the post form prints its login message, which can render outside the
+     * content (post form block in a template, Elementor widget, sidebar).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $html Output that may hold a login-required message.
+     *
+     * @return string The same output.
+     */
+    public static function detect_login_message( $html ) {
+        if ( self::$login_message_printed || ! is_string( $html ) || is_user_logged_in() || 'on' !== wpuf_get_option( 'login_popup', 'wpuf_profile', 'off' ) ) {
+            return $html;
+        }
+
+        $login_page = wpuf_get_option( 'login_page', 'wpuf_profile', false );
+        $login_url  = $login_page ? get_permalink( $login_page ) : '';
+        $has_link   = ( $login_url && false !== strpos( $html, $login_url ) ) || false !== strpos( $html, 'wp-login.php' );
+
+        if ( $has_link && preg_match( '/wpuf-(message|info|restrict-message|restricted-content)\b/', $html ) ) {
+            self::$login_message_printed = true;
+        }
+
+        return $html;
+    }
+
+    /**
+     * Print the login popup for the Login links of restricted content
+     *
+     * Opt-in with the `login_popup` setting. The popup holds the normal login form and posts it
+     * to the WPUF login page, so errors, reCAPTCHA, Turnstile and two-factor steps work the same
+     * as there. Without JavaScript, or without dialog support, the links still go to the login page.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function login_popup() {
+        $login_page = wpuf_get_option( 'login_page', 'wpuf_profile', false );
+
+        // Only on requests that printed a login-required message, so other pages load nothing.
+        if ( ! self::$login_message_printed || is_user_logged_in() || ! $login_page || is_page( $login_page ) || 'on' !== wpuf_get_option( 'login_popup', 'wpuf_profile', 'off' ) ) {
+            return;
+        }
+
+        // The same styles and scripts as the login page, so the form looks and works the same.
+        wpuf()->frontend->enqueue_form_assets();
+
+        // Only when the login form shows Turnstile, as on the login page.
+        if ( 'on' === wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' ) && 'on' === wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' ) ) {
+            wp_enqueue_script( 'wpuf-turnstile' );
+        }
+
+        $login_url = $this->get_login_url();
+
+        // The same filtered template args as the login page, so a layout or texts set by Pro apply here too.
+        $args = apply_filters(
+            'wpuf_login_form_template_args',
+            [
+                'action_url'   => $login_url,
+                'redirect_to'  => '',
+                'layout_class' => apply_filters( 'wpuf_login_form_layout_class', '' ),
+            ]
+        );
+
+        // Login links point to the login page or to wp-login.php, with or without a redirect_to.
+        $link_urls = [ $login_url, site_url( 'wp-login.php', 'login' ) ];
+        ?>
+        <dialog id="wpuf-login-popup" class="wpuf-login-popup" aria-labelledby="wpuf-login-popup-title" data-link-urls="<?php echo esc_attr( wp_json_encode( $link_urls ) ); ?>">
+            <div class="wpuf-login-popup-inner">
+                <button type="button" class="wpuf-login-popup-close" aria-label="<?php esc_attr_e( 'Close', 'wp-user-frontend' ); ?>">&times;</button>
+                <h2 id="wpuf-login-popup-title"><?php esc_html_e( 'Login required', 'wp-user-frontend' ); ?></h2>
+                <?php
+                wpuf_load_template( 'login-form.php', $args );
+                ?>
+            </div>
+        </dialog>
+        <style>
+            .wpuf-login-popup { width: calc(100% - 32px); max-width: 420px; padding: 0; border: 0; border-radius: 8px; box-shadow: 0 10px 40px rgba(0, 0, 0, .25); }
+            .wpuf-login-popup::backdrop { background: rgba(0, 0, 0, .5); }
+            .wpuf-login-popup-inner { position: relative; padding: 24px; }
+            .wpuf-login-popup-inner h2 { margin: 0 0 16px; padding-right: 32px; font-size: 1.25em; }
+            .wpuf-login-popup-close { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; padding: 0; border: 0; background: transparent; color: inherit; font-size: 24px; line-height: 1; cursor: pointer; }
+        </style>
+        <script>
+            ( function () {
+                var dialog = document.getElementById( 'wpuf-login-popup' ),
+                    form   = dialog ? dialog.querySelector( 'form' ) : null;
+
+                // Without dialog support, or with a theme login template that has no usual form, keep the links.
+                if ( ! form || ! form.elements.log || ! form.elements.redirect_to || 'function' !== typeof dialog.showModal || ! window.URL ) {
+                    return;
+                }
+
+                var opener = null,
+                    bare   = function ( href ) {
+                        var url = new URL( href, window.location.href );
+
+                        url.searchParams.delete( 'redirect_to' );
+                        url.hash = '';
+
+                        return url.href;
+                    },
+                    linkUrls = JSON.parse( dialog.getAttribute( 'data-link-urls' ) ).map( bare );
+
+                document.addEventListener( 'click', function ( e ) {
+                    var link = e.target.closest ? e.target.closest( '.wpuf-message a[href], .wpuf-info a[href], .wpuf-restrict-message a[href], .wpuf-restricted-content a[href]' ) : null;
+
+                    if ( ! link || 0 !== e.button || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || -1 === linkUrls.indexOf( bare( link.href ) ) ) {
+                        return;
+                    }
+
+                    e.preventDefault();
+                    opener = link;
+
+                    // Come back to this page after logging in, also after a failed try on the login page.
+                    var action = new URL( linkUrls[0] );
+
+                    action.searchParams.set( 'redirect_to', window.location.href );
+                    // setAttribute, form.action is shadowed by the form's hidden "action" input.
+                    form.setAttribute( 'action', action.href );
+                    form.elements.redirect_to.value = window.location.href;
+
+                    dialog.showModal();
+                    form.elements.log.focus();
+                } );
+
+                dialog.querySelector( '.wpuf-login-popup-close' ).addEventListener( 'click', function () {
+                    dialog.close();
+                } );
+
+                // Keep Tab inside the popup, the browser would move on to its own toolbar.
+                dialog.addEventListener( 'keydown', function ( e ) {
+                    if ( 'Tab' !== e.key ) {
+                        return;
+                    }
+
+                    var items = Array.prototype.filter.call(
+                            dialog.querySelectorAll( 'a[href], button, input:not([type="hidden"]), select, textarea, iframe, [tabindex]:not([tabindex="-1"])' ),
+                            function ( el ) {
+                                return ! el.disabled && el.getClientRects().length;
+                            }
+                        ),
+                        first = items[0],
+                        last  = items[ items.length - 1 ];
+
+                    if ( e.shiftKey && document.activeElement === first ) {
+                        e.preventDefault();
+                        last.focus();
+                    } else if ( ! e.shiftKey && document.activeElement === last ) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                } );
+
+                // A click on the backdrop closes the popup, Esc is handled by the dialog itself.
+                dialog.addEventListener( 'click', function ( e ) {
+                    if ( e.target === dialog ) {
+                        dialog.close();
+                    }
+                } );
+
+                dialog.addEventListener( 'close', function () {
+                    if ( opener ) {
+                        opener.focus();
+                    }
+                } );
+            } )();
+        </script>
+        <?php
     }
 }

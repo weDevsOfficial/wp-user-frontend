@@ -13,6 +13,15 @@ use WeDevs\Wpuf\User_Subscription;
  */
 class Frontend_Account {
     /**
+     * The post the current user may preview as its author on this request
+     *
+     * @since WPUF_SINCE
+     *
+     * @var int
+     */
+    private $preview_post_id = 0;
+
+    /**
      * Class constructor
      */
     public function __construct() {
@@ -36,14 +45,15 @@ class Frontend_Account {
      *
      * @since 2.9.0
      * @return array $options
-     *
      */
     public function add_settings_options( $options ) {
         $options[] = [
             'name'    => 'allow_post_submission',
             'label'   => __( 'Post Submission', 'wp-user-frontend' ),
-            'desc'    => __( 'Enable if you want to allow users to submit post from the account page.',
-                             'wp-user-frontend' ),
+            'desc'    => __(
+                'Enable if you want to allow users to submit post from the account page.',
+                'wp-user-frontend'
+            ),
             'type'    => 'checkbox',
             'default' => 'on',
         ];
@@ -57,8 +67,10 @@ class Frontend_Account {
         $options[] = [
             'name'    => 'post_submission_form',
             'label'   => __( 'Submission Form', 'wp-user-frontend' ),
-            'desc'    => __( 'Select a post form that will use to submit post by the users from their account page.',
-                             'wp-user-frontend' ),
+            'desc'    => __(
+                'Select a post form that will use to submit post by the users from their account page.',
+                'wp-user-frontend'
+            ),
             'type'    => 'select',
             'options' => $this->get_post_forms(),
         ];
@@ -71,19 +83,22 @@ class Frontend_Account {
      *
      * @since 2.9.0
      * @return array $sections
-     *
      */
     public function add_account_sections( $sections ) {
         $allow_post_submission = wpuf_get_option( 'allow_post_submission', 'wpuf_my_account', 'on' );
-        $submission_label      = wpuf_get_option( 'post_submission_label', 'wpuf_my_account',
-                                                  __( 'Submit Post', 'wp-user-frontend' ) );
+        $submission_label      = wpuf_get_option(
+            'post_submission_label', 'wpuf_my_account',
+            __( 'Submit Post', 'wp-user-frontend' )
+        );
         if ( ! is_array( $sections ) ) {
             $sections = (array) $sections;
         }
         if ( $allow_post_submission === 'on' ) {
-            $sections = array_merge( $sections, [
-                'submit-post' => $submission_label,
-            ] );
+            $sections = array_merge(
+                $sections, [
+					'submit-post' => $submission_label,
+				]
+            );
         }
 
         return $sections;
@@ -99,17 +114,18 @@ class Frontend_Account {
      * @param array  $sections
      *
      * @return void
-     *
      */
     public function submit_post_section( $sections, $current_section ) {
         $allow_post_submission = wpuf_get_option( 'allow_post_submission', 'wpuf_my_account', 'on' );
         if ( $allow_post_submission !== 'on' ) {
             return;
         }
-        wpuf_load_template( 'submit-post.php', [
-            'sections'        => $sections,
-            'current_section' => $current_section,
-        ] );
+        wpuf_load_template(
+            'submit-post.php', [
+				'sections'        => $sections,
+				'current_section' => $current_section,
+			]
+        );
     }
 
     /**
@@ -172,10 +188,12 @@ class Frontend_Account {
      * @return void
      */
     public function dashboard_section( $sections, $current_section ) {
-        wpuf_load_template( 'dashboard/dashboard.php', [
-            'sections'        => $sections,
-            'current_section' => $current_section,
-        ] );
+        wpuf_load_template(
+            'dashboard/dashboard.php', [
+				'sections'        => $sections,
+				'current_section' => $current_section,
+			]
+        );
     }
 
     /**
@@ -190,10 +208,12 @@ class Frontend_Account {
      * @return void
      */
     public function posts_section( $sections, $current_section ) {
-        wpuf_load_template( 'dashboard/posts.php', [
-            'sections'        => $sections,
-            'current_section' => $current_section,
-        ] );
+        wpuf_load_template(
+            'dashboard/posts.php', [
+				'sections'        => $sections,
+				'current_section' => $current_section,
+			]
+        );
     }
 
     /**
@@ -225,9 +245,12 @@ class Frontend_Account {
         $pack = wpuf()->subscription->get_subscription( $sub_id );
 
         if ( ! $pack ) {
-            echo wp_kses_post( sprintf(
+            echo wp_kses_post(
+                sprintf(
                 // translators: %1$s and %2$s are HTML tags
-                __( '%1$sYour subscription pack is not exists. Please contact admin.%2$s', 'wp-user-frontend' ), '<p>', '</p>' ) );
+                    __( '%1$sYour subscription pack is not exists. Please contact admin.%2$s', 'wp-user-frontend' ), '<p>', '</p>'
+                )
+            );
 
             return;
         }
@@ -236,19 +259,26 @@ class Frontend_Account {
         $details_meta['onclick']      = '';
         $details_meta['symbol']       = wpuf_get_currency( 'symbol' );
         $recurring_des = '';
-        $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free',
-                                                                                                                                                      'wp-user-frontend' );
+        $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __(
+            'Free',
+            'wp-user-frontend'
+        );
         if ( wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay'] ) ) {
             /* translators: %s: billing cycle number, %s: billing cycle period */
-            $recurring_des = sprintf( __( 'For each', 'wp-user-frontend' ) . ' %s %s',
-                                      $pack->meta_value['billing_cycle_number'],
-                                      Subscription::get_cycle_label( $pack->meta_value['cycle_period'],
-                                                                          $pack->meta_value['billing_cycle_number'] ),
-                                      $pack->meta_value['_trial_duration_type'] );
-            /* translators: %s: number of installments */
-            $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) && -1 ===  $pack->meta_value['billing_limit'] ? sprintf( __( ', for %s installments',
-                                                                                           'wp-user-frontend' ),
-                                                                                       $pack->meta_value['billing_limit'] ) : '';
+            $recurring_des = sprintf(
+                __( 'For each', 'wp-user-frontend' ) . ' %s %s',
+                $pack->meta_value['billing_cycle_number'],
+                Subscription::get_cycle_label(
+                    $pack->meta_value['cycle_period'],
+                    $pack->meta_value['billing_cycle_number']
+                ),
+                $pack->meta_value['_trial_duration_type']
+            );
+            $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) && -1 === $pack->meta_value['billing_limit'] ? sprintf(
+                /* translators: %s: number of installments */
+                __( ', for %s installments', 'wp-user-frontend' ),
+                $pack->meta_value['billing_limit']
+            ) : '';
         }
         ob_start();
         wpuf_load_template(
@@ -277,10 +307,12 @@ class Frontend_Account {
      * @return void
      */
     public function edit_profile_section( $sections, $current_section ) {
-        wpuf_load_template( 'dashboard/edit-profile.php', [
-            'sections'        => $sections,
-            'current_section' => $current_section,
-        ] );
+        wpuf_load_template(
+            'dashboard/edit-profile.php', [
+				'sections'        => $sections,
+				'current_section' => $current_section,
+			]
+        );
     }
 
     /**
@@ -294,10 +326,12 @@ class Frontend_Account {
      * @return void
      */
     public function change_password_section( $sections, $current_section ) {
-        wpuf_load_template( 'dashboard/change-password.php', [
-            'sections'        => $sections,
-            'current_section' => $current_section,
-        ] );
+        wpuf_load_template(
+            'dashboard/change-password.php', [
+				'sections'        => $sections,
+				'current_section' => $current_section,
+			]
+        );
     }
 
     /**
@@ -355,10 +389,12 @@ class Frontend_Account {
             return;
         }
 
-        $result = wp_update_user( [
-            'ID'        => $current_user->ID,
-            'user_pass' => $pass1,
-        ] );
+        $result = wp_update_user(
+            [
+				'ID'        => $current_user->ID,
+				'user_pass' => $pass1,
+			]
+        );
 
         if ( is_wp_error( $result ) ) {
             wp_send_json_error( __( 'Could not update password. Please try again.', 'wp-user-frontend' ) );
@@ -423,7 +459,7 @@ class Frontend_Account {
             $email = sanitize_email( $email );
             if ( ! is_email( $email ) ) {
                 wp_send_json_error( __( 'Please provide a valid email address.', 'wp-user-frontend' ) );
-            } else if ( email_exists( $email ) && $email !== $current_user->user_email ) {
+            } elseif ( email_exists( $email ) && $email !== $current_user->user_email ) {
                 wp_send_json_error( __( 'This email address is already registered.', 'wp-user-frontend' ) );
             }
             $user->user_email = $email;
@@ -431,17 +467,19 @@ class Frontend_Account {
         if ( ! empty( $current_password ) && empty( $pass1 ) && empty( $pass2 ) ) {
             wp_send_json_error( __( 'Please fill out all password fields.', 'wp-user-frontend' ) );
             $save_pass = false;
-        } else if ( ! empty( $pass1 ) && empty( $current_password ) ) {
+        } elseif ( ! empty( $pass1 ) && empty( $current_password ) ) {
             wp_send_json_error( __( 'Please enter your current password.', 'wp-user-frontend' ) );
             $save_pass = false;
-        } else if ( ! empty( $pass1 ) && empty( $pass2 ) ) {
+        } elseif ( ! empty( $pass1 ) && empty( $pass2 ) ) {
             wp_send_json_error( __( 'Please re-enter your password.', 'wp-user-frontend' ) );
             $save_pass = false;
-        } else if ( ( ! empty( $pass1 ) || ! empty( $pass2 ) ) && $pass1 !== $pass2 ) {
+        } elseif ( ( ! empty( $pass1 ) || ! empty( $pass2 ) ) && $pass1 !== $pass2 ) {
             wp_send_json_error( __( 'New passwords do not match.', 'wp-user-frontend' ) );
             $save_pass = false;
-        } else if ( ! empty( $pass1 ) && ! wp_check_password( $current_password, $current_user->user_pass,
-                                                              $current_user->ID ) ) {
+        } elseif ( ! empty( $pass1 ) && ! wp_check_password(
+            $current_password, $current_user->user_pass,
+            $current_user->ID
+        ) ) {
             wp_send_json_error( __( 'Your current password is incorrect.', 'wp-user-frontend' ) );
             $save_pass = false;
         }
@@ -472,17 +510,85 @@ class Frontend_Account {
      * @return void
      */
     public function process_user_for_previewing_post( $query ) {
-        if ( current_user_can( 'edit_posts' ) ) {
+        if ( ! $query->is_main_query() || $this->preview_post_id ) {
             return;
         }
-        if ( ! $query->is_main_query() && ! $query->is_preview && ! $query->get( 'p' ) ) {
-            return;
-        }
+
         $current_user_id = get_current_user_id();
         $current_post_id = absint( $query->get( 'p' ) );
-        if ( $current_user_id === absint( get_post_field( 'post_author', $current_post_id ) ) ) {
-            add_filter( 'user_has_cap', [ $this, 'add_temporary_capability' ], 10, 3 );
+
+        if ( ! $current_user_id || ! $current_post_id ) {
+            return;
         }
+
+        if ( $current_user_id !== absint( get_post_field( 'post_author', $current_post_id ) ) || current_user_can( 'edit_post', $current_post_id ) ) {
+            return;
+        }
+
+        // WP_Query checks the post type's own edit cap (edit_tribe_event, ...) before it
+        // shows a draft, so grant edit_post for this one post, and only until that check ran.
+        $this->preview_post_id = $current_post_id;
+
+        add_filter( 'map_meta_cap', [ $this, 'allow_author_preview' ], 10, 4 );
+        add_filter( 'the_posts', [ $this, 'remove_author_preview' ], 10, 2 );
+        // Fallback: the_posts does not fire when another plugin suppresses filters on the main query.
+        add_action( 'wp', [ $this, 'drop_author_preview' ] );
+    }
+
+    /**
+     * Let the author pass the edit_post check for the post being previewed
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array  $caps    Primitive caps the meta cap maps to.
+     * @param string $cap     Capability being checked.
+     * @param int    $user_id User ID.
+     * @param array  $args    Extra arguments, the post ID first.
+     *
+     * @return array
+     */
+    public function allow_author_preview( $caps, $cap, $user_id, $args ) {
+        if (
+            'edit_post' === $cap
+            && isset( $args[0] ) && is_numeric( $args[0] )
+            && $this->preview_post_id === absint( $args[0] )
+            && get_current_user_id() === absint( $user_id )
+        ) {
+            return [ 'exist' ];
+        }
+
+        return $caps;
+    }
+
+    /**
+     * Drop the preview grant once the main query has its posts
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array     $posts Posts found.
+     * @param \WP_Query $query The query.
+     *
+     * @return array
+     */
+    public function remove_author_preview( $posts, $query ) {
+        if ( $query->is_main_query() ) {
+            $this->drop_author_preview();
+        }
+
+        return $posts;
+    }
+
+    /**
+     * Remove the preview grant filters
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function drop_author_preview() {
+        remove_filter( 'map_meta_cap', [ $this, 'allow_author_preview' ], 10 );
+        remove_filter( 'the_posts', [ $this, 'remove_author_preview' ], 10 );
+        remove_action( 'wp', [ $this, 'drop_author_preview' ] );
     }
 
     /**

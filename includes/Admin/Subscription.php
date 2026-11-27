@@ -1125,9 +1125,12 @@ class Subscription {
 
         // $price_with_tax = $this->wpuf_prices_include_tax();
 
+        // No charge notice at all when the form does not take payments.
         if (
-            ( self::has_user_error( $form_settings ) && ! ( $force_pack && $form->is_enabled_fallback_cost() ) )
-            || ( $payment_enabled && $pay_per_post && ! $force_pack )
+            $payment_enabled && (
+                ( self::has_user_error( $form_settings ) && ! ( $force_pack && $form->is_enabled_fallback_cost() ) )
+                || ( $pay_per_post && ! $force_pack )
+            )
         ) {
             ?>
             <div class="wpuf-info">

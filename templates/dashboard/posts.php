@@ -1,6 +1,11 @@
 <?php
 
-$post_type = ! empty( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'post';
+// $current_section is passed in by Frontend_Account::posts_section() and already falls back to the Default Active Tab.
+if ( ! empty( $current_section ) && is_string( $current_section ) ) {
+    $post_type = $current_section;
+} else {
+    $post_type = ! empty( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'post';
+}
 
 global $userdata;
 
@@ -20,7 +25,7 @@ if ( $action == 'del' ) {
 
     //check, if the requested user is the post author
     $pid  = isset( $_REQUEST['pid'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['pid'] ) ) : '';
-    $type = isset( $_REQUEST['section'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['section'] ) ) : '';
+    $type = $post_type;
     $maybe_delete = get_post( $pid );
 
     if ( ( $maybe_delete->post_author == $userdata->ID ) || current_user_can( 'delete_others_pages' ) ) {

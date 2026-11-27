@@ -24,7 +24,7 @@ class Form_Field_Radio extends Form_Field_Checkbox {
      * @return void
      */
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
-        if ( isset( $post_id ) && $post_id != '0'  ) {
+        if ( isset( $post_id ) && $post_id != '0' ) {
             if ( $this->is_meta( $field_settings ) ) {
                 $selected = $this->get_meta( $post_id, $field_settings['name'], $type );
             }
@@ -36,7 +36,7 @@ class Form_Field_Radio extends Form_Field_Checkbox {
 
         do_action( 'wpuf_radio_field_after_label', $field_settings ); ?>
 
-            <div class="wpuf-fields">
+            <div class="<?php echo esc_attr( $this->get_options_wrap_class( $field_settings ) ); ?>">
 
                 <?php
                 if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {
@@ -59,13 +59,15 @@ class Form_Field_Radio extends Form_Field_Checkbox {
                         </label>
                         <?php
                     }
-                } ?>
+                }
+                ?>
 
                 <?php $this->help_text( $field_settings ); ?>
 
             </div>
 
-        <?php $this->after_field_print_label();
+        <?php
+        $this->after_field_print_label();
     }
 
     /**
@@ -91,6 +93,7 @@ class Form_Field_Radio extends Form_Field_Checkbox {
                 'priority'      => 23,
                 'help_text'     => __( 'Show this option in an inline list', 'wp-user-frontend' ),
             ],
+            $this->get_columns_option_settings(),
         ];
 
         return array_merge( $default_options, $dropdown_options );
@@ -104,7 +107,7 @@ class Form_Field_Radio extends Form_Field_Checkbox {
     public function get_field_props() {
         $defaults = $this->default_attributes();
 
-        $props    = [
+        $props = [
             'input_type'       => 'radio',
             'selected'         => '',
             'inline'           => 'no',
@@ -129,9 +132,9 @@ class Form_Field_Radio extends Form_Field_Checkbox {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $val   = isset( $_POST[$field['name']] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) ) : '';
+        $val = isset( $_POST[ $field['name'] ] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) ) : '';
 
-        return isset( $field['options'][$val] ) ? $field['options'][$val] : '';
+        return isset( $field['options'][ $val ] ) ? $field['options'][ $val ] : '';
     }
 
     /**
@@ -158,8 +161,8 @@ class Form_Field_Radio extends Form_Field_Checkbox {
 
         ob_start();
         ?>
-            <li class="<?php echo esc_attr( implode( ' ' , $container_classnames ) );  ?>">
-                <?php if ( ! $hide_label ): ?>
+            <li class="<?php echo esc_attr( implode( ' ', $container_classnames ) ); ?>">
+                <?php if ( ! $hide_label ) : ?>
                     <label><?php echo esc_html( $field['label'] ); ?>:</label>
                 <?php endif; ?>
                 <?php echo esc_html( $field['options'][ $data ] ); ?>

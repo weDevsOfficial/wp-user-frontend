@@ -252,3 +252,45 @@
 .lity {
 	z-index: 9999 !important;
 }
+// Checkbox and radio options shown in columns (field setting "Columns"), same as frontend-forms.less,
+// which is dequeued in the Elementor context.
+.wpuf-elementor-widget-wrapper ul.wpuf-form li .wpuf-fields.wpuf-fields-columns {
+	display: grid !important;
+	gap: 8px 16px;
+
+	// Help text and any other non-option element spans the full row.
+	> * {
+		grid-column: 1 / -1;
+	}
+
+	> label {
+		grid-column: auto;
+		margin: 0;
+
+		// Narrow cells must not squeeze the checkbox or radio itself.
+		input {
+			flex-shrink: 0;
+		}
+	}
+
+	// Up to N columns: a cell never gets narrower than 120px, so long labels drop to fewer columns instead of overlapping.
+	&.wpuf-fields-columns-2 {
+		grid-template-columns: repeat(auto-fill, minmax(~"max(120px, calc((100% - 16px) / 2))", 1fr));
+	}
+
+	&.wpuf-fields-columns-3 {
+		grid-template-columns: repeat(auto-fill, minmax(~"max(120px, calc((100% - 32px) / 3))", 1fr));
+	}
+
+	&.wpuf-fields-columns-4 {
+		grid-template-columns: repeat(auto-fill, minmax(~"max(120px, calc((100% - 48px) / 4))", 1fr));
+	}
+
+	@media (max-width: 767px) {
+		&.wpuf-fields-columns-2,
+		&.wpuf-fields-columns-3,
+		&.wpuf-fields-columns-4 {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+}

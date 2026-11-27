@@ -24,9 +24,11 @@ class Form_Field_Checkbox extends Field_Contract {
      * @return void
      */
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
-        if ( isset( $post_id ) && $post_id != '0'  ) {
+        if ( isset( $post_id ) && $post_id != '0' ) {
             if ( $this->is_meta( $field_settings ) ) {
-                if ( $value = $this->get_meta( $post_id, $field_settings['name'], $type, true ) ) {
+                $value = $this->get_meta( $post_id, $field_settings['name'], $type, true );
+
+                if ( $value ) {
                     $selected = $this->get_formatted_value( $value );
                 } else {
                     $selected = [];
@@ -37,7 +39,7 @@ class Form_Field_Checkbox extends Field_Contract {
         }
         $this->field_print_label( $field_settings, $form_id ); ?>
 
-        <div class="wpuf-fields">
+        <div class="<?php echo esc_attr( $this->get_options_wrap_class( $field_settings ) ); ?>">
 
             <?php
             if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {
@@ -49,7 +51,7 @@ class Form_Field_Checkbox extends Field_Contract {
                             class="<?php echo esc_attr( sprintf( 'wpuf_%s_%d', $field_settings['name'], $form_id ) ); ?>"
                             id="<?php echo esc_attr( $field_settings['name'] ); ?>"
                             name="<?php echo esc_attr( $field_settings['name'] ); ?>[]"
-                            value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $value, $selected ) ? ' checked="checked"' : ''; ?>
+                            value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $value, $selected ) ? ' checked="checked"' : ''; // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- int option keys must match saved string values. ?>
                             data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                             data-type="checkbox"
                         />
@@ -57,13 +59,15 @@ class Form_Field_Checkbox extends Field_Contract {
                     </label>
                     <?php
                 }
-            } ?>
+            }
+            ?>
 
             <?php $this->help_text( $field_settings ); ?>
 
         </div>
 
-        <?php $this->after_field_print_label();
+        <?php
+        $this->after_field_print_label();
     }
 
     /**
@@ -72,7 +76,7 @@ class Form_Field_Checkbox extends Field_Contract {
      * @return array
      */
     public function get_options_settings() {
-        $default_options  = $this->get_default_option_settings();
+        $default_options = $this->get_default_option_settings();
 
         $dropdown_options = [
             $this->get_default_option_dropdown_settings( true ),
@@ -91,9 +95,56 @@ class Form_Field_Checkbox extends Field_Contract {
                 'priority'      => 23,
                 'help_text'     => __( 'Show this option in an inline list', 'wp-user-frontend' ),
             ],
+            $this->get_columns_option_settings(),
         ];
 
         return array_merge( $default_options, $dropdown_options );
+    }
+
+    /**
+     * Columns setting shared by the checkbox and radio fields
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    protected function get_columns_option_settings() {
+        return [
+            'name'      => 'columns',
+            'title'     => __( 'Columns', 'wp-user-frontend' ),
+            'type'      => 'select',
+            'options'   => [
+                '1' => __( 'Default', 'wp-user-frontend' ),
+                '2' => __( '2 Columns', 'wp-user-frontend' ),
+                '3' => __( '3 Columns', 'wp-user-frontend' ),
+                '4' => __( '4 Columns', 'wp-user-frontend' ),
+            ],
+            'default'   => '1',
+            'section'   => 'advanced',
+            'priority'  => 23,
+            'help_text' => __( 'Show the options in columns. Default keeps the inline list setting. On small screens the options stack in one column.', 'wp-user-frontend' ),
+        ];
+    }
+
+    /**
+     * CSS class of the wrapper around the options
+     *
+     * Fields without a columns value keep the plain wrapper class.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $field_settings
+     *
+     * @return string
+     */
+    protected function get_options_wrap_class( $field_settings ) {
+        $columns = isset( $field_settings['columns'] ) ? (string) $field_settings['columns'] : '';
+
+        if ( in_array( $columns, [ '2', '3', '4' ], true ) ) {
+            return 'wpuf-fields wpuf-fields-columns wpuf-fields-columns-' . $columns;
+        }
+
+        return 'wpuf-fields';
     }
 
     /**
@@ -104,7 +155,7 @@ class Form_Field_Checkbox extends Field_Contract {
     public function get_field_props() {
         $defaults = $this->default_attributes();
 
-        $props    = [
+        $props = [
             'input_type'        => 'checkbox',
             'is_meta'           => 'yes',
             'selected'          => [],
@@ -129,16 +180,16 @@ class Form_Field_Checkbox extends Field_Contract {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $field_name = isset( $_POST[$field['name']] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[$field['name']] ) ) : [];
+        $field_name = isset( $_POST[ $field['name'] ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $field['name'] ] ) ) : [];
         $field_name = array_map( 'sanitize_text_field', array_map( 'strip_shortcodes', $field_name ) );
 
-        $entry_value  = ( is_array( $field_name ) && $field_name ) ? $field_name : [];
+        $entry_value = ( is_array( $field_name ) && $field_name ) ? $field_name : [];
 
         if ( $entry_value ) {
             $new_val = [];
 
             foreach ( $entry_value as $option_key ) {
-                $new_val[] = isset( $field['options'][$option_key] ) ? $field['options'][$option_key] : '';
+                $new_val[] = isset( $field['options'][ $option_key ] ) ? $field['options'][ $option_key ] : '';
             }
 
             $entry_value = implode( '|', $new_val );
@@ -210,7 +261,7 @@ class Form_Field_Checkbox extends Field_Contract {
             ? wpuf_validate_boolean( $field['hide_field_label'] )
             : false;
 
-        $data = implode( ' | ' , $selected );
+        $data = implode( ' | ', $selected );
 
         if ( empty( $data ) ) {
             return '';
@@ -220,8 +271,8 @@ class Form_Field_Checkbox extends Field_Contract {
 
         ob_start();
         ?>
-            <li class="<?php echo esc_attr( implode( ' ' , $container_classnames ) );  ?>">
-                <?php if ( ! $hide_label ): ?>
+            <li class="<?php echo esc_attr( implode( ' ', $container_classnames ) ); ?>">
+                <?php if ( ! $hide_label ) : ?>
                     <label><?php echo esc_html( $field['label'] ); ?>:</label>
                 <?php endif; ?>
                 <?php echo esc_html( $data ); ?>

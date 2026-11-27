@@ -1,0 +1,1986 @@
+/**
+ * The base sheet of the frontend apps (frontend-react-architecture.md 3):
+ * every rule under `.wpuf-frontend`, tokens on that element (not :root),
+ * no preflight, no element rules outside the root, native controls. The
+ * theme's font is inherited; colours follow the account "black" design.
+ */
+
+.wpuf-frontend {
+    --wpuf-fe-text: #111827;
+    --wpuf-fe-muted: #6b7280;
+    --wpuf-fe-faint: #9ca3af;
+    --wpuf-fe-border: #e5e7eb;
+    --wpuf-fe-soft: #f9fafb;
+    --wpuf-fe-hover: #f3f4f6;
+    --wpuf-fe-surface: #ffffff;
+    --wpuf-fe-primary: #111827;
+    --wpuf-fe-primary-hover: #1f2937;
+    --wpuf-fe-primary-text: #ffffff;
+    --wpuf-fe-danger: #dc2626;
+    --wpuf-fe-danger-soft: #fef2f2;
+    --wpuf-fe-success: #059669;
+    --wpuf-fe-success-soft: #ecfdf5;
+    --wpuf-fe-warning: #d97706;
+    --wpuf-fe-warning-soft: #fffbeb;
+    --wpuf-fe-info: #2563eb;
+    --wpuf-fe-info-soft: #eff6ff;
+    --wpuf-fe-radius: 8px;
+    --wpuf-fe-radius-lg: 10px;
+    --wpuf-fe-radius-xl: 16px;
+    /* The profile hero's band when the member has no cover photo. */
+    --wpuf-fe-cover: linear-gradient(120deg, var(--wpuf-fe-primary) 0%, #374151 55%, #6b7280 100%);
+    --wpuf-fe-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --wpuf-fe-focus: 0 0 0 3px rgba(17, 24, 39, 0.18);
+    /* The admin app's font (Frontend Bundles::font_face()), system fallback. */
+    --wpuf-fe-font: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --wpuf-fe-size: 14px;
+    --wpuf-fe-line: 1.5;
+    color: var(--wpuf-fe-text);
+    font-family: var(--wpuf-fe-font);
+    font-size: var(--wpuf-fe-size);
+    line-height: var(--wpuf-fe-line);
+    box-sizing: border-box;
+}
+
+/* The forms keep the theme's box model, like the classic forms (the template sheets assume it). */
+.wpuf-frontend:not(.wpuf-form-root) :not(.wpuf-form-root, .wpuf-form-root *),
+.wpuf-frontend:not(.wpuf-form-root) :not(.wpuf-form-root, .wpuf-form-root *)::before,
+.wpuf-frontend:not(.wpuf-form-root) :not(.wpuf-form-root, .wpuf-form-root *)::after {
+    box-sizing: inherit;
+}
+
+/* Accessibility helper, inside the root only. */
+.wpuf-frontend .wpuf-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.wpuf-frontend .wpuf-muted {
+    color: var(--wpuf-fe-muted);
+}
+
+/* ---- Buttons ---- */
+.wpuf-frontend .wpuf-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-radius: var(--wpuf-fe-radius);
+    font: inherit;
+    font-size: var(--wpuf-fe-size);
+    font-weight: 500;
+    line-height: 1.25;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+/* Keyboard focus for every link and control: the kit's neutral ring, not the
+   browser's blue outline. :where() keeps it below component rules. */
+.wpuf-frontend :where(a, button, summary, [role="button"], [role="tab"], [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: none;
+    box-shadow: var(--wpuf-fe-focus);
+}
+
+.wpuf-frontend .wpuf-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--wpuf-fe-focus);
+}
+
+.wpuf-frontend .wpuf-btn:disabled,
+.wpuf-frontend .wpuf-btn.is-busy {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.wpuf-frontend .wpuf-btn--primary {
+    background: var(--wpuf-fe-primary);
+    color: var(--wpuf-fe-primary-text);
+}
+
+.wpuf-frontend .wpuf-btn--primary:hover:not(:disabled) {
+    background: var(--wpuf-fe-primary-hover);
+    color: var(--wpuf-fe-primary-text);
+}
+
+.wpuf-frontend .wpuf-btn--secondary {
+    background: var(--wpuf-fe-surface);
+    color: var(--wpuf-fe-text);
+    border-color: var(--wpuf-fe-border);
+}
+
+.wpuf-frontend .wpuf-btn--secondary:hover:not(:disabled) {
+    background: var(--wpuf-fe-hover);
+}
+
+.wpuf-frontend .wpuf-btn--danger {
+    background: var(--wpuf-fe-danger);
+    color: #fff;
+}
+
+.wpuf-frontend .wpuf-btn--ghost {
+    background: transparent;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-btn--ghost:hover:not(:disabled) {
+    background: var(--wpuf-fe-hover);
+}
+
+.wpuf-frontend .wpuf-btn--link {
+    background: transparent;
+    color: var(--wpuf-fe-text);
+    text-decoration: underline;
+    padding-inline: 4px;
+}
+
+.wpuf-frontend .wpuf-btn--sm {
+    min-height: 32px;
+    padding: 4px 12px;
+    font-size: 13px;
+}
+
+/* ---- Spinner ---- */
+.wpuf-frontend .wpuf-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: wpuf-spin 0.7s linear infinite;
+    vertical-align: middle;
+}
+
+.wpuf-frontend .wpuf-spinner-wrap {
+    display: inline-flex;
+    align-items: center;
+    color: var(--wpuf-fe-muted);
+}
+
+@keyframes wpuf-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ---- Notices ---- */
+.wpuf-frontend .wpuf-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius);
+    background: var(--wpuf-fe-soft);
+    color: var(--wpuf-fe-text);
+    margin: 0 0 16px;
+}
+
+.wpuf-frontend .wpuf-notice__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.wpuf-frontend .wpuf-notice__body p:last-child {
+    margin-bottom: 0;
+}
+
+.wpuf-frontend .wpuf-notice__close {
+    background: transparent;
+    border: 0;
+    font: inherit;
+    font-size: 18px;
+    line-height: 1;
+    color: var(--wpuf-fe-muted);
+    cursor: pointer;
+    padding: 0 4px;
+}
+
+.wpuf-frontend .wpuf-notice--success {
+    background: var(--wpuf-fe-success-soft);
+    border-color: #a7f3d0;
+    color: #065f46;
+}
+
+.wpuf-frontend .wpuf-notice--error {
+    background: var(--wpuf-fe-danger-soft);
+    border-color: #fecaca;
+    color: #991b1b;
+}
+
+.wpuf-frontend .wpuf-notice--warning {
+    background: var(--wpuf-fe-warning-soft);
+    border-color: #fde68a;
+    color: #92400e;
+}
+
+.wpuf-frontend .wpuf-notice--info {
+    background: var(--wpuf-fe-info-soft);
+    border-color: #bfdbfe;
+    color: #1e40af;
+}
+
+/* ---- State card (a form that cannot be filled in right now) ---- */
+.wpuf-frontend .wpuf-state-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 40px 24px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius-lg);
+    background: #ffffff;
+    box-shadow: var(--wpuf-fe-shadow);
+    color: var(--wpuf-fe-text);
+    text-align: center;
+}
+
+.wpuf-frontend .wpuf-state-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 4px;
+    border-radius: 999px;
+    background: var(--wpuf-fe-soft);
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-state-card__title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-state-card__text {
+    max-width: 420px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-state-card__text a {
+    color: var(--wpuf-fe-text);
+    text-decoration: underline;
+}
+
+.wpuf-frontend .wpuf-state-card .wpuf-btn {
+    margin-top: 8px;
+    text-decoration: none;
+}
+
+.wpuf-frontend .wpuf-state-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* A closed form's classic box (wpuf-info / wpuf-message) in the notice look. */
+.wpuf-frontend.wpuf-form-gate > .wpuf-info,
+.wpuf-frontend.wpuf-form-gate > .wpuf-message {
+    margin: 0 0 16px;
+    padding: 12px 16px;
+    border: 1px solid #bfdbfe;
+    border-radius: var(--wpuf-fe-radius);
+    background: var(--wpuf-fe-info-soft);
+    color: #1e40af;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.wpuf-frontend.wpuf-form-gate > .wpuf-info a,
+.wpuf-frontend.wpuf-form-gate > .wpuf-message a {
+    color: inherit;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+/* ---- Plans: pack card (PlanCard) and the user's subscription (SubscriptionCard) ---- */
+.wpuf-frontend .wpuf-plan-card {
+    --wpuf-plan-accent: var(--wpuf-fe-primary);
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    padding: 24px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius-lg);
+    background: #ffffff;
+    box-shadow: var(--wpuf-fe-shadow);
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.wpuf-frontend .wpuf-plan-card:hover {
+    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.08);
+}
+
+.wpuf-frontend .wpuf-plan-card.is-featured {
+    margin-top: 30px;
+    /* 2px border: 1px less padding keeps the content level with the other cards. */
+    padding: 23px;
+    border: 2px solid var(--wpuf-plan-accent);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    box-shadow: 0 10px 24px rgba(17, 24, 39, 0.1);
+}
+
+/* The highlighted plan's ribbon sits on top of the card (in the card's own
+   30px top margin, or the plans grid's row space: plans.css), so the card
+   bodies of a row stay aligned. */
+.wpuf-frontend .wpuf-plan-card__ribbon {
+    position: absolute;
+    right: -2px;
+    bottom: 100%;
+    left: -2px;
+    height: 30px;
+    padding: 0 12px;
+    overflow: hidden;
+    border-radius: var(--wpuf-fe-radius-lg) var(--wpuf-fe-radius-lg) 0 0;
+    background: var(--wpuf-plan-accent);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 30px;
+    letter-spacing: 0.06em;
+    text-align: center;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.wpuf-frontend .wpuf-plan-card.is-current {
+    border-color: #a7f3d0;
+}
+
+.wpuf-frontend .wpuf-plan-card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.wpuf-frontend .wpuf-plan-card__title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-plan-card__desc {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-plan-card__desc p {
+    margin: 0 0 6px;
+}
+
+.wpuf-frontend .wpuf-plan-card__price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.wpuf-frontend .wpuf-plan-card__amount {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-plan-card__cycle {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-plan-card__trial {
+    margin: 0;
+    font-size: 13px;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-plan-card__action {
+    margin-top: 4px;
+}
+
+.wpuf-frontend .wpuf-plan-card__button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    text-decoration: none;
+}
+
+.wpuf-frontend .wpuf-plan-card .wpuf-btn--primary.wpuf-plan-card__button {
+    border-color: var(--wpuf-plan-accent);
+    background: var(--wpuf-plan-accent);
+}
+
+.wpuf-frontend .wpuf-plan-card .wpuf-btn--primary.wpuf-plan-card__button:hover {
+    filter: brightness(0.92);
+}
+
+.wpuf-frontend .wpuf-plan-card__button.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.wpuf-frontend .wpuf-plan-card__features {
+    padding-top: 12px;
+    border-top: 1px solid var(--wpuf-fe-border);
+}
+
+.wpuf-frontend .wpuf-plan-card__features ul {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wpuf-frontend .wpuf-plan-card__features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-plan-card__features li svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--wpuf-plan-accent);
+}
+
+.wpuf-frontend .wpuf-plan-card__more {
+    margin-top: 10px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--wpuf-plan-accent);
+    cursor: pointer;
+}
+
+.wpuf-frontend .wpuf-plan-card__more:hover {
+    text-decoration: underline;
+}
+
+.wpuf-frontend .wpuf-plan-status {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius-lg);
+    background: #ffffff;
+    box-shadow: var(--wpuf-fe-shadow);
+}
+
+.wpuf-frontend .wpuf-plan-status__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.wpuf-frontend .wpuf-plan-status__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--wpuf-fe-radius);
+    background: var(--wpuf-fe-success-soft);
+    color: #047857;
+}
+
+.wpuf-frontend .wpuf-plan-status.is-expired .wpuf-plan-status__icon {
+    background: var(--wpuf-fe-danger-soft);
+    color: #b91c1c;
+}
+
+.wpuf-frontend .wpuf-plan-status__title {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+}
+
+.wpuf-frontend .wpuf-plan-status__title h3 {
+    margin: 2px 0 0;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--wpuf-fe-text);
+}
+
+/* Price and dates: one strip of facts, a label over each value. */
+.wpuf-frontend .wpuf-plan-status__facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 1px;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius-lg);
+    background: var(--wpuf-fe-border);
+}
+
+.wpuf-frontend .wpuf-plan-fact {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    min-width: 0;
+    padding: 14px 16px;
+    background: var(--wpuf-fe-soft);
+}
+
+.wpuf-frontend .wpuf-plan-fact__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-plan-fact__value {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-plan-fact--price .wpuf-plan-card__amount {
+    font-size: 24px;
+}
+
+/* Plan includes: a check list, two columns when there is room. */
+.wpuf-frontend .wpuf-plan-status__features h4 {
+    margin: 0 0 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--wpuf-fe-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.wpuf-frontend .wpuf-plan-status__features ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wpuf-frontend .wpuf-plan-status__features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-plan-status__features li svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #059669;
+}
+
+.wpuf-frontend .wpuf-plan-status__more {
+    margin-top: 8px;
+    padding: 0;
+}
+
+/* What is left: a tile per limit, the number first. */
+.wpuf-frontend .wpuf-plan-status__limits ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wpuf-frontend .wpuf-plan-status__limits h4 {
+    margin: 0 0 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--wpuf-fe-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.wpuf-frontend .wpuf-plan-status__limits li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 12px 14px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius);
+    background: #ffffff;
+    font-size: 13px;
+}
+
+.wpuf-frontend .wpuf-plan-status__limits li strong {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--wpuf-fe-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.wpuf-frontend .wpuf-plan-status__note {
+    margin: 0;
+    font-size: 14px;
+    color: #b91c1c;
+}
+
+.wpuf-frontend .wpuf-plan-status__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--wpuf-fe-border);
+}
+
+.wpuf-frontend .wpuf-plan-status__actions .wpuf-btn {
+    text-decoration: none;
+}
+
+.wpuf-frontend .wpuf-plan-cancel {
+    margin: 0;
+}
+
+/* Cancelling is the secondary action of the card: outlined, red on hover. */
+.wpuf-frontend .wpuf-plan-status__actions .wpuf-plan-cancel .wpuf-btn--danger {
+    border: 1px solid #fecaca;
+    background: #ffffff;
+    color: #b91c1c;
+}
+
+.wpuf-frontend .wpuf-plan-status__actions .wpuf-plan-cancel .wpuf-btn--danger:hover:not(:disabled) {
+    border-color: #fca5a5;
+    background: var(--wpuf-fe-danger-soft);
+}
+
+.wpuf-frontend .wpuf-plan-extra {
+    margin-top: 16px;
+}
+
+/* ---- Checkout (the payment page: classic markup, ids and hooks; the kit's look) ---- */
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-wrap {
+    max-width: 960px;
+    font-family: inherit;
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-columns {
+    gap: 24px;
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-right {
+    width: 340px;
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-billing,
+.wpuf-frontend.wpuf-checkout .wpuf-order-summary {
+    padding: 24px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius-lg);
+    background: #ffffff;
+    box-shadow: var(--wpuf-fe-shadow);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-billing h3 {
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-billing input[type="text"],
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-billing input[type="email"],
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-billing select,
+.wpuf-frontend.wpuf-checkout .wpuf-coupon-field {
+    width: 100%;
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius);
+    background: #ffffff;
+    font: inherit;
+    font-size: 14px;
+    color: var(--wpuf-fe-text);
+    box-shadow: none;
+    box-sizing: border-box;
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-billing input:focus,
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-billing select:focus,
+.wpuf-frontend.wpuf-checkout .wpuf-coupon-field:focus {
+    border-color: var(--wpuf-fe-text);
+    outline: none;
+    box-shadow: var(--wpuf-fe-focus);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-billing label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-gateway-card {
+    padding: 16px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius-lg);
+    background: #ffffff;
+    box-shadow: var(--wpuf-fe-shadow);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-gateway-card:hover {
+    border-color: #d1d5db;
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-gateway-card:has(input[type="radio"]:checked) {
+    border-color: var(--wpuf-fe-text);
+    box-shadow: 0 0 0 1px var(--wpuf-fe-text);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-gateway-card .wpuf-gateway-label {
+    font-size: 15px;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-gateway-card .wpuf-gateway-desc {
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-gateway-card input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-gateway-card .wpuf-payment-instruction {
+    border-top-color: var(--wpuf-fe-border);
+    font-size: 14px;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-order-item .wpuf-order-label,
+.wpuf-frontend.wpuf-checkout .wpuf-order-row .wpuf-order-label,
+.wpuf-frontend.wpuf-checkout .wpuf-order-row .wpuf-order-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-order-row + .wpuf-order-row {
+    margin-top: 8px;
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-order-subtitle {
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-order-tax .wpuf-order-label {
+    font-weight: 400;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-order-divider {
+    border-top-color: var(--wpuf-fe-border);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-order-total .wpuf-order-label,
+.wpuf-frontend.wpuf-checkout .wpuf-order-total .wpuf-order-value {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-coupon-show {
+    display: inline-flex;
+    width: auto;
+    margin-top: 16px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--wpuf-fe-text);
+    text-decoration: underline;
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-coupon-wrap .wpuf-coupon-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-coupon-wrap a.wpuf-apply-coupon,
+.wpuf-frontend.wpuf-checkout .wpuf-coupon-wrap .wpuf-coupon-cancel {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    padding: 6px 12px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius);
+    background: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--wpuf-fe-text);
+    text-decoration: none;
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-coupon-wrap a.wpuf-apply-coupon {
+    border-color: var(--wpuf-fe-primary);
+    background: var(--wpuf-fe-primary);
+    color: var(--wpuf-fe-primary-text);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-footer .wpuf-checkout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 20px;
+    border: 1px solid var(--wpuf-fe-primary);
+    border-radius: var(--wpuf-fe-radius);
+    background: var(--wpuf-fe-primary);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--wpuf-fe-primary-text);
+    cursor: pointer;
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-footer .wpuf-checkout-btn:hover:not(:disabled) {
+    background: var(--wpuf-fe-primary-hover);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-footer .wpuf-checkout-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--wpuf-fe-focus);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-footer .wpuf-checkout-errors {
+    border-radius: var(--wpuf-fe-radius);
+}
+
+.wpuf-frontend.wpuf-checkout .wpuf-checkout-free {
+    font-weight: 500;
+}
+
+/* ---- Pills ---- */
+.wpuf-frontend .wpuf-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.5;
+    white-space: nowrap;
+    background: var(--wpuf-fe-hover);
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-pill--green {
+    background: var(--wpuf-fe-success-soft);
+    color: #065f46;
+}
+
+.wpuf-frontend .wpuf-pill--amber {
+    background: var(--wpuf-fe-warning-soft);
+    color: #92400e;
+}
+
+.wpuf-frontend .wpuf-pill--red {
+    background: var(--wpuf-fe-danger-soft);
+    color: #991b1b;
+}
+
+.wpuf-frontend .wpuf-pill--blue {
+    background: var(--wpuf-fe-info-soft);
+    color: #1e40af;
+}
+
+.wpuf-frontend .wpuf-pill--black {
+    background: var(--wpuf-fe-primary);
+    color: var(--wpuf-fe-primary-text);
+}
+
+/* ---- Avatar ---- */
+.wpuf-frontend .wpuf-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--wpuf-fe-hover);
+    color: var(--wpuf-fe-text);
+    font-weight: 600;
+    overflow: hidden;
+}
+
+.wpuf-frontend .wpuf-avatar--initials {
+    background: var(--wpuf-fe-primary);
+    color: var(--wpuf-fe-primary-text);
+}
+
+/* ---- Skeletons ---- */
+.wpuf-frontend .wpuf-skeleton {
+    display: block;
+    background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 37%, #e5e7eb 63%);
+    background-size: 400% 100%;
+    border-radius: var(--wpuf-fe-radius);
+    animation: wpuf-shimmer 1.4s ease infinite;
+}
+
+.wpuf-frontend .wpuf-skeleton-lines {
+    display: grid;
+    gap: 8px;
+}
+
+.wpuf-frontend .wpuf-skeleton-rows__row {
+    display: flex;
+    gap: 16px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--wpuf-fe-border);
+}
+
+.wpuf-frontend .wpuf-skeleton-label {
+    width: 40%;
+    height: 14px;
+}
+
+.wpuf-frontend .wpuf-skeleton-input {
+    width: 100%;
+    height: 38px;
+    border-radius: var(--wpuf-fe-radius);
+}
+
+.wpuf-frontend .wpuf-skeleton-button {
+    width: 120px;
+    height: 40px;
+    border-radius: var(--wpuf-fe-radius);
+}
+
+.wpuf-frontend .wpuf-skeleton-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    margin: 0 auto 12px;
+}
+
+.wpuf-frontend .wpuf-skeleton-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.wpuf-frontend .wpuf-skeleton-card {
+    width: 100%;
+    height: 240px;
+    border-radius: var(--wpuf-fe-radius-lg);
+}
+
+@keyframes wpuf-shimmer {
+    0% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+/* ---- Cards (FlyHR card: 10px radius, 1px border, soft shadow) ---- */
+.wpuf-frontend .wpuf-card {
+    background: var(--wpuf-fe-surface);
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius-lg);
+    box-shadow: var(--wpuf-fe-shadow);
+    padding: 24px;
+}
+
+.wpuf-frontend .wpuf-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--wpuf-fe-border);
+}
+
+.wpuf-frontend .wpuf-card__title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-card__actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* ---- Detail list ---- */
+.wpuf-frontend .wpuf-details {
+    display: grid;
+    gap: 20px 24px;
+    margin: 0;
+    grid-template-columns: 1fr;
+}
+
+.wpuf-frontend .wpuf-details__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 0;
+}
+
+.wpuf-frontend .wpuf-details__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 28px;
+    height: 28px;
+    margin-top: 2px;
+    border-radius: var(--wpuf-fe-radius);
+    background: rgba(17, 24, 39, 0.08);
+    color: var(--wpuf-fe-primary);
+}
+
+.wpuf-frontend .wpuf-details__text {
+    min-width: 0;
+}
+
+.wpuf-frontend .wpuf-details dt {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-details dd {
+    margin: 2px 0 0;
+    font-size: var(--wpuf-fe-size);
+    color: var(--wpuf-fe-text);
+    overflow-wrap: anywhere;
+}
+
+@media (min-width: 640px) {
+    .wpuf-frontend .wpuf-details--2,
+    .wpuf-frontend .wpuf-details--3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .wpuf-frontend .wpuf-details--3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* ---- Stat cards ---- */
+.wpuf-frontend .wpuf-stat {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius-lg);
+    background: var(--wpuf-fe-surface);
+    box-shadow: var(--wpuf-fe-shadow);
+    color: var(--wpuf-fe-text);
+    text-decoration: none;
+    font: inherit;
+    text-align: start;
+    cursor: default;
+    min-width: 0;
+}
+
+.wpuf-frontend a.wpuf-stat,
+.wpuf-frontend button.wpuf-stat {
+    cursor: pointer;
+}
+
+.wpuf-frontend a.wpuf-stat:hover,
+.wpuf-frontend button.wpuf-stat:hover {
+    border-color: #d1d5db;
+}
+
+.wpuf-frontend a.wpuf-stat:focus-visible,
+.wpuf-frontend button.wpuf-stat:focus-visible {
+    outline: none;
+    box-shadow: var(--wpuf-fe-focus), var(--wpuf-fe-shadow);
+}
+
+.wpuf-frontend .wpuf-stat__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--wpuf-fe-radius-lg);
+    background: rgba(17, 24, 39, 0.08);
+    color: var(--wpuf-fe-primary);
+}
+
+.wpuf-frontend .wpuf-stat--green .wpuf-stat__icon {
+    background: var(--wpuf-fe-success-soft);
+    color: var(--wpuf-fe-success);
+}
+
+.wpuf-frontend .wpuf-stat--violet .wpuf-stat__icon {
+    background: #f5f3ff;
+    color: #7c3aed;
+}
+
+.wpuf-frontend .wpuf-stat--amber .wpuf-stat__icon {
+    background: var(--wpuf-fe-warning-soft);
+    color: var(--wpuf-fe-warning);
+}
+
+.wpuf-frontend .wpuf-stat--blue .wpuf-stat__icon {
+    background: var(--wpuf-fe-info-soft);
+    color: var(--wpuf-fe-info);
+}
+
+.wpuf-frontend .wpuf-stat__text {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.wpuf-frontend .wpuf-stat__value {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.wpuf-frontend .wpuf-stat__label {
+    font-size: 12px;
+    color: var(--wpuf-fe-muted);
+}
+
+/* ---- Rail (FlyHR SideNavItem: active = solid primary pill) ---- */
+.wpuf-frontend .wpuf-account-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: var(--wpuf-fe-radius);
+    color: var(--wpuf-fe-text);
+    font-size: var(--wpuf-fe-size);
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.wpuf-frontend .wpuf-account-nav-item:hover {
+    background: var(--wpuf-fe-hover);
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-account-nav-item.active {
+    background: var(--wpuf-fe-primary);
+    color: var(--wpuf-fe-primary-text);
+}
+
+.wpuf-frontend .wpuf-account-nav-item:focus-visible {
+    outline: none;
+    box-shadow: var(--wpuf-fe-focus);
+}
+
+.wpuf-frontend .wpuf-account-nav-item__icon {
+    display: inline-flex;
+    flex: none;
+}
+
+.wpuf-frontend .wpuf-account-nav-item__label {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.wpuf-frontend .wpuf-account-nav-item__badge {
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: var(--wpuf-fe-danger);
+    color: #fff;
+}
+
+/* ---- Pagination ---- */
+.wpuf-frontend .wpuf-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 16px;
+}
+
+.wpuf-frontend .wpuf-pagination__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 4px 12px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius);
+    color: var(--wpuf-fe-text);
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.wpuf-frontend .wpuf-pagination__link:hover {
+    background: var(--wpuf-fe-hover);
+}
+
+.wpuf-frontend .wpuf-pagination__link.is-current {
+    background: var(--wpuf-fe-primary);
+    border-color: var(--wpuf-fe-primary);
+    color: var(--wpuf-fe-primary-text);
+}
+
+/*
+ * The kit select (components/Select.jsx, single and multiple): a box in the controls'
+ * look and a list in place of the browser's dropdown. The classic select
+ * stays in the DOM, visually hidden.
+ */
+.wpuf-frontend select.wpuf-select__native.wpuf-select__native {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    min-height: 0 !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important;
+    border: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.wpuf-frontend .wpuf-select {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 44px;
+    margin: 0;
+    padding: 10px 12px 10px 14px;
+    border: 1px solid var(--wpuf-m-border, #d1d5db);
+    border-radius: var(--wpuf-m-radius, 8px);
+    background: var(--wpuf-m-input-bg, #ffffff);
+    box-shadow: var(--wpuf-m-shadow, 0 1px 2px rgba(16, 24, 40, 0.05));
+    color: var(--wpuf-m-input-text, #111827);
+    font: inherit;
+    font-size: 15px;
+    line-height: 22px;
+    text-align: left;
+    text-transform: none;
+    letter-spacing: normal;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__trigger:hover {
+    border-color: var(--wpuf-m-accent, #2563eb);
+    background: var(--wpuf-m-input-bg, #ffffff);
+    color: var(--wpuf-m-input-text, #111827);
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__trigger:focus,
+.wpuf-frontend .wpuf-select .wpuf-select__trigger:focus-visible,
+.wpuf-frontend .wpuf-select.is-open .wpuf-select__trigger {
+    border-color: var(--wpuf-m-accent, #2563eb);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--wpuf-m-ring, rgba(37, 99, 235, 0.2));
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__trigger:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__value {
+    overflow: hidden;
+    min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__trigger.is-placeholder .wpuf-select__value {
+    color: var(--wpuf-m-muted, #6b7280);
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__trigger--multiple {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__trigger--multiple[aria-disabled="true"] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__chips {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-width: 0;
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    max-width: 100%;
+    padding: 2px 4px 2px 10px;
+    border: 1px solid var(--wpuf-m-border, #e5e7eb);
+    border-radius: 999px;
+    background: var(--wpuf-m-hover, #f3f4f6);
+    color: var(--wpuf-m-input-text, #111827);
+    font-size: 13px;
+    line-height: 20px;
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__chip-label {
+    overflow: hidden;
+    min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.wpuf-frontend .wpuf-select button.wpuf-select__chip-remove.wpuf-select__chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    box-shadow: none;
+    color: var(--wpuf-m-muted, #6b7280);
+    cursor: pointer;
+}
+
+.wpuf-frontend .wpuf-select button.wpuf-select__chip-remove.wpuf-select__chip-remove:hover {
+    background: var(--wpuf-m-border, #e5e7eb);
+    color: var(--wpuf-m-input-text, #111827);
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__chevron {
+    flex: none;
+    color: var(--wpuf-m-muted, #6b7280);
+    transition: transform 0.15s ease;
+}
+
+.wpuf-frontend .wpuf-select.is-open .wpuf-select__chevron {
+    transform: rotate(180deg);
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__popover {
+    position: absolute;
+    z-index: 1000;
+    top: calc(100% + 6px);
+    left: 0;
+    box-sizing: border-box;
+    min-width: 100%;
+    max-width: min(420px, 90vw);
+    padding: 4px;
+    border: 1px solid var(--wpuf-m-border, #e5e7eb);
+    border-radius: var(--wpuf-m-radius, 8px);
+    background: var(--wpuf-m-pop, #ffffff);
+    box-shadow: 0 12px 24px -6px rgba(16, 24, 40, 0.18), 0 4px 8px -4px rgba(16, 24, 40, 0.08);
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__popover.is-above {
+    top: auto;
+    bottom: calc(100% + 6px);
+}
+
+.wpuf-frontend .wpuf-select input.wpuf-select__search {
+    display: block;
+    box-sizing: border-box;
+    width: 100% !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    margin: 0 0 4px !important;
+    padding: 6px 10px !important;
+    border: 1px solid var(--wpuf-m-border, #e5e7eb) !important;
+    border-radius: 6px !important;
+    background: var(--wpuf-m-input-bg, #ffffff) !important;
+    box-shadow: none !important;
+    color: var(--wpuf-m-input-text, #111827) !important;
+    font-size: 14px !important;
+}
+
+.wpuf-frontend .wpuf-select ul.wpuf-select__list {
+    max-height: 264px;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-y: auto;
+    list-style: none !important;
+    outline: none;
+}
+
+.wpuf-frontend .wpuf-select ul.wpuf-select__list li.wpuf-select__option.wpuf-select__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 0 !important;
+    padding: 8px 10px 8px calc(12px + var(--wpuf-select-depth, 0) * 16px) !important;
+    border-radius: 6px;
+    color: var(--wpuf-m-input-text, #111827);
+    font-size: 14px;
+    line-height: 20px;
+    list-style: none !important;
+    cursor: pointer;
+    user-select: none;
+}
+
+.wpuf-frontend .wpuf-select li.wpuf-select__option::before {
+    content: none !important;
+}
+
+.wpuf-frontend .wpuf-select li.wpuf-select__option.is-active {
+    background: var(--wpuf-m-hover, #f3f4f6);
+}
+
+.wpuf-frontend .wpuf-select li.wpuf-select__option[aria-selected="true"] {
+    color: var(--wpuf-m-accent, #2563eb);
+    font-weight: 500;
+}
+
+.wpuf-frontend .wpuf-select li.wpuf-select__option.is-placeholder {
+    color: var(--wpuf-m-muted, #6b7280);
+}
+
+.wpuf-frontend .wpuf-select li.wpuf-select__option[aria-disabled="true"] {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__option-label {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.wpuf-frontend .wpuf-select .wpuf-select__check {
+    flex: none;
+}
+
+.wpuf-frontend .wpuf-select ul.wpuf-select__list li.wpuf-select__empty.wpuf-select__empty {
+    margin: 0 !important;
+    padding: 8px 12px !important;
+    color: var(--wpuf-m-muted, #6b7280);
+    font-size: 14px;
+    list-style: none !important;
+}
+
+.wpuf-frontend .wpuf-select.wpuf-select--sm {
+    display: inline-block;
+    width: auto;
+}
+
+.wpuf-frontend .wpuf-select.wpuf-select--sm .wpuf-select__trigger {
+    min-height: 32px;
+    height: 32px;
+    padding: 0 6px 0 10px;
+    border-radius: 6px;
+    box-shadow: none;
+    color: var(--wpuf-m-text, #374151);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.wpuf-frontend .wpuf-select.wpuf-select--sm .wpuf-select__popover {
+    min-width: 160px;
+}
+
+.wpuf-frontend .wpuf-select.wpuf-select--sm ul.wpuf-select__list li.wpuf-select__option.wpuf-select__option {
+    padding: 6px 8px 6px calc(10px + var(--wpuf-select-depth, 0) * 16px) !important;
+    font-size: 13px;
+}
+
+/*
+ * Validation (the forms' look, shared by every app): a field's message with
+ * the alert icon under the control, the summary box at the submit button.
+ * The forms app repeats them with !important against the layout sheets.
+ */
+.wpuf-frontend .wpuf-error-msg {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin: 6px 0 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+}
+
+.wpuf-frontend .wpuf-error-msg::before {
+    content: "";
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+    margin-top: 2px;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.wpuf-frontend .wpuf-errors {
+    margin: 12px 0;
+    padding: 10px 12px;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    background: #fef2f2;
+    color: #991b1b;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+/* Shared by the account Posts section and the [wpuf_dashboard] list (PostsTable). */
+/* ---- Section heads ---- */
+.wpuf-frontend .wpuf-section-head {
+    margin: 0;
+}
+
+.wpuf-frontend .wpuf-section-head__title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-section-head__lead {
+    margin: 6px 0 0;
+    color: var(--wpuf-fe-muted);
+}
+
+/* ---- Posts table ---- */
+.wpuf-frontend .wpuf-posts-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.wpuf-frontend .wpuf-posts-card > .wpuf-card__body {
+    padding: 0;
+}
+
+.wpuf-frontend .wpuf-posts-card .wpuf-pagination {
+    padding: 16px;
+    margin: 0;
+    border-top: 1px solid var(--wpuf-fe-border);
+}
+
+.wpuf-frontend .wpuf-empty {
+    padding: 32px 16px;
+    text-align: center;
+}
+
+.wpuf-frontend .wpuf-table-wrap {
+    overflow-x: auto;
+}
+
+.wpuf-frontend .wpuf-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    border: 0;
+}
+
+.wpuf-frontend .wpuf-table th,
+.wpuf-frontend .wpuf-table td {
+    padding: 14px 16px;
+    text-align: start;
+    vertical-align: middle;
+    border: 0;
+    border-bottom: 1px solid var(--wpuf-fe-border);
+    background: transparent;
+}
+
+.wpuf-frontend .wpuf-table th {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--wpuf-fe-muted);
+    background: var(--wpuf-fe-soft);
+}
+
+.wpuf-frontend .wpuf-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.wpuf-frontend .wpuf-table tbody tr:hover td {
+    background: var(--wpuf-fe-soft);
+}
+
+.wpuf-frontend .wpuf-table__title {
+    font-weight: 500;
+}
+
+.wpuf-frontend .wpuf-table__title a {
+    color: var(--wpuf-fe-text);
+    text-decoration: none;
+}
+
+.wpuf-frontend .wpuf-table__title a:hover {
+    text-decoration: underline;
+}
+
+.wpuf-frontend .wpuf-table__title .wpuf-pill {
+    margin-inline-start: 8px;
+}
+
+.wpuf-frontend .wpuf-table__thumb {
+    display: block;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--wpuf-fe-radius);
+    object-fit: cover;
+    background: var(--wpuf-fe-hover);
+}
+
+.wpuf-frontend .wpuf-table__actions {
+    text-align: end;
+    white-space: nowrap;
+}
+
+.wpuf-frontend .wpuf-row-actions {
+    display: inline-flex;
+    gap: 4px;
+}
+
+.wpuf-frontend .wpuf-row-actions__delete:hover:not(:disabled) {
+    color: var(--wpuf-fe-danger);
+    background: var(--wpuf-fe-danger-soft);
+}
+
+@media (max-width: 640px) {
+    .wpuf-frontend .wpuf-table thead {
+        display: none;
+    }
+
+    .wpuf-frontend .wpuf-table tr {
+        display: block;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--wpuf-fe-border);
+    }
+
+    .wpuf-frontend .wpuf-table td {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 6px 16px;
+        border: 0;
+    }
+
+    .wpuf-frontend .wpuf-table td::before {
+        content: attr(data-label);
+        font-size: 12px;
+        color: var(--wpuf-fe-muted);
+    }
+
+    .wpuf-frontend .wpuf-table__actions {
+        text-align: start;
+    }
+}
+
+.wpuf-frontend .wpuf-table__terms a {
+    color: inherit;
+}
+
+.wpuf-frontend .wpuf-table__nowrap {
+    white-space: nowrap;
+}
+
+.wpuf-frontend .wpuf-table__excerpt {
+    max-width: 320px;
+    color: var(--wpuf-fe-muted);
+}
+
+/* Shared by the account page and the [wpuf_dashboard] page (ProfileHero). */
+/* ---- Profile hero ---- */
+.wpuf-frontend .wpuf-profile-header {
+    padding: 0;
+    text-align: start;
+    background: var(--wpuf-fe-surface);
+}
+
+.wpuf-frontend .wpuf-profile-cover {
+    height: 140px;
+    overflow: hidden;
+    background: var(--wpuf-fe-cover);
+}
+
+.wpuf-frontend .wpuf-profile-cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    object-fit: cover;
+}
+
+.wpuf-frontend .wpuf-profile-header__main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 12px 16px;
+    padding: 0 20px 20px;
+}
+
+.wpuf-frontend .wpuf-profile-header .wpuf-profile-avatar {
+    flex: none;
+    margin-top: -40px;
+    border: 4px solid var(--wpuf-fe-surface);
+    border-radius: 999px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    background-color: var(--wpuf-fe-primary);
+}
+
+/* Change photo / cover (Pro, PhotoControls.jsx): shown on hover and focus,
+   always on touch screens. */
+.wpuf-frontend .wpuf-profile-header {
+    position: relative;
+}
+
+.wpuf-frontend .wpuf-profile-photo {
+    position: relative;
+    flex: none;
+    margin-top: -40px;
+    border-radius: 999px;
+}
+
+.wpuf-frontend .wpuf-profile-photo .wpuf-profile-avatar {
+    margin-top: 0;
+}
+
+.wpuf-frontend .wpuf-profile-photo__change {
+    position: absolute;
+    inset: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(17, 24, 39, 0.8);
+    color: #fff;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.wpuf-frontend .wpuf-profile-photo__remove {
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: 999px;
+    background: var(--wpuf-fe-surface);
+    color: var(--wpuf-fe-danger);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.wpuf-frontend .wpuf-profile-cover__actions {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.wpuf-frontend .wpuf-profile-cover__actions .wpuf-btn {
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.wpuf-frontend .wpuf-profile-photo:hover .wpuf-profile-photo__change,
+.wpuf-frontend .wpuf-profile-photo:focus-within .wpuf-profile-photo__change,
+.wpuf-frontend .wpuf-profile-photo:hover .wpuf-profile-photo__remove,
+.wpuf-frontend .wpuf-profile-photo:focus-within .wpuf-profile-photo__remove,
+.wpuf-frontend .wpuf-profile-photo.is-busy .wpuf-profile-photo__change,
+.wpuf-frontend .wpuf-profile-header:hover .wpuf-profile-cover__actions,
+.wpuf-frontend .wpuf-profile-cover__actions:focus-within,
+.wpuf-frontend .wpuf-profile-cover__actions.is-busy {
+    opacity: 1;
+}
+
+.wpuf-frontend .wpuf-profile-photo__change:focus-visible,
+.wpuf-frontend .wpuf-profile-photo__remove:focus-visible {
+    outline: none;
+    box-shadow: var(--wpuf-fe-focus);
+}
+
+@media (hover: none) {
+    .wpuf-frontend .wpuf-profile-cover__actions,
+    .wpuf-frontend .wpuf-profile-photo__remove {
+        opacity: 1;
+    }
+}
+
+.wpuf-frontend .wpuf-profile-header__text {
+    flex: 1;
+    min-width: 200px;
+    padding-top: 12px;
+}
+
+.wpuf-frontend .wpuf-profile-header__name-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+}
+
+.wpuf-frontend .wpuf-profile-name {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-profile-username {
+    margin: 0;
+    color: var(--wpuf-fe-muted);
+    font-size: var(--wpuf-fe-size);
+}
+
+.wpuf-frontend .wpuf-profile-header__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding-top: 12px;
+}
+
+.wpuf-frontend .wpuf-meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: 999px;
+    background: var(--wpuf-fe-surface);
+    color: var(--wpuf-fe-muted);
+    font-size: 12px;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.wpuf-frontend a.wpuf-meta-pill:hover {
+    border-color: #d1d5db;
+    color: var(--wpuf-fe-text);
+}
+
+/* A wide column (the nearest app root is the container). */
+@container (min-width: 760px) {
+    .wpuf-frontend .wpuf-profile-header__main {
+        padding: 0 32px 24px;
+    }
+
+    .wpuf-frontend .wpuf-profile-cover {
+        height: 160px;
+    }
+}

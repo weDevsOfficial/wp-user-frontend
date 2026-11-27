@@ -76,8 +76,19 @@ class WPUF_ACF_Compatibility {
             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
-        wpuf_update_option( 'wpuf_compatibility_' . $this->id, 'wpuf_general', 'yes' );
+        $this->mark_compatible();
         wp_send_json_success();
+    }
+
+    /**
+     * Turn the compatible option on (REST `wpuf/v1/admin/integrations/acf/compatible`).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function mark_compatible() {
+        wpuf_update_option( 'wpuf_compatibility_' . $this->id, 'wpuf_general', 'yes' );
     }
 
     /**
@@ -94,6 +105,20 @@ class WPUF_ACF_Compatibility {
             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
+        $this->migrate();
+        wp_send_json_success();
+    }
+
+    /**
+     * Store the checkbox / multiselect values of the forms' posts the way ACF
+     * reads them, then turn the compatible option on (REST
+     * `wpuf/v1/admin/integrations/acf/migrate`).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function migrate() {
         $forms = $this->get_post_forms();
         if ( ! empty( $forms ) ) {
             foreach ( $forms as $form ) {
@@ -128,8 +153,7 @@ class WPUF_ACF_Compatibility {
             }
         }
         update_option( 'wpuf_migrate_' . $this->id, 'yes' );
-        wpuf_update_option( 'wpuf_compatibility_' . $this->id, 'wpuf_general', 'yes' );
-        wp_send_json_success();
+        $this->mark_compatible();
     }
 
     /**
@@ -264,26 +288,24 @@ class WPUF_ACF_Compatibility {
 
                     var self = $(this);
                     self.addClass('updating-message');
-                    wp.ajax.send('wpuf_compatibility_<?php echo esc_attr( $this->id ); ?>', {
-                        data: {
-                            nonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_acf_compatibility' ) ); ?>'
-                        },
-                        success: function() {
+                    <?php echo wpuf_rest_post_js( 'admin/integrations/acf/compatible' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON-encoded JS. ?>
+                        .then( function ( response ) {
+                            if ( ! response.ok ) {
+                                throw new Error( response.statusText );
+                            }
+
                             var html = '<p><strong>Compatible Option Updated</strong></p>';
 
                             self.closest( '.notice' ).removeClass( 'notice-info' ).addClass( 'notice-success' ).html( html );
-                        },
-
-                        error: function () {
+                        } )
+                        .catch( function () {
                             var html = '<p><strong>Something went wrong.</strong></p>';
 
                             self.closest( '.notice' ).removeClass( 'notice-info' ).addClass( 'notice-error' ).html( html );
-                        },
-
-                        complete: function () {
+                        } )
+                        .then( function () {
                             self.removeClass( 'updating-message' );
-                        }
-                    } );
+                        } );
                 } );
 
                 $( '.notice' ).on( 'click', 'a#wpuf-migrate-<?php echo esc_attr( $this->id ); ?>', function ( e ) {
@@ -291,37 +313,31 @@ class WPUF_ACF_Compatibility {
 
                     var self = $(this);
                     self.addClass('updating-message');
-                    wp.ajax.send('wpuf_migrate_<?php echo esc_attr( $this->id ); ?>', {
-                        data: {
-                            nonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_acf_migration' ) ); ?>'
-                        },
-                        success: function() {
+                    <?php echo wpuf_rest_post_js( 'admin/integrations/acf/migrate' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON-encoded JS. ?>
+                        .then( function ( response ) {
+                            if ( ! response.ok ) {
+                                throw new Error( response.statusText );
+                            }
+
                             var html  = '<p><strong>Compatible option and existing custom fields data updated</strong></p>';
 
                             self.closest( '.notice' ).removeClass( 'notice-info' ).addClass( 'notice-success' ).html( html );
-                        },
-
-                        error: function () {
+                        } )
+                        .catch( function () {
                             var html = '<p><strong>Something went wrong.</strong></p>';
 
                             self.closest( '.notice' ).removeClass( 'notice-info' ).addClass( 'notice-error' ).html( html );
-                        },
-
-                        complete: function () {
+                        } )
+                        .then( function () {
                             self.removeClass( 'updating-message' );
-                        }
-                    } );
+                        } );
                 } );
 
                 $( '.notice' ).on( 'click', '#wpuf-dismiss-<?php echo esc_attr( $this->id ); ?>', function ( e ) {
                     e.preventDefault();
 
                     $(this).closest('.notice').remove();
-                    wp.ajax.send('wpuf_dismiss_notice_<?php echo esc_attr( $this->id ); ?>', {
-                        data: {
-                            nonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_dismiss_acf_notice' ) ); ?>'
-                        },
-                    });
+                    <?php echo wpuf_rest_post_js( 'admin/notices/acf/dismiss' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON-encoded JS. ?>;
                 });
 
             } );

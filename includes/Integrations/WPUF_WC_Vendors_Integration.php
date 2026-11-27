@@ -119,7 +119,7 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WC_Vendors_Integration' ) ) 
                 <style type="text/css">
                     .table-vendor-sales-report,
                     .wpuf-wc-vendors-submit-post-page .page-head,
-                    .hide-if-wpuf-page h2,
+                    .hide-if-wpuf-page h2:not(.wpuf-frontend h2):not(.wpuf-form-add h2),
                     .hide-if-wpuf-page > form {
                         display: none;
                     }

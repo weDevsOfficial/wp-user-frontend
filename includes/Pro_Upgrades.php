@@ -8,7 +8,7 @@ class Pro_Upgrades {
      * Initialize
      */
     public function __construct() {
-        if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
+        if ( wpuf_is_pro_active() ) {
             return;
         }
 

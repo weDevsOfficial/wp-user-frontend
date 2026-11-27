@@ -27,7 +27,7 @@ export class RegFormPage extends Base {
         // Visit Registration forms page
         await this.navigateToURL(this.wpufRegistrationFormPage);
 
-        const validateWPUFProActivate = await this.page.isVisible(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
+        const validateWPUFProActivate = await this.isVisibleSoon(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
         if (validateWPUFProActivate == true) {
             console.log('WPUF Pro is Activated');
         }
@@ -196,21 +196,15 @@ export class RegFormPage extends Base {
             await this.validateAndClick(Selectors.registrationForms.addFields.clickForm(newRegFormName));
             await this.validateAndClick(Selectors.registrationForms.addFields.clickFormEditor);
 
-            // The default Registration form already ships some of these fields.
-            // Re-adding one pops a SweetAlert whose backdrop blocks every later
-            // click, so dismiss it after each add — the field is present either
-            // way, which is all this test needs.
-            const profileFields = [
-                'Username', 'First Name', 'Last Name', 'Display Name', 'Nickname Name',
-                'Website', 'Biographical Info', 'Avatar', 'Profile Photo',
-                'X (Twitter)', 'Facebook', 'LinkedIn', 'Instagram',
-            ];
-
-            for (const field of profileFields) {
+            // Single-use fields already on the form (a rerun) answer with an
+            // "Oops... already have this field" alert: close it and go on.
+            for (const field of [ 'Username', 'First Name', 'Last Name', 'Display Name', 'Nickname Name', 'Website', 'Biographical Info', 'Avatar', 'Profile Photo', 'X (Twitter)', 'Facebook', 'LinkedIn', 'Instagram' ]) {
                 await this.validateAndClick(Selectors.registrationForms.addFields.useField(field));
-                await this.dismissBlockingModal();
+                const oops = this.page.locator(Selectors.registrationForms.addFields.alreadyAddedOk);
+                if (await oops.waitFor({ state: 'visible', timeout: 1500 }).then(() => true, () => false)) {
+                    await oops.click();
+                }
             }
-
             await this.validateAndClick(Selectors.regFormSettings.saveButton);
             flag = await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
         }
@@ -483,6 +477,15 @@ export class RegFormPage extends Base {
             return false;
         }
         await this.page.keyboard.press('Enter');
+        // The search box renders even when Google refuses the key at runtime (no billing on
+        // the key's project: BillingNotEnabledMapError; referer not allowed). The place is
+        // then never geocoded, the location input stays empty and Register cannot pass.
+        const location = this.page.locator('.wpuf-form-google-map-container:has(input[placeholder="Search address"]) input[id^="wpuf-map-lat-"]').first();
+        const located = await expect(location).not.toHaveValue('', { timeout: 10000 }).then(() => true, () => false);
+        if (!located) {
+            console.log('\x1b[33m%s\x1b[0m', '⚠️  Dokan vendor store location (Google Maps) did not resolve — the Maps key is refused at runtime (billing / referer). Cannot complete vendor registration; RF0009–RF0011 skip.');
+            return false;
+        }
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.passwordField, VendorRegistrationForm.dokanVendorPassword = VendorRegistrationForm.dokanVendorEmail);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.confirmPasswordField, VendorRegistrationForm.dokanVendorPassword = VendorRegistrationForm.dokanVendorEmail);
         // Submit Registration. WPUF keeps Register `disabled` until every required
@@ -619,7 +622,9 @@ export class RegFormPage extends Base {
         expect(emailTo).toContain(VendorRegistrationForm.wcVendorEmail);
 
         // View email content to validate body
-        await this.validateAndClick(Selectors.vendorRegistrationForms.wpMailLogValidation.viewEmailContent(VendorRegistrationForm.wcVendorEmail));
+        // No "pending by an administrator" mail: the form needs no admin approval (Pro 2d4dde9b).
+        await expect(this.page.locator(Selectors.vendorRegistrationForms.wpMailLogValidation.pendingStatusEmail(VendorRegistrationForm.wcVendorEmail))).toHaveCount(0);
+        await this.validateAndClick(Selectors.vendorRegistrationForms.wpMailLogValidation.viewActivationEmail(VendorRegistrationForm.wcVendorEmail));
 
         const activationLink = await this.page.locator(Selectors.vendorRegistrationForms.wpMailLogValidation.grabActivationLink).getAttribute('href');
         //expect(emailBody).toContain(expectedBodyContent);
@@ -656,7 +661,7 @@ export class RegFormPage extends Base {
         await this.page.waitForTimeout(5000)
         await this.navigateToURL(this.wcVendorsPage);
         await this.assertionValidate(Selectors.vendorRegistrationForms.wcVendor.wcValidation.vendorValidation(VendorRegistrationForm.wcVendorShopName));
-        await this.assertionValidate(Selectors.vendorRegistrationForms.wcVendor.wcValidation.vendorStatusValidation);
+        await this.assertionValidate(Selectors.vendorRegistrationForms.wcVendor.wcValidation.vendorStatusValidation(VendorRegistrationForm.wcVendorShopName));
 
     }
 
@@ -787,11 +792,12 @@ export class RegFormPage extends Base {
 
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.emailField, VendorRegistrationForm.wcfmMemberEmail = faker.internet.email());
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.storeNameField, VendorRegistrationForm.wcfmMemberStoreName = faker.word.words(2));
-        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.phoneField, VendorRegistrationForm.wcfmMemberPhone = `+88016${faker.string.numeric(8)}`);
+        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.phoneField, VendorRegistrationForm.wcfmMemberPhone = `88016${faker.string.numeric(8)}`);
+        // Next refuses a required upload still on its way: wait for each stored attachment.
         await this.page.setInputFiles(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.storeLogoField, VendorRegistrationForm.wcfmMemberStoreLogo);
-        await this.page.waitForTimeout(2000);
+        await expect(this.page.locator(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.uploadedFile('_vendor_image'))).toHaveCount(1, { timeout: 30000 });
         await this.page.setInputFiles(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.storeBannerField, VendorRegistrationForm.wcfmMemberStoreBanner);
-        await this.page.waitForTimeout(2000);
+        await expect(this.page.locator(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.uploadedFile('_vendor_banner'))).toHaveCount(1, { timeout: 30000 });
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.descriptionField, VendorRegistrationForm.description = faker.lorem.paragraph());
         await this.validateAndClick(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.nextButton);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.addressLine1Field, VendorRegistrationForm.wcfmMemberAddress = faker.location.streetAddress());
@@ -799,6 +805,8 @@ export class RegFormPage extends Base {
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.cityField, VendorRegistrationForm.wcfmMemberCity);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.zipField, VendorRegistrationForm.wcfmMemberZip);
         await this.selectOptionWithLabel(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.countryField, VendorRegistrationForm.wcfmMemberCountry);
+        // The State part is a required text input; the React form enforces it (classic let it through).
+        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.stateField, VendorRegistrationForm.wcfmMemberState);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.facebookField, VendorRegistrationForm.wcfmMemberFacebook = `https://www.facebook.com/${this.generateWordWithMinLength(5)}`);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.twitterField, VendorRegistrationForm.wcfmMemberTwitter = `https://www.x.com/${this.generateWordWithMinLength(5)}`);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.googleField, VendorRegistrationForm.wcfmMemberGoogle = `https://www.google.com/${this.generateWordWithMinLength(5)}`);
@@ -826,8 +834,10 @@ export class RegFormPage extends Base {
         const emailTo = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentEmailAddress(VendorRegistrationForm.wcfmMemberEmail));
         expect(emailTo).toContain(VendorRegistrationForm.wcfmMemberEmail);
 
-        // View email content to validate body
-        await this.validateAndClick(Selectors.regFormSettings.wpMailLogValidation.viewEmailContent(VendorRegistrationForm.wcfmMemberEmail));
+        // View the activation mail (by subject) to grab the link.
+        // No "pending by an administrator" mail: the form needs no admin approval (Pro 2d4dde9b).
+        await expect(this.page.locator(Selectors.vendorRegistrationForms.wpMailLogValidation.pendingStatusEmail(VendorRegistrationForm.wcfmMemberEmail))).toHaveCount(0);
+        await this.validateAndClick(Selectors.vendorRegistrationForms.wpMailLogValidation.viewActivationEmail(VendorRegistrationForm.wcfmMemberEmail));
 
         const activationLink = await this.page.locator(Selectors.regFormSettings.wpMailLogValidation.grabActivationLink).getAttribute('href');
         //expect(emailBody).toContain(expectedBodyContent);

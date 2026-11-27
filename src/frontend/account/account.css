@@ -1,0 +1,908 @@
+/**
+ * The React account page: an app frame with the profile hero on top
+ * (cover band, avatar over its edge, name, member pill, @username, role
+ * and Edit Profile), below it the left sidebar (section nav, sign out)
+ * beside the section content. Built on the kit's --wpuf-fe-* tokens. Every
+ * rule under `.wpuf-frontend`; the classic container classes stay for CSS
+ * written against them.
+ */
+
+.wpuf-frontend .wpuf-account-shell {
+    /* One corner scale for the whole account: controls, cards, frame. */
+    --wpuf-fe-radius: 8px;
+    --wpuf-fe-radius-lg: 12px;
+    --wpuf-fe-radius-xl: 16px;
+    --wpuf-fe-cover: linear-gradient(120deg, var(--wpuf-fe-primary) 0%, #374151 55%, #6b7280 100%);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: var(--wpuf-fe-surface);
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius-xl);
+    box-shadow: var(--wpuf-fe-shadow);
+    overflow: hidden;
+}
+
+/* The layout keys off the column the theme gives the app root, not the
+   viewport: a narrow column stacks the sidebar, a wide one puts it beside. */
+.wpuf-frontend.wpuf-account-root {
+    container-type: inline-size;
+    container-name: wpuf-account;
+}
+
+/* ---- Sidebar ---- */
+.wpuf-frontend .wpuf-account-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    flex: none;
+    margin: 0;
+    padding: 16px;
+    background: var(--wpuf-fe-surface);
+    border-bottom: 1px solid var(--wpuf-fe-border);
+}
+
+.wpuf-frontend .wpuf-account-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.wpuf-frontend .wpuf-account-nav li {
+    margin: 0;
+    padding: 0;
+}
+
+.wpuf-frontend .wpuf-account-nav .wpuf-account-nav-item {
+    color: var(--wpuf-fe-muted);
+    border-radius: var(--wpuf-fe-radius);
+}
+
+.wpuf-frontend .wpuf-account-nav .wpuf-account-nav-item:hover {
+    background: var(--wpuf-fe-soft);
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-account-nav .wpuf-account-nav-item.active {
+    background: var(--wpuf-fe-hover);
+    color: var(--wpuf-fe-text);
+    font-weight: 600;
+}
+
+.wpuf-frontend .wpuf-account-nav .wpuf-account-nav-item.active .wpuf-account-nav-item__icon {
+    color: var(--wpuf-fe-primary);
+}
+
+.wpuf-frontend .wpuf-logout-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--wpuf-fe-radius);
+    color: var(--wpuf-fe-danger);
+    font-size: var(--wpuf-fe-size);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.wpuf-frontend .wpuf-logout-link:hover {
+    background: var(--wpuf-fe-danger-soft);
+    color: var(--wpuf-fe-danger);
+}
+
+.wpuf-frontend .wpuf-account-menu-toggle {
+    display: none;
+}
+
+/* ---- Body: sidebar + content ---- */
+.wpuf-frontend .wpuf-account-body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* ---- Section content ---- */
+.wpuf-frontend .wpuf-account-content {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    background: var(--wpuf-fe-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+@container wpuf-account (min-width: 760px) {
+    .wpuf-frontend .wpuf-account-body {
+        flex-direction: row;
+    }
+
+    .wpuf-frontend .wpuf-account-sidebar {
+        width: 230px;
+        padding: 8px 16px 24px;
+        border-bottom: 0;
+    }
+
+    .wpuf-frontend .wpuf-account-sidebar .wpuf-logout-link {
+        margin-top: auto;
+    }
+
+    .wpuf-frontend .wpuf-account-nav {
+        position: sticky;
+        top: 56px;
+    }
+
+    /* The grey panel's own rounded corner and edge separate it from the
+       hero and the sidebar (no hard T-joint of two lines). */
+    .wpuf-frontend .wpuf-account-content {
+        padding: 28px 32px 32px;
+        border-top: 1px solid var(--wpuf-fe-border);
+        border-inline-start: 1px solid var(--wpuf-fe-border);
+        border-start-start-radius: var(--wpuf-fe-radius-xl);
+    }
+}
+
+@container wpuf-account (max-width: 759.98px) {
+    .wpuf-frontend .wpuf-account-menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        min-height: 44px;
+        padding: 10px 14px;
+        border: 1px solid var(--wpuf-fe-border);
+        border-radius: var(--wpuf-fe-radius-lg);
+        background: var(--wpuf-fe-surface);
+        color: var(--wpuf-fe-text);
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .wpuf-frontend .wpuf-account-nav {
+        display: none;
+    }
+
+    .wpuf-frontend .wpuf-account-nav.is-open {
+        display: block;
+    }
+
+    .wpuf-frontend .wpuf-account-sidebar .wpuf-logout-link {
+        display: none;
+    }
+
+    .wpuf-frontend .wpuf-account-nav.is-open + .wpuf-logout-section .wpuf-logout-link {
+        display: flex;
+    }
+}
+
+/* ---- Overview ---- */
+.wpuf-frontend .wpuf-overview {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.wpuf-frontend .wpuf-overview__stats {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.wpuf-frontend .wpuf-overview__greeting {
+    margin: 0;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-overview__greeting strong {
+    color: var(--wpuf-fe-text);
+    font-weight: 600;
+}
+
+.wpuf-frontend .wpuf-overview__greeting a {
+    color: var(--wpuf-fe-text);
+    text-decoration: underline;
+}
+
+.wpuf-frontend .wpuf-overview__links {
+    margin: 0;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-overview__links a {
+    color: var(--wpuf-fe-text);
+    text-decoration: underline;
+}
+
+/* ---- Profile forms ---- */
+.wpuf-frontend .wpuf-edit-profile-container,
+.wpuf-frontend .wpuf-change-password-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.wpuf-frontend .wpuf-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0 0 20px;
+}
+
+.wpuf-frontend .wpuf-form-grid {
+    display: grid;
+    gap: 0 20px;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+    .wpuf-frontend .wpuf-form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.wpuf-frontend .wpuf-form-label {
+    font-weight: 600;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-form-label .required {
+    color: var(--wpuf-fe-danger);
+}
+
+.wpuf-frontend .wpuf-form-control {
+    position: relative;
+}
+
+.wpuf-frontend .wpuf-form-input {
+    display: block;
+    width: 100%;
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius);
+    background: var(--wpuf-fe-surface);
+    color: var(--wpuf-fe-text);
+    font: inherit;
+    font-size: var(--wpuf-fe-size);
+    line-height: 1.4;
+    box-shadow: none;
+    margin: 0;
+}
+
+.wpuf-frontend .wpuf-form-input:focus {
+    outline: none;
+    border-color: var(--wpuf-fe-primary);
+    box-shadow: var(--wpuf-fe-focus);
+}
+
+/* Invalid fields: the React forms' validation look (forms.css): red border,
+   soft ring, also while focused; the row itself stays clear (the classic
+   sheets paint `.has-error` rows pink). */
+.wpuf-frontend .wpuf-form-group.has-error {
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+.wpuf-frontend .has-error .wpuf-form-input,
+.wpuf-frontend .has-error .wpuf-form-input:focus {
+    border-color: var(--wpuf-fe-danger);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+.wpuf-frontend .wpuf-form-eye {
+    position: absolute;
+    top: 50%;
+    inset-inline-end: 10px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 0;
+    padding: 4px;
+    color: var(--wpuf-fe-muted);
+    cursor: pointer;
+    display: inline-flex;
+}
+
+.wpuf-frontend .wpuf-form-fieldset {
+    margin: 8px 0 20px;
+    padding: 16px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius);
+}
+
+.wpuf-frontend .wpuf-form-fieldset legend {
+    padding: 0 6px;
+    font-weight: 600;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.wpuf-frontend .wpuf-error-msg {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+    color: var(--wpuf-fe-danger);
+}
+
+/* Circle with "!" like the form messages. */
+.wpuf-frontend .wpuf-error-msg::before {
+    content: "";
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+    margin-top: 2px;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* ---- Server HTML sections keep the classic Tailwind look of their templates ---- */
+.wpuf-frontend .wpuf-account-html {
+    min-width: 0;
+}
+
+/* ---- Boot skeleton (server-rendered before the app mounts) ---- */
+.wpuf-frontend .wpuf-account-boot {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.wpuf-frontend .wpuf-account-boot .wpuf-skeleton-row {
+    display: flex;
+    gap: 12px;
+    padding: 10px 12px;
+}
+
+@container wpuf-account (min-width: 760px) {
+    .wpuf-frontend .wpuf-account-boot {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .wpuf-frontend .wpuf-account-boot .wpuf-account-sidebar {
+        width: 240px;
+    }
+}
+
+/* ---- One button look in the account ----
+   The PHP sections (billing Update, invoices, subscription) bring their own
+   button styles; they take the kit primary button's size, radius and type.
+   The forms (Submit Post, Edit Profile) keep their own layout's look, as on
+   a page. */
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway button[type="submit"],
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input[type="submit"] {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: auto !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 40px !important;
+    padding: 8px 20px !important;
+    border: 1px solid transparent !important;
+    border-radius: var(--wpuf-fe-radius) !important;
+    background: var(--wpuf-fe-primary) !important;
+    color: var(--wpuf-fe-primary-text) !important;
+    font-family: inherit !important;
+    font-size: var(--wpuf-fe-size) !important;
+    font-weight: 500 !important;
+    line-height: 1.25 !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    cursor: pointer;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway button[type="submit"]:hover,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input[type="submit"]:hover {
+    background: var(--wpuf-fe-primary-hover) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway button[type="submit"]:focus-visible,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input[type="submit"]:focus-visible {
+    outline: none;
+    box-shadow: var(--wpuf-fe-focus) !important;
+}
+
+/* ---- Corners of the parts the account hosts ----
+   PHP sections (classic Tailwind rounded-* classes, fields) and the chat
+   follow the same scale. */
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input:not([type="checkbox"]):not([type="radio"]),
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway select,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway textarea,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-rounded,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-rounded-md {
+    border-radius: var(--wpuf-fe-radius) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-rounded-lg,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-rounded-xl,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html .wpuf-rounded-2xl,
+.wpuf-frontend .wpuf-account-content .wpuf-pm {
+    border-radius: var(--wpuf-fe-radius-lg) !important;
+}
+
+/* Select arrows: one chevron, never tiled (the classic preflight resets
+   background-repeat on the layout sheets' arrow image). */
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway select {
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    padding-inline-end: 36px !important;
+}
+
+/* Focus: the kit ring, not the theme / WordPress blue. */
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway input:not([type="checkbox"]):not([type="radio"]):focus,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway select:focus,
+.wpuf-frontend .wpuf-account-content .wpuf-account-html #wpuf-payment-gateway textarea:focus {
+    outline: none !important;
+    border-color: var(--wpuf-fe-primary) !important;
+    box-shadow: var(--wpuf-fe-focus) !important;
+}
+
+/* Rail links: no theme outline box after a click; keyboard focus keeps the ring. */
+.wpuf-frontend .wpuf-account-nav .wpuf-account-nav-item:focus,
+.wpuf-frontend .wpuf-logout-link:focus {
+    outline: none;
+}
+
+.wpuf-frontend .wpuf-account-nav .wpuf-account-nav-item:focus-visible,
+.wpuf-frontend .wpuf-logout-link:focus-visible {
+    box-shadow: var(--wpuf-fe-focus);
+}
+
+/* ---- Invoices (Pro template) in the Posts table look ---- */
+/* Section headers of the classic templates (invoices, subscription, add-ons):
+   a 32px title and an 18px lead become the native section head. */
+.wpuf-frontend .wpuf-account-content .wpuf-account-html h2[class*="wpuf-text-[32px]"] {
+    margin: 0 !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+    letter-spacing: normal !important;
+    color: var(--wpuf-fe-text) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-account-html div:has(> h2[class*="wpuf-text-[32px]"]) {
+    margin-bottom: 4px !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-account-html p[class*="wpuf-text-[18px]"] {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    letter-spacing: normal !important;
+    color: var(--wpuf-fe-muted) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-account-html div:has(> p[class*="wpuf-text-[18px]"]) {
+    margin-bottom: 16px !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices div:has(> .items-table),
+.wpuf-frontend .wpuf-account-content .wpuf-invoices > div:nth-child(3) {
+    max-width: none !important;
+    overflow: hidden;
+    background: var(--wpuf-fe-surface) !important;
+    border: 1px solid var(--wpuf-fe-border) !important;
+    border-radius: var(--wpuf-fe-radius-lg) !important;
+    box-shadow: var(--wpuf-fe-shadow) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table {
+    width: 100%;
+    margin: 0;
+    border: 0;
+    border-collapse: collapse !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table thead,
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table thead tr {
+    background: var(--wpuf-fe-soft) !important;
+    border: 0 !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table th {
+    padding: 14px 16px !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--wpuf-fe-border) !important;
+    background: var(--wpuf-fe-soft) !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase;
+    color: var(--wpuf-fe-muted) !important;
+    text-align: start;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table tbody tr {
+    height: auto !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table td {
+    padding: 14px 16px !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--wpuf-fe-border) !important;
+    background: transparent;
+    font-size: var(--wpuf-fe-size);
+    color: var(--wpuf-fe-text);
+    vertical-align: middle;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table tbody tr:last-child td {
+    border-bottom: 0 !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table tbody tr:hover td {
+    background: var(--wpuf-fe-soft);
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .items-table td a:not(.wpuf-invoice-menu a) {
+    min-height: 32px;
+    padding: 6px 12px !important;
+    border-radius: var(--wpuf-fe-radius) !important;
+    font-size: 13px !important;
+    font-weight: 500;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-invoice-menu-button {
+    width: 32px;
+    height: 32px;
+    padding: 0 !important;
+    border: 0;
+    border-radius: var(--wpuf-fe-radius) !important;
+    background: transparent;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-invoice-menu-button:hover {
+    background: var(--wpuf-fe-hover) !important;
+    color: var(--wpuf-fe-text);
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-invoice-menu {
+    border-radius: var(--wpuf-fe-radius) !important;
+    border-color: var(--wpuf-fe-border) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Pagination in the kit look: small boxes, the current one filled. */
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination {
+    margin-top: 16px !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination nav {
+    justify-content: flex-start !important;
+    gap: 6px !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination nav a,
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination nav > span,
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination nav > div > a,
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination nav > div > span {
+    min-width: 32px;
+    height: 32px;
+    justify-content: center;
+    padding: 0 10px !important;
+    border: 1px solid var(--wpuf-fe-border) !important;
+    border-radius: var(--wpuf-fe-radius) !important;
+    background: var(--wpuf-fe-surface);
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: var(--wpuf-fe-text) !important;
+    text-decoration: none !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination nav a:hover {
+    background: var(--wpuf-fe-hover) !important;
+    border-color: var(--wpuf-fe-border) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination [aria-current="page"] {
+    background: var(--wpuf-fe-primary) !important;
+    border-color: var(--wpuf-fe-primary) !important;
+    color: var(--wpuf-fe-primary-text) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination .wpuf-cursor-not-allowed {
+    display: none !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-pagination svg {
+    display: none;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-invoice-menu-button:focus {
+    outline: none;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-invoices .wpuf-invoice-menu-button:focus-visible {
+    box-shadow: var(--wpuf-fe-focus);
+}
+
+/* ---- Subscription section on the account scale ---- */
+.wpuf-frontend .wpuf-account-content .wpuf-subscription-cards {
+    max-width: none !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-subscription-card,
+.wpuf-frontend .wpuf-account-content .wpuf-cancel-subscription-section {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 0 16px !important;
+    padding: 20px 24px !important;
+    background: var(--wpuf-fe-surface) !important;
+    border: 1px solid var(--wpuf-fe-border) !important;
+    border-radius: var(--wpuf-fe-radius-lg) !important;
+    box-shadow: var(--wpuf-fe-shadow) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-subscription-name {
+    margin: 0 !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: var(--wpuf-fe-text) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-subscription-next-payment,
+.wpuf-frontend .wpuf-account-content .wpuf-subscription-expire-date,
+.wpuf-frontend .wpuf-account-content .wpuf-price-period,
+.wpuf-frontend .wpuf-account-content .wpuf-cancel-text {
+    font-size: 13px !important;
+    color: var(--wpuf-fe-muted) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-subscription-price .wpuf-price {
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: var(--wpuf-fe-text) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-show-details-btn,
+.wpuf-frontend .wpuf-account-content .wpuf-show-all-btn {
+    min-height: 32px !important;
+    padding: 6px 12px !important;
+    border: 1px solid var(--wpuf-fe-border) !important;
+    border-radius: var(--wpuf-fe-radius) !important;
+    background: var(--wpuf-fe-surface) !important;
+    color: var(--wpuf-fe-text) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-show-details-btn:hover,
+.wpuf-frontend .wpuf-account-content .wpuf-show-all-btn:hover {
+    background: var(--wpuf-fe-hover) !important;
+}
+
+.wpuf-frontend .wpuf-account-content .wpuf-show-details-btn:focus,
+.wpuf-frontend .wpuf-account-content .wpuf-show-all-btn:focus {
+    outline: none;
+}
+
+/* ---- Edit Profile (profile form) and Billing Address: the Change Password look ----
+   Header + one card (App.jsx); inside it the form drops its own card and takes
+   the account form style: labels on top, kit inputs, the primary button on
+   the right, no divider. The scope carries an id-level boost
+   (`:not(#…)`): the forms sheet, the layout sheets and the registration
+   templates style these fields with !important and long class chains. */
+.wpuf-frontend .wpuf-account-form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) .wpuf-reg-form-card,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) form.wpuf-form-add.wpuf-form-add,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form > li.wpuf-el {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    margin: 0 0 20px !important;
+    padding: 0 !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form > li .wpuf-label {
+    width: auto !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: start !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form > li .wpuf-label label,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway label {
+    margin: 0 !important;
+    font-size: var(--wpuf-fe-size) !important;
+    font-weight: 600 !important;
+    color: var(--wpuf-fe-text) !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form > li .wpuf-fields {
+    width: 100% !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="file"]),
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields select,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields textarea,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway select {
+    width: 100% !important;
+    min-height: 40px !important;
+    padding: 8px 12px !important;
+    border: 1px solid var(--wpuf-fe-border) !important;
+    border-radius: var(--wpuf-fe-radius) !important;
+    background-color: var(--wpuf-fe-surface) !important;
+    color: var(--wpuf-fe-text) !important;
+    font: inherit !important;
+    font-size: var(--wpuf-fe-size) !important;
+    line-height: 1.4 !important;
+    box-shadow: none !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields select,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway select {
+    appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 16px 16px !important;
+    padding-inline-end: 36px !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields input:focus,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields select:focus,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields textarea:focus,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway input:focus,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway select:focus {
+    outline: none !important;
+    border-color: var(--wpuf-fe-primary) !important;
+    box-shadow: var(--wpuf-fe-focus) !important;
+}
+
+/* Single-line controls at the kit height (the forms sheet fixes 44px). */
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="file"]),
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form .wpuf-fields select,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway select {
+    height: 40px !important;
+}
+
+/* The action row: no divider, the button on the right. */
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form > li.wpuf-submit,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway .wpuf-border-t {
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    text-align: end !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway .wpuf-border-t {
+    margin-top: 20px !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form > li.wpuf-submit .wpuf-label {
+    display: none !important;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form li.wpuf-submit input[type="submit"],
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form li.wpuf-submit button[type="submit"],
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form li.wpuf-submit .wpuf-submit-button.wpuf-submit-button,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway button[type="submit"],
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway input[type="submit"] {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: auto !important;
+    min-height: 40px !important;
+    margin: 0 !important;
+    padding: 8px 20px !important;
+    border: 1px solid transparent !important;
+    border-radius: var(--wpuf-fe-radius) !important;
+    background: var(--wpuf-fe-primary) !important;
+    color: var(--wpuf-fe-primary-text) !important;
+    font-family: inherit !important;
+    font-size: var(--wpuf-fe-size) !important;
+    font-weight: 500 !important;
+    line-height: 1.25 !important;
+    text-transform: none !important;
+    box-shadow: none !important;
+    cursor: pointer;
+}
+
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form li.wpuf-submit input[type="submit"]:hover,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form li.wpuf-submit button[type="submit"]:hover,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) ul.wpuf-form li.wpuf-submit .wpuf-submit-button.wpuf-submit-button:hover,
+.wpuf-frontend .wpuf-account-form-card:not(#wpuf-account-form) #wpuf-payment-gateway button[type="submit"]:hover {
+    background: var(--wpuf-fe-primary-hover) !important;
+}
+
+/* Subscription section: header, then the card. */
+.wpuf-frontend .wpuf-account-subscription .wpuf-section-head {
+    margin-bottom: 16px;
+}
+
+/* Password strength (WordPress' meter): a bar and the word under the new password. */
+.wpuf-frontend .wpuf-password-strength {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: -4px 0 16px;
+    font-size: 13px;
+    color: var(--wpuf-fe-muted);
+}
+
+.wpuf-frontend .wpuf-password-strength__bar {
+    position: relative;
+    flex: 0 0 160px;
+    height: 6px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--wpuf-fe-border);
+}
+
+.wpuf-frontend .wpuf-password-strength__bar > span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 25%;
+    border-radius: inherit;
+    background: #dc2626;
+    transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+.wpuf-frontend .wpuf-password-strength.is-bad .wpuf-password-strength__bar > span {
+    width: 50%;
+    background: #f97316;
+}
+
+.wpuf-frontend .wpuf-password-strength.is-good .wpuf-password-strength__bar > span {
+    width: 75%;
+    background: #eab308;
+}
+
+.wpuf-frontend .wpuf-password-strength.is-strong .wpuf-password-strength__bar > span {
+    width: 100%;
+    background: #16a34a;
+}
+
+.wpuf-frontend .wpuf-password-strength.is-mismatch .wpuf-password-strength__bar > span {
+    width: 100%;
+    background: #9ca3af;
+}

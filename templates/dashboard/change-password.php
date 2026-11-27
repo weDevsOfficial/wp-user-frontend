@@ -191,20 +191,16 @@ wp_enqueue_script( 'password-strength-meter' );
                     $error.hide();
                     $btn.prop('disabled', true);
 
-                    $.post(
-                        wpuf_frontend.ajaxurl,
-                        $form.serialize(),
-                        function(response) {
-                            $btn.prop('disabled', false);
-                            if ( response.success ) {
-                                $success.text(response.data).show();
-                                $form.find('input[type="password"]').val('');
-                                $('#wpuf-cp-pass-strength-result').html('<?php echo esc_js( __( 'Strength indicator', 'wp-user-frontend' ) ); ?>').removeClass('short bad good strong');
-                            } else {
-                                $error.text(response.data).show();
-                            }
-                        }
-                    );
+                    // REST PUT wpuf/v1/account/password.
+                    window.wpufRest.request( wpuf_frontend.rest, 'account/password', { method: 'PUT', data: window.wpufRest.formBody( $form.serialize() ) } ).then( function( response ) {
+                        $btn.prop('disabled', false);
+                        $success.text( response.message ).show();
+                        $form.find('input[type="password"]').val('');
+                        $('#wpuf-cp-pass-strength-result').html('<?php echo esc_js( __( 'Strength indicator', 'wp-user-frontend' ) ); ?>').removeClass('short bad good strong');
+                    } ).catch( function( error ) {
+                        $btn.prop('disabled', false);
+                        $error.text( error.message ).show();
+                    } );
                 });
             });
         </script>

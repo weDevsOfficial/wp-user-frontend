@@ -15,7 +15,7 @@
       "Bash(npm install)",
       "Bash(npm ci)",
       "Bash(npx playwright:*)",
-      "Bash(grunt release)",
+      "Bash(pnpm release)",
       "Bash(grunt:*)",
       "Bash(git status)",
       "Bash(git status:*)",

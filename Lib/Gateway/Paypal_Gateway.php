@@ -74,7 +74,7 @@ class Paypal_Gateway extends Payment_Gateway {
         $this->gateway_url       = 'https://www.paypal.com/webscr/?';
         $this->test_mode         = 'test' === wpuf_get_option( 'paypal_test_mode', 'wpuf_payment' );
         $this->webhook_id        = wpuf_get_option( 'paypal_webhook_id', 'wpuf_payment' );
-        $this->settings_url      = admin_url( 'admin.php?page=wpuf-settings&tab=wpuf_payment' );
+        $this->settings_url      = admin_url( 'admin.php?page=wpuf-settings#wpuf_payment' );
         $this->setup_guide_url   = 'https://wedevs.com/docs/wp-user-frontend-pro/settings/paypal-payement-gateway/';
     }
 
@@ -96,9 +96,8 @@ class Paypal_Gateway extends Payment_Gateway {
         add_action( 'wpuf_paypal_webhook', [ $this, 'process_webhook' ] );
         add_action( 'template_redirect', [ $this, 'handle_webhook_request' ] );
 
-        // Admin hooks
-        add_action( 'admin_notices', [ $this, 'paypal_settings_update_notice' ] );
-        add_action( 'wp_ajax_wpuf_dismiss_paypal_notice', [ $this, 'dismiss_paypal_notice' ] );
+        // Admin hooks. The "PayPal Integration Enhanced" notice is no longer shown
+        // (owner request, as in Paypal.php); paypal_settings_update_notice() stays.
         add_action( 'admin_head', [ $this, 'inject_webhook_css' ] );
     }
 
@@ -236,20 +235,6 @@ class Paypal_Gateway extends Payment_Gateway {
         $legacy_paypal = isset( wpuf()->paypal ) ? wpuf()->paypal : null;
         if ( $legacy_paypal && method_exists( $legacy_paypal, 'paypal_settings_update_notice' ) ) {
             $legacy_paypal->paypal_settings_update_notice();
-        }
-    }
-
-    /**
-     * Dismiss PayPal notice
-     *
-     * @since WPUF_PRO_SINCE
-     *
-     * @return void
-     */
-    public function dismiss_paypal_notice() {
-        $legacy_paypal = isset( wpuf()->paypal ) ? wpuf()->paypal : null;
-        if ( $legacy_paypal && method_exists( $legacy_paypal, 'dismiss_paypal_notice' ) ) {
-            $legacy_paypal->dismiss_paypal_notice();
         }
     }
 

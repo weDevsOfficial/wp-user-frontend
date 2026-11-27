@@ -322,4 +322,108 @@ export class WpufApi {
         }
         console.log('\x1b[32m%s\x1b[0m', `✅ XSS payload sanitized on store (title="${storedTitle}")`);
     }
+
+    /* ------------------------- business QA rows (BS-17/18) ------------------------- */
+
+    /**
+     * BS1703: a post form made from a template picker card stores that card's key as
+     * its form_template (the EDD template stored the Events Calendar key, so its
+     * after-submit step never ran). Templates whose plugin is inactive answer 400 and
+     * are skipped. Returns the keys checked.
+     */
+    async validateTemplatesStoreTheirOwnKey(keys: string[]): Promise<string[]> {
+        const checked: string[] = [];
+
+        for (const key of keys) {
+            const created = await this.post('/admin/forms', { type: 'wpuf_forms', template: key });
+
+            if (400 === created.status()) {
+                console.log('\x1b[33m%s\x1b[0m', `- ${key}: not available on this site (plugin inactive), skipped`);
+                continue;
+            }
+
+            expect(created.ok(), `create from ${key}`).toBeTruthy();
+            const body = await created.json();
+            const id = Number(body.id || body.data?.id || body.form_id);
+            expect(id, `${key} form id`).toBeGreaterThan(0);
+
+            try {
+                const read = await this.get('/admin/forms/' + id);
+                const settings = (await read.json()).data.form_settings;
+                expect(settings.form_template, `${key} stored form_template`).toBe(key);
+            } finally {
+                // Removed even when the check fails, so reruns start clean.
+                await this.del('/admin/forms/' + id);
+            }
+
+            checked.push(key);
+        }
+
+        expect(checked.length, 'at least the free templates were checked').toBeGreaterThan(0);
+        console.log('\x1b[32m%s\x1b[0m', `✅ ${checked.length} templates store their own key`);
+
+        return checked;
+    }
+
+    /**
+     * BS1801: the account data's logout link is a plain URL (no `&amp;`), with the
+     * logout action and a nonce the browser actually sends.
+     */
+    async validateAccountLogoutUrlIsPlain() {
+        const res = await this.get('/account');
+        expect(res.status(), 'GET /account as the member').toBe(200);
+
+        const url: string = (await res.json()).profile.logout_url;
+        expect(url, 'logout_url is not HTML-escaped').not.toContain('&amp;');
+
+        const query = new URL(url).searchParams;
+        expect(query.get('action'), 'logout action').toBe('logout');
+        expect(query.get('_wpnonce'), 'logout nonce sent as _wpnonce').toBeTruthy();
+        console.log('\x1b[32m%s\x1b[0m', '✅ account logout_url is a plain URL with action + _wpnonce');
+    }
+
+    /**
+     * BS1801 (Pro): a guest registration that the server logs in (auto login after
+     * registration, approved status) answers `logged_in: true` and sets the login
+     * cookie, so the React form opens the page logged in.
+     */
+    async validateRegistrationAutoLoginAnswer(formId: number, login: string, password: string) {
+        const schema = await this.get(`/registration/${formId}/schema`, false);
+        expect(schema.status(), 'registration schema for a guest').toBe(200);
+        const nonce: string = (await schema.json()).nonces.submit;
+
+        const res = await this.post(`/registration/${formId}/submissions`, {
+            form_id: formId,
+            page_id: 0,
+            wpuf_nonce: nonce,
+            first_name: 'Auto',
+            last_name: 'Login',
+            user_login: login,
+            user_email: `${login}@example.test`,
+            pass1: password,
+            pass2: password,
+        }, false);
+
+        expect(res.status(), 'registration accepted').toBe(200);
+        const body = await res.json();
+        expect(body.logged_in, 'answer says the member is logged in').toBe(true);
+
+        const cookies = res.headersArray().filter((h) => 'set-cookie' === h.name.toLowerCase()).map((h) => h.value).join('\n');
+        expect(cookies, 'login cookie set').toMatch(/wordpress_logged_in_/);
+        console.log('\x1b[32m%s\x1b[0m', '✅ auto-login registration answers logged_in + sets the login cookie');
+    }
+
+    /**
+     * Create a registration form from a Pro template card; returns its id.
+     */
+    async createRegistrationFormFromTemplate(key: string): Promise<number> {
+        const res = await this.post('/admin/forms', { type: 'wpuf_profile', template: key });
+        expect(res.ok(), `create registration form from ${key}`).toBeTruthy();
+        const body = await res.json();
+        return Number(body.id || body.data?.id || body.form_id);
+    }
+
+    async deleteForm(id: number) {
+        await this.del('/admin/forms/' + id);
+    }
 }

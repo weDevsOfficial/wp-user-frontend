@@ -403,13 +403,13 @@ body ul.wpuf-form li label.wpuf-form-sub-label {
   border-color: var(--wpuf-l2-primary) !important;
 }
 
-/* Figma typography — Inter (falls back to system sans when not loaded). */
+/* The admin app's font (--wpuf-fe-font, loaded with the frontend runtime); system sans elsewhere. */
 .wpuf-form-add.wpuf-form-layout2,
 .wpuf-form-add.wpuf-form-layout2 input,
 .wpuf-form-add.wpuf-form-layout2 textarea,
 .wpuf-form-add.wpuf-form-layout2 select,
 .wpuf-form-add.wpuf-form-layout2 button {
-    font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--wpuf-fe-font, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
 }
 
 /* ==== Figma deep-sync (node 5527:36594) — exact navy palette & geometry ====

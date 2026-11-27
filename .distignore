@@ -15,12 +15,25 @@
 /src
 /bin
 /tests
+/tools
 /build
 /node_modules
+/assets/less
 
-# Nested build inputs for the user-directory module (keep its built output)
-modules/user-directory/src
-modules/user-directory/node_modules
+# The user-directory module's own npm project: ship its PHP and views, not its
+# build setup (its bundle is built into assets/).
+/modules/user-directory/node_modules
+/modules/user-directory/package.json
+/modules/user-directory/package-lock.json
+/modules/user-directory/webpack.config.js
+/modules/user-directory/tailwind.config.js
+
+# Local work folders that can sit in a checkout (never in git, never shipped)
+/dist
+/.playwright-mcp
+/openspec
+/qa-stories
+/RELEASE_NOTES.md
 
 # Dotfiles / dev config (root-anchored)
 /.babelrc
@@ -28,15 +41,13 @@ modules/user-directory/node_modules
 /.eslintrc
 /.eslintrc.js
 /.eslintrc.json
-/.jshintrc
 /.prettierrc
 /.gitignore
 /.gitattributes
 /.distignore
-/.svnignore
 /.nvmrc
 /.travis.yml
-/.php_cs.dist
+/.phpunit.result.cache
 /phpcs.xml
 /phpcs.xml.dist
 /phpunit.xml
@@ -46,13 +57,19 @@ modules/user-directory/node_modules
 # Build / tooling config (root-anchored)
 /Gruntfile.js
 /gruntfile.js
-/vite.config.mjs
-/vite.config.js
+/webpack.admin.config.js
+/webpack.config.js
+/webpack.wpuf-externals.js
+/webpack.frontend.config.js
 /tailwind.config.js
 /postcss.config.js
 /postcss.user-directory.config.js
+/postcss.config.admin.js
+/postcss.config.frontend.js
 /package.json
 /package-lock.json
+/pnpm-lock.yaml
+/pnpm-workspace.yaml
 /composer.json
 /composer.lock
 /appsero.json
@@ -63,10 +80,12 @@ modules/user-directory/node_modules
 /README.md
 /CHANGELOG.md
 /CLAUDE.md
-/docs.md
 /docs
 
-# Match anywhere (safe — these never appear inside required vendor paths)
+# Match anywhere (safe: none of these is needed at runtime, vendor included)
 .DS_Store
 *.zip
 *.log
+*.map
+CLAUDE.md
+AGENTS.md

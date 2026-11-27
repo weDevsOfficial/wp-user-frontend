@@ -4,6 +4,8 @@
 
 namespace WeDevs\Wpuf\Blocks;
 
+use WeDevs\Wpuf\Platform\Stores\Stores;
+
 /**
  * Post Form Gutenberg block
  *
@@ -118,7 +120,7 @@ class PostForm {
         $forms_list = [];
 
         foreach ( $post_forms as $form ) {
-            $settings     = get_post_meta( $form->ID, 'wpuf_form_settings', true );
+            $settings     = Stores::forms()->read_settings( $form->ID );
             $is_multistep = ! empty( $settings['enable_multistep'] ) && in_array( $settings['enable_multistep'], [ 'on', 'yes' ], true );
 
             $forms_list[] = [

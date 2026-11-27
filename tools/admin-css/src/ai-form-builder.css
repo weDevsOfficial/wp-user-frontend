@@ -1,0 +1,151 @@
+/**
+ * WPUF AI Form Builder screen (React): Tailwind CSS 4 entry, replaces the Vue
+ * app's src/css/ai-form-builder.css (Tailwind 3, `wpuf-` prefix).
+ *
+ * Plain Tailwind classes (no prefix, like FlyHR). Only the AI builder sources
+ * are scanned. build.mjs scopes the utilities to body.wpuf-admin-screen and
+ * adds the shared Tailwind 3 base (scoped preflight on #wpuf-ai-form-builder).
+ */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@import "./v3-theme.css";
+
+@source "../../../src/admin/apps/ai-form-builder";
+
+@theme {
+    --color-primary: #059669;
+    --color-primaryHover: #10b981;
+}
+
+/* The full-height app has no WordPress bottom padding (develop). */
+.wpuf-ai-form-builder-page #wpbody-content {
+    padding-bottom: unset !important;
+}
+
+/* Thin scrollbars on the chat and preview (develop's scoped styles). */
+.wpuf-chat-scrollable,
+.wpuf-form-scrollable {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+.wpuf-chat-scrollable:hover,
+.wpuf-form-scrollable:hover {
+    scrollbar-color: #10b981 transparent;
+}
+
+/* Preview selects: no WordPress core select arrow or sizing. */
+#wpuf-ai-form-builder .wpuf-form-select,
+#wpuf-ai-form-builder .wpuf-form-multiselect {
+    -webkit-appearance: none;
+    appearance: none;
+    background: #fff;
+    background-image: none;
+    border: 1px solid #e3e5e8;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: #374151;
+    min-height: 36px;
+    max-width: 100%;
+    box-shadow: none;
+}
+
+#wpuf-ai-form-builder .wpuf-form-select {
+    padding-right: 2.5rem;
+}
+
+#wpuf-ai-form-builder .wpuf-form-multiselect {
+    min-height: 96px;
+}
+
+#wpuf-ai-form-builder .wpuf-form-select option,
+#wpuf-ai-form-builder .wpuf-form-multiselect option {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    padding: 0.25rem 0.5rem;
+}
+
+#wpuf-ai-form-builder .wpuf-form-multiselect option:checked {
+    background-color: #10b981;
+    color: #fff;
+}
+
+/* Develop's description box (13px / 1.4) and its disabled Generate (50%):
+   the shared Textarea / Button carry plugin-ui's !important sizes. */
+#wpuf-ai-form-builder .wpuf-ai-description {
+    font-size: 14px !important;
+    line-height: 20px !important;
+}
+
+#wpuf-ai-form-builder .wpuf-ai-generate:disabled {
+    opacity: 0.5 !important;
+}
+
+/* Checkpoint restore row fades in (develop). */
+.wpuf-checkpoint-actions {
+    animation: wpuf-ai-fade-in 0.3s ease-in-out;
+}
+
+@keyframes wpuf-ai-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/*
+ * Develop's AI builder modals on the shared ConfirmDialog. The dialogs render in
+ * a body-level portal and their buttons carry plugin-ui's !important classes,
+ * so the sizes are set here, scoped to each dialog's class.
+ */
+.pui-root:has(> .wpuf-ai-regenerate-dialog) > [data-slot="alert-dialog-overlay"] {
+    background-color: rgba(0, 0, 0, 0.75) !important;
+    backdrop-filter: none !important;
+}
+
+.pui-root:has(> .wpuf-ai-pro-fields-dialog) > [data-slot="alert-dialog-overlay"],
+.pui-root:has(> .wpuf-ai-pro-warning-dialog) > [data-slot="alert-dialog-overlay"] {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: none !important;
+}
+
+.wpuf-ai-regenerate-dialog,
+.wpuf-ai-pro-fields-dialog {
+    border-radius: 10px !important;
+}
+
+.wpuf-ai-regenerate-dialog {
+    min-height: 360px;
+    justify-content: center;
+}
+
+.wpuf-ai-regenerate-dialog [data-slot="alert-dialog-action"],
+.wpuf-ai-regenerate-dialog [data-slot="alert-dialog-cancel"] {
+    min-width: 160px !important;
+    height: 40px !important;
+    margin: 0 6px !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+}
+
+.wpuf-ai-pro-fields-dialog [data-slot="alert-dialog-action"],
+.wpuf-ai-pro-fields-dialog [data-slot="alert-dialog-cancel"] {
+    height: 40px !important;
+    margin: 0 6px !important;
+    padding: 0 20px !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+}
+
+/* The button row follows the field list directly (develop). */
+.wpuf-ai-pro-fields-dialog > :last-child {
+    margin-top: 0 !important;
+}

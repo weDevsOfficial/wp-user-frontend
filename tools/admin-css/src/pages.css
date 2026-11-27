@@ -1,0 +1,72 @@
+/**
+ * WPUF Help, Tools, Transactions (and the free coupon promo) screens of the
+ * admin app: Tailwind CSS 4 entry. build.mjs scopes the utilities to
+ * body.wpuf-admin-screen and adds the settings screen's Tailwind 3 base and
+ * the plugin-ui part.
+ */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@import "./v3-theme.css";
+
+@source "../../../src/admin/apps/help";
+@source "../../../src/admin/apps/tools";
+@source "../../../src/admin/apps/transactions";
+@source "../../../src/admin/apps/coupons-promo";
+@source "../../../src/admin/apps/modules-preview";
+/* Route container classes (app_routes containerClass). */
+@source inline("px-[20px]");
+
+@theme {
+    --color-primary: #059669;
+    --color-primaryHover: #10b981;
+}
+
+/* Links of these screens: no WordPress underline. */
+:where(#wpuf-help-root, #wpuf-tools-root, #wpuf-transactions-root, #wpuf-coupons-root) a {
+    text-decoration: none;
+}
+
+/* Topic bodies (Help): HTML from the shared partials. */
+.wpuf-help-body p {
+    margin: 0 0 12px;
+}
+
+.wpuf-help-body ol,
+.wpuf-help-body ul {
+    margin: 0 0 12px;
+    padding-left: 20px;
+}
+
+.wpuf-help-body ol {
+    list-style: decimal;
+}
+
+.wpuf-help-body ul {
+    list-style: disc;
+}
+
+.wpuf-help-body li {
+    margin: 0 0 6px;
+}
+
+.wpuf-help-body a {
+    color: #059669;
+    font-weight: 500;
+}
+
+.wpuf-help-body a:hover {
+    text-decoration: underline;
+}
+
+.wpuf-help-body code {
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: #f3f4f6;
+    color: #047857;
+    font-size: 12px;
+}
+
+.wpuf-help-body img {
+    max-width: 100%;
+    height: auto;
+}

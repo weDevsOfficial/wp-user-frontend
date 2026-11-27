@@ -29,7 +29,7 @@ class Form_Preview {
     private $form_id;
 
     /**
-     * is_preview
+     * Whether this is a preview
      *
      * @var string
      */
@@ -48,7 +48,6 @@ class Form_Preview {
         // Security: Validate and sanitize form_id parameter
         $this->form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
         add_action( 'pre_get_posts', [ $this, 'pre_get_posts' ] );
-        // add_filter( 'template_include', [ $this, 'template_include' ] );
         add_filter( 'the_title', [ $this, 'the_title' ] );
         add_filter( 'the_content', [ $this, 'the_content' ] );
         add_filter( 'get_the_excerpt', [ $this, 'the_content' ] );
@@ -109,14 +108,5 @@ class Form_Preview {
         if ( $query->is_main_query() ) {
             $query->set( 'posts_per_page', 1 );
         }
-    }
-
-    /**
-     * Limit the page templates to singular pages only
-     *
-     * @return string
-     */
-    public function template_include() {
-        return locate_template( [ 'page.php', 'single.php', 'index.php' ] );
     }
 }

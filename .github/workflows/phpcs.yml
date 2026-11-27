@@ -29,11 +29,16 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-suggest --no-progress
 
+      # Every page of the PR file list (the API returns 30 per page by default),
+      # PHP files only, and never removed files: phpcs stops on a missing path.
       - id: changes
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
-          FILES=$(curl -s -X GET -G $URL | jq -r '.[] | .filename' | xargs)
-          echo "files=$FILES" >> $GITHUB_OUTPUT
+          gh api --paginate "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files?per_page=100" \
+            --jq '.[] | select(.status != "removed") | .filename | select(endswith(".php"))' > changed-php.txt
+          echo "count=$(grep -c . changed-php.txt || true)" >> $GITHUB_OUTPUT
 
       - name: Detect coding standard violations
-        run: vendor/bin/phpcs ${{ steps.changes.outputs.files }} -q --report=checkstyle | cs2pr --graceful-warnings
+        if: steps.changes.outputs.count != '0'
+        run: vendor/bin/phpcs --file-list=changed-php.txt -q --report=checkstyle | cs2pr --graceful-warnings

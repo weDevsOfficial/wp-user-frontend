@@ -1,0 +1,174 @@
+/**
+ * WPUF React Settings screen: Tailwind CSS 4 entry (replaces the Tailwind 3
+ * src/css/settings.css + tailwind.settings.config.js build).
+ *
+ * Plain Tailwind classes (no prefix, like FlyHR). Only the settings sources
+ * are scanned. build.mjs scopes the utilities to body.wpuf-admin-screen and
+ * adds the Tailwind 3 base of this screen (src/base-v3/settings.css: scoped
+ * preflight + @tailwindcss/forms `base` rules).
+ */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@import "./v3-theme.css";
+/* The TipTap rich editor of the rich text settings (shared/ui/RichEditor.jsx). */
+@import "../../../src/frontend/kit/fields/editor/editor.css";
+
+@source "../../../src/admin/shared/ui/RichEditor.jsx";
+@source "../../../src/admin/apps/settings";
+@source "../../../includes/Admin/Screens/Settings.php";
+
+/* Words in these sources that read as Tailwind classes but never had CSS in
+   the Tailwind 3 build (unprefixed there, or not classes at all, e.g.
+   type="hidden"). Kept out so the screen looks exactly as before. */
+@source not inline("!leading-6");
+@source not inline("container");
+@source not inline("filter");
+@source not inline("focus-visible:outline");
+@source not inline("focus-visible:outline-2");
+@source not inline("focus-visible:outline-offset-2");
+@source not inline("hidden");
+@source not inline("inline");
+@source not inline("inline-block");
+@source not inline("resize");
+@source not inline("ring");
+@source not inline("rounded");
+@source not inline("static");
+@source not inline("table");
+@source not inline("visible");
+
+@theme {
+    --color-primary: #059669;
+    --color-primaryHover: #10b981;
+}
+
+/* Hide the WordPress admin footer on the settings page (this stylesheet is only
+   enqueued here). The footer text is emptied server-side; this removes the
+   leftover empty bar. */
+#wpfooter {
+    display: none !important;
+}
+
+/* Hide the native number-input spinner arrows on the tax-rate field so the
+   trailing "%" suffix doesn't collide with them. */
+#wpuf-settings-root .wpuf-no-spinner::-webkit-inner-spin-button,
+#wpuf-settings-root .wpuf-no-spinner::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#wpuf-settings-root .wpuf-no-spinner {
+    -moz-appearance: textfield;
+}
+
+/* Dynamic merge-tag hints under email bodies / long help: render the legacy
+   `<code>{tag}</code>` markers as readable pills, kept on a single line
+   ("You may use: …" + all tags) with horizontal scroll on overflow. */
+#wpuf-settings-root .wpuf-long-help {
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+#wpuf-settings-root .wpuf-long-help code {
+    display: inline-block;
+    margin: 2px 3px 2px 0;
+    padding: 1px 7px;
+    font-size: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: #047857;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 4px;
+}
+
+#wpuf-settings-root .wpuf-long-help a {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+/* Headings use the app font (Plus Jakarta Sans, src/pui.css); size, weight and
+   leading are set per heading via Tailwind. */
+#wpuf-settings-root h1,
+#wpuf-settings-root h2,
+#wpuf-settings-root h3,
+#wpuf-settings-root h4 {
+    font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Suppress the WordPress-admin blue focus ring (`box-shadow: 0 0 0 1px #2271b1`
+   from wp-admin/css/forms.css) and the native browser outline on every input
+   inside the React app. Tailwind's `focus:ring-*` utilities cannot override it
+   because the blue glow is WP's box-shadow, not a Tailwind ring. Replace it with
+   a subtle indigo border that matches the app accent. */
+#wpuf-settings-root input:focus,
+#wpuf-settings-root input[type="text"]:focus,
+#wpuf-settings-root input[type="search"]:focus,
+#wpuf-settings-root input[type="email"]:focus,
+#wpuf-settings-root input[type="url"]:focus,
+#wpuf-settings-root input[type="number"]:focus,
+#wpuf-settings-root input[type="password"]:focus,
+#wpuf-settings-root textarea:focus,
+#wpuf-settings-root select:focus {
+    border-color: #d1d5db !important;
+    box-shadow: none !important;
+    outline: 2px solid transparent !important;
+    outline-offset: 0 !important;
+}
+
+/* Exception: the in-dropdown search box mirrors the User Directory module's
+   MultiSelect search — a clean 2px blue ring (Tailwind `ring-2 ring-blue-500`)
+   instead of the muted resting border. Needs to out-specify the blanket rule
+   above, hence the `#wpuf-settings-root` prefix + `!important`. */
+#wpuf-settings-root input.wpuf-ms-search:focus {
+    border-color: transparent !important;
+    box-shadow: 0 0 0 2px #3b82f6 !important;
+    outline: 2px solid transparent !important;
+}
+
+/* Tooltip styles — DaisyUI's .tooltip doesn't work with the wpuf- prefix, so we
+   define .wpuf-tooltip manually (data-tip + ::before). Ported from the
+   subscriptions React page so help icons behave identically. */
+.wpuf-tooltip {
+    position: relative;
+    display: inline-flex;
+}
+
+.wpuf-tooltip[data-tip]::before {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: normal;
+    max-width: 20rem;
+    width: max-content;
+    padding: 0.375rem 0.625rem;
+    font-size: 0.75rem;
+    line-height: 1.25;
+    border-radius: 0.375rem;
+    background-color: #374151;
+    color: #f9fafb;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 50;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.wpuf-tooltip[data-tip]::after {
+    content: "";
+    position: absolute;
+    bottom: calc(100% + 0.125rem);
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 0.375rem;
+    border-style: solid;
+    border-color: #374151 transparent transparent transparent;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 50;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.wpuf-tooltip[data-tip]:hover::before,
+.wpuf-tooltip[data-tip]:hover::after {
+    opacity: 1;
+}

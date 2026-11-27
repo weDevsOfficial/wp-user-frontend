@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf\Frontend;
 
+use WeDevs\Wpuf\Frontend\Dashboard\Dashboard_Service;
 use WP_Query;
 
 /**
@@ -37,6 +38,11 @@ class Frontend_Dashboard {
             ], $atts
         );
         $attributes = array_merge( $attributes, $atts );
+
+        if ( is_user_logged_in() && $this->renderer()->mounts( 'dashboard' ) && ! $this->dashboard()->classic_only() ) {
+            return $this->mount_dashboard( $attributes );
+        }
+
         ob_start();
         if ( is_user_logged_in() ) {
             $this->post_listing( $attributes );
@@ -159,9 +165,13 @@ class Frontend_Dashboard {
                     <div class="wpuf-user-image"><?php echo get_avatar( $userdata->user_email, 80 ); ?></div>
                     <div class="wpuf-author-body">
                         <?php /* translators: %s: user display name */ ?>
-                        <p class="wpuf-user-name"><a href="<?php echo esc_url(
-                                get_author_posts_url( esc_attr( $userdata->ID ) )
-                            ); ?>"><?php printf( '%s', esc_attr( $userdata->display_name ) ); ?></a></p>
+                        <p class="wpuf-user-name"><a href="
+                        <?php
+                        echo esc_url(
+                            get_author_posts_url( esc_attr( $userdata->ID ) )
+                        );
+						?>
+                            "><?php printf( '%s', esc_attr( $userdata->display_name ) ); ?></a></p>
                         <p class="wpuf-author-info"><?php echo esc_html( $userdata->description ); ?></p>
                     </div>
                 </div>
@@ -182,9 +192,17 @@ class Frontend_Dashboard {
         if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_del' ) ) {
             return;
         }
+        // The list hides Delete when deleting is turned off; the link obeys the same setting.
+        if ( 'yes' !== wpuf_get_option( 'enable_post_del', 'wpuf_dashboard', 'yes' ) ) {
+            echo wp_kses_post( '<div class="error">' . __( 'Deleting posts is turned off.', 'wp-user-frontend' ) . '</div>' );
+
+            return;
+        }
         //check, if the requested user is the post author
         $maybe_delete = get_post( $pid );
-        if ( ( $maybe_delete->post_author == $userdata->ID ) || current_user_can( 'delete_others_pages' ) ) {
+        $is_author    = $maybe_delete instanceof \WP_Post && (int) $maybe_delete->post_author === (int) $userdata->ID;
+
+        if ( $is_author || current_user_can( 'delete_others_pages' ) ) {
             wp_trash_post( $pid );
             //redirect
             $redirect = add_query_arg( [ 'msg' => 'deleted' ], get_permalink() );
@@ -198,5 +216,84 @@ class Frontend_Dashboard {
                 ) . '</div>'
             );
         }
+    }
+
+    /**
+     * The markup the React dashboard mounts into: the first page of the list
+     * (with `?status=`, `?q=`, `?type=` filters) and the overview blocks as boot
+     * data (no request on load), the signed attributes the app sends
+     * back for other pages and deletes, and a skeleton of the list.
+     *
+     * A Delete link of the classic list (`?action=del`, bookmarked or from an
+     * old page) is still handled first, with the same rules.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $attributes Shortcode attributes
+     *
+     * @return string
+     */
+    protected function mount_dashboard( array $attributes ) {
+        $action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- delete_post() verifies its nonce.
+
+        ob_start();
+
+        if ( 'del' === $action ) {
+            $this->delete_post();
+        }
+
+        // delete_post() redirects when it deletes, so anything it printed is a refusal.
+        $refusal = ob_get_clean();
+        $service = $this->dashboard();
+        $atts    = $service->attributes( $attributes );
+        $pagenum = isset( $_GET['pagenum'] ) ? absint( wp_unslash( $_GET['pagenum'] ) ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $boot    = array_merge(
+            [
+                'id'       => get_current_user_id(),
+                'initial'  => $service->page(
+                    $atts,
+                    max( 1, $pagenum ),
+                    [
+                        'status' => isset( $_GET['status'] ) ? sanitize_key( wp_unslash( $_GET['status'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                        'search' => isset( $_GET['q'] ) ? sanitize_text_field( wp_unslash( $_GET['q'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                        'type'   => isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    ]
+                ),
+                'overview' => wpuf()->platform()->get( Dashboard\Dashboard_Overview::class )->build( $atts ),
+                // The classic `?msg=deleted` notice after a classic Delete link.
+                'deleted'  => isset( $_GET['msg'] ) && 'deleted' === sanitize_key( wp_unslash( $_GET['msg'] ) ), // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                'error'    => trim( wp_strip_all_tags( $refusal ) ),
+            ],
+            $service->sign( $atts )
+        );
+
+        $skeleton = '<div class="wpuf-dashboard wpuf-dashboard-boot" aria-busy="true"><span class="wpuf-skeleton wpuf-skeleton-label"></span><span class="wpuf-skeleton wpuf-skeleton-card"></span></div>';
+
+        /** This filter is documented in includes/Frontend/Frontend_Account.php */
+        $align_wide = ! $service->list_only( $atts ) && (bool) apply_filters( 'wpuf_account_align_wide', function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() );
+
+        return $this->renderer()->markup( 'dashboard', $boot, $skeleton, 'wpuf-dashboard-root' . ( $align_wide ? ' alignwide' : '' ) );
+    }
+
+    /**
+     * The React app renderer.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return Renderer
+     */
+    protected function renderer() {
+        return wpuf()->platform()->get( Renderer::class );
+    }
+
+    /**
+     * The dashboard list data and actions.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return Dashboard_Service
+     */
+    protected function dashboard() {
+        return wpuf()->platform()->get( Dashboard_Service::class );
     }
 }

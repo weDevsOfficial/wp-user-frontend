@@ -19,7 +19,8 @@ let newRegFormPage: string = "Reg Here";
 
 test.beforeAll(async () => {
     // Launch browser
-    browser = await chromium.launch();
+    // HEADED=1 shows the browser (this spec launches its own).
+    browser = await chromium.launch({ headless: ! process.env.HEADED });
 
     // Create a single context
     context = await browser.newContext();
@@ -37,7 +38,7 @@ test.describe('Reg Form Settings Tests', () => {
      *
      * @TestScenario : [Registration Form Settings]
      * @Test_RFS0001 : Admin is setting newly registered user role to administrator
-     * @Test_RFS0002 : Admin is validating newly registered user role to administrator
+     * @Test_RFS0002 : An administrator role on the form registers the member with the default role
      * @Test_RFS0003 : Admin is setting newly registered user role to editor
      * @Test_RFS0004 : Admin is validating newly registered user role to editor
      * @Test_RFS0005 : Admin is setting newly registered user role to author
@@ -110,11 +111,13 @@ test.describe('Reg Form Settings Tests', () => {
         await regFormSettings.settingNewlyRegisteredUserRole(formName, 'administrator');
     });
 
-    test('RFS0002 : Admin is validating newly registered user role to administrator', { tag: ['@Pro'] }, async () => {
+    test('RFS0002 : An administrator role on the form registers the member with the default role', { tag: ['@Pro'] }, async () => {
         userEmail = faker.internet.email();
         userPassword = userEmail;
         const regFormSettings = new RegFormSettingsPage(page);
-        await regFormSettings.validateNewlyRegisteredUserRole(userEmail, userPassword, 'administrator');
+        // A registration form never hands out administrator (wpuf_is_role_allowed_for_registration):
+        // the member gets the site's default role.
+        await regFormSettings.validateNewlyRegisteredUserRole(userEmail, userPassword, 'subscriber');
     });
 
     test('RFS0003 : Admin is setting newly registered user role to editor', { tag: ['@Pro'] }, async () => {

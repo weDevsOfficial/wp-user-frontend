@@ -1,0 +1,1810 @@
+{
+  "post_type": "wpuf_forms",
+  "post_status": "publish",
+  "post_title": "Parity All Fields",
+  "meta": {
+    "integrations": [],
+    "notifications": [],
+    "wpuf_form_settings": {
+      "show_form_title": "off",
+      "form_description": "",
+      "post_type": "post",
+      "redirect_to": "post",
+      "message": "Post saved",
+      "page_id": "",
+      "url": "",
+      "post_status": "publish",
+      "draft_post": "off",
+      "submit_text": "Submit",
+      "form_template": "",
+      "enable_multistep": "off",
+      "multistep_progressbar_type": "progressive",
+      "ms_ac_txt_color": "#000000",
+      "ms_active_bgcolor": "#00a0d2",
+      "ms_bgcolor": "#e4e4e4",
+      "edit_post_status": "publish",
+      "edit_redirect_to": "same",
+      "update_message": "Post updated successfully",
+      "edit_page_id": "",
+      "edit_url": "",
+      "lock_edit_post": "",
+      "update_text": "Update",
+      "post_permission": "everyone",
+      "name_label": "Name",
+      "email_label": "Email",
+      "message_restrict": "This page is restricted. Please {login} / {register} to view this page.",
+      "view_control_role_enabled": "off",
+      "view_control_role_message": "This post is restricted. Please {login}/{register} to view this post.",
+      "view_control_subscription_enabled": "off",
+      "view_control_subscription_message": "You need to have one of the {subscriptions} to view this post. Have not subscribed yet? Please {login}/{register} to subscribe.",
+      "payment_options": "off",
+      "choose_payment_option": "force_pack_purchase",
+      "fallback_ppp_cost": "",
+      "pay_per_post_cost": "",
+      "ppp_payment_success_page": "",
+      "enable_pricing_payment": "off",
+      "notification": {
+        "new": "on",
+        "new_to": "admin@example.com",
+        "new_subject": "New post created",
+        "new_body": "Hi Admin, \r\n\r\nA new post has been created in your site {sitename} ({siteurl}). \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}"
+      },
+      "notification_edit": "off",
+      "notification_edit_to": "admin@example.com",
+      "notification_edit_subject": "A post has been edited",
+      "notification_edit_body": "Hi Admin, \r\n\r\nThe post \"{post_title}\" has been updated. \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
+      "use_theme_css": "off",
+      "label_position": "above",
+      "comment_status": "open",
+      "schedule_form": "off",
+      "schedule_start": "",
+      "schedule_end": "",
+      "form_pending_message": "",
+      "form_expired_message": "",
+      "limit_entries": "off",
+      "limit_number": "100",
+      "limit_message": "",
+      "submit_button_cond": {
+        "condition_status": "no",
+        "cond_logic": "any",
+        "conditions": [
+          {
+            "name": "",
+            "operator": "=",
+            "option": "",
+            "input_type": ""
+          }
+        ]
+      },
+      "expiration_settings": {
+        "enable_post_expiration": "on",
+        "expiration_time_value": "7",
+        "expiration_time_type": "day",
+        "expired_post_status": "draft",
+        "post_expiration_message": ""
+      },
+      "enable_n8n": "off",
+      "n8n_webhook_url": "",
+      "ai_review_enabled": "off",
+      "ai_review_prompt": "",
+      "sms_enable": "off",
+      "mob_number": "",
+      "sms_sender_name": "",
+      "sms_body": ""
+    },
+    "wpuf_form_version": "4.3.13"
+  },
+  "fields": [
+    {
+      "menu_order": 0,
+      "post_status": "publish",
+      "post_content": {
+        "template": "post_title",
+        "name": "post_title",
+        "label": "Post Title",
+        "required": "yes",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "no",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "text",
+        "restriction_type": "character",
+        "restriction_to": "max",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 1,
+      "post_status": "publish",
+      "post_content": {
+        "template": "post_content",
+        "name": "post_content",
+        "label": "Post Content",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "no",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "textarea",
+        "rows": 5,
+        "cols": 25,
+        "rich": "yes",
+        "restriction_type": "character",
+        "restriction_to": "max",
+        "text_editor_control": [],
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 2,
+      "post_status": "publish",
+      "post_content": {
+        "template": "post_excerpt",
+        "name": "post_excerpt",
+        "label": "Post Excerpt",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "no",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "textarea",
+        "rows": 5,
+        "cols": 25,
+        "rich": "no",
+        "restriction_type": "character",
+        "restriction_to": "max",
+        "text_editor_control": [],
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 3,
+      "post_status": "publish",
+      "post_content": {
+        "template": "featured_image",
+        "name": "featured_image",
+        "label": "Featured Image",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "no",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "image_upload",
+        "max_size": "1024",
+        "button_label": "Featured Image",
+        "count": "1",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 4,
+      "post_status": "publish",
+      "post_content": {
+        "template": "taxonomy",
+        "name": "category",
+        "label": "Category",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "no",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "taxonomy",
+        "type": "select",
+        "first": "- Select -",
+        "show_inline": "inline",
+        "orderby": "name",
+        "order": "ASC",
+        "exclude": [],
+        "restriction_type": "character",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 5,
+      "post_status": "publish",
+      "post_content": {
+        "template": "post_tags",
+        "name": "tags",
+        "label": "Tags",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "no",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "text",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 6,
+      "post_status": "publish",
+      "post_content": {
+        "template": "text_field",
+        "name": "text",
+        "label": "Text",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "text",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "restriction_type": "character",
+        "restriction_to": "max",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 7,
+      "post_status": "publish",
+      "post_content": {
+        "template": "textarea_field",
+        "name": "textarea",
+        "label": "Textarea",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "textarea",
+        "rows": 5,
+        "cols": 25,
+        "rich": "no",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "restriction_type": "character",
+        "restriction_to": "max",
+        "text_editor_control": [],
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 8,
+      "post_status": "publish",
+      "post_content": {
+        "template": "dropdown_field",
+        "name": "dropdown",
+        "label": "Dropdown",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "select",
+        "options": {
+          "Option": "Option"
+        },
+        "first": "- Select -",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int",
+        "selected": ""
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 9,
+      "post_status": "publish",
+      "post_content": {
+        "template": "multiple_select",
+        "name": "multi_select",
+        "label": "Multi Select",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "multiselect",
+        "selected": [],
+        "options": {
+          "Option": "Option"
+        },
+        "first": "- Select -",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 10,
+      "post_status": "publish",
+      "post_content": {
+        "template": "radio_field",
+        "name": "radio",
+        "label": "Radio",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "radio",
+        "selected": "",
+        "inline": "no",
+        "options": {
+          "Option": "Option"
+        },
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 11,
+      "post_status": "publish",
+      "post_content": {
+        "template": "checkbox_field",
+        "name": "checkbox",
+        "label": "Checkbox",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "checkbox",
+        "selected": [],
+        "inline": "no",
+        "options": {
+          "Option": "Option"
+        },
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 12,
+      "post_status": "publish",
+      "post_content": {
+        "template": "website_url",
+        "name": "website_url",
+        "label": "Website URL",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "url",
+        "open_window": "same",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 13,
+      "post_status": "publish",
+      "post_content": {
+        "template": "email_address",
+        "name": "email_address",
+        "label": "Email Address",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "email",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 14,
+      "post_status": "publish",
+      "post_content": {
+        "template": "custom_hidden_field",
+        "name": "hidden_field",
+        "label": "Hidden Field",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": null,
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "hidden",
+        "meta_value": "",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 15,
+      "post_status": "publish",
+      "post_content": {
+        "template": "image_upload",
+        "name": "image_upload",
+        "label": "Image Upload",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "image_upload",
+        "max_size": "1024",
+        "count": "1",
+        "button_label": "Select Image",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 16,
+      "post_status": "publish",
+      "post_content": {
+        "template": "repeat_field",
+        "name": "repeat_field",
+        "label": "Repeat Field",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": "40",
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "repeat",
+        "show_in_post": "yes",
+        "repeat_display": "blocks",
+        "hide_field_label": "no",
+        "max_repeats": -1,
+        "inner_fields": [],
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int",
+        "multiple": ""
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 17,
+      "post_status": "publish",
+      "post_content": {
+        "template": "date_field",
+        "name": "date___time",
+        "label": "Date / Time",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "date",
+        "format": "dd/mm/yy",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 18,
+      "post_status": "publish",
+      "post_content": {
+        "template": "time_field",
+        "name": "time_field",
+        "label": "Time Field",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "time",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "first_option": "- Select -",
+        "time_format": "g:i a",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 19,
+      "post_status": "publish",
+      "post_content": {
+        "template": "file_upload",
+        "name": "file_upload",
+        "label": "File Upload",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "file_upload",
+        "max_size": "1024",
+        "count": "1",
+        "extension": [
+          "images",
+          "audio",
+          "video",
+          "pdf",
+          "office",
+          "zip",
+          "csv"
+        ],
+        "playable_audio_video": "no",
+        "preview_width": "123",
+        "preview_height": "456",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 20,
+      "post_status": "publish",
+      "post_content": {
+        "template": "country_list_field",
+        "name": "country_list",
+        "label": "Country List",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "country_list",
+        "country_list": {
+          "name": "",
+          "country_list_visibility_opt_name": "all",
+          "country_select_show_list": [],
+          "country_select_hide_list": []
+        },
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 21,
+      "post_status": "publish",
+      "post_content": {
+        "template": "numeric_text_field",
+        "name": "numeric_field",
+        "label": "Numeric Field",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "numeric_text",
+        "step_text_field": "0",
+        "min_value_field": "0",
+        "max_value_field": "0",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 22,
+      "post_status": "publish",
+      "post_content": {
+        "template": "phone_field",
+        "name": "phone_field",
+        "label": "Phone Field",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "show_country_list": "yes",
+        "auto_placeholder": "yes",
+        "input_type": "country_list",
+        "country_list": {
+          "name": "",
+          "country_list_visibility_opt_name": "all",
+          "country_select_show_list": [],
+          "country_select_hide_list": []
+        },
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 23,
+      "post_status": "publish",
+      "post_content": {
+        "template": "address_field",
+        "name": "address_field",
+        "label": "Address Field",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "address",
+        "address_desc": "",
+        "address": {
+          "street_address": {
+            "checked": "checked",
+            "type": "text",
+            "required": "checked",
+            "label": "Address Line 1",
+            "value": "",
+            "placeholder": ""
+          },
+          "street_address2": {
+            "checked": "checked",
+            "type": "text",
+            "required": "",
+            "label": "Address Line 2",
+            "value": "",
+            "placeholder": ""
+          },
+          "city_name": {
+            "checked": "checked",
+            "type": "text",
+            "required": "checked",
+            "label": "City",
+            "value": "",
+            "placeholder": ""
+          },
+          "zip": {
+            "checked": "checked",
+            "type": "text",
+            "required": "checked",
+            "label": "Zip Code",
+            "value": "",
+            "placeholder": ""
+          },
+          "country_select": {
+            "checked": "checked",
+            "type": "select",
+            "required": "checked",
+            "label": "Country",
+            "value": "",
+            "country_list_visibility_opt_name": "all",
+            "country_select_hide_list": [],
+            "country_select_show_list": []
+          },
+          "state": {
+            "checked": "checked",
+            "type": "select",
+            "required": "checked",
+            "label": "State",
+            "value": "",
+            "placeholder": ""
+          }
+        },
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 24,
+      "post_status": "publish",
+      "post_content": {
+        "input_type": "step_start",
+        "is_meta": "no",
+        "template": "step_start",
+        "label": "Step Start",
+        "step_start": {
+          "prev_button_text": "Previous",
+          "next_button_text": "Next"
+        },
+        "name": "step_start",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 25,
+      "post_status": "publish",
+      "post_content": {
+        "template": "embed",
+        "name": "embed",
+        "label": "Embed",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "url",
+        "preview_width": "800",
+        "preview_height": "600",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 26,
+      "post_status": "publish",
+      "post_content": {
+        "template": "price_field",
+        "name": "price",
+        "label": "Price",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "Enter amount",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "price_field",
+        "price_input_mode": "user_input",
+        "price_hidden": "no",
+        "price_min": "0",
+        "price_max": "",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 27,
+      "post_status": "publish",
+      "post_content": {
+        "template": "pricing_checkbox",
+        "name": "wpuf_pricing_checkbox",
+        "label": "Pricing Checkbox",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "pricing_checkbox",
+        "selected": [],
+        "inline": "no",
+        "show_price_label": "yes",
+        "enable_quantity": "no",
+        "options": {
+          "first_item": "First Item",
+          "second_item": "Second Item",
+          "third_item": "Third Item"
+        },
+        "prices": {
+          "first_item": "10",
+          "second_item": "25",
+          "third_item": "50"
+        },
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 28,
+      "post_status": "publish",
+      "post_content": {
+        "template": "pricing_radio",
+        "name": "wpuf_pricing_radio",
+        "label": "Pricing Radio",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "pricing_radio",
+        "selected": "",
+        "inline": "no",
+        "show_price_label": "yes",
+        "enable_quantity": "no",
+        "options": {
+          "first_item": "First Item",
+          "second_item": "Second Item",
+          "third_item": "Third Item"
+        },
+        "prices": {
+          "first_item": "10",
+          "second_item": "25",
+          "third_item": "50"
+        },
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 29,
+      "post_status": "publish",
+      "post_content": {
+        "template": "pricing_dropdown",
+        "name": "wpuf_pricing_dropdown",
+        "label": "Pricing Dropdown",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "pricing_dropdown",
+        "enable_quantity": "no",
+        "options": {
+          "first_item": "First Item",
+          "second_item": "Second Item",
+          "third_item": "Third Item"
+        },
+        "prices": {
+          "first_item": "10",
+          "second_item": "25",
+          "third_item": "50"
+        },
+        "first": "- Select -",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 30,
+      "post_status": "publish",
+      "post_content": {
+        "template": "pricing_multiselect",
+        "name": "wpuf_pricing_multiselect",
+        "label": "Pricing Multi-Select",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "pricing_multiselect",
+        "enable_quantity": "no",
+        "selected": [],
+        "options": {
+          "first_item": "First Item",
+          "second_item": "Second Item",
+          "third_item": "Third Item"
+        },
+        "prices": {
+          "first_item": "10",
+          "second_item": "25",
+          "third_item": "50"
+        },
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 31,
+      "post_status": "publish",
+      "post_content": {
+        "template": "cart_total",
+        "name": "total",
+        "label": "Total",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "cart_total",
+        "show_summary": "yes",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 32,
+      "post_status": "publish",
+      "post_content": {
+        "input_type": "column_field",
+        "template": "column_field",
+        "is_meta": "no",
+        "columns": 3,
+        "min_column": 1,
+        "max_column": 3,
+        "column_space": "5",
+        "inner_fields": {
+          "column-1": [],
+          "column-2": [],
+          "column-3": []
+        },
+        "inner_columns_size": {
+          "column-1": "33.33%",
+          "column-2": "33.33%",
+          "column-3": "33.33%"
+        },
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 33,
+      "post_status": "publish",
+      "post_content": {
+        "input_type": "section_break",
+        "template": "section_break",
+        "label": "Section Break",
+        "description": "Some description about this section",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "wpuf_cond": null,
+        "divider": "regular",
+        "name": "section_break",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 34,
+      "post_status": "publish",
+      "post_content": {
+        "input_type": "html",
+        "template": "custom_html",
+        "label": "Custom HTML",
+        "html": "HTML Section",
+        "wpuf_cond": null,
+        "name": "custom_html",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 35,
+      "post_status": "publish",
+      "post_content": {
+        "template": "qr_code",
+        "name": "qr_code",
+        "label": "QR Code",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "qr_code",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "qr_type": [
+          "url",
+          "text"
+        ],
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 36,
+      "post_status": "publish",
+      "post_content": {
+        "input_type": "shortcode",
+        "template": "shortcode",
+        "label": "Shortcode",
+        "shortcode": "[your_shortcode]",
+        "is_meta": "yes",
+        "wpuf_cond": null,
+        "hide_field_label": "no",
+        "name": "shortcode",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 37,
+      "post_status": "publish",
+      "post_content": {
+        "input_type": "action_hook",
+        "template": "action_hook",
+        "label": "YOUR_CUSTOM_HOOK_NAME",
+        "is_meta": "yes",
+        "name": "your_custom_hook_name",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 38,
+      "post_status": "publish",
+      "post_content": {
+        "input_type": "toc",
+        "template": "toc",
+        "label": "",
+        "name": "terms_and_conditions",
+        "is_meta": "yes",
+        "description": "I have read and agree to the <a href=\"#\">Terms and Conditions</a> and <a href=\"#\">Privacy Policy</a>",
+        "show_checkbox": true,
+        "css": "",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "wpuf_cond": "",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 39,
+      "post_status": "publish",
+      "post_content": {
+        "template": "ratings",
+        "name": "ratings",
+        "label": "Ratings",
+        "required": "no",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "yes",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "ratings",
+        "selected": [],
+        "options": {
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5"
+        },
+        "inline": "no",
+        "show_in_post": "yes",
+        "hide_field_label": "no",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    },
+    {
+      "menu_order": 40,
+      "post_status": "publish",
+      "post_content": {
+        "template": "math_captcha",
+        "name": "math_captcha",
+        "label": "Math Captcha",
+        "required": "yes",
+        "width": "large",
+        "css": "",
+        "placeholder": "",
+        "default": "",
+        "size": 40,
+        "help": "",
+        "is_meta": "no",
+        "wpuf_cond": {
+          "condition_status": "no",
+          "cond_field": [],
+          "cond_operator": [
+            "="
+          ],
+          "cond_option": [
+            "- Select -"
+          ],
+          "cond_logic": "all"
+        },
+        "wpuf_visibility": {
+          "selected": "everyone",
+          "choices": []
+        },
+        "input_type": "text",
+        "show_icon": "no",
+        "field_icon": "",
+        "icon_position": "left_label",
+        "id": "@self:int"
+      },
+      "meta": []
+    }
+  ]
+}

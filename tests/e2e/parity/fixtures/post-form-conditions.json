@@ -1,0 +1,237 @@
+{
+    "post_type": "wpuf_forms",
+    "post_status": "publish",
+    "post_title": "Parity Conditions Form",
+    "meta": {
+        "integrations": {
+            "zapier": {
+                "enabled": true,
+                "url": "https://example.com/hook"
+            }
+        },
+        "notifications": [],
+        "wpuf_form_settings": {
+            "show_form_title": "off",
+            "form_description": "",
+            "post_type": "post",
+            "redirect_to": "post",
+            "message": "Post saved",
+            "page_id": "",
+            "url": "",
+            "post_status": "publish",
+            "draft_post": "off",
+            "submit_text": "Submit",
+            "form_template": "",
+            "enable_multistep": "off",
+            "multistep_progressbar_type": "progressive",
+            "ms_ac_txt_color": "#ffffff",
+            "ms_active_bgcolor": "#00a0d2",
+            "ms_bgcolor": "#e4e4e4",
+            "edit_post_status": "publish",
+            "edit_redirect_to": "same",
+            "update_message": "Post updated successfully",
+            "edit_page_id": "",
+            "edit_url": "",
+            "lock_edit_post": "",
+            "update_text": "Update",
+            "post_permission": "everyone",
+            "name_label": "Name",
+            "email_label": "Email",
+            "message_restrict": "This page is restricted. Please {login} / {register} to view this page.",
+            "view_control_role_enabled": "off",
+            "view_control_role_message": "This post is restricted. Please {login}/{register} to view this post.",
+            "view_control_subscription_enabled": "off",
+            "view_control_subscription_message": "You need to have one of the {subscriptions} to view this post. Have not subscribed yet? Please {login}/{register} to subscribe.",
+            "payment_options": "off",
+            "choose_payment_option": "force_pack_purchase",
+            "fallback_ppp_cost": "",
+            "pay_per_post_cost": "",
+            "ppp_payment_success_page": "",
+            "enable_pricing_payment": "off",
+            "notification": {
+                "new": "on",
+                "new_to": "admin@example.com",
+                "new_subject": "New post created",
+                "new_body": "Hi Admin, \r\n\r\nA new post has been created in your site {sitename} ({siteurl}). \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}"
+            },
+            "notification_edit": "off",
+            "notification_edit_to": "admin@example.com",
+            "notification_edit_subject": "A post has been edited",
+            "notification_edit_body": "Hi Admin, \r\n\r\nThe post \"{post_title}\" has been updated. \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
+            "use_theme_css": "off",
+            "label_position": "above",
+            "comment_status": "open",
+            "schedule_form": "off",
+            "schedule_start": "",
+            "schedule_end": "",
+            "form_pending_message": "",
+            "form_expired_message": "",
+            "limit_entries": "off",
+            "limit_number": "100",
+            "limit_message": "",
+            "submit_button_cond": {
+                "condition_status": "no",
+                "cond_logic": "any",
+                "conditions": [
+                    {
+                        "name": "",
+                        "operator": "=",
+                        "option": "",
+                        "input_type": ""
+                    }
+                ]
+            },
+            "expiration_settings": {
+                "enable_post_expiration": "on",
+                "expiration_time_value": "7",
+                "expiration_time_type": "day",
+                "expired_post_status": "draft",
+                "post_expiration_message": ""
+            },
+            "enable_n8n": "off",
+            "n8n_webhook_url": "",
+            "ai_review_enabled": "off",
+            "ai_review_prompt": ""
+        },
+        "wpuf_form_version": "4.3.13"
+    },
+    "fields": [
+        {
+            "menu_order": 0,
+            "post_status": "publish",
+            "post_content": {
+                "input_type": "text",
+                "template": "post_title",
+                "required": "yes",
+                "label": "Post Title",
+                "name": "post_title",
+                "is_meta": "no",
+                "help": "",
+                "css": "",
+                "placeholder": "",
+                "default": "",
+                "size": "40",
+                "wpuf_cond": [],
+                "id": "@self:int",
+                "show_icon": "no",
+                "field_icon": "fas fa-0",
+                "icon_position": "left_label"
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 1,
+            "post_status": "publish",
+            "post_content": {
+                "input_type": "textarea",
+                "template": "post_content",
+                "required": "yes",
+                "label": "Post Content",
+                "name": "post_content",
+                "is_meta": "no",
+                "help": "",
+                "css": "",
+                "rows": "5",
+                "cols": "25",
+                "placeholder": "",
+                "default": "",
+                "rich": "teeny",
+                "insert_image": "yes",
+                "wpuf_cond": [],
+                "id": "@self:int",
+                "show_icon": "no",
+                "field_icon": "fas fa-0",
+                "icon_position": "left_label"
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 2,
+            "post_status": "publish",
+            "post_content": {
+                "template": "dropdown_field",
+                "name": "color",
+                "label": "Color",
+                "required": "no",
+                "width": "large",
+                "css": "",
+                "placeholder": "",
+                "default": "",
+                "size": 40,
+                "help": "",
+                "is_meta": "yes",
+                "wpuf_cond": {
+                    "condition_status": "no",
+                    "cond_field": [],
+                    "cond_operator": [
+                        "="
+                    ],
+                    "cond_option": [
+                        "- Select -"
+                    ],
+                    "cond_logic": "all"
+                },
+                "wpuf_visibility": {
+                    "selected": "everyone",
+                    "choices": []
+                },
+                "input_type": "select",
+                "options": {
+                    "red": "Red",
+                    "blue": "Blue"
+                },
+                "first": "- Select -",
+                "show_in_post": "yes",
+                "hide_field_label": "no",
+                "show_icon": "no",
+                "field_icon": "",
+                "icon_position": "left_label",
+                "id": "@self:int",
+                "selected": ""
+            },
+            "meta": []
+        },
+        {
+            "menu_order": 3,
+            "post_status": "publish",
+            "post_content": {
+                "template": "text_field",
+                "name": "nickname",
+                "label": "Nickname",
+                "required": "no",
+                "width": "large",
+                "css": "",
+                "placeholder": "",
+                "default": "",
+                "size": 40,
+                "help": "",
+                "is_meta": "yes",
+                "wpuf_cond": {
+                    "condition_status": "no",
+                    "cond_field": [],
+                    "cond_operator": [
+                        "="
+                    ],
+                    "cond_option": [
+                        "- Select -"
+                    ],
+                    "cond_logic": "all"
+                },
+                "wpuf_visibility": {
+                    "selected": "everyone",
+                    "choices": []
+                },
+                "input_type": "text",
+                "show_in_post": "yes",
+                "hide_field_label": "no",
+                "restriction_type": "character",
+                "restriction_to": "max",
+                "show_icon": "no",
+                "field_icon": "",
+                "icon_position": "left_label",
+                "id": "@self:int"
+            },
+            "meta": []
+        }
+    ]
+}

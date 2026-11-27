@@ -1,0 +1,370 @@
+/**
+ * plugin-ui part of a React screen's stylesheet (Tailwind CSS 4).
+ *
+ * A screen entry with `pui: true` in build.mjs puts this at the top of its
+ * one stylesheet (no second Tailwind sheet, same handle). It styles what
+ * @wedevs/plugin-ui renders, the FlyHR way:
+ * - utilities for every class plugin-ui and src/admin/shared use,
+ *   `!important` and scoped by build.mjs to `.pui-root` and its descendants,
+ *   so WordPress admin form rules (forms.css) cannot override them; WPUF's
+ *   own markup outside `.pui-root` keeps its utilities untouched;
+ * - Tailwind 4 preflight inside `.pui-root` only (ThemeProvider root and the
+ *   body-level portals of dropdowns, popovers and dialogs);
+ * - plugin-ui's own theme (tokens, `@theme inline` radius/shadow/color
+ *   mapping), scoped base, animations (tw-animate-css) from its
+ *   src/styles.css, vendored as src/pui-upstream.css by gen-pui.cjs; the
+ *   ThemeProvider sets WPUF's token values (design-tokens.md).
+ *
+ * The global @wordpress/components, dataviews and theme stylesheets that
+ * plugin-ui's styles import are not part of this file (wp-components style
+ * handle; DataViews wrapper, task 3.3d).
+ */
+@layer theme, pui-base, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) important source(none);
+
+/* plugin-ui's own theme and scoped base (generated, see gen-pui.cjs). */
+@import "./pui-upstream.css";
+
+/* Tailwind 3 palette and font sizes, like the WPUF screens (develop look). */
+@import "./v3-theme.css";
+
+@source "../../../node_modules/@wedevs/plugin-ui/dist";
+@source "../../../src/admin/shared";
+
+/* plugin-ui marks dark mode with a `.dark` class (ThemeProvider), not the OS;
+   otherwise an OS in dark mode repaints its fields (FlyHR fix). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+.pui-root {
+    @import "tailwindcss/preflight.css" layer(pui-base);
+
+    /* What preflight sets on html/body, which a scoped preflight cannot reach
+       (font family, color and smoothing come from plugin-ui's scoped base). */
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    font-feature-settings: normal;
+    font-variation-settings: normal;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* WordPress admin forms.css styles inputs by tag/attribute; neutralize the
+   parts utilities do not always set, inside plugin-ui only. */
+.pui-root input[type="text"],
+.pui-root input[type="search"],
+.pui-root input[type="email"],
+.pui-root input[type="url"],
+.pui-root input[type="tel"],
+.pui-root input[type="number"],
+.pui-root input[type="password"],
+.pui-root input[type="date"],
+.pui-root input[type="datetime-local"],
+.pui-root input[type="month"],
+.pui-root input[type="time"],
+.pui-root input[type="week"],
+.pui-root select,
+.pui-root textarea {
+    box-shadow: none;
+    min-height: 0;
+    max-width: none;
+    background-image: none;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+}
+
+/* The search box of plugin-ui's command lists (MultiSelect) has no border of
+   its own (its wrapper draws the line), so WordPress's input border and blue
+   focus ring (forms.css `input[type="text"]:focus`) showed on it. */
+.pui-root input[data-slot="command-input"],
+.pui-root input[data-slot="command-input"]:focus {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+    background-color: transparent;
+}
+
+/* plugin-ui's searchable selects size their list to the trigger
+   (`!w-(--anchor-width)`), but every utility here is !important, so the
+   popover's own `w-72`, printed later, won: the list was 288px under a
+   full-width trigger. */
+.pui-root [data-slot$="-content"][class*="!w-(--anchor-width)"] {
+    width: var(--anchor-width) !important;
+}
+
+/* Links on the React screens: WordPress draws a blue ring on `a:focus`
+   (admin color), dialogs included (they render outside #wpbody-content).
+   No ring on a mouse click; keyboard focus gets the primary
+   green outline (owner 2026-10-04: "no blue, only green"). */
+body.wpuf-admin-screen #wpbody-content a:focus,
+body.wpuf-admin-screen [role="dialog"] a:focus {
+    box-shadow: none;
+    outline: 2px solid transparent;
+}
+
+body.wpuf-admin-screen #wpbody-content a:focus-visible,
+body.wpuf-admin-screen [role="dialog"] a:focus-visible {
+    outline: 2px solid #059669;
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* Other plugins' unscoped utility names on every admin page: WC Vendors'
+   wcv-admin.css has `.text-gray-600 { font-weight: 600; color: rgba(0,0,0,.65) }`,
+   printed after ours with the same specificity, so every gray-600 text of
+   the React screens turned bold and black. Put the utility back, with the
+   weight of a `font-*` class next to it. */
+body.wpuf-admin-screen .text-gray-600 {
+    color: var(--color-gray-600, #4b5563);
+}
+
+body.wpuf-admin-screen .text-gray-600:not([class*="font-"]) {
+    font-weight: inherit;
+}
+
+body.wpuf-admin-screen .text-gray-600.font-normal {
+    font-weight: 400;
+}
+
+body.wpuf-admin-screen .text-gray-600.font-medium {
+    font-weight: 500;
+}
+
+body.wpuf-admin-screen .text-gray-600.font-semibold {
+    font-weight: 600;
+}
+
+body.wpuf-admin-screen .text-gray-600.font-bold {
+    font-weight: 700;
+}
+
+/* Page look of every screen on the shared layer (design-tokens.md "Page
+   background", owner 2026-10-04, FlyHR's admin page): WordPress admin gray
+   page edge to edge (no #wpcontent left gutter; WordPress notices keep their
+   own margins), white header strip (PageHeader), white cards on top and the
+   white logo footer (PageFooter) instead of WordPress's #wpfooter.
+   Set once here, so each screen that adopts the shared layer gets it; the
+   builders (body.wpuf-builder-screen) keep their own layout (no gutter rule)
+   but share the footer rules and get the gray page below. */
+body.wpuf-admin-screen:not(.wpuf-builder-screen),
+body.wpuf-admin-screen:not(.wpuf-builder-screen) #wpcontent {
+    background-color: #f0f0f1;
+}
+
+body.wpuf-admin-screen:not(.wpuf-builder-screen) #wpcontent {
+    padding-left: 0;
+}
+
+body.wpuf-admin-screen #wpbody-content {
+    padding-bottom: 0;
+}
+
+body.wpuf-admin-screen #wpfooter {
+    display: none;
+}
+
+/* The builders keep their own full-screen layout but get the same gray page:
+   the white header strip (Header) and the white editor / settings cards sit on
+   it (owner 2026-10-04). The legacy form wrapper is white (!important class). */
+body.wpuf-builder-screen,
+body.wpuf-builder-screen #wpcontent,
+body.wpuf-builder-screen form#wpuf-form-builder {
+    background-color: #f0f0f1 !important;
+}
+
+/* The wrapper is 100% + 20px wide to cover #wpcontent's gutter, but its
+   `wpuf-ml-[-20px]` utility is not built (develop's sheet lacked it too), so
+   it ran 20px past the window and the card's right edge was cut off. */
+body.wpuf-builder-screen form#wpuf-form-builder {
+    margin-left: -20px !important;
+}
+
+/* Develop's popup backdrops behind the shared ConfirmDialog: SweetAlert's 40%
+   black (variant alert) and Popup.vue's gray-500 at 75% (variant panel), no blur. */
+.pui-root:has(> [data-wpuf-dialog="alert"]) > [data-slot="alert-dialog-overlay"] {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: none !important;
+}
+
+.pui-root:has(> [data-wpuf-dialog="panel"]) > [data-slot="alert-dialog-overlay"] {
+    background-color: rgba(107, 114, 128, 0.75) !important;
+    backdrop-filter: none !important;
+}
+
+.pui-root:has(> [data-wpuf-dialog="card"]) > [data-slot="alert-dialog-overlay"] {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: none !important;
+}
+
+/*
+ * Toasts: plugin-ui's Toaster with sonner's rich colours, mapped to WPUF's
+ * palette (success = primary emerald). Scoped above sonner's injected rules.
+ */
+[data-wpuf-ui] [data-sonner-toaster][data-sonner-theme] {
+    --success-bg: #ecfdf5;
+    --success-border: #a7f3d0;
+    --success-text: #065f46;
+    --error-bg: #fef2f2;
+    --error-border: #fecaca;
+    --error-text: #991b1b;
+    --warning-bg: #fffbeb;
+    --warning-border: #fde68a;
+    --warning-text: #92400e;
+    --info-bg: #eff6ff;
+    --info-border: #bfdbfe;
+    --info-text: #1e40af;
+}
+
+/*
+ * Font: Plus Jakarta Sans (SIL OFL 1.1, assets/fonts/plus-jakarta-sans),
+ * bundled, no third-party request. build.mjs resolves __WPUF_FONTS__ to the
+ * fonts folder relative to each stylesheet. Only WPUF's React screen content
+ * and its portals use it; the WordPress admin menu and bar keep theirs.
+ */
+@font-face {
+    font-family: "Plus Jakarta Sans";
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url("__WPUF_FONTS__/plus-jakarta-sans/PlusJakartaSans-latin-ext.woff2") format("woff2");
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: "Plus Jakarta Sans";
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url("__WPUF_FONTS__/plus-jakarta-sans/PlusJakartaSans-latin.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Attribute selectors: build.mjs rewrites `.pui-root` selectors (host roots excluded). */
+body.wpuf-admin-screen #wpbody-content,
+body.wpuf-admin-app #wpbody-content,
+body.wpuf-admin-screen [class~="pui-root"],
+body.wpuf-admin-screen [class~="wpuf-onboarding"],
+body.wpuf-admin-screen #wpbody-content .wpuf-help {
+    /* Literal, like FlyHR: ahead of any --font-sans printed inline. */
+    font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Content width like FlyHR's app shell (`mx-auto w-full max-w-[1400px]`): every
+   screen of the admin app is centred at 1400px at most, except the builders
+   (post / registration form builder and the AI form builder), which keep the
+   full width for their canvas. */
+#wpuf-admin-app:not([data-wpuf-app="form-builder"]):not([data-wpuf-app="ai-form-builder"]) > * {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* The page header and footer stay as wide as the app (FlyHR's TopBar and
+   AppFooter sit outside the capped content): centred under the capped content,
+   `--wpuf-app-w` is the app width (src/admin/app/index.js). Without it they keep
+   their 20px bleed. */
+#wpuf-admin-app:not([data-wpuf-app="form-builder"]):not([data-wpuf-app="ai-form-builder"]) [data-wpuf-bleed] {
+    box-sizing: border-box !important;
+    width: var(--wpuf-app-w, calc(100% + 40px)) !important;
+    max-width: none !important;
+    margin-left: calc((100% - var(--wpuf-app-w, calc(100% + 40px))) / 2) !important;
+}
+
+/* Shared Notice (src/admin/shared/ui/Notice.jsx): its tone colours over
+   plugin-ui Alert's !important `[&]:bg-muted` / `[&]:border-border`. */
+[data-slot="alert"][data-wpuf-tone] {
+    background-color: var(--wpuf-notice-bg) !important;
+    border-color: var(--wpuf-notice-border) !important;
+}
+[data-slot="alert"][data-wpuf-tone] > svg {
+    color: var(--wpuf-notice-icon) !important;
+}
+
+/* WPUF's own admin notices on the app screens (AppPage wraps them in
+   .wpuf-own-notice; other plugins' notices keep WordPress's look): framed like
+   the shared Notice (10px radius, 1px light border, tinted background by type,
+   14px text, no left bar). The notices area spans the full width. */
+.wpuf-admin-notices {
+    box-sizing: border-box;
+    margin: 16px 0 0;
+    padding: 0 20px;
+}
+.wpuf-admin-notices .wpuf-own-notice .notice,
+.wpuf-admin-notices .wpuf-own-notice div.updated,
+.wpuf-admin-notices .wpuf-own-notice div.error,
+.wpuf-admin-notices .wpuf-own-notice .update-nag {
+    box-sizing: border-box;
+    margin: 0 0 12px !important;
+    padding: 12px 40px 12px 16px !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 10px;
+    background: #f9fafb !important;
+    box-shadow: none !important;
+    color: #4b5563;
+    font-size: 14px;
+    line-height: 20px;
+}
+.wpuf-admin-notices .wpuf-own-notice .notice:not(.is-dismissible),
+.wpuf-admin-notices .wpuf-own-notice .update-nag {
+    padding-right: 16px !important;
+}
+.wpuf-admin-notices .wpuf-own-notice .notice-success,
+.wpuf-admin-notices .wpuf-own-notice div.updated {
+    border-color: #a7f3d0 !important;
+    background: #ecfdf5 !important;
+    color: #374151;
+}
+.wpuf-admin-notices .wpuf-own-notice .notice-warning,
+.wpuf-admin-notices .wpuf-own-notice .update-nag {
+    border-color: #fde68a !important;
+    background: #fffbeb !important;
+    color: #92400e;
+}
+.wpuf-admin-notices .wpuf-own-notice .notice-error,
+.wpuf-admin-notices .wpuf-own-notice div.error {
+    border-color: #fecaca !important;
+    background: #fef2f2 !important;
+    color: #991b1b;
+}
+.wpuf-admin-notices .wpuf-own-notice .notice p {
+    margin: 4px 0 !important;
+    padding: 0 !important;
+    font-size: 14px;
+    line-height: 20px;
+}
+.wpuf-admin-notices .wpuf-own-notice .notice h2,
+.wpuf-admin-notices .wpuf-own-notice .notice h3,
+.wpuf-admin-notices .wpuf-own-notice .notice strong:first-child {
+    color: #111827;
+    font-weight: 600;
+}
+.wpuf-admin-notices .wpuf-own-notice .notice h2,
+.wpuf-admin-notices .wpuf-own-notice .notice h3 {
+    margin: 0 0 4px !important;
+    font-size: 14px !important;
+    line-height: 20px;
+}
+.wpuf-admin-notices .wpuf-own-notice .notice-dismiss {
+    top: 8px;
+    right: 8px;
+}
+.wpuf-admin-notices .wpuf-own-notice:empty {
+    display: none;
+}
+
+/* Toast card (src/admin/shared/toast/ToastCard.jsx, FlyHR's): the body drains
+   as the timer runs (a countdown, so no reduced-motion guard, like FlyHR). */
+@keyframes wpuf-toast-progress {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+}
+@keyframes wpuf-toast-spin {
+    to { transform: rotate(360deg); }
+}

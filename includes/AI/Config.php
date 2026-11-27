@@ -33,22 +33,22 @@ class Config {
                 'endpoint' => 'https://api.openai.com/v1/chat/completions',
                 'requires_key' => true,
                 'api_key_field' => 'openai_api_key',
-                'api_key_url' => 'https://platform.openai.com/api-keys'
+                'api_key_url' => 'https://platform.openai.com/api-keys',
             ],
             'anthropic' => [
                 'name' => 'Anthropic',
                 'endpoint' => 'https://api.anthropic.com/v1/messages',
                 'requires_key' => true,
                 'api_key_field' => 'anthropic_api_key',
-                'api_key_url' => 'https://console.anthropic.com/settings/keys'
+                'api_key_url' => 'https://console.anthropic.com/settings/keys',
             ],
             'google' => [
                 'name' => 'Google',
                 'endpoint' => 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
                 'requires_key' => true,
                 'api_key_field' => 'google_api_key',
-                'api_key_url' => 'https://aistudio.google.com/app/apikey'
-            ]
+                'api_key_url' => 'https://aistudio.google.com/app/apikey',
+            ],
         ];
     }
 
@@ -59,10 +59,10 @@ class Config {
      */
     public static function get_models() {
         // Get cached models from WordPress transient
-        $cached_models = get_transient('wpuf_ai_models_cache');
+        $cached_models = get_transient( 'wpuf_ai_models_cache' );
 
         // Extract models if they exist
-        if (is_array($cached_models) && isset($cached_models['models']) && !empty($cached_models['models'])) {
+        if ( is_array( $cached_models ) && isset( $cached_models['models'] ) && ! empty( $cached_models['models'] ) ) {
             return $cached_models['models'];
         }
 
@@ -84,7 +84,7 @@ class Config {
                 'token_param' => 'max_tokens',
                 'token_location' => 'body',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
+                'supports_custom_temperature' => true,
             ],
             'gpt-4o-mini' => [
                 'name' => 'GPT-4o Mini (OpenAI)',
@@ -92,7 +92,7 @@ class Config {
                 'token_param' => 'max_tokens',
                 'token_location' => 'body',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
+                'supports_custom_temperature' => true,
             ],
             'gpt-4-turbo' => [
                 'name' => 'GPT-4 Turbo (OpenAI)',
@@ -100,7 +100,7 @@ class Config {
                 'token_param' => 'max_tokens',
                 'token_location' => 'body',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
+                'supports_custom_temperature' => true,
             ],
             // Anthropic defaults
             'claude-3-5-sonnet-20241022' => [
@@ -109,7 +109,7 @@ class Config {
                 'token_param' => 'max_tokens',
                 'token_location' => 'body',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
+                'supports_custom_temperature' => true,
             ],
             'claude-3-5-haiku-20241022' => [
                 'name' => 'Claude 3.5 Haiku (Anthropic)',
@@ -117,7 +117,7 @@ class Config {
                 'token_param' => 'max_tokens',
                 'token_location' => 'body',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
+                'supports_custom_temperature' => true,
             ],
             // Google defaults
             'gemini-2.5-flash' => [
@@ -126,7 +126,7 @@ class Config {
                 'token_param' => 'maxOutputTokens',
                 'token_location' => 'generationConfig',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
+                'supports_custom_temperature' => true,
             ],
             'gemini-2.0-flash' => [
                 'name' => 'Gemini 2.0 Flash (Google)',
@@ -134,7 +134,7 @@ class Config {
                 'token_param' => 'maxOutputTokens',
                 'token_location' => 'generationConfig',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
+                'supports_custom_temperature' => true,
             ],
             'gemini-pro-latest' => [
                 'name' => 'Gemini Pro Latest (Google)',
@@ -142,8 +142,8 @@ class Config {
                 'token_param' => 'maxOutputTokens',
                 'token_location' => 'generationConfig',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
-            ]
+                'supports_custom_temperature' => true,
+            ],
         ];
     }
 
@@ -153,18 +153,18 @@ class Config {
      * @param string $provider Provider ID
      * @return array Models for the provider
      */
-    public static function get_models_by_provider($provider) {
+    public static function get_models_by_provider( $provider ) {
         $all_models = self::get_models();
         $provider_models = [];
 
-        foreach ($all_models as $model_id => $model_config) {
+        foreach ( $all_models as $model_id => $model_config ) {
             // Validate model config is an array with required keys
-            if (!is_array($model_config) || !isset($model_config['provider'])) {
+            if ( ! is_array( $model_config ) || ! isset( $model_config['provider'] ) ) {
                 continue;
             }
 
-            if ($model_config['provider'] === $provider) {
-                $provider_models[$model_id] = $model_config;
+            if ( $model_config['provider'] === $provider ) {
+                $provider_models[ $model_id ] = $model_config;
             }
         }
 
@@ -177,18 +177,18 @@ class Config {
      * @param string $model_id Model ID
      * @return array|null Model configuration or null if not found
      */
-    public static function get_model_config($model_id) {
+    public static function get_model_config( $model_id ) {
         // Get all models from cache
         $all_models = self::get_models();
 
         // Check for exact match
-        if (isset($all_models[$model_id])) {
-            return $all_models[$model_id];
+        if ( isset( $all_models[ $model_id ] ) ) {
+            return $all_models[ $model_id ];
         }
 
         // Check for pattern matches (e.g., gpt-5-turbo-preview matches gpt-5-turbo)
-        foreach ($all_models as $pattern => $config) {
-            if (strpos($model_id, $pattern) === 0) {
+        foreach ( $all_models as $pattern => $config ) {
+            if ( strpos( $model_id, $pattern ) === 0 ) {
                 return $config;
             }
         }
@@ -199,28 +199,28 @@ class Config {
                 'token_param' => 'max_tokens',
                 'token_location' => 'body',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
+                'supports_custom_temperature' => true,
             ],
             'anthropic' => [
                 'token_param' => 'max_tokens',
                 'token_location' => 'body',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
+                'supports_custom_temperature' => true,
             ],
             'google' => [
                 'token_param' => 'maxOutputTokens',
                 'token_location' => 'generationConfig',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
-            ]
+                'supports_custom_temperature' => true,
+            ],
         ];
 
         // Try to detect provider from model ID
-        if (strpos($model_id, 'gpt-') === 0 || strpos($model_id, 'o1') === 0) {
+        if ( strpos( $model_id, 'gpt-' ) === 0 || strpos( $model_id, 'o1' ) === 0 ) {
             return $provider_defaults['openai'];
-        } elseif (strpos($model_id, 'claude-') === 0) {
+        } elseif ( strpos( $model_id, 'claude-' ) === 0 ) {
             return $provider_defaults['anthropic'];
-        } elseif (strpos($model_id, 'gemini-') === 0) {
+        } elseif ( strpos( $model_id, 'gemini-' ) === 0 ) {
             return $provider_defaults['google'];
         }
 
@@ -233,9 +233,9 @@ class Config {
      * @param string $provider_id Provider ID
      * @return array|null Provider configuration or null if not found
      */
-    public static function get_provider_config($provider_id) {
+    public static function get_provider_config( $provider_id ) {
         $providers = self::get_providers();
-        return $providers[$provider_id] ?? null;
+        return $providers[ $provider_id ] ?? null;
     }
 
     /**
@@ -247,12 +247,12 @@ class Config {
         $models = self::get_models();
         $options = [];
 
-        foreach ($models as $model_id => $model_config) {
+        foreach ( $models as $model_id => $model_config ) {
             // Validate model config is an array with required keys
-            if (!is_array($model_config) || !isset($model_config['name'])) {
+            if ( ! is_array( $model_config ) || ! isset( $model_config['name'] ) ) {
                 continue;
             }
-            $options[$model_id] = $model_config['name'];
+            $options[ $model_id ] = $model_config['name'];
         }
 
         return $options;
@@ -267,8 +267,8 @@ class Config {
         $providers = self::get_providers();
         $options = [];
 
-        foreach ($providers as $provider_id => $provider_config) {
-            $options[$provider_id] = $provider_config['name'];
+        foreach ( $providers as $provider_id => $provider_config ) {
+            $options[ $provider_id ] = $provider_config['name'];
         }
 
         return $options;
@@ -285,26 +285,26 @@ class Config {
         $models = self::get_models();
         $configs = [];
 
-        foreach ($providers as $provider_id => $provider_config) {
+        foreach ( $providers as $provider_id => $provider_config ) {
             $provider_models = [];
 
             // Get all models for this provider
-            foreach ($models as $model_id => $model_config) {
+            foreach ( $models as $model_id => $model_config ) {
                 // Validate model config is an array with required keys
-                if (!is_array($model_config) || !isset($model_config['provider'], $model_config['name'])) {
+                if ( ! is_array( $model_config ) || ! isset( $model_config['provider'], $model_config['name'] ) ) {
                     continue;
                 }
 
-                if ($model_config['provider'] === $provider_id) {
-                    $provider_models[$model_id] = $model_config['name'];
+                if ( $model_config['provider'] === $provider_id ) {
+                    $provider_models[ $model_id ] = $model_config['name'];
                 }
             }
 
-            $configs[$provider_id] = [
+            $configs[ $provider_id ] = [
                 'name' => $provider_config['name'],
                 'endpoint' => $provider_config['endpoint'],
                 'models' => $provider_models,
-                'requires_key' => $provider_config['requires_key']
+                'requires_key' => $provider_config['requires_key'],
             ];
         }
 
@@ -317,66 +317,68 @@ class Config {
      * @param string $api_key OpenAI API key
      * @return array|\WP_Error Array of models or WP_Error on failure
      */
-    public static function fetch_openai_models($api_key) {
-        if (empty($api_key)) {
-            return new \WP_Error('missing_api_key', 'API key is required');
+    public static function fetch_openai_models( $api_key ) {
+        if ( empty( $api_key ) ) {
+            return new \WP_Error( 'missing_api_key', 'API key is required' );
         }
 
         $endpoint = 'https://api.openai.com/v1/models';
 
-        $response = wp_safe_remote_get($endpoint, [
-            'timeout' => 15,
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer ' . $api_key
+        $response = wp_safe_remote_get(
+            $endpoint, [
+                'timeout' => 15,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . $api_key,
+                ],
             ]
-        ]);
+        );
 
-        if (is_wp_error($response)) {
+        if ( is_wp_error( $response ) ) {
             return $response;
         }
 
-        $status_code = wp_remote_retrieve_response_code($response);
-        if ($status_code !== 200) {
-            $error_body = wp_remote_retrieve_body($response);
-            return new \WP_Error('api_error', "OpenAI API returned HTTP {$status_code}: {$error_body}");
+        $status_code = wp_remote_retrieve_response_code( $response );
+        if ( $status_code !== 200 ) {
+            $error_body = wp_remote_retrieve_body( $response );
+            return new \WP_Error( 'api_error', "OpenAI API returned HTTP {$status_code}: {$error_body}" );
         }
 
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
+        $body = wp_remote_retrieve_body( $response );
+        $data = json_decode( $body, true );
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            return new \WP_Error('json_error', 'Invalid JSON response from OpenAI API');
+        if ( json_last_error() !== JSON_ERROR_NONE ) {
+            return new \WP_Error( 'json_error', 'Invalid JSON response from OpenAI API' );
         }
 
-        if (!isset($data['data']) || !is_array($data['data'])) {
-            return new \WP_Error('invalid_response', 'Invalid response format from OpenAI API');
+        if ( ! isset( $data['data'] ) || ! is_array( $data['data'] ) ) {
+            return new \WP_Error( 'invalid_response', 'Invalid response format from OpenAI API' );
         }
 
         $available_models = [];
 
-        foreach ($data['data'] as $model) {
+        foreach ( $data['data'] as $model ) {
             $model_id = $model['id'] ?? '';
 
             // Only include GPT models
-            if (strpos($model_id, 'gpt-') !== 0 && strpos($model_id, 'o1') !== 0) {
+            if ( strpos( $model_id, 'gpt-' ) !== 0 && strpos( $model_id, 'o1' ) !== 0 ) {
                 continue;
             }
 
             // Get model name
-            $model_name = ucwords(str_replace(['-', '_'], ' ', $model_id));
+            $model_name = ucwords( str_replace( [ '-', '_' ], ' ', $model_id ) );
 
             // Determine token parameter based on model type
-            $token_param = (strpos($model_id, 'o1') === 0) ? 'max_completion_tokens' : 'max_tokens';
-            $supports_temp = (strpos($model_id, 'o1') !== 0);
+            $token_param = ( strpos( $model_id, 'o1' ) === 0 ) ? 'max_completion_tokens' : 'max_tokens';
+            $supports_temp = ( strpos( $model_id, 'o1' ) !== 0 );
 
-            $available_models[$model_id] = [
+            $available_models[ $model_id ] = [
                 'name' => $model_name . ' (OpenAI)',
                 'provider' => 'openai',
                 'token_param' => $token_param,
                 'token_location' => 'body',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => $supports_temp
+                'supports_custom_temperature' => $supports_temp,
             ];
         }
 
@@ -398,7 +400,7 @@ class Config {
                 'token_param' => 'max_tokens',
                 'token_location' => 'body',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
+                'supports_custom_temperature' => true,
             ],
             'claude-3-5-haiku-20241022' => [
                 'name' => 'Claude 3.5 Haiku (Anthropic)',
@@ -406,7 +408,7 @@ class Config {
                 'token_param' => 'max_tokens',
                 'token_location' => 'body',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
+                'supports_custom_temperature' => true,
             ],
             'claude-3-opus-20240229' => [
                 'name' => 'Claude 3 Opus (Anthropic)',
@@ -414,7 +416,7 @@ class Config {
                 'token_param' => 'max_tokens',
                 'token_location' => 'body',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
+                'supports_custom_temperature' => true,
             ],
             'claude-3-sonnet-20240229' => [
                 'name' => 'Claude 3 Sonnet (Anthropic)',
@@ -422,7 +424,7 @@ class Config {
                 'token_param' => 'max_tokens',
                 'token_location' => 'body',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
+                'supports_custom_temperature' => true,
             ],
             'claude-3-haiku-20240307' => [
                 'name' => 'Claude 3 Haiku (Anthropic)',
@@ -430,8 +432,8 @@ class Config {
                 'token_param' => 'max_tokens',
                 'token_location' => 'body',
                 'supports_json_mode' => true,
-                'supports_custom_temperature' => true
-            ]
+                'supports_custom_temperature' => true,
+            ],
         ];
 
         return $available_models;
@@ -443,58 +445,60 @@ class Config {
      * @param string $api_key Google API key
      * @return array|\WP_Error Array of models or WP_Error on failure
      */
-    public static function fetch_google_models($api_key) {
-        if (empty($api_key)) {
-            return new \WP_Error('missing_api_key', 'API key is required');
+    public static function fetch_google_models( $api_key ) {
+        if ( empty( $api_key ) ) {
+            return new \WP_Error( 'missing_api_key', 'API key is required' );
         }
 
         // Google API endpoint to list models
         $endpoint = 'https://generativelanguage.googleapis.com/v1beta/models?key=' . $api_key;
 
-        $response = wp_safe_remote_get($endpoint, [
-            'timeout' => 15,
-            'headers' => [
-                'Content-Type' => 'application/json'
+        $response = wp_safe_remote_get(
+            $endpoint, [
+                'timeout' => 15,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
             ]
-        ]);
+        );
 
-        if (is_wp_error($response)) {
+        if ( is_wp_error( $response ) ) {
             return $response;
         }
 
-        $status_code = wp_remote_retrieve_response_code($response);
-        if ($status_code !== 200) {
-            $error_body = wp_remote_retrieve_body($response);
-            return new \WP_Error('api_error', "Google API returned HTTP {$status_code}: {$error_body}");
+        $status_code = wp_remote_retrieve_response_code( $response );
+        if ( $status_code !== 200 ) {
+            $error_body = wp_remote_retrieve_body( $response );
+            return new \WP_Error( 'api_error', "Google API returned HTTP {$status_code}: {$error_body}" );
         }
 
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
+        $body = wp_remote_retrieve_body( $response );
+        $data = json_decode( $body, true );
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            return new \WP_Error('json_error', 'Invalid JSON response from Google API: ' . json_last_error_msg());
+        if ( json_last_error() !== JSON_ERROR_NONE ) {
+            return new \WP_Error( 'json_error', 'Invalid JSON response from Google API: ' . json_last_error_msg() );
         }
 
-        if (!isset($data['models']) || !is_array($data['models'])) {
-            return new \WP_Error('invalid_response', 'Invalid response format from Google API');
+        if ( ! isset( $data['models'] ) || ! is_array( $data['models'] ) ) {
+            return new \WP_Error( 'invalid_response', 'Invalid response format from Google API' );
         }
 
         $available_models = [];
 
-        foreach ($data['models'] as $model) {
+        foreach ( $data['models'] as $model ) {
             // Extract model ID (remove 'models/' prefix if present)
             $model_id = $model['name'] ?? '';
-            if (strpos($model_id, 'models/') === 0) {
-                $model_id = substr($model_id, 7);
+            if ( strpos( $model_id, 'models/' ) === 0 ) {
+                $model_id = substr( $model_id, 7 );
             }
 
             // Only include Gemini models that support generateContent
-            if (strpos($model_id, 'gemini-') !== 0) {
+            if ( strpos( $model_id, 'gemini-' ) !== 0 ) {
                 continue;
             }
 
             $supported_methods = $model['supportedGenerationMethods'] ?? [];
-            if (!in_array('generateContent', $supported_methods)) {
+            if ( ! in_array( 'generateContent', $supported_methods, true ) ) {
                 continue;
             }
 
@@ -505,7 +509,7 @@ class Config {
             $max_input_tokens = $model['inputTokenLimit'] ?? 8192;
             $max_output_tokens = $model['outputTokenLimit'] ?? 2048;
 
-            $available_models[$model_id] = [
+            $available_models[ $model_id ] = [
                 'name' => $display_name . ' (Google)',
                 'provider' => 'google',
                 'token_param' => 'maxOutputTokens',
@@ -514,7 +518,7 @@ class Config {
                 'supports_custom_temperature' => true,
                 'max_input_tokens' => $max_input_tokens,
                 'max_output_tokens' => $max_output_tokens,
-                'description' => $model['description'] ?? ''
+                'description' => $model['description'] ?? '',
             ];
         }
 
@@ -527,7 +531,7 @@ class Config {
      * @return bool|\WP_Error True on success, WP_Error on failure
      */
     public static function update_all_models() {
-        $settings = get_option('wpuf_ai', []);
+        $settings = \WeDevs\Wpuf\Platform\Stores\Stores::settings()->read( 'wpuf_ai' );
         $all_models = [];
 
         // Get API keys
@@ -535,41 +539,41 @@ class Config {
         $google_key = $settings['google_api_key'] ?? '';
 
         // Fetch OpenAI models if key exists
-        if (!empty($openai_key)) {
-            $openai_models = self::fetch_openai_models($openai_key);
-            if (!is_wp_error($openai_models) && is_array($openai_models)) {
-                $all_models = array_merge($all_models, $openai_models);
+        if ( ! empty( $openai_key ) ) {
+            $openai_models = self::fetch_openai_models( $openai_key );
+            if ( ! is_wp_error( $openai_models ) && is_array( $openai_models ) ) {
+                $all_models = array_merge( $all_models, $openai_models );
             }
         }
 
         // Always include Anthropic models (static, no API validation required)
         $anthropic_models = self::fetch_anthropic_models();
-        if (is_array($anthropic_models)) {
-            $all_models = array_merge($all_models, $anthropic_models);
+        if ( is_array( $anthropic_models ) ) {
+            $all_models = array_merge( $all_models, $anthropic_models );
         }
 
         // Fetch Google models if key exists
-        if (!empty($google_key)) {
-            $google_models = self::fetch_google_models($google_key);
-            if (!is_wp_error($google_models) && is_array($google_models)) {
-                $all_models = array_merge($all_models, $google_models);
+        if ( ! empty( $google_key ) ) {
+            $google_models = self::fetch_google_models( $google_key );
+            if ( ! is_wp_error( $google_models ) && is_array( $google_models ) ) {
+                $all_models = array_merge( $all_models, $google_models );
             }
         }
 
         // Store cache if we have models
-        if (!empty($all_models)) {
+        if ( ! empty( $all_models ) ) {
             $cache_data = [
                 'models' => $all_models,
                 'last_updated' => time(),
             ];
 
             // Use transient for auto-expiring cache (24 hours)
-            set_transient('wpuf_ai_models_cache', $cache_data, DAY_IN_SECONDS);
+            set_transient( 'wpuf_ai_models_cache', $cache_data, DAY_IN_SECONDS );
 
             return true;
         }
 
-        return new \WP_Error('no_models_fetched', __('Failed to fetch models from any provider.', 'wp-user-frontend'));
+        return new \WP_Error( 'no_models_fetched', __( 'Failed to fetch models from any provider.', 'wp-user-frontend' ) );
     }
 
     /**
@@ -579,8 +583,6 @@ class Config {
      * @return void
      */
     public static function clear_models_cache() {
-        delete_transient('wpuf_ai_models_cache');
+        delete_transient( 'wpuf_ai_models_cache' );
     }
-
 }
-

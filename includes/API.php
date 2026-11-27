@@ -2,8 +2,10 @@
 
 namespace WeDevs\Wpuf;
 
-use WeDevs\Wpuf\Api\FormList;
-use WeDevs\Wpuf\Api\Subscription;
+use WeDevs\Wpuf\Platform\REST\Controllers\FormListController;
+use WeDevs\Wpuf\Platform\REST\Controllers\SettingsController;
+use WeDevs\Wpuf\Platform\REST\Controllers\SubscriptionController;
+use WeDevs\Wpuf\Platform\REST\Manager;
 use WeDevs\WpUtils\ContainerTrait;
 
 /**
@@ -20,23 +22,37 @@ class API {
      * @since 1.0.0
      */
     public function __construct() {
-        $this->subscription = new Subscription();
-        $this->form_list    = new FormList();
+        $this->subscription = new SubscriptionController();
+        $this->form_list    = new FormListController();
+        $this->settings     = new SettingsController();
 
-        add_action( 'rest_api_init', [ $this, 'init_api' ] );
+        // Routes are registered by the platform REST manager
+        // (Platform\REST\Manager) on rest_api_init, once per controller.
+    }
+
+    /**
+     * The core REST controllers (wpuf()->api->subscription, ->form_list, ->settings).
+     *
+     * @since WPUF_SINCE
+     *
+     * @return object[]
+     */
+    public function controllers() {
+        return array_values( $this->container );
     }
 
     /**
      * API initialization
+     *
+     * Kept for callers of the old method: forwards to the platform REST manager,
+     * which registers each controller once (this loop used to build every
+     * controller a second time).
      *
      * @since 4.0.11
      *
      * @return void
      */
     public function init_api() {
-        foreach ( $this->container as $class ) {
-            $object = new $class();
-            $object->register_routes();
-        }
+        wpuf()->platform()->get( Manager::class )->register_routes();
     }
 }

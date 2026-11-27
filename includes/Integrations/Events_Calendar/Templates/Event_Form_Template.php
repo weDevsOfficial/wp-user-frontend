@@ -24,7 +24,7 @@ class Event_Form_Template extends Form_Template {
         $this->description   = __(
             'Form for creating events. The Events Calendar plugin is required.', 'wp-user-frontend'
         );
-        $this->image         = WPUF_ASSET_URI . '/images/templates/post.svg';
+        $this->image         = WPUF_ASSET_URI . '/images/templates/event.webp';
         $this->form_fields   = $this->get_form_fields();
         $this->form_settings = $this->get_form_settings();
     }
@@ -51,8 +51,8 @@ class Event_Form_Template extends Form_Template {
                 'default'     => '',
                 'size'        => '40',
                 'wpuf_cond'   => $this->conditionals,
-                'id'          => uniqid('wpuf_', true),
-                'is_new'     => true
+                'id'          => uniqid( 'wpuf_', true ),
+                'is_new'     => true,
             ],
             [
                 'input_type'          => 'textarea',
@@ -72,8 +72,8 @@ class Event_Form_Template extends Form_Template {
                 'word_restriction'    => '',
                 'wpuf_cond'           => $this->conditionals,
                 'text_editor_control' => [],
-                'id'                   => uniqid('wpuf_', true),
-                'is_new'               => true
+                'id'                   => uniqid( 'wpuf_', true ),
+                'is_new'               => true,
             ],
             [
                 'input_type' => 'checkbox',
@@ -86,8 +86,8 @@ class Event_Form_Template extends Form_Template {
                     '1' => __( 'All Day Event', 'wp-user-frontend' ),
                 ],
                 'wpuf_cond'  => $this->conditionals,
-                'id'         => uniqid('wpuf_', true),
-                'is_new'    => true
+                'id'         => uniqid( 'wpuf_', true ),
+                'is_new'    => true,
             ],
             [
                 'input_type' => 'url',
@@ -99,8 +99,8 @@ class Event_Form_Template extends Form_Template {
                 'width'      => 'large',
                 'size'       => 40,
                 'wpuf_cond'  => $this->conditionals,
-                'id'         => uniqid('wpuf_', true),
-                'is_new'    => true
+                'id'         => uniqid( 'wpuf_', true ),
+                'is_new'    => true,
             ],
             [
                 'input_type' => 'text',
@@ -111,8 +111,8 @@ class Event_Form_Template extends Form_Template {
                 'is_meta'    => 'yes',
                 'size'       => 40,
                 'wpuf_cond'  => $this->conditionals,
-                'id'         => uniqid('wpuf_', true),
-                'is_new'    => true
+                'id'         => uniqid( 'wpuf_', true ),
+                'is_new'    => true,
             ],
             [
                 'input_type' => 'text',
@@ -122,8 +122,8 @@ class Event_Form_Template extends Form_Template {
                 'name'       => '_EventCost',
                 'is_meta'    => 'yes',
                 'wpuf_cond'  => $this->conditionals,
-                'id'         => uniqid('wpuf_', true),
-                'is_new'    => true
+                'id'         => uniqid( 'wpuf_', true ),
+                'is_new'    => true,
             ],
             [
                 'input_type'   => 'image_upload',
@@ -138,8 +138,8 @@ class Event_Form_Template extends Form_Template {
                 'css'          => '',
                 'max_size'     => '1024',
                 'wpuf_cond'    => $this->conditionals,
-                'id'           => uniqid('wpuf_', true),
-                'is_new'      => true
+                'id'           => uniqid( 'wpuf_', true ),
+                'is_new'      => true,
             ],
             [
                 'input_type'          => 'textarea',
@@ -148,8 +148,10 @@ class Event_Form_Template extends Form_Template {
                 'label'               => __( 'Short Description', 'wp-user-frontend' ),
                 'name'                => 'post_excerpt',
                 'is_meta'             => 'no',
-                'help'                => __( 'Provide a short description of this event (optional)',
-                    'wp-user-frontend' ),
+                'help'                => __(
+                    'Provide a short description of this event (optional)',
+                    'wp-user-frontend'
+                ),
                 'css'                 => '',
                 'rows'                => '5',
                 'cols'                => '25',
@@ -158,8 +160,8 @@ class Event_Form_Template extends Form_Template {
                 'rich'                => 'no',
                 'wpuf_cond'           => $this->conditionals,
                 'text_editor_control' => [],
-                'id'                   => uniqid('wpuf_', true),
-                'is_new'               => true
+                'id'                   => uniqid( 'wpuf_', true ),
+                'is_new'               => true,
             ],
             [
                 'input_type'  => 'text',
@@ -174,8 +176,8 @@ class Event_Form_Template extends Form_Template {
                 'default'     => '',
                 'size'        => '40',
                 'wpuf_cond'   => $this->conditionals,
-                'id'          => uniqid('wpuf_', true),
-                'is_new'     => true
+                'id'          => uniqid( 'wpuf_', true ),
+                'is_new'     => true,
             ],
         ];
 
@@ -210,7 +212,7 @@ class Event_Form_Template extends Form_Template {
         $utc->setTimezone( new DateTimeZone( 'UTC' ) );
         $utc->modify( $offset );
 
-        return $utc->format('Y-m-d H:i:s');
+        return $utc->format( 'Y-m-d H:i:s' );
     }
 
     /**
@@ -226,8 +228,10 @@ class Event_Form_Template extends Form_Template {
             'post_status'      => 'publish',
             'default_cat'      => '-1',
             'guest_post'       => 'false',
-            'message_restrict' => __( 'This page is restricted. Please Log in / Register to view this page.',
-                'wp-user-frontend' ),
+            'message_restrict' => __(
+                'This page is restricted. Please Log in / Register to view this page.',
+                'wp-user-frontend'
+            ),
             'redirect_to'      => 'post',
             'comment_status'   => 'open',
             'submit_text'      => __( 'Create Event', 'wp-user-frontend' ),
@@ -239,9 +243,8 @@ class Event_Form_Template extends Form_Template {
                     'Event has been updated successfully. %1$sView event%2$s',
                     'wp-user-frontend'
                 ),
-
                 '<a target="_blank" href="{link}">',
-                    '</a>'
+                '</a>'
             ),
             'edit_url'         => '',
             'update_text'      => __( 'Update Event', 'wp-user-frontend' ),
@@ -276,7 +279,7 @@ Description: {post_content}
 Short Description: {post_excerpt}
 Author: {author}
 Event URL: {permalink}
-Edit URL: {editlink}'
+Edit URL: {editlink}',
             ],
         ];
     }

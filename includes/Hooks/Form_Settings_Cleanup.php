@@ -2,9 +2,13 @@
 
 namespace WeDevs\Wpuf\Hooks;
 
+use WeDevs\Wpuf\Platform\Stores\Stores;
+
+use WeDevs\Wpuf\Platform\Stores\Normalizers;
+
 /**
  * Form Settings Cleanup
- * 
+ *
  * Cleans up pro-only settings from form configurations in the free version
  * to prevent unintended activation of premium features.
  */
@@ -29,16 +33,16 @@ class Form_Settings_Cleanup {
         }
 
         $form_settings = wpuf_get_form_settings( $form_id );
-        
+
         if ( empty( $form_settings ) ) {
             return;
         }
 
         $cleaned_settings = $this->remove_pro_notification_settings( $form_settings );
-        
+
         // Update if settings were modified
         if ( $cleaned_settings !== $form_settings ) {
-            update_post_meta( $form_id, 'wpuf_form_settings', $cleaned_settings );
+            Stores::forms()->write_settings( $form_id, $cleaned_settings );
         }
     }
 
@@ -53,17 +57,17 @@ class Form_Settings_Cleanup {
             return;
         }
 
-        $form_settings = get_post_meta( $post_id, 'wpuf_form_settings', true );
-        
+        $form_settings = Stores::forms()->read_meta( $post_id, 'wpuf_form_settings' );
+
         if ( empty( $form_settings ) ) {
             return;
         }
 
         $cleaned_settings = $this->remove_pro_notification_settings( $form_settings );
-        
+
         // Update if settings were modified
         if ( $cleaned_settings !== $form_settings ) {
-            update_post_meta( $post_id, 'wpuf_form_settings', $cleaned_settings );
+            Stores::forms()->write_settings( $post_id, $cleaned_settings );
         }
     }
 
@@ -74,34 +78,8 @@ class Form_Settings_Cleanup {
      * @return array Cleaned form settings
      */
     private function remove_pro_notification_settings( $form_settings ) {
-        if ( ! is_array( $form_settings ) ) {
-            return $form_settings;
-        }
-
-        // List of pro-only notification settings to remove
-        $pro_notification_keys = [
-            'notification_edit',
-            'notification_edit_to', 
-            'notification_edit_subject',
-            'notification_edit_body'
-        ];
-
-        foreach ( $pro_notification_keys as $key ) {
-            if ( isset( $form_settings[ $key ] ) ) {
-                unset( $form_settings[ $key ] );
-            }
-        }
-
-        if ( isset( $form_settings['notification'] ) && is_array( $form_settings['notification'] ) ) {
-            $notification_pro_keys = [ 'edit', 'edit_to', 'edit_subject', 'edit_body' ];
-            
-            foreach ( $notification_pro_keys as $key ) {
-                if ( isset( $form_settings['notification'][ $key ] ) ) {
-                    unset( $form_settings['notification'][ $key ] );
-                }
-            }
-        }
-
-        return $form_settings;
+        // One rule for the builder save and this cleanup (task 2.4a); callers
+        // already return when Pro is active.
+        return Normalizers::form_settings( $form_settings, false );
     }
 }

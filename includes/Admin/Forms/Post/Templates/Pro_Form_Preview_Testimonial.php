@@ -30,7 +30,7 @@ class Pro_Form_Preview_Testimonial {
 
     public function __construct() {
         $this->title    = __( 'Testimonial Submission', 'wp-user-frontend' );
-        $this->image    = WPUF_ASSET_URI . '/images/templates/testimonial.svg';
+        $this->image    = WPUF_ASSET_URI . '/images/templates/testimonial.webp';
         $this->pro_icon = WPUF_ASSET_URI . '/images/templates/crown.svg';
     }
 

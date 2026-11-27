@@ -48,17 +48,6 @@ class TEC_Compatibility_Manager {
     }
 
     /**
-     * Get current TEC version
-     *
-     * @since 4.1.9
-     *
-     * @return string
-     */
-    public function get_tec_version() {
-        return $this->tec_version;
-    }
-
-    /**
      * Get appropriate compatibility handler based on TEC version
      *
      * @since 4.1.9

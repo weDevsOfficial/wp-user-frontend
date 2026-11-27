@@ -153,6 +153,19 @@ export class FieldAddPage extends Base {
 
 
 
+    /**
+     * Close a builder prompt (custom field tooltip, API key notice) when it opens.
+     * The React builder opens it one render after the click, so wait briefly
+     * instead of checking visibility once.
+     */
+    async dismissPromptIfShown(selector: string) {
+        const prompt = this.page.locator(selector).first();
+        if (await prompt.waitFor({ state: 'visible', timeout: 3000 }).then(() => true, () => false)) {
+            await prompt.click();
+            await prompt.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
+        }
+    }
+
     /**************************************/
     /********** @Common Fields ***********/
     /************************************/
@@ -163,9 +176,7 @@ export class FieldAddPage extends Base {
         //CustomFields
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsText);
         
-        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
-        }
+        await this.dismissPromptIfShown(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsTextarea);
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsDropdown);
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsMultiSelect);
@@ -201,9 +212,7 @@ export class FieldAddPage extends Base {
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsAddressField);
             //GoogleMaps
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsGoogleMaps);
-            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
-                await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
-            }
+            await this.dismissPromptIfShown(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsGoogleMapsEdit);
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.googleMapsSearchbox);
             await this.validateAndClick(Selectors.postForms.addPostFieldButton);
@@ -227,9 +236,7 @@ export class FieldAddPage extends Base {
         //CustomFields
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsText);
         
-        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
-        }
+        await this.dismissPromptIfShown(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsTextarea);
     }
 
@@ -325,9 +332,7 @@ export class FieldAddPage extends Base {
 
         else {
             //ShortCode
-            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-                await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
-            }
+            await this.dismissPromptIfShown(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
             //ActionHook
             await this.validateAndClick(Selectors.postForms.addOthers_Common.othersActionHook);
             //TermsAndConditions
@@ -336,9 +341,7 @@ export class FieldAddPage extends Base {
             await this.validateAndClick(Selectors.postForms.addOthers_Common.othersRatings);
             //ReallySimpleCaptcha
             await this.validateAndClick(Selectors.postForms.addOthers_Common.othersReallySimpleCaptcha);
-            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
-                await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
-            }
+            await this.dismissPromptIfShown(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
             //MathCaptcha
             await this.validateAndClick(Selectors.postForms.addOthers_Common.othersMathCaptcha);
              
@@ -382,9 +385,7 @@ export class FieldAddPage extends Base {
         await this.validateAndClick(Selectors.postForms.addTaxonomies_PF.categoryBlock);
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsText);
         
-        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
-        }
+        await this.dismissPromptIfShown(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsTextarea);
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsDropdown);
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsRadio);
@@ -415,9 +416,7 @@ export class FieldAddPage extends Base {
         await this.validateAndClick(Selectors.postForms.addPostFields_PF.postTitleBlock);
         //DateTime
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsDateTime);
-        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
-        }
+        await this.dismissPromptIfShown(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
 
     }
 
@@ -425,9 +424,7 @@ export class FieldAddPage extends Base {
         //FOS
         await this.validateAndClick(Selectors.postForms.addPostFields_PF.postTitleBlock);
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsWebsiteUrl);
-        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
-        }
+        await this.dismissPromptIfShown(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
     }
 
 
@@ -465,30 +462,46 @@ export class FieldAddPage extends Base {
     //Admin checks if Created form is displayed in Post Forms - Table/List
     async validatePostFormCreated(validateNewPostName_PF: string) {
         //Return HOME
-        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
+        // The save must be finished first: leaving the builder while it is still saving
+        // stops at the unsaved-changes guard and the list never opens.
+        await expect(this.page.locator(Selectors.postForms.saveForm_Common.saveFormButton).first()).toBeDisabled({ timeout: 30000 }).catch(() => {});
+        await this.navigateToURL(this.wpufPostFormPage);
+        await this.isVisibleSoon(Selectors.postForms.navigatePage_PF.checkAddButton_PF);
         await this.page.reload();
          
 
         //ASSERTION > Check if-VALID
-        const checkNewBlankFormCreatedValid_PF = await this.page.isVisible(Selectors.postForms.navigatePage_PF.checkAddButton_PF);
+        const checkNewBlankFormCreatedValid_PF = await this.isVisibleSoon(Selectors.postForms.navigatePage_PF.checkAddButton_PF);
         if (checkNewBlankFormCreatedValid_PF === true) {
             await this.checkElementText(Selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF(validateNewPostName_PF), validateNewPostName_PF);
-            return await this.page.textContent(Selectors.postForms.navigatePage_PF.postFormShortCode(validateNewPostName_PF));
+            const shortcode = (await this.page.textContent(Selectors.postForms.navigatePage_PF.postFormShortCode(validateNewPostName_PF))) || '';
+            // An empty value made the next test build an empty page (PF0003): fail here instead.
+            expect(shortcode, `shortcode of "${validateNewPostName_PF}" in the forms list`).toMatch(/^\[wpuf_form id="\d+"\]$/);
+            return shortcode;
         }
+        throw new Error(`Forms list did not load after saving "${validateNewPostName_PF}"`);
     }
 
     async validateProductPostFormCreated(validateNewPostName_PF: string) {
         //Return HOME
-        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
+        // The save must be finished first: leaving the builder while it is still saving
+        // stops at the unsaved-changes guard and the list never opens.
+        await expect(this.page.locator(Selectors.postForms.saveForm_Common.saveFormButton).first()).toBeDisabled({ timeout: 30000 }).catch(() => {});
+        await this.navigateToURL(this.wpufPostFormPage);
+        await this.isVisibleSoon(Selectors.postForms.navigatePage_PF.checkAddButton_PF);
         await this.page.reload();
          
 
         //ASSERTION > Check if-VALID
-        const checkNewBlankFormCreatedValid_PF = await this.page.isVisible(Selectors.postForms.navigatePage_PF.checkAddButton_PF);
+        const checkNewBlankFormCreatedValid_PF = await this.isVisibleSoon(Selectors.postForms.navigatePage_PF.checkAddButton_PF);
         if (checkNewBlankFormCreatedValid_PF === true) {
             await this.checkElementText(Selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF(validateNewPostName_PF), validateNewPostName_PF);
-            return await this.page.textContent(Selectors.postForms.navigatePage_PF.postFormShortCode(validateNewPostName_PF));
+            const shortcode = (await this.page.textContent(Selectors.postForms.navigatePage_PF.postFormShortCode(validateNewPostName_PF))) || '';
+            // An empty value made the next test build an empty page (PF0003): fail here instead.
+            expect(shortcode, `shortcode of "${validateNewPostName_PF}" in the forms list`).toMatch(/^\[wpuf_form id="\d+"\]$/);
+            return shortcode;
         }
+        throw new Error(`Forms list did not load after saving "${validateNewPostName_PF}"`);
     }
 
 
@@ -527,11 +540,11 @@ export class FieldAddPage extends Base {
     //Admin checks if Created form is displayed in Post Forms - Table/List
     async validateRegistrtionFormCreated(validateNewPostName_RF) {
         //Return HOME
-        await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
+        await this.clickWpufSubmenu(Selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
          
 
         //ASSERTION > Check if-VALID
-        const checkNewBlankFormCreatedValid_RF = await this.page.isVisible(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
+        const checkNewBlankFormCreatedValid_RF = await this.isVisibleSoon(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
         if (checkNewBlankFormCreatedValid_RF === true) {
             await this.checkElementText(Selectors.registrationForms.navigatePage_RF.postFormsPageFormTitleCheck_RF, validateNewPostName_RF);
         }

@@ -308,7 +308,12 @@ $style_output .= $scope . ' .wpuf-el.dropdown select, ' . $scope . ' .wpuf-el.mu
 
     <?php if ( $form_id > 0 ) : ?>
         <?php
-        $shortcode_output = do_shortcode( '[wpuf_form id="' . intval( $form_id ) . '"]' );
+        $shortcode_output = \WeDevs\Wpuf\Frontend\Renderer::with_source(
+            'block',
+            function () use ( $form_id ) {
+                return do_shortcode( '[wpuf_form id="' . intval( $form_id ) . '"]' );
+            }
+        );
 
         if ( $is_editor_preview ) {
             // Strip inline scripts so multistep/conditional JS does not execute

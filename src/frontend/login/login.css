@@ -1,0 +1,609 @@
+/**
+ * The React `[wpuf-login]` screens.
+ *
+ * Free: no design of its own, the screens follow the theme like the
+ * classic template did (labels on their own line, the classic notice
+ * boxes). Only what the React parts need: the list reset, the password
+ * show / hide button, the field messages, the spinner.
+ *
+ * Pro (`.wpuf-login-styled`, Simple_Login `wpuf_login_screen_styled`): the
+ * registration form's markup classes, so forms.css (with the classic
+ * frontend-forms / layout1 sheets) gives the card its look; the rules
+ * below add the login parts. Colours: forms.css reads `--wpuf-m-*`; here
+ * they come from the `--wpuf-login-*` variables of Pro's login settings
+ * (set on the root by index.jsx), with the registration palette as the
+ * fallback.
+ */
+
+/* Free: the theme's type and colours, not the kit's. */
+.wpuf-frontend.wpuf-login-root:not(.wpuf-login-styled) {
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form ul.wpuf-login-fields {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form ul.wpuf-login-fields > li {
+    margin: 0 0 1em;
+    padding: 0;
+    list-style: none;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form ul.wpuf-login-fields > li::before {
+    content: none;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form .wpuf-label label {
+    display: block;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form .wpuf-help {
+    display: block;
+    font-size: 0.875em;
+    opacity: 0.8;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form .wpuf-error-msg {
+    display: block;
+    margin-top: 4px;
+    color: #a94442;
+    font-size: 0.875em;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form .wpuf-login-password {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form .wpuf-login-password input {
+    padding-right: 40px;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form .wpuf-login-password__toggle {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    color: inherit;
+    opacity: 0.7;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form .wpuf-login-password__toggle:hover,
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form .wpuf-login-password__toggle:focus-visible {
+    opacity: 1;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form .wpuf-login-password__toggle svg {
+    width: 18px;
+    height: 18px;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form li.wpuf-remember-forgot-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 16px;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form .wpuf-remember-me {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form .wpuf-remember-me label {
+    margin: 0;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form .wpuf-submit .wpuf-submit-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wpuf-frontend.wpuf-login-root form.wpuf-login-form .wpuf-login-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: wpuf-login-spin 0.7s linear infinite;
+}
+
+@keyframes wpuf-login-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wpuf-frontend.wpuf-login-root form.wpuf-login-form .wpuf-login-spinner {
+        animation-duration: 2s;
+    }
+}
+
+/* The classic notice boxes (frontend-forms.css). */
+.wpuf-frontend.wpuf-login-root:not(.wpuf-login-styled) .wpuf-login-notices .wpuf-error,
+.wpuf-frontend.wpuf-login-root:not(.wpuf-login-styled) .wpuf-login-notices .wpuf-message,
+.wpuf-frontend.wpuf-login-root:not(.wpuf-login-styled) .wpuf-login-notices .wpuf-success {
+    margin: 0 0 1em;
+    padding: 10px;
+    border: 1px solid #ebccd1;
+    border-radius: 3px;
+    background-color: #f2dede;
+    color: #a94442;
+    font-size: 13px;
+}
+
+.wpuf-frontend.wpuf-login-root:not(.wpuf-login-styled) .wpuf-login-notices .wpuf-message {
+    border-color: #faebcc;
+    background: #fcf8e3;
+    color: #8a6d3b;
+}
+
+.wpuf-frontend.wpuf-login-root:not(.wpuf-login-styled) .wpuf-login-notices .wpuf-success {
+    border-color: #d6e9c6;
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.wpuf-frontend.wpuf-login-root .wpuf-action-links {
+    margin-top: 1em;
+}
+
+/* ---- Pro: the designed card ---- */
+
+
+/*
+ * Width and alignment on the root's children: a block theme constrains the
+ * root itself (`.is-layout-constrained > *`) and forms.css then centres
+ * the root's children with !important, so left / right win with it too.
+ */
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled > form,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled > .wpuf-action-links {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: var(--wpuf-login-form-width, 440px);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-align-left > form,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-align-left > .wpuf-action-links {
+    margin-left: 0 !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-align-right > form,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-align-right > .wpuf-action-links {
+    margin-right: 0 !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled *,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled *::before,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled *::after {
+    box-sizing: border-box;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) {
+    --wpuf-m-text: var(--wpuf-login-label-color, #374151);
+    --wpuf-m-muted: var(--wpuf-login-help-text, #6b7280);
+    --wpuf-m-input-bg: var(--wpuf-login-field-bg, #ffffff);
+    --wpuf-m-input-text: var(--wpuf-login-input-text, #111827);
+    --wpuf-m-border: var(--wpuf-login-field-border, #d1d5db);
+    --wpuf-m-accent: var(--wpuf-login-button-bg, #0088bb);
+    --wpuf-m-accent-text: var(--wpuf-login-button-text, #ffffff);
+    --wpuf-m-ring: color-mix(in srgb, var(--wpuf-m-accent) 20%, transparent);
+    padding: 32px !important;
+    border: 1px solid var(--wpuf-login-form-border, transparent) !important;
+    border-radius: 16px !important;
+    background: var(--wpuf-login-form-bg, #ffffff) !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form {
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li {
+    margin: 0 0 20px !important;
+    padding: 0 !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li .wpuf-label,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li .wpuf-fields {
+    float: none !important;
+    width: 100% !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li .wpuf-fields input::placeholder {
+    color: var(--wpuf-login-placeholder, var(--wpuf-m-muted)) !important;
+}
+
+/* Pro's heading (`login_message`): title and subtitle at the top of the card. */
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-login-message:empty {
+    display: none;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-login-header {
+    margin: 0 0 24px;
+    text-align: center;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-login-title {
+    margin: 0 0 6px !important;
+    padding: 0 !important;
+    color: var(--wpuf-m-text) !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    line-height: 32px !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-login-subtitle {
+    margin: 0 !important;
+    color: var(--wpuf-m-muted) !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-login-subtitle:empty {
+    display: none;
+}
+
+/* Password with the show / hide button over its end. */
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-login-password {
+    position: relative;
+    display: block;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields .wpuf-login-password input {
+    width: 100% !important;
+    padding-right: 46px !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-login-password__toggle {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: var(--wpuf-m-muted) !important;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-login-password__toggle:hover,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-login-password__toggle:focus-visible {
+    background: color-mix(in srgb, var(--wpuf-m-text) 8%, transparent) !important;
+    color: var(--wpuf-m-input-text) !important;
+    outline: none;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-login-password__toggle svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Remember me left, lost password right. */
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li.wpuf-remember-forgot-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin-top: -4px !important;
+}
+
+/* The classic sheet's clearfix pseudo-elements would be flex items here. */
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li.wpuf-remember-forgot-wrapper::before,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li.wpuf-remember-forgot-wrapper::after {
+    display: none !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-remember-me {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-remember-me input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0 !important;
+    accent-color: var(--wpuf-m-accent);
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-remember-me label {
+    margin: 0 !important;
+    color: var(--wpuf-m-text) !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 20px !important;
+    cursor: pointer;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-lost-password a {
+    color: var(--wpuf-m-accent) !important;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-decoration: none !important;
+    box-shadow: none !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-lost-password a:hover {
+    text-decoration: underline !important;
+}
+
+/* The submit row: one wide button with the spinner inside. */
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li.wpuf-submit {
+    margin: 4px 0 0 !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit .wpuf-submit-button {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100% !important;
+    border: 1px solid var(--wpuf-login-button-border, var(--wpuf-m-accent)) !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit .wpuf-submit-button.is-busy {
+    cursor: progress;
+    opacity: 0.85;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-login-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: wpuf-login-spin 0.7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-login-spinner {
+        animation-duration: 2s;
+    }
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style).is-submitting ul.wpuf-form > li:not(.wpuf-submit) {
+    opacity: 0.7;
+}
+
+/* Captcha and hook rows sit in the column like the fields. */
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li.wpuf-login-captcha,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li.wpuf-login-hook,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li.wpuf-login-bottom {
+    overflow-x: auto;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form > li.wpuf-login-bottom:last-child {
+    margin: 16px 0 0 !important;
+}
+
+/*
+ * Pro's layouts on the card: each keeps its shape from the classic sheets,
+ * the colours come from the settings (layout defaults + saved values).
+ */
+
+/* 3 Minimal: no card, underlined fields. */
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-layout3 form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) {
+    padding: 8px 0 !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-layout3 form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="hidden"])) {
+    padding-left: 0 !important;
+    border-width: 0 0 1px !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-layout3 form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="hidden"])):focus {
+    box-shadow: 0 1px 0 0 var(--wpuf-m-accent) !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-layout3 form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-login-password__toggle {
+    right: 0;
+}
+
+/* 4 Bordered: a drawn frame instead of the shadow. */
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-layout4 form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) {
+    border: 1px solid var(--wpuf-login-field-border, #d1d5db) !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+}
+
+/* 5 Rounded: pill fields and button. */
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-layout5 form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) {
+    border-radius: 24px !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-layout5 form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="hidden"])),
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-layout5 form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form li.wpuf-submit .wpuf-submit-button {
+    border-radius: 999px !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-layout5 form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="hidden"])) {
+    padding-left: 18px !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-layout5 form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-login-password__toggle {
+    right: 10px;
+    border-radius: 999px !important;
+}
+
+/* 6 Clean: no frame or shadow, quiet fields. */
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-layout6 form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) {
+    padding: 8px 0 !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-layout6 form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) ul.wpuf-form.wpuf-form li .wpuf-fields input:where(:not([type="checkbox"]):not([type="hidden"])) {
+    box-shadow: none !important;
+}
+
+/* 7 Premium: help lines (LoginForm), a larger heading, a deeper card. */
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-layout7 form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) {
+    padding: 40px !important;
+    border-radius: 20px !important;
+    box-shadow: 0 0 0 1px rgba(16, 24, 40, 0.05), 0 20px 40px -12px rgba(16, 24, 40, 0.18) !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-layout7 form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) .wpuf-login-title {
+    font-size: 28px !important;
+    line-height: 36px !important;
+}
+
+@media (max-width: 480px) {
+    .wpuf-frontend.wpuf-login-root.wpuf-login-styled.wpuf-login-layout7 form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) {
+        padding: 28px 20px !important;
+    }
+}
+
+/* Links under the card (register, log in, lost password). */
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-action-links {
+    margin-top: 16px;
+    /* Outside the card: on the page's background, not the card's help colour. */
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-action-links a {
+    color: var(--wpuf-login-button-bg, #0088bb) !important;
+    font-weight: 500;
+    text-decoration: none !important;
+    box-shadow: none !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-action-links a:hover {
+    text-decoration: underline !important;
+}
+
+@media (max-width: 480px) {
+    .wpuf-frontend.wpuf-login-root.wpuf-login-styled form.wpuf-login-form.wpuf-form-add:not(.wpuf-theme-style) {
+        padding: 24px 20px !important;
+    }
+}
+
+/*
+ * The server's notices (Simple_Login: `.wpuf-error`, `.wpuf-message`) at the
+ * top of the form card, and `login_message` output above it: the kit's
+ * notice look (soft box, icon), the classic sheet's boxes are not loaded.
+ */
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-login-notices {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0 0 20px;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-login-notices:not(:has(*)) {
+    display: none;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-login-notices .wpuf-login-error-lines {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-login-notices .wpuf-login-error-line {
+    display: block;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-login-notices:empty {
+    display: none;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-login-notices .wpuf-error,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-login-notices .wpuf-message,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-slot-inline .wpuf-error,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-slot-inline .wpuf-message,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-slot-inline .message {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0 !important;
+    padding: 12px 14px !important;
+    border: 1px solid #fecaca !important;
+    border-radius: var(--wpuf-fe-radius) !important;
+    background: var(--wpuf-fe-danger-soft) !important;
+    color: #991b1b !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+    text-align: left !important;
+    overflow-wrap: anywhere;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-login-notices .wpuf-error::before,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-slot-inline .wpuf-error::before {
+    content: "";
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-login-notices .wpuf-message,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-slot-inline .wpuf-message,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-slot-inline .message {
+    border-color: #bfdbfe !important;
+    background: var(--wpuf-fe-info-soft, #eff6ff) !important;
+    color: #1e40af !important;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-login-notices .wpuf-message::before,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-slot-inline .wpuf-message::before {
+    content: "";
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='16' x2='12' y2='12'/%3E%3Cline x1='12' y1='8' x2='12.01' y2='8'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='16' x2='12' y2='12'/%3E%3Cline x1='12' y1='8' x2='12.01' y2='8'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-login-notices a,
+.wpuf-frontend.wpuf-login-root.wpuf-login-styled .wpuf-slot-inline a {
+    color: inherit !important;
+    font-weight: 600;
+}

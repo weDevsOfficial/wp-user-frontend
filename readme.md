@@ -4,10 +4,10 @@
 **Contributors:** [wedevs](https://profiles.wordpress.org/wedevs/), [tareq1988](https://profiles.wordpress.org/tareq1988/), [nizamuddinbabu](https://profiles.wordpress.org/nizamuddinbabu/)  
 **Donate link:** https://tareq.co/donate/  
 **Tags:** frontend post, user directory, membership, user profile, user registration  
-**Requires at least:** 5.0  
+**Requires at least:** 6.6  
 **Tested up to:** 7.1  
 **Stable tag:** 4.3.15  
-**Requires PHP:** 7.4  
+**Requires PHP:** 8.0  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -455,6 +455,18 @@ User Frontend uses the following third-party services to enhance frontend conten
 
 User Frontend uses the [Appsero](https://appsero.com) SDK to collect **optional telemetry data only with your consent**. No data is collected by default. Telemetry starts only after you opt in through the admin notice, helping us improve the plugin and troubleshoot issues faster.
 
+
+## Source Code ##
+
+The admin JavaScript and CSS shipped in this plugin are compiled from human-readable source code, published in the public repository: [github.com/weDevsOfficial/wp-user-frontend](https://github.com/weDevsOfficial/wp-user-frontend).
+
+To build the assets yourself from a checkout of the release tag:
+
+1. Install Node.js 26 or newer and enable pnpm (`corepack enable`).
+2. Run `pnpm install --frozen-lockfile`.
+3. Run `pnpm build`.
+
+The admin screens use the [plugin-ui](https://github.com/getdokan/plugin-ui) component library (GPL-2.0-or-later), pinned to a fixed commit in `package.json`. Every bundled file is local; the build fails if any compiled file would load a file from another site.
 
 ## Installation ##
 

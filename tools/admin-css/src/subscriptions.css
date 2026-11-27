@@ -1,0 +1,104 @@
+/**
+ * WPUF React Subscriptions screen: Tailwind CSS 4 entry (replaces the
+ * src/css/subscriptions.css import compiled with the shared Tailwind 3 config).
+ *
+ * Plain Tailwind classes (no prefix, like FlyHR). Only the subscriptions
+ * sources are scanned. build.mjs scopes the utilities to body.wpuf-admin-screen
+ * and adds the screen's Tailwind 3 base + daisyUI components
+ * (src/base-v3/subscriptions.pre.css).
+ */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@import "./v3-theme.css";
+
+@source "../../../src/admin/apps/subscriptions";
+@source "../../../includes/Admin/views/subscriptions.php";
+/* Route container class (Admin\Screens\Subscriptions): the 20px page gutter
+   of the forms lists. */
+@source inline("px-[20px]");
+
+/* Words in these sources that read as Tailwind classes but never had CSS in
+   the Tailwind 3 build (unprefixed there, or not classes at all, e.g.
+   type="hidden"). Kept out so the screen looks exactly as before. */
+@source not inline("after:!rotate-45");
+@source not inline("after:border-[#DBDBDB]");
+@source not inline("after:content-['']");
+@source not inline("after:h-[13px]");
+@source not inline("after:right-[1.4rem]");
+@source not inline("after:top-[-7px]");
+@source not inline("after:w-[13px]");
+@source not inline("after:z-[-1]");
+@source not inline("before:-right-[1px]");
+@source not inline("before:content-['']");
+@source not inline("before:w-[70%]");
+@source not inline("border-[#DBDBDB]");
+@source not inline("border-gray-900/5");
+@source not inline("container");
+@source not inline("filter");
+@source not inline("focus:outline-offset-0");
+@source not inline("inline");
+@source not inline("isolate");
+@source not inline("min-w-[122px]");
+@source not inline("ms-3");
+@source not inline("ms-auto");
+
+@theme {
+    --color-primary: #059669;
+    --color-primaryHover: #10b981;
+    --text-2xs: 13px;
+}
+
+@utility min-w-btn-cancel {
+    min-width: 101px;
+}
+
+@utility min-w-btn-save {
+    min-width: 158px;
+}
+
+
+/* Tooltip styles — DaisyUI's .tooltip class doesn't work with the wpuf- prefix,
+   so we define .wpuf-tooltip manually using data-tip + ::before pseudo-element. */
+.wpuf-tooltip {
+    position: relative;
+    display: inline-flex;
+}
+
+.wpuf-tooltip[data-tip]::before {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: normal;
+    max-width: 20rem;
+    width: max-content;
+    padding: 0.375rem 0.625rem;
+    font-size: 0.75rem;
+    line-height: 1.25;
+    border-radius: 0.375rem;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 50;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.wpuf-tooltip[data-tip]::after {
+    content: "";
+    position: absolute;
+    bottom: calc(100% + 0.125rem);
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 0.375rem;
+    border-style: solid;
+    border-color: transparent;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 50;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.wpuf-tooltip[data-tip]:hover::before,
+.wpuf-tooltip[data-tip]:hover::after {
+    opacity: 1;
+}

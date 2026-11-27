@@ -14,11 +14,13 @@ class Form_Field_Pro extends Field_Contract {
      */
     public function render( $field_settings, $form_id, $post_id = null, $user_id = null ) {
         if ( current_user_can( 'manage_options' ) ) {
-            esc_html( sprintf(
+            echo esc_html(
+                sprintf(
                 // translators: %s is settings template
-                __( '%s is a premium field. To use this field you need to upgrade to the premium version.', 'wp-user-frontend' ),
-                $field_settings['template']
-            ) );
+                    __( '%s is a premium field. To use this field you need to upgrade to the premium version.', 'wp-user-frontend' ),
+                    $field_settings['template']
+                )
+            );
             echo wp_kses_post( '<br/>' );
         }
     }

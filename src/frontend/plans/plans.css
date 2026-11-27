@@ -1,0 +1,86 @@
+/**
+ * The plans app (`[wpuf_sub_pack]`): the grid around the kit's PlanCard.
+ */
+
+/* As develop's plans list (max-w-5xl): up to 1024px, centered, wider than a
+   block theme's content column; no effect where the column is narrower. */
+.wpuf-frontend.wpuf-plans-root {
+    max-width: 64rem;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.wpuf-frontend .wpuf-plans {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.wpuf-frontend .wpuf-plans .wpuf-notice {
+    margin: 0;
+}
+
+.wpuf-frontend .wpuf-plans__notice-title {
+    display: block;
+    margin-bottom: 2px;
+}
+
+.wpuf-frontend .wpuf-plans__active {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px;
+    border: 1px solid var(--wpuf-fe-border);
+    border-radius: var(--wpuf-fe-radius-lg);
+    background: var(--wpuf-fe-soft);
+}
+
+.wpuf-frontend .wpuf-plans__active p {
+    margin: 0;
+}
+
+.wpuf-frontend .wpuf-plans__active-title {
+    font-weight: 600;
+}
+
+.wpuf-frontend ul.wpuf-plans__grid {
+    display: grid;
+    /* auto-fit: the plans share the row (three at about 330px in 1024px);
+       200px keeps three in one row down to a 645px column. */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 16px;
+    align-items: stretch;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wpuf-frontend ul.wpuf-plans__grid > li {
+    display: flex;
+    /* One or two plans do not stretch across the whole row. */
+    max-width: 360px;
+    margin: 0;
+    padding: 0;
+}
+
+/* A highlighted plan: every card gets the ribbon's 30px on top, so the
+   card bodies line up on every row (kit.css .wpuf-plan-card__ribbon). */
+.wpuf-frontend ul.wpuf-plans__grid:has(.wpuf-plan-card.is-featured) > li {
+    padding-top: 30px;
+}
+
+.wpuf-frontend ul.wpuf-plans__grid:has(.wpuf-plan-card.is-featured) .wpuf-plan-card.is-featured {
+    margin-top: 0;
+}
+
+.wpuf-frontend ul.wpuf-plans__grid > li::before,
+.wpuf-frontend ul.wpuf-plans__grid > li::marker {
+    content: none;
+}
+
+.wpuf-frontend .wpuf-plans__empty {
+    padding: 24px 0;
+    text-align: center;
+}

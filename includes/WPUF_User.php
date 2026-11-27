@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf;
 
+use WeDevs\Wpuf\Platform\Stores\Stores;
 use WP_User;
 
 /**
@@ -81,6 +82,36 @@ class WPUF_User {
     }
 
     /**
+     * Lock or unlock the user's frontend posting, with the reason shown to them.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $locked 'yes' / 'no'
+     * @param string $reason Reason text
+     *
+     * @return void
+     */
+    public function set_post_lock( $locked, $reason ) {
+        update_user_meta( $this->id, 'wpuf_postlock', $locked );
+        update_user_meta( $this->id, 'wpuf_lock_cause', $reason );
+    }
+
+    /**
+     * Lock or unlock the user's frontend editing, with the reason shown to them.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $locked 'yes' / 'no'
+     * @param string $reason Reason text
+     *
+     * @return void
+     */
+    public function set_edit_post_lock( $locked, $reason ) {
+        update_user_meta( $this->id, 'wpuf_edit_postlock', $locked );
+        update_user_meta( $this->id, 'wpuf_edit_post_lock_cause', $reason );
+    }
+
+    /**
      * Handles user subscription
      *
      * @return User_Subscription
@@ -97,7 +128,7 @@ class WPUF_User {
      * @return bool
      */
     public function is_verified() {
-        if ( !metadata_exists( 'user', $this->id, '_wpuf_user_active' ) ) {
+        if ( ! metadata_exists( 'user', $this->id, '_wpuf_user_active' ) ) {
             return true;
         }
 
@@ -177,7 +208,7 @@ class WPUF_User {
             return $address;
         }
 
-        if ( !empty( $address ) ) {
+        if ( ! empty( $address ) ) {
             return implode( ' ,', $address );
         }
 
@@ -192,10 +223,7 @@ class WPUF_User {
      * @return mixed|string
      */
     public function get_transaction_data( $array = false ) {
-        global $wpdb;
-
-        $sql      = "SELECT * FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = $this->id";
-        $txn_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = %d", $this->id ), ARRAY_A );
+        $txn_data = Stores::transactions()->rows_for_user( $this->id, [], 0, 0, true );
 
         return apply_filters( 'wpuf_privacy_transaction_export_data', $txn_data );
     }

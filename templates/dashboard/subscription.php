@@ -21,32 +21,12 @@ if ( ! function_exists( 'wpuf_dashboard_get_subscription_data' ) ) {
         if ( ! $subscription || is_wp_error( $subscription ) || empty( $subscription->meta_value ) ) {
             return [];
         }
+		$store = \WeDevs\Wpuf\Platform\Stores\Stores::transactions();
 		// Get payment gateway
-		$payment_gateway = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT payment_type
-            FROM {$wpdb->prefix}wpuf_transaction
-            WHERE user_id = %d
-            AND status = 'completed'
-            ORDER BY created DESC",
-                $user_id
-            )
-		);
+		$payment_gateway = $store->last_completed_gateway( $user_id );
 		$payment_gateway = $payment_gateway ? strtolower( $payment_gateway ) : '';
-
 		// Get last payment date
-		$last_payment_date = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT created
-            FROM {$wpdb->prefix}wpuf_transaction
-            WHERE user_id = %d
-            AND status = 'completed'
-            ORDER BY created DESC
-            LIMIT 1",
-                $user_id
-            )
-		);
-
+		$last_payment_date = $store->last_completed_date( $user_id );
 		// Get billing cycle details
 		$cycle_number = intval( $subscription->meta_value['billing_cycle_number'] );
 		$cycle_period = $subscription->meta_value['cycle_period'];
@@ -55,7 +35,6 @@ if ( ! function_exists( 'wpuf_dashboard_get_subscription_data' ) ) {
 		$trial_status        = $subscription->meta_value['_trial_status'];
 		$trial_duration      = $subscription->meta_value['_trial_duration'];
 		$trial_duration_type = $subscription->meta_value['_trial_duration_type'];
-
 
 		return [
 			'payment_gateway'       => $payment_gateway,
@@ -76,12 +55,14 @@ if ( ! function_exists( 'wpuf_dashboard_get_subscription_data' ) ) {
  *
  * @param array $subscription_data Subscription data
  */
-function display_subscription_details( $subscription_data ) {
-	$trial_html = get_trial_expiration_html( $subscription_data );
-	$billing_html = get_next_billing_html( $subscription_data );
-	?>
+if ( ! function_exists( 'display_subscription_details' ) ) :
+
+	function display_subscription_details( $subscription_data ) {
+		$trial_html = get_trial_expiration_html( $subscription_data );
+		$billing_html = get_next_billing_html( $subscription_data );
+		?>
         <br>
-	<?php if ( ! empty( $subscription_data['trial_status'] ) && wpuf_is_checkbox_or_toggle_on( $subscription_data['trial_status'] ) ) : ?>
+		<?php if ( ! empty( $subscription_data['trial_status'] ) && wpuf_is_checkbox_or_toggle_on( $subscription_data['trial_status'] ) ) : ?>
             <?php echo wp_kses_post( $trial_html ); ?>
         <?php elseif ( ! empty( $subscription_data['trial_status'] ) && ! wpuf_is_checkbox_or_toggle_on( $subscription_data['trial_status'] ) ) : ?>
             <div class="wpuf-recurring-info">
@@ -97,71 +78,73 @@ function display_subscription_details( $subscription_data ) {
             <input type="submit" name="wpuf_cancel_subscription" class="btn btn-sm btn-danger" value="<?php esc_html_e( 'Cancel', 'wp-user-frontend' ); ?>">
         </form>
         <?php
-}
-
-/**
- * Get trial expiration HTML
- *
- * @since 4.1.5
- *
- * @param array $subscription_data Subscription data
- *
- * @return string Trial expiration HTML
- */
-function get_trial_expiration_html( $subscription_data ) {
-	if ( ! empty( $subscription_data['trial_status'] ) && 'on' !== $subscription_data['trial_status'] ) {
-		return '';
 	}
 
-	$trial_expiration_date = gmdate(
-		'Y-m-d',
-		strtotime(
-			"+{$subscription_data['trial_duration']} {$subscription_data['trial_duration_type']}",
-			strtotime( $subscription_data['last_payment_date'] )
-		)
-	);
+	/**
+	 * Get trial expiration HTML
+	 *
+	 * @since 4.1.5
+	 *
+	 * @param array $subscription_data Subscription data
+	 *
+	 * @return string Trial expiration HTML
+	 */
+	function get_trial_expiration_html( $subscription_data ) {
+		if ( ! empty( $subscription_data['trial_status'] ) && 'on' !== $subscription_data['trial_status'] ) {
+			return '';
+		}
 
-	return sprintf(
-		'<div><strong>%s</strong> %s</div>',
-		esc_html__( 'Trial expiration date:', 'wp-user-frontend' ),
-		esc_html( $trial_expiration_date )
-	);
-}
+		$trial_expiration_date = gmdate(
+            'Y-m-d',
+            strtotime(
+                "+{$subscription_data['trial_duration']} {$subscription_data['trial_duration_type']}",
+                strtotime( $subscription_data['last_payment_date'] )
+            )
+		);
 
-/**
- * Get next billing HTML
- *
- * @since 4.1.5
- *
- * @param array $subscription_data Subscription data
- *
- * @return string Next billing HTML
- */
-function get_next_billing_html( $subscription_data ) {
-	if ( ! $subscription_data['last_payment_date'] ||
-		! $subscription_data['cycle_period'] ||
-		empty( $subscription_data['cycle_number'] ) ||
-		-1 === intval( $subscription_data['cycle_number'] ) ) {
 		return sprintf(
 			'<div><strong>%s</strong> %s</div>',
-			esc_html__( 'Next billing date:', 'wp-user-frontend' ),
-			esc_html__( 'N/A', 'wp-user-frontend' )
+			esc_html__( 'Trial expiration date:', 'wp-user-frontend' ),
+			esc_html( $trial_expiration_date )
 		);
 	}
 
-	$next_billing_date = gmdate(
-		'Y-m-d',
-		strtotime(
-			"+{$subscription_data['cycle_number']} {$subscription_data['cycle_period']}",
-			strtotime( $subscription_data['last_payment_date'] )
-		)
-	);
-	return sprintf(
-		'<div><strong>%s</strong> %s</div>',
-		esc_html__( 'Next billing date:', 'wp-user-frontend' ),
-		esc_html( $next_billing_date )
-	);
-}
+	/**
+	 * Get next billing HTML
+	 *
+	 * @since 4.1.5
+	 *
+	 * @param array $subscription_data Subscription data
+	 *
+	 * @return string Next billing HTML
+	 */
+	function get_next_billing_html( $subscription_data ) {
+		if ( ! $subscription_data['last_payment_date'] ||
+		! $subscription_data['cycle_period'] ||
+		empty( $subscription_data['cycle_number'] ) ||
+		-1 === intval( $subscription_data['cycle_number'] ) ) {
+			return sprintf(
+                '<div><strong>%s</strong> %s</div>',
+                esc_html__( 'Next billing date:', 'wp-user-frontend' ),
+                esc_html__( 'N/A', 'wp-user-frontend' )
+			);
+		}
+
+		$next_billing_date = gmdate(
+            'Y-m-d',
+            strtotime(
+                "+{$subscription_data['cycle_number']} {$subscription_data['cycle_period']}",
+                strtotime( $subscription_data['last_payment_date'] )
+            )
+		);
+		return sprintf(
+			'<div><strong>%s</strong> %s</div>',
+			esc_html__( 'Next billing date:', 'wp-user-frontend' ),
+			esc_html( $next_billing_date )
+		);
+	}
+
+endif;
 ?>
 <!-- Subscription Page Header -->
 <div class="wpuf-bg-transparent wpuf-rounded-t-lg wpuf-mb-3">
@@ -208,6 +191,7 @@ function get_next_billing_html( $subscription_data ) {
                     if ( 'yes' !== $user_sub['recurring'] ) {
                         if ( ! empty( $user_sub['expire'] ) ) {
                             $expiry_date = ( 'unlimited' === $user_sub['expire'] ) ? __( 'Unlimited', 'wp-user-frontend' ) : wpuf_get_date( wpuf_date2mysql( $user_sub['expire'] ) );
+                            /* translators: %s: expiry date */
                             $expire_info = sprintf( __( 'Expire: %s', 'wp-user-frontend' ), $expiry_date );
                         }
                     } else {
@@ -221,6 +205,7 @@ function get_next_billing_html( $subscription_data ) {
                                         strtotime( $subscription_data['last_payment_date'] )
                                     )
                                 );
+                                /* translators: %s: trial expiration date */
                                 $next_payment = sprintf( __( 'Next Payment: %s', 'wp-user-frontend' ), $trial_expiration_date );
                             } elseif ( $subscription_data['last_payment_date'] && $subscription_data['cycle_period'] && ! empty( $subscription_data['cycle_number'] ) && -1 !== intval( $subscription_data['cycle_number'] ) ) {
                                 $next_billing_date = gmdate(
@@ -230,6 +215,7 @@ function get_next_billing_html( $subscription_data ) {
                                         strtotime( $subscription_data['last_payment_date'] )
                                     )
                                 );
+                                /* translators: %s: next billing date */
                                 $next_payment = sprintf( __( 'Next Payment: %s', 'wp-user-frontend' ), $next_billing_date );
                             }
                         }
@@ -285,7 +271,7 @@ function get_next_billing_html( $subscription_data ) {
                                 <span><?php echo esc_html( $post_type_obj->labels->name ); ?>: <strong><?php echo esc_html( $value_display ); ?></strong></span>
                             </li>
                             <?php
-                            $feature_count++;
+                            ++$feature_count;
                         }
                     }
 
@@ -296,13 +282,27 @@ function get_next_billing_html( $subscription_data ) {
 
                     // Add other features to reach 4
                     $basic_features = [
-                        [ 'label' => __( 'Template Parts', 'wp-user-frontend' ), 'value' => __( 'Unlimited', 'wp-user-frontend' ) ],
-                        [ 'label' => __( 'User Requests', 'wp-user-frontend' ), 'value' => $user_requests_display ],
-                        [ 'label' => __( 'Global Styles', 'wp-user-frontend' ), 'value' => __( 'Unlimited', 'wp-user-frontend' ) ],
-                        [ 'label' => __( 'Pages', 'wp-user-frontend' ), 'value' => __( 'Unlimited', 'wp-user-frontend' ) ],
+                        [
+							'label' => __( 'Template Parts', 'wp-user-frontend' ),
+							'value' => __( 'Unlimited', 'wp-user-frontend' ),
+						],
+                        [
+							'label' => __( 'User Requests', 'wp-user-frontend' ),
+							'value' => $user_requests_display,
+						],
+                        [
+							'label' => __( 'Global Styles', 'wp-user-frontend' ),
+							'value' => __( 'Unlimited', 'wp-user-frontend' ),
+						],
+                        [
+							'label' => __( 'Pages', 'wp-user-frontend' ),
+							'value' => __( 'Unlimited', 'wp-user-frontend' ),
+						],
                     ];
 
-                    for ( $i = $feature_count; $i < $max_initial_features && $i < count( $basic_features ); $i++ ) {
+                    $basic_feature_count = count( $basic_features );
+
+                    for ( $i = $feature_count; $i < $max_initial_features && $i < $basic_feature_count; $i++ ) {
                         // Track this feature as displayed in compact view
                         $compact_displayed_features[] = strtolower( trim( $basic_features[ $i ]['label'] ) );
                         ?>

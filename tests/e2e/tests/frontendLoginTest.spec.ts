@@ -8,6 +8,7 @@ import {
     getWpufOptionKey,
     setWpufOptionKey,
     deleteWpufOptionKey,
+    wpCli,
 } from '../utils/wpEnvCli';
 
 let browser: Browser;
@@ -22,16 +23,14 @@ let turnstileBefore: string | null = null;
 let loginPageBefore: string | null = null;
 
 const loginPageTitle = 'WPUF FE Login';
+// wp-env prints status lines around wp-cli output: pick the value line.
+const cliValue = (out: string, re: RegExp): string => ( out.split( '\n' ).map( (l) => l.trim() ).find( (l) => re.test( l ) ) || '' );
 // Self-seeded subscriber — this spec must not depend on setup-phase fixtures.
 const feUser = 'flspecuser';
 const feUserEmail = 'flspecuser@yopmail.com';
 const feUserPassword = 'FLspec-Pass-2026!';
 
 test.beforeAll(async () => {
-    browser = await chromium.launch();
-    context = await browser.newContext();
-    page = await context.newPage();
-
     // Seed via wp-cli (fast, self-cleaning): page with [wpuf-login], registered
     // as WPUF's login page so the form posts back to itself.
     const seeded = seedPageWithShortcode(loginPageTitle, '[wpuf-login]');
@@ -43,6 +42,13 @@ test.beforeAll(async () => {
     setWpufOptionKey('wpuf_general', 'enable_turnstile', 'off');
 
     seedUser(feUser, feUserEmail, feUserPassword);
+
+    // The wp-cli seeds above block the event loop; the browser starts after them so its
+    // connection is not left idle that long (under load it dropped: "browser has been closed").
+    // HEADED=1 shows the browser (this spec launches its own).
+    browser = await chromium.launch({ headless: ! process.env.HEADED });
+    context = await browser.newContext();
+    page = await context.newPage();
 });
 
 test.afterAll(async () => {
@@ -67,11 +73,14 @@ test.describe('Frontend Login ([wpuf-login])', () => {
     /**
      * @Test_Scenarios : [FRONTEND LOGIN — [wpuf-login] shortcode + lost password]
      * @Test_FL0001 : Login form renders with all controls on the shortcode page
-     * @Test_FL0002 : Empty submit is rejected ("Username is required.")
+     * @Test_FL0002 : Empty submit is rejected ("Username is required." under the field)
      * @Test_FL0003 : Invalid credentials are rejected, visitor stays logged out
-     * @Test_FL0004 : Lost password with an unknown email is rejected
+     * @Test_FL0004 : Lost password with an unknown email gets the same neutral answer as a real account
      * @Test_FL0005 : Lost password for a known user reaches the mailer (env-gated)
      * @Test_FL0006 : Valid credentials log the user in (logged-in view shown)
+     * @Test_FL0007 : Login and lost-password screens load only the login app (no classic bundle, no Pro jQuery script)
+     * @Test_FL0008 : Empty lost-password submit is rejected under the field
+     * @Test_FL0009 : Reset password with a key: mismatch caught, reset saved, success message
      */
 
     test('FL0001 : Login form renders on the shortcode page', { tag: ['@Lite', '@FrontendLogin'] }, async () => {
@@ -86,7 +95,7 @@ test.describe('Frontend Login ([wpuf-login])', () => {
         await new FrontendLoginPage(page).validateInvalidCredentialsBlocked(loginUrl, feUser);
     });
 
-    test('FL0004 : Lost password with unknown email is rejected', { tag: ['@Lite', '@FrontendLogin', '@Negative'] }, async () => {
+    test('FL0004 : Lost password with an unknown email gets the neutral answer', { tag: ['@Lite', '@FrontendLogin', '@Negative'] }, async () => {
         const unknown = `nouser_${faker.string.alphanumeric(8)}@example.com`;
         await new FrontendLoginPage(page).validateLostPasswordUnknownEmail(loginUrl, unknown);
     });
@@ -96,6 +105,22 @@ test.describe('Frontend Login ([wpuf-login])', () => {
         // WPUF's side (user lookup, reset key, redirect) is proven either way;
         // actual delivery needs the env's mail stack (same class as EM0004).
         test.skip(outcome === 'mailfail', 'Reset flow reached the mailer but this env cannot send mail (SMTP gap) — WPUF logic verified.');
+    });
+
+    test('FL0007 : Login screens load only the login app', { tag: ['@Lite', '@FrontendLogin'] }, async () => {
+        await new FrontendLoginPage(page).validateLoginAppAssets(loginUrl);
+    });
+
+    test('FL0008 : Empty lost-password submit is rejected', { tag: ['@Lite', '@FrontendLogin', '@Negative'] }, async () => {
+        await new FrontendLoginPage(page).validateLostPasswordEmptyBlocked(loginUrl);
+    });
+
+    test('FL0009 : Reset password with a key', { tag: ['@Lite', '@FrontendLogin'] }, async () => {
+        // A fresh key straight from WordPress (the e-mail cannot be read in every env).
+        const key = cliValue(wpCli(`eval 'echo get_password_reset_key( get_user_by( "login", "${feUser}" ) );'`), /^[A-Za-z0-9]{20}$/);
+        test.skip(! key, 'no reset key from wp-cli');
+        // Same password again, so FL0006 still logs in with it.
+        await new FrontendLoginPage(page).validateResetPassword(loginUrl, feUser, key, feUserPassword);
     });
 
     // Last: changes the shared page's auth state.

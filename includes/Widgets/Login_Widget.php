@@ -22,105 +22,91 @@ class Login_Widget extends WP_Widget {
     }
 
     /**
-     * Ajax Login function
+     * Log a visitor in from the widget form (REST `auth/login`).
      *
-     * @return void
+     * @since WPUF_SINCE
+     *
+     * @param array $input `log`, `pwd`, `rememberme`
+     *
+     * @return array|WP_Error `message`, or the error
      */
-    public function ajax_login() {
-        $user_login     = isset( $_POST['log'] ) ? sanitize_text_field( wp_unslash( $_POST['log'] ) ) : '';
-        $user_pass      = isset( $_POST['pwd'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd'] ) ) : '';
-        $rememberme     = isset( $_POST['rememberme'] ) ? sanitize_text_field( wp_unslash( $_POST['rememberme'] ) ) : false;
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
-
-        if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
-            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
-        }
+    public function login( array $input ) {
+        $user_login = isset( $input['log'] ) ? sanitize_text_field( $input['log'] ) : '';
+        $user_pass  = isset( $input['pwd'] ) ? (string) $input['pwd'] : '';
+        $remember   = ! empty( $input['rememberme'] );
 
         // Sign-in may only happen for a request that came from a page on this
-        // site. The nonce above cannot establish that: it is printed to every
+        // site. The widget nonce cannot establish that: it is printed to every
         // logged-out visitor, and a cross-site POST carries none of the
-        // visitor's cookies, so this nopriv handler would otherwise sign a
-        // visitor's browser into whichever account the other site chose,
-        // ending the session they had. Same cause as CVE-2026-17564.
+        // visitor's cookies, so this would otherwise sign a visitor's browser
+        // into whichever account the other site chose. CVE-2026-17564.
         if ( ! wpuf_is_same_origin_request() ) {
-            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+            return new WP_Error( 'wpuf_login_cross_site', __( 'Permission denied', 'wp-user-frontend' ), [ 'status' => 403 ] );
         }
 
-        if ( empty( $user_login ) || empty( $user_pass ) ) {
-            wp_send_json_error( [ 'message' => __( 'Please fill all form fields', 'wp-user-frontend' ) ] );
-        } else {
-            $user = wp_signon(
-                [
-                    'user_login' => $user_login,
-                    'user_password' => $user_pass,
-                ], false
-            );
-
-            if ( is_wp_error( $user ) ) {
-                wp_send_json_error( [ 'message' => $user->get_error_message() ] );
-            } else {
-                wp_send_json_success( [ 'message' => __( 'Login successful!', 'wp-user-frontend' ) ] );
-            }
+        if ( '' === $user_login || '' === $user_pass ) {
+            return new WP_Error( 'wpuf_login_empty', __( 'Please fill all form fields', 'wp-user-frontend' ), [ 'status' => 400 ] );
         }
-        wp_set_auth_cookie( $user->ID, $rememberme );
+
+        $user = wp_signon(
+            [
+                'user_login'    => $user_login,
+                'user_password' => $user_pass,
+                'remember'      => $remember,
+            ],
+            is_ssl()
+        );
+
+        if ( is_wp_error( $user ) ) {
+            return new WP_Error( 'wpuf_login_failed', $user->get_error_message(), [ 'status' => 403 ] );
+        }
+
+        return [ 'message' => __( 'Login successful!', 'wp-user-frontend' ) ];
     }
 
     /**
-     * Ajax Logout function
+     * Log the current user out (REST `auth/logout`).
      *
-     * @return void
+     * @since WPUF_SINCE
+     *
+     * @return array `message`
      */
-    public function ajax_logout() {
-        $nonce = isset( $_REQUEST['nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['nonce'] ) ) : '';
-
-        if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
-            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
-        }
-
+    public function logout() {
         wp_logout();
-        wp_send_json_success( [ 'message' => __( 'Logout successful!', 'wp-user-frontend' ) ] );
+
+        return [ 'message' => __( 'Logout successful!', 'wp-user-frontend' ) ];
     }
 
     /**
-     * Ajax password reset function
+     * Send the password reset e-mail from the widget form (REST `auth/lost-password`).
      *
-     * @return void
+     * @since WPUF_SINCE
+     *
+     * @param array $input `user_login`
+     *
+     * @return array|WP_Error `message`, or the error (its message is HTML: one `<p>` per error)
      */
-    public function ajax_reset_pass() {
-        $username_or_email = isset( $_POST['user_login'] ) ? sanitize_text_field( wp_unslash( $_POST['user_login'] ) ) : '';
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+    public function lost_password( array $input ) {
+        $username_or_email = isset( $input['user_login'] ) ? sanitize_text_field( $input['user_login'] ) : '';
 
-        if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
-            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+        if ( '' === $username_or_email ) {
+            return new WP_Error( 'wpuf_lost_password_empty', __( 'Please fill all form fields', 'wp-user-frontend' ), [ 'status' => 400 ] );
         }
 
-        // Check if input variables are empty
-        if ( empty( $username_or_email ) ) {
-            wp_send_json_error(
-                [
-                    'error' => true,
-                    'message' => __( 'Please fill all form fields', 'wp-user-frontend' ),
-                ]
-            );
-        } else {
-            $username = is_email( $username_or_email ) ? sanitize_email( $username_or_email ) : sanitize_user( $username_or_email );
+        $username = is_email( $username_or_email ) ? sanitize_email( $username_or_email ) : sanitize_user( $username_or_email );
+        $result   = $this->ajax_lostpassword_retrieve( $username );
 
-            $user_forgotten = $this->ajax_lostpassword_retrieve( $username );
+        if ( is_wp_error( $result ) ) {
+            $display_errors = '';
 
-            if ( is_wp_error( $user_forgotten ) ) {
-                $lostpass_error_messages = $user_forgotten->errors;
-
-                $display_errors = '';
-
-                foreach ( $lostpass_error_messages as $error ) {
-                    $display_errors .= '<p>' . $error[0] . '</p>';
-                }
-
-                wp_send_json_error( [ 'message' => $display_errors ] );
-            } else {
-                wp_send_json_success( [ 'message' => __( 'Password has been reset. Please check your email.', 'wp-user-frontend' ) ] );
+            foreach ( $result->errors as $error ) {
+                $display_errors .= '<p>' . $error[0] . '</p>';
             }
+
+            return new WP_Error( 'wpuf_lost_password_failed', wp_kses_post( $display_errors ), [ 'status' => 400 ] );
         }
+
+        return [ 'message' => __( 'Password has been reset. Please check your email.', 'wp-user-frontend' ) ];
     }
 
     /**
@@ -208,6 +194,8 @@ class Login_Widget extends WP_Widget {
         wp_localize_script(
             'wpuf_ajax_login',
             'wpuf_ajax', [
+                'rest'    => wpuf_rest_script_data(),
+                'nonce'   => wp_create_nonce( 'wpuf_lost_pass' ),
                 'ajaxurl' => admin_url( 'admin-ajax.php' ),
             ]
         );
@@ -242,7 +230,7 @@ class Login_Widget extends WP_Widget {
         <div class="login-widget-container">
             <?php
             if ( ! is_user_logged_in() ) {
-                ?>
+				?>
 
                 <!-- Login form -->
                 <div class="wpuf-ajax-login-form">
@@ -257,10 +245,10 @@ class Login_Widget extends WP_Widget {
                         $registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Register', 'wp-user-frontend' ) );
                         echo wp_kses(
                             $registration_url, [
-                                'a' => [
-                                    'href' => [],
-                                ],
-                            ]
+								'a' => [
+									'href' => [],
+								],
+							]
                         );
                         echo esc_html( apply_filters( 'login_link_separator', ' | ' ) );
                     }

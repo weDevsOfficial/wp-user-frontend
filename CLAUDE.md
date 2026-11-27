@@ -2,7 +2,7 @@
 
 ## What This Is
 
-WP User Frontend (WPUF) is a WordPress plugin that enables frontend content management — post submission, user registration/login, dashboards, subscriptions, guest posting, content restriction, and AI form building. Requires PHP 5.6+.
+WP User Frontend (WPUF) is a WordPress plugin that enables frontend content management: post submission, user registration/login, dashboards, subscriptions, guest posting, content restriction, and AI form building. Requires PHP 7.4+ and WordPress 6.6+ (`wpuf.php` header).
 
 ## Skill Routing (invoke these, don't re-explain them)
 
@@ -11,7 +11,7 @@ The `.claude/skills/` directory has procedural HOW-TOs. **Invoke the matching sk
 | When you're about to… | Invoke |
 |---|---|
 | Write or modify PHP | [`wpuf-backend-dev`](.claude/skills/wpuf-backend-dev/SKILL.md) |
-| Write or modify Vue / JS / CSS | [`wpuf-frontend-dev`](.claude/skills/wpuf-frontend-dev/SKILL.md) |
+| Write or modify React / JS / CSS | [`wpuf-frontend-dev`](.claude/skills/wpuf-frontend-dev/SKILL.md) |
 | Review a PR or code change | [`wpuf-code-review`](.claude/skills/wpuf-code-review/SKILL.md) |
 
 ## Deeper Docs (read on demand)
@@ -21,6 +21,9 @@ The `.claude/skills/` directory has procedural HOW-TOs. **Invoke the matching sk
 | Architecture (directory layout, init flow, services, REST, payments, fields) | [`docs/architecture.md`](docs/architecture.md) | New to the codebase, or touching a subsystem you don't know |
 | Coding standards & patterns | [`docs/conventions.md`](docs/conventions.md) | Before writing non-trivial code |
 | Build & test commands | [`docs/build-and-test.md`](docs/build-and-test.md) | Before running lint/build/tests |
+| Hooks (PHP rules, generated index, JS hooks, Vue -> React migration) | [`docs/hooks/`](docs/hooks/php.md) | Before adding, moving or retiring a hook |
+| Slots on admin React screens | [`docs/slots/README.md`](docs/slots/README.md) | Before injecting UI into an admin React screen |
+| Settings React | [`docs/settings-screen.md`](docs/settings-screen.md) | Before adding or changing a setting |
 
 Per-directory `CLAUDE.md` files auto-load when Claude works in that path:
 - [`includes/Fields/CLAUDE.md`](includes/Fields/CLAUDE.md) — form field contract & conventions
@@ -29,9 +32,13 @@ Per-directory `CLAUDE.md` files auto-load when Claude works in that path:
 ## Non-Negotiables
 
 - **Preserve existing behavior.** Hooks, filters, public methods, REST routes, template paths, and shortcodes are contracts — don't change signatures or drop parameters silently.
-- **Legacy code stays.** jQuery form builder, LESS, Grunt, and the `class/` directory coexist with modern Vue/Tailwind/Vite intentionally. Don't rewrite legacy code without explicit permission.
+- **Legacy code stays.** The site frontend, field types and payments coexist with the React admin platform intentionally. Don't rewrite legacy code without explicit permission; renamed classes keep a `class_alias` stub at the old name.
 - **Free/Pro split matters.** Never assume Pro features exist. Detect with `class_exists('WP_User_Frontend_Pro')`.
 - **Scope discipline.** No drive-by refactors. Note unrelated issues separately instead of fixing them inline.
+
+## Admin platform revamp (branch `feature/react-admin-revamp`)
+
+Every admin screen runs on a FlyHR-style platform (`includes/Platform/`, `includes/Admin/Screens/`, `src/admin/`, `@wedevs/plugin-ui` with the old Vue look, Dokan-style hooks) as one React app on `admin.php?page=wp-user-frontend`; old admin URLs redirect to their route. Read [`docs/architecture.md`](docs/architecture.md) first (boot flow and the "where is X" map). Rules: stored data frozen (untouched save changes nothing), WPUF keeps firing every hook it owns, Pro modules and User Directory are not edited, every in-scope button is the shared `Button` wrapper, pnpm on that branch, tracked docs are committed with the work. Plan and evidence: `openspec/changes/revamp-admin-react-flyhr/` in the dev site.
 
 ## Quick Reference
 
@@ -43,7 +50,7 @@ Per-directory `CLAUDE.md` files auto-load when Claude works in that path:
 2. Defines constants (`WPUF_VERSION`, `WPUF_FILE`, `WPUF_ROOT`, etc.)
 3. Creates `WP_User_Frontend` singleton via `wpuf()` helper
 4. Manually includes `wpuf-functions.php`, `Frontend_Render_Form`, reCaptcha libs, AI manager, and gateway helpers
-5. On `plugins_loaded`: loads insights tracker, free/pro loader, upgrades, and instantiates all services into `$this->container[]`
+5. On `plugins_loaded`: loads insights tracker, free/pro loader, upgrades, then `instantiate()` builds every core service from the platform container (`Platform\Providers\PluginServiceProvider`, eager, in the old order) into `$this->container[]` and boots the platform (`wpuf_platform_loaded`)
 6. Services available via magic getter: `wpuf()->service_name`
 
 ### Directory Structure
@@ -51,13 +58,15 @@ Per-directory `CLAUDE.md` files auto-load when Claude works in that path:
 ```
 wp-user-frontend/
 ├── wpuf.php                # Main plugin file & bootstrap class
-├── wpuf-functions.php      # Global utility functions (6,782 lines)
-├── includes/               # PHP backend (166 files)
+├── wpuf-functions.php      # Loads the includes/functions/<domain>.php helpers
+├── includes/               # PHP backend (280 files)
 │   ├── Admin/              # Admin settings, menus, subscription management
 │   ├── Ajax/               # AJAX handlers (forms, uploads, addresses)
 │   ├── AI/                 # AI form builder (config, prompts, REST)
-│   ├── Api/                # REST API controllers (FormList, Subscription)
+│   ├── Blocks/             # Post form block (classic render)
+│   ├── Builder/            # Builder boot data, save, hook bridge, retired-hook deprecations
 │   ├── Fields/             # Form field types (20+ field classes)
+│   ├── functions/          # Global helpers split by domain (loaded by wpuf-functions.php)
 │   ├── Free/               # Free version functionality & pro prompts
 │   ├── Frontend/           # Frontend forms, dashboard, registration, payments
 │   ├── Hooks/              # Form settings cleanup hooks
@@ -65,19 +74,14 @@ wp-user-frontend/
 │   ├── Traits/             # Shared traits (FieldableTrait, TaxableTrait)
 │   ├── Widgets/            # WordPress widgets
 │   ├── Data/               # Data layer classes
-│   ├── Log/                # Logging utilities
+│   ├── Platform/           # Container, providers, REST (Manager + Controllers), stores, Caps, Onboarding services
 │   ├── upgrades/           # Version migration scripts
 │   └── Abstracts/          # Abstract base classes
-├── src/                    # Vue 3 source (17 files)
-│   ├── admin/              # Admin panel components
-│   ├── components/         # Shared Vue components
-│   ├── css/                # Component styles
-│   ├── js/                 # JavaScript modules
-│   └── router/             # Vue Router config
-├── admin/                  # Legacy admin PHP files & form builder
-│   ├── form-builder/       # Drag-and-drop form builder (PHP + JS)
-│   └── html/               # Admin HTML templates
-├── form-builder/           # Form builder assets
+├── src/                    # React source (no Vue left)
+│   ├── admin/              # React admin: app/ (runtime), apps/<screen>/, shared/
+│   ├── frontend/           # React frontend: kit, forms, account, login (Renderer)
+│   ├── css/                # Admin + frontend source styles
+│   └── js/                 # Blocks, user directory
 ├── templates/              # Overridable PHP templates
 │   ├── dashboard/          # User dashboard templates
 │   ├── subscriptions/      # Subscription plan templates
@@ -88,7 +92,6 @@ wp-user-frontend/
 │   ├── css/                # Compiled stylesheets
 │   ├── js/                 # Compiled JS bundles
 │   ├── images/             # Static images
-│   ├── less/               # LESS source files (legacy)
 │   └── vendor/             # Third-party vendor assets
 ├── Lib/                    # Third-party libraries
 │   ├── Gateway/            # Payment gateways (PayPal, Bank)
@@ -97,36 +100,35 @@ wp-user-frontend/
 ├── modules/                # Self-contained feature modules
 │   └── user-directory/     # User directory module (own npm project)
 ├── tests/
-│   └── e2e/                # Playwright E2E tests
-├── views/                  # Legacy PHP view files
-├── class/                  # Legacy class files (subscription, render-form)
+│   ├── e2e/                # Playwright E2E + parity tests
+│   ├── php/                # PHPUnit suite (WordPress test library)
+│   └── contracts/          # Hook / endpoint / runtime contract snapshots
 ├── config/                 # Configuration files
 └── languages/              # Translation files
 ```
 
 ### Key PHP Files
-- `wpuf-functions.php` — Global utility functions (6,782 lines, the largest file)
+- `wpuf-functions.php` — loads the global helpers split by domain under `includes/functions/`
 - `includes/Assets.php` — Script/style registration and enqueuing
 - `includes/Frontend_Render_Form.php` / `includes/Render_Form.php` — Core form rendering engine
 - `includes/User_Subscription.php` — Subscription plan management
 - `includes/Installer.php` — Plugin activation, DB table creation
-- `includes/API.php` — REST API registration
+- `includes/API.php` — builds the three frozen REST controllers (`wpuf()->api`); routes are registered by `Platform\REST\Manager`
 - `includes/AI_Manager.php` — AI form builder orchestration
 
 ### Service Container
-Simple array-based container with magic `__get()`. Services accessed via `wpuf()->service_name`. Major services:
-`assets`, `subscription`, `fields`, `customize`, `bank`, `paypal`, `gateway_manager`, `api`, `integrations`, `ai_manager`, `admin`, `frontend`, `ajax`, `setup_wizard`, `pro_upgrades`, `privacy`, `widgets`, `tracker`, `free_loader`, `upgrades`
+The platform container (`WeDevs\Wpuf\Platform\Container`) builds every service: `wpuf()->platform()->get( Class::class )`. Service providers in `includes/Platform/Providers/` (`Plugin`, `Core`, `Store`, `Rest`, `Admin`, `Frontend`, `Ai`) register them; Pro adds its providers on `wpuf_platform_loaded`. Storage goes through the stores (`Platform\Stores\Stores::forms()`, `::fields()`, `::subscriptions()`, `::settings()`, `::transactions()`, `::subscribers()`, `::user_packs()`, `::submissions()`, `::users()`).
+The legacy keys stay as an array with magic `__get()` (`wpuf()->service_name`), filled from the same container instances (`PluginServiceProvider::SERVICES`):
+`assets`, `subscription`, `fields`, `customize`, `bank`, `paypal`, `gateway_manager`, `api`, `integrations`, `ai_manager`, `post_form_block`, `admin`, `frontend`, `ajax`, `setup_wizard`, `pro_upgrades`, `privacy`, `widgets`, `tracker`, `free_loader`, `upgrades`
 
 ### Frontend Architecture
-- **Vue 3** (primary) for modern admin and frontend components, with Pinia state management and Vue Router
-- **jQuery** (legacy) for form builder and older frontend interactions
-- **Vite** as build tool with 5 entry points (forms-list, subscriptions, frontend-subscriptions, ai-form-builder, account)
-- **Grunt** for legacy build tasks (LESS compilation, Tailwind CSS, release packaging)
-- **Tailwind CSS 3** with DaisyUI component library and scoped preflight
-- **LESS** (legacy) for older stylesheets
+- **React** for every admin screen (`webpack.admin.config.js`, wp-scripts) and the frontend shortcodes (`webpack.frontend.config.js`: post / edit / registration / profile forms, login screens, account, plans, checkout; mounted by `Frontend\Renderer`); no Vue is left
+- **jQuery** (legacy) for the classic render, which stays where `Frontend\Renderer` does not mount React: a theme template override, the post form block and Elementor widgets, an unbuilt app, and older frontend interactions
+- **Grunt** runs the Tailwind CSS 3 CLI for the classic account sheet (`src/css/frontend/account.css` to `assets/css/frontend/account.css`) and `frontend-subscriptions.min.css`, and the POT step; no LESS, Vite or JS minify step (the classic jQuery files and their CSS are served as written). The React plans and checkout CSS come from the frontend webpack build
+- **CSS**: admin screens use Tailwind 4 with plain classes, scoped per screen (`tools/admin-css`); the React frontend uses plain hand-scoped CSS under `.wpuf-frontend` (no Tailwind); Tailwind 3 with DaisyUI is left only in the two classic Grunt sheets above
 
 ### REST API
-2 controllers under `includes/Api/` — `FormList` and `Subscription`. AI features add an additional REST controller via `includes/AI/RestController.php`.
+Namespace `wpuf/v1`. Controllers live in `includes/Platform/REST/Controllers/` on the `Platform\REST\RestController` base: the admin routes (`FormsController`, `ToolsController`, `TransactionsController`, `SubscribersController`, `OnboardingController`, `NoticesController` for notice dismiss and ACF tasks, `FreeModulesController` for free module toggles, `PostLockController` for clearing a frontend edit lock), the frontend routes (`FormsPublicController`, `AccountController`, `UploadsController`, `AuthController` for the Login widget, `LoginController` for the `[wpuf-login]` screens) and the frozen routes (`FormListController`, `SubscriptionController`, `SettingsController`). The AI form builder keeps its controller with its feature (`includes/AI/RestController.php`); Pro adds its own under `wpuf-pro/includes/Platform/<Feature>/`. `Platform\REST\Manager` registers all of them once on `rest_api_init`; permissions come from `Platform\Caps`.
 
 ### Payment System
 Payment gateways managed through `Lib/Gateway/`:
@@ -143,26 +145,27 @@ Text, Textarea, Email, URL, Dropdown, MultiDropdown, Checkbox, Radio, Image, Fea
 
 - **PHP**: WordPress Coding Standards (WPCS) via PHPCS
 - **JS**: JSHint (legacy), Prettier for formatting
-- **CSS**: Tailwind CSS 3 with DaisyUI
+- **CSS**: Tailwind 4 (admin screens, `tools/admin-css`), plain scoped CSS (React frontend), Tailwind 3 with DaisyUI (classic account and subscription sheets only)
 - **PHP Namespace**: `WeDevs\Wpuf\` for `includes/`, `WeDevs\Wpuf\Lib\` for `Lib/`
 
 ## Key Patterns
 
 - **Singleton pattern** via `WeDevs\WpUtils\SingletonTrait` for main plugin class
-- **Simple container** — array-based `$container[]` with magic `__get()` (not a formal DI container)
+- **Platform container**: `wpuf()->platform()->get()`, service providers, Stores for all storage; the legacy `$container[]` keys with magic `__get()` stay for back compat
 - **WordPress hooks** extensively used for extensibility (actions & filters)
 - **Overridable templates** — themes can override templates from `templates/` directory
 - **Free/Pro split** — `includes/Free/Free_Loader.php` loads free-only features; Pro version detected via `WP_User_Frontend_Pro` class
 - **Form field contract** — all form fields implement `Field_Contract` for consistent rendering
-- **Legacy + modern coexistence** — jQuery form builder alongside Vue 3 components, LESS alongside Tailwind, Grunt alongside Vite
+- **Legacy + modern coexistence** — classic jQuery frontend (plain JS and CSS) alongside the React frontend, Grunt (Tailwind CLI) alongside wp-scripts
 - **Third-party integrations** — Dokan, WC Vendors, WC Marketplace, ACF, n8n, Events Calendar
 
 ## Testing
 
 - **Playwright** for E2E tests in `tests/e2e/`
-  - A single `playwright.config.ts` with `setup` / `e2e` / `api` projects (select via `--project`)
+  - A single `tests/e2e/playwright.config.ts` with `setup` / `e2e` / `api` / `parity` projects (select via `--project`; `parity` compares a develop site with the branch site, local gate)
   - The `e2e` project is sharded via Playwright's native `--shard=i/n`
-- **PHPUnit 7.5.9** listed as dev dependency (test infrastructure in development)
+- **PHPUnit 9.6** suite in `tests/php` (`WP_TESTS_DIR=$HOME/Sites/parity-db/wp-tests-lib vendor/bin/phpunit --filter <Test>`, add `WPUF_TESTS_WITH_PRO=1` to load Pro)
+- **Jest**: `pnpm run test:shared|test:stores|test:form-builder|test:ai-form-builder|test:frontend`
 
 ## Integrations
 

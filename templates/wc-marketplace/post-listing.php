@@ -4,4 +4,4 @@
     </span>
 </header><!-- .dokan-dashboard-header -->
 
-<?php echo do_shortcode( '[wpuf_dashboard]' ); ?>
+<?php echo do_shortcode( '[wpuf_dashboard layout="list"]' ); ?>

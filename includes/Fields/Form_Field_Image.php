@@ -2,7 +2,7 @@
 
 namespace WeDevs\Wpuf\Fields;
 
-use WeDevs\Wpuf\Ajax\Upload_Ajax;
+use WeDevs\Wpuf\Frontend\Forms\Upload_Handler;
 
 /**
  * Image Field Class
@@ -63,7 +63,7 @@ class Form_Field_Image extends Field_Contract {
                             <?php
                             if ( $has_images ) {
                                 foreach ( $images as $attach_id ) {
-                                    echo Upload_Ajax::attach_html( $attach_id, $field_settings['name'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                                    echo Upload_Handler::attach_html( $attach_id, $field_settings['name'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                 }
                             }
                             ?>
@@ -161,8 +161,14 @@ class Form_Field_Image extends Field_Contract {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $raw_files = isset( $_POST['wpuf_files'] ) ? wp_unslash( $_POST['wpuf_files'] ) : [];
-        $wpuf_files = array_map( 'absint', $raw_files );
+        // field name => attachment ids (absint() on the whole list turned it into 1).
+        $raw_files  = isset( $_POST['wpuf_files'] ) ? (array) wp_unslash( $_POST['wpuf_files'] ) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- each id is absint()ed below.
+        $wpuf_files = array_map(
+            function ( $ids ) {
+                return array_map( 'absint', (array) $ids );
+            },
+            $raw_files
+        );
 
         return isset( $wpuf_files[ $field['name'] ] ) ? $wpuf_files[ $field['name'] ] : [];
     }

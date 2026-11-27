@@ -12,7 +12,6 @@ class Admin_Welcome {
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'register_menu' ] );
         add_action( 'admin_head', [ $this, 'hide_menu' ] );
-        // add_action( 'admin_init', array( $this, 'redirect_to_page' ), 9999 );
     }
 
     /**
@@ -21,11 +20,21 @@ class Admin_Welcome {
      * @return void
      */
     public function register_menu() {
-        add_dashboard_page(
+        $hook = add_dashboard_page(
             __( 'Welcome to WP User Frontend', 'wp-user-frontend' ),
             __( 'Welcome to WP User Frontend', 'wp-user-frontend' ), 'manage_options', 'wpuf-welcome',
             [ $this, 'welcome_page' ]
         );
+
+        // The page opens the admin app route #/welcome (Admin\Screens\Welcome).
+        if ( $hook ) {
+            add_action(
+                'load-' . $hook,
+                function () {
+                    wpuf()->platform()->get( Screens\Registry::class )->load( Screens\Welcome::SLUG );
+                }
+            );
+        }
     }
 
     /**
@@ -38,29 +47,15 @@ class Admin_Welcome {
     }
 
     /**
-     * Redirect to the welcome page once the plugin is installed
+     * Render the welcome page: the admin app route #/welcome opens instead
+     * (Admin\Screens\Welcome).
      *
-     * @return void
-     */
-    public function redirect_to_page() {
-        if ( ! get_transient( 'wpuf_activation_redirect' ) ) {
-            return;
-        }
-        delete_transient( 'wpuf_activation_redirect' );
-        // Only do this for single site installs.
-        if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
-            return;
-        }
-        wp_safe_redirect( admin_url( 'index.php?page=wpuf-welcome' ) );
-        exit;
-    }
-
-    /**
-     * Render the welcome page
+     * @since WPUF_SINCE Renders nothing; was views/welcome-page.php
      *
      * @return void
      */
     public function welcome_page() {
-        require_once WPUF_ROOT . '/views/welcome-page.php';
+        // The welcome screen is the admin app route #/welcome: its load hook
+        // redirects there before WordPress calls this page callback.
     }
 }

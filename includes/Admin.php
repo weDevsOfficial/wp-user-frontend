@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf;
 
+use WeDevs\Wpuf\Platform\Providers\AdminServiceProvider;
+
 use WeDevs\WpUtils\ContainerTrait;
 
 /**
@@ -14,29 +16,35 @@ class Admin {
     use ContainerTrait;
 
     public function __construct() {
-        $this->container['admin_welcome']         = new Admin\Admin_Welcome();
-        $this->container['menu']                  = new Admin\Menu();
-        $this->container['dashboard_metabox']     = new Admin\Dashboard_Metabox();
-        $this->container['form_template']         = new Admin\Forms\Post\Templates\Form_Template();
-        $this->container['admin_form']            = new Admin\Forms\Admin_Form();
-        $this->container['admin_form_handler']    = new Admin\Forms\Admin_Form_Handler();
-        $this->container['ai_form_handler']       = new Admin\Forms\AI_Form_Handler();
-        $this->container['admin_subscription']    = new Admin\Admin_Subscription();
-        $this->container['admin_installer']       = new Admin\Admin_Installer();
-        $this->container['settings']              = new Admin\Admin_Settings();
-        $this->container['forms']                 = new Admin\Forms\Form_Manager();
-        // Legacy wpuf/form block. Superseded by the wpuf/post-form block but
-        // still registered so existing posts keep editing without an invalid
-        // block notice.
-        $this->container['gutenberg_block']       = new Frontend\Form_Gutenberg_Block();
-        $this->container['plugin_upgrade_notice'] = new Admin\Plugin_Upgrade_Notice();
-        $this->container['posting']               = new Admin\Posting();
-        $this->container['shortcodes_button']     = new Admin\Shortcodes_Button();
-        $this->container['tools']                 = new Admin\Admin_Tools();
+        // Every admin service comes from the platform container (AdminServiceProvider,
+        // Core for the installer, Ai for the AI handler): one instance per request,
+        // built here in the old order so the constructors add their hooks as before.
+        $platform = wpuf()->platform();
+
+        foreach ( [ 'admin_welcome', 'menu', 'dashboard_metabox', 'form_template', 'admin_form' ] as $key ) {
+            $this->container[ $key ] = $platform->get( AdminServiceProvider::class_of( $key ) );
+        }
+
+        $this->container['ai_form_handler']    = $platform->get( Admin\Forms\AI_Form_Handler::class );
+        $this->container['admin_subscription'] = $platform->get( Admin\Admin_Subscription::class );
+        $this->container['admin_installer']    = $platform->get( Admin\Admin_Installer::class );
+
+        foreach ( [ 'forms', 'plugin_upgrade_notice', 'posting', 'shortcodes_button', 'tools', 'onboarding' ] as $key ) {
+            $this->container[ $key ] = $platform->get( AdminServiceProvider::class_of( $key ) );
+        }
+
+        // Notice for plugins that still use the retired Vue builder hooks (4.4g).
+        // On admin_init: the platform providers register after this constructor.
+        add_action(
+            'admin_init',
+            function () {
+                wpuf()->platform()->get( Builder\HookDeprecations::class )->register();
+            }
+        );
 
         // only free users will see the promotion
-        if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
-            $this->container['promotion'] = new Admin\Promotion();
+        if ( ! wpuf_is_pro_active() ) {
+            $this->container['promotion'] = $platform->get( AdminServiceProvider::class_of( 'promotion' ) );
         }
 
         // dynamic hook. format: "admin_action_{$action}". more details: wp-admin/admin.php
@@ -92,20 +100,32 @@ class Admin {
         }
 
         wp_enqueue_style( 'wpuf-admin' );
-        wp_enqueue_style( 'wpuf-sweetalert2' );
-        wp_enqueue_script( 'wpuf-sweetalert2' );
+        wp_enqueue_style( 'wpuf-dialog' );
+        wp_enqueue_script( 'wpuf-dialog' );
         wp_enqueue_script( 'wpuf-admin' );
 
-        $page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
-        $selected_page = [ 'wpuf-post-forms', 'wpuf-profile-forms', 'wpuf_subscription', 'wpuf_transaction', 'wpuf_tools' ];
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+        // The settings screen shows the same header (4.6b): its changelog icon was an empty dot.
+        $selected_page = [ 'wpuf-post-forms', 'wpuf-profile-forms', 'wpuf_subscription', 'wpuf_subscriptions', 'wpuf_transaction', 'wpuf_tools', 'wpuf-settings' ];
 
-        if ( in_array( $page, $selected_page ) ) {
-            wpuf_load_headway_badge();
+        // The admin app page shows these screens as routes.
+        if ( in_array( $page, $selected_page, true ) || 'wp-user-frontend' === $page ) {
+            // Printed in the footer (task 2.5b): called here on `init`, its script
+            // landed before <!DOCTYPE> and put these screens in quirks mode.
+            // admin_footer passes '' as its first argument, so keep the default selector.
+            add_action(
+                'admin_footer',
+                function () {
+                    wpuf_load_headway_badge();
+                }
+            );
         }
 
         wp_localize_script(
             'wpuf-admin', 'wpuf_admin_script',
             [
+                'rest'                          => wpuf_rest_script_data(),
                 'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
                 'nonce'                        => wp_create_nonce( 'wpuf_nonce' ),
                 'cleared_schedule_lock'        => __( 'Post lock has been cleared', 'wp-user-frontend' ),
@@ -116,7 +136,7 @@ class Admin {
                 ),
                 'version'                      => WPUF_VERSION,
                 'pro_version'                  => defined( 'WPUF_PRO_VERSION' ) ? WPUF_PRO_VERSION : '',
-                'isProActive'                  => class_exists( 'WP_User_Frontend_Pro' ),
+                'isProActive'                  => wpuf_is_pro_active(),
                 'plan'                         => function_exists( 'wpuf_pro_current_plan' ) ? wpuf_pro_current_plan() : '',
                 'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
                 'protected_shortcodes_message' => sprintf(
@@ -133,26 +153,6 @@ class Admin {
                 ),
             ]
         );
-
-        // Add inline script for dynamic API key link
-        wp_add_inline_script( 'wpuf-admin', '
-            jQuery(document).ready(function($) {
-                function updateAPIKeyLink() {
-                    var provider = $("[name=\'wpuf_ai[ai_provider]\']").val() || "openai";
-                    var $link = $(".wpuf-api-key-link");
-                    if ($link.length) {
-                        var url = $link.data(provider) || $link.data("openai");
-                        $link.attr("href", url);
-                    }
-                }
-
-                // Update on provider change
-                $(document).on("change", "[name=\'wpuf_ai[ai_provider]\']", updateAPIKeyLink);
-
-                // Initial update when page loads
-                updateAPIKeyLink();
-            });
-        ' );
     }
 
     public function enqueue_cpt_page_scripts( $hook_suffix ) {
@@ -175,6 +175,8 @@ class Admin {
                     'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
                     'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
                     'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
+                    'rest'        => wpuf_rest_script_data(),
+                    'upload_nonce' => wp_create_nonce( 'wpuf-upload-nonce' ),
                     'ajaxurl'    => admin_url( 'admin-ajax.php' ),
                     'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
                     'plupload'   => [
@@ -201,77 +203,13 @@ class Admin {
      * Enqueue scripts for AI form builder page
      *
      * @since 4.0.0
+     * @since WPUF_SINCE Forwards to Admin\Screens\AiFormBuilder::enqueue() (React app).
      *
      * @param string $form_type Form type ('post' or 'profile')
      * @return void
      */
     public function enqueue_ai_form_builder_scripts( $form_type = 'post' ) {
-        wp_enqueue_script( 'wpuf-ai-form-builder' );
-        wp_enqueue_style( 'wpuf-ai-form-builder' );
-
-        // Get AI settings
-        $ai_settings = get_option('wpuf_ai', []);
-
-        // Determine if we should expose API key status based on user capabilities
-        $show_api_status = current_user_can( wpuf_admin_role() );
-
-        // Get AI Manager instance for templates
-        $ai_manager = wpuf()->ai_manager;
-
-        // Prepare localization data
-        $localize_data = [
-            'version'              => WPUF_VERSION,
-            'assetUrl'             => WPUF_ASSET_URI,
-            'siteUrl'              => site_url(),
-            'nonce'                => wp_create_nonce( 'wp_rest' ),
-            'rest_url'             => esc_url_raw( rest_url() ),
-            'endpoints'            => [
-                'generate'     => esc_url_raw( rest_url( 'wpuf/v1/ai-form-builder/generate' ) ),
-                'createForm'   => esc_url_raw( rest_url( 'wpuf/v1/ai-form-builder/create-form' ) ),
-                'integrations' => esc_url_raw( rest_url( 'wpuf/v1/ai-form-builder/integrations' ) ),
-            ],
-            'formType'             => $form_type, // Pass form type to frontend
-            'provider'             => $ai_settings['ai_provider'] ?? 'openai',
-            'model'                => $ai_settings['ai_model'] ?? 'gpt-3.5-turbo',
-            'hasApiKey'            => $show_api_status ? !empty($ai_settings['ai_api_key']) : null,
-            'isProActive'          => class_exists( 'WP_User_Frontend_Pro' ),
-            'temperature'          => floatval( $ai_settings['temperature'] ?? 0.7 ),
-            'maxTokens'            => intval( $ai_settings['max_tokens'] ?? 2000 ),
-            'promptTemplates'      => $ai_manager->get_all_prompt_templates(),
-            'promptAIInstructions' => $ai_manager->get_all_prompt_ai_instructions(),
-            'i18n' => [
-                'errorTitle' => __('Error', 'wp-user-frontend'),
-                'errorMessage' => __('Something went wrong. Please try again.', 'wp-user-frontend'),
-                'invalidRequest' => __('Invalid Request', 'wp-user-frontend'),
-                'nonFormRequest' => __('I can only help with form creation. Try: "Create a contact form"', 'wp-user-frontend'),
-                'proFieldWarning' => __('Pro Feature Required', 'wp-user-frontend'),
-                'proFieldMessage' => __('This field type requires WP User Frontend Pro. You can continue without it or upgrade to Pro for full functionality.', 'wp-user-frontend'),
-                'continueWithoutPro' => __('Continue without Pro', 'wp-user-frontend'),
-                'upgradeToPro' => __('Upgrade to Pro', 'wp-user-frontend'),
-                'tryAgain' => __('Try Again', 'wp-user-frontend'),
-                'close' => __('Close', 'wp-user-frontend'),
-            ]
-        ];
-
-        /**
-         * Filter the AI Form Builder localization data.
-         *
-         * Allows external code to modify or enrich the data passed to the frontend,
-         * including custom templates, stages, prompts, or form details.
-         *
-         * @since 4.2.1
-         *
-         * @param array $localize_data Localization data array to be passed to wp_localize_script.
-         */
-        $localize_data = apply_filters( 'wpuf_ai_form_builder_localize_data', $localize_data );
-
-        wp_localize_script(
-            'wpuf-ai-form-builder',
-            'wpufAIFormBuilder',
-            $localize_data
-        );
-
-
+        wpuf()->platform()->get( Admin\Screens\AiFormBuilder::class )->enqueue( $form_type );
     }
 
     /**
@@ -290,7 +228,7 @@ class Admin {
         $access_level = wpuf_get_option( 'admin_access', 'wpuf_general', 'read' );
         $valid_pages  = [ 'admin-ajax.php', 'admin-post.php', 'async-upload.php', 'media-upload.php' ];
 
-        if ( ! current_user_can( $access_level ) && ! in_array( $pagenow, $valid_pages ) ) {
+        if ( ! current_user_can( $access_level ) && ! in_array( $pagenow, $valid_pages, true ) ) {
             // wp_die( __( 'Access Denied. Your site administrator has blocked your access to the WordPress back-office.', 'wpuf' ) );
             wp_redirect( home_url() );
             exit;

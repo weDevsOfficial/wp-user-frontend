@@ -1,14 +1,8 @@
 'use strict';
 module.exports = function( grunt) {
     const tailwindFileMap = {
-        'admin/form-builder/views/form-builder-v4.1.php': 'admin/form-builder.css',
-        'admin/form-builder/views/post-form-settings.php': 'admin/form-builder.css',
-        'assets/js/forms-list.js': 'admin/form-builder.css',
         'templates/account.php': 'frontend/account.css',
-        'ai-form-builder': 'ai-form-builder.css'
     }
-
-    var formBuilderAssets = require('./admin/form-builder/assets/js/form-builder-assets.js');
 
     var pkg = grunt.file.readJSON('package.json');
 
@@ -16,30 +10,9 @@ module.exports = function( grunt) {
         // setting folder templates
         dirs: {
             css: 'assets/css',
-            less: 'assets/less',
             images: 'assets/images',
             js: 'assets/js',
             template: 'assets/js-templates'
-        },
-
-        // Compile all .less files.
-        less: {
-
-            // one to one
-            front: {
-                files: {
-                    '<%= dirs.css %>/frontend-forms.css': '<%= dirs.less %>/frontend-forms.less',
-                    '<%= dirs.css %>/elementor-frontend-forms.css': '<%= dirs.less %>/elementor-frontend-forms.less'
-                }
-            },
-
-            admin: {
-                files: {
-                    '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/assets/less/form-builder.less'],
-                    '<%= dirs.css %>/admin.css': ['<%= dirs.less %>/admin.less'],
-                    '<%= dirs.css %>/registration-forms.css': ['<%= dirs.less %>/registration-forms.less']
-                }
-            }
         },
 
         wp_readme_to_markdown: {
@@ -82,52 +55,20 @@ module.exports = function( grunt) {
             }
         },
 
-        uglify: {
-            minify: {
-                files: {
-                    '<%= dirs.js %>/frontend-form.min.js': ['<%= dirs.js %>/frontend-form.js'],
-                    '<%= dirs.js %>/upload.min.js': ['<%= dirs.js %>/upload.js'],
-                }
-            }
-        },
-
         watch: {
-            less: {
-                files: ['<%= dirs.less %>/*.less'],
-                tasks: ['less:front', 'less:admin']
-            },
-
             formBuilder: {
                 files: [
-                    'admin/form-builder/assets/less/*',
-                    'admin/form-builder/assets/js/**/*',
-                    'assets/js/wpuf-form-builder-wpuf-forms.js',
-                    '<%= dirs.css %>/frontend-forms.less',
+                    'src/admin/apps/form-builder/**/*.{js,jsx}',
                 ],
                 tasks: [
-                    'jshint:formBuilder', 'less:admin',
-                    'concat:formBuilder', 'concat:templates', 'less:front'
+                    'shell:npm_build_form_builder'
                 ]
             },
 
-            vue: {
+            aiFormBuilder: {
                 files: [
-                    'assets/js/subscriptions.js',
-                    'assets/js/forms-list.js',
-                    'assets/css/admin/subscriptions.css',
-                    'assets/js/components/**/*.vue',
-                    'assets/js/stores/**/*.js',
-                ],
-                tasks: [
-                    'shell:npm_build'
-                ]
-            },
-
-            aiFormBuilderVue: {
-                files: [
-                    'assets/js/ai-form-builder.js',
-                    'assets/js/components/**/*.vue',
-                    'assets/js/stores/**/*.js',
+                    'src/admin/apps/ai-form-builder/**/*.{js,jsx}',
+                    'tools/admin-css/src/ai-form-builder.css',
                 ],
                 tasks: [
                     'shell:npm_build_ai_form_builder'
@@ -137,14 +78,11 @@ module.exports = function( grunt) {
             tailwind: {
                 files: [
                     'src/css/**/*.css',
-                    'admin/form-builder/views/*.php',
-                    'admin/form-builder/assets/js/**/*.php',
-                    'admin/form-builder/assets/js/**/*.js',
+                    'src/admin/apps/form-builder/**/*.{js,jsx}',
                     'includes/Admin/**/*.php',
                     'templates/**/*.php',
                     'includes/Free/Free_Loader.php',
                     'wpuf-functions.php',
-                    'assets/js/forms-list.js',
                 ],
                 tasks: ['tailwind'],
                 options: {
@@ -152,17 +90,6 @@ module.exports = function( grunt) {
                 }
             },
 
-            aiFormBuilder: {
-                files: [
-                    'src/css/ai-form-builder.css',
-                    'assets/**/*.{js,jsx,ts,tsx,vue,html}',
-                    'includes/Admin/**/*.php',
-                ],
-                tasks: ['shell:tailwind:src/css/ai-form-builder.css:assets/css/ai-form-builder.css'],
-                options: {
-                    spawn: false
-                }
-            },
 
             userDirectory: {
                 files: [
@@ -180,123 +107,21 @@ module.exports = function( grunt) {
 
         },
 
-        // Clean up build directory
-        clean: {
-            main: ['build/']
-        },
-
-        // Copy the plugin into the build directory
-        copy: {
-            main: {
-                src: [
-                    '**',
-                    '!**/node_modules/**',
-                    '!build/**',
-                    '!admin/form-builder/assets/**',
-                    '!assets/css/*.less',
-                    '!bin/**',
-                    '!.git/**',
-                    '!includes/pro/.git/**',
-                    '!Gruntfile.js',
-                    '!secret.json',
-                    '!package.json',
-                    '!debug.log',
-                    '!phpunit.xml',
-                    '!.gitignore',
-                    '!.gitmodules',
-                    '!npm-debug.log',
-                    '!plugin-deploy.sh',
-                    '!export.sh',
-                    '!config.codekit',
-                    '!**/nbproject/**',
-                    '!assets/less/**',
-                    '!assets/tailwind/**',
-                    '!tests/**',
-                    '!**/Gruntfile.js',
-                    '!**/package.json',
-                    '!**/readme.md',
-                    '!**/docs.md',
-                    '!**/*~',
-                    '!**/log.txt',
-                    '!**/package-lock.json',
-                    '!**/appsero.json',
-                    '!**/composer.lock',
-                    '!**/phpcs-report.txt',
-                    '!**/phpcs.xml.dist',
-                    '!**/postcss.config.js',
-                    '!**/tailwind.config.js',
-                    '!**/vite.config.mjs',
-                    '!**/CLAUDE.md',
-                    '!.claude/**',
-                    '!**/.DS_Store',
-                ],
-                dest: 'build/'
-            }
-        },
-
-        //Compress build directory into <name>.zip and <name>-<version>.zip
-        compress: {
-            main: {
-                options: {
-                    mode: 'zip',
-                    archive: './build/wp-user-frontend-v'+pkg.version+'.zip'
-                },
-                expand: true,
-                cwd: 'build/',
-                src: ['**/*'],
-                dest: 'wp-user-frontend'
-            }
-        },
-
-        // jshint
-        jshint: {
-            options: {
-                jshintrc: '.jshintrc',
-                reporter: require('jshint-stylish')
-            },
-
-            formBuilder: [
-                'admin/form-builder/assets/js/**/*.js',
-                '!admin/form-builder/assets/js/jquery-siaf-start.js',
-                '!admin/form-builder/assets/js/jquery-siaf-end.js',
-                'assets/js/wpuf-form-builder-wpuf-forms.js',
-            ]
-        },
-
-        // concat/join files
-        concat: {
-            formBuilder: {
-                files: {
-                    '<%= dirs.js %>/wpuf-form-builder.js': 'admin/form-builder/assets/js/form-builder.js',
-                    '<%= dirs.js %>/wpuf-form-builder-mixins.js': formBuilderAssets.mixins,
-                    '<%= dirs.js %>/wpuf-form-builder-components.js': formBuilderAssets.components,
-                },
-            },
-
-            templates: {
-                options: {
-                    process: function(src, filepath) {
-                        var id = filepath.replace('/template.php', '').split('/').pop();
-
-                        return '<script type="text/x-template" id="tmpl-wpuf-' + id + '">\n' + src + '</script>\n';
-                    }
-                },
-                files: {
-                    '<%= dirs.template %>/form-components.php': formBuilderAssets.componentTemplates,
-                }
-            }
-        },
-
         // is to run NPM commands through Grunt
         shell: {
-            npm_build: {
-                command: 'npm run build',
+            // POT with the React strings (WP-CLI make-pot over src/admin and the
+            // assets/js/screens bundles); grunt-wp-i18n reads PHP only.
+            makepot: {
+                command: 'node bin/make-pot.mjs',
             },
             npm_build_ai_form_builder: {
-                command: 'npm run build:ai-form-builder',
+                command: 'pnpm run build:ai-form-builder',
+            },
+            npm_build_form_builder: {
+                command: 'pnpm run build:form-builder',
             },
             npm_build_user_directory: {
-                command: 'npm run build:user-directory',
+                command: 'pnpm run build:user-directory',
             },
             tailwind: {
                 command: function ( input, output ) {
@@ -312,29 +137,22 @@ module.exports = function( grunt) {
     });
 
     // Load NPM tasks to be used here
-    grunt.loadNpmTasks( 'grunt-contrib-less' );
-    grunt.loadNpmTasks( 'grunt-contrib-concat' );
-    grunt.loadNpmTasks( 'grunt-contrib-jshint' );
     grunt.loadNpmTasks( 'grunt-wp-i18n' );
-    grunt.loadNpmTasks( 'grunt-contrib-uglify' );
     grunt.loadNpmTasks( 'grunt-contrib-watch' );
-    grunt.loadNpmTasks( 'grunt-contrib-clean' );
-    grunt.loadNpmTasks( 'grunt-contrib-copy' );
-    grunt.loadNpmTasks( 'grunt-contrib-compress' );
     // grunt.loadNpmTasks( 'grunt-notify' );
     grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
     grunt.loadNpmTasks( 'grunt-shell' );
     grunt.loadNpmTasks( 'grunt-postcss' );
 
-    grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n', 'tailwind', 'build-user-directory' ] );
+    grunt.registerTask( 'default', [ 'i18n', 'tailwind' ] );
 
     // file auto generation
-    grunt.registerTask( 'i18n', [ 'makepot' ] );
+    grunt.registerTask( 'i18n', [ 'shell:makepot' ] );
     grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
 
     // build stuff
-    grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme', 'tailwind', 'tailwind-minify' ] );
-    grunt.registerTask( 'zip', [ 'shell:npm_build', 'clean', 'copy', 'compress' ] );
+    // No release task here: `pnpm release` is the one release command (build once,
+    // POT, zip through bin/zip.mjs).
 
     // User Directory CSS build task
     grunt.registerTask( 'build-user-directory', 'Build User Directory CSS with Tailwind', function() {
@@ -367,10 +185,7 @@ module.exports = function( grunt) {
 
     grunt.registerTask('tailwind-minify', function() {
         const cssFiles = [
-            { input: 'assets/css/forms-list.css', output: 'assets/css/forms-list.min.css' },
-            { input: 'assets/css/frontend-subscriptions.css', output: 'assets/css/frontend-subscriptions.min.css' },
-            { input: 'assets/css/ai-form-builder.css', output: 'assets/css/ai-form-builder.min.css' },
-            { input: 'assets/css/admin/subscriptions.css', output: 'assets/css/admin/subscriptions.min.css' }
+            { input: 'assets/css/frontend-subscriptions.css', output: 'assets/css/frontend-subscriptions.min.css' }
         ];
 
         cssFiles.forEach(file => {

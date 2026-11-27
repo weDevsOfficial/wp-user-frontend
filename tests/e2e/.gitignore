@@ -7,3 +7,5 @@
 .playwright-mcp/
 # Symlinks to the wp-env container debug logs — machine-local paths.
 debug/
+
+.wp-env.override.json

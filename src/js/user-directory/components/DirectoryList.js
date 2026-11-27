@@ -21,17 +21,45 @@ const ProBadge = ({ className = '' }) => (
 
 const DirectoryList = ( {directories, currentPage, totalPages, onPageChange, fetchDirectories, className = '', onRequestDelete, deletingId, onEdit, config = {}} ) => {
     const [copiedId, setCopiedId] = useState( null );
+    const [copyFailedId, setCopyFailedId] = useState( null );
     const [openMenuId, setOpenMenuId] = useState(null);
     const menuRefs = useRef({});
     const [memberCounts, setMemberCounts] = useState({});
     const [loadingCounts, setLoadingCounts] = useState({});
 
+    // navigator.clipboard exists only on HTTPS / localhost; fall back to a hidden textarea elsewhere (#1780).
+    const copyText = ( text ) => {
+        const fallback = () => {
+            const area = document.createElement( 'textarea' );
+            area.value = text;
+            area.setAttribute( 'readonly', '' );
+            area.style.position = 'fixed';
+            area.style.opacity = '0';
+            document.body.appendChild( area );
+            area.select();
+            let copied = false;
+            try {
+                copied = document.execCommand( 'copy' );
+            } catch ( e ) {
+                copied = false;
+            }
+            document.body.removeChild( area );
+            return copied ? Promise.resolve() : Promise.reject();
+        };
+
+        return navigator.clipboard && window.isSecureContext
+            ? navigator.clipboard.writeText( text ).catch( fallback )
+            : fallback();
+    };
+
     const handleCopy = ( shortcode, id ) => {
-        navigator.clipboard.writeText( shortcode ).then( () => {
+        copyText( shortcode ).then( () => {
+            setCopyFailedId( null );
             setCopiedId( id );
             setTimeout( () => setCopiedId( null ), 1500 );
         } ).catch( () => {
-            // Fallback: silent fail if clipboard API is unavailable
+            setCopyFailedId( id );
+            setTimeout( () => setCopyFailedId( null ), 4000 );
         } );
     };
 
@@ -244,7 +272,9 @@ const DirectoryList = ( {directories, currentPage, totalPages, onPageChange, fet
                                             {displayShortcode}
                                         </code>
                                         {copiedId === dir.ID ? (
-                                            <span className="wpuf-ml-2 wpuf-text-green-600">Copied!</span>
+                                            <span className="wpuf-ml-2 wpuf-text-green-600" role="status">{ __( 'Copied!', 'wp-user-frontend' ) }</span>
+                                        ) : copyFailedId === dir.ID ? (
+                                            <span className="wpuf-ml-2 wpuf-text-red-600" role="alert">{ __( 'Could not copy. Select the shortcode and copy it manually.', 'wp-user-frontend' ) }</span>
                                         ) : (
                                             <button
                                                 onClick={() => handleCopy( displayShortcode, dir.ID )}

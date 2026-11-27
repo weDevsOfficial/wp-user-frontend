@@ -2287,14 +2287,11 @@ class Paypal {
         $is_subscription_return = isset( $_GET['subscription_id'] ) || isset( $_GET['ba_token'] ) ||
                                  ( 'pack' === $return_type && 0 === strpos( $return_token, 'I-' ) );
 
-        // For subscription returns, nonce verification might fail due to PayPal's redirect process
-        // So we'll be more lenient with subscription returns
-        if ( ! $is_subscription_return ) {
-            // Only enforce strict nonce checking for regular payments
-            if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_paypal_return' ) ) {
-                wp_safe_redirect( $this->get_error_page_url( 'Invalid nonce' ) );
-                exit;
-            }
+        // Subscription returns use the same return_url as one-time payments, and PayPal keeps
+        // its query args (it only appends its own), so the nonce is checked for both.
+        if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_paypal_return' ) ) {
+            wp_safe_redirect( $this->get_error_page_url( 'Invalid nonce' ) );
+            exit;
         }
 
         // Handle subscription return differently

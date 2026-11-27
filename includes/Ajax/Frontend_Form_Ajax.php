@@ -197,9 +197,14 @@ class Frontend_Form_Ajax {
         // it with _wpuf_draft_pending and that flag is cleared once the submission goes
         // through, so finishing a draft is gated exactly once. Posts without the flag are
         // genuine edits (including everything created before this flag existed) and are
-        // not re-gated, matching [wpuf_edit], which the renderer never gates.
+        // not re-gated, matching [wpuf_edit], which the renderer never gates. A published,
+        // scheduled or private post has a GMT date (drafts and pending posts do not), so a
+        // flag left over on it from an earlier Save Draft does not make it new again.
         $posted_post_id    = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
-        $is_new_submission = ! $posted_post_id || (bool) get_post_meta( $posted_post_id, '_wpuf_draft_pending', true );
+        $is_new_submission = ! $posted_post_id || (
+            get_post_meta( $posted_post_id, '_wpuf_draft_pending', true )
+            && '0000-00-00 00:00:00' === get_post_field( 'post_date_gmt', $posted_post_id )
+        );
 
         if ( $is_new_submission ) {
             [ $user_can_post, $submission_info ] = $form->is_submission_open( $form, $this->form_settings );
@@ -217,7 +222,8 @@ class Frontend_Form_Ajax {
 
         [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
-        if ( ! isset( $_POST['post_id'] ) ) {
+        // The entry limit applies to every new submission, including the first Submit of a saved draft.
+        if ( $is_new_submission ) {
             $has_limit = isset( $this->form_settings['limit_entries'] ) && ( 'true' === $this->form_settings['limit_entries'] || 'on' === $this->form_settings['limit_entries'] );
 
             if ( $has_limit ) {
@@ -228,6 +234,9 @@ class Frontend_Form_Ajax {
                     wpuf()->ajax->send_error( $this->form_settings['limit_message'] ?? null );
                 }
             }
+        }
+
+        if ( ! isset( $_POST['post_id'] ) ) {
             $this->on_edit_no_check_recaptcha( $post_vars );
         }
 
@@ -306,6 +315,10 @@ class Frontend_Form_Ajax {
             $postarr['tags_input'] = explode( ',', sanitize_text_field( wp_unslash( $_POST['tags'] ) ) );
         }
 
+        // What the new-post path stores, kept for a saved draft that is being submitted for the first time.
+        $new_post_status = $postarr['post_status'];
+        $new_post_date   = $postarr['post_date'] ?? '';
+
         if ( isset( $_POST['post_id'] ) ) {
             $post_id = intval( wp_unslash( $_POST['post_id'] ) );
 
@@ -351,6 +364,20 @@ class Frontend_Form_Ajax {
         $wpuf_form_status = isset( $_POST['wpuf_form_status'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_form_status'] ) ) : '';
         if ( $wpuf_form_status === 'new' ) {
             $is_update = false;
+        }
+
+        // A draft made with Save Draft and never submitted still carries _wpuf_draft_pending
+        // (server state, see $is_new_submission above). Its first Submit, in the same session
+        // or later from the edit link, is a new submission: it gets the form's post status
+        // (so moderation still applies), the new-post notification and the add-post hooks.
+        if ( $posted_post_id && $is_new_submission ) {
+            $is_update              = false;
+            $postarr['post_status'] = $new_post_status;
+            $postarr['post_date']   = $new_post_date;
+
+            if ( isset( $this->form_settings['comment_status'] ) ) {
+                $postarr['comment_status'] = $this->form_settings['comment_status'];
+            }
         }
 
         // set default post category if it's not been set yet and if post type supports

@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly
 
 class Widget extends Widget_Base {
+    use Per_User_Output;
 
     /**
      * Retrieve the widget name
@@ -165,11 +166,13 @@ class Widget extends Widget_Base {
      * @return array Array of forms formatted as select options
      */
     protected function get_wpuf_forms() {
-        $forms = get_posts( [
-            'post_type'      => 'wpuf_forms',
-            'posts_per_page' => -1,
-            'post_status'    => 'publish',
-        ] );
+        $forms = get_posts(
+            [
+                'post_type'      => 'wpuf_forms',
+                'posts_per_page' => -1,
+                'post_status'    => 'publish',
+            ]
+        );
 
         $options = [ '' => __( 'Select a Form', 'wp-user-frontend' ) ];
 

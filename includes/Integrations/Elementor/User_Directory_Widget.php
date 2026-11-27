@@ -18,6 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class User_Directory_Widget extends Widget_Base {
+    use Per_User_Output;
+
     /**
      * Retrieve the widget name
      *

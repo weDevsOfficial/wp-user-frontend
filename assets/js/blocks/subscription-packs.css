@@ -1,0 +1,164 @@
+/* DESCRIPTION: Editor-only styles for the subscription packs block. */
+/* Includes MultiSelect component styles and ServerSideRender adjustments. */
+
+.wp-block-wpuf-subscription-packs .components-server-side-render {
+    pointer-events: none;
+}
+
+.wp-block-wpuf-subscription-packs .components-placeholder {
+    min-height: 100px;
+}
+
+/* Loading overlay for ServerSideRender */
+.wpuf-ssr-loading-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.75);
+    min-height: 80px;
+}
+
+.wpuf-ssr-loading {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e0e0e0;
+    border-top-color: #007cba;
+    border-radius: 50%;
+    animation: wpuf-ssr-spin 0.7s linear infinite;
+}
+
+@keyframes wpuf-ssr-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* MultiSelect component */
+.wpuf-block-multiselect {
+    position: relative;
+}
+
+.wpuf-block-multiselect__trigger {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    padding: 8px 12px;
+    background: #fff;
+    border: 1px solid #949494;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #1e1e1e;
+    cursor: pointer;
+    text-align: left;
+}
+
+.wpuf-block-multiselect__trigger:hover {
+    border-color: #007cba;
+}
+
+.wpuf-block-multiselect__placeholder {
+    color: #757575;
+}
+
+.wpuf-block-multiselect__dropdown {
+    position: absolute;
+    z-index: 10;
+    margin-top: 4px;
+    width: 100%;
+    max-height: 240px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    list-style: none;
+    padding: 0;
+    margin-left: 0;
+}
+
+.wpuf-block-multiselect__search-wrap {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 0;
+}
+
+.wpuf-block-multiselect__search {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 13px;
+}
+
+.wpuf-block-multiselect__search:focus {
+    outline: none;
+    border-color: #007cba;
+    box-shadow: 0 0 0 1px #007cba;
+}
+
+.wpuf-block-multiselect__option {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+.wpuf-block-multiselect__option:hover {
+    background: #f0f0f0;
+}
+
+.wpuf-block-multiselect__empty {
+    padding: 12px;
+    color: #757575;
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+.wpuf-block-multiselect__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.wpuf-block-multiselect__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #1e1e1e;
+}
+
+.wpuf-block-multiselect__pill-remove {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    color: #757575;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.wpuf-block-multiselect__pill-remove:hover {
+    background: #ddd;
+    color: #1e1e1e;
+}
+

@@ -225,6 +225,7 @@ final class WP_User_Frontend {
         $this->container['integrations'] = new WeDevs\Wpuf\Integrations();
         $this->container['ai_manager']   = new WeDevs\Wpuf\AI_Manager();
         $this->container['post_form_block'] = new WeDevs\Wpuf\Blocks\PostForm();
+        $this->container['subscription_packs_block'] = new WeDevs\Wpuf\Blocks\SubscriptionPacks();
 
         if ( is_admin() ) {
             $this->container['admin']        = new WeDevs\Wpuf\Admin();

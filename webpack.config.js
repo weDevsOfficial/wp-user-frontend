@@ -13,6 +13,7 @@ module.exports = {
     ...defaultConfig,
     entry: {
         'js/blocks/post-form': './src/js/blocks/post-form/index.js',
+        'js/blocks/subscription-packs': './src/js/blocks/subscription-packs/index.js',
     },
     output: {
         path: path.resolve( __dirname, 'assets' ),

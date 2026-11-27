@@ -11,6 +11,29 @@
  * @var $details_meta
  * @var $current_pack
  */
+
+// Only the subscription block passes $block_config; the [wpuf_sub_pack] shortcode keeps its original markup
+$block_config = empty( $block_config ) ? [] : wp_parse_args(
+    (array) $block_config,
+    [
+        'columns'               => 3,
+        'show_price'            => true,
+        'show_features'         => true,
+        'show_description'      => true,
+        'button_color'          => '',
+        'button_text'           => '',
+        'pack_background_color' => '#ffffff',
+        'pack_border_color'     => '#e5e7eb',
+        'pack_border_radius'    => 12,
+        'pack_padding'          => 24,
+        'pack_shadow'           => 'md',
+        'title_font_size'       => 18,
+        'price_font_size'       => 30,
+        'card_gap'              => 16,
+        'recurring_font_size'   => 14,
+    ]
+);
+
 do_action( 'wpuf_before_subscription_listing', $packs );
 ?>
 <style>
@@ -26,15 +49,22 @@ do_action( 'wpuf_before_subscription_listing', $packs );
 </style>
 <?php
 if ( $packs ) {
-    echo wp_kses_post( '<ul class="wpuf_packs wpuf-grid wpuf-grid-cols-1 md:wpuf-grid-cols-2 lg:wpuf-grid-cols-3 wpuf-gap-4 wpuf-max-w-5xl wpuf-mx-auto wpuf-px-4 wpuf-items-start wpuf-mt-6">' );
+    if ( $block_config ) {
+        $columns_class = 'lg:wpuf-grid-cols-' . absint( $block_config['columns'] );
+        $gap_px        = absint( $block_config['card_gap'] );
+        echo wp_kses_post( '<ul class="wpuf_packs wpuf-grid wpuf-grid-cols-1 md:wpuf-grid-cols-2 ' . esc_attr( $columns_class ) . ' wpuf-max-w-5xl wpuf-mx-auto wpuf-px-4 wpuf-items-start wpuf-mt-6" style="gap:' . esc_attr( $gap_px ) . 'px">' );
+    } else {
+        echo wp_kses_post( '<ul class="wpuf_packs wpuf-grid wpuf-grid-cols-1 md:wpuf-grid-cols-2 lg:wpuf-grid-cols-3 wpuf-gap-4 wpuf-max-w-5xl wpuf-mx-auto wpuf-px-4 wpuf-items-start wpuf-mt-6">' );
+    }
 
     if ( isset( $args['include'] ) && $args['include'] != '' ) {
-        for ( $i = 0; $i < count( $pack_order ); $i++ ) {
+        for ( $i = 0, $pack_order_count = count( $pack_order ); $i < $pack_order_count; $i++ ) {
             foreach ( $packs as $pack ) {
-                if (  (int) $pack->ID == $pack_order[$i] ) {
-                    $class = 'wpuf-pack-' . $pack->ID; ?>
+                if ( (int) $pack->ID == $pack_order[ $i ] ) {
+                    $class = 'wpuf-pack-' . $pack->ID;
+                    ?>
                     <li class="<?php echo esc_attr( $class ); ?>">
-                        <?php $subscription->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '' ); ?>
+                        <?php $subscription->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '', false, $block_config ); ?>
                     </li>
                     <?php
                 }
@@ -42,9 +72,10 @@ if ( $packs ) {
         }
     } else {
         foreach ( $packs as $pack ) {
-            $class = 'wpuf-pack-' . $pack->ID; ?>
+            $class = 'wpuf-pack-' . $pack->ID;
+            ?>
             <li class="<?php echo esc_attr( $class ); ?>">
-                <?php $subscription->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '' ); ?>
+                <?php $subscription->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '', false, $block_config ); ?>
             </li>
             <?php
         }
